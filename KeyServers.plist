@@ -1,0 +1,16 @@
+(
+    "ldap://keyserver.pgp.com",
+    "wwwkeys.pgp.net",
+    "wwwkeys.at.pgp.net",
+    "wwwkeys.ch.pgp.net",
+    "wwwkeys.cz.pgp.net",
+    "wwwkeys.de.pgp.net",
+    "wwwkeys.dk.pgp.net",
+    "wwwkeys.es.pgp.net",
+    "wwwkeys.eu.pgp.net",
+    "wwwkeys.nl.pgp.net",
+    "wwwkeys.pl.pgp.net",
+    "wwwkeys.uk.pgp.net",
+    "wwwkeys.us.pgp.net",
+    "sks-keyservers.net",
+)

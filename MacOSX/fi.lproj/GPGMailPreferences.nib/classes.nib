@@ -1,0 +1,100 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {
+                changeDefaultKey = id; 
+                changeLineWrapping = id; 
+                changePassphraseStrategy = id; 
+                changePassphraseTimeout = id; 
+                flushCachedPassphrases = id; 
+                refreshKeys = id; 
+                toggleAlwaysEncryptMessages = id; 
+                toggleAlwaysSignMessages = id; 
+                toggleAuthenticateUnreadMessagesAutomatically = id; 
+                toggleAuthenticatesMessagesAutomatically = id; 
+                toggleAutomaticPersonalKeyChoice = id; 
+                toggleBCCRecipientsUse = id; 
+                toggleButtonsBehavior = id; 
+                toggleDecryptsMessagesAutomatically = id; 
+                toggleDecryptsUnreadMessagesAutomatically = id; 
+                toggleDisplayAccessoryView = id; 
+                toggleEncryptToSelf = id; 
+                toggleEncryptWhenPossible = id; 
+                toggleEncryptedReplyToEncryptedMessage = id; 
+                toggleExtendedInformation = id; 
+                toggleFilterKeys = id; 
+                toggleKeyRefresh = id; 
+                toggleOpenPGPMIME = id; 
+                toggleSMIME = id; 
+                toggleSeparatePGPOperations = id; 
+                toggleShowKeyInformation = id; 
+                toggleShowPassphrase = id; 
+                toggleShowUserIDs = id; 
+                toggleSignWhenEncrypting = id; 
+                toggleSignedReplyToSignedMessage = id; 
+                toggleSmartRules = id; 
+                toggleTrustAllKeys = id; 
+            }; 
+            CLASS = GPGMailPreferences; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                alwaysEncryptSwitchButton = NSButton; 
+                alwaysSignSwitchButton = NSButton; 
+                authenticateUnreadMessagesSwitchButton = NSButton; 
+                automaticallyAuthenticateMessagesSwitchButton = NSButton; 
+                automaticallyDecryptMessagesSwitchButton = NSButton; 
+                buttonsShowStateSwitchButton = NSButton; 
+                choosesPersonalKeyAccordingToAccountSwitchButton = NSButton; 
+                contactTextField = NSTextField; 
+                decryptUnreadMessagesSwitchButton = NSButton; 
+                disableSMIMESwitchButton = NSButton; 
+                displayButtonInComposeWindowSwitchButton = NSButton; 
+                encryptReplyToEncryptedMessageSwitchButton = NSButton; 
+                encryptToSelfSwitchButton = NSButton; 
+                encryptWhenAllKeysAvailableSwitchButton = NSButton; 
+                extendedInfoSwitchButton = NSButton; 
+                filtersKeysSwitchButton = NSButton; 
+                keyIdentifiersPopUpButton = NSPopUpButton; 
+                keyIdentifiersTableView = NSTableView; 
+                lineWrappingFormCell = NSFormCell; 
+                openPGPMIMESwitchButton = NSButton; 
+                passphraseStrategyMatrix = NSMatrix; 
+                passphraseTimeoutFormCell = NSFormCell; 
+                personalKeysPopUpButton = NSPopUpButton; 
+                refreshKeysOnVolumeChangeSwitchButton = NSButton; 
+                separateSignAndEncryptOperationsSwitchButton = NSButton; 
+                showUserIDsSwitchButton = NSButton; 
+                showsPassphraseSwitchButton = NSButton; 
+                signReplyToSignedMessageSwitchButton = NSButton; 
+                signWhenEncryptingSwitchButton = NSButton; 
+                trustAllKeysSwitchButton = NSButton; 
+                useBCCRecipientsSwitchButton = NSButton; 
+                useSmartRulesSwitchButton = NSButton; 
+                versionTextField = NSTextField; 
+                webSiteTextField = NSTextField; 
+            }; 
+            SUPERCLASS = NSPreferencesModule; 
+        }, 
+        {
+            ACTIONS = {apply = id; cancel = id; ok = id; selectModule = id; windowDidResize = id; }; 
+            CLASS = NSPreferences; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                applyButton = id; 
+                cancelButton = id; 
+                moduleMatrix = id; 
+                okButton = id; 
+                preferencesPanel = id; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            CLASS = NSPreferencesModule; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {preferencesView = id; }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}

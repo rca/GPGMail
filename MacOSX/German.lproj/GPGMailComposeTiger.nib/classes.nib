@@ -1,0 +1,53 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {
+                choosePersonalKey = id; 
+                endConflictResolution = id; 
+                endModal = id; 
+                gpgChoosePersonalKey = id; 
+                gpgChoosePublicKey = id; 
+                gpgChoosePublicKeys = id; 
+                gpgDownloadMissingKeys = id; 
+                gpgToggleAutomaticPublicKeysChoice = id; 
+                gpgToggleEncryptionForNewMessage = id; 
+                gpgToggleSignatureForNewMessage = id; 
+                gpgToggleSymetricEncryption = id; 
+                gpgToggleUsesOnlyOpenPGPStyle = id; 
+                gpgUseDefaultPublicKeys = id; 
+                toggleColumnDisplay = id; 
+            }; 
+            CLASS = GPGMailComposeAccessoryViewOwner; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                conflictEncryptionButton = NSButton; 
+                conflictMIMEButton = NSButton; 
+                conflictPanel = NSPanel; 
+                conflictSignatureButton = NSButton; 
+                conflictTableView = NSTableView; 
+                emptyView = NSView; 
+                encryptionSwitch = NSButton; 
+                fullView = NSView; 
+                optionalView = OptionalView; 
+                optionalViewTitleField = NSTextField; 
+                personalKeysPopUpButton = NSPopUpButton; 
+                popDownButton = NSPopUpButton; 
+                publicKeysOutlineView = NSOutlineView; 
+                publicKeysPanel = NSPanel; 
+                publicKeysPopDownButton = NSPopUpButton; 
+                signSwitch = NSButton; 
+                switchProtoMatrix = NSMatrix; 
+            }; 
+            SUPERCLASS = MVComposeAccessoryViewOwner; 
+        }, 
+        {CLASS = MVComposeAccessoryViewOwner; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = OptionalView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {"_optionSwitch" = NSButton; "_primaryView" = NSView; }; 
+            SUPERCLASS = NSView; 
+        }
+    ); 
+    IBVersion = 1; 
+}

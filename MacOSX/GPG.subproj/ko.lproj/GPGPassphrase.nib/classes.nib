@@ -1,0 +1,21 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {endModal = id; toggleShowPassphrase = id; }; 
+            CLASS = GPGPassphraseController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                clearPassphraseTextField = NSTextField; 
+                messageTextField = NSTextField; 
+                panel = NSPanel; 
+                passphraseCheckBox = NSButton; 
+                passphraseTabView = NSTabView; 
+                passphraseTextField = NSSecureTextField; 
+                titleTextField = NSTextField; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}

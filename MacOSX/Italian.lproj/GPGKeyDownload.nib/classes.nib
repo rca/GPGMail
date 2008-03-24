@@ -1,0 +1,29 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {cancel = id; gpgSearchKeys = id; import = id; search = id; }; 
+            CLASS = GPGKeyDownload; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                checkBoxMatrix = NSMatrix; 
+                context = id; 
+                emailCell = NSFormCell; 
+                importButton = NSButton; 
+                importProgressField = NSTextField; 
+                importProgressIndicator = NSProgressIndicator; 
+                outlineView = NSOutlineView; 
+                searchButton = NSButton; 
+                searchProgressField = NSTextField; 
+                searchProgressIndicator = NSProgressIndicator; 
+                serverComboBox = NSComboBox; 
+                subtitleField = NSTextField; 
+                tabView = NSTabView; 
+                titleField = NSTextField; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = SearchTextField; LANGUAGE = ObjC; SUPERCLASS = NSTextField; }
+    ); 
+    IBVersion = 1; 
+}

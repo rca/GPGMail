@@ -1,0 +1,52 @@
+{
+    IBClasses = (
+        {CLASS = ColorBackgroundView; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
+        {
+            ACTIONS = {"" = id; }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {
+                authenticate = id; 
+                decrypt = id; 
+                gpgAuthenticate = id; 
+                gpgDecrypt = id; 
+                toggleSignatureExtraView = id; 
+            }; 
+            CLASS = GPGMessageViewerAccessoryViewOwner; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                authenticationButton = NSButton; 
+                authenticationView = NSView; 
+                decryptedIconView = NSImageView; 
+                decryptedInfoView = NSView; 
+                decryptedMessageTextField = NSTextField; 
+                decryptionButton = NSButton; 
+                decryptionView = NSView; 
+                delegate = id; 
+                disclosureButton = NSButton; 
+                expirationAlertIconView = NSImageView; 
+                generalAlertIconView = NSImageView; 
+                policyAlertIconView = NSImageView; 
+                signatureBadPolicyAlertTextField = NSTextField; 
+                signatureCreationDateTextField = NSTextField; 
+                signatureExpirationDateTextField = NSTextField; 
+                signatureIconView = NSImageView; 
+                signatureKeyFingerprintTextField = NSTextField; 
+                signatureLowerView = NSView; 
+                signatureMessageTextField = NSTextField; 
+                signatureToggleButton = NSButton; 
+                signatureUpperView = NSView; 
+                signatureValidityTextField = NSTextField; 
+                signatureView = NSView; 
+                trustAlertIconView = NSImageView; 
+                userIDsPopDownButton = NSPopUpButton; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {CLASS = NSObject; LANGUAGE = ObjC; }
+    ); 
+    IBVersion = 1; 
+}

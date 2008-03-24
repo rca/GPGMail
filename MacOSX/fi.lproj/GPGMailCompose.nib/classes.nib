@@ -1,0 +1,63 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {gpgToggleSymetricEncryption = id; }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {
+                choosePersonalKey = id; 
+                endConflictResolution = id; 
+                endModal = id; 
+                gpgChoosePersonalKey = id; 
+                gpgChoosePublicKey = id; 
+                gpgChoosePublicKeys = id; 
+                gpgDownloadMissingKeys = id; 
+                gpgToggleAutomaticPublicKeysChoice = id; 
+                gpgToggleEncryptionForNewMessage = id; 
+                gpgToggleSignatureForNewMessage = id; 
+                gpgToggleSymetricEncryption = id; 
+                gpgToggleUsesOnlyOpenPGPStyle = id; 
+                gpgUseDefaultPublicKeys = id; 
+                toggleColumnDisplay = id; 
+            }; 
+            CLASS = GPGMailComposeAccessoryViewOwner; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                alertImageView = NSImageView; 
+                conflictEncryptionButton = NSButton; 
+                conflictMIMEButton = NSButton; 
+                conflictPanel = NSPanel; 
+                conflictSignatureButton = NSButton; 
+                conflictTableView = NSTableView; 
+                emptyView = NSView; 
+                encryptionSwitch = NSButton; 
+                fullView = NSView; 
+                personalKeysPopUpButton = NSPopUpButton; 
+                popDownButton = NSPopUpButton; 
+                publicKeysOutlineView = NSOutlineView; 
+                publicKeysPanel = NSPanel; 
+                publicKeysPopDownButton = NSPopUpButton; 
+                selectedPersonalKey = id; 
+                signSwitch = NSButton; 
+                switchProtoMatrix = NSMatrix; 
+            }; 
+            SUPERCLASS = MVComposeAccessoryViewOwner; 
+        }, 
+        {
+            CLASS = MVComposeAccessoryViewOwner; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {accessoryView = NSView; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            CLASS = NSToolBar; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {delegate = id; }; 
+            SUPERCLASS = NSView; 
+        }
+    ); 
+    IBVersion = 1; 
+}

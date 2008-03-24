@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>GPGMail</string>
+	<key>CFBundleGetInfoHTML</key>
+	<string>&lt;A HREF="http://www.sente.ch/software/GPGMail/"&gt;GPGMail&lt;/A&gt; version d52 (v52, Leopard), Copyright 2000-2008, St&amp;eacute;phane Corth&amp;eacute;sy.</string>
+	<key>CFBundleGetInfoString</key>
+	<string>GPGMail version d52 (v52, Leopard), Copyright 2000-2008, Stéphane Corthésy.</string>
+	<key>CFBundleIconFile</key>
+	<string>GPGMail</string>
+	<key>CFBundleIdentifier</key>
+	<string>ch.sente.gpgmail</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>GPGMail</string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>d52 (v52, Leopard)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>52</string>
+	<key>NSPrincipalClass</key>
+	<string>GPGMailBundle</string>
+</dict>
+</plist>
