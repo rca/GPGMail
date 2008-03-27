@@ -141,6 +141,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
         [[[self messageBody] topLevelPart] contentsForTextSystem]; // Will force re-evaluation of the decode* methods. Will not raise an exception, because -contentsForTextSystem will catch it!
         if(GPGMailLoggingLevel)
             NSLog(@"[DEBUG] Finished Decrypting");
+        [messageSignatures addObjectsFromArray:[self gpgMessageSignatures]];
     }
     @catch(NSException *localException){
         if(GPGMailLoggingLevel)

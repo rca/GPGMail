@@ -265,6 +265,9 @@ Release notes for v52:
 * New license: BSD
 * Now on SourceForge.net
 
+UNRELEASED - Release notes for v53:
+* (r3) Fixed regression bug in v52: does no longer recognize signatures after decryption, for ASCII (separate sig or not), and MIME (non-separate sig); for MIME/separate sig, sig is not seen automatically, but verifiable
+
 
 FIXME When _receiving_ signed+encrypted message with attachment, GPGMail says it's unsigned
 FIXME Unable to forward encrypted message as decrypted attachment (possible in PGPmail?)

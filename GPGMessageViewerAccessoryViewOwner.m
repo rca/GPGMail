@@ -413,10 +413,10 @@
     if(GPGMailLoggingLevel)
         NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
     // TODO: Should be done async, in another thread
-    volatile GPGSignature   *signature = nil;
-    NSException				*decryptionException = nil, *authenticationException = nil;
-    BOOL					decrypted = NO;
-    GPGMailBundle           *mailBundle = [GPGMailBundle sharedInstance];
+    NSMutableArray  *sigs = [NSMutableArray array];
+    NSException		*decryptionException = nil, *authenticationException = nil;
+    BOOL			decrypted = NO;
+    GPGMailBundle   *mailBundle = [GPGMailBundle sharedInstance];
 
 #if !defined(LEOPARD) && !defined(TIGER)
     [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"DECRYPTING", @"GPGMail", [NSBundle bundleForClass:[self class]], "")];
@@ -425,24 +425,24 @@
     NS_DURING
 //        Message	*decryptedMessage = [[delegate gpgMessageForAccessoryViewOwner:self] gpgDecryptedMessageWithPassphraseDelegate:mailBundle signature:(id *)&signature];
         Message	*decryptedMessage = [delegate gpgMessageForAccessoryViewOwner:self];
-        NSMutableArray  *sigs = [NSMutableArray array];
         [decryptedMessage gpgDecryptMessageWithPassphraseDelegate:mailBundle messageSignatures:sigs];
-        if([sigs count] > 0)
-            signature = [[sigs objectAtIndex:0] signature];
 
         if(GPGMailLoggingLevel)
-            NSLog(@"[DEBUG] Got decrypted message; signature = %@", signature);
+            NSLog(@"[DEBUG] Got decrypted message; signatures = %@", sigs);
         NSAssert(decryptedMessage != nil, @"Why is it nil? Which circumstances??"); // Would return nil in case method was called for a message which is not an encrypted one => programmation error
         // Let's support messages which have been signed then encrypted
-        if(!signature && [decryptedMessage gpgHasSignature]){ // FIXME: The decryptedMessage we get here is still the original encrypted one -> headers are the encrypted ones, and cannot be the decrypted ones!
+        if([sigs count] == 0 && [decryptedMessage gpgHasSignature]){ // FIXME: The decryptedMessage we get here is still the original encrypted one -> headers are the encrypted ones, and cannot be the decrypted ones!
 #if !defined(LEOPARD) && !defined(TIGER)
             [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"AUTHENTICATING", @"GPGMail", [NSBundle bundleForClass:[self class]], "")];
 #endif
 			
             if(GPGMailLoggingLevel)
-                NSLog(@"[DEBUG] Extracting signature");
+                NSLog(@"[DEBUG] Extracting signatures");
             NS_DURING
-                signature = [decryptedMessage gpgEmbeddedAuthenticationSignature]; // Can raise an exception
+                GPGSignature    *aSignature = [decryptedMessage gpgEmbeddedAuthenticationSignature]; // Can raise an exception
+                
+                if(aSignature != nil)
+                    [sigs addObject:aSignature];
             NS_HANDLER
                 // Error during verification
                 authenticationException = localException;
@@ -453,13 +453,13 @@
         else if(GPGMailLoggingLevel)
             NSLog(@"[DEBUG] Not signed");
 
-        if(signature != nil){
-            [self loadSignatureInfoViewWithSignature:(GPGSignature *)signature];
+        if([sigs count] > 0){
+            [self loadSignatureInfoViewWithSignature:[sigs objectAtIndex:0]]; // TODO: display all signatures
             [delegate gpgAccessoryViewOwner:self replaceViewWithView:signatureUpperView];
             [self setBannerType:gpgDecryptedSignatureInfoBanner];
         }
         isSignatureExtraViewVisible = NO;
-        [delegate gpgAccessoryViewOwner:self displayMessage:decryptedMessage isSigned:(signature != nil)];
+        [delegate gpgAccessoryViewOwner:self displayMessage:decryptedMessage isSigned:([sigs count] > 0)];
     NS_HANDLER
         decryptionException = localException;
         // Error during decryption
@@ -471,7 +471,7 @@
 	
     if(decryptionException == nil){
         decrypted = YES;
-        if(!signature){
+        if([sigs count] == 0){
 #warning OR signature is not a signature... Test signature summary state
             if(authenticationException == nil)
                 // Warn user that message was not authenticated
