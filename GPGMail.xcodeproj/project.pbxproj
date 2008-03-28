@@ -166,8 +166,8 @@
 		558C390E0CF9720500998406 /* NSObject+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+GPGMail.h"; sourceTree = "<group>"; };
 		558C39990CFAB0DF00998406 /* GPGMessageSignature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPGMessageSignature.h; sourceTree = "<group>"; };
 		558C399A0CFAB0DF00998406 /* GPGMessageSignature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPGMessageSignature.m; sourceTree = "<group>"; };
-		558D4E270D3A695F0007E29A /* rfc2440.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = rfc2440.txt; path = /Users/dave/Developer/GPGMail/rfc2440.txt; sourceTree = "<absolute>"; };
-		558D4E280D3A695F0007E29A /* rfc4880.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = rfc4880.txt; path = /Users/dave/Developer/GPGMail/rfc4880.txt; sourceTree = "<absolute>"; };
+		558D4E270D3A695F0007E29A /* rfc2440.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rfc2440.txt; sourceTree = "<group>"; };
+		558D4E280D3A695F0007E29A /* rfc4880.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rfc4880.txt; sourceTree = "<group>"; };
 		558D74410CDCD67800BA33EC /* ColorBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColorBackgroundView.h; path = MacOSX/ColorBackgroundView.h; sourceTree = "<group>"; };
 		558D75310CDD033A00BA33EC /* OutgoingMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OutgoingMessage.h; sourceTree = "<group>"; };
 		559A7F7A0838E2870052F47C /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = MacOSX/GPG.subproj/English.lproj/GPG.strings; sourceTree = "<group>"; };
@@ -418,9 +418,9 @@
 		559A81820838F38D0052F47C /* plistutil.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = plistutil.m; sourceTree = SOURCE_ROOT; };
 		559A81860838F3C30052F47C /* Info-GPGMail.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Info-GPGMail.plist"; sourceTree = SOURCE_ROOT; };
 		559A819C0838F87E0052F47C /* Installer.applescript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.applescript; path = Installer.applescript; sourceTree = "<group>"; };
-		559ED3280D26B8E400EA9DFB /* GPGEngineChoiceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPGEngineChoiceController.h; path = /Users/dave/Developer/GPGMail/GPGEngineChoiceController.h; sourceTree = "<absolute>"; };
-		559ED3290D26B8E400EA9DFB /* GPGEngineChoiceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GPGEngineChoiceController.m; path = /Users/dave/Developer/GPGMail/GPGEngineChoiceController.m; sourceTree = "<absolute>"; };
-		559ED32D0D26C54E00EA9DFB /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = /Users/dave/Developer/GPGMail/MacOSX/English.lproj/GPGEngineChoiceController.xib; sourceTree = "<absolute>"; };
+		559ED3280D26B8E400EA9DFB /* GPGEngineChoiceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPGEngineChoiceController.h; sourceTree = "<group>"; };
+		559ED3290D26B8E400EA9DFB /* GPGEngineChoiceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPGEngineChoiceController.m; sourceTree = "<group>"; };
+		559ED32D0D26C54E00EA9DFB /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MacOSX/English.lproj/GPGEngineChoiceController.xib; sourceTree = "<group>"; };
 		55CB1D76098D4B95007D00D4 /* NL.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = NL.gif; sourceTree = "<group>"; };
 		8D5B49B6048680CD000E48DA /* GPGMail.mailbundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPGMail.mailbundle; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
