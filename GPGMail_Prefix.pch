@@ -4,8 +4,6 @@
 #import <WebKit/WebKit.h>
 #endif
 
-#include "/usr/local/include/gpgme.h"
-
 extern void instrumentObjcMessageSends(BOOL enabled);
 extern int  GPGMailLoggingLevel;
 
