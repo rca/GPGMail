@@ -232,7 +232,7 @@ static NSString *stringForEncoding(CFStringEncoding encoding)
 + (NSString *) gpgPath
 {
     if(_gpgPath == nil)
-        _gpgPath = [[GPGOptions gpgPath] retain];
+        _gpgPath = [[[GPGEngine engineForProtocol:GPGOpenPGPProtocol] executablePath] retain];
     return _gpgPath;
 }
 
