@@ -1485,8 +1485,10 @@ static IMP  MimePart_isEncrypted = NULL;
                     NSData  *originalBodyData = [[encryptedMessage messageStore] fullBodyDataForMessage:encryptedMessage andHeaderDataIfReadilyAvailable:&originalHeaderData];
                     NSRange aRange = [self range];
                     
-                    originalHeaderData = [originalHeaderData valueForKey:@"data"]; // It was actually a Subdata
-                    originalBodyData = [originalBodyData valueForKey:@"data"]; // It was actually a Subdata
+                    if(![originalHeaderData isKindOfClass:[NSData class]])
+                        originalHeaderData = [originalHeaderData valueForKey:@"data"]; // It was actually a Subdata
+                    if(![originalBodyData isKindOfClass:[NSData class]])
+                        originalBodyData = [originalBodyData valueForKey:@"data"]; // It was actually a Subdata
                     newDecryptedData = [[NSMutableData alloc] initWithData:decryptedData];
                     [newDecryptedData convertNetworkLineEndingsToUnix];
                     [newDecryptedData replaceBytesInRange:NSMakeRange(0, 0) withBytes:[originalHeaderData bytes] length:[originalHeaderData length]];
