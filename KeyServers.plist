@@ -1,6 +1,7 @@
 (
-    "ldap://keyserver.pgp.com",
+    "sks-keyservers.net",
     "wwwkeys.pgp.net",
+    "ldap://keyserver.pgp.com",
     "wwwkeys.at.pgp.net",
     "wwwkeys.ch.pgp.net",
     "wwwkeys.cz.pgp.net",
@@ -12,5 +13,8 @@
     "wwwkeys.pl.pgp.net",
     "wwwkeys.uk.pgp.net",
     "wwwkeys.us.pgp.net",
-    "sks-keyservers.net",
+    "keyserver.linux.it",
+    "pgp.uni-mainz.de",
+    "minsky.surfnet.nl",
+    "pgp.mit.edu"
 )
