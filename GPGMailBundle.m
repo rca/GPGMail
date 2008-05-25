@@ -53,10 +53,10 @@
 
 
 // The following strings are used as toolbarItem identifiers and userDefault keys (value is the position index)
-NSString	*authenticateMessageToolbarItemIdentifier = @"GPGAuthenticateMessageToolbarItem";
-NSString	*decryptMessageToolbarItemIdentifier = @"GPGDecryptMessageToolbarItem";
-NSString	*signMessageToolbarItemIdentifier = @"GPGSignMessageToolbarItemIdentifier";
-NSString	*encryptMessageToolbarItemIdentifier = @"GPGEncryptMessageToolbarItem";
+NSString	*GPGAuthenticateMessageToolbarItemIdentifier = @"GPGAuthenticateMessageToolbarItem";
+NSString	*GPGDecryptMessageToolbarItemIdentifier = @"GPGDecryptMessageToolbarItem";
+NSString	*GPGSignMessageToolbarItemIdentifier = @"GPGGPGSignMessageToolbarItemIdentifier";
+NSString	*GPGEncryptMessageToolbarItemIdentifier = @"GPGEncryptMessageToolbarItem";
 
 NSString	*GPGKeyListWasInvalidatedNotification = @"GPGKeyListWasInvalidatedNotification";
 NSString	*GPGPreferencesDidChangeNotification = @"GPGPreferencesDidChangeNotification";
@@ -423,11 +423,11 @@ static BOOL	gpgMailWorks = YES;
 - (NSToolbarItem *) toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
 {
 	// IMPORTANT: we need to give, as altLabel, the largest label we can have!
-    if([itemIdentifier isEqualToString:decryptMessageToolbarItemIdentifier])
+    if([itemIdentifier isEqualToString:GPGDecryptMessageToolbarItemIdentifier])
         return [self createToolbarItemWithItemIdentifier:itemIdentifier label:@"DECRYPT_ITEM" altLabel:@"" paletteLabel:@"DECRYPT_ITEM" tooltip:@"DECRYPT_ITEM_TOOLTIP" target:self action:@selector(gpgDecrypt:) imageNamed:@"gpgClear" forToolbar:toolbar];
-    else if([itemIdentifier isEqualToString:authenticateMessageToolbarItemIdentifier])
+    else if([itemIdentifier isEqualToString:GPGAuthenticateMessageToolbarItemIdentifier])
         return [self createToolbarItemWithItemIdentifier:itemIdentifier label:@"AUTHENTICATE_ITEM" altLabel:@"" paletteLabel:@"AUTHENTICATE_ITEM" tooltip:@"AUTHENTICATE_ITEM_TOOLTIP" target:self action:@selector(gpgAuthenticate:) imageNamed:@"gpgSigned" forToolbar:toolbar];
-    else if([itemIdentifier isEqualToString:encryptMessageToolbarItemIdentifier]){
+    else if([itemIdentifier isEqualToString:GPGEncryptMessageToolbarItemIdentifier]){
         // (We cannot use responder chain mechanism, because MessageEditor class does not cooperate...)
         NSToolbarItem	*newItem;
         
@@ -438,7 +438,7 @@ static BOOL	gpgMailWorks = YES;
 
         return newItem;
     }
-    else if([itemIdentifier isEqualToString:signMessageToolbarItemIdentifier]){
+    else if([itemIdentifier isEqualToString:GPGSignMessageToolbarItemIdentifier]){
         // (We cannot use responder chain mechanism, because MessageEditor class does not cooperate...)
         NSToolbarItem	*newItem;
         
@@ -717,11 +717,11 @@ static BOOL	gpgMailWorks = YES;
     
     realToolbarDelegates = [[NSMutableDictionary allocWithZone:[self zone]] init];
 #ifdef LEOPARD
-    additionalToolbarItemIdentifiersPerToolbarIdentifier = [[NSDictionary allocWithZone:[self zone]] initWithObjectsAndKeys:[NSArray arrayWithObjects:decryptMessageToolbarItemIdentifier, authenticateMessageToolbarItemIdentifier, nil], @"MainWindow", [NSArray arrayWithObjects:decryptMessageToolbarItemIdentifier, authenticateMessageToolbarItemIdentifier, nil], @"SingleMessageViewer", [NSArray arrayWithObjects:encryptMessageToolbarItemIdentifier, signMessageToolbarItemIdentifier, nil], @"ComposeWindow_NewMessage", [NSArray arrayWithObjects:encryptMessageToolbarItemIdentifier, signMessageToolbarItemIdentifier, nil], @"ComposeWindow_ReplyOrForward", nil];
+    additionalToolbarItemIdentifiersPerToolbarIdentifier = [[NSDictionary allocWithZone:[self zone]] initWithObjectsAndKeys:[NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"MainWindow", [NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"SingleMessageViewer", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeWindow_NewMessage", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeWindow_ReplyOrForward", nil];
 #elif defined(TIGER)
-    additionalToolbarItemIdentifiersPerToolbarIdentifier = [[NSDictionary allocWithZone:[self zone]] initWithObjectsAndKeys:[NSArray arrayWithObjects:decryptMessageToolbarItemIdentifier, authenticateMessageToolbarItemIdentifier, nil], @"MessageViewerTiger", [NSArray arrayWithObjects:decryptMessageToolbarItemIdentifier, authenticateMessageToolbarItemIdentifier, nil], @"TornOffViewerTiger", [NSArray arrayWithObjects:encryptMessageToolbarItemIdentifier, signMessageToolbarItemIdentifier, nil], @"ComposeNewOrDraftTiger", [NSArray arrayWithObjects:encryptMessageToolbarItemIdentifier, signMessageToolbarItemIdentifier, nil], @"ComposeReplyOrForwardTiger", nil];
+    additionalToolbarItemIdentifiersPerToolbarIdentifier = [[NSDictionary allocWithZone:[self zone]] initWithObjectsAndKeys:[NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"MessageViewerTiger", [NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"TornOffViewerTiger", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeNewOrDraftTiger", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeReplyOrForwardTiger", nil];
 #else
-    additionalToolbarItemIdentifiersPerToolbarIdentifier = [[NSDictionary allocWithZone:[self zone]] initWithObjectsAndKeys:[NSArray arrayWithObjects:decryptMessageToolbarItemIdentifier, authenticateMessageToolbarItemIdentifier, nil], @"MessageViewer", [NSArray arrayWithObjects:decryptMessageToolbarItemIdentifier, authenticateMessageToolbarItemIdentifier, nil], @"TornOffViewer", [NSArray arrayWithObjects:encryptMessageToolbarItemIdentifier, signMessageToolbarItemIdentifier, nil], @"ComposeNewOrDraft", [NSArray arrayWithObjects:encryptMessageToolbarItemIdentifier, signMessageToolbarItemIdentifier, nil], @"ComposeReplyOrForward", nil];
+    additionalToolbarItemIdentifiersPerToolbarIdentifier = [[NSDictionary allocWithZone:[self zone]] initWithObjectsAndKeys:[NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"MessageViewer", [NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"TornOffViewer", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeNewOrDraft", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeReplyOrForward", nil];
 #endif
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(anyToolbarWillAddItem:) name:NSToolbarWillAddItemNotification object:nil];
     // LEOPARD - list is always empty. If too early, then it's OK for us. No instance has yet been created, and we will do the work through -anyToolbarWillAddItem:
@@ -1306,7 +1306,7 @@ static BOOL	gpgMailWorks = YES;
 
 - (BOOL) disablesSMIME
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"GPGDisablesSMIME"];
+    return gpgMailWorks && [[NSUserDefaults standardUserDefaults] boolForKey:@"GPGDisablesSMIME"];
 }
 
 - (void) setWarnedAboutMissingPrivateKeys:(BOOL)flag

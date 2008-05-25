@@ -1158,77 +1158,89 @@ static IMP  MimePart_isEncrypted = NULL;
 
 - (NSArray *)gpgCopySignerLabels
 {    
-    NSArray *pgpSignerLabels = nil;
-    NSArray *smimeSignerLabels = ((id (*)(id, SEL))MimePart_copySignerLabels)(self, _cmd); // Returns an array of NSString, or nil. Invokes -[MimePart copyMessageSigners].
-    NSArray *allSignerLabels;
-    
-    if([self gpgHasSignature]){
-        GPGSignature    *sig = [self gpgAuthenticationSignature]; // FIXME: Does not support multiple signatures
+    if(![GPGMailBundle gpgMailWorks])
+        return ((id (*)(id, SEL))MimePart_copySignerLabels)(self, _cmd); // Returns an array of NSString, or nil. Invokes -[MimePart  copyMessageSigners].
+    else{
+        NSArray *pgpSignerLabels = nil;
+        NSArray *smimeSignerLabels = ((id (*)(id, SEL))MimePart_copySignerLabels)(self, _cmd); // Returns an array of NSString, or nil. Invokes -[MimePart copyMessageSigners].
+        NSArray *allSignerLabels;
         
-        if([sig status] == GPGErrorNoError){
-            NSString *aString = [sig fingerprint];
-            GPGKey   *signatureKey = nil;
+        if([self gpgHasSignature]){
+            GPGSignature    *sig = [self gpgAuthenticationSignature]; // FIXME: Does not support multiple signatures
             
-            if(aString){
-                GPGContext	*aContext = [[GPGContext alloc] init];
+            if([sig status] == GPGErrorNoError){
+                NSString *aString = [sig fingerprint];
+                GPGKey   *signatureKey = nil;
                 
-                NS_DURING
+                if(aString){
+                    GPGContext	*aContext = [[GPGContext alloc] init];
+                    
+                    NS_DURING
                     signatureKey = [aContext keyFromFingerprint:aString secretKey:NO];
-                NS_HANDLER
+                    NS_HANDLER
                     [aContext release];
                     [localException raise];
-                NS_ENDHANDLER
-                [aContext release];
+                    NS_ENDHANDLER
+                    [aContext release];
+                }
+                if(signatureKey)
+                    aString = [signatureKey name]; // Like Apple does for S/MIME
+                else if([aString length] >= 32)
+                    aString = [GPGKey formattedFingerprint:aString];
+                pgpSignerLabels = [NSArray arrayWithObject:aString];
             }
-            if(signatureKey)
-                aString = [signatureKey name]; // Like Apple does for S/MIME
-            else if([aString length] >= 32)
-                aString = [GPGKey formattedFingerprint:aString];
-            pgpSignerLabels = [NSArray arrayWithObject:aString];
         }
-    }
-    
-    if(pgpSignerLabels != nil){
-        if(smimeSignerLabels != nil){
-            allSignerLabels = [[pgpSignerLabels arrayByAddingObjectsFromArray:smimeSignerLabels] retain];
-            [smimeSignerLabels release];
+        
+        if(pgpSignerLabels != nil){
+            if(smimeSignerLabels != nil){
+                allSignerLabels = [[pgpSignerLabels arrayByAddingObjectsFromArray:smimeSignerLabels] retain];
+                [smimeSignerLabels release];
+            }
+            else
+                allSignerLabels = [pgpSignerLabels retain];
         }
         else
-            allSignerLabels = [pgpSignerLabels retain];
+            allSignerLabels = smimeSignerLabels;
+        
+        if((GPGMailLoggingLevel > 0))
+            NSLog(@"[DEBUG] %s => %@", __PRETTY_FUNCTION__, allSignerLabels);
+        
+        return allSignerLabels;
     }
-    else
-        allSignerLabels = smimeSignerLabels;
-    
-    if((GPGMailLoggingLevel > 0))
-        NSLog(@"[DEBUG] %s => %@", __PRETTY_FUNCTION__, allSignerLabels);
-    
-    return allSignerLabels;
 }
 
 - (BOOL)gpgIsSigned
 {
-    BOOL    result;
-    
-    if([self gpgHasSignature])
-        result = YES;
-    else
-        result = ((BOOL (*)(id, SEL))MimePart_isSigned)(self, _cmd);
-//    NSLog(@"%s => %@", __PRETTY_FUNCTION__, result ? @"YES":@"NO");
-    
-    return result;
+    if(![GPGMailBundle gpgMailWorks])
+        return ((BOOL (*)(id, SEL))MimePart_isSigned)(self, _cmd);
+    else{
+        BOOL    result;
+        
+        if([self gpgHasSignature])
+            result = YES;
+        else
+            result = ((BOOL (*)(id, SEL))MimePart_isSigned)(self, _cmd);
+        //    NSLog(@"%s => %@", __PRETTY_FUNCTION__, result ? @"YES":@"NO");
+        
+        return result;
+    }
 }
 
 - (BOOL)_gpgIsEncrypted
 {
-    BOOL    result;
-    
-    if([self gpgIsEncrypted])
-        result = YES;
-    else
-        result = ((BOOL (*)(id, SEL))MimePart_isEncrypted)(self, _cmd);
-//    NSLog(@"%s => %@", __PRETTY_FUNCTION__, result ? @"YES":@"NO");
-    
-    return result;
+    if(![GPGMailBundle gpgMailWorks])
+        return ((BOOL (*)(id, SEL))MimePart_isEncrypted)(self, _cmd);
+    else{
+        BOOL    result;
+        
+        if([self gpgIsEncrypted])
+            result = YES;
+        else
+            result = ((BOOL (*)(id, SEL))MimePart_isEncrypted)(self, _cmd);
+        //    NSLog(@"%s => %@", __PRETTY_FUNCTION__, result ? @"YES":@"NO");
+        
+        return result;
+    }
 }
 
 /*!
@@ -1562,120 +1574,149 @@ static IMP  MimePart_isEncrypted = NULL;
 
 - gpgDecodeMultipartEncrypted
 {
-    id	result = nil;
-    
-    if(GPGMailLoggingLevel)
-        NSLog(@"[DEBUG] %p decodeMultipartEncrypted", self);
-    NS_DURING
-//        [self setGpgException:nil];
-        [(Message *)[[self mimeBody] message] setGpgException:nil];
-		result = [self _gpgDecodePGP]; // Can raise an exception!        
-    NS_HANDLER
-//        [localException raise]; // Exception will be caught by Mail and a message will be logged in console: '*** Exception Decryption failed was raised while decoding mime message part. Displaying as text/plain.'
-//        [self setGpgException:localException];
-        [(Message *)[[self mimeBody] message] setGpgException:localException];
-    NS_ENDHANDLER
-	
-    if(!result){
-//        [encryptedMessage setGpgIsDecrypting:NO]; // Needed, else will try again to decrypt
+    if(![GPGMailBundle gpgMailWorks]){
         if(MimePart_decodeMultipartEncrypted)
-            result = ((id (*)(id, SEL))MimePart_decodeMultipartEncrypted)(self, _cmd); // TESTME Test when PGPmail is present
+            return ((id (*)(id, SEL))MimePart_decodeMultipartEncrypted)(self, _cmd); // TESTME Test when PGPmail is present
         else
-            result = [self decodeMultipart]; // Use default behavior (works!)
+            return [self decodeMultipart];
     }
-    if(GPGMailLoggingLevel)
-        NSLog(@"[DEBUG] Done: result = %p", result);
-	return result;
+    else{
+        id	result = nil;
+        
+        if(GPGMailLoggingLevel)
+            NSLog(@"[DEBUG] %p decodeMultipartEncrypted", self);
+        NS_DURING
+            //        [self setGpgException:nil];
+            [(Message *)[[self mimeBody] message] setGpgException:nil];
+            result = [self _gpgDecodePGP]; // Can raise an exception!        
+        NS_HANDLER
+            //        [localException raise]; // Exception will be caught by Mail and a message will be logged in console: '*** Exception Decryption failed was raised while decoding mime message part. Displaying as text/plain.'
+            //        [self setGpgException:localException];
+            [(Message *)[[self mimeBody] message] setGpgException:localException];
+        NS_ENDHANDLER
+        
+        if(!result){
+            //        [encryptedMessage setGpgIsDecrypting:NO]; // Needed, else will try again to decrypt
+            if(MimePart_decodeMultipartEncrypted)
+                result = ((id (*)(id, SEL))MimePart_decodeMultipartEncrypted)(self, _cmd); // TESTME Test when PGPmail is present
+            else
+                result = [self decodeMultipart]; // Use default behavior (works!)
+        }
+        if(GPGMailLoggingLevel)
+            NSLog(@"[DEBUG] Done: result = %p", result);
+        return result;
+    }
 }
 
 - gpgDecodeMultipartSigned
 {
-    if(GPGMailLoggingLevel)
-        NSLog(@"[DEBUG] %p decodeMultipartSigned", self);
-	id	result = [self _gpgDecodePGP];
-	
-	if(!result)
-		result = ((id (*)(id, SEL))MimePart_decodeMultipartSigned)(self, _cmd);
-    if(GPGMailLoggingLevel)
-        NSLog(@"[DEBUG] Done: result = %p", result);
-	
-	return result;
+    if(![GPGMailBundle gpgMailWorks])
+		return ((id (*)(id, SEL))MimePart_decodeMultipartSigned)(self, _cmd);
+    else{
+        if(GPGMailLoggingLevel)
+            NSLog(@"[DEBUG] %p decodeMultipartSigned", self);
+        id	result = [self _gpgDecodePGP];
+        
+        if(!result)
+            result = ((id (*)(id, SEL))MimePart_decodeMultipartSigned)(self, _cmd);
+        if(GPGMailLoggingLevel)
+            NSLog(@"[DEBUG] Done: result = %p", result);
+        
+        return result;
+    }
 }
 
 - gpgDecodeTextPlain
 {
-#if 0
-	//	NSLog(@"$$$ %p gpgDecodeTextPlain", self);
-	id	result = [self _gpgDecodePGP];
-	
-	if(!result)
-		result = ((id (*)(id, SEL))MimePart_decodeTextPlain)(self, _cmd);
-	//	NSLog(@"$$$ Done: result = %p", result);
-	return result;
-#else
-    id  result = nil;
+	id	result = nil;
     
-    if(GPGMailLoggingLevel)
-        NSLog(@"[DEBUG] %p gpgDecodeTextPlain", self);
-    NS_DURING
-		result = [self _gpgDecodePGP]; // Can raise an exception!        
-    NS_HANDLER
-        [(Message *)[[self mimeBody] message] setGpgException:localException];
-    NS_ENDHANDLER
-	
-    if(!result)
+    if(![GPGMailBundle gpgMailWorks])
 		result = ((id (*)(id, SEL))MimePart_decodeTextPlain)(self, _cmd);
+    else{
+#if 0
+        //	NSLog(@"$$$ %p gpgDecodeTextPlain", self);
+        result = [self _gpgDecodePGP];	
+        if(!result)
+            result = ((id (*)(id, SEL))MimePart_decodeTextPlain)(self, _cmd);
+        //	NSLog(@"$$$ Done: result = %p", result);
+        return result;
+#else
+        if(GPGMailLoggingLevel)
+            NSLog(@"[DEBUG] %p gpgDecodeTextPlain", self);
+        NS_DURING
+            result = [self _gpgDecodePGP]; // Can raise an exception!        
+        NS_HANDLER
+            [(Message *)[[self mimeBody] message] setGpgException:localException];
+        NS_ENDHANDLER
+        
+        if(!result)
+            result = ((id (*)(id, SEL))MimePart_decodeTextPlain)(self, _cmd);
+        
+        return result;
+#endif
+    }
 
 	return result;
-#endif
 }
 
 - gpgDecodeTextHtml
 {
-    if(GPGMailLoggingLevel)
-		NSLog(@"[DEBUG] %p gpgDecodeTextHtml", self);
-	id	result = [self _gpgDecodePGP];
-	
-	if(!result)
-		result = ((id (*)(id, SEL))MimePart_decodeTextHtml)(self, _cmd);
-    if(GPGMailLoggingLevel)
-        NSLog(@"[DEBUG] Done: result = %p", result);
-	return result;
+    if(![GPGMailBundle gpgMailWorks])
+		return ((id (*)(id, SEL))MimePart_decodeTextHtml)(self, _cmd);
+    else{
+        if(GPGMailLoggingLevel)
+            NSLog(@"[DEBUG] %p gpgDecodeTextHtml", self);
+        id	result = [self _gpgDecodePGP];
+        
+        if(!result)
+            result = ((id (*)(id, SEL))MimePart_decodeTextHtml)(self, _cmd);
+        if(GPGMailLoggingLevel)
+            NSLog(@"[DEBUG] Done: result = %p", result);
+        return result;
+    }
 }
 
 - gpgDecodeApplicationOctet_stream
 {
-    BOOL    doDecode = ![[self parentPart] gpgIsOpenPGPEncryptedContainerPart];
-    id      result = nil;
-
-    if(doDecode){
-        if(GPGMailLoggingLevel)
-            NSLog(@"[DEBUG] %p gpgDecodeApplicationOctet_stream", self);
-        result = [self _gpgDecodePGP];
+    if(![GPGMailBundle gpgMailWorks])
+		return ((id (*)(id, SEL))MimePart_decodeApplicationOctet_stream)(self, _cmd);
+    else{
+        BOOL    doDecode = ![[self parentPart] gpgIsOpenPGPEncryptedContainerPart];
+        id      result = nil;
+        
+        if(doDecode){
+            if(GPGMailLoggingLevel)
+                NSLog(@"[DEBUG] %p gpgDecodeApplicationOctet_stream", self);
+            result = [self _gpgDecodePGP];
+        }
+        
+        if(!result)
+            result = ((id (*)(id, SEL))MimePart_decodeApplicationOctet_stream)(self, _cmd);
+        if(doDecode && GPGMailLoggingLevel)
+            NSLog(@"[DEBUG] Done: result = %p", result);
+        return result;
     }
-	
-	if(!result)
-		result = ((id (*)(id, SEL))MimePart_decodeApplicationOctet_stream)(self, _cmd);
-    if(doDecode && GPGMailLoggingLevel)
-        NSLog(@"[DEBUG] Done: result = %p", result);
-	return result;
 }
 
 - (void) gpgClearCachedDescryptedMessageBody
 { 
 	// Is invoked automatically when selection changes? Currently called by _setMessage:fp8 headerOrder: (indirectly)
-    if(GPGMailLoggingLevel)
-        NSLog(@"[DEBUG] %p clearCachedDescryptedMessageBody", self);
-	Message	*aMessage = (Message *)[[self mimeBody] message];
-	
-	if([aMessage gpgMayClearCachedDecryptedMessageBody]){
-		[aMessage setGpgMessageSignatures:nil];
-		((void (*)(id, SEL))MimePart_clearCachedDescryptedMessageBody)(self, _cmd);
+    if(![GPGMailBundle gpgMailWorks])
+        ((void (*)(id, SEL))MimePart_clearCachedDescryptedMessageBody)(self, _cmd);
+    else{
         if(GPGMailLoggingLevel)
-            NSLog(@"[DEBUG] Really did it", self);
-	}
-    else if(GPGMailLoggingLevel)
-        NSLog(@"[DEBUG] Not yet", self);
+            NSLog(@"[DEBUG] %p clearCachedDescryptedMessageBody", self);
+        Message	*aMessage = (Message *)[[self mimeBody] message];
+        
+        if([aMessage gpgMayClearCachedDecryptedMessageBody]){
+            [aMessage setGpgMessageSignatures:nil];
+            ((void (*)(id, SEL))MimePart_clearCachedDescryptedMessageBody)(self, _cmd);
+            if(GPGMailLoggingLevel)
+                NSLog(@"[DEBUG] Really did it", self);
+        }
+        else if(GPGMailLoggingLevel)
+            NSLog(@"[DEBUG] Not yet", self);
+    }
 }
 
 #endif

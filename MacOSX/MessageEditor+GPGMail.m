@@ -28,6 +28,7 @@
 
 
 #import "MessageEditor+GPGMail.h"
+#import "GPGMailBundle.h"
 #import "GPGMailPatching.h"
 #import "GPGMailComposeAccessoryViewOwner.h"
 #import <MailToolbarItem.h>
@@ -84,7 +85,8 @@ static IMP  HeadersEditor_changeFromHeader = NULL;
 - (void) gpgChangeFromHeader:(id)sender
 {
     ((void (*)(id, SEL, id))HeadersEditor_changeFromHeader)(self, _cmd, sender);
-    [self gpgForwardAction:_cmd from:sender]; // _cmd = changeFromHeader: !!!
+    if([GPGMailBundle gpgMailWorks])
+        [self gpgForwardAction:_cmd from:sender]; // _cmd = changeFromHeader: !!!
 }
 
 @end
@@ -121,15 +123,17 @@ static IMP  MailDocumentEditor_animationDidEnd = NULL;
 
 - (void)gpgShowOrHideStationery:(id)fp8
 {
-    if(![self stationeryPaneIsVisible]){
-        NSView  *accessoryView = [[self gpgMyComposeAccessoryViewOwner] composeAccessoryView];
-        
-        if(![accessoryView isHidden]){
-            NSRect  aRect = [composeWebView frame];
+    if([GPGMailBundle gpgMailWorks]){
+        if(![self stationeryPaneIsVisible]){
+            NSView  *accessoryView = [[self gpgMyComposeAccessoryViewOwner] composeAccessoryView];
             
-            aRect.size.height += NSHeight([accessoryView frame]);
-            [composeWebView setFrame:aRect];
-            [accessoryView setHidden:YES];
+            if(![accessoryView isHidden]){
+                NSRect  aRect = [composeWebView frame];
+                
+                aRect.size.height += NSHeight([accessoryView frame]);
+                [composeWebView setFrame:aRect];
+                [accessoryView setHidden:YES];
+            }
         }
     }
     
@@ -140,15 +144,17 @@ static IMP  MailDocumentEditor_animationDidEnd = NULL;
 {
     ((void (*)(id, SEL, id))MailDocumentEditor_animationDidEnd)(self, _cmd, fp8);
     
-    if(![self stationeryPaneIsVisible]){
-        NSView  *accessoryView = [[self gpgMyComposeAccessoryViewOwner] composeAccessoryView];
-        
-        if([accessoryView isHidden]){
-            NSRect  aRect = [composeWebView frame];
+    if([GPGMailBundle gpgMailWorks]){
+        if(![self stationeryPaneIsVisible]){
+            NSView  *accessoryView = [[self gpgMyComposeAccessoryViewOwner] composeAccessoryView];
             
-            [accessoryView setHidden:NO];
-            aRect.size.height -= NSHeight([accessoryView frame]);
-            [composeWebView setFrame:aRect];
+            if([accessoryView isHidden]){
+                NSRect  aRect = [composeWebView frame];
+                
+                [accessoryView setHidden:NO];
+                aRect.size.height -= NSHeight([accessoryView frame]);
+                [composeWebView setFrame:aRect];
+            }
         }
     }
 }
@@ -181,33 +187,37 @@ static IMP  MailDocumentEditor_animationDidEnd = NULL;
 {
     // WARNING That method can be invoked more than once, when message is created by AppleScript (bug?).
 	((void (*)(id, SEL, id))MailDocumentEditor_backEndDidLoadInitialContent)(self, _cmd, fp8);
-    
-    NSEnumerator                *anEnum = [[(HeadersEditor *)[self headersEditor] gpgAccessoryViewOwners] objectEnumerator];
-    MVComposeAccessoryViewOwner *eachOwner;
-    BOOL                        createNewAccessoryViewOwner = YES;
-    
-    while(eachOwner = [anEnum nextObject]){
-        if([eachOwner isKindOfClass:[GPGMailComposeAccessoryViewOwner class]]){
-            createNewAccessoryViewOwner = NO;
-            break;
-        }
-    }
-    if(createNewAccessoryViewOwner){
-        MVComposeAccessoryViewOwner	*myComposeAccessoryViewOwner = [GPGMailComposeAccessoryViewOwner composeAccessoryViewOwner];
+
+    if([GPGMailBundle gpgMailWorks]){
+        NSEnumerator                *anEnum = [[(HeadersEditor *)[self headersEditor] gpgAccessoryViewOwners] objectEnumerator];
+        MVComposeAccessoryViewOwner *eachOwner;
+        BOOL                        createNewAccessoryViewOwner = YES;
         
-        [self gpgAddAccessoryViewOwner:myComposeAccessoryViewOwner];
-        [myComposeAccessoryViewOwner setupUIForMessage:[fp8 message]]; // Toolbar already finished
-        [self gpgInsertComposeAccessoryViewOfOwner:myComposeAccessoryViewOwner]; // Must be called after setUIForMessage:, which loads the nib	
+        while(eachOwner = [anEnum nextObject]){
+            if([eachOwner isKindOfClass:[GPGMailComposeAccessoryViewOwner class]]){
+                createNewAccessoryViewOwner = NO;
+                break;
+            }
+        }
+        if(createNewAccessoryViewOwner){
+            MVComposeAccessoryViewOwner	*myComposeAccessoryViewOwner = [GPGMailComposeAccessoryViewOwner composeAccessoryViewOwner];
+            
+            [self gpgAddAccessoryViewOwner:myComposeAccessoryViewOwner];
+            [myComposeAccessoryViewOwner setupUIForMessage:[fp8 message]]; // Toolbar already finished
+            [self gpgInsertComposeAccessoryViewOfOwner:myComposeAccessoryViewOwner]; // Must be called after setUIForMessage:, which loads the nib	
+        }
     }
 }
 
 - (BOOL)gpgBackEnd:fp12 shouldDeliverMessage:fp16
 {
-    MVComposeAccessoryViewOwner	*anOwner = [self gpgMyComposeAccessoryViewOwner];
-
-	if(anOwner != nil && ![anOwner messageWillBeDelivered:fp16]){
-        NSBeep();
-        return NO;
+    if([GPGMailBundle gpgMailWorks]){
+        MVComposeAccessoryViewOwner	*anOwner = [self gpgMyComposeAccessoryViewOwner];
+        
+        if(anOwner != nil && ![anOwner messageWillBeDelivered:fp16]){
+            NSBeep();
+            return NO;
+        }
     }
 	
 	return ((BOOL (*)(id, SEL, id, id))MailDocumentEditor_backEnd_shouldDeliverMessage)(self, _cmd, fp12, fp16);
@@ -393,20 +403,22 @@ static IMP  MessageEditor_initWithType_message_showAllHeaders = NULL;
 
 - (BOOL)gpgBackEnd:fp12 shouldDeliverMessage:fp16
 {
-    NSEnumerator				*anEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
-    MVComposeAccessoryViewOwner	*anOwner;
-    
-    while(anOwner = [anEnum nextObject]){
-        // We pass the -messageWillBeDelivered: method only to our own
-        // own accessory view controller, because if there are more than
-        // one poser (like MailPriority), then the method would be invoked
-        // by each poser!
-        if([anOwner isKindOfClass:[GPGMailComposeAccessoryViewOwner class]]){
-            if([anOwner messageWillBeDelivered:fp16])
-                break;
-            else{
-                NSBeep();
-                return NO;
+    if([GPGMailBundle gpgMailWorks]){
+        NSEnumerator				*anEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
+        MVComposeAccessoryViewOwner	*anOwner;
+        
+        while(anOwner = [anEnum nextObject]){
+            // We pass the -messageWillBeDelivered: method only to our own
+            // own accessory view controller, because if there are more than
+            // one poser (like MailPriority), then the method would be invoked
+            // by each poser!
+            if([anOwner isKindOfClass:[GPGMailComposeAccessoryViewOwner class]]){
+                if([anOwner messageWillBeDelivered:fp16])
+                    break;
+                else{
+                    NSBeep();
+                    return NO;
+                }
             }
         }
     }
@@ -443,6 +455,11 @@ static IMP  MessageEditor_initWithType_message_showAllHeaders = NULL;
 
 - (void)gpgBackEnd:(id)fp8 didCompleteLoadForEditorSettings:(id)fp12
 {
+    if(![GPGMail gpgMailWorks]){
+        ((void (*)(id, SEL, id, id))MessageEditor_backEnd_didCompleteLoadForEditorSettings)(self, _cmd, fp8, fp12);
+        return;
+    }
+    
 #warning FIXME
 #ifdef TIGER
     NSView	*editorView = [self mainContentView];
@@ -654,7 +671,8 @@ static IMP  MessageEditor_initWithType_message_showAllHeaders = NULL;
 - (void) gpg_changeFromHeader:(id)sender
 {
     ((void (*)(id, SEL, id))MessageEditor_changeFromHeader)(self, _cmd, sender);
-    [self gpgForwardAction:_cmd from:sender]; // _cmd = changeFromHeader: !!!
+    if([GPGMail gpgMailWorks])
+        [self gpgForwardAction:_cmd from:sender]; // _cmd = changeFromHeader: !!!
 }
 
 - (void) gpgSetOptions:(NSDictionary *)options
@@ -737,7 +755,7 @@ static IMP  MessageEditor_initWithType_message_showAllHeaders = NULL;
 - (id)gpgInitWithType:(int)fp8 settings:(id)fp12
 {
 	// Settings is a dict with array of messages ('Messages')
-	if(((id (*)(id, SEL, int, id))MessageEditor_initWithType_settings)(self, _cmd, fp12, fp16)){
+	if(((id (*)(id, SEL, int, id))MessageEditor_initWithType_settings)(self, _cmd, fp12, fp16) && [GPGMailBundle gpgMailWorks]){
 		[self _gpgInitializeOptionsFromMessages:[fp12 objectForKey:@"Messages"]];
 	}
 	
@@ -747,7 +765,7 @@ static IMP  MessageEditor_initWithType_message_showAllHeaders = NULL;
 #else
 - gpgInitWithType:(int)fp8 message:(Message *)message showAllHeaders:(char)fp16
 {
-    if(self = ((id (*)(id, SEL, int, id, char))MessageEditor_initWithType_message_showAllHeaders)(self, _cmd, fp8, message, fp16)){
+    if(self = ((id (*)(id, SEL, int, id, char))MessageEditor_initWithType_message_showAllHeaders)(self, _cmd, fp8, message, fp16) && [GPGMailBundle gpgMailWorks]){
 #warning Does not work for detached viewers, because passed message is the decrypted one, not the original one
 		// I should keep a ref from decrypted to original (and backwards?)
 		// Or use same technique as in Tiger...
@@ -762,17 +780,18 @@ static IMP  MessageEditor_initWithType_message_showAllHeaders = NULL;
 
 - (void)gpgComposeHeaderViewWillBeginCustomization:(id)fp8
 {
-    //    NSLog(@"%s - headerView: %@, mainContentView: %@", __PRETTY_FUNCTION__, NSStringFromRect([(NSView *)_composeHeaderView frame]), NSStringFromRect([[self mainContentView] frame]));
-	NSEnumerator				*anEnum = [accessoryViewOwners objectEnumerator];
-	MVComposeAccessoryViewOwner	*eachOwner;
-	
-	while((eachOwner = [anEnum nextObject])){
-		if([eachOwner isKindOfClass:[GPGMailComposeAccessoryViewOwner class]] && [[eachOwner composeAccessoryView] window] != nil){
-			[[eachOwner composeAccessoryView] setHidden:YES];
-            //            NSLog(@"accView: %@", NSStringFromRect([[eachOwner composeAccessoryView] frame]));
+    if([GPGMailBundle gpgMailWorks]){
+        //    NSLog(@"%s - headerView: %@, mainContentView: %@", __PRETTY_FUNCTION__, NSStringFromRect([(NSView *)_composeHeaderView frame]), NSStringFromRect([[self mainContentView] frame]));
+        NSEnumerator				*anEnum = [accessoryViewOwners objectEnumerator];
+        MVComposeAccessoryViewOwner	*eachOwner;
+        
+        while((eachOwner = [anEnum nextObject])){
+            if([eachOwner isKindOfClass:[GPGMailComposeAccessoryViewOwner class]] && [[eachOwner composeAccessoryView] window] != nil){
+                [[eachOwner composeAccessoryView] setHidden:YES];
+                //            NSLog(@"accView: %@", NSStringFromRect([[eachOwner composeAccessoryView] frame]));
+            }
         }
 	}
-	
     ((void (*)(id, SEL, id))MessageEditor_composeHeaderViewWillBeginCustomization)(self, _cmd, fp8);
     //    NSLog(@"==> headerView: %@, mainContentView: %@", NSStringFromRect([(NSView *)_composeHeaderView frame]), NSStringFromRect([[self mainContentView] frame]));
 }
@@ -780,25 +799,27 @@ static IMP  MessageEditor_initWithType_message_showAllHeaders = NULL;
 - (void)gpgComposeHeaderViewDidEndCustomization:(id)fp8
 {
     //    NSLog(@"%s - headerView: %@, mainContentView: %@", __PRETTY_FUNCTION__, NSStringFromRect([(NSView *)_composeHeaderView frame]), NSStringFromRect([[self mainContentView] frame]));
-	NSEnumerator				*anEnum = [accessoryViewOwners objectEnumerator];
-	MVComposeAccessoryViewOwner	*eachOwner;
-	
     ((void (*)(id, SEL, id))MessageEditor_composeHeaderViewDidEndCustomization)(self, _cmd, fp8);
     
-	while((eachOwner = [anEnum nextObject])){
-		if([eachOwner isKindOfClass:[GPGMailComposeAccessoryViewOwner class]] && [[eachOwner composeAccessoryView] window] != nil){
-			NSView	*editorView = [self mainContentView];
-			float	aHeight = NSHeight([[eachOwner composeAccessoryView] frame]);
-            
-			if(NSMaxY([editorView frame]) != NSMinY([[eachOwner composeAccessoryView] frame])){
-				[editorView setFrameSize:NSMakeSize(NSWidth([editorView frame]), NSHeight([editorView frame]) - aHeight)];
-				NSRect	aRect = [editorView frame];
-				[[eachOwner composeAccessoryView] setFrame:NSMakeRect(0, NSMaxY(aRect), NSWidth(aRect), aHeight)];
-			}
-			[[eachOwner composeAccessoryView] setHidden:NO];
-            //            NSLog(@"accView: %@", NSStringFromRect([[eachOwner composeAccessoryView] frame]));
-		}
-	}
+    if([GPGMailBundle gpgMailWorks]){
+        NSEnumerator				*anEnum = [accessoryViewOwners objectEnumerator];
+        MVComposeAccessoryViewOwner	*eachOwner;
+        
+        while((eachOwner = [anEnum nextObject])){
+            if([eachOwner isKindOfClass:[GPGMailComposeAccessoryViewOwner class]] && [[eachOwner composeAccessoryView] window] != nil){
+                NSView	*editorView = [self mainContentView];
+                float	aHeight = NSHeight([[eachOwner composeAccessoryView] frame]);
+                
+                if(NSMaxY([editorView frame]) != NSMinY([[eachOwner composeAccessoryView] frame])){
+                    [editorView setFrameSize:NSMakeSize(NSWidth([editorView frame]), NSHeight([editorView frame]) - aHeight)];
+                    NSRect	aRect = [editorView frame];
+                    [[eachOwner composeAccessoryView] setFrame:NSMakeRect(0, NSMaxY(aRect), NSWidth(aRect), aHeight)];
+                }
+                [[eachOwner composeAccessoryView] setHidden:NO];
+                //            NSLog(@"accView: %@", NSStringFromRect([[eachOwner composeAccessoryView] frame]));
+            }
+        }
+    }
     //    NSLog(@"==> headerView: %@, mainContentView: %@", NSStringFromRect([(NSView *)_composeHeaderView frame]), NSStringFromRect([[self mainContentView] frame]));
 }
 #endif

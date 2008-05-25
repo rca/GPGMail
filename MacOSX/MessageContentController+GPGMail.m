@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2008, Stéphane Corthésy <stephane at sente.ch>
+ * Copyright (c) 2000-2008, St√©phane Corth√©sy <stephane at sente.ch>
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -9,14 +9,14 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of Stéphane Corthésy nor the names of GPGMail
+ *     * Neither the name of St√©phane Corth√©sy nor the names of GPGMail
  *       contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY STÉPHANE CORTHÉSY AND CONTRIBUTORS ``AS IS'' AND ANY
+ * THIS SOFTWARE IS PROVIDED BY ST√âPHANE CORTH√âSY AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL STÉPHANE CORTHÉSY AND CONTRIBUTORS BE LIABLE FOR ANY
+ * DISCLAIMED. IN NO EVENT SHALL ST√âPHANE CORTH√âSY AND CONTRIBUTORS BE LIABLE FOR ANY
  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -143,15 +143,22 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 
 - (void) gpgFadeToEmpty
 {
-    if(GPGMailLoggingLevel)
-        NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
-    if(YES/* && ![self gpgDoNotResetFlags]*/)
-        [self gpgHideBanner];
+    if([GPGMailBundle gpgMailWorks]){
+        if(GPGMailLoggingLevel)
+            NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
+        if(YES/* && ![self gpgDoNotResetFlags]*/)
+            [self gpgHideBanner];
+    }
     ((void (*)(id, SEL))MessageContentController_fadeToEmpty)(self, _cmd);
 }
 
 - (void) gpg_updateDisplay // FIXME: LEOPARD Delayed invocation (from other thread) after decryption -> hides again!
 {
+    if(![GPGMailBundle gpgMailWorks]){
+        ((void (*)(id, SEL))MessageContentController__updateDisplay)(self, _cmd); // will change message flags, if necessary
+        return;
+    }
+        
     if(GPGMailLoggingLevel)
         NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
     GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
@@ -329,37 +336,41 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 
 - (void)gpgSetMessage:fp8 headerOrder:fp12
 {
-    if(GPGMailLoggingLevel)
-        NSLog(@"[DEBUG] %s %@", __PRETTY_FUNCTION__, fp8);
-//    if(/*![self gpgDoNotResetFlags]*/YES){
-	if(fp8 == nil || fp8 != [self message]){
+    if([GPGMailBundle gpgMailWorks]){
         if(GPGMailLoggingLevel)
-            NSLog(@"[DEBUG] Message changed");
-        [self gpgSetMessageWasInFactSigned:NO];
-        [self gpgSetMessageHasBeenDecrypted:NO];
-        if(GPGMailLoggingLevel)
-            NSLog(@"[DEBUG] Reset WasInFactSigned and HasBeenDecrypted");
+            NSLog(@"[DEBUG] %s %@", __PRETTY_FUNCTION__, fp8);
+        //    if(/*![self gpgDoNotResetFlags]*/YES){
+        if(fp8 == nil || fp8 != [self message]){
+            if(GPGMailLoggingLevel)
+                NSLog(@"[DEBUG] Message changed");
+            [self gpgSetMessageWasInFactSigned:NO];
+            [self gpgSetMessageHasBeenDecrypted:NO];
+            if(GPGMailLoggingLevel)
+                NSLog(@"[DEBUG] Reset WasInFactSigned and HasBeenDecrypted");
+        }
     }
     ((void (*)(id, SEL, id, id))MessageContentController_setMessage_headerOrder)(self, _cmd, fp8, fp12);
 }
 
 - (void)gpg_setMessage:fp8 headerOrder:fp12
 {
-    if(GPGMailLoggingLevel)
-        NSLog(@"[DEBUG] %s %@", __PRETTY_FUNCTION__, fp8);
-//    if(/*![self gpgDoNotResetFlags]*/YES){
-	if(fp8 == nil || fp8 != [self message]){
+    if([GPGMailBundle gpgMailWorks]){
         if(GPGMailLoggingLevel)
-        NSLog(@"[DEBUG] Message changed(2)");
-        if([self message] != nil)
-            [[(MimeBody *)[[self message] messageBody] topLevelPart] clearCachedDescryptedMessageBody]; // FIXME: problem is that it's not the right part!
-        [self gpgSetMessageWasInFactSigned:NO];
-        [self gpgSetMessageHasBeenDecrypted:NO];
-        if(GPGMailLoggingLevel)
-            NSLog(@"[DEBUG] Reset WasInFactSigned and HasBeenDecrypted");
+            NSLog(@"[DEBUG] %s %@", __PRETTY_FUNCTION__, fp8);
+        //    if(/*![self gpgDoNotResetFlags]*/YES){
+        if(fp8 == nil || fp8 != [self message]){
+            if(GPGMailLoggingLevel)
+                NSLog(@"[DEBUG] Message changed(2)");
+            if([self message] != nil)
+                [[(MimeBody *)[[self message] messageBody] topLevelPart] clearCachedDescryptedMessageBody]; // FIXME: problem is that it's not the right part!
+            [self gpgSetMessageWasInFactSigned:NO];
+            [self gpgSetMessageHasBeenDecrypted:NO];
+            if(GPGMailLoggingLevel)
+                NSLog(@"[DEBUG] Reset WasInFactSigned and HasBeenDecrypted");
+        }
+        if(fp8 == nil)
+            [[self gpgMessageViewerAccessoryViewOwner] messageChanged:nil];
     }
-    if(fp8 == nil)
-        [[self gpgMessageViewerAccessoryViewOwner] messageChanged:nil];
     ((void (*)(id, SEL, id, id))MessageContentController__setMessage_headerOrder)(self, _cmd, fp8, fp12);
 }
 

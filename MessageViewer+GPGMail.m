@@ -74,6 +74,11 @@ static IMP MessageViewer_validateMenuItem = NULL;
 
 - (void)gpg_replyMessageWithType:(int)fp8
 {
+    if(![GPGMailBundle gpgMailWorks]){
+        ((void (*)(id, SEL, int))MessageViewer__replyMessageWithType)(self, _cmd, fp8);
+        return;
+    }
+    
     // When message is encrypted and user has not selected anything, 
     // then we temporarily select all body content
 #if defined(LEOPARD) || defined(TIGER)
@@ -94,6 +99,11 @@ static IMP MessageViewer_validateMenuItem = NULL;
 
 - (void)gpgForwardMessage:fp12
 {
+    if(![GPGMailBundle gpgMailWorks]){
+        ((void (*)(id, SEL, id))MessageViewer_forwardMessage)(self, _cmd, fp12);
+        return;
+    }
+    
 #if defined(LEOPARD) || defined(TIGER)
 #warning CHECK
     BOOL    changedSelection = ([self currentDisplayedMessage] != nil && [[self currentDisplayedMessage] gpgIsEncrypted] && [[self gpgTextViewer:nil] selectedText] == nil);

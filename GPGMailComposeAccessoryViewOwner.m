@@ -854,7 +854,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
         NSToolbarItem	*anItem = [[notif userInfo] objectForKey:@"item"];
 #endif
 
-        if([[anItem itemIdentifier] isEqualToString:encryptMessageToolbarItemIdentifier] || [[anItem itemIdentifier] isEqualToString:signMessageToolbarItemIdentifier]){
+        if([[anItem itemIdentifier] isEqualToString:GPGEncryptMessageToolbarItemIdentifier] || [[anItem itemIdentifier] isEqualToString:GPGSignMessageToolbarItemIdentifier]){
 #if defined(LEOPARD) || defined(TIGER)
             [anItem setTarget:self forSegment:0];
 #else
@@ -971,7 +971,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     }
 
     while(anItem = [anEnum nextObject])
-        if([[anItem itemIdentifier] isEqualToString:encryptMessageToolbarItemIdentifier]){
+        if([[anItem itemIdentifier] isEqualToString:GPGEncryptMessageToolbarItemIdentifier]){
             if(buttonsShowState){
 #if defined(LEOPARD) || defined(TIGER)
                 [anItem setLabel:NSLocalizedStringFromTableInBundle(encryptsMessage ? @"ENCRYPTED_ITEM":@"CLEAR_ITEM", @"GPGMail", aBundle, "") forSegment:0];
@@ -1030,7 +1030,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     signsMessage = flag;
 
     while(anItem = [anEnum nextObject])
-        if([[anItem itemIdentifier] isEqualToString:signMessageToolbarItemIdentifier]){
+        if([[anItem itemIdentifier] isEqualToString:GPGSignMessageToolbarItemIdentifier]){
             if(buttonsShowState){
 #if defined(LEOPARD) || defined(TIGER)
                 [anItem setLabel:NSLocalizedStringFromTableInBundle(signsMessage ? @"SIGNED_ITEM":@"UNSIGNED_ITEM", @"GPGMail", aBundle, "") forSegment:0];

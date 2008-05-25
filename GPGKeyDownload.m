@@ -498,7 +498,7 @@ static GPGKeyDownload	*_sharedInstance = nil;
 
 - (void) missingKeysNotification:(NSNotification *)notification
 {
-    if(!isSearching && !isImporting){
+    if([GPGMailBundle gpgMailWorks] && !isSearching && !isImporting){
         NSArray *fingerprints = [[notification userInfo] objectForKey:@"fingerprints"];
         NSArray *emails = [[notification userInfo] objectForKey:@"emails"];
         NSArray *patterns = nil;
