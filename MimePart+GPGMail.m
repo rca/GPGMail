@@ -1542,11 +1542,20 @@ static IMP  MimePart_isEncrypted = NULL;
 #endif
 //				decryptedPart = [decryptedMessageBody topLevelPart]; // FIXME: WRONG, in case of multiple encrypted parts
 				decryptedPart = [decryptedMessageBody partWithNumber:[self partNumber]]; // FIXME: WRONG, in case of PGP/MIME parts which result in multiple parts
-				result = [decryptedPart contentsForTextSystem];
+				result = [decryptedPart contentsForTextSystem]; // Can invoke _gpgDecodePGP
 #if 0
 				[decryptedPart getNumberOfAttachments:&numberOfAttachments isSigned:&isSigned isEncrypted:&isEncrypted];
 				[[encryptedMessage messageStore] setNumberOfAttachments:numberOfAttachments isSigned:(theDecodeOptions.mIsSigned) isEncrypted:(theDecodeOptions.mIsEncrypted) forMessage:encryptedMessage];
 #else
+                
+                // TESTME! This is only a patch to bug: no automatic verification
+                if(aSignature == nil){
+                    aSignature = [decryptedPart gpgAuthenticationSignature];
+                    if(aSignature)
+                        signatures = [NSArray arrayWithObject:aSignature];
+                }
+                // End of patch
+                
 				[self getNumberOfAttachments:&numberOfAttachments isSigned:&isSigned isEncrypted:&isEncrypted];
 #warning FIXME: Set isSigned only when sig is valid
 				[[encryptedMessage messageStore] setNumberOfAttachments:numberOfAttachments isSigned:(aSignature != nil) isEncrypted:YES forMessage:encryptedMessage];
