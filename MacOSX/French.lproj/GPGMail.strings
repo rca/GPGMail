@@ -97,8 +97,8 @@
 /* Title */
 /* Error messages */
 "GPGMAIL_CANNOT_WORK" = "GPGMail ne peut pas fonctionner parce que son application conjointe n'a pas pu être démarrée. Essayez de redémarrer Mail et si cette erreur persiste, envoyez un message à gpgmail@sente.ch";
-"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail ne peut pas fonctionner. Il a trouvé GnuPG (%@) version %@, mais il a besoin de la version %@ (ou plus récente). Veuillez quitter Mail, installer une nouvelle version de GnuPG (par exemple depuis le site de MacGPG Group, http://macgpg.sourceforge.net/), puis redémarrer Mail."; // First arg is path to gpg, second and third are version strings
-"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail ne peut pas fonctionner. Il n'a pas trouvé de version de GnuPG (%@) aussi récente que la %@. Veuillez quitter Mail, installer une nouvelle version de GnuPG (par exemple depuis le site de MacGPG Group, http://macgpg.sourceforge.net/), puis redémarrer Mail."; // First arg is path to gpg, second is version string
+"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail ne peut pas fonctionner. Il a trouvé GnuPG (%@) version %@, mais il a besoin de la version %@ (ou plus récente). Veuillez quitter Mail, installer une nouvelle version de GnuPG (par exemple depuis le site de MacGPG Project, http://macgpg.sourceforge.net/), puis redémarrer Mail."; // First arg is path to gpg, second and third are version strings
+"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail ne peut pas fonctionner. Il n'a pas trouvé de version de GnuPG (%@) aussi récente que la %@. Veuillez quitter Mail, installer une nouvelle version de GnuPG (par exemple depuis le site de MacGPG Project, http://macgpg.sourceforge.net/), puis redémarrer Mail."; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "Votre version de GPGMail n'est pas compatible avec votre version de Mail."; /* Title of alert sheet */
 "NEEDS_COMPATIBLE_BUNDLE_VERSION" = "Vous devez télécharger et installer la version de GPGMail correspondant à votre version du système. Allez-la prendre à l'adresse http://www.sente.ch/software/GPGMail/French.lproj/";
         

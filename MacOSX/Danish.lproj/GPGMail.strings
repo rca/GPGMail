@@ -97,8 +97,8 @@
 /* Title */
 /* Error messages */
 "GPGMAIL_CANNOT_WORK" = "GPGmail kan ikke arbejde, fordi dens hjælpeprogram ikke kan startes. Prøv at genstarte Mail, og hvis problemet fortsat findes, så send en besked til gpgmail@sente.ch";
-"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail kan ikke arbejde. Den fandt GnuPG (%@) version %@; men den har brug for minimum version %@. Afslut Mail, installér en passende version af GnuPG (for eksempel fra MacGPG Group, http://macgpg.sourceforge.net/), genstart derpå Mail."; // First arg is path to gpg, second and third are version strings
-"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail kan ikke arbejde. Den fandt ingen GnuPG (%@) med versionsnummer højere end %@. Afslut Mail, installér en passende version af GnuPG (for eksempel fra MacGPG Group, http://macgpg.sourceforge.net/), genstart derpå Mail."; // First arg is path to gpg, second is version string
+"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail kan ikke arbejde. Den fandt GnuPG (%@) version %@; men den har brug for minimum version %@. Afslut Mail, installér en passende version af GnuPG (for eksempel fra MacGPG Project, http://macgpg.sourceforge.net/), genstart derpå Mail."; // First arg is path to gpg, second and third are version strings
+"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail kan ikke arbejde. Den fandt ingen GnuPG (%@) med versionsnummer højere end %@. Afslut Mail, installér en passende version af GnuPG (for eksempel fra MacGPG Project, http://macgpg.sourceforge.net/), genstart derpå Mail."; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "Din version af GnuPG kan ikke arbejde sammen med din version af Mail."; /* Title of alert sheet */
 "NEEDS_COMPATIBLE_BUNDLE_VERSION" = "Du er nødt til at nedlaste og installere en version af GPGMail, der passer til din version af styresystem. Gå til http://www.sente.ch/software/GPGMail/ for at nedlaste den.";
 
