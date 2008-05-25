@@ -51,10 +51,10 @@ NSString * const GPGAsynchronousOperationDidTerminateNotification;
 #endif
 
 // The following strings are used as toolbarItem identifiers and userDefault keys (value is the position index)
-extern NSString	*authenticateMessageToolbarItemIdentifier;
-extern NSString	*decryptMessageToolbarItemIdentifier;
-extern NSString	*signMessageToolbarItemIdentifier;
-extern NSString	*encryptMessageToolbarItemIdentifier;
+extern NSString	*GPGAuthenticateMessageToolbarItemIdentifier;
+extern NSString	*GPGDecryptMessageToolbarItemIdentifier;
+extern NSString	*GPGSignMessageToolbarItemIdentifier;
+extern NSString	*GPGEncryptMessageToolbarItemIdentifier;
 
 extern NSString	*GPGKeyListWasInvalidatedNotification;
 extern NSString	*GPGPreferencesDidChangeNotification;
