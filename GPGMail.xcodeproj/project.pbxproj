@@ -117,7 +117,7 @@
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		32DBCF630370AF2F00C91783 /* GPGMail_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPGMail_Prefix.pch; sourceTree = "<group>"; };
-		5501B4CB0A45540D00D4E602 /* Swedish */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Swedish; path = MacOSX/GPG.subproj/Swedish.lproj/GPG.strings; sourceTree = "<group>"; };
+		5501B4CB0A45540D00D4E602 /* Swedish */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Swedish; path = MacOSX/GPG.subproj/Swedish.lproj/GPG.strings; sourceTree = "<group>"; };
 		5501B4CC0A45540D00D4E602 /* Swedish */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Swedish; path = MacOSX/GPG.subproj/Swedish.lproj/GPGPassphrase.nib; sourceTree = "<group>"; };
 		5501B4CD0A45540D00D4E602 /* Swedish */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Swedish; path = MacOSX/GPG.subproj/Swedish.lproj/GPGProgressIndicatorController.nib; sourceTree = "<group>"; };
 		5501B4D00A45544E00D4E602 /* Swedish */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Swedish; path = MacOSX/Swedish.lproj/GPGKeyDownload.nib; sourceTree = "<group>"; };
@@ -416,11 +416,8 @@
 		559A812F0838EEFD0052F47C /* System.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = System.framework; path = /System/Library/Frameworks/System.framework; sourceTree = "<absolute>"; };
 		559A817F0838F3250052F47C /* plistutil */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = plistutil; sourceTree = BUILT_PRODUCTS_DIR; };
 		559A81820838F38D0052F47C /* plistutil.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = plistutil.m; sourceTree = SOURCE_ROOT; };
-		559A81860838F3C30052F47C /* Info-GPGMail.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Info-GPGMail.plist"; sourceTree = SOURCE_ROOT; };
+		559A81860838F3C30052F47C /* Info-GPGMail.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-GPGMail.plist"; sourceTree = SOURCE_ROOT; };
 		559A819C0838F87E0052F47C /* Installer.applescript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.applescript; path = Installer.applescript; sourceTree = "<group>"; };
-		559ED3280D26B8E400EA9DFB /* GPGEngineChoiceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPGEngineChoiceController.h; sourceTree = "<group>"; };
-		559ED3290D26B8E400EA9DFB /* GPGEngineChoiceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPGEngineChoiceController.m; sourceTree = "<group>"; };
-		559ED32D0D26C54E00EA9DFB /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MacOSX/English.lproj/GPGEngineChoiceController.xib; sourceTree = "<group>"; };
 		55CB1D76098D4B95007D00D4 /* NL.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = NL.gif; sourceTree = "<group>"; };
 		8D5B49B6048680CD000E48DA /* GPGMail.mailbundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPGMail.mailbundle; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -480,7 +477,6 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				559ED32C0D26C54E00EA9DFB /* GPGEngineChoiceController.xib */,
 				559A80DC0838EC770052F47C /* Images */,
 				559A80C90838EBE90052F47C /* GPGMail.strings */,
 				559A80E30838ED1F0052F47C /* InfoPlist.strings */,
@@ -763,8 +759,6 @@
 				558C390E0CF9720500998406 /* NSObject+GPGMail.h */,
 				558C39990CFAB0DF00998406 /* GPGMessageSignature.h */,
 				558C399A0CFAB0DF00998406 /* GPGMessageSignature.m */,
-				559ED3280D26B8E400EA9DFB /* GPGEngineChoiceController.h */,
-				559ED3290D26B8E400EA9DFB /* GPGEngineChoiceController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -1323,21 +1317,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		559ED32C0D26C54E00EA9DFB /* GPGEngineChoiceController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				559ED32D0D26C54E00EA9DFB /* English */,
-			);
-			name = GPGEngineChoiceController.xib;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		55541F4D085AE6B100548474 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH)";
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 52;
@@ -1380,6 +1365,7 @@
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 52;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/../Release";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GPGMail_Prefix.pch;
