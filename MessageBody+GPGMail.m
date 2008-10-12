@@ -1,7 +1,7 @@
 /* MessageBody+GPGMail.m created by dave on Thu 02-Nov-2000 */
 
 /*
- * Copyright (c) 2000-2008, Stéphane Corthésy <stephane at sente.ch>
+ * Copyright (c) 2000-2008, St√©phane Corth√©sy <stephane at sente.ch>
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -11,14 +11,14 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of Stéphane Corthésy nor the names of GPGMail
+ *     * Neither the name of St√©phane Corth√©sy nor the names of GPGMail
  *       contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY STÉPHANE CORTHÉSY AND CONTRIBUTORS ``AS IS'' AND ANY
+ * THIS SOFTWARE IS PROVIDED BY ST√âPHANE CORTH√âSY AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL STÉPHANE CORTHÉSY AND CONTRIBUTORS BE LIABLE FOR ANY
+ * DISCLAIMED. IN NO EVENT SHALL ST√âPHANE CORTH√âSY AND CONTRIBUTORS BE LIABLE FOR ANY
  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -173,12 +173,14 @@ NSString	*GPGMailHeaderKey = @"X-PGP-Agent";
         modifiedData = [modifiedData encodeBase64];
         usesBase64 = YES;
     }
-    else if([modifiedData gpgContainsNonASCIICharacter] || (keepsOriginalContentTransferEncoding && usedQuotedPrintable)){
+#warning TESTME: now we always force using quoted-printable
+    else /*if([modifiedData gpgContainsNonASCIICharacter] || (keepsOriginalContentTransferEncoding && usedQuotedPrintable))*/{
         // If body contains non-ASCII character, we need to use quoted-printable
         // characters, as non-ASCII characters could be modified by some MTA
         // and invalidate the signature.
         modifiedData = [modifiedData encodeQuotedPrintableForText:YES];
         usesQuotedPrintable = YES;
+//        NSLog(@"$$$ FORCING QUOTED-PRINTABLE $$$");
     }
     
     [self gpgSetEncodedBody:modifiedData]; // Replace current encrypted data; this modification IS persistent (i.e. saved in mailbox)
@@ -186,9 +188,9 @@ NSString	*GPGMailHeaderKey = @"X-PGP-Agent";
     // message with quoted-printable/base64 (if needed) and appropriate character set.
     newHeaders = [[[self message] headers] mutableCopy];
 
-    if(!keepsOriginalContentTransferEncoding)
+/*    if(!keepsOriginalContentTransferEncoding)
         [newHeaders setHeader:@"7bit" forKey:@"content-transfer-encoding"];
-    else if(usesQuotedPrintable && !usedQuotedPrintable)
+    else*/ if(usesQuotedPrintable && !usedQuotedPrintable)
         [newHeaders setHeader:@"quoted-printable" forKey:@"content-transfer-encoding"];
     else if(usesBase64 && !usedBase64)
         [newHeaders setHeader:@"base64" forKey:@"content-transfer-encoding"];
@@ -275,7 +277,7 @@ NSString	*GPGMailHeaderKey = @"X-PGP-Agent";
 - (NSData *)gpgRawData
 {
 #ifdef LEOPARD
-	return [[[self message] messageStore] bodyDataForMessage:[self message]];
+	return [[[self message] messageStore] bodyDataForMessage:[self message]]; // Always returns new instance
 #else
 	return [self rawData];
 #endif
