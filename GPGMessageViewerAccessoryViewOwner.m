@@ -36,6 +36,7 @@
 #import "GPGMailBundle.h"
 #import "GPGMessageSignature.h"
 #import <Message+GPGMail.h>
+#import <NSString+Message.h>
 #import <NSString+GPGMail.h>
 
 
@@ -312,19 +313,24 @@
             iconName = @"gpgUnsigned";
             iconToolTip = @"SIGNATURE_IS_NOT_GOOD";
             break;
-            case GPGErrorNoPublicKey:{
-                NSArray *fingerprints = [NSArray arrayWithObject:[authenticationSignature fingerprint]];
-                NSArray *emails = [NSArray arrayWithObject:[[[delegate gpgMessageForAccessoryViewOwner:self] sender] uncommentedAddress]];
-                
-                aString = [NSMutableString stringWithFormat:NSLocalizedStringFromTableInBundle(@"MISSING KEY %@.", @"GPGMail", aBundle, ""), [authenticationSignature formattedFingerprint]];
-                [[NSNotificationCenter defaultCenter] postNotificationName:GPGMissingKeysNotification object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:fingerprints, @"fingerprints", emails, @"emails", nil]]; // For some key servers, passing the fingerprint does not work, so let's pass the sender's email too
-                iconName = @"gpgUnsigned";
-                iconToolTip = nil;
-                break;
-            }
+        case GPGErrorNoPublicKey:{
+            NSArray *fingerprints = [NSArray arrayWithObject:[authenticationSignature fingerprint]];
+            NSArray *emails = [NSArray arrayWithObject:[[[delegate gpgMessageForAccessoryViewOwner:self] sender] uncommentedAddress]];
+            
+            aString = [NSMutableString stringWithFormat:NSLocalizedStringFromTableInBundle(@"MISSING KEY %@.", @"GPGMail", aBundle, ""), [authenticationSignature formattedFingerprint]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:GPGMissingKeysNotification object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:fingerprints, @"fingerprints", emails, @"emails", nil]]; // For some key servers, passing the fingerprint does not work, so let's pass the sender's email too
+            iconName = @"gpgUnsigned";
+            iconToolTip = nil;
+            break;
+        }
+        case GPGErrorGeneralError:
+            aString = [NSMutableString stringWithFormat:@"%@: %@", [mailBundle descriptionForError:[authenticationSignature status]], [mailBundle descriptionForError:GPGMakeErrorFromSystemError()]];
+            iconName = @"gpgUnsigned";
+            iconToolTip = nil;
+            break;
         default:
             aString = [NSMutableString stringWithString:[mailBundle descriptionForError:[authenticationSignature status]]];
-            NSLog(@"$$$ GPGMail: Summary 0x%04x, status code %u", [authenticationSignature summary], [mailBundle gpgErrorCodeFromError:[authenticationSignature status]]);
+            NSLog(@"$$$ GPGMail: Summary 0x%04x, status code %u, validity error %d '%@', errno %u '%@'", [authenticationSignature summary], [mailBundle gpgErrorCodeFromError:[authenticationSignature status]], GPGErrorCodeFromError([authenticationSignature validityError]), GPGErrorDescription([authenticationSignature validityError]), GPGErrorCodeFromError(GPGMakeErrorFromSystemError()), GPGErrorDescription(GPGMakeErrorFromSystemError()));
             iconName = @"gpgUnsigned";
             iconToolTip = nil;
     }
