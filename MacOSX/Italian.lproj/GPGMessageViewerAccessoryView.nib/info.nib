@@ -4,14 +4,13 @@
 <dict>
 	<key>IBFramework Version</key>
 	<string>629</string>
+	<key>IBLastKnownRelativeProjectPath</key>
+	<string>../../../GPGMail.xcodeproj</string>
 	<key>IBOldestOS</key>
 	<integer>5</integer>
 	<key>IBOpenObjects</key>
 	<array>
-		<integer>22</integer>
-		<integer>11</integer>
-		<integer>18</integer>
-		<integer>75</integer>
+		<integer>67</integer>
 	</array>
 	<key>IBSystem Version</key>
 	<string>9F33</string>
