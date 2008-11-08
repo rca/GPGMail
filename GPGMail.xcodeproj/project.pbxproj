@@ -683,6 +683,8 @@
 				559A80640838E8890052F47C /* MessageContentController+GPGMail.h */,
 				559A80670838E8890052F47C /* MessageKeychainManager+GPGMail.h */,
 				559A80560838E8300052F47C /* GPGMEAdditions.h */,
+				558C390E0CF9720500998406 /* NSObject+GPGMail.h */,
+				558C39990CFAB0DF00998406 /* GPGMessageSignature.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -756,8 +758,6 @@
 				559A80700838E9B10052F47C /* GPGMailPatching.m */,
 				559A808F0838EA1C0052F47C /* MessageKeychainManager+GPGMail.m */,
 				559A808C0838EA1C0052F47C /* MessageContentController+GPGMail.m */,
-				558C390E0CF9720500998406 /* NSObject+GPGMail.h */,
-				558C39990CFAB0DF00998406 /* GPGMessageSignature.h */,
 				558C399A0CFAB0DF00998406 /* GPGMessageSignature.m */,
 			);
 			name = Classes;

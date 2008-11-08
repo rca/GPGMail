@@ -272,7 +272,15 @@ Release notes for v53:
 * Now allows gpg-agent to be restarted
 * Automatic verification after decryption should work again
 
+Release notes for v54:
+* More information in case of General Error, when decrypting/verifying
+* Updated all localizations - thanks to Guillaume Gandreau
+* For ASCII encrypted/signed messages, enforces use of quoted-printable - more robust - Thanks to Greg A. Woods
+* FIXED: Reply to a message, whose sender you have the public key, but whose recipients you miss some public keys; message should be encrypted; click on the reply all button; message should not be encrypted (missing keys), but it is! GPGMail doesn't reevaluate the addresses.
 
+
+FIXME Notice when GPGMail bundle has been installed in ~/Library and /Library -> avoid double-encryption
+FIXME When performing keysearch, now that we use email+keyID, filter out keys that don't match keyID - special case when done automatically
 FIXME When _receiving_ signed+encrypted message with attachment, GPGMail says it's unsigned
 FIXME Unable to forward encrypted message as decrypted attachment (possible in PGPmail?)
 FIXME Unable to decrypt attached encrypted message
@@ -280,22 +288,19 @@ FIXME Multiple encrypted parts
 TESTME Automatic decryption/verification - no deadlock? No.
 FIXME HTML when no alternate
 FIXME PGP options not restored in drafts - still unable to; posing on ComposeBackEnd??
-FIXME Use key arrows in focussed decrypted message -> gets re-encrypted. Same when resizing window. But no problem when using page up/down buttons, nor space.
-TODO Update modified nibs for localized ones
+(FIXME Use key arrows in focussed decrypted message -> gets re-encrypted. Same when resizing window. But no problem when using page up/down buttons, nor space.) -- 10.5.5: seems OK
 FIXME Sometimes a decrypted message is displayed in plain text instead of rich text - HOW TO REPRODUCE?
 FIXME Crash when no secret key to decrypt, or cancelled password panel? Maybe automatic decryption? - HOW TO REPRODUCE?
-TESTME with gpg2; both gpg & gpg2 or gpg2 alone
 FIXME Invalid signatures when contains all usenet sig + attachment?
 FIXME Unable to decrypt encrypted attachments automatically - see Oct 23 2007
 FIXME (Leopard) If encrypted message has associated TODO, then decrypting message masks TODO. Because can no longer make link from TODO to decrypted message?
 FIXME (Leopard) No support for Time Machine: when navigating in Time Machine, PGP controls are not available, thus messages can't be decrypted.
 FIXME With autoverification ON, when receiving a junk signed message, the junk banner disappears when signature banner is displayed
 TODO If HTML encrypted message misses plain text alternative, decode HTML and decrypt it?
-BUG Reply to a message, whose sender you have the public key, but whose recipients you miss some public keys; message should be encrypted; click on the reply all button; message should not be encrypted (missing keys), but it is! GPGMail doesn't reevaluate the addresses.
 BUG Crash or infinite loop with auto-decryption of encrypted PGP inline message with encrypted attachment.
 BUG Invalid signature (or verification?) in PGP-MIME messages containing usenet ('-- ') signatures; works in PGP-inline messages
 BUG Sometimes OpenPGP-signed messages are generated with 2 empty lines after the 'Content-Type: multipart/alternative', instead of one, and some mail servers remove one of the empty lines, thus invalidating message signature - see Jim Syler, Mar 7 2006
-SOLVED Stack trace logs in console, due to MailTags; these exception are normally thrown and caught by GPGMail
+SOLVED Stack trace logs in console, due to MailTags; these exceptions are normally thrown and caught by GPGMail
 
 
 ? PENDING BUG: Was returning a "No data" error WITHOUT decrypting data when decrypting message which was also signed, and key was not available, AND automatic key search WAS enabled. If no automatic search, then decrypts but warns it is missing key. -> correct gpgme first; asked bug-gpgme.
@@ -364,14 +369,13 @@ BUG in Cocoa 10.4.2: impossible to type passphrase with composed characters, e.g
 TODO Disable S/MIME on a per-message basis, e.g. when PGP encryption/signing is on
 BUG Automatic decryption fails often: still displays encrypted message
 TODO Use Smart Crash Report (10.4 only?) -> create SOPE app
-TODO GPGPreferences: support for key server connection timeout
 BUG Private key is actually unselected when it seems to be selected -> user might be unable to encrypt anything, due to rules
 TODO In pref pane, add 'export config' button to gather GPGMail userDefaults
 TODO No longer hide unusable keys, but explain why they are unusable, and prevent automatic choice
 BUG GPGMail not invoked when message created automatically by rule (because no UI) -> should provide applescript, or intercept the delivery
 TODO New toolbar button showing key caching state - clicking it clears cache (valid only for memory cache, not keychain)
 TODO Warn when replying/forwarding unencrypted to encrypted message
-TODO Auto-decrypt when passphrase is in cache
+(TODO Auto-decrypt when passphrase is in cache) -- unable to know that with gpg-agent
 TODO New pref to not even show passphrase-disclosure checkbox in passphrase panel
 TODO When showing signed message, display image in signer's key (if any) instead of sender's image (if any), with PGP icon/cert/padlock on it
 (TODO New mailbundle for PGP timestamping service (http://www.itconsult.co.uk/stamper/stampinf.htm)) No longer active? Very old.
@@ -386,6 +390,5 @@ TODO Toolbar button to toggle MIME/inline (when possible)
 (TODO Can we now use progress info when encrypting? Not yet implemented with gpg 1.4.8/gpgme 1.4)
 TODO When BCC is used and BCC keys are not in non-BCC keys, then issue warning; also, change the pref to simply turn off that warning.
 BUG Sometimes OpenPGP-signed messages are generated with 2 empty lines after the 'Content-Type: multipart/alternative', instead of one, and some mail servers remove one of the empty lines, thus invalidating message signature - see Jim Syler, Mar 7 2006
-TODO Automatic search of gpg in well-known paths, when GPGOpenPGPExecutablePath has not been set, and set it: /usr/local/bin/gpg2, /usr/local/bin/gpg, /opt/local/bin/gpg2, /opt/local/bin/gpg, /sw/bin/gpg2, /sw/bin/gpg
 
 ? OT: Charly's extras: detachable mailbox panel - keyboard shortcuts for rule creation - ability to add additional headers (x-...)
