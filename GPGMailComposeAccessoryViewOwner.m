@@ -80,7 +80,6 @@
 - (void) searchKnownPersonsOptions;
 - (void) setUsesOnlyOpenPGPStyle:(BOOL)flag;
 - (NSArray *) allPublicKeys;
-- (void) evaluateRules;
 - (NSString *) senderEmail;
 @end
 

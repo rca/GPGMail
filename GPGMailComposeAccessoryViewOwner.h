@@ -120,4 +120,6 @@
 - (BOOL) displaysButtonsInComposeWindow;
 - (void) setDisplaysButtonsInComposeWindow:(BOOL)value;
 
+- (void) evaluateRules;
+
 @end

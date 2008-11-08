@@ -99,6 +99,7 @@ static IMP  MailDocumentEditor_backEnd_shouldDeliverMessage = NULL;
 static IMP  MailDocumentEditor_showOrHideStationery = NULL;
 static IMP  MailDocumentEditor_animationDidEnd = NULL;
 //static IMP  MailDocumentEditor_backEnd_willCreateMessageWithHeaders = NULL; // Invoked only when saving message as draft
+static IMP  MailDocumentEditor_changeReplyMode = NULL;
 
 + (void)load
 {
@@ -106,6 +107,7 @@ static IMP  MailDocumentEditor_animationDidEnd = NULL;
 	MailDocumentEditor_backEnd_shouldDeliverMessage = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(backEnd:shouldDeliverMessage:), [MailDocumentEditor class], @selector(gpgBackEnd:shouldDeliverMessage:), [MailDocumentEditor class]);
 	MailDocumentEditor_showOrHideStationery = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(showOrHideStationery:), [MailDocumentEditor class], @selector(gpgShowOrHideStationery:), [MailDocumentEditor class]);
 	MailDocumentEditor_animationDidEnd = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(animationDidEnd:), [MailDocumentEditor class], @selector(gpgAnimationDidEnd:), [MailDocumentEditor class]);
+	MailDocumentEditor_changeReplyMode = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(changeReplyMode:), [MailDocumentEditor class], @selector(gpgChangeReplyMode:), [MailDocumentEditor class]);
 }
 
 - (GPGMailComposeAccessoryViewOwner *)gpgMyComposeAccessoryViewOwner
@@ -244,6 +246,21 @@ static IMP  MailDocumentEditor_animationDidEnd = NULL;
             [anOwner performSelector:_cmd withObject:sender];
 }
 */
+
+- (void)gpgChangeReplyMode:(id)fp8
+{
+    // Invoked when user clicks the reply/reply to all button in a compose window
+    // Let's force reevaluation of PGP rules by accessoryView owner
+    ((void (*)(id, SEL, id))MailDocumentEditor_changeReplyMode)(self, _cmd, fp8);
+    
+    NSEnumerator	*anEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
+    id				anOwner;
+    
+    while(anOwner = [anEnum nextObject])
+        if([anOwner respondsToSelector:@selector(evaluateRules)])
+            [anOwner evaluateRules];
+}
+
 - (NSArray *)gpgAccessoryViewOwners
 {
     return [[self headersEditor] gpgAccessoryViewOwners];
