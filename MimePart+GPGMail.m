@@ -1,7 +1,7 @@
 /* MimePart+GPGMail.m created by stephane on Mon 10-Jul-2000 */
 
 /*
- * Copyright (c) 2000-2008, Stéphane Corthésy <stephane at sente.ch>
+ * Copyright (c) 2000-2008, St√©phane Corth√©sy <stephane at sente.ch>
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -11,14 +11,14 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of Stéphane Corthésy nor the names of GPGMail
+ *     * Neither the name of St√©phane Corth√©sy nor the names of GPGMail
  *       contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY STÉPHANE CORTHÉSY AND CONTRIBUTORS ``AS IS'' AND ANY
+ * THIS SOFTWARE IS PROVIDED BY ST√âPHANE CORTH√âSY AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL STÉPHANE CORTHÉSY AND CONTRIBUTORS BE LIABLE FOR ANY
+ * DISCLAIMED. IN NO EVENT SHALL ST√âPHANE CORTH√âSY AND CONTRIBUTORS BE LIABLE FOR ANY
  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -361,8 +361,14 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
         GPGContext  *aContext = [[GPGContext alloc] init];
         GPGData		*inputData = [[GPGData alloc] initWithData:bodyPartData];
 
-        if(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask)
-            (void)[bodyPartData writeToFile:[NSTemporaryDirectory() stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"asc"]] atomically:NO];
+        if(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask){
+            NSString    *filename = [NSTemporaryDirectory() stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"asc"]];
+            
+            if([bodyPartData writeToFile:filename atomically:NO])
+                NSLog(@"[DEBUG] Data to decrypt in %@", filename);
+            else
+                NSLog(@"[DEBUG] FAILED to write data to decrypt in %@", filename);
+        }
 
         [aContext setPassphraseDelegate:passphraseDelegate];
         [aContext setUsesArmor:YES];
@@ -424,8 +430,14 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
     }
 
     inputData = [[GPGData alloc] initWithData:pgpData];
-    if(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask)
-        (void)[pgpData writeToFile:[NSTemporaryDirectory() stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:(isText ? @"asc":@"gpg")]] atomically:NO];
+    if(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask){
+        NSString    *filename = [NSTemporaryDirectory() stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:(isText ? @"asc":@"gpg")]];
+        
+        if([pgpData writeToFile:filename atomically:NO])
+            NSLog(@"[DEBUG] Data to decrypt in %@", filename);
+        else
+            NSLog(@"[DEBUG] FAILED to write data to decrypt in %@", filename);
+    }
     
 #warning CHECK: Do we support decrypted-then-verified messages?
     NS_DURING
@@ -782,7 +794,6 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
         MimePart	*aPart;
         NSData		*signedData;
         NSString	*signatureFile = nil;
-        NSString	*signedDataFile = nil;
         GPGContext  *aContext = [[GPGContext alloc] init];
         GPGData		*inputData, *signatureInputData;
         NSString    *aTempFile;
@@ -849,8 +860,12 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 #endif
         inputData = [[GPGData alloc] initWithData:signedData];
         if(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask){
-            signedDataFile = [aTempFile stringByAppendingPathExtension:@"asc"];
-            (void)[signedData writeToFile:signedDataFile atomically:NO];
+            NSString	*signedDataFile = [aTempFile stringByAppendingPathExtension:@"asc"];
+            
+            if([signedData writeToFile:signedDataFile atomically:NO])
+                NSLog(@"[DEBUG] Data to verify in %@", signedDataFile);
+            else
+                NSLog(@"[DEBUG] FAILED to write data to verify in %@", signedDataFile);
         }
         
         signatureInputData = [[GPGData alloc] initWithContentsOfFile:signatureFile];
@@ -929,8 +944,14 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
         // First we try the right way, and if it doesn't work, we try the old way.
         // Problem happens with messages containing non-ASCII characters.
         inputData = [[GPGData alloc] initWithData:pgpData];
-        if(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask)
-            (void)[pgpData writeToFile:[NSTemporaryDirectory() stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"asc"]] atomically:NO];
+        if(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask){
+            NSString	*filename = [NSTemporaryDirectory() stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"asc"]];
+            
+            if([pgpData writeToFile:filename atomically:NO])
+                NSLog(@"[DEBUG] Data to verify in %@", filename);
+            else
+                NSLog(@"[DEBUG] FAILED to write data to verify in %@", filename);
+        }
         
         [aContext setUsesArmor:YES];
         [aContext setUsesTextMode:YES];
@@ -1007,8 +1028,14 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
                 if(pgpRange.location != NSNotFound){
                     [inputData release];
                     inputData = [[GPGData alloc] initWithData:pgpData];
-                    if(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask)
-                        (void)[pgpData writeToFile:[NSTemporaryDirectory() stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"asc"]] atomically:NO];
+                    if(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask){
+                        NSString	*filename = [NSTemporaryDirectory() stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"asc"]];
+                        
+                        if([pgpData writeToFile:filename atomically:NO])
+                            NSLog(@"[DEBUG] Data to verify in %@", filename);
+                        else
+                            NSLog(@"[DEBUG] FAILED to write data to verify in %@", filename);
+                    }
                     
                     verificationSignatures = [aContext verifySignedData:inputData /*encoding:[self textEncoding]*/]; // Can raise an exception
                     [inputData release];
