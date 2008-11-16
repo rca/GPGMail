@@ -34,12 +34,13 @@
 #import "NSData+GPGMail.h"
 #import "NSString+GPGMail.h"
 #import "GPGMailBundle.h"
+#import "GPGMailPatching.h"
 
 #import <Message.h>
 #import <MutableMessageHeaders.h>
 #import <MessageStore.h>
 #import <MessageWriter.h>
-#import <MimeTextAttachment.h>
+//#import <MimeTextAttachment.h>
 #import <ObjectCache.h>
 #import <NSData+Message.h>
 #import <NSString+Message.h>
@@ -66,14 +67,14 @@
 //    NSParameterAssert([self rawData] != nil);
 	(void)[self mimeType];
 
-    return [_topLevelPart gpgIsEncrypted];
+    return [[self topLevelPart] gpgIsEncrypted];
 }
 
 - (MessageBody *) gpgDecryptedBodyWithPassphraseDelegate:(id)passphraseDelegate signature:(NSArray **)signaturesPtr headers:(MessageHeaders **)decryptedMessageHeaders
 {
     NSData	*decryptedData;
 
-    decryptedData = [_topLevelPart gpgDecryptedDataWithPassphraseDelegate:passphraseDelegate signatures:signaturesPtr]; // Can raise an exception
+    decryptedData = [[self topLevelPart] gpgDecryptedDataWithPassphraseDelegate:passphraseDelegate signatures:signaturesPtr]; // Can raise an exception
     if(decryptedData){
         MutableMessageHeaders	*headers = [[[self message] headers] mutableCopy];
         NSData					*headerData;
@@ -372,22 +373,43 @@ if(0){
 //    NSParameterAssert([self rawData] != nil);
 	(void)[self mimeType]; // Still needed?
     
-    return [_topLevelPart gpgHasSignature];
+    return [[self topLevelPart] gpgHasSignature];
 }
 
 - (BOOL) gpgAllAttachmentsAreAvailable
 {
-    return [_topLevelPart gpgAllAttachmentsAreAvailable];
+    return [[self topLevelPart] gpgAllAttachmentsAreAvailable];
 }
 
 - (GPGSignature *) gpgEmbeddedAuthenticationSignature
 {
-    return [_topLevelPart gpgAuthenticationSignature]; // Can raise an exception
+    return [[self topLevelPart] gpgAuthenticationSignature]; // Can raise an exception
 }
 
 - (GPGSignature *) gpgAuthenticationSignature
 {
-    return [_topLevelPart gpgAuthenticationSignature]; // Can raise an exception
+    return [[self topLevelPart] gpgAuthenticationSignature]; // Can raise an exception
+}
+
+- (NSData *)gpgRawDataWithEnforcedQuotedPrintable
+{
+    // TODO: recreate message body and parts; for each text/plain part, 
+    // enforce quoted-printable; create new message from these parts, 
+    // and get the message body's raw data
+//    BOOL            modifiedBody = NO;
+//    NSEnumerator    *partEnum = [self allPartsEnumerator];
+//    MimePart        *eachPart;
+//    
+//    while(eachPart = [partEnum nextObject]){
+//        if([[[eachPart type] lowercaseString] isEqualToString:@"text"] && [[[eachPart subtype] lowercaseString] isEqualToString:@"plain"] && [[[eachPart contentTransferEncoding] lowercaseString] isEqualToString:@"7bit"]){
+//            modifiedBody = YES;
+//            [eachPart setContentTransferEncoding:@"quoted-printable"];
+//        }
+//    }
+//    if(modifiedBody)
+//        NSLog(@"===>\n%@", [[[NSString alloc] initWithData:[self gpgRawData] encoding:NSASCIIStringEncoding] autorelease]); // TODO: will still return old data; how to change that? Clear cache? MessageWriter is used in a separate thread...
+    
+    return [self gpgRawData];
 }
 
 - (NSData *) gpgOpenPGPSignWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate encapsulated:(BOOL)encapsulated headers:(MutableMessageHeaders **)headersPtr
@@ -419,16 +441,17 @@ if(0){
     GPGData                 *inputData;
 //    NSData                  *data;
     GPGSignature            *newSignature;
+    NSData                  *rawData = /*[self gpgRawData]*/[self gpgRawDataWithEnforcedQuotedPrintable];
 
     [headersToSign setHeader:[newHeaders firstHeaderForKey:@"content-type"] forKey:@"content-type"];
     [headersToSign setHeader:[newHeaders firstHeaderForKey:@"content-transfer-encoding"] forKey:@"content-transfer-encoding"];
 
-    NSAssert2([(NSData *)[self gpgRawData] length] > 0, @"-[%@ %@]: No data to sign!", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+    NSAssert2([rawData length] > 0, @"-[%@ %@]: No data to sign!", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
 
     // 'From ' escaping is done by Mail, no need to check.
-    // We also don't need to check for trailing spaces, Mail cares for it.
+    // We also don't need to check for trailing spaces, Mail cares for it. FIXME: NOT TRUE!!!
     [dataToSign appendData:[headersToSign gpgEncodedHeadersExcludingFromSpace]]; // Already contains ending spacer
-    [dataToSign appendData:[self gpgRawData]];
+    [dataToSign appendData:rawData];
     [dataToSign gpgNormalizeDataForSigning];
     // "all data signed according to this protocol MUST be constrained to 7 bits"
     // Normally, Mail already takes care of it, by using quoted-printable or base64 if necessary
@@ -686,3 +709,20 @@ static IMP  MimePart_decryptedMessageBody = NULL;
 @end
 
 #endif
+
+// FIXME: Never invoked
+//@implementation MessageWriter(GPGMail)
+//
+//static IMP MessageWriter_appendDataForMimePart_toData_withPartData = NULL;
+//
+//+ (void)load
+//{
+//    MessageWriter_appendDataForMimePart_toData_withPartData = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(appendDataForMimePart:toData:withPartData:), [MessageWriter class], @selector(gpgAppendDataForMimePart:toData:withPartData:), [MessageWriter class]);
+//}
+//
+//- (void)gpgAppendDataForMimePart:(id)fp8 toData:(id)fp12 withPartData:(id)fp16
+//{
+//    ((void (*)(id, SEL, id, id, id))MessageWriter_appendDataForMimePart_toData_withPartData)(self, _cmd, fp8, fp12, fp16);
+//}
+//
+//@end
