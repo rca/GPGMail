@@ -1,6 +1,6 @@
 /* Localized versions of Info.plist keys */
 
-CFBundleShortVersionString = "d54 (v54, Leopard)";
-CFBundleGetInfoHTML = "<A HREF=\"http://www.sente.ch/software/GPGMail/French.lproj/\">GPGMail</A> version d54 (v54, Leopard), Copyright 2000-2008, St&eacute;phane Corth&eacute;sy.";
-CFBundleGetInfoString = "GPGMail version d54 (v54, Leopard), Copyright 2000-2008, Stéphane Corthésy.";
+CFBundleShortVersionString = "d55 (v55, Leopard)";
+CFBundleGetInfoHTML = "<A HREF=\"http://www.sente.ch/software/GPGMail/French.lproj/\">GPGMail</A> version d55 (v55, Leopard), Copyright 2000-2008, St&eacute;phane Corth&eacute;sy.";
+CFBundleGetInfoString = "GPGMail version d55 (v55, Leopard), Copyright 2000-2008, Stéphane Corthésy.";
 NSHumanReadableCopyright = "© Stéphane Corthésy, 2000-2008";

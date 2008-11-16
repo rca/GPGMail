@@ -277,6 +277,11 @@ Release notes for v54:
 * Updated all localizations - thanks to Guillaume Gandreau
 * For ASCII encrypted/signed messages, enforces use of quoted-printable - more robust - Thanks to Greg A. Woods
 * FIXED: Reply to a message, whose sender you have the public key, but whose recipients you miss some public keys; message should be encrypted; click on the reply all button; message should not be encrypted (missing keys), but it is! GPGMail doesn't reevaluate the addresses.
+* Fixed edition of key presentation in Preferences/Misc (tableView)
+
+Release notes for v55:
+* Corrections of the Swedish translation, courtesy of Mischa Hammarnejd
+* CRITICAL: fixed compatibility with 10.5.6 (tested against 9G38); previous GPGMail releases crash under 10.5.6
 
 
 FIXME Notice when GPGMail bundle has been installed in ~/Library and /Library -> avoid double-encryption
@@ -301,6 +306,7 @@ BUG Crash or infinite loop with auto-decryption of encrypted PGP inline message 
 BUG Invalid signature (or verification?) in PGP-MIME messages containing usenet ('-- ') signatures; works in PGP-inline messages
 BUG Sometimes OpenPGP-signed messages are generated with 2 empty lines after the 'Content-Type: multipart/alternative', instead of one, and some mail servers remove one of the empty lines, thus invalidating message signature - see Jim Syler, Mar 7 2006
 SOLVED Stack trace logs in console, due to MailTags; these exceptions are normally thrown and caught by GPGMail
+BUG with gpgme 1.1.4: when decrypting signed OpenPGP message and signature key cannot be retrieved, gpgme appends error line at the end of the decrypted data
 
 
 ? PENDING BUG: Was returning a "No data" error WITHOUT decrypting data when decrypting message which was also signed, and key was not available, AND automatic key search WAS enabled. If no automatic search, then decrypts but warns it is missing key. -> correct gpgme first; asked bug-gpgme.
