@@ -305,9 +305,21 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
     // It's rather difficult, even if it's not impossible:
     // We should search for armor in HTMLDocument
     // If there is a text/plain alternative, then user can see decrypted message
-    if(!isPlainText)
-        return NO;
-
+    if(!isPlainText){
+        BOOL    isApplicationPGP = ([aType isEqualToString:@"application"] && [aSubtype isEqualToString:@"pgp"]);
+        
+        if(isApplicationPGP && [[[self bodyParameterForKey:@"format"] lowercaseString] isEqualToString:@"text"]){
+            // Content-Type: application/pgp; format=text; x-action=encryptsign
+            // Content-Type: application/pgp; format=text; x-action=sign
+            // Content-Type: application/pgp; format=text
+            // Content-Type: application/pgp; format=text; x-action=encrypt
+            // Here we don't case about the x-action.
+            return YES;
+        }
+        else
+            return NO;
+    }
+    
     // If message contains a plain text PGP attachment, don't consider the part to be encrypted;
     // user will have to do it manually.
     if([self isAttachment])
@@ -1120,31 +1132,31 @@ static IMP	MimePart_decodeTextHtml = NULL;
 static IMP  MimePart_decodeApplicationOctet_stream = NULL;
 static IMP	MimePart_decodeMultipartSigned = NULL;
 static IMP	MimePart_decodeMultipartEncrypted = NULL;
+static IMP	MimePart_decodeApplicationPgp = NULL;
 static IMP	MimePart_clearCachedDescryptedMessageBody = NULL;
 static IMP  MimePart_copySignerLabels = NULL;
 static IMP  MimePart_isSigned = NULL;
 static IMP  MimePart_isEncrypted = NULL;
 
-+ (void) gpgAdd_decodeMultipartEncryptedMethod
++ (void) gpgAddMethodForSelector:(SEL)selector implementationSelector:(SEL)implementationSelector implementation:(IMP *)implementationPtr
 {
 	// We don't add that method using a category, 
 	// to allow 'peaceful' coexistence between PGPmail and GPGMail ;-)
 	// PGPmail will do the same.
-	SEL		decodeMultipartEncryptedSelector = @selector(decodeMultipartEncrypted);	
-	Method	existingMethod = class_getInstanceMethod([self class], decodeMultipartEncryptedSelector);
+	Method	existingMethod = class_getInstanceMethod([self class], selector);
 	
 	if(existingMethod == NULL){
 #ifdef LEOPARD
-		Method	replacementMethod = class_getInstanceMethod([self class], @selector(gpgDecodeMultipartEncrypted));
+		Method	replacementMethod = class_getInstanceMethod([self class], @selector(implementationSelector));
 		
-		if(!class_addMethod([self class], decodeMultipartEncryptedSelector, method_getImplementation(replacementMethod), method_getTypeEncoding(replacementMethod)))
-			NSLog(@"### ERROR: unable to add -[MimePart decodeMultipartEncrypted]");
+		if(!class_addMethod([self class], selector, method_getImplementation(replacementMethod), method_getTypeEncoding(replacementMethod)))
+			NSLog(@"### ERROR: unable to add -[MimePart %@]", NSStringFromSelector(selector));
 #else
 		struct objc_method_list	aMethodList;
 		struct objc_method		aNewMethod;
-		Method					replacementMethod = class_getInstanceMethod([self class], @selector(gpgDecodeMultipartEncrypted));
+		Method					replacementMethod = class_getInstanceMethod([self class], @selector(implementationSelector));
 		
-		aNewMethod.method_name = decodeMultipartEncryptedSelector;
+		aNewMethod.method_name = selector;
 		aNewMethod.method_types = replacementMethod->method_types;
 		aNewMethod.method_imp = replacementMethod->method_imp;
 		
@@ -1153,14 +1165,14 @@ static IMP  MimePart_isEncrypted = NULL;
 		aMethodList.method_list[0] = aNewMethod;
 		
 		class_addMethods([self class], &aMethodList);
-		if(class_getInstanceMethod([self class], decodeMultipartEncryptedSelector) == NULL)
-			NSLog(@"### ERROR: unable to add -[MimePart decodeMultipartEncrypted]");
+		if(class_getInstanceMethod([self class], selector) == NULL)
+			NSLog(@"### ERROR: unable to add -[MimePart %@]", NSStringFromSelector(selector));
 #endif
 	}
 	else{
-		MimePart_decodeMultipartEncrypted = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeMultipartEncrypted), [MimePart class], @selector(gpgDecodeMultipartEncrypted), [MimePart class]);
-		if(MimePart_decodeMultipartEncrypted == NULL)
-			NSLog(@"### ERROR: unable to add our version of -[MimePart decodeMultipartEncrypted]");
+		*implementationPtr = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeMultipartEncrypted), [MimePart class], @selector(implementationSelector), [MimePart class]);
+		if(*implementationPtr == NULL)
+			NSLog(@"### ERROR: unable to add our version of -[MimePart %@]", NSStringFromSelector(selector));
 	}
 }
 
@@ -1172,7 +1184,8 @@ static IMP  MimePart_isEncrypted = NULL;
 	MimePart_decodeApplicationOctet_stream = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeApplicationOctet_stream), [MimePart class], @selector(gpgDecodeApplicationOctet_stream), [MimePart class]);
 	MimePart_decodeMultipartSigned = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeMultipartSigned), [MimePart class], @selector(gpgDecodeMultipartSigned), [MimePart class]);
 	MimePart_clearCachedDescryptedMessageBody = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(clearCachedDescryptedMessageBody), [MimePart class], @selector(gpgClearCachedDescryptedMessageBody), [MimePart class]);
-	[self gpgAdd_decodeMultipartEncryptedMethod];
+    [self gpgAddMethodForSelector:@selector(decodeMultipartEncrypted) implementationSelector:@selector(gpgDecodeMultipartEncrypted) implementation:&MimePart_decodeMultipartEncrypted];
+    [self gpgAddMethodForSelector:@selector(decodeApplicationPgp) implementationSelector:@selector(gpgDecodeApplicationPgp) implementation:&MimePart_decodeApplicationPgp];
 
     // Do not overload -[MimePart usesKnownSignatureProtocol], else Mail will display its banner even for PGP messages.
 	MimePart_copySignerLabels = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(copySignerLabels), [MimePart class], @selector(gpgCopySignerLabels), [MimePart class]);
@@ -1185,7 +1198,8 @@ static IMP  MimePart_isEncrypted = NULL;
 
 - (NSArray *)gpgCopySignerLabels
 {    
-    if(![GPGMailBundle gpgMailWorks])
+    // FIXME: will perform verification - we don't want that; we want to use cached verification info, not perform verification now; if we prevent verification now, we no longer have opportunity to modify those signers labels!
+    if(![GPGMailBundle gpgMailWorks] /*|| ![[[(MimeBody *)[self mimeBody] message] gpgMessageSignatures] count]*/)
         return ((id (*)(id, SEL))MimePart_copySignerLabels)(self, _cmd); // Returns an array of NSString, or nil. Invokes -[MimePart  copyMessageSigners].
     else{
         NSArray *pgpSignerLabels = nil;
@@ -1490,6 +1504,14 @@ static IMP  MimePart_isEncrypted = NULL;
                     while((aHeaderKey = [headerKeysToRemoveEnum nextObject]))
                         [newHeaders removeHeaderForKey:aHeaderKey];
                 }
+                else{
+                    BOOL    isApplicationPGP = ([[[self type] lowercaseString] isEqualToString:@"application"] && [[[self subtype] lowercaseString] isEqualToString:@"pgp"]);
+                    
+                    if(isApplicationPGP && [[[self bodyParameterForKey:@"format"] lowercaseString] isEqualToString:@"text"]){
+                        [newHeaders removeHeaderForKey:@"content-type"];
+                        [newHeaders setHeader:@"text/plain" forKey:@"content-type"];
+                    }
+                }
                 
 #warning FIXME: In case of application/octet-stream attachment, rename attachment: remove .asc suffix, and set MIME type accordingly
                 if([self _gpgLooksLikeBinaryPGPAttachment]){
@@ -1730,6 +1752,32 @@ static IMP  MimePart_isEncrypted = NULL;
             result = ((id (*)(id, SEL))MimePart_decodeApplicationOctet_stream)(self, _cmd);
         if(doDecode && GPGMailLoggingLevel)
             NSLog(@"[DEBUG] Done: result = %p", result);
+        return result;
+    }
+}
+
+- decodeApplicationPgp // FIXME: install it conditionally?
+{
+    if(![GPGMailBundle gpgMailWorks])
+		return ((id (*)(id, SEL))MimePart_decodeApplicationOctet_stream)(self, _cmd);
+    else{
+        id	result = nil;
+        
+        if(GPGMailLoggingLevel)
+            NSLog(@"[DEBUG] %p gpgDecodeApplicationPgp", self);
+        NS_DURING
+            result = [self _gpgDecodePGP]; // Can raise an exception!        
+        NS_HANDLER
+            [(Message *)[[self mimeBody] message] setGpgException:localException];
+        NS_ENDHANDLER
+        
+        if(!result){
+            if(MimePart_decodeApplicationPgp)
+                result = ((id (*)(id, SEL))MimePart_decodeApplicationPgp)(self, _cmd); // TESTME Test when PGPmail is present
+            else
+                result = ((id (*)(id, SEL))MimePart_decodeApplicationOctet_stream)(self, _cmd);
+        }
+        
         return result;
     }
 }
