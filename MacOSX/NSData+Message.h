@@ -67,6 +67,10 @@
 - (id)todosFromPasteboardData;
 @end
 
+@interface NSData (ActuallyFromFoundation)
+- (id)_web_guessedMIMETypeForExtension:(id)fp8;
+@end
+
 #elif defined(TIGER)
 
 @interface NSMutableData (MimeDataEncoding)

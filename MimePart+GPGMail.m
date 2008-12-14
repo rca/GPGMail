@@ -48,6 +48,7 @@
 
 #import <Foundation/Foundation.h>
 
+#define DECRYPT_PGP_ATTACHMENTS 1
 
 @implementation MimePart(GPGMail)
 
@@ -292,9 +293,6 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 - (BOOL) _gpgIsNonOpenPGPEncryptedPart
 {
     // We accept only text/plain or application/octet-stream
-//    if([self _gpgLooksLikeBinaryPGPAttachment]) // TODO: there are problems to fix with message body: message should cache decrypted message body, it's not part's task
-//        return YES;
-
     // As with plain text messages, contains simple PGP encrypted block
     NSData      *bodyData;
     NSString    *aType = [[self type] lowercaseString];
@@ -316,8 +314,14 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
             // Here we don't case about the x-action.
             return YES;
         }
-        else
-            return NO;
+        else{
+#if DECRYPT_PGP_ATTACHMENTS
+            if([self _gpgLooksLikeBinaryPGPAttachment]) // TODO: there are problems to fix with message body: message should cache decrypted message body, it's not part's task
+                return YES;
+            else
+#endif
+                return NO;
+        }
     }
     
     // If message contains a plain text PGP attachment, don't consider the part to be encrypted;
@@ -424,6 +428,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 
     // TODO: add support for multiple ASCII armors in same part
     [aContext setPassphraseDelegate:passphraseDelegate];
+#if DECRYPT_PGP_ATTACHMENTS
     if([self _gpgLooksLikeBinaryPGPAttachment]){
         pgpRange = NSMakeRange(0, [data length]);
         pgpData = data;
@@ -431,7 +436,9 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
         [aContext setUsesTextMode:NO];
         isText = NO;
     }
-    else{
+    else
+#endif
+      {
         data = [data gpgStandardizedEOLsToCRLF];
         pgpRange = [GPGHandler pgpEncryptionBlockRangeInData:data];
         NSAssert(pgpRange.location != NSNotFound, @"Not encrypted!");
@@ -1147,14 +1154,14 @@ static IMP  MimePart_isEncrypted = NULL;
 	
 	if(existingMethod == NULL){
 #ifdef LEOPARD
-		Method	replacementMethod = class_getInstanceMethod([self class], @selector(implementationSelector));
+		Method	replacementMethod = class_getInstanceMethod([self class], implementationSelector);
 		
 		if(!class_addMethod([self class], selector, method_getImplementation(replacementMethod), method_getTypeEncoding(replacementMethod)))
 			NSLog(@"### ERROR: unable to add -[MimePart %@]", NSStringFromSelector(selector));
 #else
 		struct objc_method_list	aMethodList;
 		struct objc_method		aNewMethod;
-		Method					replacementMethod = class_getInstanceMethod([self class], @selector(implementationSelector));
+		Method					replacementMethod = class_getInstanceMethod([self class], implementationSelector);
 		
 		aNewMethod.method_name = selector;
 		aNewMethod.method_types = replacementMethod->method_types;
@@ -1170,7 +1177,7 @@ static IMP  MimePart_isEncrypted = NULL;
 #endif
 	}
 	else{
-		*implementationPtr = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeMultipartEncrypted), [MimePart class], @selector(implementationSelector), [MimePart class]);
+		*implementationPtr = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeMultipartEncrypted), [MimePart class], implementationSelector, [MimePart class]);
 		if(*implementationPtr == NULL)
 			NSLog(@"### ERROR: unable to add our version of -[MimePart %@]", NSStringFromSelector(selector));
 	}
@@ -1369,6 +1376,7 @@ static IMP  MimePart_isEncrypted = NULL;
                         [newHeaders removeHeaderForKey:aHeaderKey];
                 }
                 
+#if DECRYPT_PGP_ATTACHMENTS
                 if([self _gpgLooksLikeBinaryPGPAttachment]){
                     NSString    *aFileName = [self attachmentFilename];
                     
@@ -1393,6 +1401,7 @@ static IMP  MimePart_isEncrypted = NULL;
                     }
 #warning Seems completely dans les choux with partially decrypted/decoded attachment!
                 }
+#endif
                 
 				newDecryptedData = [[newHeaders _encodedHeadersIncludingFromSpace:NO] mutableCopy]; // Using -headerData still returns removed header!
                 if(decryptedDataContainsHeaders)
@@ -1454,6 +1463,48 @@ static IMP  MimePart_isEncrypted = NULL;
 }
 #endif
 
+- (void)resetGpgCache
+{
+    [[self subparts] makeObjectsPerformSelector:_cmd];
+    GPG_SET_EXTRA_IVAR(nil, @"range");
+}
+
+- (NSRange)gpgRange
+{
+    NSValue *rangeValue = GPG_GET_EXTRA_IVAR(@"range");
+    
+    if(rangeValue == nil)
+        return [self range];
+    else
+        return [rangeValue rangeValue];
+}
+
+- (void)shiftGpgRangeBy:(NSInteger)shift ifAfterLocation:(NSUInteger)location
+{
+    NSRange currentRange = [self gpgRange];
+    
+    if(currentRange.location != NSNotFound && currentRange.location > location){
+        currentRange.location += shift;
+        GPG_SET_EXTRA_IVAR([NSValue valueWithRange:currentRange], @"range");
+    }
+    
+    NSEnumerator    *partEnum = [[self subparts] objectEnumerator];
+    MimePart        *eachSubpart;
+
+    while(eachSubpart = [partEnum nextObject])
+        [eachSubpart shiftGpgRangeBy:shift ifAfterLocation:location];
+}
+
+- (void)setGpgRange:(NSRange)range
+{
+    NSRange     currentRange = [self gpgRange];
+    NSInteger   delta = (range.location - currentRange.location) + (range.length - currentRange.length);
+    MimePart    *topLevelPart = [[self mimeBody] topLevelPart];
+    
+    [topLevelPart shiftGpgRangeBy:delta ifAfterLocation:currentRange.location];
+    GPG_SET_EXTRA_IVAR([NSValue valueWithRange:range], @"range");
+}
+
 - (id) _gpgDecodePGP
 {
 #ifdef LEOPARD
@@ -1472,6 +1523,7 @@ static IMP  MimePart_isEncrypted = NULL;
             NSArray         *signatures = nil;
             BOOL            getsNewPartData = [self gpgIsOpenPGPEncryptedContainerPart];
 			NSData			*decryptedData = [self gpgDecryptedDataWithPassphraseDelegate:[GPGMailBundle sharedInstance] signatures:&signatures]; // Can raise an exception!
+            BOOL            isTopLevelPart = ([(MimeBody *)[encryptedMessage messageBody] topLevelPart] == self);
 			
             if(signatures != nil && [signatures count] > 0)
                 aSignature = [signatures objectAtIndex:0];
@@ -1485,10 +1537,44 @@ static IMP  MimePart_isEncrypted = NULL;
                 MutableMessageHeaders	*newHeaders;
                 NSMutableData			*newDecryptedData;
 
-                if([(MimeBody *)[encryptedMessage messageBody] topLevelPart] == self)
+                if(isTopLevelPart)
                     newHeaders = [[encryptedMessage headers] mutableCopy];
-                else
+                else{
+#if DECRYPT_PGP_ATTACHMENTS
+                    // Extracting part data from message store does not work: we get ony the body data, without the headers.
+//                    NSData  *originalHeaderData = [[encryptedMessage messageStore] dataForMimePart:self];
+//                    
+//                    originalHeaderData = [originalHeaderData subdataWithRange:[originalHeaderData rangeOfRFC822HeaderData]];                    
+//                    newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:originalHeaderData encoding:NSUTF8StringEncoding]; // FIXME: not sure about encoding
+//                    id  headerValue;
+                    
+                    newHeaders = [[MutableMessageHeaders alloc] init];
+                    // TODO: how can we get part's headers?
+//                    headerValue = [self contentTransferEncoding];
+//                    if(headerValue != nil)
+//                        [newHeaders setHeader:headerValue forKey:@"content-type"];
+//                    headerValue = [self contentTransferEncoding];
+//                    if(headerValue != nil)
+//                        [newHeaders setHeader:headerValue forKey:@"content-transfer-encoding"];
+//                    headerValue = [self contentTransferEncoding];
+//                    if(headerValue != nil)
+//                        [newHeaders setHeader:headerValue forKey:@"content-disposition"];
+//                    headerValue = [self contentDescription];
+//                    if(headerValue != nil)
+//                        [newHeaders setHeader:headerValue forKey:@"content-description"];
+//                    headerValue = [self contentTransferEncoding];
+//                    if(headerValue != nil)
+//                        [newHeaders setHeader:headerValue forKey:@"content-id"];
+//                    headerValue = [self contentTransferEncoding];
+//                    if(headerValue != nil)
+//                        [newHeaders setHeader:headerValue forKey:@"content-location"];
+//                    headerValue = [self contentTransferEncoding];
+//                    if(headerValue != nil)
+//                        [newHeaders setHeader:headerValue forKey:@"content-languages"];
+#else
                     newHeaders = nil;
+#endif
+                }
                 
                 if(getsNewPartData){
                     // S/MIME doesn't do that: the decrypted message has quite no header.
@@ -1508,54 +1594,89 @@ static IMP  MimePart_isEncrypted = NULL;
                     BOOL    isApplicationPGP = ([[[self type] lowercaseString] isEqualToString:@"application"] && [[[self subtype] lowercaseString] isEqualToString:@"pgp"]);
                     
                     if(isApplicationPGP && [[[self bodyParameterForKey:@"format"] lowercaseString] isEqualToString:@"text"]){
+                        // FIXME: if not top-level part, newHeaders is nil!
                         [newHeaders removeHeaderForKey:@"content-type"];
                         [newHeaders setHeader:@"text/plain" forKey:@"content-type"];
                     }
                 }
                 
-#warning FIXME: In case of application/octet-stream attachment, rename attachment: remove .asc suffix, and set MIME type accordingly
+#if DECRYPT_PGP_ATTACHMENTS
                 if([self _gpgLooksLikeBinaryPGPAttachment]){
-                    NSLog(@"TODO: rename attachment: remove .asc/.pgp/.gpg suffix, and set MIME type accordingly");
                     NSString    *aFileName = [self attachmentFilename];
                     
                     if(aFileName){
                         NSString    *ext = [[aFileName pathExtension] lowercaseString];
                         
                         if([ext isEqualToString:@"asc"] || [ext isEqualToString:@"gpg"] || [ext isEqualToString:@"pgp"]){
-                            NSString        *newMIME = @"";
-                            NSFileWrapper   *dummyFileWrapper = [[NSFileWrapper alloc] initRegularFileWithContents:decryptedData];
+                            NSString    *newMIME;
                             
-                            // How can get get MIME type from extension??            
-                            aFileName = [aFileName stringByDeletingPathExtension];
-                            [dummyFileWrapper setPreferredFilename:aFileName];
-                            newMIME = [dummyFileWrapper mimeType];
-                            [dummyFileWrapper release];
+                            // How can get get MIME type from extension??
+                            aFileName = [aFileName stringByDeletingPathExtension]; // Removes only last extension (.pgp, .gpg, .asc)
+                            if([decryptedData respondsToSelector:@selector(_web_guessedMIMETypeForExtension:)])
+                                newMIME = [decryptedData _web_guessedMIMETypeForExtension:[aFileName pathExtension]];
+                            else
+                                newMIME = @"application/octet-stream";
                             // Modify newHeaders by adding new filename + new content-encoding + new MIME type
-/*                            [newHeaders removeHeaderForKey:@"content-disposition"];
-                            [newHeaders setHeader:[@"attachment; filename=" stringByAppendingString:aFileName] forKey:@"content-disposition"];
+                            [newHeaders removeHeaderForKey:@"content-disposition"];
+                            [newHeaders setHeader:[@"attachment; filename=" stringByAppendingString:aFileName] forKey:@"content-disposition"]; // FIXME: no escaping of filename
                             [newHeaders removeHeaderForKey:@"content-type"];
-                            [newHeaders setHeader:[NSString stringWithFormat:@"%@; filename=%@", newMIME, aFileName] forKey:@"content-type"];*/
+                            [newHeaders setHeader:[NSString stringWithFormat:@"%@; filename=%@", newMIME, aFileName] forKey:@"content-type"]; // FIXME: no escaping of filename
+                            [newHeaders removeHeaderForKey:@"content-transfer-encoding"];
+                            [newHeaders setHeader:@"base64" forKey:@"content-transfer-encoding"];
+//                            decryptedData = [decryptedData encodeBase64]; // FIXME: seems to be already in base64!?
                         }
                     }
-#warning Seems completely dans les choux with partially decrypted/decoded attachment!
                 }
-                // FIXME: newHeaders can be nil!
-                if(newHeaders == nil){
-                    // Replace part's data with part's decrypted data, in whole message data, and set decryptedData to that.
+#endif
+                if(!isTopLevelPart){
+                    // Replace part's data with part's decrypted data, 
+                    // in whole message data, and set decryptedData to that.
                     NSData  *originalHeaderData = nil;
-                    NSData  *originalBodyData = [[encryptedMessage messageStore] fullBodyDataForMessage:encryptedMessage andHeaderDataIfReadilyAvailable:&originalHeaderData];
-                    NSRange aRange = [self range];
+                    NSData  *originalBodyData = [encryptedMessage gpgCurrentFullBodyPartDataAndHeaderDataIfReadilyAvailable:&originalHeaderData];
+                    NSRange partBodyRange = [self gpgRange]; // FIXME: aRange.location = NSNotFound, sometimes!
                     
+                    NSAssert(partBodyRange.location != NSNotFound, @"### GPGMail is not yet able to decode that embedded encrypted part");
                     if(![originalHeaderData isKindOfClass:[NSData class]])
                         originalHeaderData = [originalHeaderData valueForKey:@"data"]; // It was actually a Subdata
                     if(![originalBodyData isKindOfClass:[NSData class]])
                         originalBodyData = [originalBodyData valueForKey:@"data"]; // It was actually a Subdata
                     newDecryptedData = [[NSMutableData alloc] initWithData:decryptedData];
                     [newDecryptedData convertNetworkLineEndingsToUnix];
+                    
+                    // Extract header range: search backwards for part boundary, 
+                    // which is a line starting with '--'
+                    const char  *partBodyDataPtr = [originalBodyData bytes] + partBodyRange.location;
+                    const char  *aCharPtr = partBodyDataPtr;
+                    while(*aCharPtr != '-' || *(aCharPtr - 1) != '-' || *(aCharPtr - 2) != '\n')
+                        aCharPtr--;
+                    // Now go until next line, to get header start
+                    while(*aCharPtr != '\n')
+                        aCharPtr++;
+                    aCharPtr++;
+                    // Augment partBodyRange to include headers
+                    int headerPartLength = partBodyDataPtr - aCharPtr;
+                    partBodyRange.location -= headerPartLength;
+                    partBodyRange.length += headerPartLength;
+                    
+                    // If we had no headers, e.g. part is not a PGP attachment,
+                    // then use same headers as before decryption.
+                    if([[newHeaders allHeaderKeys] count] == 0){
+                        [newHeaders release];
+                        newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[originalBodyData subdataWithRange:NSMakeRange(partBodyRange.location, headerPartLength)] encoding:NSUTF8StringEncoding];
+                    }
+                    
+                    NSRange decryptedPartBodyRange = NSMakeRange(0, [newDecryptedData length]);
+                    NSData  *newHeadersData = [newHeaders _encodedHeadersIncludingFromSpace:NO]; // Contains headers/body separator
+                    [newDecryptedData replaceBytesInRange:NSMakeRange(0, 0) withBytes:[newHeadersData bytes] length:[newHeadersData length]];
+                    decryptedPartBodyRange.location += [newHeadersData length];
+                    
                     [newDecryptedData replaceBytesInRange:NSMakeRange(0, 0) withBytes:[originalHeaderData bytes] length:[originalHeaderData length]];
-                    [newDecryptedData replaceBytesInRange:NSMakeRange([originalHeaderData length], 0) withBytes:[[originalBodyData subdataToIndex:aRange.location] bytes] length:aRange.location];
-                    [newDecryptedData appendData:[originalBodyData subdataFromIndex:NSMaxRange(aRange)]];
+                    [newDecryptedData replaceBytesInRange:NSMakeRange([originalHeaderData length], 0) withBytes:[[originalBodyData subdataToIndex:partBodyRange.location] bytes] length:partBodyRange.location];
+                    decryptedPartBodyRange.location += partBodyRange.location;
+                    [newDecryptedData appendData:[originalBodyData subdataFromIndex:NSMaxRange(partBodyRange)]];
                     decryptedData = [newDecryptedData autorelease];
+                    [encryptedMessage gpgUpdateCurrentFullBodyPartData:[decryptedData subdataFromIndex:[originalHeaderData length]]]; // Remove headers - only body
+                    [self setGpgRange:decryptedPartBodyRange];
                 }
                 else{
                     newDecryptedData = [[newHeaders _encodedHeadersIncludingFromSpace:NO] mutableCopy]; // Using -headerData still returns removed header!
@@ -1756,7 +1877,7 @@ static IMP  MimePart_isEncrypted = NULL;
     }
 }
 
-- decodeApplicationPgp // FIXME: install it conditionally?
+- gpgDecodeApplicationPgp
 {
     if(![GPGMailBundle gpgMailWorks])
 		return ((id (*)(id, SEL))MimePart_decodeApplicationOctet_stream)(self, _cmd);
@@ -1773,9 +1894,9 @@ static IMP  MimePart_isEncrypted = NULL;
         
         if(!result){
             if(MimePart_decodeApplicationPgp)
-                result = ((id (*)(id, SEL))MimePart_decodeApplicationPgp)(self, _cmd); // TESTME Test when PGPmail is present
+                result = ((id (*)(id, SEL))MimePart_decodeApplicationPgp)(self, _cmd); // TESTME: Test when PGPmail is present
             else
-                result = ((id (*)(id, SEL))MimePart_decodeApplicationOctet_stream)(self, _cmd);
+                result = [self decodeApplicationOctet_stream];
         }
         
         return result;

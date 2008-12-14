@@ -57,5 +57,7 @@
 - (BOOL) gpgIsOpenPGPEncryptedContainerPart;
 - (BOOL) gpgIsOpenPGPSignedContainerPart;
 
+- (void)resetGpgCache;
+
 @end
 

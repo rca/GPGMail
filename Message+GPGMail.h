@@ -77,4 +77,7 @@
 
 - (NSString *) gpgDescription;
 
+- (NSData *)gpgCurrentFullBodyPartDataAndHeaderDataIfReadilyAvailable:(NSData **)headerDataPtr;
+- (void)gpgUpdateCurrentFullBodyPartData:(NSData *)newData;
+
 @end

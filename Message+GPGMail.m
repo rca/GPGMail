@@ -1,7 +1,7 @@
 /* Message+GPGMail.m created by stephane on Fri 30-Jun-2000 */
 
 /*
- * Copyright (c) 2000-2008, Stéphane Corthésy <stephane at sente.ch>
+ * Copyright (c) 2000-2008, St√©phane Corth√©sy <stephane at sente.ch>
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -11,14 +11,14 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of Stéphane Corthésy nor the names of GPGMail
+ *     * Neither the name of St√©phane Corth√©sy nor the names of GPGMail
  *       contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY STÉPHANE CORTHÉSY AND CONTRIBUTORS ``AS IS'' AND ANY
+ * THIS SOFTWARE IS PROVIDED BY ST√âPHANE CORTH√âSY AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL STÉPHANE CORTHÉSY AND CONTRIBUTORS BE LIABLE FOR ANY
+ * DISCLAIMED. IN NO EVENT SHALL ST√âPHANE CORTH√âSY AND CONTRIBUTORS BE LIABLE FOR ANY
  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -34,6 +34,7 @@
 #import "GPGMailPatching.h"
 #import "NSObject+GPGMail.h"
 #import "GPGMessageSignature.h"
+#import "MimePart+GPGMail.h"
 
 #import <NSString+Message.h>
 #import <MessageHeaders.h>
@@ -41,7 +42,6 @@
 #import <MutableMessageHeaders.h>
 #import <MessageStore.h>
 #import <MimeBody.h>
-#import <MimePart.h>
 #import <ObjectCache.h>
 
 #import <Foundation/Foundation.h>
@@ -318,6 +318,11 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 
 - (void) setGpgIsDecrypting:(BOOL)flag
 {
+    if(!flag){
+        [[(MimeBody *)[self messageBody] topLevelPart] resetGpgCache];
+        GPG_SET_EXTRA_IVAR(nil, @"fullBodyData");
+        GPG_SET_EXTRA_IVAR(nil, @"headerData");
+    }
 	GPG_SET_EXTRA_IVAR([NSNumber numberWithBool:flag], @"isDecrypting");
 }
 
@@ -363,6 +368,30 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 		((_messageFlags & 0x40000000) ? @", highlight text in toc":@""), 
 		((_messageFlags & 0x80000000) ? @", u31":@"")
 		];
+}
+
+/*
+ * When decrypting multiple encrypted parts, we need to have an up-to-date
+ * fullBodyData.
+ */
+- (NSData *)gpgCurrentFullBodyPartDataAndHeaderDataIfReadilyAvailable:(NSData **)headerDataPtr
+{
+    NSData  *cachedData = GPG_GET_EXTRA_IVAR(@"fullBodyData");
+    
+    if(cachedData == nil){
+        cachedData = [[self messageStore] fullBodyDataForMessage:self andHeaderDataIfReadilyAvailable:headerDataPtr];
+        GPG_SET_EXTRA_IVAR(cachedData, @"fullBodyData");
+        GPG_SET_EXTRA_IVAR(*headerDataPtr, @"headerData");
+    }
+    else
+        *headerDataPtr = GPG_GET_EXTRA_IVAR(@"headerData");
+    
+    return cachedData;
+}
+
+- (void)gpgUpdateCurrentFullBodyPartData:(NSData *)newData
+{
+    GPG_SET_EXTRA_IVAR(newData, @"fullBodyData");
 }
 
 @end
