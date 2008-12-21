@@ -206,6 +206,16 @@
 #undef CR
 }
 
+enum {
+    lookingForNothing,
+    lookingForFirstDash,
+    lookingForSecondDash,
+    lookingForFirstSpace,
+    lookingForSecondSpace,
+    lookingForCR,
+    lookingForLF
+};
+
 - (NSData *) gpgFormatFlowedFixedWithCRLF:(BOOL)useCRLF useQP:(BOOL)useQP
 {
     // Replace line consisting of DASH DASH SPACE [SPACE] by DASH DASH
@@ -217,46 +227,39 @@
         unsigned			i = 0, newLength = 0;
         const unsigned char	*oldBytes;
         unsigned char		aByte, *newBytes;
-        BOOL                lookingForFirstDash = YES, lookingForSecondDash = NO, lookingForFirstSpace = NO, lookingForSecondSpace = NO, lookingForCR = NO, lookingForLF = NO; 
+        int                 state = lookingForFirstDash; 
         
         oldBytes = [self bytes];
         newBytes = NSZoneMalloc(NSDefaultMallocZone(), length);
         
         for(; i < length; i++){
             aByte = oldBytes[i];
-            if(lookingForFirstDash && aByte == '-'){
-                lookingForFirstDash = NO;
-                lookingForSecondDash = YES;
+            if(state == lookingForFirstDash && aByte == '-'){
+                state = lookingForSecondDash;
                 newBytes[newLength++] = '-';
             }
-            else if(lookingForSecondDash && aByte == '-'){
-                lookingForSecondDash = NO;
-                lookingForFirstSpace = YES;
+            else if(state == lookingForSecondDash && aByte == '-'){
+                state = lookingForFirstSpace;
                 newBytes[newLength++] = '-';
             }
-            else if(lookingForFirstSpace && aByte == ' '){
-                lookingForFirstSpace = NO;
-                lookingForSecondSpace = YES;
+            else if(state == lookingForFirstSpace && aByte == ' '){
+                state = lookingForSecondSpace;
                 newBytes[newLength++] = ' ';
             }
-            else if(lookingForSecondSpace && aByte == ' '){
-                lookingForSecondSpace = NO;
+            else if(state == lookingForSecondSpace && aByte == ' '){
                 if(useCRLF)
-                    lookingForCR = YES;
+                    state = lookingForCR;
                 else
-                    lookingForLF = YES;
+                    state = lookingForLF;
                 newBytes[newLength++] = ' ';
             }
-            else if(useCRLF && (lookingForSecondSpace || lookingForCR) && aByte == '\r'){
-                lookingForCR = NO;
-                lookingForLF = YES;
+            else if(useCRLF && (state == lookingForSecondSpace || state == lookingForCR) && aByte == '\r'){
+                state = lookingForLF;
                 newBytes[newLength++] = '\r';
             }
-            else if((lookingForSecondSpace || lookingForLF) && aByte == '\n'){
-                lookingForLF = NO;
-                lookingForFirstDash = YES;
+            else if((state == lookingForSecondSpace || state == lookingForLF) && aByte == '\n'){
                 if(useCRLF){
-                    if(lookingForSecondSpace)
+                    if(state == lookingForSecondSpace)
                         newLength -= 2;
                     else
                         newLength -= 3;
@@ -273,10 +276,12 @@
                     }
                 }
                 else{
-                    if(lookingForSecondSpace)
+                    // Remove trailing space(s)
+                    if(state == lookingForSecondSpace)
                         newLength -= 1;
                     else
                         newLength -= 2;
+                    // If uses quoted-printable, append space encoded in quoted-printable
                     if(useQP){
                         newBytes[newLength++] = '=';
                         newBytes[newLength++] = '2';
@@ -287,15 +292,10 @@
                         newBytes[newLength++] = '\n';
                     }
                 }
-                lookingForSecondSpace = NO;
+                state = lookingForFirstDash;
             }
             else{
-                lookingForFirstDash = (aByte == '\n');
-                lookingForSecondDash = NO;
-                lookingForFirstSpace = NO;
-                lookingForSecondSpace = NO;
-                lookingForCR = NO;
-                lookingForLF = NO;
+                state = (aByte == '\n' ? lookingForFirstDash : lookingForNothing);
                 newBytes[newLength++] = aByte;
             }
         }
