@@ -240,6 +240,14 @@ if(0){
         [aContext addSignerKey:key];
     }
     inputData = [[GPGData alloc] initWithData:dataToEncrypt];
+    if(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask){
+        NSString    *filename = [NSTemporaryDirectory() stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"txt"]];
+        
+        if([dataToEncrypt writeToFile:filename atomically:NO])
+            NSLog(@"[DEBUG] Data to encrypt/sign in %@", filename);
+        else
+            NSLog(@"[DEBUG] FAILED to write data to encrypt/sign in %@", filename);
+    }
     NS_DURING
         GPGData *outputData;
 
@@ -473,6 +481,14 @@ if(0){
     // We can iterate through all parts, and ask them for their format=flowed, and getting their data
     // out of [self rawData] using their -range
     inputData = [[GPGData alloc] initWithData:dataToSign];
+    if(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask){
+        NSString    *filename = [NSTemporaryDirectory() stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"txt"]];
+        
+        if([dataToSign writeToFile:filename atomically:NO])
+            NSLog(@"[DEBUG] Data to sign in %@", filename);
+        else
+            NSLog(@"[DEBUG] FAILED to write data to sign in %@", filename);
+    }
     NS_DURING
 #warning Use kCFStringEncodingISOLatin1 encoding!
         GPGData *outputData = [aContext signedData:inputData signatureMode:GPGSignatureModeDetach /*encoding:kCFStringEncodingISOLatin1*/]; // Can raise an exception

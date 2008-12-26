@@ -133,7 +133,14 @@ NSString	*GPGMailHeaderKey = @"X-PGP-Agent";
     if(key != nil)
         [aContext addSignerKey:key];
     inputData = [[GPGData alloc] initWithData:dataToModify];
-//[dataToModify writeToFile:@"/tmp/text.asc" atomically:YES];
+    if(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask){
+        NSString    *filename = [NSTemporaryDirectory() stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"txt"]];
+        
+        if([dataToModify writeToFile:filename atomically:NO])
+            NSLog(@"[DEBUG] Data to encrypt/sign in %@", filename);
+        else
+            NSLog(@"[DEBUG] FAILED to write data to encrypt/sign in %@", filename);
+    }
     
     NS_DURING
         GPGData *outputData;
