@@ -2157,7 +2157,8 @@ static BOOL	gpgMailWorks = YES;
 - (id) locale
 {
 #ifdef LEOPARD
-    return [NSLocale autoupdatingCurrentLocale];
+//    return [NSLocale autoupdatingCurrentLocale]; // FIXME: does not work as expected
+    return [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
 #else
     // Maybe I don't understand APIs, but descriptions of dates never use the user's language!
     // I need to explicitely pass the locale.
