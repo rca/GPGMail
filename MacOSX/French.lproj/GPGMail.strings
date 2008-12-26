@@ -118,11 +118,11 @@
 "GPGErrorCode=10" = "Erreur de somme de contrôle";
 "GPGErrorCode=11" = "Mauvais mot de passe";
 "GPGErrorCode=15" = "Armure ASCII invalide";
-"GPGErrorCode=17" = "Pas de clef secrete";
+"GPGErrorCode=17" = "Pas de clef secrète";
 "GPGErrorCode=31" = "Mot de passe invalide";
 "GPGErrorCode=40" = "Erreur de serveur de clefs";
 "GPGErrorCode=53" = "Clef publique non utilisable";
-"GPGErrorCode=54" = "Clef secrete non utilisable";
+"GPGErrorCode=54" = "Clef secrète non utilisable";
 "GPGErrorCode=55" = "Valeur invalide";
 "GPGErrorCode=58" = "Pas de donnée";
 "GPGErrorCode=69" = "Pas implémenté";
