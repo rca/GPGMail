@@ -29,8 +29,6 @@
 <tr><td>
 <h2>GPGMail - Foire Aux Questions</h2>
 <ul style="list-style-type: none;">
-<li><a href="http://ilovja.homeunix.com/mywiki/GPGMailFAQ"><img alt="&#54620;&#44544;" src="../KO.gif" style="border: none;" /></a> <a href="http://ilovja.homeunix.com/mywiki/GPGMailFAQ">GPGMail&#51032; FAQ &#54620;&#44544;&#48264;&#50669;
-(traduction cor&eacute;enne)</a></li>
 <li><a href="../English.lproj/FAQ.html"><img alt="English" src="../US.gif" style="border: none;" /></a> <a href="../English.lproj/FAQ.html">FAQ (traduction anglaise)</a></li>
 </ul>
 <!--#config timefmt="%d/%m/%y" --><!--#set var="LastUpdateText" value="<p><i>Dernière mise à jour: ${LAST_MODIFIED}</i></p>" --><!--#echo encoding="none" var="LastUpdateText" -->
@@ -63,8 +61,6 @@ Terminal pour corriger le probl&egrave;me:
 </code>
 Vous pouvez aussi utilisez <a href="http://macgpg.sourceforge.net/fr/">mac2unix</a>.</div></li>
 
-<li><div class="question">Q: GPGMail est incapable de trouver <span class="executable">gpg</span>, qui a &eacute;t&eacute; install&eacute; avec <span class="executable">fink</span>. Comment puis-je indiquer &agrave; GPGMail o&ugrave; se trouve <span class="executable">gpg</span>?</div>
-<div class="answer">R: GPGMail s'attend &agrave; trouver <span class="executable">gpg</span> dans le dossier <span class="path">/usr/local/bin/</span>, tout comme les autres applications utilisant <span class="executable">gpg</span>. Soit vous savez le d&eacute;placer &agrave; la main ou faire un lien, soit vous utilisez <a href="http://macgpg.sourceforge.net/fr/">GPGPreferences</a>.</div></li>
 <li><div class="question">Q:
 Je ne peux plus r&eacute;diger de message, ni r&eacute;pondre
 &agrave; un message. Mail ne fait rien ou se plante.</div>
@@ -73,11 +69,12 @@ peut y avoir un probl&egrave;me avec les nouveaux
 &eacute;l&eacute;ments ajout&eacute;s par GPGMail sur la
 barre d'outils, dans certains cas. Pour corriger le
 probl&egrave;me, quittez Mail, lancez le Terminal et tapez:
-<code class="terminal"><span class="input"><span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration ComposeNewOrDraft"</span>
-<span class="input"><span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration ComposeReplyOrForward"</span>
-<span class="input"><span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration MessageViewer"</span>
-<span class="input"><span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration TornOffViewer"</span>
+<code class="terminal"><span class="input"><span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration ComposeWindow_NewMessage"</span>
+<span class="input"><span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration ComposeWindow_ReplyOrForward"</span>
+<span class="input"><span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration MainWindow"</span>
+<span class="input"><span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration SingleMessageViewer"</span>
 </code></div></li>
+
 <li><div class="question">Q:
 Je ne peux pas envoyer de message chiffr&eacute; &agrave; un
 ami, bien que j'aie sa cl&eacute; publique, avec la bonne adresse
@@ -89,15 +86,16 @@ mani&egrave;re-l&agrave; (signature non-exportable):
 <code class="terminal"><span class="input"><span class="prompt">&gt; </span>gpg --lsign-key laCleAvecID</span>
 </code>
 Lisez <a href="http://www.gnupg.org/docs.html">la documentation de GnuPG</a>
-pour en savoir plus sur la signature des cl&eacute;s. Notez que ce
-probl&egrave;me n'appara&icirc;t pas si vous utilisez <span class="executable">gpg</span> 1.0.7: GPGMail force <span class="executable">gpg</span> &agrave; accepter les cl&eacute;s non-sign&eacute;es, par d&eacute;faut.</div></li>
+pour en savoir plus sur la signature des cl&eacute;s. Notez que GPGMail force <span class="executable">gpg</span> &agrave; accepter les cl&eacute;s non-sign&eacute;es, par d&eacute;faut - voyez les pr&eacute;f&eacute;rences de GPGMail.</div></li>
+
 <li><div class="question">Q:
 Je travaille dans un environnement o&ugrave; mon dossier
 utilisateur se trouve sur le r&eacute;seau, donc le dossier .gnupg
 est implicitement non-s&ucirc;r. &Ccedil;a serait bien si je
 pouvais indiquer &agrave; GPGMail d'utiliser l'option <span class="option">--homedir
 /Volumes/DisqueS&eacute;curis&eacute;/DossierGPG</span> de <span class="executable">gpg</span> par exemple.</div>
-<div class="answer">R: Il y a deux mani&egrave;res de faire &ccedil;a: la premi&egrave;re solution serait d'&eacute;crire un <i>shell script</i> qui invoquerait <span class="executable">gpg</span> avec l'argument <span class="option">--homedir</span>, et de remplacer <span class="executable">gpg</span> par ce script. La seconde solution est de cr&eacute;er la variable d'environment <span class="variable">GNUPGHOME</span>: cr&eacute;ez ou modifiez le fichier <span class="path">$HOME/.MacOSX/environment.plist</span> avec l'application <span class="path">/Developer/Applications/PropertyListEditor</span> et ajoutez une nouvelle pair cl&eacute;-valeur <span class="variable">GNUPGHOME</span>; vous devez ensuite quitter votre session et la relancer. Notez que <a href="http://macgpg.sourceforge.net/fr/">GPGPreferences</a> peut faire &ccedil;a pour vous.</div></li>
+<div class="answer">R: Il y a trois mani&egrave;res de faire &ccedil;a: la premi&egrave;re solution serait d'&eacute;crire un <i>shell script</i> qui invoquerait <span class="executable">gpg</span> avec l'argument <span class="option">--homedir</span>, et de remplacer <span class="executable">gpg</span> par ce script. La seconde solution est de créer un lien soft <span class="path">~/.gnupg</span> pointant vers le vrai dossier .gnupg. La troisième est de cr&eacute;er la variable d'environment <span class="variable">GNUPGHOME</span>: cr&eacute;ez ou modifiez le fichier <span class="path">$HOME/.MacOSX/environment.plist</span> avec l'application <span class="path">/Developer/Applications/PropertyListEditor</span> et ajoutez une nouvelle pair cl&eacute;-valeur <span class="variable">GNUPGHOME</span>; vous devez ensuite quitter votre session et la relancer. Notez que <a href="http://macgpg.sourceforge.net/fr/">GPGPreferences</a> peut faire &ccedil;a pour vous.</div></li>
+
 <li><div class="question">Q:
 Je crois avoir install&eacute; GPGMail correctement, mais il n'y a
 pas de nouveaux boutons dans la barre d'outils. Qu'ai-je fait de faux?</div>
@@ -109,6 +107,7 @@ Il y a en fait quatre barres d'outils diff&eacute;rentes, et
 chacune doit &ecirc;tre personnalis&eacute;e. Notez que les
 boutons sont en g&eacute;n&eacute;ral inutiles depuis GPGMail
 1.0.</div></li>
+
 <li><div class="question">Q:
 Je crois avoir install&eacute; GPGMail correctement, mais il n'y a
 pas de nouveaux boutons dans la barre d'outils, ni de nouveau menu,
@@ -120,15 +119,6 @@ GPGMail doit ex&eacute;cuter la commande pour son propre compte,
 pas celui de root, ni un autre. D'ailleurs, vous ne devriez jamais
 travailler avec le compte root!</div></li>
 
-<li><div class="question">Q: J'utilise maintenant GnuPG 1.0.7, et je ne peux plus chiffrer aucun message. J'obtiens toujours l'erreur <code class="terminal">1234ABCD: There is no indication that this key really belongs to the owner
-no valid addressees
-[stdin]: sign+encrypt failed: no such user id
-</code>
-Qu'est-ce qui se passe?</div>
-<div class="answer">R:
-Depuis GnuPG 1.0.7, les cl&eacute;s doivent toujours &ecirc;tre
-sign&eacute;es par leur possesseur. Avez-vous sign&eacute;
-votre cl&eacute;?</div></li>
 <li><div class="question">Q: J'essaie d'utiliser GPGMail, mais j'obtiens toujours cette erreur:
 <code class="terminal">skipped `myname@mac.com': duplicated
 </code>
@@ -141,21 +131,13 @@ pr&eacute;f&eacute;rences de GPGMail) pour le chiffrage. Vous
 avez demand&eacute; &agrave; GPGMail d'utiliser encore cette
 cl&eacute; en mettant votre adresse &eacute;lectronique dans le
 champ &Agrave;: ou Cc:. Enlevez-la.</div></li>
-<li><div class="question">Q:
-Quand je r&eacute;ponds &agrave; un message chiffr&eacute;,
-la r&eacute;ponse cite le message chiffr&eacute;, et non pas le
-message d&eacute;chiffr&eacute; que je lis. Comment forcer Mail
-&agrave; utiliser le message d&eacute;chiffr&eacute;?</div>
-<div class="answer">R:
-GPGMail ne permet pas de faire cela de mani&egrave;re automatique.
-Toutefois, il existe un moyen, manuel: s&eacute;lectionnez le texte
-d&eacute;chiffr&eacute; du message avant de cliquer sur le
-bouton <b>R&eacute;pondre</b>.</div></li>
+
 <li><div class="question">Q: Comment puis-je d&eacute;sinstaller GPGMail?</div>
 <div class="answer">R: Pour
 d&eacute;sinstaller GPGMail, vous avez simplement besoin de
 d&eacute;truire le fichier <span class="path">GPGMail.mailbundle</span> se trouvant dans le
 dossier Library/Mail/Bundles de votre compte.</div></li>
+
 <li><div class="question">Q:
 Comment puis-je indiquer &agrave; GPGMail de
 t&eacute;l&eacute;charger automatiquement les cl&eacute;s
@@ -168,12 +150,12 @@ v&eacute;rification. Modifiez le fichier <span class="path">$HOME/.gnupg/gpg.con
 <code class="terminal">keyserver x-hkp://wwwkeys.us.pgp.net
 keyserver-options auto-key-retrieve include-disabled include-revoked
 </code></div></li>
+
 <li><div class="question">Q: Comment puis-je participer &agrave; votre programme de test (beta testing)?</div>
-<div class="answer">R: Inscrivez-vous &agrave; la liste de diffusion de GPGMail en envoyant un courriel &agrave; <a href="mailto:gpgmail-users-on@sente.ch">gpgmail-users-on@sente.ch</a>.
-C'est une liste en anglais uniquement, avec tr&egrave;s peu de
+<div class="answer">R: Inscrivez-vous &agrave; la liste de diffusion de GPGMail en allant sur <a target="_blank" href="https://lists.sourceforge.net/lists/listinfo/gpgmail-users">https://lists.sourceforge.net/lists/listinfo/gpgmail-users</a>.
+C'est une liste en anglais uniquement, avec peu de
 trafic, que j'utilise pour donner des nouvelles concernant le
-d&eacute;veloppement de GPGMail. Les archives sont accessibles en
-ligne &agrave; l'adresse <a href="http://www.sente.ch/Lists/gpgmail-users/List.html">http://www.sente.ch/Lists/gpgmail-users/List.html</a>.</div></li>
+d&eacute;veloppement de GPGMail. et que les gens utilisent pour trouver des solutions à leurs problèmes. Regardez la <a href="GPGMail.html#MailingList">documentation</a> pour plus d'info.</div></li>
 
 <li><div class="question">Q:
 J'&eacute;change des courriels chiffr&eacute;s avec un ami qui
@@ -191,6 +173,7 @@ formattage ni de pi&egrave;ce jointe. Si vous voulez que GPGMail
 utilise toujours le nouveau format, aller dans les
 pr&eacute;f&eacute;rences de GPGMail et s&eacute;lectionnez
 l'option <b>Utiliser OpenPGP-MIME par d&eacute;faut</b> dans la partie <b>Composition</b>. Vous pourrez changer cette option au cas par cas en passant par le menu <b>Message</b>/<b>PGP</b>/<b>Utiliser PGP-MIME</b>.</div></li>
+
 <li><div class="question">Q:
 Je ne peux pas installer GPGMail, parce que quand je tape la ligne de
 commande suivante dans le Terminal, j'obtiens une erreur:
@@ -201,12 +184,13 @@ default: Too many arguments.
 n'avez pas install&eacute; le sous-syst&egrave;me BSD de MacOS
 X. Il est fourni sur le CD d'installation de MacOS X. De plus vous avez
 tap&eacute; <span class="executable">default</span> au lieu de <span class="executable">defaults</span>, ce qui n'est pas la m&ecirc;me commande.</div></li>
-<li><div class="question">Q: Est-ce que je peux installer en m&ecirc;me temps GPGMail et PGP8?</div>
+
+<li><div class="question">Q: Est-ce que je peux installer en m&ecirc;me temps GPGMail et PGP8/9?</div>
 <div class="answer">R: Non.
 Les deux extensions apportent les m&ecirc;mes
 fonctionnalit&eacute;s, de la m&ecirc;me mani&egrave;re
 (PGPmail est bas&eacute; sur GPGMail; jetez un coup d'oeil aux
-cr&eacute;dits de PGP8 pour le v&eacute;rifier), ce qui
+cr&eacute;dits de PGP8/9 pour le v&eacute;rifier), ce qui
 cr&eacute;erait des conflits; parfois Mail se plantera, ou GPGMail
 ne fonctionnera pas correctement. Si vous voulez utiliser une des deux
 extensions, enlevez l'autre. GPGMail est install&eacute; dans le
@@ -224,7 +208,7 @@ avez auparavant install&eacute; PGPmail.mailbundle et vous devez
 l'enlever. Les deux extensions PGPmail et GPGMail apportent les
 m&ecirc;mes fonctionnalit&eacute;s, de la m&ecirc;me
 mani&egrave;re (PGPmail est bas&eacute; sur GPGMail; jetez un
-coup d'oeil aux cr&eacute;dits de PGP8 pour le
+coup d'oeil aux cr&eacute;dits de PGP8/9 pour le
 v&eacute;rifier), ce qui cr&eacute;e des conflits; parfois Mail
 se plante, ou GPGMail ne fonctionne pas correctement. Si vous voulez
 utiliser une des deux extensions, enlevez l'autre. GPGMail est
@@ -253,13 +237,13 @@ repr&eacute;sentent votre dossier utilisateur. Vous pouvez utiliser
 <span class="variable">$HOME</span> ou <span class="variable">~</span> dans les shell scripts pour indiquer au shell le chemin de votre compte utilisateur.</div></li>
 
 <li><div class="question">Q: Je crois que j'ai trouv&eacute; un bogue dans GPGMail. Qui dois-je contacter?</div>
-<div class="answer">R: Envoyez un message &agrave; <a href="mailto:gpgmail@sente.ch">gpgmail@sente.ch</a>, SVP. J'ai besoin des informations suivantes:
+<div class="answer">R: Vérifiez d'abord que le bug ne soit pas déjà connu en consultant <a href="GPGMail.html#KnownBugs">cette liste</a>. Envoyez ensuite un message &agrave; <code>gpgmail a sente ch</code>, SVP. J'ai besoin des informations suivantes:
 <ul>
 <li>Quelle version de GPGMail utilisez-vous (voyez les informations fournies par le Finder sur GPGMail)?
 </li><li>Quelle version de MacOS X utilisez-vous?
 </li><li>Quelles autres extensions de Mail sont install&eacute;es, s'il y en a (nom + version)?
-</li><li>Avez-vous un "Crash Report" &agrave; transmettre (regardez si vous avez des fichiers nomm&eacute;s <span class="path">Mail.crash.log</span> ou <span class="path">GPGMEProxyServer.crash.log</span> dans <span class="path">$HOME/Biblioth&egrave;que/Logs/CrashReporter/</span>)?
-</li><li>Il y a-t-il des lignes dans la console Syst&egrave;me (<span class="path">/Applications/Utilities/Console</span>) concernant Mail ou GPGMail?
+</li><li>Avez-vous un "Crash Report" &agrave; transmettre (regardez si vous avez des fichiers nomm&eacute;s <span class="path">Mail.crash.log</span> dans <span class="path">$HOME/Biblioth&egrave;que/Logs/CrashReporter/</span>)?
+</li><li>Y a-t-il des lignes dans la console Syst&egrave;me (<span class="path">/Applications/Utilities/Console</span>) concernant Mail ou GPGMail?
 </li></ul></div></li>
 
 <li><div class="question">Q:
@@ -277,6 +261,7 @@ GPGMail. Il faut quitter Mail, lancer le Terminal, puis taper la
 commande:
 <code class="terminal"><span class="input"><span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration NSPreferences"</span>
 </code></div></li>
+
 <li><div class="question">Q:
 Puis-je utiliser GPGMail si mon correspondant travaille sur un PC avec
 Outlook ou un autre logiciel de courriel qui n'est pas fait par Apple?</div>
@@ -308,16 +293,14 @@ courriel. Vous pouvez forcer GPGMail &agrave; toujours utiliser le
 format PGP-MIME, en modifiant ses pr&eacute;f&eacute;rences,
 mais vous ne pouvez le forcer &agrave; toujours utiliser l'ancien
 format.
-<br />GPGMail ne sait pas
-d&eacute;chiffrer/v&eacute;rifier les messages qui ne sont pas
-enti&egrave;rement chiffr&eacute;s/sign&eacute;s (dans le
-nouveau format), c'est-&agrave;-dire si seule une partie du message
-est chiffr&eacute;e ou sign&eacute;e. C'est une des limites
+<br />GPGMail a des problèmes pour
+d&eacute;chiffrer/v&eacute;rifier des messages HTML. C'est une des limites
 actuelles.
 <br />Echangez vos cl&eacute;s
 publique PGP et envoyez-vous des messages
 sign&eacute;s/chiffr&eacute;s pour voir quels formats sont
 support&eacute;s par les deux logiciels.</div></li>
+
 <li><div class="question">Q:
 J'ai plusieurs identit&eacute;s (uid) sur ma cl&eacute;, mais
 quand j'envoie un message, la seule qui est utilis&eacute;e
@@ -341,6 +324,7 @@ les autres applications de type PGP): elle repr&eacute;sente la
 cl&eacute;. Les autres identit&eacute;s sont
 affich&eacute;s &agrave; titre informatif, mais ne sont jamais
 s&eacute;lectionnables.</div></li>
+
 <li><div class="question">Q:
 J'ai plusieurs clefs PGP qui portent la m&ecirc;me adresse e-mail,
 et une de ces clefs a expir&eacute;. GPGMail me dit que je n'ai pas
@@ -352,6 +336,7 @@ valides. Pour changer l'ordre des clefs dans la recherche, en attendant
 que GPGMail g&egrave;re ce cas de figure, vous devriez exportez
 cette clef expir&eacute;e, l'enlever de votre trousseau, puis la
 r&eacute;importer; lisez la documentation de <span class="executable">gpg</span> pour cela, ou utilisez <a href="http://macgpg.sourceforge.net/fr/">GPG Keychain Access</a>.</div></li>
+
 <li><div class="question">Q:
 Bien que les messages que je re&ccedil;ois ont le format PGP
 traditional pour la signature (en-ligne), ils sont affich&eacute;s
@@ -370,32 +355,19 @@ avec une pi&egrave;ce jointe MIME. Je ne comprends pas pourquoi.</div>
 (consulter <a href="http://blue.frogfoot.net/unix/mutt/publish/gpg">http://blue.frogfoot.net/unix/mutt/publish/gpg</a> pour plus d'info)
 </div></li>
 
-<li><div class="question">Q:
-J'ai install&eacute; GPGMail et toutes ses
-fonctionnalit&eacute;s, ses boutons, etc. apparaissent
-dans Mail, mais quoi que je fasse, quand j'envoie un courrier, celui-ci
-est envoy&eacute; en clair, non sign&eacute;. J'ai
-essay&eacute; tous les boutons de la barre d'outils, les menus,
-etc. mais toujours pas de chiffrage. Qu'est-ce qui se passe?</div>
-<div class="answer">R: Si vous avez installé OD4Contact et son extension pour Mail, alors cette extension empêche GPGMail de fonctionner correctement. Ce problème a été soumis aux développeurs de OD4Contact le 19.2, et pour l'instant il n'y a rien d'autre à faire que d'enlever l'extension Mail de OD4Contact: enlevez le fichier ODMailBundle.mailbundle du dossier <span class="path">Bibliothèque/Mail/Bundles</span> de votre dossier personnel. Le problème a été constaté avec OD4Contact version 2.6.4.
-</div></li>
-
 <li><div class="question">Q: J'ai <span class="executable">gpg</span> installé dans un autre endroit que <span class="path">/usr/local/bin/</span>. Comment faire fonctionner GPGMail avec ça?</div>
-<div class="answer">R: Vous devez créer des liens soft avec <span class="executable">gpg</span> et d'autres exécutables. Par exemple:
-<code class="terminal"><span class="input"><span class="prompt">&gt; </span>sudo mkdir -p /usr/local/bin/</span>
-<span class="input"><span class="prompt">&gt; </span>cd /usr/local/bin/</span>
-<span class="input"><span class="prompt">&gt; </span>ln -s /opt/local/bin/gpg</span>
-<span class="input"><span class="prompt">&gt; </span>sudo mkdir -p /usr/local/libexec/</span>
-<span class="input"><span class="prompt">&gt; </span>cd /usr/local/libexec</span>
-<span class="input"><span class="prompt">&gt; </span>ln -s /opt/local/libexec/gnupg</span>
-</code></div></li>
+<div class="answer">R: GPGMail reconnaît maintenant plusieurs endroits - voyez la <a href="GPGMail.html#Requirements">documentation</a>.</div></li>
 
 <li><div class="question">Q: Depuis que j'ai installé GPGMail, certains messages ont leur status de lecture qui repasse à 'non-lu'. Qu'est-ce qui se passe?</div>
 <div class="answer">R: C'est une erreur dans GPGMail que je n'ai pas encore réussi à corriger. Le seul remède connu, qui marche pour la plupart des utilisateurs (mais pas tous), est de désactiver le déchiffrage et la vérificaton automatiques des messages.
 </div></li>
 
+<li><a name="gpg2" /><div class="question">Q: GPGMail ne me permet pas d'entrer ma phrase de passe lors du d&eacute;chiffrage ou de la signature, et affiche toujours l'erreur "Mauvaise phrase de passe". Qu'est-ce qui se passe?</div>
+<div class="answer">R: Vous n'avez pas install&eacute; la bonne version de <span class="executable">gpg2</span>: vous avez besoin d'une version contenant un agent GPG adapt&eacute; à MacOS X. Actuellement, MacGPG ne fournit pas encore une telle version, mais vous pouvez en t&eacute;l&eacute;charger une, &eacute;crite par Benjamin Donnachie: <a href="http://macgpg2.sourceforge.net/">http://macgpg2.sourceforge.net/</a>
+</div></li>
+
 <li><div class="question">Q: GPGMail bloque Mail lors de l'authentification d'un message. Pourquoi?</div>
-<div class="answer">R: Lors de l'authentification d'un message, <span class="executable">gpg</span> recherche les clefs PGP manquantes. Suivant quel serveur de clefs est utilisé, cela peut prendre du temps. Vous pouvez soit désactivez la recherche automatique de clefs, soit changer de serveur de clefs, ou changer le temps maximum à utiliser pour la recherche de clefs. Voyez la <a href="x-man-page://1/gpg"><i>man page</i> de gpg</a>.
+<div class="answer">R: Lors de l'authentification d'un message, <span class="executable">gpg</span> recherche les clefs PGP manquantes. Suivant quel serveur de clefs est utilisé, cela peut prendre du temps. Vous pouvez soit désactivez la recherche automatique de clefs, soit changer de serveur de clefs, ou changer le temps maximum à utiliser pour la recherche de clefs. Voyez la <i>man page</i> de <a href="x-man-page://1/gpg">gpg</a>/<a href="x-man-page://1/gpg2">gpg2</a>.
 </div></li>
 
 </ul>
@@ -416,7 +388,7 @@ etc. mais toujours pas de chiffrage. Qu'est-ce qui se passe?</div>
         <td><img src="../home.gif" alt="Bienvenue" /><a href="http://www.sente.ch/Welcome.html">Bienvenue</a></td>
         <td><img src="../find.gif" alt="Recherche" /><a href="http://www.sente.ch/sente/French.wlproj/SearchForm.html">Recherche</a></td>
         <td><img src="../info.gif" alt="Information" /><a href="http://www.sente.ch/sente/French.wlproj/Addresses.html">Information</a></td>
-        <td><img src="../mail.gif" alt="Demander &agrave; Sen:te" /><a href="mailto:gpgmail@sente.ch">Demander &agrave; Sen:te</a></td>
+        <td><img src="../mail.gif" alt="Demander &agrave; Sen:te" /><a href="mailto:info@sente.ch">Demander &agrave; Sen:te</a></td>
     </tr>
     <tr><td colspan="4">&copy;Copyright 2000-2008, St&eacute;phane Corth&eacute;sy. Tous droits r&eacute;serv&eacute;s.</td></tr>
 </tbody></table>

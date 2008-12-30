@@ -28,7 +28,6 @@
 <tr><td>
 <h2>GPGMail Frequently Asked Questions</h2>
 <ul style="list-style-type: none;">
-<li><a href="http://ilovja.homeunix.com/mywiki/GPGMailFAQ"><img alt="Korean" src="../KO.gif" style="border: none;" /></a> <a href="http://ilovja.homeunix.com/mywiki/GPGMailFAQ">&#x0047;&#x0050;&#x0047;&#x004d;&#x0061;&#x0069;&#x006c;&#xc758;&#x0020;&#x0046;&#x0041;&#x0051;&#x0020;&#xd55c;&#xae00;&#xbc88;&#xc5ed;&#x000a; (Korean translation)</a></li>
 <li><a href="../French.lproj/FAQ.html"><img alt="Fran&ccedil;ais" src="../FR.gif" style="border: none;" /></a> <a href="../French.lproj/FAQ.html">Foire aux questions (French translation)</a></li>
 </ul>
 <!--#config timefmt="%A %B %d, %Y" --><!--#set var="LastUpdateText" value="<p><i>Last update: ${LAST_MODIFIED}</i></p>" --><!--#echo encoding="none" var="LastUpdateText" -->
@@ -51,28 +50,25 @@ gpg: Go ahead and type your message ...
 <code class="terminal"><span class="input"><span class="prompt">&gt; </span>tr -d '\r' &lt; myMacOS9ExportedKeyring &gt; myMacOSXImportableKeyring</span>
 </code></div></li>
 
-<li><div class="question">Q: GPGMail is unable to find <span class="executable">gpg</span>, which has been installed via <span class="executable">fink</span>. How can I make it aware that <span class="executable">gpg</span> is in another location?</div>
-<div class="answer">A: GPGMail expects <span class="executable">gpg</span> to be located in <span class="path">/usr/local/bin/</span>, like do other GnuPG-related applications. Either move it there, or make a soft link. <a href="http://macgpg.sourceforge.net/">GPGPreferences</a> will do it for you.</div></li>
-
 <li><div class="question">Q: I can't open any new compose windows, or reply to any message. Mail doesn't do anything or crashes each time.</div>
 <div class="answer">A: There is a problem with toolbar items added by GPGMail, on some occasions. To correct the problem, quit Mail, launch Terminal and type:
-<code class="terminal"><span class="input"><span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration ComposeNewOrDraft"
-<span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration ComposeReplyOrForward"
-<span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration MessageViewer"
-<span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration TornOffViewer"</span>
+<code class="terminal"><span class="input"><span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration ComposeWindow_NewMessage"
+<span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration ComposeWindow_ReplyOrForward"
+<span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration MainWindow"
+<span class="prompt">&gt; </span>defaults delete com.apple.mail "NSToolbar Configuration SingleMessageViewer"</span>
 </code></div></li>
 
 <li><div class="question">Q: I can't send an encrypted message to my friend, despite I have her public key, with the corresponding email address.</div>
 <div class="answer">A: Check that the public key has been signed by your key. You can sign a key locally like this:
 <code class="terminal"><span class="input"><span class="prompt">&gt; </span>gpg --lsign-key myFriendKeyID</span>
 </code>
-Read <a href="http://www.gnupg.org/docs.html">GnuPG documentation</a> to know more about signing keys. Note that this problem will not happen if you use <span class="executable">gpg</span> 1.0.7: GPGMail forces <span class="executable">gpg</span> to accept unsigned keys, by default.</div></li>
+Read <a href="http://www.gnupg.org/docs.html">GnuPG documentation</a> to know more about signing keys. Note that by default GPGMail forces <span class="executable">gpg</span> to trusts any unsigned keys - see GPGMail preferences.</div></li>
 
 <li><div class="question">Q: I work in an environment where my home folder is on a 
 network, so the folder <span class="path">~/.gnupg</span> is implicitly insecure.  It would be 
 great if there were an easy way to specify <span class="option">--homedir 
 /Volumes/LocalSecureDisk/GPGStuff</span> for instance in a preference field.</div>
-<div class="answer">A: There are two ways to do this currently: the first solution would be to write a shell script which would invoke <span class="executable">gpg</span> with the <span class="option">--homedir</span> argument, and tell GPGMail to use this script instead of <span class="executable">gpg</span>. The second solution is to set the environment variable <span class="variable">GNUPGHOME</span>: create or modify the file <span class="path">$HOME/.MacOSX/environment.plist</span> with <span class="path">/Developer/Applications/PropertyListEditor</span> and add a new key-value entry named <span class="variable">GNUPGHOME</span>; you need to log out and log in again for this change to apply. Note that you can also use <a href="http://macgpg.sourceforge.net/">GPGPreferences</a> for this.
+<div class="answer">A: There are three ways to do this currently: the first solution would be to write a shell script which would invoke <span class="executable">gpg</span> with the <span class="option">--homedir</span> argument, and tell GPGMail to use this script instead of <span class="executable">gpg</span>. The second solution is to create a soft link <span class="path">~/.gnupg</span> pointing to the real GnuPG home directory. Third solution is to set the environment variable <span class="variable">GNUPGHOME</span>: create or modify the file <span class="path">$HOME/.MacOSX/environment.plist</span> with <span class="path">/Developer/Applications/PropertyListEditor</span> and add a new key-value entry named <span class="variable">GNUPGHOME</span>; you need to log out and log in again for this change to apply. Note that you can also use <a href="http://macgpg.sourceforge.net/">GPGPreferences</a> for this.
 </div></li>
 
 <li><div class="question">Q: I guess I installed GPGMail correctly, but the buttons don't appear in the toolbar. What's wrong?</div>
@@ -85,20 +81,10 @@ great if there were an easy way to specify <span class="option">--homedir
 What's wrong?</div>
 <div class="answer">A: You probably executed the command as user root, didn't you?! Each user wanting to use GPGMail must execute the command with her own account, not root's. BTW, you should never work as user root!</div></li>
 
-<li><div class="question">Q: I use now GnuPG 1.0.7, and I can no longer encrypt any message. I always get the message
-<code class="terminal">1234ABCD: There is no indication that this key really belongs to the owner
-no valid addressees
-[stdin]: sign+encrypt failed: no such user id
-</code>What's wrong?</div>
-<div class="answer">A: Starting with GnuPG 1.0.7, keys always need to be signed by their owner. You're probably trying to use a public key which has not been signed by its owner.</div></li>
-
 <li><div class="question">Q: I am trying to use the GPGMail plugin, but I keep getting this cryptic error.
 <code class="terminal">skipped `myname@mac.com': duplicated
 </code>What does this mean and how do I fix it?</div>
 <div class="answer">A: GPGMail automatically includes your own public key (i.e. the one define in GPGMail preferences) when encrypting. You asked explicitely GPGMail to use that key again by putting your email address in the To: or CC: fields. Just remove it.</div></li>
-
-<li><div class="question">Q: When I reply to an encrypted message, the reply quotes the encrypted message, not the decrypted message that I'm reading. How can I force Mail to use the decrypted message?</div>
-<div class="answer">A: GPGMail does not allow you to do this automatically. To workaround the problem, select the decrypted content before clicking the <b>Reply</b> button.</div></li>
 
 <li><div class="question">Q: How can I uninstall GPGMail?</div>
 <div class="answer">A: To uninstall GPGMail, you only need to delete the file <span class="path">GPGMail.mailbundle</span> located in <span class="path">$HOME/Library/Mail/Bundles</span>.</div></li>
@@ -110,7 +96,7 @@ keyserver-options auto-key-retrieve include-disabled include-revoked
 </code></div></li>
 
 <li><div class="question">Q: How can I participate to your beta testing program?</div>
-<div class="answer">A: Subscribe to GPGMail's mailing list by sending an email to <a href="mailto:gpgmail-users-on@sente.ch">gpgmail-users-on@sente.ch</a>. This is a very low traffic mailing list that I use to give information about the development of GPGMail. Archives are accessible on-line at <a href="http://www.sente.ch/Lists/gpgmail-users/List.html">http://www.sente.ch/Lists/gpgmail-users/List.html</a>.
+<div class="answer">A: Subscribe to GPGMail's mailing list: go to <a target="_blank" href="https://lists.sourceforge.net/lists/listinfo/gpgmail-users">https://lists.sourceforge.net/lists/listinfo/gpgmail-users</a>. This is a low traffic mailing list that I use to give information about the development of GPGMail, and people use to get solutions to problems. Read <a href="GPGMail.html#MailingList">documentation</a> for more information.
 </div></li>
 
 <li><div class="question">Q: I'm exchanging encrypted emails with a friend who uses Ximian Evolution, and his mailer doesn't recognize the mails I send. My friend needs to copy-paste the contents of the email to the Terminal to be able to decrypt it. Why?</div>
@@ -122,8 +108,8 @@ default: Too many arguments.
 </code></div>
 <div class="answer">A: You need to have the BSD subsystem package installed. It is provided by MacOS X installation CD. You'd better use GPGMail installer provided with GPGMail distribution. BTW you typed <span class="executable">default</span> instead of <span class="executable">defaults</span>, which is a different Unix command.</div></li>
 
-<li><div class="question">Q: Can I install both GPGMail and PGP8?</div>
-<div class="answer">A: No. Both plug-ins try to do the same job in the same way (PGPmail is based on GPGMail - have a look at PGP8 credits to verify this) and this will create conflicts; sometimes Mail will crash, or GPGMail will simply not work. If you plan to use one of the plug-ins, remove the other one. GPGMail is installed in the folder <span class="path">Library/Mail/Bundles</span> of your home folder, whereas PGPmail is installed in <span class="path">/Library/Mail/Bundles</span>. Since GPGMail 1.0, an alert panel will be displayed if GPGMail sees that PGPmail has been loaded too.
+<li><div class="question">Q: Can I install both GPGMail and PGP8/9?</div>
+<div class="answer">A: No. Both plug-ins try to do the same job in the same way (PGPmail is based on GPGMail - have a look at PGP8/9 credits to verify this) and this will create conflicts; sometimes Mail will crash, or GPGMail will simply not work. If you plan to use one of the plug-ins, remove the other one. GPGMail is installed in the folder <span class="path">Library/Mail/Bundles</span> of your home folder, whereas PGPmail is installed in <span class="path">/Library/Mail/Bundles</span>. Since GPGMail 1.0, an alert panel will be displayed if GPGMail sees that PGPmail has been loaded too.
 </div></li>
 
 <li><div class="question">Q: I have installed GPGMail and all its functions, buttons, etc. show
@@ -131,10 +117,10 @@ up in Mail, but no matter what - whenever I send a message - it is sent
 unencrypted and/or unsigned. I have tried the toolbar buttons, the menu
 selections, etc. and still no encrypted output. Am I doing something
 obviously wrong?</div>
-<div class="answer">A: You previously installed PGPmail.mailbundle and need to remove it. Both PGPmail and GPGMail plug-ins try to do the same job in the same way (PGPmail is based on GPGMail - have a look at PGP8 credits to verify this) and this will create conflicts; sometimes Mail will crash, or GPGMail will simply not work. If you plan to use one of the plug-ins, remove the other one. GPGMail is installed in the folder <span class="path">Library/Mail/Bundles</span> of your home folder, whereas PGPmail is installed in <span class="path">/Library/Mail/Bundles</span>. Since GPGMail 1.0, an alert panel will be displayed if GPGMail sees that PGPmail has been loaded too.
+<div class="answer">A: You previously installed PGPmail.mailbundle and need to remove it. Both PGPmail and GPGMail plug-ins try to do the same job in the same way (PGPmail is based on GPGMail - have a look at PGP8/9 credits to verify this) and this will create conflicts; sometimes Mail will crash, or GPGMail will simply not work. If you plan to use one of the plug-ins, remove the other one. GPGMail is installed in the folder <span class="path">Library/Mail/Bundles</span> of your home folder, whereas PGPmail is installed in <span class="path">/Library/Mail/Bundles</span>. Since GPGMail 1.0, an alert panel will be displayed if GPGMail sees that PGPmail has been loaded too.
 </div></li>
 
-<li><div class="question">Q: I've just changed my passphrase in gnupg with french accentuated text (&eacute;, &agrave;, ...) and now I can't signed my messages. Is there any way to enable accentuated text? Maybe by editing the sourcecode?</div>
+<li><div class="question">Q: I've just changed my passphrase in gnupg with french accentuated text (&eacute;, &agrave;, ...) and now I can't sign my messages. Is there any way to enable accentuated text? Maybe by editing the sourcecode?</div>
 <div class="answer">A: You probably used the wrong string encoding in Terminal when changing your passphrase. GPGMail uses UTF-8 string encoding when passing passphrase to <span class="executable">gpg</span>.<br />
 You should go back to Terminal, change your passphrase to contain no accent, THEN set the Terminal to use UTF-8 string encoding (use <a href="http://macgpg.sourceforge.net/">GPGPreferences</a>, it's easier), and then you can set back your passphrase with accents.<br />
 Note that it's generally not a good idea to use accents in passphrases, for that reason.
@@ -145,11 +131,11 @@ Note that it's generally not a good idea to use accents in passphrases, for that
 </div></li>
 
 <li><div class="question">Q: I think I found a bug in GPGMail. Whom should I contact?</div>
-<div class="answer">A: Please send an email to <a href="mailto:gpgmail@sente.ch">gpgmail@sente.ch</a>. I need the following information:<ul>
+<div class="answer">A: First verify that it's not a known bug by looking at the <a href="GPGMail.html#KnownBugs">list of known bugs</a>. If it's not, create a bug report on the bug report site. I need the following information:<ul>
 <li>Which version of GPGMail do you use (see GPGMail's Finder info)?</li>
 <li>Which MacOS X version do you use?</li>
 <li>Which other Mail plug-ins are installed, if any (name + version)?</li>
-<li>Do you have a crash report to submit (look if you have files named <span class="path">Mail.crash.log</span> or <span class="path">GPGMEProxyServer.crash.log</span> in <span class="path">$HOME/Library/Logs/CrashReporter/</span>)?</li>
+<li>Do you have a crash report to submit (look if you have files named <span class="path">Mail.crash.log</span> in <span class="path">$HOME/Library/Logs/CrashReporter/</span>)?</li>
 <li>Are there any lines in the System console (see <span class="path">/Applications/Utilities/Console</span>) concerning Mail or GPGMail?</li>
 </ul>
 </div></li>
@@ -166,7 +152,7 @@ The problem you might encounter is that some plug-ins don't support the 2 messag
 <br />
 GPGMail partly supports the ASCII-armored format: it uses that format by default, as long as your message doesn't contain any attachment or style formatting. As soon as your message is no longer plain text, GPGMail uses the PGP-MIME format, which is not recognized by some mailers. You can force GPGMail to always use the PGP-MIME format, by changing its preferences, but you cannot force it to always use the former format.
 <br />
-GPGMail fails to decrypt/verify some messages which are not fully encrypted/signed, i.e. only a small part is encrypted/signed. That's a limitation.
+GPGMail has troubles to decrypt/verify HTML messages. That's a limitation.
 <br />
 You need to exchange your public PGP keys and start writing PGP-signed/encrypted messages, and see how well all formats are supported.
 </div></li>
@@ -196,33 +182,14 @@ Only the main uid is selectable in GPGMail (as well as all other PGP-related app
 (see <a href="http://blue.frogfoot.net/unix/mutt/publish/gpg">http://blue.frogfoot.net/unix/mutt/publish/gpg</a> for more information)
 </div></li>
 
-<li><div class="question">Q: Mail crashes when launched; if I remove the following libraries, <span class="executable">libgpgme-pthread</span> and <span class="executable">libgpg-error</span>,  from <span class="path">/usr/local/lib/</span>, Mail works again.</div>
-<div class="answer">A: Unfortunately GPGMail will try to load these librairies from <span class="path">/usr/local/lib/</span> before trying the embededd ones, and if the versions in <span class="path">/usr/local/lib/</span> are older then the embedded ones, Mail will crash; you need to remove these libraries from <span class="path">/usr/local/lib/</span>, until a new version of GPGMail fixes that unwanted dependency.</div></li>
-
-<li><div class="question">Q: I have installed GPGMail and all its functions, buttons, etc. show
-up in Mail, but no matter what - whenever I send a message - it is sent
-unencrypted and/or unsigned. I have tried the toolbar buttons, the menu
-selections, etc. and still no encrypted output. Am I doing something
-obviously wrong?</div>
-<div class="answer">A: If you have OD4Contact Mail bundle installed, then this bundle prevents GPGMail from working correctly. This problem has been reported to OD4Contact authors as of Feb 19th, and there is no workaround for the moment except uninstalling OD4Contact Mail bundle: remove file ODMailBundle.mailbundle from the folder <span class="path">Library/Mail/Bundles</span> in your home directory. The problem has been noticed with OD4Contact version 2.6.4.
-</div></li>
-
 <li><div class="question">Q: I have <span class="executable">gpg</span> installed in another location than <span class="path">/usr/local/bin/</span>. How can I make GPGMail work with it?</div>
-<div class="answer">A: You need to create soft links to <span class="executable">gpg</span> and its helper executables. E.g.
-<code class="terminal"><span class="input"><span class="prompt">&gt; </span>sudo mkdir -p /usr/local/bin/</span>
-<span class="input"><span class="prompt">&gt; </span>cd /usr/local/bin/</span>
-<span class="input"><span class="prompt">&gt; </span>ln -s /opt/local/bin/gpg</span>
-<span class="input"><span class="prompt">&gt; </span>sudo mkdir -p /usr/local/libexec/</span>
-<span class="input"><span class="prompt">&gt; </span>cd /usr/local/libexec</span>
-<span class="input"><span class="prompt">&gt; </span>ln -s /opt/local/libexec/gnupg</span>
-</code></div></li>
+<div class="answer">A: GPGMail now supports several locations for <span class="executable">gpg</span> - please read <a href="GPGMail.html#Requirements">GPGMail documentation</a>.</div></li>
 
-<li><a name="unread" /><div class="question">Q: Since I installed GPGMail, some read messages have their 'read' status come back to 'unread'. What's happening?</div>
-<div class="answer">A: It's is a bug in GPGMail that I've been unable to fix yet. The only workaround that works for most people (but not all) is to disable automatic decryption/verification of emails.
-</div></li>
+<li><a name="gpg2" /><div class="question">Q: GPGMail doesn't let me enter my passphrase when decrypting or signing, and always return the error "Bad passphrase". What's happening?</div>
+<div class="answer">A: You didn't install a fully working <span class="executable">gpg2</span>: you need a version with gpg-agent adapted to Mac. Currently, MacGPG doesn't provide such a version, but you can download a working one here, written by Benjamin Donnachie: <a href="http://macgpg2.sourceforge.net/">http://macgpg2.sourceforge.net/</a></div>
 
 <li><div class="question">Q: GPGMail blocks Mail when verifying messages. Why</div>
-<div class="answer">A: When performing message verification, <span class="executable">gpg</span> searches for missing PGP keys. Depending on which key server you use, this can take a long time. You can either disable the automatic key retrieval, change the key server, or change the timeout for searching keys. See <a href="x-man-page://1/gpg">gpg man page</a>.
+<div class="answer">A: When performing message verification, <span class="executable">gpg</span> searches for missing PGP keys. Depending on which key server you use, this can take a long time. You can either disable the automatic key retrieval, change the key server, or change the timeout for searching keys. See <a href="x-man-page://1/gpg">gpg</a>/<a href="x-man-page://1/gpg2">gpg2</a> man page or use <a href="http://macgpg.sourceforge.net/">GPGPreferences 1.3</a>.
 </div></li>
 
 </ul>
