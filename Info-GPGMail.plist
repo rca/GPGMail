@@ -7,9 +7,9 @@
 	<key>CFBundleExecutable</key>
 	<string>GPGMail</string>
 	<key>CFBundleGetInfoHTML</key>
-	<string>&lt;A HREF=&quot;http://www.sente.ch/software/GPGMail/&quot;&gt;GPGMail&lt;/A&gt; version d55 (v55, Leopard), Copyright 2000-2008, St&amp;eacute;phane Corth&amp;eacute;sy.</string>
+	<string>&lt;A HREF=&quot;http://www.sente.ch/software/GPGMail/&quot;&gt;GPGMail&lt;/A&gt; version 1.2.0 (v56), Copyright 2000-2008, St&amp;eacute;phane Corth&amp;eacute;sy.</string>
 	<key>CFBundleGetInfoString</key>
-	<string>GPGMail version d55 (v55, Leopard), Copyright 2000-2008, Stéphane Corthésy.</string>
+	<string>GPGMail version 1.2.0 (v56), Copyright 2000-2008, Stéphane Corthésy.</string>
 	<key>CFBundleIconFile</key>
 	<string>GPGMail</string>
 	<key>CFBundleIdentifier</key>
@@ -21,11 +21,11 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>d55 (v55, Leopard)</string>
+	<string>1.2.0 (v56)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>55</string>
+	<string>56</string>
 	<key>NSPrincipalClass</key>
 	<string>GPGMailBundle</string>
 </dict>
