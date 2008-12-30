@@ -1,6 +1,6 @@
 {
 /* Passphrase panel titles */
-"MESSAGE_AUTHENTICATION_TITLE" = "Vérification du message";
+"MESSAGE_AUTHENTICATION_TITLE" = "Authentification du message";
 "MESSAGE_DECRYPTION_PASSPHRASE_TITLE" = "Déchiffrement du message";
 
 /**/
