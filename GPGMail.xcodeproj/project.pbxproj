@@ -970,7 +970,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Cleanup of files\n\n# First, avoid having write privileges for anyone but owner\nchmod -R go-w \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.${WRAPPER_EXTENSION}\"\n";
+			shellScript = "# Cleanup of files\n\n# Remove framework headers\nfind -d \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.${WRAPPER_EXTENSION}/Contents/Frameworks/MacGPGME.framework/\" \\( -name Headers -o -name PrivateHeaders \\) -exec rm -rf {} \\;\n\n# Avoid having write privileges for anyone but owner\nchmod -R go-w \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.${WRAPPER_EXTENSION}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
