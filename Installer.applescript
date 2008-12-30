@@ -37,17 +37,14 @@
 WARNING: does not support a space in mounted disk image path!
 Due to the inability of AppleScript to find a "FileVaulted" home directory
 or even a networked one, we need to use shell to do the work.
-And even worse, we need to use CpMac to copy files, because cp doesn't
-understand resource forks, nor meta-data.
-CpMac has to be bundled in disk image
 *)
 
 copy my (system attribute "sysv") to system_string
 
--- 4160 = 0x1040
-if not (system_string < 4160) then
+-- 4176 = 0x1050
+if (system_string < 4176) then
 	display dialog Â
-		"This bundle is not compatible with your system. You need to download the version for 10.3." buttons {"Quit"} with icon caution
+		"GPGMail is only compatible with 10.5 (Leopard)." buttons {"Quit"} with icon caution
 else
 	local emailAddress
 	local packageName
@@ -69,11 +66,11 @@ else
 			if application process "Mail" exists then
 				tell me
 					display dialog Â
-						"You need to quit Mail first." buttons {"Cancel", "Quit Mail"} Â
+						"You need to quit Mail first." buttons {"Cancel Install", "Quit Mail"} Â
 						default button 2 Â
 						with icon caution
 				end tell
-				if the button returned of the result is "Cancel" then tell me to quit
+				if the button returned of the result is "Cancel Install" then tell me to quit
 				tell application "Mail" to quit
 			end if
 			
@@ -81,15 +78,11 @@ else
 			set myCommand to "mkdir -p '" & destinationFolder & "'"
 			tell current application to do shell script myCommand
 			
-			if (system_string ³ 4161) then
-				set BundleCompatibilityVersion to "2"
-			else
-				set BundleCompatibilityVersion to "1"
-			end if
+			set BundleCompatibilityVersion to "3"
 			-- Now we enable bundles for Mail
 			-- PROBLEM: command 'defaults' is available only if user installed BSD package!
 			set myPlist to (homeFolder & "Library/Preferences/com.apple.mail.plist")
-			set myCommand to "'" & POSIX path of ((item "plistutil" of sourceFolder) as string) & "'" & " -write '" & myPlist & "' EnableBundles 1"
+			set myCommand to "'" & POSIX path of ((item "plistutil" of sourceFolder) as string) & "'" & " -write '" & myPlist & "' EnableBundles  1"
 			tell current application to do shell script myCommand
 			set myCommand to "'" & POSIX path of ((item "plistutil" of sourceFolder) as string) & "'" & " -write '" & myPlist & "' BundleCompatibilityVersion " & BundleCompatibilityVersion
 			tell current application to do shell script myCommand
@@ -98,7 +91,7 @@ else
 			set myCommand to "test ! -e '" & destinationFolder & packageName & "' || test ! -e '" & homeFolder & ".Trash" & "' || mv '" & destinationFolder & packageName & "' '" & homeFolder & ".Trash/" & packageName & "-" & (current date) & "'"
 			tell current application to do shell script myCommand
 			-- and copy the new one to the right location
-			set myCommand to "'" & POSIX path of ((item "CpMac" of sourceFolder) as string) & "' -r '" & POSIX path of ((item packageName of sourceFolder) as string) & "' '" & destinationFolder & "'"
+			set myCommand to "cp -r '" & POSIX path of ((item packageName of sourceFolder) as string) & "' '" & destinationFolder & "'"
 			tell current application to do shell script myCommand
 			
 			-- We also remove bundles in other locations (/Library/Mail/Bundles)
