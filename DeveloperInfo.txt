@@ -283,30 +283,45 @@ Release notes for v55:
 * Corrections of the Swedish translation, courtesy of Mischa Hammarnejd
 * CRITICAL: fixed compatibility with 10.5.6 (tested against 9G38); previous GPGMail releases crash under 10.5.6
 
+Release notes for v56 (1.2.0):
+* Corrections to the Spanish localization, courtesy of Charly
+* Added support for (obsolete) Content-Type: application/pgp; format="text"... (e.g. emails from biglumber.com)
+* Better recognition and decryption of encrypted parts/attachments (better compatibility with Outlook and others)
+* Fixed localizations of dates
+* Fixed French version
 
+
+Bugs
+----
+2299458 - Korean translation is incomplete
+2299507 - Unable to forward decrypted message as decrypted attachment
+2299525 - Unable to decrypt attached encrypted message
+2299563 - PGP options not restored in drafts - still unable to; posing on ComposeBackEnd??
+2299636 - If encrypted message has associated TODO, then decrypting message masks TODO. Because can no longer make link from TODO to decrypted message?
+2299681 - Decrypted message ends with gpgkeys error log
+2299727 - when working offline, it may happen that a signature verification fails though signature is valid, in case there are attachments in message (except signature)
+2299748 - "reply" mark is not set when you reply to a decrypted message from the singleMessageViewer only.
+2299765 - "security header" not visible
+
+
+FIXME (Leopard) No support for Time Machine: when navigating in Time Machine, PGP controls are not available, thus messages can't be decrypted.
 FIXME Notice when GPGMail bundle has been installed in ~/Library and /Library -> avoid double-encryption
 FIXME When performing keysearch, now that we use email+keyID, filter out keys that don't match keyID - special case when done automatically
 FIXME When _receiving_ signed+encrypted message with attachment, GPGMail says it's unsigned
-FIXME Unable to forward encrypted message as decrypted attachment (possible in PGPmail?)
-FIXME Unable to decrypt attached encrypted message
 FIXME Multiple encrypted parts
 TESTME Automatic decryption/verification - no deadlock? No.
 FIXME HTML when no alternate
-FIXME PGP options not restored in drafts - still unable to; posing on ComposeBackEnd??
 (FIXME Use key arrows in focussed decrypted message -> gets re-encrypted. Same when resizing window. But no problem when using page up/down buttons, nor space.) -- 10.5.5: seems OK
 FIXME Sometimes a decrypted message is displayed in plain text instead of rich text - HOW TO REPRODUCE?
 FIXME Crash when no secret key to decrypt, or cancelled password panel? Maybe automatic decryption? - HOW TO REPRODUCE?
 FIXME Invalid signatures when contains all usenet sig + attachment?
 FIXME Unable to decrypt encrypted attachments automatically - see Oct 23 2007
-FIXME (Leopard) If encrypted message has associated TODO, then decrypting message masks TODO. Because can no longer make link from TODO to decrypted message?
-FIXME (Leopard) No support for Time Machine: when navigating in Time Machine, PGP controls are not available, thus messages can't be decrypted.
 FIXME With autoverification ON, when receiving a junk signed message, the junk banner disappears when signature banner is displayed
 TODO If HTML encrypted message misses plain text alternative, decode HTML and decrypt it?
 BUG Crash or infinite loop with auto-decryption of encrypted PGP inline message with encrypted attachment.
 BUG Invalid signature (or verification?) in PGP-MIME messages containing usenet ('-- ') signatures; works in PGP-inline messages
 BUG Sometimes OpenPGP-signed messages are generated with 2 empty lines after the 'Content-Type: multipart/alternative', instead of one, and some mail servers remove one of the empty lines, thus invalidating message signature - see Jim Syler, Mar 7 2006
 SOLVED Stack trace logs in console, due to MailTags; these exceptions are normally thrown and caught by GPGMail
-BUG with gpgme 1.1.4: when decrypting signed OpenPGP message and signature key cannot be retrieved, gpgme appends error line at the end of the decrypted data
 
 
 ? PENDING BUG: Was returning a "No data" error WITHOUT decrypting data when decrypting message which was also signed, and key was not available, AND automatic key search WAS enabled. If no automatic search, then decrypts but warns it is missing key. -> correct gpgme first; asked bug-gpgme.
@@ -332,11 +347,7 @@ New FAQ: messages MUST be cached on client-side, else verifying MIME signature d
 New FAQ: line wrapping param use
 New FAQ: Some mail servers break OpenPGP-signed messages by reordering some header contents (Wannadoo or .mac) - see G. Pineau, Mar 8 2006
 
-KNOWN BUG: when working offline, it may happen that a signature verification fails though signature is valid, in case there are attachments in message (except signature)
 ? KNOWN BUG: GPGMail doesn't support signing with RSA keys (old PGP keys).
-KNOWN BUG: "security header" for OpenPGP signed or signed+encrypted messages set ~correctly, but after mailbox has been closed/reopened.
-? KNOWN BUG: "reply" mark is not set when you reply to a decrypted message from the singleMessageViewer only.
-KNOWN BUG: incomplete Korean translation
 
 ? Crash in gpgme:gpgme_op_keylist_start(); GPGMail#2418; seems it's a low memory condition crash
 ? NEW FEATURE: after encryption failure due to missing keys, user can now select to send unencrypted to missing keys, and encrypted to keys -> multiple messages
@@ -396,5 +407,21 @@ TODO Toolbar button to toggle MIME/inline (when possible)
 (TODO Can we now use progress info when encrypting? Not yet implemented with gpg 1.4.8/gpgme 1.4)
 TODO When BCC is used and BCC keys are not in non-BCC keys, then issue warning; also, change the pref to simply turn off that warning.
 BUG Sometimes OpenPGP-signed messages are generated with 2 empty lines after the 'Content-Type: multipart/alternative', instead of one, and some mail servers remove one of the empty lines, thus invalidating message signature - see Jim Syler, Mar 7 2006
+
+Following entries should be checked: are these still bugs in v1.2.0? Maybe they are simply duplicates of existing bugs.
+    GPGMail tells decrypted messages are not signed, even when they are; you need to perform validation manually, using toolbar button or menu.
+    When arrow keys are used to navigate through messages, decrypted messages appear encrypted again. Same problem when resizing window.
+    On Leopard, sometimes validation of valid signature fails, when there is an attachment
+    Toolbar buttons are sometimes duplicated, when you have multiple viewers.
+    Toolbar buttons are sometimes lost or moved.
+    Appearance of encrypted mail attachments changes over time.
+    Returns error "No data" when cannot find missing signature key from key server, instead of telling which key cannot be found
+    Do not set message viewers splitview to a too small height, else PGP part becomes unreadable.
+    When decrypting a signed and encrypted message whose signer's key cannot be found, returns a "No data" error without decrypting message, if automatic key retrieval is enabled.
+    Does not support RSA keys for signing/encrypting (no problem when receiving a message)
+    Sometimes GPGMail fails to verify messages with <code>format=flowed</code>
+    Sometimes GPGMail fails to verify messages containing usenet signatures
+    When working offline, it may happen that a signature verification fails though signature is valid, in case there are attachments in message (except signature)
+
 
 ? OT: Charly's extras: detachable mailbox panel - keyboard shortcuts for rule creation - ability to add additional headers (x-...)
