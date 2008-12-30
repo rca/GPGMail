@@ -127,7 +127,7 @@
 		5501B4D40A45544E00D4E602 /* Swedish */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Swedish; path = MacOSX/Swedish.lproj/GPGMailPreferences.nib; sourceTree = "<group>"; };
 		5501B4D50A45544E00D4E602 /* Swedish */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Swedish; path = MacOSX/Swedish.lproj/GPGMenu.nib; sourceTree = "<group>"; };
 		5501B4D60A45544E00D4E602 /* Swedish */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Swedish; path = MacOSX/Swedish.lproj/GPGMessageViewerAccessoryView.nib; sourceTree = "<group>"; };
-		5501B4D70A45544E00D4E602 /* Swedish */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Swedish; path = MacOSX/Swedish.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5501B4D70A45544E00D4E602 /* Swedish */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Swedish; path = MacOSX/Swedish.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5506922E0CD510D300CA0BA2 /* clear-Leopard.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "clear-Leopard.tiff"; path = "MacOSX/clear-Leopard.tiff"; sourceTree = "<group>"; };
 		5506922F0CD510D300CA0BA2 /* encrypted-Leopard.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "encrypted-Leopard.tiff"; path = "MacOSX/encrypted-Leopard.tiff"; sourceTree = "<group>"; };
 		550692300CD510D300CA0BA2 /* signed-Leopard.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "signed-Leopard.tiff"; path = "MacOSX/signed-Leopard.tiff"; sourceTree = "<group>"; };
