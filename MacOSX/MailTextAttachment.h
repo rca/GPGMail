@@ -14,6 +14,7 @@
     struct _NSSize _originalImageSize;
     struct _NSSize _maxImageSize;
     struct _NSSize _lastMaxImageSize;
+    BOOL _isInitializing;
 }
 
 + (void)initialize;
@@ -28,6 +29,7 @@
 - (BOOL)isPossibleToDisplayAttachmentInline;
 - (BOOL)isDisplayingAttachmentInline;
 - (void)setIsDisplayingAttachmentInline:(BOOL)fp8;
+- (void)downloadFinished;
 - (BOOL)hasData;
 - (void)updateFromPath:(id)fp8 contentID:(id)fp12;
 - (id)attachmentCell;

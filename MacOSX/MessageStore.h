@@ -124,7 +124,6 @@
 - (void)rebuildTableOfContentsAsynchronously;
 - (BOOL)canCompact;
 - (void)doCompact;
-- (void)doCompactToDos;
 - (void)deleteMessagesOlderThanNumberOfDays:(int)fp8 compact:(BOOL)fp12;
 - (void)deleteMessages:(id)fp8 moveToTrash:(BOOL)fp12;
 - (void)undeleteMessages:(id)fp8;
@@ -239,7 +238,7 @@
 + (void)deleteUnflaggedEntriesCreatedBeforeDate:(id)fp8;
 - (void)updateEntries:(id)fp8 fromFeed:(id)fp12;
 - (void)changeFlagsForEntries:(id)fp8 fromFeed:(id)fp12;
-- (void)updateStatusFromFeed:(id)fp8 errorMessage:(id)fp12;
+- (void)updateStatusFromFeed:(id)fp8 error:(id)fp12 errorMessage:(id)fp16;
 @end
 
 #elif defined(TIGER)

@@ -21,8 +21,13 @@
 @interface MessageBody : NSObject
 {
     Message *_message;
+    unsigned int _messageID;
+    BOOL _isMessageIDValid;
 }
 
+- (id)init;
+- (void)setMessage:(id)fp8;
+- (id)message;
 - (id)attributedString;
 - (BOOL)isHTML;
 - (BOOL)isRich;
@@ -35,8 +40,12 @@
 - (id)textHtmlPart;
 - (id)webArchive;
 - (void)dealloc;
-- (id)message;
-- (void)setMessage:(id)fp8;
+- (BOOL)isMessageIDValid;
+- (void)setIsMessageIDValid:(BOOL)fp8;
+- (id)actualMessage;
+- (void)setActualMessage:(id)fp8;
+- (unsigned int)messageID;
+- (void)setMessageID:(unsigned int)fp8;
 
 @end
 

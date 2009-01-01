@@ -80,9 +80,15 @@
 - (BOOL)isRich;
 - (BOOL)isHTML;
 - (BOOL)usesKnownSignatureProtocol;
-- (id)createFileWrapper;
+- (id)_createAttachment;
+- (id)_createFileWrapper;
 - (id)attributedString;
 - (id)fileWrapper;
+- (id)_remoteFileWrapper;
+- (void)download:(id)fp8 didReceiveResponse:(id)fp12;
+- (void)download:(id)fp8 didReceiveDataOfLength:(unsigned int)fp12;
+- (void)download:(id)fp8 didFailWithError:(id)fp12;
+- (void)downloadDidFinish:(id)fp8;
 - (id)safeFileWrapper;
 - (void)configureFileWrapper:(id)fp8;
 - (id)startPart;

@@ -164,6 +164,7 @@
 - (id)associatedMessage;
 - (void)backEnd:(id)fp8 didUpdateMessage:(id)fp12;
 - (void)backEndDidSaveMessage:(id)fp8 result:(int)fp12;
+- (void)failedToSaveDraftSheetClosed:(id)fp8 returnCode:(int)fp12 contextInfo:(void *)fp16;
 - (void)backEndDidChange:(id)fp8;
 - (void)webViewDidChange:(id)fp8;
 - (void)updateWindowContent;
@@ -450,6 +451,7 @@
 - (void)malformedAddressSheetClosed:(id)fp8 returnCode:(int)fp12 contextInfo:(void *)fp16;
 - (void)noRecipientsSheetClosed:(id)fp8 returnCode:(int)fp12 contextInfo:(void *)fp16;
 - (void)backEndDidAppendMessageToOutbox:(id)fp8 result:(int)fp12;
+- (void)failedToAppendToOutboxSheetClosed:(id)fp8 returnCode:(int)fp12 contextInfo:(void *)fp16;
 - (BOOL)backEnd:(id)fp8 shouldDeliverMessage:(id)fp12;
 - (void)_setMessageStatusOnOriginalMessage;
 - (void)backEnd:(id)fp8 didCancelMessageDeliveryForError:(id)fp12;

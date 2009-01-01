@@ -213,6 +213,7 @@
 - (id)_fallbackReplyAddress;
 - (id)replyAddressForMessage:(id)fp8;
 - (id)mailboxUidCreateIfNeeded:(BOOL)fp8;
+- (int)convertSaveOrSendResultFromResultCodeT:(int)fp8;
 - (BOOL)isSavingMessage;
 - (BOOL)isContentSignificant;
 - (BOOL)saveThreadCancelFlag;
@@ -238,6 +239,7 @@
     MessageTextStorage *_textStorage;
 }
 
+- (id)init;
 - (void)dealloc;
 - (void)setTextStorage:(id)fp8;
 - (id)textStorage;

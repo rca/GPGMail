@@ -101,6 +101,7 @@
     int _selectedRowBeforeTogglingThread;
     BOOL _unreadColumnResizableAfterResizingColumnsToFit;
     BytesFormatter *_bytesFormatter;
+    BOOL _isDragging;
 }
 
 + (void)initialize;

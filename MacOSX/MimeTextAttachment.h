@@ -6,6 +6,7 @@
 
 @interface MimeTextAttachment : NSTextAttachment
 {
+    MimeBody *_mimeBody;
     MimePart *_mimePart;
 }
 
@@ -14,6 +15,8 @@
 - (void)finalize;
 - (id)initWithMimePart:(id)fp8;
 - (id)initWithMimePart:(id)fp8 andFileWrapper:(id)fp12;
+- (void)_forceDownloadOfFileWrapperInBackground:(id)fp8;
+- (void)forceDownloadOfFileWrapperInBackground;
 - (id)fileWrapperForcingDownload;
 - (id)fileWrapperForcingDownloadEvenIfExternalBody:(BOOL)fp8;
 - (id)mimePart;
