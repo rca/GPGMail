@@ -1635,7 +1635,11 @@ static IMP  MimePart_isEncrypted = NULL;
                     NSData  *originalBodyData = [encryptedMessage gpgCurrentFullBodyPartDataAndHeaderDataIfReadilyAvailable:&originalHeaderData];
                     NSRange partBodyRange = [self gpgRange]; // FIXME: aRange.location = NSNotFound, sometimes!
                     
-                    NSAssert(partBodyRange.location != NSNotFound, @"### GPGMail is not yet able to decode that embedded encrypted part");
+//                    NSAssert(partBodyRange.location != NSNotFound, @"### GPGMail is not yet able to decode that embedded encrypted part");
+                    if(partBodyRange.location == NSNotFound){
+                        NSLog(@"### GPGMail is not yet able to decode that embedded encrypted part");
+                        [NSException raise:NSInternalInconsistencyException format:@"### GPGMail is not yet able to decode that embedded encrypted part"];
+                    }
                     if(![originalHeaderData isKindOfClass:[NSData class]])
                         originalHeaderData = [originalHeaderData valueForKey:@"data"]; // It was actually a Subdata
                     if(![originalBodyData isKindOfClass:[NSData class]])
