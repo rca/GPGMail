@@ -3,6 +3,7 @@
 #ifdef LEOPARD
 
 @class MimePart;
+@class MimeBody;
 
 @interface MimeTextAttachment : NSTextAttachment
 {
