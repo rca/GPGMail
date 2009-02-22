@@ -223,7 +223,8 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
                 MimePart	*dataPart = [self subpartAtIndex:1];
 
                 // The first MIME body part must have a content type of "application/pgp-encrypted".  This body contains the control information.
-                if([[[versionPart type] lowercaseString] isEqualToString:@"application"] && [[[versionPart subtype] lowercaseString] isEqualToString:@"pgp-encrypted"] && [[[dataPart type] lowercaseString] isEqualToString:@"application"] && [[[dataPart subtype] lowercaseString] isEqualToString:@"octet-stream"]){
+                if([[[versionPart type] lowercaseString] isEqualToString:@"application"] && [[[versionPart subtype] lowercaseString] isEqualToString:@"pgp-encrypted"] && [[[dataPart type] lowercaseString] isEqualToString:@"application"] && ([[[dataPart subtype] lowercaseString] isEqualToString:@"octet-stream"] || [[[dataPart subtype] lowercaseString] isEqualToString:@"pgp-signature"])){
+                    // Quirk mode: FireGPG < 0.7.1 declared 'application/pgp-signature' instead of 'application/octet-stream'
                     NSData	*bodyData = [versionPart bodyData]; // (it doesn't matter if data has been decoded; normally there was nothing to decode)
 
                     if(bodyData){
