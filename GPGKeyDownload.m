@@ -163,7 +163,7 @@ static GPGKeyDownload	*_sharedInstance = nil;
 {
     NSDictionary	*options = [self options];
 
-    if(!options)
+    if(!options || ([selectedKeys count] == 0))
         NSBeep();
     else{
         NSBundle	*aBundle = [NSBundle bundleForClass:[self class]];
