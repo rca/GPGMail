@@ -1117,6 +1117,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 - (void) gpgSetOptions:(NSDictionary *)options
 {
     // Forwarded by GPGMessageEditorPoser via MessageEditor, on reply to a PGP message
+    // FIXME: not implemented for Leopard!
 #if 0
 #warning FIXME: Should not modify any encrypt/sign/MIME setting???
     NSNumber    *aNumber;
