@@ -1708,7 +1708,7 @@ static BOOL	gpgMailWorks = YES;
 			BOOL            found = NO;
 			
 			while((eachUserID = [uidEnum nextObject])){
-				if([searchPatterns containsObject:[eachUserID valueForKeyPath:attributeKeyPath]]){
+				if([searchPatterns containsObject:[eachUserID valueForKeyPath:attributeKeyPath]]){ // FIXME: Zombie(?) of searchPatterns crash in -isEqual:
 					found = YES;
 					break;
 				}
