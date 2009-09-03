@@ -378,7 +378,7 @@ static NSArray *recipientArgumentsFromSenderAndArguments(NSString *sender, NSArr
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readStderr:) name:NSFileHandleReadToEndOfFileCompletionNotification object:[stderrPipe fileHandleForReading]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readStdout:) name:NSFileHandleReadToEndOfFileCompletionNotification object:[stdoutPipe fileHandleForReading]];
     
-    NS_DURING
+    @try{
         NSException	*writeException = nil;
         
         [currentTask launch];
@@ -401,12 +401,12 @@ static NSArray *recipientArgumentsFromSenderAndArguments(NSString *sender, NSArr
             // To workaround this problem (this will be corrected with MacGPGME),
             // we write passphrase, then wait 1 second, and check if stdout and stderr
             // pipes have been closed, meaning that there was an error with passphrase.
-            NS_DURING
+            @try{
                 [[stdinPipe fileHandleForWriting] writeData:passphraseData]; // SIGPIPE might be thrown here
-            NS_HANDLER
+            }@catch(NSException *localException){
                 writeException = localException;
                 inputData = nil;
-            NS_ENDHANDLER
+            }
             if(inputData != nil){
                 [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
                 if([readLock tryLockWhenCondition:READ_ALL]){
@@ -419,7 +419,7 @@ static NSArray *recipientArgumentsFromSenderAndArguments(NSString *sender, NSArr
 #ifdef DEBUG
             [inputData writeToFile:[NSTemporaryDirectory() stringByAppendingPathComponent:[@"stdin-" stringByAppendingString:[[NSProcessInfo processInfo] globallyUniqueString]]] atomically:NO];
 #endif
-            NS_DURING
+            @try{
                 if([[NSUserDefaults standardUserDefaults] boolForKey:@"GPGTraceEnabled"]){
                     CFStringRef	aString = CFStringCreateFromExternalRepresentation(NULL, (CFDataRef)inputData, encoding);
                     
@@ -427,9 +427,9 @@ static NSArray *recipientArgumentsFromSenderAndArguments(NSString *sender, NSArr
                     CFRelease(aString);
                 }
                 [[stdinPipe fileHandleForWriting] writeData:inputData]; // SIGPIPE might be thrown here
-            NS_HANDLER
+            }@catch(NSException *localException){
                 writeException = localException;
-            NS_ENDHANDLER
+            }
         }
         [[stdinPipe fileHandleForWriting] closeFile]; // We need to inform task that we do not have any more data for it!
 
@@ -506,9 +506,9 @@ static NSArray *recipientArgumentsFromSenderAndArguments(NSString *sender, NSArr
             *outputData = stdoutData;
         if(errorData != NULL)
             *errorData = stderrData;
-    NS_HANDLER
+    }@catch(NSException *localException){
         result = localException;
-	NS_ENDHANDLER
+	}
 
     if(passphraseData != NULL)
         CFRelease((CFDataRef)passphraseData);

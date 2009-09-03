@@ -630,11 +630,11 @@ static BOOL	gpgMailWorks = YES;
     if(![anEngine usesCustomExecutablePath]){        
         if([availableExecutablePaths count] == 1){
             chosenPath = [availableExecutablePaths lastObject];
-            NS_DURING
+            @try{
                 [[GPGEngine engineForProtocol:GPGOpenPGPProtocol] setExecutablePath:chosenPath];
-            NS_HANDLER
+            }@catch(NSException *localException){
                 chosenPath = nil;
-            NS_ENDHANDLER
+            }
         }
         else{
             // Give choice to user: either from availables, or custom, or cancel
@@ -1731,7 +1731,7 @@ static BOOL	gpgMailWorks = YES;
         GPGKey          *aKey;
         BOOL			filterKeys = [self filtersOutUnusableKeys];
         
-        NS_DURING
+        @try{
             anEnum = [aContext keyEnumeratorForSearchPattern:@"" secretKeysOnly:YES];
 			
 			while(aKey = [anEnum nextObject]){
@@ -1741,11 +1741,11 @@ static BOOL	gpgMailWorks = YES;
 				if(!filterKeys || [self canKeyBeUsedForSigning:aKey])
 					[anArray addObject:aKey];
 			}
-		NS_HANDLER
+		}@catch(NSException *localException){
 			[aContext release];
 			[anArray release];
 			[localException raise];
-        NS_ENDHANDLER
+        }
         cachedPersonalKeys = anArray;
         [aContext release];
         if([cachedPersonalKeys count] == 0 && ![self warnedAboutMissingPrivateKeys])
@@ -1776,18 +1776,18 @@ static BOOL	gpgMailWorks = YES;
         GPGKey          *aKey;
         BOOL			filterKeys = [self filtersOutUnusableKeys];
 
-        NS_DURING
+        @try{
             anEnum = [aContext keyEnumeratorForSearchPattern:@"" secretKeysOnly:NO];
 			
 			while(aKey = [anEnum nextObject]){
 				if(!filterKeys || [self canKeyBeUsedForEncryption:aKey])
 					[anArray addObject:aKey];
 			}
-		NS_HANDLER
+		}@catch(NSException *localException){
 			[aContext release];
 			[anArray release];
 			[localException raise];
-        NS_ENDHANDLER
+        }
         cachedPublicKeys = anArray;
         [aContext release];
     }
@@ -2280,7 +2280,7 @@ static BOOL	gpgMailWorks = YES;
     GPGKeyGroup     *aKeyGroup;
     BOOL            groupsChanged = NO;
     
-	NS_DURING
+	@try{
 		gpgGroups = [aContext keyGroups];
 		while((aGroup = [abGroupEnum nextObject])){
 			NSEnumerator    *memberEnum = [[aGroup gpgFlattenedMembers] objectEnumerator];
@@ -2360,21 +2360,21 @@ static BOOL	gpgMailWorks = YES;
                     else
                         NSLog(@"[DEBUG] Will create group %@ with keys\n%@", aGroupName, [futureGroupKeys valueForKey:@"keyID"]);
                 }
-				NS_DURING
+				@try{
 					(void)[GPGKeyGroup createKeyGroupNamed:aGroupName withKeys:futureGroupKeys];
 					groupsChanged = YES;
-				NS_HANDLER
+				}@catch(NSException *localException){
 					// FIXME: Report to user that group name is invalid?
 					// Let's ignore the error
-				NS_ENDHANDLER
+				}
 			}
 		}
-	NS_HANDLER
+	}@catch(NSException *localException){
 		// FIXME: Report to user that group name is invalid?
 		// Let's ignore the error
 		[aContext release];
 		[localException raise];
-    NS_ENDHANDLER
+    }
 	[aContext release];
 			
     if(groupsChanged)

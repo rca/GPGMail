@@ -1457,25 +1457,25 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 #warning TODO: Use a sheet (-> no longer shared instance)
             [aController startWithTitle:NSLocalizedStringFromTableInBundle(@"ENCRYPTING", @"GPGMail", aBundle, "") delegate:self];
             
-            NS_DURING
+            @try{
                 [message gpgEncryptForRecipients:recipients trustAllKeys:trustsAllKeys signWithKey:(signsMessage ? selectedPersonalKey:nil) passphraseDelegate:self format:mailFormat];
-            NS_HANDLER
+            }@catch(NSException *localException){
                 result = NO;
                 if(![[localException name] isEqualToString:GPGException] || [mailBundle gpgErrorCodeFromError:[[[localException userInfo] objectForKey:GPGErrorKey] intValue]] != /*GPGErrorNoData*/GPGErrorCancelled)
                     [self performSelector:@selector(displayException:) withObject:localException afterDelay:0.0];
                 // Else, user cancelled passphrase entry; do nothing special, return.
-            NS_ENDHANDLER
+            }
             [aController stop];
         }
         else{
-            NS_DURING
+            @try{
                 [message gpgSignWithKey:selectedPersonalKey passphraseDelegate:self format:mailFormat];
-            NS_HANDLER
+            }@catch(NSException *localException){
                 result = NO;
                 if(![[localException name] isEqualToString:GPGException] || [mailBundle gpgErrorCodeFromError:[[[localException userInfo] objectForKey:GPGErrorKey] unsignedIntValue]] != /*GPGErrorNoData*/GPGErrorCancelled)
                     [self performSelector:@selector(displayException:) withObject:localException afterDelay:0.0];
                 // Else, user cancelled passphrase entry; do nothing special, return.
-            NS_ENDHANDLER
+            }
         }
 
         // There is a problem with Compose window: it is not redisplayed correctly

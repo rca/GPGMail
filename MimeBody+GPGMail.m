@@ -248,7 +248,7 @@ if(0){
         else
             NSLog(@"[DEBUG] FAILED to write data to encrypt/sign in %@", filename);
     }
-    NS_DURING
+    @try{
         GPGData *outputData;
 
 #warning Set encoding!
@@ -266,13 +266,13 @@ if(0){
             // Can also happen when a key has been revoked, is invalid, has expired
 //            [NSException raise:NSGenericException format:@"Unable to find public keys for some addresses, or keys need to be (locally) signed"];
         encryptedData = [[[outputData data] retain] autorelease]; // Because context will be freed
-	NS_HANDLER
+	}@catch(NSException *localException){
         [inputData release];
         [aContext release];
         [newHeaders release];
         [headersToEncrypt release];
         [localException raise];
-    NS_ENDHANDLER
+    }
     [inputData release];
     [aContext release];
     [headersToEncrypt release];
@@ -489,19 +489,19 @@ if(0){
         else
             NSLog(@"[DEBUG] FAILED to write data to sign in %@", filename);
     }
-    NS_DURING
+    @try{
 #warning Use kCFStringEncodingISOLatin1 encoding!
         GPGData *outputData = [aContext signedData:inputData signatureMode:GPGSignatureModeDetach /*encoding:kCFStringEncodingISOLatin1*/]; // Can raise an exception
         // We can safely use kCFStringEncodingISOLatin1, because dataToSign is only on 7 bits
 
         signatureData = [outputData data];
-    NS_HANDLER
+    }@catch(NSException *localException){
         [inputData release];
         [aContext release];
         [newHeaders release];
         [headersToSign release];
         [localException raise];
-    NS_ENDHANDLER
+    }
     [inputData release];
 
     newSignature = [[[aContext operationResults] objectForKey:@"newSignatures"] lastObject];

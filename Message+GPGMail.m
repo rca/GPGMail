@@ -87,7 +87,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
         dummyMessage = [Message messageWithRFC822Data:someData];
         // WARNING: dummyMessage's headers now contain MIME headers, and body contains NO headers!
 
-        NS_DURING
+        @try{
             GPGMailFormat   usedFormat = mailFormat;
             NSData          *encryptedData = [(MessageBody *)[dummyMessage messageBody] gpgEncryptForRecipients:recipients trustAllKeys:trustsAllKeys signWithKey:key passphraseDelegate:passphraseDelegate format:&usedFormat headers:&newHeaders]; // Can raise an exception
             
@@ -101,11 +101,11 @@ GPG_DECLARE_EXTRA_IVARS(Message)
             }
             else
                 [someData setData:encryptedData];
-        NS_HANDLER
+        }@catch(NSException *localException){
             [localException retain];
             [localAP release];
             [[localException autorelease] raise];
-        NS_ENDHANDLER
+        }
 #if defined(LEOPARD)
         [self performSelector:@selector(setMutableHeaders:) withObject:newHeaders]; // OutgoingMessage
         [[self messageBody] setRawData:someData]; // No effect on Message data
@@ -176,7 +176,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
         // that's why we create a new Message from our headers' and body's data.
         dummyMessage = [Message messageWithRFC822Data:someData];
         
-        NS_DURING
+        @try{
             GPGMailFormat   usedFormat = mailFormat;
 			NSData          *signedData = [(MessageBody *)[dummyMessage messageBody] gpgSignWithKey:key passphraseDelegate:passphraseDelegate format:&usedFormat headers:&newHeaders]; // Can raise an exception            
             
@@ -190,11 +190,11 @@ GPG_DECLARE_EXTRA_IVARS(Message)
             }
             else
                 [someData setData:signedData];
-        NS_HANDLER
+        }@catch(NSException *localException){
             [localException retain];
             [localAP release];
             [[localException autorelease] raise];
-        NS_ENDHANDLER
+        }
 #if 1
 #if defined(LEOPARD)
         [self performSelector:@selector(setMutableHeaders:) withObject:newHeaders]; // OutgoingMessage

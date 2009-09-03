@@ -212,12 +212,12 @@
     if(aString){
 		GPGContext	*aContext = [[GPGContext alloc] init];
 		
-		NS_DURING
+		@try{
 			signatureKey = [[aContext keyFromFingerprint:aString secretKey:NO] retain];
-		NS_HANDLER
+		}@catch(NSException *localException){
 			[aContext release];
 			[localException raise];
-		NS_ENDHANDLER
+		}
 		[aContext release];
     }
 
@@ -383,7 +383,7 @@
     [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"AUTHENTICATING", @"GPGMail", [NSBundle bundleForClass:[self class]], "")];
 #endif
 
-    NS_DURING
+    @try{
         GPGSignature    *authenticationSignature;
 //        BOOL			hasValidSignature;
         
@@ -404,10 +404,10 @@
                 [message setMessageFlags:[message messageFlags] & 0xFF7FFFFF];*/
             //[[message messageFlags] setObject:??? forKey:@"GPGAuthenticated"];
         }
-    NS_HANDLER
+    }@catch(NSException *localException){
         NSBeginAlertSheet(NSLocalizedStringFromTableInBundle(@"AUTHENTICATION_TITLE_FAILED", @"GPGMail", [NSBundle bundleForClass:[self class]], ""), nil, nil, nil, [[self view] window], nil, NULL, NULL, NULL, @"%@", [[GPGMailBundle sharedInstance] descriptionForException:localException]);
         //[[message messageFlags] setObject:@"NO" forKey:@"GPGAuthenticated"];
-    NS_ENDHANDLER
+    }
 
 #if !defined(LEOPARD) && !defined(TIGER)
     [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"Done.", @"Message", [NSBundle bundleForClass:[Message class]], "")];
@@ -428,7 +428,7 @@
     [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"DECRYPTING", @"GPGMail", [NSBundle bundleForClass:[self class]], "")];
 #endif
 	
-    NS_DURING
+    @try{
 //        Message	*decryptedMessage = [[delegate gpgMessageForAccessoryViewOwner:self] gpgDecryptedMessageWithPassphraseDelegate:mailBundle signature:(id *)&signature];
         Message	*decryptedMessage = [delegate gpgMessageForAccessoryViewOwner:self];
         [decryptedMessage gpgDecryptMessageWithPassphraseDelegate:mailBundle messageSignatures:sigs];
@@ -444,15 +444,15 @@
 			
             if(GPGMailLoggingLevel)
                 NSLog(@"[DEBUG] Extracting signatures");
-            NS_DURING
+            @try{
                 GPGSignature    *aSignature = [decryptedMessage gpgEmbeddedAuthenticationSignature]; // Can raise an exception
                 
                 if(aSignature != nil)
                     [sigs addObject:aSignature];
-            NS_HANDLER
+            }@catch(NSException *localException){
                 // Error during verification
                 authenticationException = localException;
-            NS_ENDHANDLER
+            }
             if(GPGMailLoggingLevel)
                 NSLog(@"[DEBUG] Done");
         }
@@ -466,10 +466,10 @@
         }
         isSignatureExtraViewVisible = NO;
         [delegate gpgAccessoryViewOwner:self displayMessage:decryptedMessage isSigned:([sigs count] > 0)];
-    NS_HANDLER
+    }@catch(NSException *localException){
         decryptionException = localException;
         // Error during decryption
-    NS_ENDHANDLER
+    }
 
 #if !defined(LEOPARD) && !defined(TIGER)
     [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"Done.", @"Message", [NSBundle bundleForClass:[Message class]], "")];
