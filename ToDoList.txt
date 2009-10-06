@@ -1,0 +1,187 @@
+Todo list, and bugs
+===================
+
+KNOWN BUGS:
+O signed plain: a line beginning with "--" is transformed to "- --"
+  This is not a bug; this is done by gpg. There is an option ib gpg to avoid this, but it should not be enabled for emails!
+X When asked for a passphrase, if user enters a bad one, an alert panel is displayed, complaining about a SIGPIPE signal
+  The alert panel can be dismissed without any fear; everything worked well though.
+  Now exception is caught, and we display gpg error
+X BCC users are never taken in account for encrypted files; their email address, thus PGP key, is not used for encryption
+  Now there is an option to use them
+X It may happen that Mail.app/MailViewer.app displays PGP signatures using non-ASCII characters, but GPGMail never creates non-ASCII signatures/encrypted messages; this is a display problem.
+  There was a problem with quoted-printable
+X In some circumstances, GPGMail is unable to decrypt MIME messages if your secret keyring contains more than one key.
+X Forwarded/Replied mail is encrypted; does not happen if user double-clicked on message.
+X Broken pipe exception if gpg cannot find public key; also in some unknown other cases!!
+  Exception is now caught, and gpg error is displayed.
+X Customizing Compose toolbar: button state is not correct
+- Passphrase panel: sometimes passphrase has not be forgotten and is redisplayed in panel. How to repeat?!
+X On MOX, there's a message from Gordon I cannot verify (plain text)
+  I didn't get MimePart data correctly; it was no longer quoted-printable => contained 8-bit characters
+- CHECK: Toolbar Items restoration: it may happen that order is not restored correctly: check stored indexes!
+- CHECK: Toolbar buttons are sometimes duplicated, when you have multiple viewers.
+X Create a MIME (multipart/alternative) message from forward/reply AND no rich text; encrypting it resulted in an ill-formed message (is missing subparts headers)
+  Seems there's a bug in Mail.app; see patch in -[Message(GPGMail) gpgEncryptWithIdentity:passphrase:recipients:signatureType:]
+X If a message is signed and encrypted, and public key is not available, then decryption will fail. It should not!
+X On MOX, with decrypted messages, user looses ability to click on hyperlinks (mailto, http, ...)
+  Changed invoked method to reload textView
+X On MOX, appearance of encrypted MIME message in mailbox changes after first decryption: before, user sees two attachments (with label), after he sees only one (without label). Maybe a cache problem?
+X On MOX, some URLs in message, containing =, are not correctly rendered: tries to decode quoted-printable sequence!
+  Corrected after I modified -[MimePart gpgBodyPart]...
+X Compose window is not redrawn correctly when mail delivery fails
+  Now we redraw in an async way (delayed)
+(- Following mails in GPGMail.mbox are unverifiable/undecryptable: 6 (missing key), 22 (missing key), 37 (Mulberry mail with 2 sigs), 110, 111)
+X Some weird behaviors: - decrypts/authenticates previously selected message, but not current one
+                        - first message authentication fails, without any message
+  These bugs were due to the non-thread-safetiness of GPGHandler...
+- It happens that after having decrypted a message, the password panel appears again, during modal sheet; after this message can no longer be displayed in clear
+X Annoying logs in console about toolbar items
+X DOES NOT WORK AT ALL ON 10.1: it needs a LOT of work... (if ever possible)
+X Some OpenPGP signed messages by GPGMailv13 are not verified by v13! (GPGMail#295)
+X Some OpenPGP signed messages by mutt/PGPFreeware 5.0i/PGP 6.5.8 are not verified by v13! (GnuPG#191, 199, cf GPGMail#292, SourceForge#99, 100)
+X It may happen that resulting encrypted message is empty! Problem with keys? We should check output length.
+- In passphrase panel, pressing Return clicks OK, but pressing Escape does nothing except beeping + OK button is not the default one (due to a bug with Japanese font?)
+X Installer: BSD package needs to have been installed, else defaults command is not available.
+  No longer uses defaults; now uses plistutil
+X Need GPG.tiff in 32x32
+- Viewer: splitview min size should be updated for our banner(s)
+- GPGMail#695 and GPGMail#694: fail - problem with header separator
+(- Limitation: Recipient menu list not up-to-date until user quits edited textfield (To, CC, BCC))
+(- CHECK: When trying to sign with a revoked key, a "No Data" error is returned.) should no longer be possible now
+X Installer: does not support links/aliases in path
+- GPGMail#1567: double-line space
+- Composer sign switch should be disabled when no valid signing key
+- If a signed and/or encrypted message cannot be delivered immediately and resubmitted to user for delivery, message is signed/encrypted again. Problem: user can modify that signed/encrypted message before re-sending it!
+X "I re-set the password cache clearing from 1 minute to 5. If I enter my password and sleep my laptop, when I open it the next time (it can be days later) the password is still cached." (GPGMail#1705)
+- GPGMail#1683: problems when using armor - empty lines when decrypting
+X ASCII: use displayed text, not raw text, because problems with line returns (format=flowed)
+- Due to libgpgme, "comment" header in signature is lost; for a workaround, we can manually add it after signature creation (see Werner mail)
+- Bug/limitation: when redirecting PGP-MIME signed/encrypted message, headers are transformed and message is no longer valid. Problem is that user is allowed to modify content, thus break signature/data.
+- Returns error "No Data" after verification failure when key cannot be found; bug in gpgme...
+- On 10.2, ordering of views is inversed -> all nibs according to 10.2, but on 10.3, bug has been corrected -> invalid order for GPGMail! See field fingerprint of signatureView, vs userIDs popdown
+- 1.0.2: when verifying message discuss-gnustep, Jul 1, 2004, Frederik:
+Internal error: -[NSFileWrapper setPreferredFilename:] *** preferredFilename cannot be empty.
+
+
+Modifications:
+- Add full compliance with RFC 3156
+X Better filtering of gpg error messages using GPGME
+X Allows decrypted message forwarding/replying
+X Replace state buttons in Compose toolbar with custom view containing 2 checkboxes; label is PGP.
+X Automatic decrypt/verify only if message is unread
+- Use sheet when asking passphrase (problem with thread!!!)
+X Banner should be less high when displaying decrypted/authenticated: only one line (no "Signed by").
+X Add tooltip for icon in banner, when authenticated or decrypted ("Good signature. Message has not been altered.")
+- In banner: move validity in upper pane, still as text
+(- Signer popup: shows matching userID?)
+X Better error message when GPGME has not correct gpg version.
+
+
+New Features:
+X Add command-key shortcuts
+X Add contextual menu entries for MessageViewer
+X Add support for multiple PGP identities
+X Allow recipients choice
+X Use Keychain Manager
+- Customize display of signed/encrypted message (i.e. hide armor, etc)
+- Do not display ----- PGP ----- headers (optional)
+- Add full safe support for BCC recipients: multiple messages?
+- Add support for partial encryption/signature (not the whole message)
+- Full multithreading of encryption/decryption
+(- Add support for S/MIME)
+X Localization in different languages
+- Read/write the following headers:
+  X-PGP-KeyID: shortKeyID
+  X-Request-PGP: http://url/to/get/publicKey
+  X-PGP-Key: 2048R/keyID/fingerprint
+X Modify MIME version header: add (GPGMail 0.5.1v8), or add X-PGP-Agent: GPGMail 0.5.1v8
+X Allow user to set passphrase timeout
+X Display (in toolbar or tableView) if message was authenticated, without modal panel; user can get more information in a drawer. If automatic, icon indicates "signed|correctly signed|bad sig" and the action is "show more sig info"; else icon indicates "signed|not signed" and the action is "verify". We could do like the Junk view which is located between the tableView and the textView
+X If pubkey is not available when sending, automatic download via gpg
+X Choose signing key according to account (optional)
+- Installer: test if gpg exists (or propose download), if keys has been generated (or generate them), set com.apple.mail defaults, use Apple's installer
+(- Allow automatic setting of keyserver (in options file, because of gpgme))
+X Read gpg options -> share code between GPGPreferences and GPGME to read options
+X Always use Open-PGP style (optional)
+X Do not display modal panel for sig authentication, but rather an icon in message; if user clicks it, more info (name, date, etc.)
+- There is not enough support in email clients that I've seen for doing stuff like automatically rejecting or tagging messages signed with revoked certificates.
+- In Composer, add icon next to headers if mail is signed and/or encrypted (a la Outlook)
+- Control automatic signing by account
+X Set OpenPGP/Inline format on a per-address basis (save this in AddressBook) - done by Robert Goldsmith's ABKeyManager bundle
+X Add support for groups of addresses (use AddressBook)
+- Use own defaults domain (see CFPreferences documentation; use suite)
+- Add new column in tableView to show signed/authenticated (+sorting; use lock icon in KeychainManager)
+- Installer: Allow installation for all users on the same host (seems we need to write our own 'defaults' tool; we need admin rights to modify /Library/Preferences/com.apple.mail.plist)
+X For MIME signed messages, add the following header in the signature part (localized):
+    Content-Description: This is a digitally signed message part
+X The attachment PGP.sig could also be renamed signature.sig, localized.
+X Could we add the following header for the MIME attachments?
+    Content-Disposition: attachment; filename="XXX.pgp"
+(- Asynchronous loading of keys) Now loaded only when strictly necessary
+- Asynchronous decryption/verification/encryption => cancelable
+X Check revocation/exp.date/invalid/disabled/can_encrypt in userID/subkey and filter out (opt.) such keys
+X Display disabled/unselectable keys for expired/etc... keys. Also display icon in corresponding menuItem)
+X Filter out untrusted keys (opt.)
+X Use fingerprint for Keychain, and add userIDs as comment
+- More info when decrypting message (which keys used for encryption, when encrypted, etc.) => ask gpgme
+- Validity images: like a vertical progress bar. Ultimate = full + user head; marginal = half; never = empty; undefined = empty + question mark; unknown = question mark
+- Use tempest-resistant font (--for-your-eyes-only) + add filter on top of viewing window
+(- On install: auto-install toolbar items) No longer very useful
+(- Pageout passphrase?) Wait for gpg-agent...
+- Use sheet when asking for passphrase; on encryption, not possible because of encryption progress bar
+X On delivery, search for missing keys (encryption) + add new menu items(?)
+X When misses a key for encryption, display warning on delivery.
+X In menus, display all userIDs, indented
+(- Toolbar: never save toolbar config, or rewrite saving to avoid uninstall problem) No longer a problem on 10.2 :-)
+- Display utility window as key inspector; reachable from menu items
+- Cache signature + verification date (persistent??)
+- Allow signature + symmetric encryption (currently disabled)
+X Toolbar items: viewer: keep decrypt/verify; composer: use "Make encrypted"/"Make signed", which will toggle to "Make clear"/"Make unsigned", with icons reflecting future state. Keep accessory views.
+X When listing keys, display also keyID (opt.)
+- Optional: store messages as decrypted. In fact, allow indexing
+- Add support for X-Request-PGP: gnupg-dev, W. Koch, 23.12.2002
+    (put that info in AddressBook? See also GPGMail#1490)
+    On another topic: Due to problems with some of the keyservers, it
+    might not be possible to retrieve or refresh some keys; to work around
+    this, I suggest the use of a mail header to get the canonical address
+    of a key.  This will most likely point to a web page, but other URL
+    schemes do also make sense.  The proposed format of such a mail header
+    is:
+    
+    X-Request-PGP: <url>
+    
+    For example, I use this one
+    
+    X-Request-PGP: finger:wk@g10code.com
+- Check that "From" matches userID when signed(+encrypted?)
+X When replying to encrypted mail, encrypt reply by default
+X Reply encrypted/signed if message was encrypted/signed (opt.)
+- If you receive a signed or/and encrypted message, does GPG get the key ID and in case of a reply use the same key ID for encrypting the reply?
+X Website: give more information about Japanese/Korean/French links
+X Website: give more information about localization: tell that GPGMail contains all localizations.
+X Website: use direct links for MacGPG/FAQ - don't point to bottom of page
+X New option: automatically sign when encrypting
+- Allow use of filter rules
+(- Display of decrypt/authenticate banner could be optional)
+X By default, encrypt message
+X Optional: show passphrase
+O CHECK that attachments are named in Mail: first part of encrypted is NOT named (version header part).
+X Save/restore encrypted/signed status of drafts messages
+- Support multiple signatures on ASCII messages
+- Support old-style encryption/signature + attachment, when receiving and sending, PLUS support multiple encryption parts (see GPGMail#1823)
+X New option: change line wrapping length (userDefault: LineLength)
+- Allow user to choose keychain (or default one)
+- Display photoID
+"still, without the ability to selectively encrypt sections of an e-mail, including nesting an already encrypted portion inside another, it is utterly worthless for several important applications of encrypted messages. I would urge the developer to move that functionality to the top of the list for future enhancements"
+- Add AppleScript interface (prefs)
+- option that allowed an unknown key to be skipped. By allowing an unknown key to be skipped, those addresses that have keys would be automatically encrypted, while those without keys would be able to go out unimpeded. -> when GPGMail fails to find all keys, it can either search for keys, send unencrypted (NEW) or cancel delivery.
+- Once GPGMail supports verifying/decrypting multiple MIME parts in same message, allow signing attachments separatly, i.e. multiple PGP-MIME blocks, one per inline text, one per attachment, with separate signatures. -> we can extract signed attachment, but still have valid signature outside Mail. Plus global signature for message (-> no need to verify embedded parts; allow extraction of them with their signature).
+
+Misc:
+(- Use images from KeychainManager)
+? Change encoding use, as GPGHandler always expects UTF8
+? See classes MainThread, MessageViewingState, PasswordPanel
+- Use Messageheader when creating headers, to avoid encoding problems
+- Encryption + sig: use common panel for password + progress
+- Modify attachment contextual menu

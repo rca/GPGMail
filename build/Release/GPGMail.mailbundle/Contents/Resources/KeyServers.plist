@@ -1,0 +1,20 @@
+(
+    "sks-keyservers.net",
+    "wwwkeys.pgp.net",
+    "ldap://keyserver.pgp.com",
+    "wwwkeys.at.pgp.net",
+    "wwwkeys.ch.pgp.net",
+    "wwwkeys.cz.pgp.net",
+    "wwwkeys.de.pgp.net",
+    "wwwkeys.dk.pgp.net",
+    "wwwkeys.es.pgp.net",
+    "wwwkeys.eu.pgp.net",
+    "wwwkeys.nl.pgp.net",
+    "wwwkeys.pl.pgp.net",
+    "wwwkeys.uk.pgp.net",
+    "wwwkeys.us.pgp.net",
+    "keyserver.linux.it",
+    "pgp.uni-mainz.de",
+    "minsky.surfnet.nl",
+    "pgp.mit.edu"
+)

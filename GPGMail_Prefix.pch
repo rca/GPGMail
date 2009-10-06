@@ -1,0 +1,23 @@
+#ifdef __OBJC__
+#import <Cocoa/Cocoa.h>
+#import <AddressBook/AddressBook.h>
+#import <WebKit/WebKit.h>
+#endif
+
+extern void instrumentObjcMessageSends(BOOL enabled);
+extern int  GPGMailLoggingLevel;
+
+#if defined __x86_64__
+	#define X86_64
+#else
+	#undef X86_64
+#endif
+
+#if defined(MAC_OS_X_VERSION_10_6)
+	#if MAC_OS_X_VERSION_MIN_REQUIRED == MAC_OS_X_VERSION_10_6
+		#define SLEOPARD
+		#define LEOPARD
+	#elif MAC_OS_X_VERSION_MIN_REQUIRED == MAC_OS_X_VERSION_10_5
+        #define LEOPARD
+	#endif	
+#endif
