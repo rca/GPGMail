@@ -62,7 +62,11 @@
         unsigned int isAutoSaving:1;
     } _flags;
     int _messageType;
+#ifdef SNOW_LEOPARD
+    struct CGPoint _originalCascadePoint;
+#else
     struct _NSPoint _originalCascadePoint;
+#endif
     NSMutableDictionary *_bodiesByAttachmentURL;
     NSOperationQueue *operationQueue;
     NSOperation *loadInterfaceOperation;
@@ -473,8 +477,13 @@
 - (BOOL)_imageStatusHidden;
 - (void)_showImageStatusView;
 - (void)_hideImageStatusView;
+#ifdef SNOW_LEOPARD
+- (struct CGSize)_imageSizeForTag:(int)fp8;
+- (struct CGSize)_selectedImageSize;
+#else
 - (struct _NSSize)_imageSizeForTag:(int)fp8;
 - (struct _NSSize)_selectedImageSize;
+#endif
 - (id)_maxImageSizeAsString;
 - (void)_processNextImageResizer;
 - (void)_ImageResizeDidFinish:(id)fp8;

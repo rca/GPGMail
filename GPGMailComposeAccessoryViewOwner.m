@@ -36,6 +36,7 @@
 #import "ComposeBackEnd+GPGMail.h"
 #import "GPGMEAdditions.h"
 #import "NSString+GPGMail.h"
+#import "GPGMailPatching.h"
 
 #import "GPG.subproj/GPGPassphraseController.h"
 #import "GPG.subproj/GPGProgressIndicatorController.h"
@@ -44,7 +45,9 @@
 #import <NSString+Message.h>
 #import <MutableMessageHeaders.h>
 #import <OptionalView.h>
+#ifndef SNOW_LEOPARD
 #import <MailToolbarItem.h>
+#endif
 #import <ColorBackgroundView.h>
 #import <AddressBook/AddressBook.h>
 
@@ -89,6 +92,21 @@
 
 
 @implementation GPGMailComposeAccessoryViewOwner
+
+#ifdef SNOW_LEOPARD
+
+static Class SegmentedToolbarItem;
+
++ (void) initialize {
+	[super initialize];
+	
+	Class parentClass = NSClassFromString(@"MVComposeAccessoryViewOwner");
+	if(parentClass)
+		class_setSuperclass([self class], parentClass);
+	
+	SegmentedToolbarItem = NSClassFromString(@"SegmentedToolbarItem");
+}
+#endif
 
 + (NSString *) composeAccessoryViewNibName
 {
@@ -846,7 +864,11 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 {
     if([notif object] == [[[self composeAccessoryView] window] toolbar]){
 #if defined(LEOPARD)
+#ifdef SNOW_LEOPARD
+        id    anItem = [[notif userInfo] objectForKey:@"item"];
+#else
         SegmentedToolbarItem    *anItem = [[notif userInfo] objectForKey:@"item"];
+#endif
 #elif defined(TIGER)
         MailToolbarItem	*anItem = [[notif userInfo] objectForKey:@"item"];
 #else
@@ -885,13 +907,66 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 }
 #endif
 
+#ifdef SNOW_LEOPARD
+- (void)awakeFromNib {
+	if(!setupUI) {
+		if(GPGMailLoggingLevel)
+			NSLog(@"Not yet ready to setup UI");
+		return;
+	}
+	
+    GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
+    
+	verifyRulesConflicts = YES;
+    selectedPublicKeys = [[NSMutableArray allocWithZone:[self zone]] init];
+    missingPublicKeyEmails = [[NSMutableSet allocWithZone:[self zone]] init];
+    selectedPersonalKey = [[mailBundle defaultKey] retain];
+    [selectedPersonalPublicKey release];
+    selectedPersonalPublicKey = nil;
+	
+    [self setupTableColumns];
+    [[publicKeysPopDownButton menu] setAutoenablesItems:NO];
+	
+	struct objc_super s = { self, [self superclass] };
+    // Call the super implementation to access the super class's accessoryView.
+    [objc_msgSendSuper(&s, @selector(composeAccessoryView)) setFrame:[[optionalView primaryView] frame]];
+    [[[optionalView primaryView] superview] replaceSubview:[optionalView primaryView] with:objc_msgSendSuper(&s, @selector(composeAccessoryView))];
+    [optionalViewBackgroundView setBackgroundColor:[NSColor windowBackgroundColor]];
+	[optionalViewTitleField setStringValue:NSLocalizedStringFromTableInBundle(@"PGP:", @"GPGMail", [NSBundle bundleForClass:[self class]], "Title of PGP accessory view")];
+	[[optionalView optionSwitch] setState:[self displaysButtonsInComposeWindow] ? NSOnState:NSOffState];
+    // After this point, the original accessoryView is replaced with the views of our
+    // Nib file, hence every further call to composeAccessoryView will use our own implementation
+    // of composeAccessoryView, which will return the one of the views from our NIB.
+
+    [personalKeysPopUpButton setAutoenablesItems:NO]; // Needed!
+	
+    [self reloadPersonalKeys];
+    [self refreshPersonalKeysMenuAccordingToSelf:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPublicKeysPopDownButton:) name:NSPopUpButtonWillPopUpNotification object:publicKeysPopDownButton];
+    // We need to delay the following call, after our composeAccessoryView has been moved to the Compose window
+    [self performSelector:@selector(finishUISetupWithStates:) withObject:currentStates afterDelay:0.0];
+}
+#endif
+
+#ifndef SNOW_LEOPARD
 - (void) setupUIForMessage:(Message *)message
+#else
+- (void) setupUIForMessage:(id)message
+#endif
 {
     // At that time, composeAccessoryView, which is going to be loaded, is not/cannot be in message view window
     GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
     NSArray         *states = [[[message headers] firstHeaderForKey:@"X-Gpgmail-State"] componentsSeparatedByString:@","];
     // FIXME: Leopard: at that time, headers lost their custom entries
     
+    setupUI = YES;
+    currentStates = states;
+	
+#ifdef SNOW_LEOPARD
+    // Runtime super call - CORRECT !
+    struct objc_super s = { self, [self superclass] };
+    objc_msgSendSuper(&s, @selector(setupUIForMessage:), message);
+#else
     [super setupUIForMessage:message]; // Will load nib
 
     verifyRulesConflicts = YES;
@@ -941,13 +1016,18 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPublicKeysPopDownButton:) name:NSPopUpButtonWillPopUpNotification object:publicKeysPopDownButton];
     // We need to delay the following call, after our composeAccessoryView has been moved to the Compose window
     [self performSelector:@selector(finishUISetupWithStates:) withObject:states afterDelay:0.0];
+#endif
 }
 
 - (void) doSetEncryptsMessage:(BOOL)flag
 {
     NSEnumerator	*anEnum = [[[[[self composeAccessoryView] window] toolbar] items] objectEnumerator];
 #if defined(LEOPARD)
+#ifdef SNOW_LEOPARD
+	id    anItem;
+#else
     SegmentedToolbarItem    *anItem;
+#endif
 #elif defined(TIGER)
     MailToolbarItem	*anItem;
 #else
@@ -1013,11 +1093,24 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 //    [self updateWarningImage]; // No longer necessary
 }
 
+#ifdef SNOW_LEOPARD
+- (NSView *)composeAccessoryView {
+//	struct objc_super s = { self, [self superclass] };
+//    return (NSView *)objc_msgSendSuper(&s, @selector(composeAccessoryView));
+    
+    return [self displaysButtonsInComposeWindow] ? [optionalView retain] : [emptyView retain];
+}
+#endif
+
 - (void) doSetSignsMessage:(BOOL)flag
 {
     NSEnumerator	*anEnum = [[[[[self composeAccessoryView] window] toolbar] items] objectEnumerator];
 #if defined(LEOPARD)
+#ifdef SNOW_LEOPARD
+	id    anItem;
+#else
     SegmentedToolbarItem    *anItem;
+#endif
 #elif defined(TIGER)
     MailToolbarItem	*anItem;
 #else
@@ -1200,7 +1293,11 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     NSBeginAlertSheet(aTitle, okTitle, cancelTitle, inClearTitle, [[self composeAccessoryView] window], self, NULL, @selector(unmatchedAddressesSheetDidDismiss:returnCode:contextInfo:), [addresses retain], aMessage, [addresses componentsJoinedByString:@"\n"]);
 }
 
+#ifdef SNOW_LEOPARD
+- (BOOL) messageWillBeSaved:(id)message
+#else
 - (BOOL) messageWillBeSaved:(OutgoingMessage *)message
+#endif
 {
     // Invoked when message is saved in drafts; we have the opportunity to add our own headers
     // that we can get back when draft is converted back to message for delivery.
@@ -1334,7 +1431,11 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     return NO;
 }
 
+#ifdef SNOW_LEOPARD
+- (BOOL) messageWillBeDelivered:(id)message
+#else
 - (BOOL) messageWillBeDelivered:(OutgoingMessage *)message
+#endif
 {
     if(GPGMailLoggingLevel)
         NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
@@ -1807,7 +1908,11 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 {
     // Forwarded by GPGComposeWindowStorePoser or MessageEditor
 #if defined(LEOPARD)
+#ifdef SNOW_LEOPARD
+    SEL anAction = ([theItem isKindOfClass:[SegmentedToolbarItem class]] ? [(id)theItem actionForSegment:0] : [theItem action]);
+#else
     SEL anAction = ([theItem isKindOfClass:[SegmentedToolbarItem class]] ? [(SegmentedToolbarItem *)theItem actionForSegment:0] : [theItem action]);
+#endif
 #elif defined(TIGER)
     SEL	anAction = [(MailToolbarItem *)theItem actionForSegment:0];
 #else

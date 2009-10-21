@@ -316,10 +316,13 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
             return YES;
         }
         else{
+#ifndef SNOW_LEOPARD
 #if DECRYPT_PGP_ATTACHMENTS
+
             if([self _gpgLooksLikeBinaryPGPAttachment]) // TODO: there are problems to fix with message body: message should cache decrypted message body, it's not part's task
                 return YES;
             else
+#endif
 #endif
                 return NO;
         }
@@ -1191,7 +1194,11 @@ static IMP  MimePart_isEncrypted = NULL;
 	MimePart_decodeTextHtml = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeTextHtml), [MimePart class], @selector(gpgDecodeTextHtml), [MimePart class]);
 	MimePart_decodeApplicationOctet_stream = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeApplicationOctet_stream), [MimePart class], @selector(gpgDecodeApplicationOctet_stream), [MimePart class]);
 	MimePart_decodeMultipartSigned = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeMultipartSigned), [MimePart class], @selector(gpgDecodeMultipartSigned), [MimePart class]);
+#ifdef SNOW_LEOPARD
+	MimePart_clearCachedDescryptedMessageBody = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(clearCachedDecryptedMessageBody), [MimePart class], @selector(gpgClearCachedDescryptedMessageBody), [MimePart class]);
+#else
 	MimePart_clearCachedDescryptedMessageBody = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(clearCachedDescryptedMessageBody), [MimePart class], @selector(gpgClearCachedDescryptedMessageBody), [MimePart class]);
+#endif
     [self gpgAddMethodForSelector:@selector(decodeMultipartEncrypted) implementationSelector:@selector(gpgDecodeMultipartEncrypted) implementation:&MimePart_decodeMultipartEncrypted];
     [self gpgAddMethodForSelector:@selector(decodeApplicationPgp) implementationSelector:@selector(gpgDecodeApplicationPgp) implementation:&MimePart_decodeApplicationPgp];
 
@@ -1433,7 +1440,11 @@ static IMP  MimePart_isEncrypted = NULL;
 				[self _setDecryptedMessageBody:decryptedMessageBody]; // FIXME: Will not work for multiple encrypted parts? Too early?
 #endif
 				decryptedPart = [decryptedMessageBody topLevelPart]; // FIXME: WRONG, in case of multiple encrypted parts
+#ifdef SNOW_LEOPARD
+				result = [decryptedPart gpgBetterDecode];
+#else
 				result = [decryptedPart contentsForTextSystem];
+#endif
 #if 0
 				[decryptedPart getNumberOfAttachments:&numberOfAttachments isSigned:&isSigned isEncrypted:&isEncrypted];
 				[[encryptedMessage messageStore] setNumberOfAttachments:numberOfAttachments isSigned:(theDecodeOptions.mIsSigned) isEncrypted:(theDecodeOptions.mIsEncrypted) forMessage:encryptedMessage];
@@ -1455,7 +1466,11 @@ static IMP  MimePart_isEncrypted = NULL;
 	else{
         if(/*decryptedMessageBody*/decryptedPart != nil && GPGMailLoggingLevel > 0)
             NSLog(@"[DEBUG] PGP part %p has already been decrypted (cache)", self);
+#ifdef SNOW_LEOPARD
+		result = [/*[decryptedMessageBody topLevelPart]*/decryptedPart gpgBetterDecode]; // WRONG, in case of multiple encrypted parts
+#else
 		result = [/*[decryptedMessageBody topLevelPart]*/decryptedPart contentsForTextSystem]; // WRONG, in case of multiple encrypted parts
+#endif
 	}
     if(GPGMailLoggingLevel)
         NSLog(@"[DEBUG] Done: result = %p", result);
@@ -1717,7 +1732,11 @@ static IMP  MimePart_isEncrypted = NULL;
 #endif
 //				decryptedPart = [decryptedMessageBody topLevelPart]; // FIXME: WRONG, in case of multiple encrypted parts
 				decryptedPart = [decryptedMessageBody partWithNumber:[self partNumber]]; // FIXME: WRONG, in case of PGP/MIME parts which result in multiple parts
+#ifdef SNOW_LEOPARD
+				result = [decryptedPart gpgBetterDecode]; // Can invoke _gpgDecodePGP
+#else
 				result = [decryptedPart contentsForTextSystem]; // Can invoke _gpgDecodePGP
+#endif
 #if 0
 				[decryptedPart getNumberOfAttachments:&numberOfAttachments isSigned:&isSigned isEncrypted:&isEncrypted];
 				[[encryptedMessage messageStore] setNumberOfAttachments:numberOfAttachments isSigned:(theDecodeOptions.mIsSigned) isEncrypted:(theDecodeOptions.mIsEncrypted) forMessage:encryptedMessage];
@@ -1748,12 +1767,38 @@ static IMP  MimePart_isEncrypted = NULL;
 	else{
         if(decryptedMessageBody != nil && GPGMailLoggingLevel > 0)
             NSLog(@"[DEBUG] PGP part %p has already been decrypted (cache)", self);
+#ifdef SNOW_LEOPARD
+		result = [[decryptedMessageBody topLevelPart] gpgBetterDecode]; // WRONG, in case of multiple encrypted parts
+#else
 		result = [[decryptedMessageBody topLevelPart] contentsForTextSystem]; // WRONG, in case of multiple encrypted parts
+#endif
 	}
     if(GPGMailLoggingLevel)
         NSLog(@"[DEBUG] Done: result = %p", result);
 	
 	return result;
+}
+
+- gpgBetterDecode
+{
+	if(GPGMailLoggingLevel)
+	    NSLog(@"Top level part: %@", self);
+	NSString *type = [NSString stringWithString:(NSString *)[self type]];
+	NSString *subtype = [NSString stringWithString:(NSString *)[self valueForKey:@"_subtype"]];
+	NSString *selector = [NSString stringWithFormat:@"decode%@%@", [type capitalizedString], [[subtype stringByReplacingOccurrencesOfString:@"-" withString:@"_"] capitalizedString]]; 
+	
+	/* Unfortunately calling decode (replacement of contentsForTextSystem) doesn't work anymore.
+	 * calling the appropriate decode method for the top part fixes the problem.
+	 */
+	if([self respondsToSelector:NSSelectorFromString(selector)]) {
+		[self performSelector:NSSelectorFromString(selector)];
+	}
+	else {
+	    /* Otherwise try it with decode. */
+	    if(GPGMailLoggingLevel)
+	        NSLog(@"Using decode anyway!");
+	    [self decode]; // Will force re-evaluation of the decode* methods. Will not raise an exception, because -contentsForTextSystem will catch it!
+	}
 }
 
 - gpgDecodeMultipartEncrypted

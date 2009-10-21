@@ -31,10 +31,12 @@
 #import "GPGMailBundle.h"
 #import "GPGMailPatching.h"
 #import "GPGMailComposeAccessoryViewOwner.h"
+#ifndef SNOW_LEOPARD
 #import <MailToolbarItem.h>
 #import <MVComposeAccessoryViewOwner.h>
 #import <MessageEditor.h>
 #import <ComposeHeaderView.h>
+#endif
 #import <Cocoa/Cocoa.h>
 
 
@@ -43,11 +45,18 @@
 #endif
 #ifdef LEOPARD
 
+#ifdef SNOW_LEOPARD
+@interface GPGMail_HeadersEditor
+#else
 @interface HeadersEditor(GPGMail)
+#endif
 - (NSMutableArray *)gpgAccessoryViewOwners;
 - (NSPopUpButton *) gpgFromPopup;
 @end
 
+#ifdef SNOW_LEOPARD
+@implementation GPGMail_HeadersEditor
+#else
 @implementation HeadersEditor(GPGMail)
 
 static IMP  HeadersEditor_changeFromHeader = NULL;
@@ -56,19 +65,30 @@ static IMP  HeadersEditor_changeFromHeader = NULL;
 {
     HeadersEditor_changeFromHeader = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(changeFromHeader:), [HeadersEditor class], @selector(gpgChangeFromHeader:), [HeadersEditor class]);
 }
+#endif
 
 #warning FIXME: LEOPARD Misses _gpgInitializeOptionsFromMessages
 
 - (NSMutableArray *)gpgAccessoryViewOwners
 {
+#ifdef SNOW_LEOPARD
+	if([self valueForKey:@"accessoryViewOwners"] == nil || ![[self valueForKey:@"accessoryViewOwners"] isKindOfClass:[NSMutableArray class]])
+		[self setValue:[[NSMutableArray alloc] init] forKey:@"accessoryViewOwners"];
+	return [self valueForKey:@"accessoryViewOwners"];
+#else
 	if(accessoryViewOwners == nil)
 		accessoryViewOwners = [[NSMutableArray alloc] init];
 	return accessoryViewOwners;
+#endif
 }
 
 - (NSPopUpButton *) gpgFromPopup
 {
+#ifdef SNOW_LEOPARD
+    return [self valueForKey:@"fromPopup"];
+#else
     return fromPopup;
+#endif
 }
 
 - (void) gpgForwardAction:(SEL)action from:(id)sender
@@ -84,13 +104,20 @@ static IMP  HeadersEditor_changeFromHeader = NULL;
 
 - (void) gpgChangeFromHeader:(id)sender
 {
+#ifdef SNOW_LEOPARD
+	((void (*)(id, SEL, id))[GPGMailSwizzler originalMethodForName:@"HeadersEditor.changeFromHeader:"])(self, _cmd, sender);
+#else
     ((void (*)(id, SEL, id))HeadersEditor_changeFromHeader)(self, _cmd, sender);
+#endif
     if([GPGMailBundle gpgMailWorks])
         [self gpgForwardAction:_cmd from:sender]; // _cmd = changeFromHeader: !!!
 }
 
 @end
 
+#ifdef SNOW_LEOPARD
+@implementation GPGMail_MailDocumentEditor
+#else
 @implementation MailDocumentEditor(GPGMail)
 
 static IMP  MailDocumentEditor_backEndDidLoadInitialContent = NULL;
@@ -109,15 +136,29 @@ static IMP  MailDocumentEditor_changeReplyMode = NULL;
 	MailDocumentEditor_animationDidEnd = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(animationDidEnd:), [MailDocumentEditor class], @selector(gpgAnimationDidEnd:), [MailDocumentEditor class]);
 	MailDocumentEditor_changeReplyMode = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(changeReplyMode:), [MailDocumentEditor class], @selector(gpgChangeReplyMode:), [MailDocumentEditor class]);
 }
+#endif
 
+#ifdef SNOW_LEOPARD
+- (id)gpgMyComposeAccessoryViewOwner
+#else
 - (GPGMailComposeAccessoryViewOwner *)gpgMyComposeAccessoryViewOwner
+#endif
 {
     NSEnumerator				*theEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
+#ifdef SNOW_LEOPARD
+    id	anOwner;
+#else
     MVComposeAccessoryViewOwner	*anOwner;
+#endif
 	
     while(anOwner = [theEnum nextObject]){
+#ifdef SNOW_LEOPARD
+        if([anOwner isKindOfClass:[NSClassFromString(@"GPGMailComposeAccessoryViewOwner") class]])
+            return (id)anOwner;
+#else
         if([anOwner isKindOfClass:[GPGMailComposeAccessoryViewOwner class]])
             return (GPGMailComposeAccessoryViewOwner *)anOwner;
+#endif
     }
     
     return nil;
@@ -130,46 +171,86 @@ static IMP  MailDocumentEditor_changeReplyMode = NULL;
             NSView  *accessoryView = [[self gpgMyComposeAccessoryViewOwner] composeAccessoryView];
             
             if(![accessoryView isHidden]){
+#ifdef SNOW_LEOPARD
+                NSRect  aRect = [[self valueForKey:@"composeWebView"] frame];
+#else
                 NSRect  aRect = [composeWebView frame];
+#endif
                 
                 aRect.size.height += NSHeight([accessoryView frame]);
+#ifdef SNOW_LEOPARD
+                [[self valueForKey:@"composeWebView"] setFrame:aRect];
+#else
                 [composeWebView setFrame:aRect];
+#endif
                 [accessoryView setHidden:YES];
             }
         }
     }
     
+#ifdef SNOW_LEOPARD    
+    ((void (*)(id, SEL, id))[GPGMailSwizzler originalMethodForName:@"MailDocumentEditor.showOrHideStationery:"])(self, _cmd, fp8);
+#else
     ((void (*)(id, SEL, id))MailDocumentEditor_showOrHideStationery)(self, _cmd, fp8);
+#endif
 }
 
 - (void)gpgAnimationDidEnd:(id)fp8
 {
+#ifdef SNOW_LEOPARD
+	((void (*)(id, SEL, id))[GPGMailSwizzler originalMethodForName:@"MailDocumentEditor.animationDidEnd:"])(self, _cmd, fp8);
+#else
     ((void (*)(id, SEL, id))MailDocumentEditor_animationDidEnd)(self, _cmd, fp8);
+#endif
     
     if([GPGMailBundle gpgMailWorks]){
         if(![self stationeryPaneIsVisible]){
             NSView  *accessoryView = [[self gpgMyComposeAccessoryViewOwner] composeAccessoryView];
             
             if([accessoryView isHidden]){
+#ifdef SNOW_LEOPARD
+                NSRect  aRect = [[self valueForKey:@"composeWebView"] frame];
+#else
                 NSRect  aRect = [composeWebView frame];
+#endif
                 
                 [accessoryView setHidden:NO];
                 aRect.size.height -= NSHeight([accessoryView frame]);
+#ifdef SNOW_LEOPARD
+                [[self valueForKey:@"composeWebView"] setFrame:aRect];
+#else
                 [composeWebView setFrame:aRect];
+#endif
             }
         }
     }
 }
 
+#ifdef SNOW_LEOPARD
+- (void) gpgAddAccessoryViewOwner:(id)owner
+#else
 - (void) gpgAddAccessoryViewOwner:(MVComposeAccessoryViewOwner *)owner
+#endif
 {
+#ifdef SNOW_LEOPARD
+	[[(id)[self headersEditor] gpgAccessoryViewOwners] addObject:owner];
+#else
 	[[(HeadersEditor *)[self headersEditor] gpgAccessoryViewOwners] addObject:owner];
+#endif
 }
 
+#ifdef SNOW_LEOPARD
+- (void)gpgInsertComposeAccessoryViewOfOwner:(id)owner
+#else
 - (void)gpgInsertComposeAccessoryViewOfOwner:(MVComposeAccessoryViewOwner *)owner
+#endif
 {
     NSView  *accessoryView = [owner composeAccessoryView];
+#ifdef SNOW_LEOPARD
+    NSView  *containerView = [[self valueForKey:@"composeWebView"] superview];
+#else
     NSView  *containerView = [composeWebView superview];
+#endif
     NSRect  aRect = [accessoryView frame];
     float   aHeight = NSHeight(aRect);
     
@@ -180,29 +261,54 @@ static IMP  MailDocumentEditor_changeReplyMode = NULL;
     [accessoryView setFrame:aRect];
     [accessoryView setAutoresizingMask:NSViewWidthSizable | NSViewMinYMargin];
     [containerView addSubview:accessoryView];
+#ifdef SNOW_LEOPARD
+    aRect = [[self valueForKey:@"composeWebView"] frame];
+#else
     aRect = [composeWebView frame];
+#endif
     aRect.size.height -= aHeight;
+#ifdef SNOW_LEOPARD
+    [[self valueForKey:@"composeWebView"] setFrame:aRect];
+#else
     [composeWebView setFrame:aRect];
+#endif
 }
 
 - (void)gpgBackEndDidLoadInitialContent:(id)fp8
 {
     // WARNING That method can be invoked more than once, when message is created by AppleScript (bug?).
+#ifdef SNOW_LEOPARD
+	[GPGMailSwizzler originalMethodForName:@"MailDocumentEditor.backEndDidLoadInitialContent:"](self, _cmd, fp8);
+#else
 	((void (*)(id, SEL, id))MailDocumentEditor_backEndDidLoadInitialContent)(self, _cmd, fp8);
+#endif
 
     if([GPGMailBundle gpgMailWorks]){
+#ifdef SNOW_LEOPARD        
+	NSEnumerator                *anEnum = [[(/*HeadersEditor **/id)[self headersEditor] gpgAccessoryViewOwners] objectEnumerator];
+        /*MVComposeAccessoryViewOwner **/id eachOwner;
+#else
         NSEnumerator                *anEnum = [[(HeadersEditor *)[self headersEditor] gpgAccessoryViewOwners] objectEnumerator];
         MVComposeAccessoryViewOwner *eachOwner;
+#endif
         BOOL                        createNewAccessoryViewOwner = YES;
         
         while(eachOwner = [anEnum nextObject]){
+#ifdef SNOW_LEOPARD
+            if([eachOwner isKindOfClass:NSClassFromString(@"GPGMailComposeAccessoryViewOwner")]){
+#else
             if([eachOwner isKindOfClass:[GPGMailComposeAccessoryViewOwner class]]){
+#endif
                 createNewAccessoryViewOwner = NO;
                 break;
             }
         }
         if(createNewAccessoryViewOwner){
+#ifdef SNOW_LEOPARD
+            id myComposeAccessoryViewOwner = [NSClassFromString(@"GPGMailComposeAccessoryViewOwner") composeAccessoryViewOwner];
+#else
             MVComposeAccessoryViewOwner	*myComposeAccessoryViewOwner = [GPGMailComposeAccessoryViewOwner composeAccessoryViewOwner];
+#endif            
             
             [self gpgAddAccessoryViewOwner:myComposeAccessoryViewOwner];
             [myComposeAccessoryViewOwner setupUIForMessage:[fp8 message]]; // Toolbar already finished
@@ -214,7 +320,11 @@ static IMP  MailDocumentEditor_changeReplyMode = NULL;
 - (BOOL)gpgBackEnd:fp12 shouldDeliverMessage:fp16
 {
     if([GPGMailBundle gpgMailWorks]){
+#ifdef SNOW_LEOPARD
+        id anOwner = [self gpgMyComposeAccessoryViewOwner];
+#else
         MVComposeAccessoryViewOwner	*anOwner = [self gpgMyComposeAccessoryViewOwner];
+#endif        
         
         if(anOwner != nil && ![anOwner messageWillBeDelivered:fp16]){
             NSBeep();
@@ -222,7 +332,11 @@ static IMP  MailDocumentEditor_changeReplyMode = NULL;
         }
     }
 	
+#ifdef SNOW_LEOPARD
+	return ((BOOL (*)(id, SEL, id, id))[GPGMailSwizzler originalMethodForName:@"MailDocumentEditor.backEnd:shouldDeliverMessage:"])(self, _cmd, fp12, fp16);
+#else
 	return ((BOOL (*)(id, SEL, id, id))MailDocumentEditor_backEnd_shouldDeliverMessage)(self, _cmd, fp12, fp16);
+#endif
 }
 
 /*
@@ -251,7 +365,11 @@ static IMP  MailDocumentEditor_changeReplyMode = NULL;
 {
     // Invoked when user clicks the reply/reply to all button in a compose window
     // Let's force reevaluation of PGP rules by accessoryView owner
+#ifdef SNOW_LEOPARD
+    ((void (*)(id, SEL, id))[GPGMailSwizzler originalMethodForName:@"MailDocumentEditor.changeReplyMode:"])(self, _cmd, fp8);
+#else
     ((void (*)(id, SEL, id))MailDocumentEditor_changeReplyMode)(self, _cmd, fp8);
+#endif
     
     NSEnumerator	*anEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
     id				anOwner;
@@ -273,17 +391,29 @@ static IMP  MailDocumentEditor_changeReplyMode = NULL;
 
 - (void)gpgSetAccessoryViewOwners:(NSArray *)newOwners
 {
+#ifdef SNOW_LEOPARD
+	[[(id)[self headersEditor] gpgAccessoryViewOwners] setArray:newOwners];
+#else
 	[[(HeadersEditor *)[self headersEditor] gpgAccessoryViewOwners] setArray:newOwners];
+#endif
 }
 
 - (BOOL)gpgIsRealEditor
 {
+#ifdef SNOW_LEOPARD
+    return ([self valueForKey:@"_backEnd"] != nil);
+#else
     return (_backEnd != nil);
+#endif
 }
 
 - (NSToolbar *)gpgToolbar
 {
+#ifdef SNOW_LEOPARD
+    return [self valueForKey:@"_toolbar"];
+#else
     return _toolbar;
+#endif
 }
 
 - (BOOL) gpgValidateToolbarItem:(NSToolbarItem *)theItem
@@ -293,7 +423,11 @@ static IMP  MailDocumentEditor_changeReplyMode = NULL;
     id				anOwner;
 #ifdef LEOPARD
 	// That works because we use only single segment items...
+#ifdef SNOW_LEOPARD
+    SEL				action = ([theItem isKindOfClass:NSClassFromString(@"SegmentedToolbarItem")] ? [(id)theItem actionForSegment:0] : [theItem action]);
+#else
     SEL				action = ([theItem isKindOfClass:[SegmentedToolbarItem class]] ? [(SegmentedToolbarItem *)theItem actionForSegment:0] : [theItem action]);
+#endif
 #else
     SEL				action = [theItem action];
 #endif

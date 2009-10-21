@@ -27,17 +27,27 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef SNOW_LEOPARD
 #import <MessageViewer.h>
 #import <TableViewManager.h>
 
+#endif
 
 @class MessageContentController;
 
+#ifdef SNOW_LEOPARD
+@interface GPGMail_MessageViewer : NSObject
+#else
 
 @interface MessageViewer(GPGMail)
+#endif
 
 - (MessageContentController *) gpgTextViewer:(id)dummy;
 - (NSToolbar *) gpgToolbar;
+#ifndef SNOW_LEOPARD
 - (TableViewManager *) gpgTableManager;
 
+#else
+- (id) gpgTableManager;
+#endif
 @end

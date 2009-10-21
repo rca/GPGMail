@@ -35,11 +35,14 @@
 #import <MimePart+GPGMail.h>
 #import <AppKit/AppKit.h>
 #import "GPGMailPatching.h"
+#ifndef SNOW_LEOPARD
 #import <MessageHeaderDisplay.h>
+#endif
 #import <MimeBody.h>
 #import <MessageHeaders.h>
 
 
+#ifndef SNOW_LEOPARD
 @interface MessageContentController(GPGMailPrivate)
 - (BOOL) _gpgBannerIsShown;
 @end
@@ -50,6 +53,53 @@
 GPG_DECLARE_EXTRA_IVARS(MessageContentController)
 
 
+#else
+@implementation GPGMail_MessageContentController
+
+static NSMapTable	*GPGMail_MessageContentController_extraIVars = NULL;
+static NSLock		*GPGMail_MessageContentController_extraIVarsLock = nil;
+static IMP          GPGMail_MessageContentController_dealloc = NULL;
+
++ (void) gpgInitExtraIvars
+{
+	GPGMail_MessageContentController_extraIVars = NSCreateMapTableWithZone(NSObjectMapKeyCallBacks, NSObjectMapValueCallBacks, 100, [self zone]);
+	GPGMail_MessageContentController_extraIVarsLock = [[NSLock alloc] init];
+	/*GPGMail_MessageContentController_dealloc = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(dealloc), [clazz class], @selector(gpgDealloc), [clazz class]);*/
+}
+
+- (NSMutableDictionary *) gpgExtraIVars
+{
+	NSMutableDictionary	*aDict;
+	NSValue             *aValue = [NSValue valueWithNonretainedObject:self];
+	
+	if(GPGMail_MessageContentController_extraIVarsLock == NULL)
+		GPGMail_MessageContentController_extraIVarsLock = [[NSLock alloc] init];
+	if(GPGMail_MessageContentController_extraIVars == NULL)
+		GPGMail_MessageContentController_extraIVars = NSCreateMapTableWithZone(NSObjectMapKeyCallBacks, NSObjectMapValueCallBacks, 100, [self zone]);	
+		
+	[GPGMail_MessageContentController_extraIVarsLock lock]; 
+	aDict = NSMapGet(GPGMail_MessageContentController_extraIVars, aValue); 
+	if(aDict == nil){ 
+		aDict = [NSMutableDictionary dictionaryWithCapacity:3]; 
+		NSMapInsert(GPGMail_MessageContentController_extraIVars, aValue, aDict); 
+	} 
+	[GPGMail_MessageContentController_extraIVarsLock unlock]; 
+
+	return aDict;
+}
+
+- (void) gpgDealloc 
+{ 
+	id	originalSelf = self; 
+
+	((void (*)(id, SEL))GPGMail_MessageContentController_dealloc)(self, _cmd); 
+	[GPGMail_MessageContentController_extraIVarsLock lock]; 
+	NSMapRemove(GPGMail_MessageContentController_extraIVars, [NSValue valueWithNonretainedObject:originalSelf]); 
+	[GPGMail_MessageContentController_extraIVarsLock unlock]; 
+}
+#endif
+
+#ifndef SNOW_LEOPARD
 // Posing no longer works correctly on 10.3, that's why we only overload single methods
 static IMP MessageContentController__updateDisplay = NULL;
 static IMP MessageContentController_validateMenuItem = NULL;
@@ -67,6 +117,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
     MessageContentController__setMessage_headerOrder = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(_setMessage:headerOrder:), [self class], @selector(gpg_setMessage:headerOrder:), [self class]);
     MessageContentController_fadeToEmpty = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(fadeToEmpty), [self class], @selector(gpgFadeToEmpty), [self class]);
 }
+#endif
 
 - (BOOL) gpgMessageWasInFactSigned
 {
@@ -149,13 +200,21 @@ static IMP MessageContentController_fadeToEmpty = NULL;
         if(YES/* && ![self gpgDoNotResetFlags]*/)
             [self gpgHideBanner];
     }
+#ifdef SNOW_LEOPARD
+    ((void (*)(id, SEL))[GPGMailSwizzler originalMethodForName:@"MessageContentController.fadeToEmpty"])(self, _cmd);
+#else
     ((void (*)(id, SEL))MessageContentController_fadeToEmpty)(self, _cmd);
+#endif
 }
 
 - (void) gpg_updateDisplay // FIXME: LEOPARD Delayed invocation (from other thread) after decryption -> hides again!
 {
     if(![GPGMailBundle gpgMailWorks]){
+#ifdef SNOW_LEOPARD
+        ((void (*)(id, SEL))[GPGMailSwizzler originalMethodForName:@"MessageContentController._updateDisplay"])(self, _cmd); // will change message flags, if necessary
+#else
         ((void (*)(id, SEL))MessageContentController__updateDisplay)(self, _cmd); // will change message flags, if necessary
+#endif
         return;
     }
         
@@ -242,15 +301,23 @@ static IMP MessageContentController_fadeToEmpty = NULL;
     }
 #endif
     
+#ifdef SNOW_LEOPARD    
+    ((void (*)(id, SEL))[GPGMailSwizzler originalMethodForName:@"MessageContentController._updateDisplay"])(self, _cmd); // will change message flags, if necessary
+#else
     ((void (*)(id, SEL))MessageContentController__updateDisplay)(self, _cmd); // will change message flags, if necessary
     
+#endif
     if(compareFlags){
         readStatusChanged = [self gpgMessageReadStatusHasChanged];
 #if defined(LEOPARD) || defined(TIGER)
         // Ensure 'read' flag has been set...
         if(!([aMessage messageFlags] & 0x00000001)){
 #warning CHECK Is this here that we cause problems with the read status??
+#ifdef SNOW_LEOPARD
+            [aMessage setMessageFlags:[aMessage messageFlags] mask:0x00000001];
+#else
             [aMessage setMessageFlags:[aMessage messageFlags] | 0x00000001];
+#endif
             if(GPGMailLoggingLevel)
                 NSLog(@"[DEBUG] Changed messageFlags");
         }
@@ -316,7 +383,11 @@ static IMP MessageContentController_fadeToEmpty = NULL;
         return [self gpgValidateAction:anAction];
     }
     
+#ifdef SNOW_LEOPARD    
+    return ((BOOL (*)(id, SEL, id))[GPGMailSwizzler originalMethodForName:@"MessageContentController.validateMenuItem:"])(self, _cmd, menuItem);
+#else
     return ((BOOL (*)(id, SEL, id))MessageContentController_validateMenuItem)(self, _cmd, menuItem);
+#endif
 }
 /*
  - (void)viewSource:fp12
@@ -349,7 +420,11 @@ static IMP MessageContentController_fadeToEmpty = NULL;
                 NSLog(@"[DEBUG] Reset WasInFactSigned and HasBeenDecrypted");
         }
     }
+#ifdef SNOW_LEOPARD
+    ((void (*)(id, SEL, id, id))[GPGMailSwizzler originalMethodForName:@"MessageContentController.setMessage:headerOrder:"])(self, _cmd, fp8, fp12);
+#else
     ((void (*)(id, SEL, id, id))MessageContentController_setMessage_headerOrder)(self, _cmd, fp8, fp12);
+#endif
 }
 
 - (void)gpg_setMessage:fp8 headerOrder:fp12
@@ -362,7 +437,11 @@ static IMP MessageContentController_fadeToEmpty = NULL;
             if(GPGMailLoggingLevel)
                 NSLog(@"[DEBUG] Message changed(2)");
             if([self message] != nil)
+#ifdef SNOW_LEOPARD
+                [[(MimeBody *)[[self message] messageBody] topLevelPart] clearCachedDecryptedMessageBody]; // FIXME: problem is that it's not the right part!
+#else
                 [[(MimeBody *)[[self message] messageBody] topLevelPart] clearCachedDescryptedMessageBody]; // FIXME: problem is that it's not the right part!
+#endif
             [self gpgSetMessageWasInFactSigned:NO];
             [self gpgSetMessageHasBeenDecrypted:NO];
             if(GPGMailLoggingLevel)
@@ -371,7 +450,11 @@ static IMP MessageContentController_fadeToEmpty = NULL;
         if(fp8 == nil)
             [[self gpgMessageViewerAccessoryViewOwner] messageChanged:nil];
     }
+#ifdef SNOW_LEOPARD
+    ((void (*)(id, SEL, id, id))[GPGMailSwizzler originalMethodForName:@"MessageContentController._setMessage:headerOrder:"])(self, _cmd, fp8, fp12);
+#else
     ((void (*)(id, SEL, id, id))MessageContentController__setMessage_headerOrder)(self, _cmd, fp8, fp12);
+#endif
 }
 
 // Do not use _gpgAddAccessoryView:, for backwards-compatibility with MailTags
@@ -384,9 +467,17 @@ static IMP MessageContentController_fadeToEmpty = NULL;
     // Works only for MIME signed, because Mail thinks it's (S/MIME) signed
     certificateView = accessoryView;
 #else
+#ifdef SNOW_LEOPARD
+    NSView  *resizedView = [[[self valueForKey:@"contentContainerView"] subviews] objectAtIndex:0];
+#else
     NSView  *resizedView = [[contentContainerView subviews] objectAtIndex:0];
+#endif
     NSArray *additionalViews = nil;
+#ifdef SNOW_LEOPARD
+    int     additionalViewsCount = [[[self valueForKey:@"contentContainerView"] subviews] count] - 1;
+#else
     int     additionalViewsCount = [[contentContainerView subviews] count] - 1;
+#endif
     
     if((GPGMailLoggingLevel > 0))
         NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
@@ -398,11 +489,19 @@ static IMP MessageContentController_fadeToEmpty = NULL;
     NSAssert1([resizedView isKindOfClass:[NSScrollView class]], @"### GPGMail: views are not ordered the expected way! First view is %@", resizedView);
 #endif
     if(additionalViewsCount > 0)
+#ifdef SNOW_LEOPARD
+        additionalViews = [[[self valueForKey:@"contentContainerView"] subviews] subarrayWithRange:NSMakeRange(1, additionalViewsCount)];
+#else
         additionalViews = [[contentContainerView subviews] subarrayWithRange:NSMakeRange(1, additionalViewsCount)];
+#endif
     originalRect = aRect = [resizedView frame];
     aHeight = NSHeight([accessoryView frame]);
     // Let's place our view on top (needed, because Junk banner always wants to be just above scrollView!)
+#ifdef SNOW_LEOPARD
+    aRect.origin.y = NSHeight([[self valueForKey:@"contentContainerView"] bounds]) + [[self valueForKey:@"contentContainerView"] bounds].origin.y - aHeight;
+#else
     aRect.origin.y = NSHeight([contentContainerView bounds]) + [contentContainerView bounds].origin.y - aHeight;
+#endif
     if(additionalViewsCount > 0){
         NSEnumerator    *anEnum = [additionalViews objectEnumerator];
         NSView          *currentBannerView = nil;
@@ -433,8 +532,13 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 - (void) _gpg2RemoveAccessoryView:(NSView *)accessoryView redisplay:(BOOL)flag
 {
     NSRect	originalRect;
+#ifdef SNOW_LEOPARD
+    NSView  *resizedView = [[[self valueForKey:@"contentContainerView"] subviews] objectAtIndex:0];
+    int     additionalViewsCount = [[[self valueForKey:@"contentContainerView"] subviews] count] - 1;
+#else
     NSView  *resizedView = [[contentContainerView subviews] objectAtIndex:0];
     int     additionalViewsCount = [[contentContainerView subviews] count] - 1;
+#endif
     
     if((GPGMailLoggingLevel > 0))
         NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
@@ -454,7 +558,11 @@ static IMP MessageContentController_fadeToEmpty = NULL;
     additionalViewsCount--;
     if(additionalViewsCount > 0){
         // First subview is the NSScrollView
+#ifdef SNOW_LEOPARD
+        NSArray         *additionalViews = [[[self valueForKey:@"contentContainerView"] subviews] subarrayWithRange:NSMakeRange(1, additionalViewsCount)];
+#else
         NSArray         *additionalViews = [[contentContainerView subviews] subarrayWithRange:NSMakeRange(1, additionalViewsCount)];
+#endif
         NSEnumerator    *anEnum = [additionalViews objectEnumerator];
         NSView          *currentBannerView = nil;
         float           resizedViewTop = NSMaxY([resizedView frame]);
@@ -591,7 +699,11 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 #endif
 	Message		*decryptedMessage = message;
 	
+#ifdef SNOW_LEOPARD
+    viewingState = [NSClassFromString(@"MessageHeaderDisplay") copyViewingState:viewingState];
+#else
     viewingState = [MessageHeaderDisplay copyViewingState:viewingState];
+#endif
 	[message gpgSetMayClearCachedDecryptedMessageBody:NO];
 	if(!messageBody)
 		messageBody = [message messageBody];
@@ -607,7 +719,11 @@ static IMP MessageContentController_fadeToEmpty = NULL;
     if([[(MessageBody *)messageBody attachments] count] == 0) // numberOfAttachments not up-to-date! Wrapper's
         [viewingState setAttachmentsDescription:nil];
     else
+#ifdef SNOW_LEOPARD
+        [viewingState setAttachmentsDescription:[NSClassFromString(@"MessageHeaderDisplay") formattedAttachmentsSizeForMessage:/*decryptedMessage*/message]];
+#else
         [viewingState setAttachmentsDescription:[MessageHeaderDisplay formattedAttachmentsSizeForMessage:/*decryptedMessage*/message]];
+#endif
 	//    NSLog(@"$$$ AttachmentsDescription = %@", [viewingState attachmentsDescription]);
     [viewingState setValue:messageBody forKey:@"mimeBody"];
     [self cacheViewingState:viewingState forMessage:message/*decryptedMessage*/]; // decryptedMessage?
@@ -624,13 +740,21 @@ static IMP MessageContentController_fadeToEmpty = NULL;
     //  [inViewer viewerPreferencesChanged:nil];
     //  [inViewer _updateDisplay];
     
+#ifdef SNOW_LEOPARD
+    viewingState = [NSClassFromString(@"MessageHeaderDisplay") copyViewingState:viewingState];
+#else
     viewingState = [MessageHeaderDisplay copyViewingState:viewingState];
+#endif
     [viewingState setHeaderAttributedString:[(MessageHeaders *)[message headers] attributedStringShowingHeaderDetailLevel:[self headerDetailLevel]]];
 	//    NSLog(@"$$$ HeaderAttributedString = %@", [viewingState headerAttributedString]);
     if(/*[message numberOfAttachments]*/[[(MessageBody *)[message messageBody] attachments] count] == 0) // numberOfAttachments not up-to-date! Wrapper's
         [viewingState setAttachmentsDescription:nil];
     else
+#ifdef SNOW_LEOPARD
+        [viewingState setAttachmentsDescription:[NSClassFromString(@"MessageHeaderDisplay") formattedAttachmentsSizeForMessage:message]];
+#else
         [viewingState setAttachmentsDescription:[MessageHeaderDisplay formattedAttachmentsSizeForMessage:message]];
+#endif
 	//    NSLog(@"$$$ AttachmentsDescription = %@", [viewingState attachmentsDescription]);
     [viewingState setValue:[message messageBody] forKey:@"mimeBody"];
 	//    viewingState->preferredAlternative = -1; // Does nothing
@@ -733,7 +857,11 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 - (Message *) gpgMessage
 {
     // On MacOS X, [self message] sometimes returns zombies!
+#ifdef SNOW_LEOPARD
+    return [self valueForKey:@"_message"];
+#else
     return _message;
+#endif
 }
 
 /*#if 0

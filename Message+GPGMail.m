@@ -138,7 +138,11 @@ GPG_DECLARE_EXTRA_IVARS(Message)
         [self setGpgIsDecrypting:YES];
         if(GPGMailLoggingLevel)
             NSLog(@"[DEBUG] Decrypting...");
+#ifndef SNOW_LEOPARD
         [[[self messageBody] topLevelPart] contentsForTextSystem]; // Will force re-evaluation of the decode* methods. Will not raise an exception, because -contentsForTextSystem will catch it!
+#else
+		[[[self messageBody] topLevelPart] gpgBetterDecode]; // Evaluate the decode method matching [part type].
+#endif
         if(GPGMailLoggingLevel)
             NSLog(@"[DEBUG] Finished Decrypting");
         [messageSignatures addObjectsFromArray:[self gpgMessageSignatures]];

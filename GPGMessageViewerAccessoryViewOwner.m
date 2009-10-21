@@ -38,6 +38,7 @@
 #import <Message+GPGMail.h>
 #import <NSString+Message.h>
 #import <NSString+GPGMail.h>
+#import <ExceptionHandling/NSExceptionHandler.h>
 
 
 @interface NSView(ColorBackgroundView)
@@ -452,6 +453,8 @@
             }@catch(NSException *localException){
                 // Error during verification
                 authenticationException = localException;
+                NSLog(@"[DEBUG] decryptionException: %@", [[authenticationException userInfo] objectForKey:NSStackTraceKey]);
+                
             }
             if(GPGMailLoggingLevel)
                 NSLog(@"[DEBUG] Done");
@@ -490,6 +493,8 @@
         }
     }
     else{ // Should we use a sheet instead?
+        // Log the stack trace of the exception to console.app for debugging.
+        NSLog(@"[DEBUG] decryptionException: %@", [[decryptionException userInfo] objectForKey:NSStackTraceKey]);
         if(![[decryptionException name] isEqualToString:GPGException] || [mailBundle gpgErrorCodeFromError:[[[decryptionException userInfo] objectForKey:GPGErrorKey] unsignedIntValue]] != GPGErrorCancelled){
             // "User canceled" => do not modify view
             [decryptedMessageTextField setStringValue:[mailBundle descriptionForException:decryptionException]];

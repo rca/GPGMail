@@ -37,7 +37,11 @@
 @class ColorBackgroundView;
 
 
+#ifndef SNOW_LEOPARD
 @interface GPGMailComposeAccessoryViewOwner : MVComposeAccessoryViewOwner
+#else
+@interface GPGMailComposeAccessoryViewOwner : NSObject
+#endif
 {
     BOOL					encryptsMessage;
     BOOL                    signsMessage;
@@ -95,6 +99,10 @@
 #endif
     BOOL                    displaysButtonsInComposeWindow;
     BOOL                    windowWillClose;
+#ifdef SNOW_LEOPARD
+    BOOL                    setupUI;
+    NSArray					*currentStates;
+#endif
 }
 
 - (IBAction) gpgToggleEncryptionForNewMessage:(id)sender;
@@ -121,5 +129,8 @@
 - (void) setDisplaysButtonsInComposeWindow:(BOOL)value;
 
 - (void) evaluateRules;
+#ifdef SNOW_LEOPARD
+- (void) setupUIForMessage:(id)message;
+#endif
 
 @end

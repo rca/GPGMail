@@ -386,6 +386,10 @@ static GPGKeyDownload	*_sharedInstance = nil;
 
 - (id) comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(int)index
 {
+    if(index < 0 || index >= [serverList count]) {
+        NSLog(@"[DEBUG] [GPGKeyDownload comboBox:objectValueForItemAtIndex:] - This shouldn't happen! NEVER!");
+        return nil;
+    }
     return [serverList objectAtIndex:index];
 }
 

@@ -153,7 +153,11 @@
     double _backgroundLoadStartTime;
     double _backgroundLoadEndTime;
     NSString *_messageIDToRestoreInitialStateFor;
+#ifdef SNOW_LEOPARD
+    struct CGRect _initialVisibleRect;
+#else
     struct _NSRect _initialVisibleRect;
+#endif
     struct _NSRange _initialSelectedRange;
     NSArray *mostRecentHeaderOrder;
     NSTimer *_fadeTimer;

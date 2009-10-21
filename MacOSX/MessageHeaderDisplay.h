@@ -60,7 +60,11 @@
 - (void)_addressBookChanged:(id)fp8;
 - (void)_addressPhotoLoaded:(id)fp8;
 - (id)textView;
+#ifdef SNOW_LEOPARD
+- (void)textView:(id)fp8 clickedOnCell:(id)fp12 event:(id)fp16 inRect:(struct CGRect)fp20 atIndex:(unsigned int)fp36;
+#else
 - (void)textView:(id)fp8 clickedOnCell:(id)fp12 event:(id)fp16 inRect:(struct _NSRect)fp20 atIndex:(unsigned int)fp36;
+#endif
 - (void)layoutManager:(id)fp8 didCompleteLayoutForTextContainer:(id)fp12 atEnd:(BOOL)fp16;
 - (void)setIsForPrinting:(BOOL)fp8;
 

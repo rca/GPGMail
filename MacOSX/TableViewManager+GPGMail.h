@@ -27,13 +27,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef SLEOPARD
 #import "TableViewManager.h"
+#endif
 
 
 @class NSMenu;
 
 
+#ifdef SLEOPARD
+@interface GPGMail_TableViewManager
+#else
 @interface TableViewManager(GPGMail)
+#endif
 
 - (NSMenu *) gpgContextualMenu;
 

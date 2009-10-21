@@ -10,6 +10,7 @@ extern int  GPGMailLoggingLevel;
 #if defined(MAC_OS_X_VERSION_10_6)
     #if MAC_OS_X_VERSION_MIN_REQUIRED == MAC_OS_X_VERSION_10_6
         #define SNOW_LEOPARD
+        #define LEOPARD
     #elif MAC_OS_X_VERSION_MIN_REQUIRED == MAC_OS_X_VERSION_10_5
         #define LEOPARD
     #elif MAC_OS_X_VERSION_MIN_REQUIRED == MAC_OS_X_VERSION_10_4

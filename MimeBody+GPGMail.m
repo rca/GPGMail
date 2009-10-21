@@ -716,8 +716,10 @@ static IMP  MimePart_decryptedMessageBody = NULL;
 
 - (id) gpgDecryptedMessageBody
 {
+    if(GPGMailLoggingLevel)
     NSLog(@"%p decryptedMessageBody", self);
     id  result = MimePart_decryptedMessageBody(self, _cmd);
+    if(GPGMailLoggingLevel)
     NSLog(@"=> %@", result);
     return result;
 }

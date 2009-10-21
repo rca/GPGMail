@@ -6,7 +6,11 @@
 {
     NSButton *_optionSwitch;
     NSView *_primaryView;
+#ifdef SNOW_LEOPARD
+	CGRect _originalFrame;
+#else
     struct _NSRect _originalFrame;
+#endif
     BOOL _isResizing;
     BOOL _isCustomizing;
 }
