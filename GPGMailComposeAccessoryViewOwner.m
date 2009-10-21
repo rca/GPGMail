@@ -179,7 +179,13 @@ static Class SegmentedToolbarItem;
     [replyOptions release];
     [[NSRunLoop currentRunLoop] cancelPerformSelectorsWithTarget:self];
     
+#ifdef SNOW_LEOPARD
+    // Runtime super call - CORRECT !
+    struct objc_super s = { self, [self superclass] };
+    objc_msgSendSuper(&s, @selector(dealloc));
+#else
 	[super dealloc];
+#endif
 }
 
 - (GPGKey *) selectedPersonalPublicKey
@@ -1332,7 +1338,14 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 #endif
     }
 
+#ifndef SNOW_LEOPARD
     return [super messageWillBeSaved:message];
+#else
+    // Runtime super call - CORRECT !
+    struct objc_super s = { self, [self superclass] };
+    
+    return (BOOL)objc_msgSendSuper(&s, @selector(messageWillBeSaved:), message);
+#endif
 }
 
 - (BOOL) messageHasAlreadyBeenEncryptedOrSigned:(Message *)message
@@ -1439,7 +1452,13 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 {
     if(GPGMailLoggingLevel)
         NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
+#ifndef SNOW_LEOPARD
     BOOL	result = [super messageWillBeDelivered:message];
+#else
+    // Runtime super call - CORRECT !
+    struct objc_super s = { self, [self superclass] };
+    BOOL	result = (BOOL)objc_msgSendSuper(&s, @selector(messageWillBeDelivered:), message);
+#endif
 
      // Remove draft headers
 #warning CHECKME LEOPARD

@@ -131,6 +131,9 @@
 - (void) evaluateRules;
 #ifdef SNOW_LEOPARD
 - (void) setupUIForMessage:(id)message;
+- (BOOL) messageWillBeSaved:(id)message;
+- (BOOL) messageWillBeDelivered:(id)message;
+
 #endif
 
 @end
