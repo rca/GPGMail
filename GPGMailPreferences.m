@@ -38,7 +38,7 @@
 - (void) refreshKeyIdentifiersDisplay
 {
     GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
-    NSEnumerator	*anEnum = [[mailBundle allDisplayedKeyIdentifiers] objectEnumerator];
+    NSEnumerator	*anEnum; // = [[mailBundle allDisplayedKeyIdentifiers] objectEnumerator];
     NSString		*anIdentifier;
     NSEnumerator	*tableColumnEnum = [[NSArray arrayWithArray:[keyIdentifiersTableView tableColumns]] objectEnumerator];
     NSTableColumn	*aColumn;
@@ -324,17 +324,18 @@
     anAttributedString = [[NSAttributedString alloc] initWithString:[webSiteTextField stringValue] attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSURL URLWithString:[webSiteTextField stringValue]], NSLinkAttributeName, pStyle, NSParagraphStyleAttributeName, nil]];
     [webSiteTextField setAttributedStringValue:anAttributedString]; // FIXME: No effect on Panther!
     [anAttributedString release];
+    [pStyle release];
     tableColumnPerIdentifier = [[NSMutableDictionary alloc] init];
     [personalKeysPopUpButton setAutoenablesItems:NO];
 
     while(aColumn = [anEnum nextObject])
         [tableColumnPerIdentifier setObject:aColumn forKey:[aColumn identifier]];
-#if defined(LEOPARD) || defined(TIGER)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
     [keyIdentifiersTableView setColumnAutoresizingStyle:NSTableViewUniformColumnAutoresizingStyle];
 #else
     [keyIdentifiersTableView setAutoresizesAllColumnsToFit:YES];
 #endif
-#if defined(LEOPARD)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     // Since 10.5, we can no longer reorder column when tableView data height is null.
     // As a workaround, we add 1 pixel.
     // FIXME: replace that tableView by NSTokenField
