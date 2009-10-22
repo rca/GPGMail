@@ -51,7 +51,7 @@ static GPGProgressIndicatorController	*_sharedController = nil;
 
 - (id) init
 {
-    if(self = [super init]){
+    if((self = [super init]) != nil){
         NSAssert([NSBundle loadNibNamed:@"GPGProgressIndicatorController" owner:self] == YES, @"### GPGMail: -[GPGProgressIndicatorController init]: Unable to load nib named 'GPGProgressIndicatorController'");
         [progressIndicator setUsesThreadedAnimation:YES];
         [enclosingBox retain];

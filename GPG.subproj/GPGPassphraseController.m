@@ -72,7 +72,7 @@ static NSTimer				*_flushTimer = nil;
     NSEnumerator			*anEnum = [_controllerPool objectEnumerator];
     GPGPassphraseController	*aController;
     
-    while(aController = [anEnum nextObject]){
+    while((aController = [anEnum nextObject]) != nil){
         if(![aController isInUse]){
             [aController setIsInUse:YES];
             return aController;
@@ -103,7 +103,7 @@ static NSTimer				*_flushTimer = nil;
 
 - (id) init
 {
-    if(self = [super init]){
+    if((self = [super init]) != nil){
         isInUse = YES;
         lock = [[NSConditionLock alloc] initWithCondition:0];
 		[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(workspaceWillSleep:) name:NSWorkspaceWillSleepNotification object:[NSWorkspace sharedWorkspace]];
@@ -545,7 +545,7 @@ static NSTimer				*_flushTimer = nil;
         GPGUserID       *aUID;
         NSMutableArray	*uids = [NSMutableArray array];
 
-        while(aUID = [anEnum nextObject])
+        while((aUID = [anEnum nextObject]) != nil)
             [uids addObject:[aUID userID]];
         attributes[1].data = (void *)[[uids componentsJoinedByString:@"\n"] UTF8String];
     }

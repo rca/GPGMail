@@ -238,7 +238,7 @@ static NSString *stringForEncoding(CFStringEncoding encoding)
 
 - (id) init
 {
-    if(self = [super init]){
+    if((self = [super init]) != nil){
         readLock = [[NSConditionLock alloc] initWithCondition:NOTHING_READ];
     }
 
@@ -338,13 +338,13 @@ static NSArray *recipientArgumentsFromSenderAndArguments(NSString *sender, NSArr
 
 - (NSException *) runGpgTaskWithArguments:(NSArray *)arguments passphrase:(NSString *)passphrase inputData:(NSData *)inputData outputData:(NSData **)outputData errorData:(NSData **)errorData encoding:(CFStringEncoding)encoding
 {
-    NSPipe					*stdinPipe = [NSPipe pipe];
-    NSPipe					*stdoutPipe = [NSPipe pipe];
-    NSPipe					*stderrPipe = [NSPipe pipe];
-    volatile NSException	*result = nil;
-    NSArray					*defaultArguments;
-    NSMutableDictionary		*environment = [NSMutableDictionary dictionaryWithDictionary:[[NSProcessInfo processInfo] environment]]; // We MUST add current environment!!
-    NSData					*passphraseData;
+    NSPipe				*stdinPipe = [NSPipe pipe];
+    NSPipe				*stdoutPipe = [NSPipe pipe];
+    NSPipe				*stderrPipe = [NSPipe pipe];
+    NSException         *result = nil;
+    NSArray				*defaultArguments;
+    NSMutableDictionary	*environment = [NSMutableDictionary dictionaryWithDictionary:[[NSProcessInfo processInfo] environment]]; // We MUST add current environment!!
+    NSData				*passphraseData;
 
     operationCancelled = NO;
 
