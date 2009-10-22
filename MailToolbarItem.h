@@ -1,6 +1,64 @@
 #import <Cocoa/Cocoa.h>
 
-#ifdef LEOPARD
+#ifdef SNOW_LEOPARD
+
+@interface SegmentedToolbarItem : NSToolbarItemGroup
+{
+}
+
+- (id)initWithItemIdentifier:(id)arg1;
+- (id)copyWithZone:(struct _NSZone *)arg1;
+- (void)configureForDisplayMode:(unsigned long)arg1 andSizeMode:(unsigned long)arg2;
+- (void)validate;
+- (id)control;
+- (void)controlAction:(id)arg1;
+- (void)setSegmentCount:(long)arg1;
+- (id)methodSignatureForSelector:(SEL)arg1;
+- (void)forwardInvocation:(id)arg1;
+- (id)labelForSegment:(long)arg1;
+- (void)setLabel:(id)arg1 forSegment:(long)arg2;
+- (void)setAlternateLabel:(id)arg1 forSegment:(long)arg2;
+- (id)paletteLabelForSegment:(long)arg1;
+- (void)setPaletteLabel:(id)arg1 forSegment:(long)arg2;
+- (SEL)actionForSegment:(long)arg1;
+- (void)setAction:(SEL)arg1 forSegment:(long)arg2;
+- (id)targetForSegment:(long)arg1;
+- (void)setTarget:(id)arg1 forSegment:(long)arg2;
+- (void)setTag:(long)arg1 forSegment:(long)arg2;
+- (void)setToolTip:(id)arg1 forSegment:(long)arg2;
+- (void)setMenu:(id)arg1 forSegment:(long)arg2;
+
+@end
+
+@interface SegmentedToolbarItemSegmentItem : NSToolbarItem
+{
+    SegmentedToolbarItem *parent;
+    int segmentNumber;
+}
+
+- (id)menuFormRepresentation;
+- (void)setToolTip:(id)arg1;
+- (void)_setToolTip:(id)arg1;
+- (void)setTag:(long)arg1;
+- (void)_setTag:(long)arg1;
+- (void)setImage:(id)arg1;
+- (void)setMenu:(id)arg1;
+- (long)segmentNumber;
+- (void)setSegmentNumber:(long)arg1;
+- (id)parent;
+- (void)setParent:(id)arg1;
+
+@end
+
+@interface SegmentedToolbarItemSegmentedCell : NSSegmentedCell
+{
+}
+
+- (double)_menuDelayTimeForSegment:(long)arg1;
+
+@end
+
+#elif defined(LEOPARD)
 
 @interface SegmentedToolbarItem : NSToolbarItemGroup
 {

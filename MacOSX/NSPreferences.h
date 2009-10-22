@@ -14,7 +14,106 @@
  *   Identifier (string)
  */
 
-#if defined(LEOPARD) || defined(TIGER)
+#ifdef SNOW_LEOPARD
+
+@protocol NSPreferencesModule
+- (id)viewForPreferenceNamed:(id)arg1;
+- (id)imageForPreferenceNamed:(id)arg1;
+- (BOOL)hasChangesPending;
+- (void)saveChanges;
+- (void)willBeDisplayed;
+- (void)initializeFromDefaults;
+- (void)didChange;
+- (void)moduleWillBeRemoved;
+- (void)moduleWasInstalled;
+- (BOOL)moduleCanBeRemoved;
+- (BOOL)preferencesWindowShouldClose;
+@end
+
+@interface NSPreferences : NSObject
+{
+    NSWindow *_preferencesPanel;
+    NSBox *_preferenceBox;
+    NSMatrix *_moduleMatrix;
+    NSButtonCell *_okButton;
+    NSButtonCell *_cancelButton;
+    NSButtonCell *_applyButton;
+    NSMutableArray *_preferenceTitles;
+    NSMutableArray *_preferenceModules;
+    NSMutableDictionary *_masterPreferenceViews;
+    NSMutableDictionary *_currentSessionPreferenceViews;
+    NSBox *_originalContentView;
+    BOOL _isModal;
+    float _constrainedWidth;
+    id _currentModule;
+    void *_reserved;
+}
+
++ (id)sharedPreferences;
++ (void)setDefaultPreferencesClass:(Class)arg1;
++ (Class)defaultPreferencesClass;
+- (id)init;
+- (void)dealloc;
+- (void)addPreferenceNamed:(id)arg1 owner:(id)arg2;
+- (void)_setupToolbar;
+- (void)_setupUI;
+- (struct _NSSize)preferencesContentSize;
+- (void)showPreferencesPanel;
+- (void)showPreferencesPanelForOwner:(id)arg1;
+- (int)showModalPreferencesPanelForOwner:(id)arg1;
+- (int)showModalPreferencesPanel;
+- (void)ok:(id)arg1;
+- (void)cancel:(id)arg1;
+- (void)apply:(id)arg1;
+- (void)_selectModuleOwner:(id)arg1;
+- (id)windowTitle;
+- (void)confirmCloseSheetIsDone:(id)arg1 returnCode:(int)arg2 contextInfo:(void *)arg3;
+- (BOOL)windowShouldClose:(id)arg1;
+- (void)windowDidResize:(id)arg1;
+- (struct _NSSize)windowWillResize:(id)arg1 toSize:(struct _NSSize)arg2;
+- (BOOL)usesButtons;
+- (id)_itemIdentifierForModule:(id)arg1;
+- (void)toolbarItemClicked:(id)arg1;
+- (id)toolbar:(id)arg1 itemForItemIdentifier:(id)arg2 willBeInsertedIntoToolbar:(BOOL)arg3;
+- (id)toolbarDefaultItemIdentifiers:(id)arg1;
+- (id)toolbarAllowedItemIdentifiers:(id)arg1;
+- (id)toolbarSelectableItemIdentifiers:(id)arg1;
+
+@end
+
+@interface NSPreferencesModule : NSObject <NSPreferencesModule>
+{
+    NSBox *_preferencesView;
+    struct _NSSize _minSize;
+    BOOL _hasChanges;
+    void *_reserved;
+}
+
++ (id)sharedInstance;
+- (void)dealloc;
+- (void)finalize;
+- (id)init;
+- (id)preferencesNibName;
+- (void)setPreferencesView:(id)arg1;
+- (id)viewForPreferenceNamed:(id)arg1;
+- (id)imageForPreferenceNamed:(id)arg1;
+- (id)titleForIdentifier:(id)arg1;
+- (BOOL)hasChangesPending;
+- (void)saveChanges;
+- (void)willBeDisplayed;
+- (void)initializeFromDefaults;
+- (void)didChange;
+- (struct _NSSize)minSize;
+- (void)setMinSize:(struct _NSSize)arg1;
+- (void)moduleWillBeRemoved;
+- (void)moduleWasInstalled;
+- (BOOL)moduleCanBeRemoved;
+- (BOOL)preferencesWindowShouldClose;
+- (BOOL)isResizable;
+
+@end
+
+#elif defined(LEOPARD) || defined(TIGER)
 
 @protocol NSPreferencesModule
 - (id)viewForPreferenceNamed:(id)fp8;
@@ -57,11 +156,7 @@
 - (void)addPreferenceNamed:(id)fp8 owner:(id)fp12;
 - (void)_setupToolbar;
 - (void)_setupUI;
-#ifdef SNOW_LEOPARD
-- (struct CGSize)preferencesContentSize;
-#else
 - (struct _NSSize)preferencesContentSize;
-#endif
 - (void)showPreferencesPanel;
 - (void)showPreferencesPanelForOwner:(id)fp8;
 - (int)showModalPreferencesPanelForOwner:(id)fp8;
@@ -74,11 +169,7 @@
 - (void)confirmCloseSheetIsDone:(id)fp8 returnCode:(int)fp12 contextInfo:(void *)fp16;
 - (BOOL)windowShouldClose:(id)fp8;
 - (void)windowDidResize:(id)fp8;
-#ifdef SNOW_LEOPARD
-- (struct CGSize)windowWillResize:(id)fp8 toSize:(struct CGSize)fp12;
-#else
 - (struct _NSSize)windowWillResize:(id)fp8 toSize:(struct _NSSize)fp12;
-#endif
 - (BOOL)usesButtons;
 - (id)_itemIdentifierForModule:(id)fp8;
 - (void)toolbarItemClicked:(id)fp8;
@@ -92,11 +183,7 @@
 @interface NSPreferencesModule : NSObject <NSPreferencesModule>
 {
     NSBox *_preferencesView;
-#ifdef SNOW_LEOPARD
-    struct CGSize _minSize;
-#else
     struct _NSSize _minSize;
-#endif
     BOOL _hasChanges;
     void *_reserved;
 }
@@ -115,13 +202,8 @@
 - (void)willBeDisplayed;
 - (void)initializeFromDefaults;
 - (void)didChange;
-#ifdef SNOW_LEOPARD
-- (struct CGSize)minSize;
-- (void)setMinSize:(struct CGSize)fp8;
-#else
 - (struct _NSSize)minSize;
 - (void)setMinSize:(struct _NSSize)fp8;
-#endif
 - (void)moduleWillBeRemoved;
 - (void)moduleWasInstalled;
 - (BOOL)moduleCanBeRemoved;
@@ -173,11 +255,7 @@
 - (void)addPreferenceNamed:fp8 owner:fp12;
 - (void)_setupToolbar;
 - (void)_setupUI;
-#ifdef SNOW_LEOPARD
-- (struct CGSize)preferencesContentSize;
-#else
 - (struct _NSSize)preferencesContentSize;
-#endif
 - (void)showPreferencesPanel;
 - (void)showPreferencesPanelForOwner:fp8;
 - (int)showModalPreferencesPanelForOwner:fp8;
@@ -190,11 +268,7 @@
 - (void)confirmCloseSheetIsDone:fp8 returnCode:(int)fp12 contextInfo:(void *)fp16;
 - (char)windowShouldClose:fp8;
 - (void)windowDidResize:fp8;
-#ifdef SNOW_LEOPARD
-- (struct CGSize)windowWillResize:fp8 toSize:(struct CGSize)fp12;
-#else
 - (struct _NSSize)windowWillResize:fp8 toSize:(struct _NSSize)fp12;
-#endif
 - (char)usesButtons;
 - _itemIdentifierForModule:fp8;
 - (void)toolbarItemClicked:fp8;
@@ -208,11 +282,7 @@
 @interface NSPreferencesModule:NSObject <NSPreferencesModule>
 {
     NSBox *_preferencesView;	// 4 = 0x4
-#ifdef SNOW_LEOPARD
-    struct CGSize _minSize;	// 8 = 0x8
-#else
     struct _NSSize _minSize;	// 8 = 0x8
-#endif
     char _hasChanges;	// 16 = 0x10
     void *_reserved;	// 20 = 0x14
 }
@@ -230,13 +300,8 @@
 - (void)willBeDisplayed;
 - (void)initializeFromDefaults;
 - (void)didChange;
-#ifdef SNOW_LEOPARD
-- (struct CGSize)minSize;
-- (void)setMinSize:(struct CGSize)fp8;
-#else
 - (struct _NSSize)minSize;
 - (void)setMinSize:(struct _NSSize)fp8;
-#endif
 - (void)moduleWillBeRemoved;
 - (void)moduleWasInstalled;
 - (char)moduleCanBeRemoved;

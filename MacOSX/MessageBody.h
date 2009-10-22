@@ -14,7 +14,61 @@
  Newly created messages use a private direct subclass of MessageBody, _OutgoingMessageBody.
  */
 
-#ifdef LEOPARD
+#ifdef SNOW_LEOPARD
+
+@class Message;
+
+@interface MessageBody : NSObject
+{
+    BOOL _hideCalendarMimePart;
+    Message *_message;
+    long long _messageID;
+}
+
+- (id)init;
+- (void)setMessage:(id)arg1;
+- (id)message;
+- (id)attributedString;
+- (BOOL)isHTML;
+- (BOOL)isRich;
+- (BOOL)isSignedByMe;
+- (void)calculateNumberOfAttachmentsIfNeeded;
+- (void)calculateNumberOfAttachmentsDecodeIfNeeded;
+- (unsigned long)numberOfAttachmentsSigned:(char *)arg1 encrypted:(char *)arg2;
+- (id)attachments;
+- (id)attachmentViewControllers;
+- (id)attachmentFilenames;
+- (id)textHtmlPart;
+- (id)webArchive;
+- (void)dealloc;
+- (BOOL)hideCalendarMimePart;
+- (void)setHideCalendarMimePart:(BOOL)arg1;
+- (id)actualMessage;
+- (void)setActualMessage:(id)arg1;
+- (long long)messageID;
+- (void)setMessageID:(long long)arg1;
+
+@end
+
+@interface MessageBody (StringRendering)
+- (void)renderString:(id)arg1;
+@end
+
+@interface _OutgoingMessageBody : MessageBody
+{
+    NSMutableData *rawData;
+}
+
+- (void)setMessage:(id)arg1;
+- (void)clearMessageWithoutReleasing;
+- (void)dealloc;
+- (id)rawData;
+- (void)setRawData:(id)arg1;
+- (id)mutableData;
+
+@end
+
+#elif defined(LEOPARD)
 
 @class Message;
 
