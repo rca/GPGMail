@@ -27,54 +27,54 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//#import <MessageContentController.h>
+#import <MessageContentController.h>
 #import "MessageViewer+GPGMail.h"
 #import "GPGMailPatching.h"
 #import "Message+GPGMail.h"
 
-//@class MessageContentController;
 
 @interface NSTextView(GPGMail)
 // In fact it is implemented in MessageTextView subclass
 - (void) originalSelectAll:(id)sender;
 @end
 
+#ifdef SNOW_LEOPARD_64
 @implementation GPGMail_MessageViewer
+#else
+@implementation MessageViewer(GPGMail)
+#endif
 
 - (MessageContentController *) gpgTextViewer:(id)dummy
 {
-    return _contentController;
+    return [self valueForKey:@"_contentController"];
 }
 
-- (MailToolbar *) gpgToolbar
+- (NSToolbar *) gpgToolbar
 {
-    return _toolbar;
+    return [self valueForKey:@"_toolbar"];
 }
 
 - (TableViewManager *) gpgTableManager
 {
-	NSLog(@"Say hello!");
-    return _tableManager;
+	return [self valueForKey:@"_tableManager"];
 }
 
-//
 // Mike's hack: when replying/forwarding encrypted message, select all content before replying
 // And it works!
 static IMP MessageViewer__replyMessageWithType = NULL;
 static IMP MessageViewer_forwardMessage = NULL;
-#ifdef LEOPARD
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 static IMP MessageViewer_validateMenuItem = NULL;
 #endif
 
-//+ (void) load
-//{
-//    MessageViewer__replyMessageWithType = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(_replyMessageWithType:), self, @selector(gpg_replyMessageWithType:), self);
-//    MessageViewer_forwardMessage = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(forwardMessage:), self, @selector(gpgForwardMessage:), self);
-//#ifdef LEOPARD
-//    MessageViewer_validateMenuItem = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(validateMenuItem:), self, @selector(gpgValidateMenuItem:), self);
-//#endif
-//}
-
++ (void) load
+{
+    MessageViewer__replyMessageWithType = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(_replyMessageWithType:), self, @selector(gpg_replyMessageWithType:), self);
+    MessageViewer_forwardMessage = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(forwardMessage:), self, @selector(gpgForwardMessage:), self);
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
+    MessageViewer_validateMenuItem = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(validateMenuItem:), self, @selector(gpgValidateMenuItem:), self);
+#endif
+}
 
 - (void)gpg_replyMessageWithType:(int)fp8
 {
@@ -85,7 +85,7 @@ static IMP MessageViewer_validateMenuItem = NULL;
     
     // When message is encrypted and user has not selected anything, 
     // then we temporarily select all body content
-#if defined(LEOPARD) || defined(TIGER)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 #warning CHECK
     BOOL    changedSelection = ([self currentDisplayedMessage] != nil && [[self currentDisplayedMessage] gpgIsEncrypted] && [[self gpgTextViewer:nil] selectedText] == nil);
 #else
@@ -108,7 +108,7 @@ static IMP MessageViewer_validateMenuItem = NULL;
         return;
     }
     
-#if defined(LEOPARD) || defined(TIGER)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 #warning CHECK
     BOOL    changedSelection = ([self currentDisplayedMessage] != nil && [[self currentDisplayedMessage] gpgIsEncrypted] && [[self gpgTextViewer:nil] selectedText] == nil);
 #else
@@ -124,7 +124,7 @@ static IMP MessageViewer_validateMenuItem = NULL;
     }
 }
 
-#ifdef LEOPARD
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 - (IBAction)gpgCopyMessageURL:(id)sender
 {
     Message *message = [self currentDisplayedMessage];
@@ -153,7 +153,7 @@ static IMP MessageViewer_validateMenuItem = NULL;
         return [self currentDisplayedMessage] != nil;
     }
     else
-        return ((BOOL (*)(id, SEL, id))[GPGMailSwizzler originalMethodForName:@"MessageViewer.validateMenuItem:"])(self, _cmd, fp8);
+        return ((BOOL (*)(id, SEL, id))MessageViewer_validateMenuItem)(self, _cmd, fp8);
 }
 #endif
 

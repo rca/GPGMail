@@ -1,6 +1,14 @@
 #import <Cocoa/Cocoa.h>
 
-#ifdef LEOPARD
+#ifdef SNOW_LEOPARD_64
+
+// Replaced by NSCache
+
+#elif defined(SNOW_LEOPARD)
+
+// Replaced by NSCache
+
+#elif defined(LEOPARD)
 
 @interface ObjectCache : NSObject
 {

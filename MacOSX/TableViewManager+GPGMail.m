@@ -31,11 +31,15 @@
 #import <AppKit/NSTableView.h>
 
 
+#ifdef SNOW_LEOPARD_64
 @implementation GPGMail_TableViewManager
+#else
+@implementation TableViewManager(GPGMail)
+#endif
 
 - (NSMenu *) gpgContextualMenu
 {
-    return [((NSTableView *)_tableView) menu];
+    return [((NSTableView *)[self valueForKey:@"_tableView"]) menu];
 }
 
 @end

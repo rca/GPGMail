@@ -38,7 +38,7 @@
 - (void) refreshKeyIdentifiersDisplay
 {
     GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
-    NSEnumerator	*anEnum = [[mailBundle allDisplayedKeyIdentifiers] objectEnumerator];
+    NSEnumerator	*anEnum; // = [[mailBundle allDisplayedKeyIdentifiers] objectEnumerator];
     NSString		*anIdentifier;
     NSEnumerator	*tableColumnEnum = [[NSArray arrayWithArray:[keyIdentifiersTableView tableColumns]] objectEnumerator];
     NSTableColumn	*aColumn;
@@ -316,25 +316,26 @@
     NSAttributedString      *anAttributedString;
     NSMutableParagraphStyle *pStyle = [[NSMutableParagraphStyle alloc] init];
 
-	[pStyle setAlignment:NSRightTextAlignment];
-	[versionTextField setStringValue:[[GPGMailBundle sharedInstance] versionDescription]];
-	anAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:[contactTextField stringValue], @"gpgmail@sente.ch"] attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSURL URLWithString:@"mailto:gpgmail@sente.ch"], NSLinkAttributeName, pStyle, NSParagraphStyleAttributeName, nil]];
-	[contactTextField setAttributedStringValue:anAttributedString]; // FIXME: No effect on Panther!
+    [pStyle setAlignment:NSRightTextAlignment];
+    [versionTextField setStringValue:[[GPGMailBundle sharedInstance] versionDescription]];
+    anAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:[contactTextField stringValue], @"gpgmail@sente.ch"] attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSURL URLWithString:@"mailto:gpgmail@sente.ch"], NSLinkAttributeName, pStyle, NSParagraphStyleAttributeName, nil]];
+    [contactTextField setAttributedStringValue:anAttributedString]; // FIXME: No effect on Panther!
     [anAttributedString release];
     anAttributedString = [[NSAttributedString alloc] initWithString:[webSiteTextField stringValue] attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSURL URLWithString:[webSiteTextField stringValue]], NSLinkAttributeName, pStyle, NSParagraphStyleAttributeName, nil]];
     [webSiteTextField setAttributedStringValue:anAttributedString]; // FIXME: No effect on Panther!
     [anAttributedString release];
+    [pStyle release];
     tableColumnPerIdentifier = [[NSMutableDictionary alloc] init];
     [personalKeysPopUpButton setAutoenablesItems:NO];
 
     while(aColumn = [anEnum nextObject])
         [tableColumnPerIdentifier setObject:aColumn forKey:[aColumn identifier]];
-#if defined(LEOPARD) || defined(TIGER)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
     [keyIdentifiersTableView setColumnAutoresizingStyle:NSTableViewUniformColumnAutoresizingStyle];
 #else
     [keyIdentifiersTableView setAutoresizesAllColumnsToFit:YES];
 #endif
-#if defined(LEOPARD)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     // Since 10.5, we can no longer reorder column when tableView data height is null.
     // As a workaround, we add 1 pixel.
     // FIXME: replace that tableView by NSTokenField
@@ -344,7 +345,7 @@
     aFrame.size.height += 1;
     [[keyIdentifiersTableView enclosingScrollView] setFrame:aFrame];
 #endif
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferencesDidChange:) name:GPGPreferencesDidChangeNotification object:[GPGMailBundle sharedInstance]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferencesDidChange:) name:GPGPreferencesDidChangeNotification object:[GPGMailBundle sharedInstance]];
 }
 
 - (void) initializeFromDefaults
@@ -402,8 +403,7 @@
 
 - (IBAction) flushCachedPassphrases:(id)sender
 {
-    NSLog(@"flushCachedPassphrases: %@", sender);
-	[GPGPassphraseController flushCachedPassphrases];
+    [GPGPassphraseController flushCachedPassphrases];
 }
 
 - (void) preferencesDidChange:(NSNotification *)notification

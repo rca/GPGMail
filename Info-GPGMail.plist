@@ -4,12 +4,14 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
+	<key>CFBundleDocumentTypes</key>
+	<array/>
 	<key>CFBundleExecutable</key>
 	<string>GPGMail</string>
 	<key>CFBundleGetInfoHTML</key>
-	<string>&lt;A HREF=&quot;http://www.sente.ch/software/GPGMail/&quot;&gt;GPGMail&lt;/A&gt; version 1.2.0 (v56), Copyright 2000-2008, St&amp;eacute;phane Corth&amp;eacute;sy.</string>
+	<string>&lt;A HREF=&quot;http://www.sente.ch/software/GPGMail/&quot;&gt;GPGMail&lt;/A&gt; version 1.2.3 (v61), Copyright 2000-2010, St&amp;eacute;phane Corth&amp;eacute;sy.</string>
 	<key>CFBundleGetInfoString</key>
-	<string>GPGMail version 1.2.0 (v56), Copyright 2000-2008, Stéphane Corthésy.</string>
+	<string>GPGMail version 1.2.3 (v61), Copyright 2000-2010, Stéphane Corthésy.</string>
 	<key>CFBundleIconFile</key>
 	<string>GPGMail</string>
 	<key>CFBundleIdentifier</key>
@@ -21,15 +23,17 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.0 (v56)</string>
+	<string>1.2.3</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>56</string>
+	<string>61</string>
 	<key>NSPrincipalClass</key>
 	<string>GPGMailBundle</string>
 	<key>SupportedPluginCompatibilityUUIDs</key>
 	<array>
+		<string>0CB5F2A0-A173-4809-86E3-9317261F1745</string>
+		<string>2F0CF6F9-35BA-4812-9CB2-155C0FDB9B0F</string>
 		<string>225E0A48-2CDB-44A6-8D99-A9BB8AF6BA04</string>
 		<string>B3F3FC72-315D-4323-BE85-7AB76090224D</string>
 		<string>2610F061-32C6-4C6B-B90A-7A3102F9B9C8</string>

@@ -108,12 +108,13 @@ enum {
 - (BOOL) isMessagePGPEncrypted;
 - (BOOL) isMessagePGPSigned;
 - (void) messageChanged:(Message *)message;
+- (void)printStackTrace:(NSException *)e;
 
 @end
 
 @interface NSObject(GPGMessageViewerAccessoryViewOwnerDelegate)
 - (void) gpgAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner replaceViewWithView:(NSView *)view;
-#if !defined(LEOPARD) && !defined(TIGER)
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
 - (void) gpgAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner showStatusMessage:(NSString *)messageString;
 #endif
 - (void) gpgAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner displayMessage:(Message *)message isSigned:(BOOL)isSigned;

@@ -228,8 +228,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -254,7 +252,7 @@
 						<dict>
 							<key>PBXSmartGroupTreeModuleColumnWidthsKey</key>
 							<array>
-								<real>186</real>
+								<real>291</real>
 							</array>
 							<key>PBXSmartGroupTreeModuleColumnsKey_v4</key>
 							<array>
@@ -278,7 +276,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 0}, {186, 536}}</string>
+							<string>{{0, 0}, {291, 693}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -290,24 +288,26 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {203, 554}}</string>
+						<string>{{0, 0}, {308, 711}}</string>
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>MainColumn</string>
-							<real>186</real>
+							<real>291</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>0 164 989 595 0 0 1440 878 </string>
+						<string>44 126 1225 752 0 0 1440 878 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
 					<key>Proportion</key>
-					<string>203pt</string>
+					<string>308pt</string>
 				</dict>
 				<dict>
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -325,16 +325,19 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>80422CEA10701DD200C6223B</string>
+										<string>8091843B107F87FB00BA6840</string>
 										<key>history</key>
 										<array>
 											<string>80B9B46A106A7091004BF8D6</string>
-											<string>80B9B472106A7091004BF8D6</string>
+											<string>80918437107F87FB00BA6840</string>
+											<string>80918438107F87FB00BA6840</string>
 										</array>
 										<key>prevStack</key>
 										<array>
 											<string>80B9B46C106A7091004BF8D6</string>
 											<string>80B9B46D106A7091004BF8D6</string>
+											<string>80918439107F87FB00BA6840</string>
+											<string>8091843A107F87FB00BA6840</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -346,14 +349,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {781, 488}}</string>
+								<string>{{0, 0}, {912, 645}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 164 989 595 0 0 1440 878 </string>
+								<string>44 126 1225 752 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>488pt</string>
+							<string>645pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -366,9 +369,9 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 493}, {781, 61}}</string>
+								<string>{{0, 650}, {912, 61}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 164 989 595 0 0 1440 878 </string>
+								<string>44 126 1225 752 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -377,7 +380,7 @@
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>781pt</string>
+					<string>912pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -392,9 +395,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>80422CE810701DCA00C6223B</string>
+				<string>8091843C107F87FB00BA6840</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>80422CE910701DCA00C6223B</string>
+				<string>8091843D107F87FB00BA6840</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -531,7 +534,7 @@
 		<string>/Volumes/Snow Leopard/Users/lukele/GPGMail/GPGMail.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>0 164 989 595 0 0 1440 878 </string>
+	<string>44 126 1225 752 0 0 1440 878 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>

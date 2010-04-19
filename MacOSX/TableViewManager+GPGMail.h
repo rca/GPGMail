@@ -33,7 +33,11 @@
 @class NSMenu;
 
 
+#ifdef SNOW_LEOPARD_64
+@interface GPGMail_TableViewManager : NSObject
+#else
 @interface TableViewManager(GPGMail)
+#endif
 
 - (NSMenu *) gpgContextualMenu;
 

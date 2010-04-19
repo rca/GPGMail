@@ -15,7 +15,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					542,
+					673,
 					20,
 					48,
 					43,
@@ -32,15 +32,18 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 275783112;
-			PBXWorkspaceStateSaveDate = 275783112;
+			PBXPerProjectTemplateStateSaveDate = 276793255;
+			PBXWorkspaceStateSaveDate = 276793255;
 		};
 		perUserProjectItems = {
-			80422CEA10701DD200C6223B /* PBXTextBookmark */ = 80422CEA10701DD200C6223B /* PBXTextBookmark */;
+			80918437107F87FB00BA6840 /* PBXTextBookmark */ = 80918437107F87FB00BA6840 /* PBXTextBookmark */;
+			80918438107F87FB00BA6840 /* PBXTextBookmark */ = 80918438107F87FB00BA6840 /* PBXTextBookmark */;
+			80918439107F87FB00BA6840 /* PBXTextBookmark */ = 80918439107F87FB00BA6840 /* PBXTextBookmark */;
+			8091843A107F87FB00BA6840 /* PBXTextBookmark */ = 8091843A107F87FB00BA6840 /* PBXTextBookmark */;
+			8091843B107F87FB00BA6840 /* PBXTextBookmark */ = 8091843B107F87FB00BA6840 /* PBXTextBookmark */;
 			80B9B46A106A7091004BF8D6 /* PBXTextBookmark */ = 80B9B46A106A7091004BF8D6 /* PBXTextBookmark */;
 			80B9B46C106A7091004BF8D6 /* PBXTextBookmark */ = 80B9B46C106A7091004BF8D6 /* PBXTextBookmark */;
 			80B9B46D106A7091004BF8D6 /* PBXTextBookmark */ = 80B9B46D106A7091004BF8D6 /* PBXTextBookmark */;
-			80B9B472106A7091004BF8D6 /* PBXTextBookmark */ = 80B9B472106A7091004BF8D6 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 80B9B4641069C5B0004BF8D6 /* Source Control */;
 		userBuildSettings = {
@@ -61,10 +64,17 @@
 	};
 	559A806E0838E9B10052F47C /* GPGMailBundle.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {834, 34216}}";
-			sepNavSelRange = "{4240, 0}";
-			sepNavVisRange = "{27352, 1421}";
+			sepNavIntBoundsRect = "{{0, 0}, {2400, 33726}}";
+			sepNavSelRange = "{11371, 0}";
+			sepNavVisRange = "{11326, 4220}";
 			sepNavWindowFrame = "{{15, 364}, {695, 809}}";
+		};
+	};
+	559A80700838E9B10052F47C /* GPGMailPatching.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {858, 4130}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{4807, 1278}";
 		};
 	};
 	559A817E0838F3250052F47C /* plistutil */ = {
@@ -73,15 +83,55 @@
 			80B9B4471069C5AE004BF8D6 /* plistutil */,
 		);
 	};
-	80422CEA10701DD200C6223B /* PBXTextBookmark */ = {
+	80918437107F87FB00BA6840 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 559A80700838E9B10052F47C /* GPGMailPatching.m */;
+		name = "GPGMailPatching.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1278;
+		vrLoc = 4807;
+	};
+	80918438107F87FB00BA6840 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 559A806E0838E9B10052F47C /* GPGMailBundle.m */;
-		name = "GPGMailBundle.m: 97";
+		name = "GPGMailBundle.m: 95";
 		rLen = 0;
 		rLoc = 4240;
 		rType = 0;
-		vrLen = 1421;
-		vrLoc = 27352;
+		vrLen = 2822;
+		vrLoc = 26704;
+	};
+	80918439107F87FB00BA6840 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 559A806E0838E9B10052F47C /* GPGMailBundle.m */;
+		name = "GPGMailBundle.m: 95";
+		rLen = 0;
+		rLoc = 4240;
+		rType = 0;
+		vrLen = 2822;
+		vrLoc = 26704;
+	};
+	8091843A107F87FB00BA6840 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 559A80700838E9B10052F47C /* GPGMailPatching.m */;
+		name = "GPGMailPatching.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1278;
+		vrLoc = 4807;
+	};
+	8091843B107F87FB00BA6840 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 559A806E0838E9B10052F47C /* GPGMailBundle.m */;
+		name = "GPGMailBundle.m: 251";
+		rLen = 0;
+		rLoc = 11371;
+		rType = 0;
+		vrLen = 4220;
+		vrLoc = 11326;
 	};
 	80B9B4471069C5AE004BF8D6 /* plistutil */ = {
 		isa = PBXExecutable;
@@ -169,16 +219,6 @@
 		rType = 0;
 		vrLen = 865;
 		vrLoc = 7733;
-	};
-	80B9B472106A7091004BF8D6 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 559A806E0838E9B10052F47C /* GPGMailBundle.m */;
-		name = "GPGMailBundle.m: 97";
-		rLen = 0;
-		rLoc = 4240;
-		rType = 0;
-		vrLen = 1388;
-		vrLoc = 27385;
 	};
 	8D5B49AC048680CD000E48DA /* GPGMail */ = {
 		activeExec = 0;

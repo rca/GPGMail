@@ -27,11 +27,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//#import <ComposeBackEnd.h>
+#import <ComposeBackEnd.h>
 
 @class NSArray;
 
+#ifdef SNOW_LEOPARD_64
 @interface GPGMail_ComposeBackEnd : NSObject
+#else
+@interface ComposeBackEnd(GPGMail)
+#endif
 
 - (NSArray *) gpgRecipients;
 // Returns email addresses of To, CC (but not BCC)

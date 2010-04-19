@@ -35,98 +35,42 @@
 #import <MimePart+GPGMail.h>
 #import <AppKit/AppKit.h>
 #import "GPGMailPatching.h"
-//#import <MessageHeaderDisplay.h>
+#import <MessageHeaderDisplay.h>
 #import <MimeBody.h>
 #import <MessageHeaders.h>
 
 
-//@interface MessageContentController(GPGMailPrivate)
-//- (BOOL) _gpgBannerIsShown;
-//@end
+NSString *MessageContentControllerName = @"MessageContentController";
+
+#ifdef SNOW_LEOPARD_64
+@implementation GPGMail_MessageContentController : NSObject
+#else
+
+@interface MessageContentController(GPGMailPrivate)
+- (BOOL) _gpgBannerIsShown;
+@end
+
+@implementation MessageContentController(GPGMail)
+#endif
+
+GPG_DECLARE_EXTRA_IVARS(MessageContentControllerName)
+
+// Posing no longer works correctly on 10.3, that's why we only overload single methods
+static IMP MessageContentController__updateDisplay = NULL;
+static IMP MessageContentController_validateMenuItem = NULL;
+static IMP MessageContentController_setMessage_headerOrder = NULL;
+static IMP MessageContentController__setMessage_headerOrder = NULL;
+static IMP MessageContentController_fadeToEmpty = NULL;
 
 
-//@implementation NSObject(GPGMailPrivate)
-//
-//+ (void)load {
-//	NSLog(@"GPG Load: %@", self);
-//	if([self respondsToSelector:@selector(gpgInitExtraIvars)]) {
-//		[self gpgInitExtraIvars];
-//	}
-//	else {
-//		NSLog(@"Can't do, I'm sorry");
-//	}
-//}
-//
-//@end
-
-@implementation GPGMail_MessageContentController
-
-static NSMapTable	*GPGMail_MessageContentController_extraIVars = NULL;
-static NSLock		*GPGMail_MessageContentController_extraIVarsLock = nil;
-static IMP          GPGMail_MessageContentController_dealloc = NULL;
-
-+ (void) gpgInitExtraIvars
++ (void) load
 {
-	NSLog(@"Initing extra ivars for: %@", self);
-	GPGMail_MessageContentController_extraIVars = NSCreateMapTableWithZone(NSObjectMapKeyCallBacks, NSObjectMapValueCallBacks, 100, [self zone]);
-	GPGMail_MessageContentController_extraIVarsLock = [[NSLock alloc] init];
-	NSLog(@"Helllo: %@", GPGMail_MessageContentController_extraIVars);
-	/*GPGMail_MessageContentController_dealloc = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(dealloc), [clazz class], @selector(gpgDealloc), [clazz class]);*/
-}
-
-- (NSMutableDictionary *) gpgExtraIVars
-{
-	NSMutableDictionary	*aDict;
-	NSValue             *aValue = [NSValue valueWithNonretainedObject:self];
-	
-	if(GPGMail_MessageContentController_extraIVarsLock == NULL)
-		GPGMail_MessageContentController_extraIVarsLock = [[NSLock alloc] init];
-	if(GPGMail_MessageContentController_extraIVars == NULL)
-		GPGMail_MessageContentController_extraIVars = NSCreateMapTableWithZone(NSObjectMapKeyCallBacks, NSObjectMapValueCallBacks, 100, [self zone]);	
-		
-	[GPGMail_MessageContentController_extraIVarsLock lock]; 
-	aDict = NSMapGet(GPGMail_MessageContentController_extraIVars, aValue); 
-	if(aDict == nil){ 
-		aDict = [NSMutableDictionary dictionaryWithCapacity:3]; 
-		NSMapInsert(GPGMail_MessageContentController_extraIVars, aValue, aDict); 
-	} 
-	[GPGMail_MessageContentController_extraIVarsLock unlock]; 
-
-	return aDict;
-}
-
-- (void) gpgDealloc 
-{ 
-	id	originalSelf = self; 
-
-	((void (*)(id, SEL))GPGMail_MessageContentController_dealloc)(self, _cmd); 
-	[GPGMail_MessageContentController_extraIVarsLock lock]; 
-	NSMapRemove(GPGMail_MessageContentController_extraIVars, [NSValue valueWithNonretainedObject:originalSelf]); 
-	[GPGMail_MessageContentController_extraIVarsLock unlock]; 
-}
-//
-//// Posing no longer works correctly on 10.3, that's why we only overload single methods
-//static IMP MessageContentController__updateDisplay = NULL;
-//static IMP MessageContentController_validateMenuItem = NULL;
-//static IMP MessageContentController_setMessage_headerOrder = NULL;
-//static IMP MessageContentController__setMessage_headerOrder = NULL;
-//static IMP MessageContentController_fadeToEmpty = NULL;
-
-
-+ (void) gpgLoad
-{
-    NSLog(@"GPG Load: %@", self);
-		if([self respondsToSelector:@selector(gpgInitExtraIvars)]) {
-		[self gpgInitExtraIvars];
-	}
-	else {
-		NSLog(@"Not today!");
-	}
-//    MessageContentController__updateDisplay = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(_updateDisplay), [self class], @selector(gpg_updateDisplay), [self class]);
-//    MessageContentController_validateMenuItem = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(validateMenuItem:), [self class], @selector(gpgValidateMenuItem:), [self class]);
-//    MessageContentController_setMessage_headerOrder = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(setMessage:headerOrder:), [self class], @selector(gpgSetMessage:headerOrder:), [self class]);
-//    MessageContentController__setMessage_headerOrder = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(_setMessage:headerOrder:), [self class], @selector(gpg_setMessage:headerOrder:), [self class]);
-//    MessageContentController_fadeToEmpty = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(fadeToEmpty), [self class], @selector(gpgFadeToEmpty), [self class]);
+    [self gpgInitExtraIvars];
+    MessageContentController__updateDisplay = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(_updateDisplay), NSClassFromString(@"MessageContentController"), @selector(gpg_updateDisplay), [self class]);
+    MessageContentController_validateMenuItem = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(validateMenuItem:), NSClassFromString(@"MessageContentController"), @selector(gpgValidateMenuItem:), [self class]);
+    MessageContentController_setMessage_headerOrder = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(setMessage:headerOrder:), NSClassFromString(@"MessageContentController"), @selector(gpgSetMessage:headerOrder:), [self class]);
+    MessageContentController__setMessage_headerOrder = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(_setMessage:headerOrder:), NSClassFromString(@"MessageContentController"), @selector(gpg_setMessage:headerOrder:), [self class]);
+    MessageContentController_fadeToEmpty = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(fadeToEmpty), NSClassFromString(@"MessageContentController"), @selector(gpgFadeToEmpty), [self class]);
 }
 
 - (BOOL) gpgMessageWasInFactSigned
@@ -210,13 +154,13 @@ static IMP          GPGMail_MessageContentController_dealloc = NULL;
         if(YES/* && ![self gpgDoNotResetFlags]*/)
             [self gpgHideBanner];
     }
-    ((void (*)(id, SEL))[GPGMailSwizzler originalMethodForName:@"MessageContentController.fadeToEmpty"])(self, _cmd);
+    ((void (*)(id, SEL))MessageContentController_fadeToEmpty)(self, _cmd);
 }
 
 - (void) gpg_updateDisplay // FIXME: LEOPARD Delayed invocation (from other thread) after decryption -> hides again!
 {
     if(![GPGMailBundle gpgMailWorks]){
-        ((void (*)(id, SEL))[GPGMailSwizzler originalMethodForName:@"MessageContentController._updateDisplay"])(self, _cmd); // will change message flags, if necessary
+        ((void (*)(id, SEL))MessageContentController__updateDisplay)(self, _cmd); // will change message flags, if necessary
         return;
     }
         
@@ -232,7 +176,7 @@ static IMP          GPGMail_MessageContentController_dealloc = NULL;
 	
     [[self gpgMessageViewerAccessoryViewOwner] messageChanged:aMessage];
     if(compareFlags){
-#if defined(LEOPARD) || defined(TIGER)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
         [self gpgSetMessageReadStatusHasChanged:([aMessage messageFlags] & 0x00000001) == 0]; // We check once if message is marked as unread; we will set it as read ourselves, as sometimes Mail does it only asynchronously
          // Since Tiger, MessageStoreMessageFlagsChanged poster is no longer message's messageStore; and flag change is sometimes done async
 #else
@@ -302,16 +246,20 @@ static IMP          GPGMail_MessageContentController_dealloc = NULL;
         [self gpgHideBanner];
     }
 #endif
-    
-    ((void (*)(id, SEL))[GPGMailSwizzler originalMethodForName:@"MessageContentController._updateDisplay"])(self, _cmd); // will change message flags, if necessary
-    
+
+    ((void (*)(id, SEL))MessageContentController__updateDisplay)(self, _cmd); // will change message flags, if necessary
+
     if(compareFlags){
         readStatusChanged = [self gpgMessageReadStatusHasChanged];
-#if defined(LEOPARD) || defined(TIGER)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
         // Ensure 'read' flag has been set...
         if(!([aMessage messageFlags] & 0x00000001)){
 #warning CHECK Is this here that we cause problems with the read status??
+#ifdef SNOW_LEOPARD
             [aMessage setMessageFlags:[aMessage messageFlags] mask:0x00000001];
+#else
+            [aMessage setMessageFlags:[aMessage messageFlags] | 0x00000001];
+#endif
             if(GPGMailLoggingLevel)
                 NSLog(@"[DEBUG] Changed messageFlags");
         }
@@ -376,8 +324,8 @@ static IMP          GPGMail_MessageContentController_dealloc = NULL;
     if(anAction == @selector(gpgDecrypt:) || anAction == @selector(gpgAuthenticate:)){
         return [self gpgValidateAction:anAction];
     }
-    
-    return ((BOOL (*)(id, SEL, id))[GPGMailSwizzler originalMethodForName:@"MessageContentController.validateMenuItem:"])(self, _cmd, menuItem);
+
+    return ((BOOL (*)(id, SEL, id))MessageContentController_validateMenuItem)(self, _cmd, menuItem);
 }
 /*
  - (void)viewSource:fp12
@@ -410,7 +358,7 @@ static IMP          GPGMail_MessageContentController_dealloc = NULL;
                 NSLog(@"[DEBUG] Reset WasInFactSigned and HasBeenDecrypted");
         }
     }
-    ((void (*)(id, SEL, id, id))[GPGMailSwizzler originalMethodForName:@"MessageContentController.setMessage:headerOrder:"])(self, _cmd, fp8, fp12);
+    ((void (*)(id, SEL, id, id))MessageContentController_setMessage_headerOrder)(self, _cmd, fp8, fp12);
 }
 
 - (void)gpg_setMessage:fp8 headerOrder:fp12
@@ -423,7 +371,11 @@ static IMP          GPGMail_MessageContentController_dealloc = NULL;
             if(GPGMailLoggingLevel)
                 NSLog(@"[DEBUG] Message changed(2)");
             if([self message] != nil)
+#ifdef SNOW_LEOPARD
                 [[(MimeBody *)[[self message] messageBody] topLevelPart] clearCachedDecryptedMessageBody]; // FIXME: problem is that it's not the right part!
+#else
+                [[(MimeBody *)[[self message] messageBody] topLevelPart] clearCachedDescryptedMessageBody]; // FIXME: problem is that it's not the right part!
+#endif
             [self gpgSetMessageWasInFactSigned:NO];
             [self gpgSetMessageHasBeenDecrypted:NO];
             if(GPGMailLoggingLevel)
@@ -432,7 +384,7 @@ static IMP          GPGMail_MessageContentController_dealloc = NULL;
         if(fp8 == nil)
             [[self gpgMessageViewerAccessoryViewOwner] messageChanged:nil];
     }
-    ((void (*)(id, SEL, id, id))[GPGMailSwizzler originalMethodForName:@"MessageContentController._setMessage:headerOrder:"])(self, _cmd, fp8, fp12);
+    ((void (*)(id, SEL, id, id))MessageContentController__setMessage_headerOrder)(self, _cmd, fp8, fp12);
 }
 
 // Do not use _gpgAddAccessoryView:, for backwards-compatibility with MailTags
@@ -445,13 +397,13 @@ static IMP          GPGMail_MessageContentController_dealloc = NULL;
     // Works only for MIME signed, because Mail thinks it's (S/MIME) signed
     certificateView = accessoryView;
 #else
-	NSView  *resizedView = [[[self valueForKey:@"contentContainerView"] subviews] objectAtIndex:0];
+    NSView  *resizedView = [[[self valueForKey:@"contentContainerView"] subviews] objectAtIndex:0];
     NSArray *additionalViews = nil;
     int     additionalViewsCount = [[[self valueForKey:@"contentContainerView"] subviews] count] - 1;
-    
+
     if((GPGMailLoggingLevel > 0))
         NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
-#ifdef LEOPARD
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     // First subview is the NSScrollView or EditingMessageWebView (for notes)
     NSAssert1([resizedView isKindOfClass:[NSScrollView class]] || [resizedView isKindOfClass:NSClassFromString(@"EditingMessageWebView")], @"### GPGMail: views are not ordered the expected way! First view is %@", resizedView);
 #else
@@ -496,11 +448,11 @@ static IMP          GPGMail_MessageContentController_dealloc = NULL;
     NSRect	originalRect;
     NSView  *resizedView = [[[self valueForKey:@"contentContainerView"] subviews] objectAtIndex:0];
     int     additionalViewsCount = [[[self valueForKey:@"contentContainerView"] subviews] count] - 1;
-    
+
     if((GPGMailLoggingLevel > 0))
         NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
     NSAssert([accessoryView ancestorSharedWithView:resizedView] != nil, @"Trying to remove unattached view!");
-#ifdef LEOPARD
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     // First subview is the NSScrollView or EditingMessageWebView
     NSAssert1([resizedView isKindOfClass:[NSScrollView class]] || [resizedView isKindOfClass:NSClassFromString(@"EditingMessageWebView")], @"### GPGMail: views are not ordered the expected way! First view is %@", resizedView);
 #else
@@ -621,7 +573,7 @@ static IMP          GPGMail_MessageContentController_dealloc = NULL;
     [self _gpg2AddAccessoryView:view];
 }
 
-#if defined(LEOPARD) || defined(TIGER)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 #else
 - (void) gpgAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner showStatusMessage:(NSString *)message
 {
@@ -643,9 +595,9 @@ static IMP          GPGMail_MessageContentController_dealloc = NULL;
 	
     if(GPGMailLoggingLevel)
         NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
-#if defined(LEOPARD) || defined(TIGER)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
     // WARNING: we must ask to the very part that we set the decrypted message body! - see -[MimePart _gpgDecodePGP]
-#ifdef LEOPARD
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 	MessageBody	*messageBody = [[(MimeBody *)[message messageBody] topLevelPart] decryptedMessageBodyIsEncrypted:NULL isSigned:NULL];
 #else
 	MessageBody	*messageBody = [[(MimeBody *)[message messageBody] topLevelPart] decryptedMessageBody];
@@ -734,7 +686,7 @@ static IMP          GPGMail_MessageContentController_dealloc = NULL;
         [self gpgSetDoNotResetFlags:YES];
     }
 #endif
-#if defined(LEOPARD) || defined(TIGER)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 	// reloadDocument does quite nothing
 	//	[self _updateDisplay];
 	//	[self clearCache];

@@ -2,7 +2,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#ifdef SLEOPARD
+#ifdef SNOW_LEOPARD_64
 
 @interface MVComposeAccessoryViewOwner : NSObject
 {
@@ -15,6 +15,39 @@
 - (id)composeAccessoryView;
 - (BOOL)messageWillBeDelivered:(id)arg1;
 - (BOOL)messageWillBeSaved:(id)arg1;
+
+@end
+
+#elif defined(SNOW_LEOPARD)
+
+@interface MVComposeAccessoryViewOwner : NSObject
+{
+    NSView *accessoryView;
+}
+
++ (id)composeAccessoryViewOwner;
++ (id)composeAccessoryViewNibName;
+- (void)setupUIForMessage:(id)arg1;
+- (id)composeAccessoryView;
+- (BOOL)messageWillBeDelivered:(id)arg1;
+- (BOOL)messageWillBeSaved:(id)arg1;
+
+@end
+
+#elif defined(LEOPARD)
+
+@interface MVComposeAccessoryViewOwner : NSObject
+{
+    NSView *accessoryView;
+}
+
++ (id)composeAccessoryViewOwner;
++ (id)composeAccessoryViewNibName;
+- (id)init;
+- (void)setupUIForMessage:(id)fp8;
+- (id)composeAccessoryView;
+- (BOOL)messageWillBeDelivered:(id)fp8;
+- (BOOL)messageWillBeSaved:(id)fp8;
 
 @end
 
