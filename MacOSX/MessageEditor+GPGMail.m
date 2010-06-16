@@ -26,7 +26,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #import "MessageEditor+GPGMail.h"
 #import "GPGMailBundle.h"
 #import "GPGMailPatching.h"
@@ -36,7 +35,6 @@
 #import <MessageEditor.h>
 #import <ComposeHeaderView.h>
 #import <Cocoa/Cocoa.h>
-
 
 #ifdef TIGER
 #warning Copy LEOPARD code
@@ -51,6 +49,9 @@
 - (NSMutableArray *)gpgAccessoryViewOwners;
 - (NSPopUpButton *) gpgFromPopup;
 @end
+
+//asm(".weak_reference _OBJC_CLASS_$_HeadersEditor");
+//asm(".weak_reference _OBJC_CLASS_$_MailDocumentEditor");
 
 #ifdef SNOW_LEOPARD_64
 @implementation GPGMail_HeadersEditor
