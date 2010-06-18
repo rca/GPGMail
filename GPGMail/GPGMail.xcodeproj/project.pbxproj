@@ -23,9 +23,7 @@
 		1B6D7066104F5322009DC095 /* plistutil.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A81820838F38D0052F47C /* plistutil.m */; };
 		1BAA17EA108E8E7500FBC3E4 /* TableViewManager+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80910838EA1C0052F47C /* TableViewManager+GPGMail.m */; };
 		1BB95C84105EE82A00A4CAE4 /* GPGMail.mailbundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D5B49B6048680CD000E48DA /* GPGMail.mailbundle */; };
-		1BBA9E2F105029D200EE0416 /* GPGMailTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBA9E2D1050295700EE0416 /* GPGMailTest.m */; };
-		1BBA9E3910502A9700EE0416 /* TesterMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBA9E3310502A1300EE0416 /* TesterMain.m */; };
-		1BBA9E6310502B2800EE0416 /* GPGMailTester.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BBA9E6110502B2400EE0416 /* GPGMailTester.xib */; };
+		1BCEE1E311CC051500488D19 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BCEE1E211CC051500488D19 /* LICENSE.txt */; };
 		1BED92F81079529C00D22B4C /* GPGMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A806E0838E9B10052F47C /* GPGMailBundle.m */; };
 		1BED934A1079563500D22B4C /* GPGMEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80720838E9B10052F47C /* GPGMEAdditions.m */; };
 		1BED9357107957E700D22B4C /* GPGMailPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80710838E9B10052F47C /* GPGMailPreferences.m */; };
@@ -49,7 +47,6 @@
 		559A7F800838E2870052F47C /* GPGPassphrase.nib in Resources */ = {isa = PBXBuildFile; fileRef = 559A7F7B0838E2870052F47C /* GPGPassphrase.nib */; };
 		559A7F810838E2870052F47C /* GPGProgressIndicatorController.nib in Resources */ = {isa = PBXBuildFile; fileRef = 559A7F7D0838E2870052F47C /* GPGProgressIndicatorController.nib */; };
 		559A7F830838E2B30052F47C /* GPG.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 559A7F820838E2B30052F47C /* GPG.tiff */; };
-		559A802F0838E6720052F47C /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 559A7FE70838E53D0052F47C /* LICENSE.txt */; };
 		559A80A80838EB270052F47C /* clear.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 559A80A40838EB270052F47C /* clear.tiff */; };
 		559A80A90838EB270052F47C /* encrypted.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 559A80A50838EB270052F47C /* encrypted.tiff */; };
 		559A80AA0838EB270052F47C /* signed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 559A80A60838EB270052F47C /* signed.tiff */; };
@@ -84,7 +81,6 @@
 		559A81320838EEFD0052F47C /* Message.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559A812D0838EEFD0052F47C /* Message.framework */; };
 		559A81330838EEFD0052F47C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559A812E0838EEFD0052F47C /* Security.framework */; };
 		559A81340838EEFD0052F47C /* System.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559A812F0838EEFD0052F47C /* System.framework */; };
-		559A81830838F38D0052F47C /* plistutil.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A81820838F38D0052F47C /* plistutil.m */; };
 		559FD1250BBC428000C8FE50 /* KeyServers.plist in Resources */ = {isa = PBXBuildFile; fileRef = 559A80E80838ED6D0052F47C /* KeyServers.plist */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -114,15 +110,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1BBA9F6010502DE900EE0416 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
-			dstPath = build/Release/GPGMail.mailbundle;
-			dstSubfolderSpec = 16;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		559A81640838F2A80052F47C /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -140,13 +127,13 @@
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		1B859A6E109331A6009E469A /* MVTerminationHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MVTerminationHandler.h; sourceTree = "<group>"; };
-		1BBA9E211050291C00EE0416 /* GPGMailTester.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GPGMailTester.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BBA9E231050291C00EE0416 /* GPGMailTester-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GPGMailTester-Info.plist"; sourceTree = "<group>"; };
 		1BBA9E2C1050295700EE0416 /* GPGMailTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPGMailTest.h; sourceTree = "<group>"; };
 		1BBA9E2D1050295700EE0416 /* GPGMailTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPGMailTest.m; sourceTree = "<group>"; };
 		1BBA9E3210502A1300EE0416 /* TesterMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TesterMain.h; sourceTree = "<group>"; };
 		1BBA9E3310502A1300EE0416 /* TesterMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TesterMain.m; sourceTree = "<group>"; };
 		1BBA9E6110502B2400EE0416 /* GPGMailTester.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GPGMailTester.xib; sourceTree = "<group>"; };
+		1BCEE1E211CC051500488D19 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		1BF51A6F108FCD1900AC8268 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
 		32DBCF630370AF2F00C91783 /* GPGMail_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPGMail_Prefix.pch; sourceTree = "<group>"; };
 		5501B4CB0A45540D00D4E602 /* Swedish */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Swedish; path = MacOSX/GPG.subproj/Swedish.lproj/GPG.strings; sourceTree = "<group>"; };
@@ -183,7 +170,7 @@
 		5521A2A90852FAB000D8B6DC /* Danish */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Danish; path = MacOSX/GPG.subproj/Danish.lproj/GPG.strings; sourceTree = "<group>"; };
 		5521A2AA0852FAB000D8B6DC /* Danish */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Danish; path = MacOSX/GPG.subproj/Danish.lproj/GPGPassphrase.nib; sourceTree = "<group>"; };
 		5521A2AB0852FAB000D8B6DC /* Danish */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Danish; path = MacOSX/GPG.subproj/Danish.lproj/GPGProgressIndicatorController.nib; sourceTree = "<group>"; };
-		554CA7EE08F9807900E135BC /* MacGPGME.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacGPGME.framework; path = build/Release/MacGPGME.framework; sourceTree = "<group>"; };
+		554CA7EE08F9807900E135BC /* MacGPGME.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacGPGME.framework; path = ../build/Release/MacGPGME.framework; sourceTree = "<group>"; };
 		557E01BE08E55D5B002A890D /* Dutch */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Dutch; path = MacOSX/Dutch.lproj/GPGKeyDownload.nib; sourceTree = "<group>"; };
 		557E01BF08E55D5B002A890D /* Dutch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Dutch; path = MacOSX/Dutch.lproj/GPGMail.strings; sourceTree = "<group>"; };
 		557E01C008E55D5B002A890D /* Dutch */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Dutch; path = MacOSX/Dutch.lproj/GPGMailCompose.nib; sourceTree = "<group>"; };
@@ -446,7 +433,6 @@
 		559A812D0838EEFD0052F47C /* Message.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Message.framework; path = /System/Library/Frameworks/Message.framework; sourceTree = "<absolute>"; };
 		559A812E0838EEFD0052F47C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
 		559A812F0838EEFD0052F47C /* System.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = System.framework; path = /System/Library/Frameworks/System.framework; sourceTree = "<absolute>"; };
-		559A817F0838F3250052F47C /* plistutil */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = plistutil; sourceTree = BUILT_PRODUCTS_DIR; };
 		559A81820838F38D0052F47C /* plistutil.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = plistutil.m; sourceTree = SOURCE_ROOT; };
 		559A81860838F3C30052F47C /* Info-GPGMail.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-GPGMail.plist"; sourceTree = SOURCE_ROOT; };
 		559A819C0838F87E0052F47C /* Installer.applescript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.applescript; path = Installer.applescript; sourceTree = "<group>"; };
@@ -455,20 +441,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1BBA9E1F1050291C00EE0416 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		559A817D0838F3250052F47C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8D5B49B3048680CD000E48DA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -490,6 +462,7 @@
 		089C166AFE841209C02AAC07 /* GPGMail */ = {
 			isa = PBXGroup;
 			children = (
+				1BCEE1E211CC051500488D19 /* LICENSE.txt */,
 				08FB77AFFE84173DC02AAC07 /* GPG */,
 				559A7FB30838E4200052F47C /* Documentation */,
 				559A80310838E6870052F47C /* Headers */,
@@ -576,8 +549,6 @@
 			isa = PBXGroup;
 			children = (
 				8D5B49B6048680CD000E48DA /* GPGMail.mailbundle */,
-				559A817F0838F3250052F47C /* plistutil */,
-				1BBA9E211050291C00EE0416 /* GPGMailTester.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -860,40 +831,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1BBA9E201050291C00EE0416 /* GPGMailTester */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 1BBA9E261050291D00EE0416 /* Build configuration list for PBXNativeTarget "GPGMailTester" */;
-			buildPhases = (
-				1BBA9E1D1050291C00EE0416 /* Resources */,
-				1BBA9E1E1050291C00EE0416 /* Sources */,
-				1BBA9E1F1050291C00EE0416 /* Frameworks */,
-				1BBA9F6010502DE900EE0416 /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = GPGMailTester;
-			productName = GPGMailTester;
-			productReference = 1BBA9E211050291C00EE0416 /* GPGMailTester.app */;
-			productType = "com.apple.product-type.application";
-		};
-		559A817E0838F3250052F47C /* plistutil */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 55541F50085AE6B100548474 /* Build configuration list for PBXNativeTarget "plistutil" */;
-			buildPhases = (
-				559A817C0838F3250052F47C /* Sources */,
-				559A817D0838F3250052F47C /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = plistutil;
-			productName = plistutil;
-			productReference = 559A817F0838F3250052F47C /* plistutil */;
-			productType = "com.apple.product-type.tool";
-		};
 		8D5B49AC048680CD000E48DA /* GPGMail */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55541F4C085AE6B100548474 /* Build configuration list for PBXNativeTarget "GPGMail" */;
@@ -902,9 +839,6 @@
 				559A81640838F2A80052F47C /* CopyFiles */,
 				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
-				55994CC1083F2A5600F12EEF /* ShellScript */,
-				559A81550838F2040052F47C /* ShellScript */,
-				559A81620838F2910052F47C /* ShellScript */,
 				1BB95C80105EE80C00A4CAE4 /* CopyFiles */,
 			);
 			buildRules = (
@@ -945,21 +879,11 @@
 			projectRoot = "";
 			targets = (
 				8D5B49AC048680CD000E48DA /* GPGMail */,
-				559A817E0838F3250052F47C /* plistutil */,
-				1BBA9E201050291C00EE0416 /* GPGMailTester */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		1BBA9E1D1050291C00EE0416 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1BBA9E6310502B2800EE0416 /* GPGMailTester.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8D5B49AF048680CD000E48DA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -968,7 +892,6 @@
 				559A7F800838E2870052F47C /* GPGPassphrase.nib in Resources */,
 				559A7F810838E2870052F47C /* GPGProgressIndicatorController.nib in Resources */,
 				559A7F830838E2B30052F47C /* GPG.tiff in Resources */,
-				559A802F0838E6720052F47C /* LICENSE.txt in Resources */,
 				559A80A80838EB270052F47C /* clear.tiff in Resources */,
 				559A80A90838EB270052F47C /* encrypted.tiff in Resources */,
 				559A80AA0838EB270052F47C /* signed.tiff in Resources */,
@@ -1004,71 +927,13 @@
 				550692330CD510D300CA0BA2 /* encrypted-Leopard.tiff in Resources */,
 				550692340CD510D300CA0BA2 /* signed-Leopard.tiff in Resources */,
 				550692350CD510D300CA0BA2 /* unsigned-Leopard.tiff in Resources */,
+				1BCEE1E311CC051500488D19 /* LICENSE.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		55994CC1083F2A5600F12EEF /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "MAC_GPGME_FRAMEWORK_VERSION=1.1.4\n\nchmod u+w \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.${WRAPPER_EXTENSION}/Contents/Frameworks/MacGPGME.framework/Versions/${MAC_GPGME_FRAMEWORK_VERSION}/MacGPGME\"\ninstall_name_tool -id \"@loader_path/../Frameworks/MacGPGME.framework/Versions/${MAC_GPGME_FRAMEWORK_VERSION}/MacGPGME\" \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.${WRAPPER_EXTENSION}/Contents/Frameworks/MacGPGME.framework/Versions/${MAC_GPGME_FRAMEWORK_VERSION}/MacGPGME\"\n\n# rewrite install_name in the app\ninstall_name_tool -change \"@executable_path/../Frameworks/MacGPGME.framework/Versions/${MAC_GPGME_FRAMEWORK_VERSION}/MacGPGME\" \"@loader_path/../Frameworks/MacGPGME.framework/Versions/${MAC_GPGME_FRAMEWORK_VERSION}/MacGPGME\" \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.${WRAPPER_EXTENSION}/Contents/MacOS/${PRODUCT_NAME}\"\n\n# remove headers and documentation\nrm -rf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.${WRAPPER_EXTENSION}/Contents/Frameworks/MacGPGME.framework/Versions/${MAC_GPGME_FRAMEWORK_VERSION}/Headers\"\nrm -rf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.${WRAPPER_EXTENSION}/Contents/Frameworks/MacGPGME.framework/Versions/${MAC_GPGME_FRAMEWORK_VERSION}/PrivateHeaders\"\nrm -rf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.${WRAPPER_EXTENSION}/Contents/Frameworks/MacGPGME.framework/Versions/${MAC_GPGME_FRAMEWORK_VERSION}/Resources/English.lproj/Documentation\"\n";
-		};
-		559A81550838F2040052F47C /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "myRez=\"/tmp/Icon.r\"\nformat1='\"    $@\"'\nformat2='\"%04X \"'\nformat3='\"@\\n\"'\nmyDest=\"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.${WRAPPER_EXTENSION}\"\ndirectoryImageFile=`echo Iconr | tr r \"\\r\"`\n\nrm -rf \"${myRez}\"\n\necho \"data 'icns' (-16455) {\" > \"${myRez}\"\nhexdump -v -e \" ${format1} 8/2 ${format2} ${format3}\" \"${SRCROOT}/MacOSX/GPGMail.icns\" | tr '@' '\"' >> \"${myRez}\"\necho '};' >> \"${myRez}\"\n\n/Developer/Tools/Rez \"${myRez}\" -o \"${myDest}/${directoryImageFile}\"\n/Developer/Tools/SetFile -c \"MACS\" -t \"icon\" -a V \"${myDest}/${directoryImageFile}\"\n/Developer/Tools/SetFile -a BCE \"${myDest}\"\necho Modified \"${myDest}\"\n#/usr/sbin/chown \"${INSTALL_OWNER}:${INSTALL_GROUP}\" \"${myDest}/${directoryImageFile}\"\n#/bin/chmod \"${INSTALL_MODE_FLAG}\" \"${myDest}/${directoryImageFile}\"\nrm -rf \"${myRez}\"\n";
-		};
-		559A81620838F2910052F47C /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Cleanup of files\n\n# Remove framework headers\nfind -d \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.${WRAPPER_EXTENSION}/Contents/Frameworks/MacGPGME.framework/\" \\( -name Headers -o -name PrivateHeaders \\) -exec rm -rf {} \\;\n\n# Avoid having write privileges for anyone but owner\nchmod -R go-w \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.${WRAPPER_EXTENSION}\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		1BBA9E1E1050291C00EE0416 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1BBA9E2F105029D200EE0416 /* GPGMailTest.m in Sources */,
-				1BBA9E3910502A9700EE0416 /* TesterMain.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		559A817C0838F3250052F47C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				559A81830838F38D0052F47C /* plistutil.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8D5B49B1048680CD000E48DA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1405,54 +1270,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		1BBA9E241050291D00EE0416 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "GPGMailTester-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = GPGMailTester;
-			};
-			name = Debug;
-		};
-		1BBA9E251050291D00EE0416 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "GPGMailTester-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = GPGMailTester;
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
 		55541F4D085AE6B100548474 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1523,65 +1340,6 @@
 			};
 			name = Release;
 		};
-		55541F51085AE6B100548474 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH)";
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = "";
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INSTALL_PATH = /usr/local/bin;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = plistutil;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				ZERO_LINK = YES;
-			};
-			name = Debug;
-		};
-		55541F52085AE6B100548474 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INSTALL_PATH = /usr/local/bin;
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PRODUCT_NAME = plistutil;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Release;
-		};
 		55541F57085AE6B100548474 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1621,29 +1379,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1BBA9E261050291D00EE0416 /* Build configuration list for PBXNativeTarget "GPGMailTester" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1BBA9E241050291D00EE0416 /* Debug */,
-				1BBA9E251050291D00EE0416 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		55541F4C085AE6B100548474 /* Build configuration list for PBXNativeTarget "GPGMail" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				55541F4D085AE6B100548474 /* Debug */,
 				55541F4E085AE6B100548474 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		55541F50085AE6B100548474 /* Build configuration list for PBXNativeTarget "plistutil" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				55541F51085AE6B100548474 /* Debug */,
-				55541F52085AE6B100548474 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
