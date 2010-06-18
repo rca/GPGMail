@@ -53,7 +53,7 @@ static IMP          clazz##_dealloc = NULL;        \
 { \
     clazz##_extraIVars = NSCreateMapTableWithZone(NSObjectMapKeyCallBacks, NSObjectMapValueCallBacks, 100, [self zone]); \
     clazz##_extraIVarsLock = [[NSLock alloc] init]; \
-    clazz##_dealloc = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(dealloc), [clazz class], @selector(gpgDealloc), [clazz class]); \
+    /*clazz##_dealloc = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(dealloc), [clazz class], @selector(gpgDealloc), [clazz class]);*/ \
 } \
 \
 - (NSMutableDictionary *) gpgExtraIVars \

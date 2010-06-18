@@ -93,13 +93,10 @@ static GPGKeyDownload	*_sharedInstance = nil;
             [aList addObject:aServer];
     }
     serverList = aList;
-    if([currentServer length] == 0){
-        [currentServer release];
-        currentServer = [[options activeOptionValuesForName:@"keyserver"] lastObject];
-        if(!currentServer)
-            currentServer = @"";
-        [currentServer retain];
-    }
+    if([currentServer length] == 0)
+        currentServer = [[[options activeOptionValuesForName:@"keyserver"] lastObject] retain];
+    if(!currentServer)
+        currentServer = @"";
     [serverComboBox reloadData];
     [serverComboBox setStringValue:currentServer];
     anIndex = [serverList indexOfObject:currentServer];
@@ -389,10 +386,6 @@ static GPGKeyDownload	*_sharedInstance = nil;
 
 - (id) comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(int)index
 {
-    if(index < 0 || index >= [serverList count]) {
-        NSLog(@"[DEBUG] [GPGKeyDownload comboBox:objectValueForItemAtIndex:] - This shouldn't happen! NEVER!");
-        return nil;
-    }
     return [serverList objectAtIndex:index];
 }
 
@@ -480,7 +473,7 @@ static GPGKeyDownload	*_sharedInstance = nil;
     [cell setEnabled:!isImporting];
 }
 
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
+#if defined(LEOPARD) || defined(TIGER)
 // Not necessary on 10.3; on Tiger the switch cell is displayed!
 - (void)outlineView:(NSOutlineView *)ov willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {

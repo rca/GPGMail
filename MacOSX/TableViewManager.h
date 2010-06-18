@@ -1,13 +1,13 @@
 #import <Cocoa/Cocoa.h>
 
-#ifdef SNOW_LEOPARD
+#ifdef SLEOPARD
 
 @class ASExtendedTableView;
 @class MessageMall;
-@class Message;
 @class VisibleStateObject;
 @class MessageThread;
 @class BytesFormatter;
+@class Message;
 
 @protocol MVSelectionOwner
 - (id)selection;
@@ -347,7 +347,6 @@
 - (BOOL)selectMessageWithIDIfExists:(id)arg1;
 @end
 
-
 #elif defined(LEOPARD)
 
 @class ASExtendedTableView;
@@ -441,9 +440,9 @@
     MessageThread *threadBeingOpened;
     struct __CFDictionary *_rowDrawingCache;
     NSMutableSet *_mouseTrackers;
-    struct _NSPoint _lastMouseDownInUnreadColumnPoint;
+    struct CGPoint _lastMouseDownInUnreadColumnPoint;
     int _lastMouseDownInUnreadColumnEventNumber;
-    struct _NSPoint _currentMouseLocationInWindow;
+    struct CGPoint _currentMouseLocationInWindow;
     float _amountToScrollDownAfterClosingThread;
     int _numberOfSelectedRowsBeforeTogglingThread;
     int _selectedRowBeforeTogglingThread;
@@ -560,7 +559,7 @@
 - (void)tableViewColumnDidResize:(id)fp8;
 - (void)tableView:(id)fp8 willDisplayCell:(id)fp12 forTableColumn:(id)fp16 row:(int)fp20;
 - (id)tableViewHighlightColor:(id)fp8;
-- (int)tableView:(id)fp8 highlightStyleForRow:(int)fp12 inRect:(struct _NSRect *)fp16 color:(id *)fp20;
+- (int)tableView:(id)fp8 highlightStyleForRow:(int)fp12 inRect:(struct CGRect *)fp16 color:(id *)fp20;
 - (void)doubleClickedMessage:(id)fp8;
 - (void)deleteKeyPressed;
 - (void)deleteSelectionAllowingMoveToTrash:(BOOL)fp8;
@@ -582,7 +581,7 @@
 - (void)deleteMessages:(id)fp8 allowMoveToTrash:(BOOL)fp12 allowUndo:(BOOL)fp16;
 - (void)undeleteMessagesAllowingUndo:(BOOL)fp8;
 - (BOOL)shouldDeleteGivenCurrentState;
-- (void)tableViewDraggedImage:(id)fp8 movedTo:(struct _NSPoint)fp12;
+- (void)tableViewDraggedImage:(id)fp8 movedTo:(struct CGPoint)fp12;
 - (unsigned int)tableView:(id)fp8 draggingSourceOperationMaskForLocal:(BOOL)fp12;
 - (id)messagesToTransfer;
 - (void)willTransferMessages:(id)fp8 toMailbox:(id)fp12 deleteOriginals:(BOOL)fp16;
@@ -592,12 +591,12 @@
 - (BOOL)tableView:(id)fp8 writeRowsWithIndexes:(id)fp12 toPasteboard:(id)fp16;
 - (void)pasteboard:(id)fp8 provideDataForType:(id)fp12;
 - (id)tableView:(id)fp8 namesOfPromisedFilesDroppedAtDestination:(id)fp12 forDraggedRowsWithIndexes:(id)fp16;
-- (id)_dragImageForRow:(int)fp8 event:(id)fp12 dragImageOffset:(struct _NSPoint *)fp16;
-- (id)tableView:(id)fp8 dragImageForRowsWithIndexes:(id)fp12 event:(id)fp16 dragImageOffset:(struct _NSPoint *)fp20;
+- (id)_dragImageForRow:(int)fp8 event:(id)fp12 dragImageOffset:(struct CGPoint *)fp16;
+- (id)tableView:(id)fp8 dragImageForRowsWithIndexes:(id)fp12 event:(id)fp16 dragImageOffset:(struct CGPoint *)fp20;
 - (void)tableView:(id)fp8 willDrawRowsInRange:(struct _NSRange)fp12;
 - (void)tableView:(id)fp8 didDrawRowsInRange:(struct _NSRange)fp12;
-- (struct _NSRect)frameOfClickedCell;
-- (struct _NSPoint)mouseLocationInWindow;
+- (struct CGRect)frameOfClickedCell;
+- (struct CGPoint)mouseLocationInWindow;
 - (void)callWillDisplayCellForClickedCell;
 - (void)setButtonCellNeedsDisplay;
 - (void)tableView:(id)fp8 gotEvent:(id)fp12;
@@ -671,10 +670,10 @@
 - (double)_getAnimationDuration:(int)fp8;
 - (id)_createHiliteImage;
 - (id)_createBackgroundImage;
-- (id)_createSnapshotOfRect:(struct _NSRect)fp8 styleMask:(unsigned int)fp24 backing:(unsigned int)fp28 defer:(BOOL)fp32;
+- (id)_createSnapshotOfRect:(struct CGRect)fp8 styleMask:(unsigned int)fp24 backing:(unsigned int)fp28 defer:(BOOL)fp32;
 - (id)_createSnapshotOfRow:(int)fp8 styleMask:(unsigned int)fp12 backing:(unsigned int)fp16 defer:(BOOL)fp20;
 - (BOOL)_isRowVisible:(int)fp8;
-- (struct _NSSize)_calculateTruncationAmountUsingRowHeight:(float)fp8 collapseOrExpandAmount:(float)fp12 invisibleThreadAmountAbove:(float)fp16 invisibleThreadAmountBelow:(float)fp20;
+- (struct CGSize)_calculateTruncationAmountUsingRowHeight:(float)fp8 collapseOrExpandAmount:(float)fp12 invisibleThreadAmountAbove:(float)fp16 invisibleThreadAmountBelow:(float)fp20;
 - (void)_animateThreadCollapsing:(int)fp8 threadRow:(int)fp12 clickedRow:(int)fp16;
 - (float)_animateThreadOpening:(id)fp8 threadMessageCount:(int)fp12 threadRow:(int)fp16 rowToBeSelected:(int)fp20;
 - (void)searchFinished:(id)fp8;
@@ -798,9 +797,9 @@
     MessageThread *threadBeingOpened;
     struct __CFDictionary *_rowDrawingCache;
     NSMutableSet *_mouseTrackers;
-    struct _NSPoint _lastMouseDownInUnreadColumnPoint;
+    struct CGPoint _lastMouseDownInUnreadColumnPoint;
     int _lastMouseDownInUnreadColumnEventNumber;
-    struct _NSPoint _currentMouseLocationInWindow;
+    struct CGPoint _currentMouseLocationInWindow;
     float _amountToScrollDownAfterClosingThread;
     int _numberOfSelectedRowsBeforeTogglingThread;
     int _selectedRowBeforeTogglingThread;
@@ -917,7 +916,7 @@
 - (void)tableView:(id)fp8 willDisplaySampleCell:(id)fp12 forTableColumn:(id)fp16 row:(int)fp20;
 - (void)tableView:(id)fp8 willDisplayCell:(id)fp12 forTableColumn:(id)fp16 row:(int)fp20;
 - (id)tableViewHighlightColor:(id)fp8;
-- (int)tableView:(id)fp8 highlightStyleForRow:(int)fp12 inRect:(struct _NSRect *)fp16 color:(id *)fp20;
+- (int)tableView:(id)fp8 highlightStyleForRow:(int)fp12 inRect:(struct CGRect *)fp16 color:(id *)fp20;
 - (void)doubleClickedMessage:(id)fp8;
 - (void)deleteKeyPressed;
 - (void)deleteSelectionAllowingMoveToTrash:(BOOL)fp8;
@@ -938,7 +937,7 @@
 - (void)deleteMessages:(id)fp8 allowMoveToTrash:(BOOL)fp12 allowUndo:(BOOL)fp16;
 - (void)undeleteMessagesAllowingUndo:(BOOL)fp8;
 - (BOOL)shouldDeleteGivenCurrentState;
-- (void)tableViewDraggedImage:(id)fp8 movedTo:(struct _NSPoint)fp12;
+- (void)tableViewDraggedImage:(id)fp8 movedTo:(struct CGPoint)fp12;
 - (unsigned int)tableView:(id)fp8 draggingSourceOperationMaskForLocal:(BOOL)fp12;
 - (id)messagesToTransfer;
 - (void)willTransferMessages:(id)fp8 toMailbox:(id)fp12 deleteOriginals:(BOOL)fp16;
@@ -946,12 +945,12 @@
 - (BOOL)transferSelectionToMailbox:(id)fp8 deleteOriginals:(BOOL)fp12;
 - (void)tableViewDragWillEnd:(id)fp8 operation:(unsigned int)fp12;
 - (BOOL)tableView:(id)fp8 writeRows:(id)fp12 toPasteboard:(id)fp16;
-- (id)_dragImageForRow:(int)fp8 event:(id)fp12 dragImageOffset:(struct _NSPoint *)fp16;
-- (id)tableView:(id)fp8 dragImageForRowsWithIndexes:(id)fp12 event:(id)fp16 dragImageOffset:(struct _NSPoint *)fp20;
+- (id)_dragImageForRow:(int)fp8 event:(id)fp12 dragImageOffset:(struct CGPoint *)fp16;
+- (id)tableView:(id)fp8 dragImageForRowsWithIndexes:(id)fp12 event:(id)fp16 dragImageOffset:(struct CGPoint *)fp20;
 - (void)tableView:(id)fp8 willDrawRowsInRange:(struct _NSRange)fp12;
 - (void)tableView:(id)fp8 didDrawRowsInRange:(struct _NSRange)fp12;
-- (struct _NSRect)frameOfClickedCell;
-- (struct _NSPoint)mouseLocationInWindow;
+- (struct CGRect)frameOfClickedCell;
+- (struct CGPoint)mouseLocationInWindow;
 - (void)callWillDisplayCellForClickedCell;
 - (void)setButtonCellNeedsDisplay;
 - (void)tableView:(id)fp8 gotEvent:(id)fp12;
@@ -1025,10 +1024,10 @@
 - (double)_getAnimationDuration:(int)fp8;
 - (id)_createHiliteImage;
 - (id)_createBackgroundImage;
-- (id)_createSnapshotOfRect:(struct _NSRect)fp8 styleMask:(unsigned int)fp24 backing:(int)fp28 defer:(BOOL)fp32;
+- (id)_createSnapshotOfRect:(struct CGRect)fp8 styleMask:(unsigned int)fp24 backing:(int)fp28 defer:(BOOL)fp32;
 - (id)_createSnapshotOfRow:(int)fp8 styleMask:(unsigned int)fp12 backing:(int)fp16 defer:(BOOL)fp20;
 - (BOOL)_isRowVisible:(int)fp8;
-- (struct _NSSize)_calculateTruncationAmountUsingRowHeight:(float)fp8 collapseOrExpandAmount:(float)fp12 invisibleThreadAmountAbove:(float)fp16 invisibleThreadAmountBelow:(float)fp20;
+- (struct CGSize)_calculateTruncationAmountUsingRowHeight:(float)fp8 collapseOrExpandAmount:(float)fp12 invisibleThreadAmountAbove:(float)fp16 invisibleThreadAmountBelow:(float)fp20;
 - (void)_animateThreadCollapsing:(int)fp8 threadRow:(int)fp12 clickedRow:(int)fp16;
 - (float)_animateThreadOpening:(id)fp8 threadMessageCount:(int)fp12 threadRow:(int)fp16 rowToBeSelected:(int)fp20;
 - (void)searchFinished:(id)fp8;
@@ -1108,9 +1107,9 @@
     MessageThread *threadBeingOpened;	// 128 = 0x80
     struct __CFDictionary *_rowDrawingCache;	// 132 = 0x84
     NSMutableSet *_mouseTrackers;	// 136 = 0x88
-    struct _NSPoint _lastMouseDownInUnreadColumnPoint;	// 140 = 0x8c
+    struct CGPoint _lastMouseDownInUnreadColumnPoint;	// 140 = 0x8c
     int _lastMouseDownInUnreadColumnEventNumber;	// 148 = 0x94
-    struct _NSPoint _currentMouseLocationInWindow;	// 152 = 0x98
+    struct CGPoint _currentMouseLocationInWindow;	// 152 = 0x98
     float _amountToScrollDownAfterClosingThread;	// 160 = 0xa0
     int _numberOfSelectedRowsBeforeTogglingThread;	// 164 = 0xa4
     int _selectedRowBeforeTogglingThread;	// 168 = 0xa8
@@ -1214,7 +1213,7 @@
 - (void)tableViewColumnDidResize:fp8;
 - (void)tableView:fp8 willDisplayCell:fp12 forTableColumn:fp16 row:(int)fp20;
 - tableViewHighlightColor:fp8;
-- (int)tableView:fp8 highlightStyleForRow:(int)fp12 inRect:(struct _NSRect *)fp16 color:(id *)fp20;
+- (int)tableView:fp8 highlightStyleForRow:(int)fp12 inRect:(struct CGRect *)fp16 color:(id *)fp20;
 - (void)doubleClickedMessage:fp8;
 - (void)deleteKeyPressed;
 - (void)deleteSelectionAllowingMoveToTrash:(char)fp8;
@@ -1241,14 +1240,14 @@
 - (char)transferSelectionToMailbox:fp8 deleteOriginals:(char)fp12;
 - (void)tableViewDragWillEnd:fp8 operation:(unsigned int)fp12;
 - (char)tableView:fp8 writeRows:fp12 toPasteboard:fp16;
-- _dragImageForRow:(int)fp8 event:fp12 dragImageOffset:(struct _NSPoint *)fp16;
+- _dragImageForRow:(int)fp8 event:fp12 dragImageOffset:(struct CGPoint *)fp16;
 - _badgeImageFromItemCount:(int)fp8;
-- tableView:fp8 dragImageForRows:fp12 event:fp16 dragImageOffset:(struct _NSPoint *)fp20;
+- tableView:fp8 dragImageForRows:fp12 event:fp16 dragImageOffset:(struct CGPoint *)fp20;
 - tableViewRowIdForRow:(int)fp8;
 - (void)tableView:fp8 willDrawRowsInRange:(struct _NSRange)fp12;
 - (void)tableView:fp8 didDrawRowsInRange:(struct _NSRange)fp12;
-- (struct _NSRect)frameOfClickedCell;
-- (struct _NSPoint)mouseLocationInWindow;
+- (struct CGRect)frameOfClickedCell;
+- (struct CGPoint)mouseLocationInWindow;
 - (void)callWillDisplayCellForClickedCell;
 - (void)setButtonCellNeedsDisplay;
 - (void)tableView:fp8 gotEvent:fp12;
@@ -1317,12 +1316,12 @@
 - (double)_getAnimationDuration:(int)fp8;
 - _createHiliteImage;
 - _createBackgroundImage;
-- _createSnapshotOfRect:(struct _NSRect)fp8 styleMask:(unsigned int)fp24 backing:(int)fp28 defer:(char)fp32;
+- _createSnapshotOfRect:(struct CGRect)fp8 styleMask:(unsigned int)fp24 backing:(int)fp28 defer:(char)fp32;
 - _createSnapshotOfRow:(int)fp8 styleMask:(unsigned int)fp12 backing:(int)fp16 defer:(char)fp20;
 - (void)_clearImageCacheForMessage:fp8;
 - (void)_clearImageCacheForRow:(int)fp8;
 - (char)_isRowVisible:(int)fp8;
-- (struct _NSSize)_calculateTruncationAmountUsingRowHeight:(float)fp8 collapseOrExpandAmount:(float)fp12 invisibleThreadAmountAbove:(float)fp16 invisibleThreadAmountBelow:(float)fp20;
+- (struct CGSize)_calculateTruncationAmountUsingRowHeight:(float)fp8 collapseOrExpandAmount:(float)fp12 invisibleThreadAmountAbove:(float)fp16 invisibleThreadAmountBelow:(float)fp20;
 - (void)_animateThreadCollapsing:(int)fp8 threadRow:(int)fp12 clickedRow:(int)fp16;
 - (float)_animateThreadOpening:fp8 threadMessageCount:(int)fp12 threadRow:(int)fp16 rowToBeSelected:(int)fp20;
 @end

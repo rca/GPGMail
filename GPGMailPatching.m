@@ -113,6 +113,7 @@ IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(
 #endif
 }
 
+
 #define NUM_OF_METHODS 2
 
 @implementation GPGMailSwizzler
@@ -125,8 +126,11 @@ IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(
 }
 
 + (IMP)originalMethodForName:(NSString *)aName {
+	//NSLog(@"originalMethodsMap 2: %@", originalMethodsMap);
+//	NSLog(@"idx: %@", [originalMethodsMap objectForKey:aName]);
 	int idx = [(NSNumber *)[[self originalMethodsMap] objectForKey:aName] intValue];
-
+	//NSLog(@"IDX: %d", idx);
+//	NSLog(@"Function pointer: %p", originalMethods[idx]);
 	return (IMP)originalMethods[idx];
 }
 
@@ -139,8 +143,7 @@ IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(
 		return;
 	anIMP = method_getImplementation(aMethod);
 	
-	if(GPGMailLoggingLevel)
-		NSLog(@"Adding %@ from %@ to %@", NSStringFromSelector(aSelector), NSStringFromClass(aClass), NSStringFromClass(bClass));
+	NSLog(@"Adding %@ from %@ to %@", NSStringFromSelector(aSelector), NSStringFromClass(aClass), NSStringFromClass(bClass));
 	
 	class_addMethod(bClass, aSelector, anIMP, method_getTypeEncoding(aMethod));
 }
@@ -159,29 +162,42 @@ IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(
 		return;
 	newIMP = method_getImplementation(newMethod);
 	
-	if(GPGMailLoggingLevel)
-		NSLog(@"Replace %@ from %@ with %@ from %@", NSStringFromSelector(aSelector), 
+	NSLog(@"Replace %@ from %@ with %@ from %@", NSStringFromSelector(aSelector), 
 												NSStringFromClass(aClass), 
 												NSStringFromSelector(bSelector), 
 												NSStringFromClass(bClass));
 	
 	method_setImplementation(origMethod, newIMP);
+	NSLog(@"originalMethods: %p", originalMethods);
 	if(methodsAllocatedCount == 0) {
+		NSLog(@"Trying to allocate here!");
 		originalMethods = (IMP *)realloc(originalMethods, (methodsAllocatedCount + NUM_OF_METHODS) * sizeof(IMP));
 		methodsAllocatedCount = methodsAllocatedCount + NUM_OF_METHODS;
 		if(originalMethods == NULL) {
 			NSLog(@"Failed to allocate!!!");
 		}
+		NSLog(@"Allocated?!");
+		NSLog(@"New pointer: %p", *originalMethods);
+		NSLog(@"Allocated space for %d method IMPLS", methodsAllocatedCount); 
 	}
+	NSLog(@"method index: %d", originalMethodsIndex);
+	NSLog(@"Methods swizzled: %d", sizeof(originalMethods)/sizeof(IMP));
 	if(originalMethodsIndex + 1 > methodsAllocatedCount) {
 		methodsAllocatedCount += methodsAllocatedCount + NUM_OF_METHODS;
 		originalMethods = (IMP *)realloc(originalMethods, methodsAllocatedCount * sizeof(IMP));
+		NSLog(@"And a new allocation: %d", methodsAllocatedCount + NUM_OF_METHODS);
 	}
 	NSString *aKey = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(aClass), NSStringFromSelector(aSelector)];
 	[[self originalMethodsMap] setObject:[NSNumber numberWithInt:originalMethodsIndex] forKey:aKey];
 	originalMethods[originalMethodsIndex++] = origIMP;
 	
+	NSLog(@"originalMethodsMap: %@", [self originalMethodsMap]);
+	
+	for(int i = 0; i < originalMethodsIndex; i++) {
+		NSLog(@"originalMethod: %d - %p", i, originalMethods[i]); 
+	}
 	NSCAssert(method_getImplementation(origMethod) == newIMP, @"Replacement failed!");
+	NSLog(@"Original impl: %p", [GPGMailSwizzler originalMethodForName:aKey]); 
 }
 
 + (void)swizzleClassMethod:(SEL)aSelector fromClass:(Class)aClass withMethod:(SEL)bSelector ofClass:(Class)bClass {
@@ -198,51 +214,64 @@ IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(
 		return;
 	newIMP = method_getImplementation(newMethod);
 	
-	if(GPGMailLoggingLevel)
-		NSLog(@"Replace %@ from %@ with %@ from %@", NSStringFromSelector(aSelector), 
+	NSLog(@"Replace %@ from %@ with %@ from %@", NSStringFromSelector(aSelector), 
 		  NSStringFromClass(aClass), 
 		  NSStringFromSelector(bSelector), 
 		  NSStringFromClass(bClass));
 	
 	method_setImplementation(origMethod, newIMP);
+	NSLog(@"originalMethods: %p", originalMethods);
 	if(methodsAllocatedCount == 0) {
+		NSLog(@"Trying to allocate here!");
 		originalMethods = (IMP *)realloc(originalMethods, (methodsAllocatedCount + NUM_OF_METHODS) * sizeof(IMP));
 		methodsAllocatedCount = methodsAllocatedCount + NUM_OF_METHODS;
 		if(originalMethods == NULL) {
 			NSLog(@"Failed to allocate!!!");
 		}
+		NSLog(@"Allocated?!");
+		NSLog(@"New pointer: %p", *originalMethods);
+		NSLog(@"Allocated space for %d method IMPLS", methodsAllocatedCount); 
 	}
+	NSLog(@"method index: %d", originalMethodsIndex);
+	NSLog(@"Methods swizzled: %d", sizeof(originalMethods)/sizeof(IMP));
 	if(originalMethodsIndex + 1 > methodsAllocatedCount) {
 		methodsAllocatedCount += methodsAllocatedCount + NUM_OF_METHODS;
 		originalMethods = (IMP *)realloc(originalMethods, methodsAllocatedCount * sizeof(IMP));
+		NSLog(@"And a new allocation: %d", methodsAllocatedCount + NUM_OF_METHODS);
 	}
 	NSString *aKey = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(aClass), NSStringFromSelector(aSelector)];
 	[[self originalMethodsMap] setObject:[NSNumber numberWithInt:originalMethodsIndex] forKey:aKey];
 	originalMethods[originalMethodsIndex++] = origIMP;
 	
+	NSLog(@"originalMethodsMap: %@", [self originalMethodsMap]);
+	
+	for(int i = 0; i < originalMethodsIndex; i++) {
+		NSLog(@"originalMethod: %d - %p", i, originalMethods[i]); 
+	}
 	NSCAssert(method_getImplementation(origMethod) == newIMP, @"Replacement failed!");
+	NSLog(@"Original impl: %p", [GPGMailSwizzler originalMethodForName:aKey]); 
 }
 
 
 + (void)addMethodsFromClass:(Class)aClass toClass:(Class)bClass {
 	unsigned int methodCount;
-	if(GPGMailLoggingLevel)
-		NSLog(@"Original method: %@", NSStringFromClass(aClass));
+	NSLog(@"Original method: %@", NSStringFromClass(aClass));
 	if(aClass == NULL) {
 		NSLog(@"Class can't be null!");
 		return;
 	}
 	Method * classMethods = class_copyMethodList(aClass, &methodCount);
 	
-	if(GPGMailLoggingLevel)
-		NSLog(@"Found %d methods", methodCount);
+	NSLog(@"Found %d methods", methodCount);
 	for(int i = 0; i < methodCount; i++) {
 		SEL selector = method_getName((Method)classMethods[i]);
-		if(GPGMailLoggingLevel)
-			NSLog(@"Adding method %@ to %@", NSStringFromSelector(selector), NSStringFromClass(bClass));
+		NSLog(@"Adding method %@ to %@", NSStringFromSelector(selector), NSStringFromClass(bClass));
 		[GPGMailSwizzler addMethod:selector fromClass:aClass toClass:bClass];
 	}
+	
 	free(classMethods);
+	
+	NSLog(@"Added methods!");
 }
 
 + (void)addIVarsFromClass:(Class)aClass toClass:(Class)bClass {
@@ -270,8 +299,7 @@ IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(
 }
 
 + (void)extendClass:(Class)aClass withClass:(Class)bClass {
-	if(GPGMailLoggingLevel)
-		NSLog(@"Extend class %@ with members and methods of class %@", NSStringFromClass(aClass), NSStringFromClass(bClass));
+	NSLog(@"Extend class %@ with members and methods of class %@", NSStringFromClass(aClass), NSStringFromClass(bClass));
 	
 	[self addMethodsFromClass:bClass toClass:aClass];
 	[self addIVarsFromClass:bClass toClass:aClass];

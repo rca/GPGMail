@@ -1,6 +1,6 @@
 #import <Cocoa/Cocoa.h>
 
-#ifdef SNOW_LEOPARD
+#ifdef SLEOPARD
 
 @interface SegmentedToolbarItem : NSToolbarItemGroup
 {

@@ -27,56 +27,37 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef SNOW_LEOPARD
-#import <MessageContentController.h>
-#endif
+//#import <MessageContentController.h>
 #import "MessageViewer+GPGMail.h"
 #import "GPGMailPatching.h"
 #import "Message+GPGMail.h"
 
+//@class MessageContentController;
 
 @interface NSTextView(GPGMail)
 // In fact it is implemented in MessageTextView subclass
 - (void) originalSelectAll:(id)sender;
 @end
 
-#ifdef SNOW_LEOPARD
 @implementation GPGMail_MessageViewer
-#else
-@implementation MessageViewer(GPGMail)
-#endif
 
 - (MessageContentController *) gpgTextViewer:(id)dummy
 {
-#ifdef SNOW_LEOPARD
-    return [self valueForKey:@"_contentController"];
-#else
     return _contentController;
-#endif
 }
 
-- (NSToolbar *) gpgToolbar
+- (MailToolbar *) gpgToolbar
 {
-#ifdef SNOW_LEOPARD
-    return [self valueForKey:@"_toolbar"];
-#else
     return _toolbar;
-#endif
 }
 
-#ifdef SNOW_LEOPARD
-- (id) gpgTableManager
-#else
 - (TableViewManager *) gpgTableManager
-#endif
 {
-#ifdef SNOW_LEOPARD
-	return [self valueForKey:@"_tableManager"];
-#else
+	NSLog(@"Say hello!");
     return _tableManager;
-#endif
 }
 
+//
 // Mike's hack: when replying/forwarding encrypted message, select all content before replying
 // And it works!
 static IMP MessageViewer__replyMessageWithType = NULL;
@@ -85,23 +66,20 @@ static IMP MessageViewer_forwardMessage = NULL;
 static IMP MessageViewer_validateMenuItem = NULL;
 #endif
 
-+ (void) load
-{
-    MessageViewer__replyMessageWithType = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(_replyMessageWithType:), self, @selector(gpg_replyMessageWithType:), self);
-    MessageViewer_forwardMessage = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(forwardMessage:), self, @selector(gpgForwardMessage:), self);
-#ifdef LEOPARD
-    MessageViewer_validateMenuItem = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(validateMenuItem:), self, @selector(gpgValidateMenuItem:), self);
-#endif
-}
+//+ (void) load
+//{
+//    MessageViewer__replyMessageWithType = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(_replyMessageWithType:), self, @selector(gpg_replyMessageWithType:), self);
+//    MessageViewer_forwardMessage = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(forwardMessage:), self, @selector(gpgForwardMessage:), self);
+//#ifdef LEOPARD
+//    MessageViewer_validateMenuItem = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(validateMenuItem:), self, @selector(gpgValidateMenuItem:), self);
+//#endif
+//}
+
 
 - (void)gpg_replyMessageWithType:(int)fp8
 {
     if(![GPGMailBundle gpgMailWorks]){
-#ifdef SNOW_LEOPARD
-        ((void (*)(id, SEL, int))[GPGMailSwizzler originalMethodForName:@"MessageViewer._replyMessageWithType:"])(self, _cmd, fp8);
-#else
         ((void (*)(id, SEL, int))MessageViewer__replyMessageWithType)(self, _cmd, fp8);
-#endif
         return;
     }
     
@@ -117,11 +95,7 @@ static IMP MessageViewer_validateMenuItem = NULL;
     if(changedSelection){
         [[[self gpgTextViewer:nil] textView] originalSelectAll:nil]; // If we use -selectAll:, headers are also selected, and we don't want it, else, on deselection, headers are still selected!
     }
-#ifdef SNOW_LEOPARD
-    ((void (*)(id, SEL, int))[GPGMailSwizzler originalMethodForName:@"MessageViewer._replyMessageWithType:"])(self, _cmd, fp8);
-#else
     ((void (*)(id, SEL, int))MessageViewer__replyMessageWithType)(self, _cmd, fp8);
-#endif
     if(changedSelection){
         [[[self gpgTextViewer:nil] textView] selectText:nil];
     }
@@ -130,11 +104,7 @@ static IMP MessageViewer_validateMenuItem = NULL;
 - (void)gpgForwardMessage:fp12
 {
     if(![GPGMailBundle gpgMailWorks]){
-#ifdef SNOW_LEOPARD
-        ((void (*)(id, SEL, id))[GPGMailSwizzler originalMethodForName:@"MessageViewer.forwardMessage:"])(self, _cmd, fp12);
-#else
         ((void (*)(id, SEL, id))MessageViewer_forwardMessage)(self, _cmd, fp12);
-#endif
         return;
     }
     
@@ -148,11 +118,7 @@ static IMP MessageViewer_validateMenuItem = NULL;
     if(changedSelection){
         [[[self gpgTextViewer:nil] textView] originalSelectAll:nil];
     }
-#ifdef SNOW_LEOPARD
-    ((void (*)(id, SEL, id))[GPGMailSwizzler originalMethodForName:@"MessageViewer.forwardMessage:"])(self, _cmd, fp12);
-#else
     ((void (*)(id, SEL, id))MessageViewer_forwardMessage)(self, _cmd, fp12);
-#endif
     if(changedSelection){
         [[[self gpgTextViewer:nil] textView] selectText:nil];
     }
@@ -187,11 +153,7 @@ static IMP MessageViewer_validateMenuItem = NULL;
         return [self currentDisplayedMessage] != nil;
     }
     else
-#ifdef SNOW_LEOPARD
         return ((BOOL (*)(id, SEL, id))[GPGMailSwizzler originalMethodForName:@"MessageViewer.validateMenuItem:"])(self, _cmd, fp8);
-#else
-        return ((BOOL (*)(id, SEL, id))MessageViewer_validateMenuItem)(self, _cmd, fp8);
-#endif
 }
 #endif
 

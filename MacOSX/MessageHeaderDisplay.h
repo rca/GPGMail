@@ -1,6 +1,6 @@
 #import <Cocoa/Cocoa.h>
 
-#ifdef SNOW_LEOPARD
+#ifdef SLEOPARD
 
 @class MessageHeaderView;
 @class MessageContentController;
@@ -126,7 +126,7 @@
 - (void)_addressBookChanged:(id)fp8;
 - (void)_addressPhotoLoaded:(id)fp8;
 - (id)textView;
-- (void)textView:(id)fp8 clickedOnCell:(id)fp12 event:(id)fp16 inRect:(struct _NSRect)fp20 atIndex:(unsigned int)fp36;
+- (void)textView:(id)fp8 clickedOnCell:(id)fp12 event:(id)fp16 inRect:(struct CGRect)fp20 atIndex:(unsigned int)fp36;
 - (void)layoutManager:(id)fp8 didCompleteLayoutForTextContainer:(id)fp12 atEnd:(BOOL)fp16;
 - (void)setIsForPrinting:(BOOL)fp8;
 
@@ -179,7 +179,7 @@
 - (BOOL)textView:(id)fp8 clickedOnLink:(id)fp12 atIndex:(unsigned int)fp16;
 - (void)adjustFontSizeBy:(int)fp8 viewingState:(id)fp12;
 - (id)selectedText;
-- (id)textView:(id)fp8 dragImageForSelectionWithEvent:(id)fp12 origin:(struct _NSPoint *)fp16;
+- (id)textView:(id)fp8 dragImageForSelectionWithEvent:(id)fp12 origin:(struct CGPoint *)fp16;
 - (id)dragImageForSelection;
 - (void)textViewDidSelectAll:(id)fp8;
 - (void)selectAll;
@@ -187,8 +187,8 @@
 - (void)messageTextIsChangingSelectionToRange:(struct _NSRange)fp8;
 - (void)_addressPhotoLoaded:(id)fp8;
 - (id)textView;
-- (void)textView:(id)fp8 clickedOnCell:(id)fp12 event:(id)fp16 inRect:(struct _NSRect)fp20 atIndex:(unsigned int)fp36;
-- (void)textView:(id)fp8 draggedCell:(id)fp12 inRect:(struct _NSRect)fp16 event:(id)fp32 atIndex:(unsigned int)fp36;
+- (void)textView:(id)fp8 clickedOnCell:(id)fp12 event:(id)fp16 inRect:(struct CGRect)fp20 atIndex:(unsigned int)fp36;
+- (void)textView:(id)fp8 draggedCell:(id)fp12 inRect:(struct CGRect)fp16 event:(id)fp32 atIndex:(unsigned int)fp36;
 - (void)layoutManager:(id)fp8 didCompleteLayoutForTextContainer:(id)fp12 atEnd:(BOOL)fp16;
 - (void)setIsForPrinting:(BOOL)fp8;
 
@@ -239,7 +239,7 @@
 - textView:fp8 willWriteSelectionToPasteboard:fp12 type:fp16;
 - (char)textView:fp8 clickedOnLink:fp12 atIndex:(unsigned int)fp16;
 - selectedText;
-- textView:fp8 dragImageForSelectionWithEvent:fp12 origin:(struct _NSPoint *)fp16;
+- textView:fp8 dragImageForSelectionWithEvent:fp12 origin:(struct CGPoint *)fp16;
 - dragImageForSelection;
 - (void)textViewDidSelectAll:fp8;
 - (void)selectAll;
@@ -247,8 +247,8 @@
 - (void)messageTextIsChangingSelectionToRange:(struct _NSRange)fp8;
 - (void)_addressPhotoLoaded:fp8;
 - textView;
-- (void)textView:fp8 clickedOnCell:fp12 event:fp16 inRect:(struct _NSRect)fp20 atIndex:(unsigned int)fp36;
-- (void)textView:fp8 draggedCell:fp12 inRect:(struct _NSRect)fp16 event:fp32 atIndex:(unsigned int)fp36;
+- (void)textView:fp8 clickedOnCell:fp12 event:fp16 inRect:(struct CGRect)fp20 atIndex:(unsigned int)fp36;
+- (void)textView:fp8 draggedCell:fp12 inRect:(struct CGRect)fp16 event:fp32 atIndex:(unsigned int)fp36;
 - (void)layoutManager:fp8 didCompleteLayoutForTextContainer:fp12 atEnd:(char)fp16;
 - (void)setIsForPrinting:(char)fp8;
 

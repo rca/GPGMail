@@ -55,5 +55,4 @@ static int methodsAllocatedCount = 0;
 + (void)addMethod:(SEL)aSelector fromClass:(Class)aClass toClass:(Class)bClass;
 + (void)addMethodsFromClass:(Class)aClass toClass:(Class)bClass;
 + (void)extendClass:(Class)aClass withClass:(Class)bClass;
-+ (void)swizzleClassMethod:(SEL)aSelector fromClass:(Class)aClass withMethod:(SEL)bSelector ofClass:(Class)bClass;
 @end

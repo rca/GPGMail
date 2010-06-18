@@ -87,7 +87,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
         dummyMessage = [Message messageWithRFC822Data:someData];
         // WARNING: dummyMessage's headers now contain MIME headers, and body contains NO headers!
 
-        @try{
+        NS_DURING
             GPGMailFormat   usedFormat = mailFormat;
             NSData          *encryptedData = [(MessageBody *)[dummyMessage messageBody] gpgEncryptForRecipients:recipients trustAllKeys:trustsAllKeys signWithKey:key passphraseDelegate:passphraseDelegate format:&usedFormat headers:&newHeaders]; // Can raise an exception
             
@@ -101,11 +101,11 @@ GPG_DECLARE_EXTRA_IVARS(Message)
             }
             else
                 [someData setData:encryptedData];
-        }@catch(NSException *localException){
+        NS_HANDLER
             [localException retain];
             [localAP release];
             [[localException autorelease] raise];
-        }
+        NS_ENDHANDLER
 #if defined(LEOPARD)
         [self performSelector:@selector(setMutableHeaders:) withObject:newHeaders]; // OutgoingMessage
         [[self messageBody] setRawData:someData]; // No effect on Message data
@@ -137,13 +137,26 @@ GPG_DECLARE_EXTRA_IVARS(Message)
     @try{
         [self setGpgIsDecrypting:YES];
         if(GPGMailLoggingLevel)
-            NSLog(@"[DEBUG] Decrypting...");
-#ifndef SNOW_LEOPARD
-        [[[self messageBody] topLevelPart] contentsForTextSystem]; // Will force re-evaluation of the decode* methods. Will not raise an exception, because -contentsForTextSystem will catch it!
-#else
-		[[[self messageBody] topLevelPart] gpgBetterDecode]; // Evaluate the decode method matching [part type].
-#endif
-        if(GPGMailLoggingLevel)
+            NSLog(@"[DEBUG] Decrypting...: %i", [self gpgIsDecrypting]);
+        NSLog(@"Top level part: %@", [[self messageBody] topLevelPart]);
+		NSString *type = [NSString stringWithString:(NSString *)[[[self messageBody] topLevelPart] type]];
+		NSString *subtype = [NSString stringWithString:(NSString *)[[[self messageBody] topLevelPart] valueForKey:@"_subtype"]];
+		NSLog(@"Type: %@/%@", type, subtype);
+		NSString *selector = [NSString stringWithFormat:@"decode%@%@", [type capitalizedString], [[subtype stringByReplacingOccurrencesOfString:@"-" withString:@"_"] capitalizedString]]; 
+		NSLog(@"Results in selector: %@", selector);
+		
+		/* Unfortunately calling decode (replacement of contentsForTextSystem) doesn't work anymore.
+		 * calling the appropriate decode method for the top part fixes the problem.
+		 */
+		if([[[self messageBody] topLevelPart] respondsToSelector:NSSelectorFromString(selector)]) {
+			[[[self messageBody] topLevelPart] performSelector:NSSelectorFromString(selector)];
+		}
+		else {
+			/* Otherwise try it with decode. */
+			NSLog(@"Using decode anyway!");
+			[[[self messageBody] topLevelPart] decode]; // Will force re-evaluation of the decode* methods. Will not raise an exception, because -contentsForTextSystem will catch it!
+        }
+		if(GPGMailLoggingLevel)
             NSLog(@"[DEBUG] Finished Decrypting");
         [messageSignatures addObjectsFromArray:[self gpgMessageSignatures]];
     }
@@ -180,7 +193,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
         // that's why we create a new Message from our headers' and body's data.
         dummyMessage = [Message messageWithRFC822Data:someData];
         
-        @try{
+        NS_DURING
             GPGMailFormat   usedFormat = mailFormat;
 			NSData          *signedData = [(MessageBody *)[dummyMessage messageBody] gpgSignWithKey:key passphraseDelegate:passphraseDelegate format:&usedFormat headers:&newHeaders]; // Can raise an exception            
             
@@ -194,11 +207,11 @@ GPG_DECLARE_EXTRA_IVARS(Message)
             }
             else
                 [someData setData:signedData];
-        }@catch(NSException *localException){
+        NS_HANDLER
             [localException retain];
             [localAP release];
             [[localException autorelease] raise];
-        }
+        NS_ENDHANDLER
 #if 1
 #if defined(LEOPARD)
         [self performSelector:@selector(setMutableHeaders:) withObject:newHeaders]; // OutgoingMessage

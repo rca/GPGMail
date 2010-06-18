@@ -45,9 +45,7 @@
 #import <NSString+Message.h>
 #import <MutableMessageHeaders.h>
 #import <OptionalView.h>
-#ifndef SNOW_LEOPARD
 #import <MailToolbarItem.h>
-#endif
 #import <ColorBackgroundView.h>
 #import <AddressBook/AddressBook.h>
 
@@ -60,6 +58,9 @@
 // IMPORTANT: we cannot use key userIDs without retaining them, due to NSProxy:
 // we need to retain every distant object, we cannot rely on this object's distant retain count,
 // that's why we use a cache for userIDs.
+
+@class MailDocumentEditor;
+@class SegmentedToolbarItem;
 
 @interface GPGMailComposeAccessoryViewOwner(Private)
 - (void) doSetEncryptsMessage:(BOOL)flag;
@@ -90,31 +91,25 @@
 - (void)setTitle:fp12 forView:fp16;
 @end
 
-
 @implementation GPGMailComposeAccessoryViewOwner
 
-#ifdef SNOW_LEOPARD
-
-static Class SegmentedToolbarItem;
-
 + (void) initialize {
-	[super initialize];
-	
+	NSLog(@"Gets initialized?");
 	Class parentClass = NSClassFromString(@"MVComposeAccessoryViewOwner");
 	if(parentClass)
 		class_setSuperclass([self class], parentClass);
-	
-	SegmentedToolbarItem = NSClassFromString(@"SegmentedToolbarItem");
+	[super initialize];
 }
-#endif
 
 + (NSString *) composeAccessoryViewNibName
 {
-    return @"GPGMailCompose"; // Invoked by -[MVComposeAccessoryViewOwner setupUIForMessage:]
+    NSLog(@"composeAccessoryViewNibName");
+	return @"GPGMailCompose"; // Invoked by -[MVComposeAccessoryViewOwner setupUIForMessage:]
 }
 
 - (BOOL) displaysButtonsInComposeWindow
 {
+	NSLog(@"displaysButtonsInComposeWindow");
     return [[GPGMailBundle sharedInstance] gpgMailWorks] && displaysButtonsInComposeWindow;
 }
 
@@ -122,6 +117,13 @@ static Class SegmentedToolbarItem;
 {
     if(displaysButtonsInComposeWindow != value)
         displaysButtonsInComposeWindow = value;
+}
+
+- (BOOL)gpgRespondsToSelector:(SEL)aSelector {
+	NSLog(@"Responds to my selector: %@", NSStringFromSelector(aSelector));
+	NSLog(@"Function pointer: %p", [GPGMailSwizzler originalMethodForName:@"MVComposeAccessoryViewOwner.respondsToSelector:"]);
+	//return ((BOOL (*)(id, SEL, SEL))[GPGMailSwizzler originalMethodForName:@"MVComposeAccessoryViewOwner.respondsToSelector:"])(self, _cmd, aSelector);
+	return NO;
 }
 
 - (void) updateMenusAccordingToSelf:(BOOL)accordingToSelf
@@ -179,13 +181,7 @@ static Class SegmentedToolbarItem;
     [replyOptions release];
     [[NSRunLoop currentRunLoop] cancelPerformSelectorsWithTarget:self];
     
-#ifdef SNOW_LEOPARD
-    // Runtime super call - CORRECT !
-    struct objc_super s = { self, [self superclass] };
-    objc_msgSendSuper(&s, @selector(dealloc));
-#else
 	[super dealloc];
-#endif
 }
 
 - (GPGKey *) selectedPersonalPublicKey
@@ -215,7 +211,8 @@ static Class SegmentedToolbarItem;
     // receive other notifications after our composeAccessoryView
     // has been freed! That's why we retain our composeAccessoryView
 
-    if([[self composeAccessoryView] isDescendantOf:[[notification object] contentView]])
+    [[self composeAccessoryView] retain];
+	if([[self composeAccessoryView] isDescendantOf:[[notification object] contentView]])
         [self updateMenusAccordingToSelf:NO];
 }
 
@@ -387,6 +384,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 
 - (NSArray *) recipients
 {
+	NSLog(@"Recipients");
     return [[[self messageEditor] backEnd] gpgRecipients];
 }
 
@@ -752,6 +750,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 - (id) init
 {
     if(self = [super init]){
+		NSLog(@"Initing Compose Accessory");
         cachedPublicKeyCount = -1;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyListWasInvalidated:) name:GPGKeyListWasInvalidatedNotification object:[GPGMailBundle sharedInstance]];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferencesDidChange:) name:GPGPreferencesDidChangeNotification object:[GPGMailBundle sharedInstance]];
@@ -759,6 +758,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
         pgpOptionsPerEmail = [[NSMutableDictionary alloc] init];
         displaysButtonsInComposeWindow = [[GPGMailBundle sharedInstance] displaysButtonsInComposeWindow];
 #if defined(LEOPARD) || defined(TIGER)
+		NSLog(@"Load Bundle");
 		NSAssert([NSBundle loadNibNamed:@"GPGMailComposeTiger" owner:self], @"### Unable to load GPGMailComposeTiger nib");
 #endif
     }
@@ -768,9 +768,12 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 
 - (void) finishUISetupWithStates:(NSArray *)savedStates
 {
+	NSLog(@"finishUISetupWithStates");
     // Called only once, after composeAccessoryView has been placed onto Compose window
     NSView              *view = [self composeAccessoryView];
-    NSWindow            *window = [view window];
+    NSLog(@"window: %@", view);
+	NSWindow            *window = [view window];
+	
 #ifdef LEOPARD
     MailDocumentEditor	*messageEditor;
 #else
@@ -868,13 +871,10 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 
 - (void) toolbarWillAddItem:(NSNotification *)notif
 {
-    if([notif object] == [[[self composeAccessoryView] window] toolbar]){
+    NSLog(@"toolbarWillAddItem");
+	if([notif object] == [[[self composeAccessoryView] window] toolbar]){
 #if defined(LEOPARD)
-#ifdef SNOW_LEOPARD
-        id    anItem = [[notif userInfo] objectForKey:@"item"];
-#else
         SegmentedToolbarItem    *anItem = [[notif userInfo] objectForKey:@"item"];
-#endif
 #elif defined(TIGER)
         MailToolbarItem	*anItem = [[notif userInfo] objectForKey:@"item"];
 #else
@@ -913,100 +913,59 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 }
 #endif
 
-#ifdef SNOW_LEOPARD
 - (void)awakeFromNib {
 	if(!setupUI) {
-		if(GPGMailLoggingLevel)
-			NSLog(@"Not yet ready to setup UI");
+		NSLog(@"Not yet ready to setup UI");
 		return;
 	}
+	NSLog(@"awaking from nib. hopefully before setupUIForMessage");
+	NSLog(@"composeAccessoryView: %@", [self composeAccessoryView]);
 	
+	NSLog(@"setupUIForMessage: accessoryView: %@", [super valueForKey:@"accessoryView"]);
+	
+	// At that time, composeAccessoryView, which is going to be loaded, is not/cannot be in message view window
     GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
-    
-	verifyRulesConflicts = YES;
-    selectedPublicKeys = [[NSMutableArray allocWithZone:[self zone]] init];
-    missingPublicKeyEmails = [[NSMutableSet allocWithZone:[self zone]] init];
-    selectedPersonalKey = [[mailBundle defaultKey] retain];
-    [selectedPersonalPublicKey release];
-    selectedPersonalPublicKey = nil;
+    //NSArray         *states = [[[message headers] firstHeaderForKey:@"X-Gpgmail-State"] componentsSeparatedByString:@","];
 	
-    [self setupTableColumns];
-    [[publicKeysPopDownButton menu] setAutoenablesItems:NO];
-	
-	struct objc_super s = { self, [self superclass] };
-    // Call the super implementation to access the super class's accessoryView.
-    [objc_msgSendSuper(&s, @selector(composeAccessoryView)) setFrame:[[optionalView primaryView] frame]];
-    [[[optionalView primaryView] superview] replaceSubview:[optionalView primaryView] with:objc_msgSendSuper(&s, @selector(composeAccessoryView))];
-    [optionalViewBackgroundView setBackgroundColor:[NSColor windowBackgroundColor]];
-	[optionalViewTitleField setStringValue:NSLocalizedStringFromTableInBundle(@"PGP:", @"GPGMail", [NSBundle bundleForClass:[self class]], "Title of PGP accessory view")];
-	[[optionalView optionSwitch] setState:[self displaysButtonsInComposeWindow] ? NSOnState:NSOffState];
-    // After this point, the original accessoryView is replaced with the views of our
-    // Nib file, hence every further call to composeAccessoryView will use our own implementation
-    // of composeAccessoryView, which will return the one of the views from our NIB.
-
-    [personalKeysPopUpButton setAutoenablesItems:NO]; // Needed!
-	
-    [self reloadPersonalKeys];
-    [self refreshPersonalKeysMenuAccordingToSelf:YES];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPublicKeysPopDownButton:) name:NSPopUpButtonWillPopUpNotification object:publicKeysPopDownButton];
-    // We need to delay the following call, after our composeAccessoryView has been moved to the Compose window
-    [self performSelector:@selector(finishUISetupWithStates:) withObject:currentStates afterDelay:0.0];
-}
-#endif
-
-#ifndef SNOW_LEOPARD
-- (void) setupUIForMessage:(Message *)message
-#else
-- (void) setupUIForMessage:(id)message
-#endif
-{
-    // At that time, composeAccessoryView, which is going to be loaded, is not/cannot be in message view window
-    GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
-    NSArray         *states = [[[message headers] firstHeaderForKey:@"X-Gpgmail-State"] componentsSeparatedByString:@","];
-    // FIXME: Leopard: at that time, headers lost their custom entries
-    
-    setupUI = YES;
-    currentStates = states;
-	
-#ifdef SNOW_LEOPARD
-    // Runtime super call - CORRECT !
-    struct objc_super s = { self, [self superclass] };
-    objc_msgSendSuper(&s, @selector(setupUIForMessage:), message);
-#else
-    [super setupUIForMessage:message]; // Will load nib
-
     verifyRulesConflicts = YES;
     selectedPublicKeys = [[NSMutableArray allocWithZone:[self zone]] init];
     missingPublicKeyEmails = [[NSMutableSet allocWithZone:[self zone]] init];
     selectedPersonalKey = [[mailBundle defaultKey] retain];
     [selectedPersonalPublicKey release];
     selectedPersonalPublicKey = nil;
-//    usesOnlyOpenPGPStyle = [mailBundle usesOnlyOpenPGPStyle];
-
+	//    usesOnlyOpenPGPStyle = [mailBundle usesOnlyOpenPGPStyle];
+	
     [self setupTableColumns];
-//    [self updateWarningImage];
+	//    [self updateWarningImage];
     [[publicKeysPopDownButton menu] setAutoenablesItems:NO];
-
+	
 #if defined(LEOPARD) || defined(TIGER)
-	[[self composeAccessoryView] setFrame:[[optionalView primaryView] frame]];
-	[[[optionalView primaryView] superview] replaceSubview:[optionalView primaryView] with:[self composeAccessoryView]];
+	NSLog(@"[self composeAccessoryView]: %@", [self composeAccessoryView]);
+	[[super composeAccessoryView] setFrame:[[optionalView primaryView] frame]];
+	[[[optionalView primaryView] superview] replaceSubview:[optionalView primaryView] with:[super composeAccessoryView]];
     [optionalViewBackgroundView setBackgroundColor:[NSColor windowBackgroundColor]];
-/*    {
-        ColorBackgroundView *aView = [[ColorBackgroundView alloc] initWithFrame:[optionalView bounds]];
-        
-        [aView setBackgroundColor:[NSColor windowBackgroundColor]];
-        [[[self composeAccessoryView] superview] addSubview:aView positioned:NSWindowBelow relativeTo:nil]; // Let's make sure our whole view is opaque; probably not needed once we're using a real optional view; if we don't do that, there are some display problems (cache?) when superview is resized
-        [aView release];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshAccessoryView:) name:NSViewFrameDidChangeNotification object:[[optionalView primaryView] superview]]; // Needed too
-    }*/
+	/*    {
+	 ColorBackgroundView *aView = [[ColorBackgroundView alloc] initWithFrame:[optionalView bounds]];
+	 
+	 [aView setBackgroundColor:[NSColor windowBackgroundColor]];
+	 [[[self composeAccessoryView] superview] addSubview:aView positioned:NSWindowBelow relativeTo:nil]; // Let's make sure our whole view is opaque; probably not needed once we're using a real optional view; if we don't do that, there are some display problems (cache?) when superview is resized
+	 [aView release];
+	 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshAccessoryView:) name:NSViewFrameDidChangeNotification object:[[optionalView primaryView] superview]]; // Needed too
+	 }*/
 	[optionalViewTitleField setStringValue:NSLocalizedStringFromTableInBundle(@"PGP:", @"GPGMail", [NSBundle bundleForClass:[self class]], "Title of PGP accessory view")];
 	[[optionalView optionSwitch] setState:[self displaysButtonsInComposeWindow] ? NSOnState:NSOffState];
-//	accessoryView = [optionalView retain];
+	//	accessoryView = [optionalView retain];
+	[super setValue:[optionalView retain] forKey:@"accessoryView"];
     if(![self displaysButtonsInComposeWindow]){
-        accessoryView = [emptyView retain];
+        //[super setAccessoryView:[emptyView retain]];
+		[super setValue:[emptyView retain] forKey:@"accessoryView"];
+		//accessoryView = [emptyView retain];
     }
     else
-        accessoryView = [optionalView retain];
+        //[super setAccessoryView:[optionalView retain]];
+		//[emptyView retain]
+		[super setValue:[optionalView retain] forKey:@"accessoryView"];
+	//accessoryView = [optionalView retain];
 #else
 #warning Check memory leak
     if(![self displaysButtonsInComposeWindow]){
@@ -1016,24 +975,29 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
         [accessoryView retain];
 #endif
     [personalKeysPopUpButton setAutoenablesItems:NO]; // Needed!
-
+	
     [self reloadPersonalKeys];
     [self refreshPersonalKeysMenuAccordingToSelf:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPublicKeysPopDownButton:) name:NSPopUpButtonWillPopUpNotification object:publicKeysPopDownButton];
     // We need to delay the following call, after our composeAccessoryView has been moved to the Compose window
-    [self performSelector:@selector(finishUISetupWithStates:) withObject:states afterDelay:0.0];
-#endif
+    [self performSelector:@selector(finishUISetupWithStates:) withObject:nil afterDelay:0.0];
+}
+
+- (void) setupUIForMessage:(Message *)message
+{
+	NSLog(@"setupUIForMessage: %@", message);
+    // FIXME: Leopard: at that time, headers lost their custom entries
+	setupUI = YES;
+    [super setupUIForMessage:message]; // Will load nib
 }
 
 - (void) doSetEncryptsMessage:(BOOL)flag
 {
+	[[self composeAccessoryView] retain];
     NSEnumerator	*anEnum = [[[[[self composeAccessoryView] window] toolbar] items] objectEnumerator];
+	[[self composeAccessoryView] retain];
 #if defined(LEOPARD)
-#ifdef SNOW_LEOPARD
-	id    anItem;
-#else
     SegmentedToolbarItem    *anItem;
-#endif
 #elif defined(TIGER)
     MailToolbarItem	*anItem;
 #else
@@ -1054,7 +1018,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
         }
 #endif
     }
-
+	
     while(anItem = [anEnum nextObject])
         if([[anItem itemIdentifier] isEqualToString:GPGEncryptMessageToolbarItemIdentifier]){
             if(buttonsShowState){
@@ -1092,31 +1056,26 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 #endif
             }
         }
-
+	
     [[[GPGMailBundle sharedInstance] encryptsNewMessageMenuItem] setState:(encryptsMessage ? NSOnState:NSOffState)];
     [publicKeysPopDownButton setEnabled:encryptsMessage];
     [encryptionSwitch setState:(encryptsMessage ? NSOnState:NSOffState)];
 //    [self updateWarningImage]; // No longer necessary
 }
 
-#ifdef SNOW_LEOPARD
 - (NSView *)composeAccessoryView {
-//	struct objc_super s = { self, [self superclass] };
-//    return (NSView *)objc_msgSendSuper(&s, @selector(composeAccessoryView));
-    
-    return [self displaysButtonsInComposeWindow] ? [optionalView retain] : [emptyView retain];
+	return [self displaysButtonsInComposeWindow] ? [optionalView retain] : [emptyView retain];
 }
-#endif
 
 - (void) doSetSignsMessage:(BOOL)flag
 {
+	//NSLog(@"composeAccessoryView: %@", [self composeAccessoryView]);
+	NSLog(@"optionalView: %@", optionalView);
+	NSLog(@"window: %@", [optionalView window]); 
+	NSView *aView = nil;
     NSEnumerator	*anEnum = [[[[[self composeAccessoryView] window] toolbar] items] objectEnumerator];
 #if defined(LEOPARD)
-#ifdef SNOW_LEOPARD
-	id    anItem;
-#else
     SegmentedToolbarItem    *anItem;
-#endif
 #elif defined(TIGER)
     MailToolbarItem	*anItem;
 #else
@@ -1169,21 +1128,21 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     [personalKeysPopUpButton setEnabled:signsMessage];
     [signSwitch setState:(signsMessage ? NSOnState : NSOffState)];
 }
-/*
-- (void) toggleEncryptionForNewMessage
-{
-    // NO LONGER USED
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    [self doSetEncryptsMessage:!encryptsMessage];
-    [self findMatchingPublicKeys]; // FIXME: Do not look for keys when user toggled encryption off?
-    [self refreshAutomaticChoiceInfo];
-    [self refreshPublicKeysMenu];
-    if(encryptsMessage && !signsMessage && [[GPGMailBundle sharedInstance] signWhenEncrypting]){
-        signatureTurnedOnBecauseEncrypted = YES;
-        [self doSetSignsMessage:YES];
-    }
-}
-*/
+///*
+//- (void) toggleEncryptionForNewMessage
+//{
+//    // NO LONGER USED
+//    NSLog(@"%s", __PRETTY_FUNCTION__);
+//    [self doSetEncryptsMessage:!encryptsMessage];
+//    [self findMatchingPublicKeys]; // FIXME: Do not look for keys when user toggled encryption off?
+//    [self refreshAutomaticChoiceInfo];
+//    [self refreshPublicKeysMenu];
+//    if(encryptsMessage && !signsMessage && [[GPGMailBundle sharedInstance] signWhenEncrypting]){
+//        signatureTurnedOnBecauseEncrypted = YES;
+//        [self doSetSignsMessage:YES];
+//    }
+//}
+//*/
 - (IBAction) gpgToggleEncryptionForNewMessage:(id)sender
 {
     // Forwarded by GPGMailBundle when sent by menuItem, or sent by checkbox, or toolbarItem
@@ -1216,7 +1175,6 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 - (void) gpgSetOptions:(NSDictionary *)options
 {
     // Forwarded by GPGMessageEditorPoser via MessageEditor, on reply to a PGP message
-    // FIXME: not implemented for Leopard!
 #if 0
 #warning FIXME: Should not modify any encrypt/sign/MIME setting???
     NSNumber    *aNumber;
@@ -1254,8 +1212,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 
 - (void) sheetDidDismiss:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo
 {
-    if(selectedPersonalKey)
-        [GPGPassphraseController flushCachedPassphraseForUser:selectedPersonalKey];
+    //if(selectedPersonalKey)
+//        [GPGPassphraseController flushCachedPassphraseForUser:selectedPersonalKey];
     if(returnCode == NSAlertDefaultReturn){
         [self retryDelivery];
     }
@@ -1279,12 +1237,12 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 {
     NSArray	*addresses = (NSArray *)contextInfo;
     
-    if(returnCode == NSAlertDefaultReturn)
-        [[GPGKeyDownload sharedInstance] searchKeysMatchingPatterns:addresses];
-    else if(returnCode == NSAlertOtherReturn){
-        [self gpgToggleEncryptionForNewMessage:nil];
-        [self retryDelivery];
-    }
+    //if(returnCode == NSAlertDefaultReturn)
+//        //[[GPGKeyDownload sharedInstance] searchKeysMatchingPatterns:addresses];
+//    else if(returnCode == NSAlertOtherReturn){
+//        [self gpgToggleEncryptionForNewMessage:nil];
+//        [self retryDelivery];
+//    }
     [addresses release];
 }
 
@@ -1299,12 +1257,9 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     NSBeginAlertSheet(aTitle, okTitle, cancelTitle, inClearTitle, [[self composeAccessoryView] window], self, NULL, @selector(unmatchedAddressesSheetDidDismiss:returnCode:contextInfo:), [addresses retain], aMessage, [addresses componentsJoinedByString:@"\n"]);
 }
 
-#ifdef SNOW_LEOPARD
 - (BOOL) messageWillBeSaved:(id)message
-#else
-- (BOOL) messageWillBeSaved:(OutgoingMessage *)message
-#endif
 {
+	NSLog(@"messageWillBeSaved: %@", [message class]);
     // Invoked when message is saved in drafts; we have the opportunity to add our own headers
     // that we can get back when draft is converted back to message for delivery.
     // This way we can save the encryption/signature flags (as well as OpenPGP/MIME,
@@ -1324,7 +1279,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
         else
             [(MutableMessageHeaders *)[message headers] removeHeaderForKey:@"X-Gpgmail-State"];
 #ifdef LEOPARD
-        MutableMessageHeaders   *newHeaders = [message headers];
+        MutableMessageHeaders   *newHeaders = (MutableMessageHeaders *)[message headers];
         NSData                  *bodyData = [[message bodyData] copy];
         newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[newHeaders encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]]; // Needed, to ensure _data ivar is updated
         [message setMutableHeaders:newHeaders];
@@ -1338,14 +1293,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 #endif
     }
 
-#ifndef SNOW_LEOPARD
-    return [super messageWillBeSaved:message];
-#else
-    // Runtime super call - CORRECT !
-    struct objc_super s = { self, [self superclass] };
-    
-    return (BOOL)objc_msgSendSuper(&s, @selector(messageWillBeSaved:), message);
-#endif
+    return (BOOL)[super messageWillBeSaved:message];
 }
 
 - (BOOL) messageHasAlreadyBeenEncryptedOrSigned:(Message *)message
@@ -1444,27 +1392,18 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     return NO;
 }
 
-#ifdef SNOW_LEOPARD
 - (BOOL) messageWillBeDelivered:(id)message
-#else
-- (BOOL) messageWillBeDelivered:(OutgoingMessage *)message
-#endif
 {
+	NSLog(@"messageWillBeDelivered: %@", [message class]);
     if(GPGMailLoggingLevel)
         NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
-#ifndef SNOW_LEOPARD
-    BOOL	result = [super messageWillBeDelivered:message];
-#else
-    // Runtime super call - CORRECT !
-    struct objc_super s = { self, [self superclass] };
-    BOOL	result = (BOOL)objc_msgSendSuper(&s, @selector(messageWillBeDelivered:), message);
-#endif
+    BOOL	result = (BOOL)[super messageWillBeDelivered:message];
 
      // Remove draft headers
 #warning CHECKME LEOPARD
     [(MutableMessageHeaders *)[message headers] removeHeaderForKey:@"X-Gpgmail-State"];
 #ifdef LEOPARD
-    MutableMessageHeaders   *newHeaders = [message headers];
+    MutableMessageHeaders   *newHeaders = (MutableMessageHeaders *)[message headers];
     NSData                  *bodyData = [[message bodyData] copy];
     newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[newHeaders encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]]; // Needed, to ensure _data ivar is updated
     [message setMutableHeaders:newHeaders];
@@ -1572,30 +1511,30 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
         
         // Finally, prepare PGP message for delivery
         if(encryptsMessage){
-            GPGProgressIndicatorController	*aController = [GPGProgressIndicatorController sharedController];
-
-#warning TODO: Use a sheet (-> no longer shared instance)
-            [aController startWithTitle:NSLocalizedStringFromTableInBundle(@"ENCRYPTING", @"GPGMail", aBundle, "") delegate:self];
+            //GPGProgressIndicatorController	*aController = [GPGProgressIndicatorController sharedController];
+//
+//#warning TODO: Use a sheet (-> no longer shared instance)
+//            [aController startWithTitle:NSLocalizedStringFromTableInBundle(@"ENCRYPTING", @"GPGMail", aBundle, "") delegate:self];
             
-            @try{
+            NS_DURING
                 [message gpgEncryptForRecipients:recipients trustAllKeys:trustsAllKeys signWithKey:(signsMessage ? selectedPersonalKey:nil) passphraseDelegate:self format:mailFormat];
-            }@catch(NSException *localException){
+            NS_HANDLER
                 result = NO;
                 if(![[localException name] isEqualToString:GPGException] || [mailBundle gpgErrorCodeFromError:[[[localException userInfo] objectForKey:GPGErrorKey] intValue]] != /*GPGErrorNoData*/GPGErrorCancelled)
                     [self performSelector:@selector(displayException:) withObject:localException afterDelay:0.0];
                 // Else, user cancelled passphrase entry; do nothing special, return.
-            }
-            [aController stop];
+            NS_ENDHANDLER
+            //[aController stop];
         }
         else{
-            @try{
+            NS_DURING
                 [message gpgSignWithKey:selectedPersonalKey passphraseDelegate:self format:mailFormat];
-            }@catch(NSException *localException){
+            NS_HANDLER
                 result = NO;
                 if(![[localException name] isEqualToString:GPGException] || [mailBundle gpgErrorCodeFromError:[[[localException userInfo] objectForKey:GPGErrorKey] unsignedIntValue]] != /*GPGErrorNoData*/GPGErrorCancelled)
                     [self performSelector:@selector(displayException:) withObject:localException afterDelay:0.0];
                 // Else, user cancelled passphrase entry; do nothing special, return.
-            }
+            NS_ENDHANDLER
         }
 
         // There is a problem with Compose window: it is not redisplayed correctly
@@ -1612,12 +1551,12 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     return result;
 }
 
-- (void) progressIndicatorDidCancel:(GPGProgressIndicatorController *)controller
-{
-    // Currently it is not possible to cancel a running operation
-//    [[GPGHandler defaultHandler] cancelOperation];
-}
-
+//- (void) progressIndicatorDidCancel:(GPGProgressIndicatorController *)controller
+//{
+//    // Currently it is not possible to cancel a running operation
+////    [[GPGHandler defaultHandler] cancelOperation];
+//}
+//
 - (IBAction) toggleColumnDisplay:(id)sender
 {
     if([sender state] != NSOnState){
@@ -1925,19 +1864,18 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 
 - (BOOL) validateToolbarItem:(NSToolbarItem *)theItem
 {
+	NSLog(@"validateToolbarItem");
     // Forwarded by GPGComposeWindowStorePoser or MessageEditor
 #if defined(LEOPARD)
-#ifdef SNOW_LEOPARD
-    SEL anAction = ([theItem isKindOfClass:[SegmentedToolbarItem class]] ? [(id)theItem actionForSegment:0] : [theItem action]);
-#else
-    SEL anAction = ([theItem isKindOfClass:[SegmentedToolbarItem class]] ? [(SegmentedToolbarItem *)theItem actionForSegment:0] : [theItem action]);
-#endif
+    SEL anAction = ([theItem isKindOfClass:(Class)NSClassForString(@"SegmentedToolbarItem")] ? [theItem actionForSegment:0] : [theItem action]);
 #elif defined(TIGER)
     SEL	anAction = [(MailToolbarItem *)theItem actionForSegment:0];
 #else
     SEL	anAction = [theItem action];
 #endif
-
+	
+	NSLog(@"validate: %@", anAction);
+	
     if(anAction == @selector(gpgToggleEncryptionForNewMessage:))
         return YES;
     else if(anAction == @selector(gpgToggleSignatureForNewMessage:))
@@ -2091,7 +2029,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 
 - (void) textDidEndEditing:(NSNotification *)notification
 {
-    // It is not possible to use NSTextDidChangeNotification or
+    NSLog(@"%@: textDidEndEditing", [self class]);
+	// It is not possible to use NSTextDidChangeNotification or
     // NSControlTextDidChangeNotification because receiver list
     // is not updated before textDidEndEditing.
     // Side-effect: menu and popdown menu are not updated before
@@ -2247,6 +2186,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 
 - (void) preferencesDidChange:(NSNotification *)notification
 {
+	NSLog(@"%@: preferencesDidChange", [self class]); 
     // Do not change current choices (selected personal key, sign/encrypt)
     [self reloadPersonalKeys]; // We reload them, because maybe user changed the way to display them
 //    [self refreshPublicKeysMenu]; // We reload them, because maybe user changed the way to display them
@@ -2259,10 +2199,10 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     return [personalKeysPopUpButton lastItem] != nil;
 }
 
-- (IBAction) gpgDownloadMissingKeys:(id)sender
-{
-    [[GPGKeyDownload sharedInstance] searchKeysMatchingPatterns:[missingPublicKeyEmails allObjects]];
-}
+//- (IBAction) gpgDownloadMissingKeys:(id)sender
+//{
+//    [[GPGKeyDownload sharedInstance] searchKeysMatchingPatterns:[missingPublicKeyEmails allObjects]];
+//}
 
 #ifdef LEOPARD
 - (MailDocumentEditor *) messageEditor
@@ -2602,8 +2542,10 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     if(logging){
         NSLog(@"RESULTS: willEncrypt = %@, willSign = %@, willUseMIME = %@", (willEncrypt ? @"YES":@"NO"), (willSign ? @"YES":@"NO"), (willUseMIME ? @"YES":@"NO"));
     }
+	NSLog(@"Hells yes: %@", [[self composeAccessoryView] retain]);
     [self doSetEncryptsMessage:willEncrypt];
-    [self doSetSignsMessage:willSign];
+	[optionalView retain];
+	[self doSetSignsMessage:willSign];
     [self setUsesOnlyOpenPGPStyle:willUseMIME];
     [self refreshAutomaticChoiceInfo];
     [self refreshPublicKeysMenu];

@@ -142,7 +142,7 @@ NSString	*GPGMailHeaderKey = @"X-PGP-Agent";
             NSLog(@"[DEBUG] FAILED to write data to encrypt/sign in %@", filename);
     }
     
-    @try{
+    NS_DURING
         GPGData *outputData;
 
 #warning Use newEncoding!
@@ -164,11 +164,11 @@ NSString	*GPGMailHeaderKey = @"X-PGP-Agent";
         }
         modifiedData = [[[outputData data] retain] autorelease]; // Because context will be freed
 //            [NSException raise:GPGException format:@"%@", NSLocalizedStringFromTableInBundle(@"UNTRUSTED RECIPIENTS", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")];
-    }@catch(NSException *localException){
+    NS_HANDLER
         [inputData release];
         [aContext release];
         [localException raise];
-	}
+	NS_ENDHANDLER
     [inputData release];
     [aContext release];
     

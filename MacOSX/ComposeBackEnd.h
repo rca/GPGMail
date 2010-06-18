@@ -1,9 +1,8 @@
 #import <Cocoa/Cocoa.h>
 
-#ifdef SNOW_LEOPARD
+#ifdef SLEOPARD
 
 @class StationeryController;
-@class DOMNode;
 @class ParsedMessage;
 @class MFUUID;
 @class InvocationQueue;

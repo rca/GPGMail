@@ -30,52 +30,28 @@
 #import "ComposeBackEnd+GPGMail.h"
 #import "GPGMailBundle.h"
 #import "NSString+Message.h"
-#import "NSString+GPGMail.h"
+#import "NSString+GPGMail.h" 
 
 #import <Foundation/Foundation.h>
 
 
-#ifdef SNOW_LEOPARD
 @implementation GPGMail_ComposeBackEnd
-#else
-@implementation ComposeBackEnd(GPGMail)
-#endif
 
 - (NSArray *) gpgRecipients
 {
     // Used only in GPGMailComposeAccessoryViewOwner => we could easily ask user for the recipients
-#ifdef SNOW_LEOPARD
     NSArray *recipients = [[self valueForKey:@"_cleanHeaders"] objectForKey:@"to"];
-#else
-    NSArray *recipients = [_cleanHeaders objectForKey:@"to"];
-#endif
 
     if(recipients != nil)
-#ifdef SNOW_LEOPARD
         recipients = [recipients arrayByAddingObjectsFromArray:[[self valueForKey:@"_cleanHeaders"] objectForKey:@"cc"]];
-#else
-        recipients = [recipients arrayByAddingObjectsFromArray:[_cleanHeaders objectForKey:@"cc"]];
-#endif
     else
-#ifdef SNOW_LEOPARD
         recipients = [[self valueForKey:@"_cleanHeaders"] objectForKey:@"cc"];
-#else
-        recipients = [_cleanHeaders objectForKey:@"cc"];
-#endif
     
     if([[GPGMailBundle sharedInstance] usesBCCRecipients]){
         if(recipients != nil)
-#ifdef SNOW_LEOPARD
             recipients = [recipients arrayByAddingObjectsFromArray:[[self valueForKey:@"_cleanHeaders"] objectForKey:@"bcc"]];
-#else
-            recipients = [recipients arrayByAddingObjectsFromArray:[_cleanHeaders objectForKey:@"bcc"]];
-#endif
         else
-#ifdef SNOW_LEOPARD
             recipients = [[self valueForKey:@"_cleanHeaders"] objectForKey:@"bcc"];
-#else
-            recipients = [_cleanHeaders objectForKey:@"bcc"];
-#endif
     }
     
     return [recipients valueForKey:@"gpgNormalizedEmail"];
@@ -83,11 +59,7 @@
 
 - (NSArray *) gpgBCCRecipients
 {
-#ifdef SNOW_LEOPARD
     return [[self valueForKey:@"_cleanHeaders"] objectForKey:@"bcc"];
-#else
-    return [_cleanHeaders objectForKey:@"bcc"];
-#endif
 }
 
 @end

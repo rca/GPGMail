@@ -1,18 +1,19 @@
 #import <Cocoa/Cocoa.h>
 
-#ifdef SNOW_LEOPARD
+#ifdef SLEOPARD
 
 @class Message;
-@class ActivityMonitor;
 @class MimeBody;
+@class ActivityMonitor;
 @class MFError;
 @class TextMessageDisplay;
 @class MessageHeaderDisplay;
 @class HeaderAttachmentsView;
-@class NSCache;
 @class InvocationQueue;
 @class ColorBackgroundView;
+@class MessageViewingState;
 @class EmbeddedNoteDocumentEditor;
+
 
 @protocol DocumentEditorManaging
 - (void)registerDocumentEditor:(id)arg1;
@@ -366,7 +367,6 @@
 
 @end
 
-
 #elif defined(LEOPARD)
 
 //extern NSString	*MessageWillBeDisplayedInView;
@@ -520,7 +520,7 @@
     double _backgroundLoadStartTime;
     double _backgroundLoadEndTime;
     NSString *_messageIDToRestoreInitialStateFor;
-    struct _NSRect _initialVisibleRect;
+    struct CGRect _initialVisibleRect;
     struct _NSRange _initialSelectedRange;
     NSArray *mostRecentHeaderOrder;
     NSTimer *_fadeTimer;
@@ -799,7 +799,7 @@ extern NSString *MessageWillNoLongerBeDisplayedInView;
     double _backgroundLoadStartTime;
     double _backgroundLoadEndTime;
     NSString *_messageIDToRestoreInitialStateFor;
-    struct _NSRect _initialVisibleRect;
+    struct CGRect _initialVisibleRect;
     struct _NSRange _initialSelectedRange;
     NSArray *mostRecentHeaderOrder;
     NSTimer *_fadeTimer;
@@ -1028,7 +1028,7 @@ extern NSString	*MessageWillNoLongerBeDisplayedInView;
     double _backgroundLoadStartTime;	// 100 = 0x64
     double _backgroundLoadEndTime;	// 108 = 0x6c
     NSString *_messageIDToRestoreInitialStateFor;	// 116 = 0x74
-    struct _NSRect_initialVisibleRect;	// 120 = 0x78
+    struct CGRect_initialVisibleRect;	// 120 = 0x78
     struct _NSRange _initialSelectedRange;	// 136 = 0x88
     NSArray *mostRecentHeaderOrder;	// 144 = 0x90
     NSTimer *_fadeTimer;	// 148 = 0x94

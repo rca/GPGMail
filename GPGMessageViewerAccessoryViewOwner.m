@@ -38,7 +38,6 @@
 #import <Message+GPGMail.h>
 #import <NSString+Message.h>
 #import <NSString+GPGMail.h>
-#import <ExceptionHandling/NSExceptionHandler.h>
 
 
 @interface NSView(ColorBackgroundView)
@@ -213,12 +212,12 @@
     if(aString){
 		GPGContext	*aContext = [[GPGContext alloc] init];
 		
-		@try{
+		NS_DURING
 			signatureKey = [[aContext keyFromFingerprint:aString secretKey:NO] retain];
-		}@catch(NSException *localException){
+		NS_HANDLER
 			[aContext release];
 			[localException raise];
-		}
+		NS_ENDHANDLER
 		[aContext release];
     }
 
@@ -384,7 +383,7 @@
     [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"AUTHENTICATING", @"GPGMail", [NSBundle bundleForClass:[self class]], "")];
 #endif
 
-    @try{
+    NS_DURING
         GPGSignature    *authenticationSignature;
 //        BOOL			hasValidSignature;
         
@@ -405,10 +404,10 @@
                 [message setMessageFlags:[message messageFlags] & 0xFF7FFFFF];*/
             //[[message messageFlags] setObject:??? forKey:@"GPGAuthenticated"];
         }
-    }@catch(NSException *localException){
+    NS_HANDLER
         NSBeginAlertSheet(NSLocalizedStringFromTableInBundle(@"AUTHENTICATION_TITLE_FAILED", @"GPGMail", [NSBundle bundleForClass:[self class]], ""), nil, nil, nil, [[self view] window], nil, NULL, NULL, NULL, @"%@", [[GPGMailBundle sharedInstance] descriptionForException:localException]);
         //[[message messageFlags] setObject:@"NO" forKey:@"GPGAuthenticated"];
-    }
+    NS_ENDHANDLER
 
 #if !defined(LEOPARD) && !defined(TIGER)
     [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"Done.", @"Message", [NSBundle bundleForClass:[Message class]], "")];
@@ -429,7 +428,7 @@
     [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"DECRYPTING", @"GPGMail", [NSBundle bundleForClass:[self class]], "")];
 #endif
 	
-    @try{
+    NS_DURING
 //        Message	*decryptedMessage = [[delegate gpgMessageForAccessoryViewOwner:self] gpgDecryptedMessageWithPassphraseDelegate:mailBundle signature:(id *)&signature];
         Message	*decryptedMessage = [delegate gpgMessageForAccessoryViewOwner:self];
         [decryptedMessage gpgDecryptMessageWithPassphraseDelegate:mailBundle messageSignatures:sigs];
@@ -445,17 +444,15 @@
 			
             if(GPGMailLoggingLevel)
                 NSLog(@"[DEBUG] Extracting signatures");
-            @try{
+            NS_DURING
                 GPGSignature    *aSignature = [decryptedMessage gpgEmbeddedAuthenticationSignature]; // Can raise an exception
                 
                 if(aSignature != nil)
                     [sigs addObject:aSignature];
-            }@catch(NSException *localException){
+            NS_HANDLER
                 // Error during verification
                 authenticationException = localException;
-                NSLog(@"[DEBUG] decryptionException: %@", [[authenticationException userInfo] objectForKey:NSStackTraceKey]);
-                
-            }
+            NS_ENDHANDLER
             if(GPGMailLoggingLevel)
                 NSLog(@"[DEBUG] Done");
         }
@@ -469,10 +466,10 @@
         }
         isSignatureExtraViewVisible = NO;
         [delegate gpgAccessoryViewOwner:self displayMessage:decryptedMessage isSigned:([sigs count] > 0)];
-    }@catch(NSException *localException){
+    NS_HANDLER
         decryptionException = localException;
         // Error during decryption
-    }
+    NS_ENDHANDLER
 
 #if !defined(LEOPARD) && !defined(TIGER)
     [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"Done.", @"Message", [NSBundle bundleForClass:[Message class]], "")];
@@ -493,8 +490,6 @@
         }
     }
     else{ // Should we use a sheet instead?
-        // Log the stack trace of the exception to console.app for debugging.
-        NSLog(@"[DEBUG] decryptionException: %@", [[decryptionException userInfo] objectForKey:NSStackTraceKey]);
         if(![[decryptionException name] isEqualToString:GPGException] || [mailBundle gpgErrorCodeFromError:[[[decryptionException userInfo] objectForKey:GPGErrorKey] unsignedIntValue]] != GPGErrorCancelled){
             // "User canceled" => do not modify view
             [decryptedMessageTextField setStringValue:[mailBundle descriptionForException:decryptionException]];

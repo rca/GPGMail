@@ -33,11 +33,12 @@
 
 #ifdef LEOPARD
 
-#ifdef SNOW_LEOPARD
-@interface GPGMail_MailDocumentEditor : NSObject
-#else
-@interface MailDocumentEditor(GPGMail)
-#endif
+@interface GPGMail_MailDocumentEditor : NSObject {
+	EditingMessageWebView *composeWebView;
+	id _backEnd;
+    id _toolbar;
+	
+}
 - (IBAction) gpgToggleEncryptionForNewMessage:(id)sender;
 - (IBAction) gpgToggleSignatureForNewMessage:(id)sender;
 - (IBAction) gpgChoosePublicKeys:(id)sender;
@@ -54,6 +55,8 @@
 - (BOOL) gpgValidateToolbarItem:(NSToolbarItem *)theItem;
 - (NSPopUpButton *) gpgFromPopup;
 @end
+
+
 
 #else
 

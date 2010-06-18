@@ -27,7 +27,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <MVComposeAccessoryViewOwner.h>
+#import "MailHeaders/MVComposeAccessoryViewOwner.h"
 #import "GPG.subproj/GPGHandler.h"
 #import <MacGPGME/MacGPGME.h>
 #import <AppKit/AppKit.h>
@@ -37,11 +37,7 @@
 @class ColorBackgroundView;
 
 
-#ifndef SNOW_LEOPARD
-@interface GPGMailComposeAccessoryViewOwner : MVComposeAccessoryViewOwner
-#else
 @interface GPGMailComposeAccessoryViewOwner : NSObject
-#endif
 {
     BOOL					encryptsMessage;
     BOOL                    signsMessage;
@@ -99,10 +95,7 @@
 #endif
     BOOL                    displaysButtonsInComposeWindow;
     BOOL                    windowWillClose;
-#ifdef SNOW_LEOPARD
-    BOOL                    setupUI;
-    NSArray					*currentStates;
-#endif
+	BOOL					setupUI;
 }
 
 - (IBAction) gpgToggleEncryptionForNewMessage:(id)sender;
@@ -129,11 +122,5 @@
 - (void) setDisplaysButtonsInComposeWindow:(BOOL)value;
 
 - (void) evaluateRules;
-#ifdef SNOW_LEOPARD
-- (void) setupUIForMessage:(id)message;
-- (BOOL) messageWillBeSaved:(id)message;
-- (BOOL) messageWillBeDelivered:(id)message;
-
-#endif
 
 @end

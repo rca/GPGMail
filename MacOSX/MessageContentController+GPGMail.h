@@ -30,11 +30,10 @@
 
 @class GPGMessageViewerAccessoryViewOwner;
 
-#ifdef SNOW_LEOPARD
-@interface GPGMail_MessageContentController : NSObject
-#else
-@interface MessageContentController(GPGMail)
-#endif
+@interface GPGMail_MessageContentController : NSObject {
+	id contentContainerView;
+	id _message;
+}
 
 - (Message *) gpgMessage;
 
@@ -51,5 +50,7 @@
 - (void) gpgForwardAction:(SEL)action from:(id)sender;
 
 - (GPGMessageViewerAccessoryViewOwner *) gpgMessageViewerAccessoryViewOwner;
+
+- (BOOL) _gpgBannerIsShown;
 
 @end

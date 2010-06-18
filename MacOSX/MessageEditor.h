@@ -1,8 +1,6 @@
 #import <Cocoa/Cocoa.h>
 
-#ifdef SNOW_LEOPARD
-
-#import "MVTerminationHandler.h"
+#ifdef SLEOPARD
 
 @class WebViewEditor;
 @class HeadersEditor;
@@ -10,15 +8,44 @@
 @class ComposeBackEnd;
 @class EditingWebMessageController;
 @class LoadingOverlay;
-@class DeliveryFailure;
-@class ColorBackgroundView;
-@class StationerySelector;
-@class HeadersEditor;
+@class MailDocumentEditor;
 @class CompletionController;
 @class ComposeHeaderView;
 @class AccountStatusDataSource;
 @class AddressTextField;
 @class DraggingTextView;
+@class DeliveryFailure;
+@class ColorBackgroundView;
+@class StationerySelector;
+@class ColorBackgroundView;
+@class EditingMessageWebView;
+@class DocumentEditor;
+@class ComposeBackEnd;
+@class HyperlinkEditor;
+@class EditingWebMessageController;
+
+@protocol MVTerminationHandler <NSObject>
+- (void)nowWouldBeAGoodTimeToTerminate:(id)arg1;
+@end
+
+@protocol AccountStatusDataSourceDelegate <NSObject>
+@end
+
+@protocol EditingMessageWebViewDelegate <NSObject>
+- (BOOL)allowQuoting;
+- (BOOL)allowsRichText;
+- (void)setAllowsRichText:(BOOL)arg1;
+- (void)editLink;
+- (void)removeSelectedLink;
+- (BOOL)selectionIsInList;
+- (void)increaseListNestingLevel:(id)arg1;
+- (void)decreaseListNestingLevel:(id)arg1;
+- (void)convertToNumberedList:(id)arg1;
+- (void)convertToBulletedList:(id)arg1;
+- (BOOL)validateMenuItem:(id)arg1;
+- (BOOL)validateUserInterfaceItem:(id)arg1;
+@end
+
 
 @interface MessageEditor : NSObject
 {
@@ -222,6 +249,117 @@
 - (id)menuForListsItem;
 @end
 
+@interface HeadersEditor : NSObject <AccountStatusDataSourceDelegate, NSUserInterfaceValidations>
+{
+    MailDocumentEditor *documentEditor;
+    CompletionController *completionController;
+    ComposeHeaderView *composeHeaderView;
+    NSPopUpButton *fromPopup;
+    NSPopUpButton *signaturePopup;
+    NSPopUpButton *priorityPopup;
+    NSButton *signButton;
+    NSButton *encryptButton;
+    AccountStatusDataSource *_deliveryASDS;
+    NSPopUpButton *deliveryPopUp;
+    AddressTextField *toField;
+    AddressTextField *ccField;
+    NSTextField *subjectField;
+    AddressTextField *bccField;
+    AddressTextField *replyToField;
+    DraggingTextView *addressFieldEditor;
+    NSMutableArray *accessoryViewOwners;
+    BOOL chatShouldBeEnabled;
+    BOOL _hasChanges;
+}
+
++ (id)keyPathsForValuesAffectingDeliveryAccount;
+- (void)awakeFromNib;
+- (void)setUpFieldsAndButtons;
+- (void)finishSetUp;
+- (void)setAGoodFirstResponder;
+- (void)configureButtonsAndPopUps;
+- (void)initializePriorityPopUp;
+- (void)composePrefsChanged;
+- (void)mailAccountsDidChange;
+- (void)accountInfoDidChange:(id)arg1;
+- (void)windowDidBecomeKey:(id)arg1;
+- (void)windowDidResignKey:(id)arg1;
+- (void)updatePriorityPopUpMakeActive:(BOOL)arg1;
+- (void)updateSecurityControls;
+- (void)updateSignButtonImages;
+- (void)updateSignButtonTooltip;
+- (void)updateEncryptButtonImages;
+- (void)updateEncryptButtonTooltip;
+- (void)updateFromAndSignatureControls;
+- (void)updateSignatureControlOverridingExistingSignature:(BOOL)arg1;
+- (void)updateDeliveryAccountControl;
+- (void)configureDeliveryPopupButton;
+- (float)deliveryPopUpSizeToFitWidth;
+- (void)updateCcOrBccMyselfFieldWithSender:(id)arg1 oldSender:(id)arg2;
+- (void)updatePresenceButtonState;
+- (void)presenceChanged:(id)arg1;
+- (void)presencePreferenceChanged:(id)arg1;
+- (void)updatePresenceButtonStateForAddresses:(id)arg1;
+- (void)webViewDidLoadStationery:(id)arg1;
+- (void)setupAddressField:(id)arg1;
+- (void)_setupField:(id)arg1 withAddressesForKey:(id)arg2 visibleSelector:(SEL)arg3;
+- (void)_configureTextField:(id)arg1 isAddressField:(BOOL)arg2;
+- (id)fieldForHeader:(id)arg1;
+- (id)headerKeyForView:(id)arg1;
+- (void)enableCompletion:(BOOL)arg1 forTextField:(id)arg2;
+- (void)loadHeadersFromBackEnd;
+- (void)textFieldBeganOrEndedEditing:(id)arg1;
+- (void)recipientsDidChange:(id)arg1;
+- (void)subjectChanged;
+- (void)addressFieldChanged;
+- (BOOL)headerFieldIsNonEmpty:(id)arg1;
+- (id)windowWillReturnFieldEditor:(id)arg1 toObject:(id)arg2;
+- (void)setHeaders:(id)arg1;
+- (void)appendAddresses:(id)arg1 toHeader:(id)arg2;
+- (void)setInlineSpellCheckingEnabled:(BOOL)arg1;
+- (void)setCheckGrammarWithSpelling:(BOOL)arg1;
+- (void)turnOffEncryption;
+- (void)changeSignatureFrom:(id)arg1 to:(id)arg2;
+- (BOOL)messageIsToBeSigned;
+- (BOOL)messageIsToBeEncrypted;
+- (BOOL)messageHasRecipients;
+- (BOOL)canSignFromAnyAccount;
+- (BOOL)chatShouldBeEnabled;
+- (BOOL)isOkayToSaveMessage:(id)arg1;
+- (void)editServerList:(id)arg1 selectedAccount:(id)arg2;
+- (void)toggleAccountLock:(id)arg1;
+- (void)setSelectedAccount:(id)arg1;
+- (id)deliveryAccount;
+- (void)setDynamicDeliveryAccountForAccount:(id)arg1;
+- (void)setDeliveryAccount:(id)arg1;
+- (id)mailAccount;
+- (void)accountStatusDidChange:(id)arg1;
+- (void)changeHeaderField:(id)arg1;
+- (void)changeFromHeader:(id)arg1;
+- (void)setMessagePriority:(id)arg1;
+- (void)securityControlChanged:(id)arg1;
+- (void)_recipientsWithoutKeysSheetClosed:(id)arg1 returnCode:(long)arg2 contextInfo:(void *)arg3;
+- (void)chatWithRecipients:(id)arg1;
+- (void)editSignatures:(id)arg1;
+- (void)changeSignature:(id)arg1;
+- (void)composeHeaderViewWillBeginCustomization:(id)arg1;
+- (void)composeHeaderViewDidEndCustomization:(id)arg1;
+- (BOOL)headerCustomizationIsInProgress;
+- (void)addCcHeader:(id)arg1;
+- (void)addBccHeader:(id)arg1;
+- (void)addReplyToHeader:(id)arg1;
+- (void)_clearFieldIfHidden:(id)arg1;
+- (void)prepareToCloseWindow;
+- (void)dealloc;
+- (BOOL)validateUserInterfaceItem:(id)arg1;
+- (BOOL)validateMenuItem:(id)arg1;
+- (BOOL)validateToolbarItem:(id)arg1;
+- (id)createSenderMarkupStringIncludeBrackets:(BOOL)arg1;
+- (BOOL)hasChanges;
+- (void)setHasChanges:(BOOL)arg1;
+
+@end
+
 @interface MailDocumentEditor : DocumentEditor <NSAnimationDelegate>
 {
     DeliveryFailure *deliveryFailure;
@@ -377,114 +515,189 @@
 
 @end
 
-@interface HeadersEditor : NSObject /*<AccountStatusDataSourceDelegate, NSUserInterfaceValidations>*/<NSUserInterfaceValidations>
+@interface WebViewEditor : NSObject <EditingMessageWebViewDelegate, NSUserInterfaceValidations>
 {
-    MailDocumentEditor *documentEditor;
-    CompletionController *completionController;
-    ComposeHeaderView *composeHeaderView;
-    NSPopUpButton *fromPopup;
-    NSPopUpButton *signaturePopup;
-    NSPopUpButton *priorityPopup;
-    NSButton *signButton;
-    NSButton *encryptButton;
-    AccountStatusDataSource *_deliveryASDS;
-    NSPopUpButton *deliveryPopUp;
-    AddressTextField *toField;
-    AddressTextField *ccField;
-    NSTextField *subjectField;
-    AddressTextField *bccField;
-    AddressTextField *replyToField;
-    DraggingTextView *addressFieldEditor;
-    NSMutableArray *accessoryViewOwners;
-    BOOL chatShouldBeEnabled;
-    BOOL _hasChanges;
+    EditingMessageWebView *webView;
+    DocumentEditor *documentEditor;
+    ComposeBackEnd *backEnd;
+    HyperlinkEditor *hyperlinkEditor;
+    EditingWebMessageController *messageController;
+    WebFrame *frameAllowedToLoadContent;
+    NSArray *attachmentsForContextualMenu;
+    NSMutableSet *largeFilesAddedWhileEditing;
+    BOOL finalSpellCheckingIsInProgress;
+    BOOL containsRichText;
+    BOOL containsRichTextFlagIsValid;
+    BOOL needToCheckRichnessInRange;
+    NSDictionary *infoForRichnessTest;
+    DOMHTMLAnchorElement *linkWhoseTextIsBeingEdited;
 }
 
-+ (id)keyPathsForValuesAffectingDeliveryAccount;
+- (id)init;
 - (void)awakeFromNib;
-- (void)setUpFieldsAndButtons;
-- (void)finishSetUp;
-- (void)setAGoodFirstResponder;
-- (void)configureButtonsAndPopUps;
-- (void)initializePriorityPopUp;
-- (void)composePrefsChanged;
-- (void)mailAccountsDidChange;
-- (void)accountInfoDidChange:(id)arg1;
-- (void)windowDidBecomeKey:(id)arg1;
-- (void)windowDidResignKey:(id)arg1;
-- (void)updatePriorityPopUpMakeActive:(BOOL)arg1;
-- (void)updateSecurityControls;
-- (void)updateSignButtonImages;
-- (void)updateSignButtonTooltip;
-- (void)updateEncryptButtonImages;
-- (void)updateEncryptButtonTooltip;
-- (void)updateFromAndSignatureControls;
-- (void)updateSignatureControlOverridingExistingSignature:(BOOL)arg1;
-- (void)updateDeliveryAccountControl;
-- (void)configureDeliveryPopupButton;
-- (float)deliveryPopUpSizeToFitWidth;
-- (void)updateCcOrBccMyselfFieldWithSender:(id)arg1 oldSender:(id)arg2;
-- (void)updatePresenceButtonState;
-- (void)presenceChanged:(id)arg1;
-- (void)presencePreferenceChanged:(id)arg1;
-- (void)updatePresenceButtonStateForAddresses:(id)arg1;
-- (void)webViewDidLoadStationery:(id)arg1;
-- (void)setupAddressField:(id)arg1;
-- (void)_setupField:(id)arg1 withAddressesForKey:(id)arg2 visibleSelector:(SEL)arg3;
-- (void)_configureTextField:(id)arg1 isAddressField:(BOOL)arg2;
-- (id)fieldForHeader:(id)arg1;
-- (id)headerKeyForView:(id)arg1;
-- (void)enableCompletion:(BOOL)arg1 forTextField:(id)arg2;
-- (void)loadHeadersFromBackEnd;
-- (void)textFieldBeganOrEndedEditing:(id)arg1;
-- (void)recipientsDidChange:(id)arg1;
-- (void)subjectChanged;
-- (void)addressFieldChanged;
-- (BOOL)headerFieldIsNonEmpty:(id)arg1;
-- (id)windowWillReturnFieldEditor:(id)arg1 toObject:(id)arg2;
-- (void)setHeaders:(id)arg1;
-- (void)appendAddresses:(id)arg1 toHeader:(id)arg2;
+- (void)dealloc;
+- (void)earlySetUp;
+- (void)setUp;
+- (void)close;
+- (id)webView;
+- (BOOL)useDesignMode;
+- (id)documentEditor;
+- (void)setBackEnd:(id)arg1;
+- (id)document;
+- (void)setMessageController:(id)arg1;
+- (void)setFrameAllowedToLoadContent:(id)arg1;
+- (void)webView:(id)arg1 decidePolicyForNavigationAction:(id)arg2 request:(id)arg3 frame:(id)arg4 decisionListener:(id)arg5;
+- (id)webView:(id)arg1 resource:(id)arg2 willSendRequest:(id)arg3 redirectResponse:(id)arg4 fromDataSource:(id)arg5;
 - (void)setInlineSpellCheckingEnabled:(BOOL)arg1;
 - (void)setCheckGrammarWithSpelling:(BOOL)arg1;
-- (void)turnOffEncryption;
-- (void)changeSignatureFrom:(id)arg1 to:(id)arg2;
-- (BOOL)messageIsToBeSigned;
-- (BOOL)messageIsToBeEncrypted;
-- (BOOL)messageHasRecipients;
-- (BOOL)canSignFromAnyAccount;
-- (BOOL)chatShouldBeEnabled;
-- (BOOL)isOkayToSaveMessage:(id)arg1;
-- (void)editServerList:(id)arg1 selectedAccount:(id)arg2;
-- (void)toggleAccountLock:(id)arg1;
-- (void)setSelectedAccount:(id)arg1;
-- (id)deliveryAccount;
-- (void)setDynamicDeliveryAccountForAccount:(id)arg1;
-- (void)setDeliveryAccount:(id)arg1;
-- (id)mailAccount;
-- (void)accountStatusDidChange:(id)arg1;
-- (void)changeHeaderField:(id)arg1;
-- (void)changeFromHeader:(id)arg1;
-- (void)setMessagePriority:(id)arg1;
-- (void)securityControlChanged:(id)arg1;
-- (void)_recipientsWithoutKeysSheetClosed:(id)arg1 returnCode:(long)arg2 contextInfo:(void *)arg3;
-- (void)chatWithRecipients:(id)arg1;
-- (void)editSignatures:(id)arg1;
-- (void)changeSignature:(id)arg1;
-- (void)composeHeaderViewWillBeginCustomization:(id)arg1;
-- (void)composeHeaderViewDidEndCustomization:(id)arg1;
-- (BOOL)headerCustomizationIsInProgress;
-- (void)addCcHeader:(id)arg1;
-- (void)addBccHeader:(id)arg1;
-- (void)addReplyToHeader:(id)arg1;
-- (void)_clearFieldIfHidden:(id)arg1;
-- (void)prepareToCloseWindow;
-- (void)dealloc;
-- (BOOL)validateUserInterfaceItem:(id)arg1;
+- (BOOL)startFinalSpellCheck;
+- (void)endFinalSpellCheck;
+- (void)finalSpellCheckCompleted:(id)arg1;
+- (void)setFinalSpellCheckingIsInProgress:(BOOL)arg1;
+- (BOOL)finalSpellCheckingIsInProgress;
+- (void)updateIgnoredWordsForHeader:(id)arg1;
 - (BOOL)validateMenuItem:(id)arg1;
-- (BOOL)validateToolbarItem:(id)arg1;
-- (id)createSenderMarkupStringIncludeBrackets:(BOOL)arg1;
-- (BOOL)hasChanges;
-- (void)setHasChanges:(BOOL)arg1;
+- (BOOL)validateUserInterfaceItem:(id)arg1;
+- (void)_editLink;
+- (void)editLink:(id)arg1;
+- (void)editLink;
+- (void)continueEditLink:(id)arg1 returnCode:(long)arg2 contextInfo:(id)arg3;
+- (void)removeSelectedLink;
+- (void)webViewDidChangeSelection:(id)arg1;
+- (void)insertList:(id)arg1;
+- (BOOL)allowQuoting;
+- (void)increaseIndentation;
+- (void)decreaseIndentation;
+- (void)changeIndentationIfAllowed:(long)arg1;
+- (void)continueChangeIndentation:(id)arg1 returnCode:(long)arg2 contextInfo:(id)arg3;
+- (BOOL)selectionIsInList;
+- (BOOL)selectionIsInListTypes:(id)arg1;
+- (BOOL)selectionIsInEmptyListItem;
+- (void)insertNumberedList:(id)arg1;
+- (void)insertBulletedList:(id)arg1;
+- (void)insertListWithNumbers:(BOOL)arg1 undoTitle:(id)arg2;
+- (void)continueInsertListWithNumbers:(id)arg1 returnCode:(long)arg2 contextInfo:(id)arg3;
+- (void)convertToNumberedList:(id)arg1;
+- (void)convertToBulletedList:(id)arg1;
+- (void)increaseListNestingLevel:(id)arg1;
+- (void)decreaseListNestingLevel:(id)arg1;
+- (void)_setFloat:(id)arg1 ofNode:(id)arg2 inView:(id)arg3 undoTitle:(id)arg4;
+- (void)setFloat:(id)arg1 ofNode:(id)arg2 inView:(id)arg3 undoTitle:(id)arg4;
+- (void)continueSetFloat:(id)arg1 returnCode:(long)arg2 contextInfo:(id)arg3;
+- (BOOL)webView:(id)arg1 shouldShowDeleteInterfaceForElement:(id)arg2;
+- (BOOL)webView:(id)arg1 canInsertFromPasteboard:(id)arg2 forDrag:(BOOL)arg3;
+- (BOOL)allowsRichText;
+- (void)removeAllFormattingFromWebView;
+- (void)setAllowsRichText:(BOOL)arg1;
+- (BOOL)containsRichText;
+- (void)setContainsRichText:(BOOL)arg1;
+- (void)invalidateRichTextCache;
+- (void)changeSendFormatInBackEndAndView:(int)arg1;
+- (void)checkRichnessForEditedRange:(id)arg1;
+- (BOOL)webView:(id)arg1 shouldDeleteDOMRange:(id)arg2;
+- (void)webViewDidInsertRichText:(id)arg1;
+- (BOOL)webView:(id)arg1 shouldApplyStyle:(id)arg2 toElementsInDOMRange:(id)arg3;
+- (void)continueShouldApplyStyle:(id)arg1 returnCode:(long)arg2 contextInfo:(id)arg3;
+- (id)alertForConvertingToRichText;
+- (void)beginConvertToRichTextAlert:(id)arg1 context:(id)arg2;
+- (void)convertToRichAlertDidEnd:(id)arg1 returnCode:(long)arg2 contextInfo:(id)arg3;
+- (BOOL)isSelectionEditable;
+- (void)appendFragment:(id)arg1 toDocument:(id)arg2 asQuote:(BOOL)arg3;
+- (void)appendParsedMessage:(id)arg1 toDocument:(id)arg2 asQuote:(BOOL)arg3;
+- (void)appendAttributedString:(id)arg1 toDocument:(id)arg2 asQuote:(BOOL)arg3;
+- (BOOL)webView:(id)arg1 shouldInsertText:(id)arg2 replacingDOMRange:(id)arg3 givenAction:(int)arg4;
+- (BOOL)webView:(id)arg1 shouldInsertNode:(id)arg2 replacingDOMRange:(id)arg3 givenAction:(int)arg4;
+- (void)webViewDidChange:(id)arg1;
+- (BOOL)webView:(id)arg1 doCommandBySelector:(SEL)arg2;
+- (id)validRangeFromSelection:(id)arg1;
+- (id)webView:(id)arg1 shouldReplaceSelectionWithWebArchive:(id)arg2 givenAction:(int)arg3;
+- (BOOL)webView:(id)arg1 shouldInsertAttachments:(id)arg2 context:(id)arg3;
+- (void)webViewMainDocumentBaseURIDidChange:(id)arg1;
+- (BOOL)webViewShouldReplaceSelectionWithContentsOfWebpage:(id)arg1;
+- (void)webViewWillInsertContentsOfWebpage:(id)arg1;
+- (void)webView:(id)arg1 didAddMailAttachment:(id)arg2;
+- (void)webView:(id)arg1 willRemoveMailAttachment:(id)arg2;
+- (BOOL)removeAttachmentsLeavingPlaceholder:(BOOL)arg1;
+- (void)replaceRiskyAttachmentsWithLinks;
+- (id)selectedAttachments;
+- (id)attachmentForEvent:(id)arg1;
+- (id)selectedAttachmentNode;
+- (id)directoryForAttachment:(id)arg1;
+- (void)removeAttachments:(id)arg1;
+- (void)viewAttachments:(id)arg1 inLine:(BOOL)arg2;
+- (void)redisplayChangedAttachment:(id)arg1;
+- (void)addAttachmentsForPaths:(id)arg1;
+- (void)insertAttributedStringOfAttachments:(id)arg1 allAttachmentsAreOkay:(BOOL)arg2;
+- (BOOL)isOkayToInsertAttachment:(id)arg1;
+- (void)replaceSelectionWithFragment:(id)arg1;
+- (void)pasteAsMarkup;
+- (void)saveDocument:(id)arg1;
+- (void)saveChangedDocument:(id)arg1;
+- (void)createToDo:(id)arg1;
+- (id)largeFilesAddedWhileEditing;
+- (void)largeFileAdded:(id)arg1;
+- (void)webViewWillStartLiveResize:(id)arg1;
+- (void)webViewDidEndLiveResize:(id)arg1;
+- (id)composeBackEnd;
+- (id)infoForRichnessTest;
+- (void)setInfoForRichnessTest:(id)arg1;
+
+@end
+
+@interface MailWebViewEditor : WebViewEditor <DOMEventListener>
+{
+    BOOL needToFinishMakingPlainAfterRemovingStationery;
+    NSArray *backgroundTilingElements;
+    NSArray *backgroundTilingDivs;
+    NSArray *backgroundTilingFixedSizes;
+    NSMutableArray *uneditedEditableElements;
+    NSMutableArray *editedEditableElements;
+    DOMNode *editableElementWithMouseDown;
+    BOOL shouldAttachFilesAtEnd;
+    BOOL isDeletingAllEncompassingSelection;
+}
+
+- (id)insertablePasteboardTypes;
+- (void)prepareToGoAway;
+- (void)dealloc;
+- (void)setUp;
+- (void)setBackEnd:(id)arg1;
+- (BOOL)allowQuoting;
+- (void)setAllowsRichText:(BOOL)arg1;
+- (id)alertForConvertingToRichText;
+- (BOOL)webView:(id)arg1 shouldInsertAttachments:(id)arg2 context:(id)arg3;
+- (BOOL)isOkayToLoadStationery;
+- (void)continueCannotInsertStationery:(id)arg1 returnCode:(long)arg2 contextInfo:(id)arg3;
+- (BOOL)shouldAttachFilesAtEnd;
+- (void)_insertAttributedStringOfAttachments:(id)arg1 allAttachmentsAreOkay:(BOOL)arg2;
+- (void)continueShouldInsertAttachments:(id)arg1 returnCode:(long)arg2 contextInfo:(id)arg3;
+- (BOOL)isOkayToInsertAttachment:(id)arg1;
+- (void)insertAttributedStringOfAttachments:(id)arg1 allAttachmentsAreOkay:(BOOL)arg2;
+- (void)continueInsertAttributedStringOfAttachments:(id)arg1 returnCode:(long)arg2 contextInfo:(id)arg3;
+- (BOOL)webView:(id)arg1 canInsertFromPasteboard:(id)arg2 forDrag:(BOOL)arg3;
+- (void)prepareToRemoveStationery;
+- (void)webViewDidLoadStationery:(id)arg1;
+- (void)stationeryDidFinishLoadingResources:(id)arg1;
+- (void)handleEvent:(id)arg1;
+- (void)doOrUndoEditingInSignatureWithInfo:(id)arg1;
+- (id)editedEditableElements;
+- (void)mouseDownDidHappen:(id)arg1 inWebView:(id)arg2;
+- (void)mouseUpDidHappen:(id)arg1 inWebView:(id)arg2;
+- (void)webViewDidChange:(id)arg1;
+- (id)replaceOldSignatureWithNewSignature:(id)arg1;
+- (void)webViewDidChangeSelection:(id)arg1;
+- (BOOL)webView:(id)arg1 doCommandBySelector:(SEL)arg2;
+- (BOOL)insertNewline:(id)arg1;
+- (void)webView:(id)arg1 didWriteSelectionToPasteboard:(id)arg2;
+- (void)changeDocumentBackgroundColorWithContext:(id)arg1;
+- (void)continueChangeDocumentBackgroundColor:(id)arg1 returnCode:(long)arg2 contextInfo:(id)arg3;
+- (id)backgroundTilingFixedSizes;
+- (void)setBackgroundTilingFixedSizes:(id)arg1;
+- (id)backgroundTilingDivs;
+- (void)setBackgroundTilingDivs:(id)arg1;
+- (id)backgroundTilingElements;
+- (void)setBackgroundTilingElements:(id)arg1;
+- (void)setShouldAttachFilesAtEnd:(BOOL)arg1;
 
 @end
 
@@ -550,7 +763,7 @@
         unsigned int isAutoSaving:1;
     } _flags;
     int _messageType;
-    struct _NSPoint _originalCascadePoint;
+    struct CGPoint _originalCascadePoint;
     NSMutableDictionary *_bodiesByAttachmentURL;
     NSOperationQueue *operationQueue;
     NSOperation *loadInterfaceOperation;
@@ -961,8 +1174,8 @@
 - (BOOL)_imageStatusHidden;
 - (void)_showImageStatusView;
 - (void)_hideImageStatusView;
-- (struct _NSSize)_imageSizeForTag:(int)fp8;
-- (struct _NSSize)_selectedImageSize;
+- (struct CGSize)_imageSizeForTag:(int)fp8;
+- (struct CGSize)_selectedImageSize;
 - (id)_maxImageSizeAsString;
 - (void)_processNextImageResizer;
 - (void)_ImageResizeDidFinish:(id)fp8;
@@ -1228,7 +1441,7 @@
     id _deliveryErrorLabel;
     id _deliveryFallbackErrorLabel;
     id _deliveryFallbackPopupButton;
-    struct _NSPoint _originalCascadePoint;
+    struct CGPoint _originalCascadePoint;
     ActivityProgressPanel *_progressAlert;
     NSView *imageStatusView;
     NSTextField *imageFileSizeLabel;
@@ -1305,9 +1518,9 @@
 - (void)changeSpellCheckingBehavior:(id)fp8;
 - (void)setMessagePriority:(id)fp8;
 - (id)directoryForAttachment:(id)fp8;
-- (void)textView:(id)fp8 doubleClickedOnCell:(id)fp12 inRect:(struct _NSRect)fp16 atIndex:(unsigned int)fp32;
-- (void)textView:(id)fp8 clickedOnCell:(id)fp12 inRect:(struct _NSRect)fp16 atIndex:(unsigned int)fp32;
-- (void)textView:(id)fp8 draggedCell:(id)fp12 inRect:(struct _NSRect)fp16 event:(id)fp32 atIndex:(unsigned int)fp36;
+- (void)textView:(id)fp8 doubleClickedOnCell:(id)fp12 inRect:(struct CGRect)fp16 atIndex:(unsigned int)fp32;
+- (void)textView:(id)fp8 clickedOnCell:(id)fp12 inRect:(struct CGRect)fp16 atIndex:(unsigned int)fp32;
+- (void)textView:(id)fp8 draggedCell:(id)fp12 inRect:(struct CGRect)fp16 event:(id)fp32 atIndex:(unsigned int)fp36;
 - (BOOL)cachedGatekeeperApprovalStatusForAttachment:(id)fp8;
 - (void)cacheGatekeeperApprovalStatus:(BOOL)fp8 forAttachment:(id)fp12;
 - (BOOL)textView:(id)fp8 shouldReadSelectionFromPasteboard:(id)fp12 type:(id)fp16 result:(char *)fp20;
@@ -1395,8 +1608,8 @@
 - (BOOL)_imageStatusHidden;
 - (void)_showImageStatusView;
 - (void)_hideImageStatusView;
-- (struct _NSSize)_imageSizeForTag:(int)fp8;
-- (struct _NSSize)_selectedImageSize;
+- (struct CGSize)_imageSizeForTag:(int)fp8;
+- (struct CGSize)_selectedImageSize;
 - (id)_maxImageSizeAsString;
 - (void)_processNextImageResizer;
 - (void)_ImageResizeDidFinish:(id)fp8;
@@ -1550,9 +1763,9 @@
 - (void)undoSignatureChange:fp8;
 - (void)changeSignature:fp8;
 - directoryForAttachment:fp8;
-- (void)textView:fp8 doubleClickedOnCell:fp12 inRect:(struct _NSRect)fp16 atIndex:(unsigned int)fp32;
-- (void)textView:fp8 clickedOnCell:fp12 inRect:(struct _NSRect)fp16 atIndex:(unsigned int)fp32;
-- (void)textView:fp8 draggedCell:fp12 inRect:(struct _NSRect)fp16 event:fp32 atIndex:(unsigned int)fp36;
+- (void)textView:fp8 doubleClickedOnCell:fp12 inRect:(struct CGRect)fp16 atIndex:(unsigned int)fp32;
+- (void)textView:fp8 clickedOnCell:fp12 inRect:(struct CGRect)fp16 atIndex:(unsigned int)fp32;
+- (void)textView:fp8 draggedCell:fp12 inRect:(struct CGRect)fp16 event:fp32 atIndex:(unsigned int)fp36;
 - (char)textView:fp8 shouldReadSelectionFromPasteboard:fp12 type:fp16 result:(char *)fp20;
 - attachmentContextMenu;
 - (void)enableCompletion:(char)fp8 forTextField:fp12;

@@ -249,7 +249,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
                 if(recognizesVersion)
                     return YES;
             }
-
+	
     return NO;
 }
 
@@ -316,13 +316,10 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
             return YES;
         }
         else{
-#ifndef SNOW_LEOPARD
 #if DECRYPT_PGP_ATTACHMENTS
-
             if([self _gpgLooksLikeBinaryPGPAttachment]) // TODO: there are problems to fix with message body: message should cache decrypted message body, it's not part's task
                 return YES;
             else
-#endif
 #endif
                 return NO;
         }
@@ -393,7 +390,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
         [aContext setPassphraseDelegate:passphraseDelegate];
         [aContext setUsesArmor:YES];
         [aContext setUsesTextMode:YES];
-        @try{
+        NS_DURING
             GPGData *outputData = [aContext decryptedData:inputData signatures:signaturesPtr /*encoding:[self textEncoding]*/]; // Can raise an exception
             NSData	*decryptedData;
             
@@ -402,13 +399,13 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
                 [[*signaturesPtr retain] autorelease]; // Because context will be released
             [aContext release];
             [inputData release];
-            return decryptedData;
-        }@catch(NSException *localException){
+            NS_VALUERETURN(decryptedData, NSData *);
+        NS_HANDLER
             [inputData release];
             [aContext release];
             [localException raise];
             return nil;
-        }
+        NS_ENDHANDLER
     }
     else{
         // Happens if part has not been downloaded
@@ -463,18 +460,18 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
     }
     
 #warning CHECK: Do we support decrypted-then-verified messages?
-    @try{
+    NS_DURING
         GPGData *outputData = [aContext decryptedData:inputData signatures:signaturesPtr /*encoding:[self textEncoding]*/]; // Can raise an exception
 
         decryptedData = [[[outputData data] retain] autorelease]; // Because context will be released
 
         if(signaturesPtr != NULL)
             [[*signaturesPtr retain] autorelease]; // Because context will be released
-    }@catch(NSException *localException){
+    NS_HANDLER
         [inputData release];
         [aContext release];
         [localException raise];
-    }
+    NS_ENDHANDLER
     [aContext release];
     [inputData release];
     
@@ -894,7 +891,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
         signatureInputData = [[GPGData alloc] initWithContentsOfFile:signatureFile];
         [aContext setUsesArmor:YES];
         [aContext setUsesTextMode:YES];
-        @try{
+        NS_DURING
             GPGSignature    *aSignature;
             
             (void)[aContext verifySignatureData:signatureInputData againstData:inputData /*encoding:[self textEncoding]*/]; // Can raise an exception
@@ -908,8 +905,8 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
             [aContext release];
             [inputData release];
             [signatureInputData release];
-            return aSignature;
-        }@catch(NSException *localException){
+            NS_VALUERETURN(aSignature, GPGSignature *);
+        NS_HANDLER
             if(!(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask))
                 (void)[[NSFileManager defaultManager] removeFileAtPath:signatureFile handler:nil];
 
@@ -927,7 +924,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
                 [aContext release];
             [localException raise];
             return nil;
-        }
+        NS_ENDHANDLER
     }
     else if(i > 0){
         // Not handled correctly... We should retrieve a dict with sigs per part.
@@ -979,14 +976,14 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
         [aContext setUsesArmor:YES];
         [aContext setUsesTextMode:YES];
 #if 0
-        @try{
+        NS_DURING
             // The following call should be enough...
             (void)[aContext verifySignedData:inputData /*encoding:[self textEncoding]*/]; // Can raise an exception
             [inputData release];
             inputData = nil;
             
-            return [[[aContext autorelease] signatures] lastObject];
-        }@catch(NSException *localException){
+            NS_VALUERETURN([[[aContext autorelease] signatures] lastObject], GPGSignature *);
+        NS_HANDLER
             NSException			*originalException = localException;
             volatile NSArray	*originalSignatures = [[[aContext signatures] retain] autorelease]; // Because context will be released
             
@@ -994,7 +991,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
             pgpRange = [GPGHandler pgpSignatureBlockRangeInData:data];
             NSAssert(pgpRange.location != NSNotFound, @"Not signed!");
             pgpData = [data subdataWithRange:pgpRange];
-            @try{
+            NS_DURING
                 NSArray	*verificationSignatures;
                 
                 [inputData release];
@@ -1004,8 +1001,8 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
                 [aContext release];
                 [inputData release];
                 
-                return [verificationSignatures lastObject];
-            }@catch(NSException *localException){
+                NS_VALUERETURN([verificationSignatures lastObject], GPGSignature *);
+            NS_HANDLER
                 [inputData release];
                 [aContext release];
                 if([[originalException name] isEqualToString:GPGException]){
@@ -1015,11 +1012,11 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
                 }
                 [(NSException *)originalException raise];
                 return nil; // Never reached
-            }
-        }
+            NS_ENDHANDLER
+        NS_ENDHANDLER
 #else
 #warning Test old signatures?! (<= v11)
-        @try{
+        NS_DURING
             NSArray			*verificationSignatures;
             GPGSignature    *aSignature;
             
@@ -1086,13 +1083,13 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
                 aContext = nil;
             }
             
-            return aSignature;
-        }@catch(NSException *localException){
+            NS_VALUERETURN(aSignature, GPGSignature *);
+        NS_HANDLER
             [inputData release];
             [aContext release];
             [localException raise];
             return nil; // Never reached
-        }
+        NS_ENDHANDLER
 #endif
     }
     else
@@ -1156,12 +1153,15 @@ static IMP  MimePart_isEncrypted = NULL;
 	// PGPmail will do the same.
 	Method	existingMethod = class_getInstanceMethod([self class], selector);
 	
+	NSLog(@"Coming here...");
+	
 	if(existingMethod == NULL){
 #ifdef LEOPARD
 		Method	replacementMethod = class_getInstanceMethod([self class], implementationSelector);
 		
 		if(!class_addMethod([self class], selector, method_getImplementation(replacementMethod), method_getTypeEncoding(replacementMethod)))
 			NSLog(@"### ERROR: unable to add -[MimePart %@]", NSStringFromSelector(selector));
+		NSLog(@"Method should have been added.");
 #else
 		struct objc_method_list	aMethodList;
 		struct objc_method		aNewMethod;
@@ -1194,11 +1194,7 @@ static IMP  MimePart_isEncrypted = NULL;
 	MimePart_decodeTextHtml = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeTextHtml), [MimePart class], @selector(gpgDecodeTextHtml), [MimePart class]);
 	MimePart_decodeApplicationOctet_stream = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeApplicationOctet_stream), [MimePart class], @selector(gpgDecodeApplicationOctet_stream), [MimePart class]);
 	MimePart_decodeMultipartSigned = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeMultipartSigned), [MimePart class], @selector(gpgDecodeMultipartSigned), [MimePart class]);
-#ifdef SNOW_LEOPARD
 	MimePart_clearCachedDescryptedMessageBody = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(clearCachedDecryptedMessageBody), [MimePart class], @selector(gpgClearCachedDescryptedMessageBody), [MimePart class]);
-#else
-	MimePart_clearCachedDescryptedMessageBody = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(clearCachedDescryptedMessageBody), [MimePart class], @selector(gpgClearCachedDescryptedMessageBody), [MimePart class]);
-#endif
     [self gpgAddMethodForSelector:@selector(decodeMultipartEncrypted) implementationSelector:@selector(gpgDecodeMultipartEncrypted) implementation:&MimePart_decodeMultipartEncrypted];
     [self gpgAddMethodForSelector:@selector(decodeApplicationPgp) implementationSelector:@selector(gpgDecodeApplicationPgp) implementation:&MimePart_decodeApplicationPgp];
 
@@ -1231,12 +1227,12 @@ static IMP  MimePart_isEncrypted = NULL;
                 if(aString){
                     GPGContext	*aContext = [[GPGContext alloc] init];
                     
-                    @try{
+                    NS_DURING
                     signatureKey = [aContext keyFromFingerprint:aString secretKey:NO];
-                    }@catch(NSException *localException){
+                    NS_HANDLER
                     [aContext release];
                     [localException raise];
-                    }
+                    NS_ENDHANDLER
                     [aContext release];
                 }
                 if(signatureKey)
@@ -1440,11 +1436,7 @@ static IMP  MimePart_isEncrypted = NULL;
 				[self _setDecryptedMessageBody:decryptedMessageBody]; // FIXME: Will not work for multiple encrypted parts? Too early?
 #endif
 				decryptedPart = [decryptedMessageBody topLevelPart]; // FIXME: WRONG, in case of multiple encrypted parts
-#ifdef SNOW_LEOPARD
-				result = [decryptedPart gpgBetterDecode];
-#else
-				result = [decryptedPart contentsForTextSystem];
-#endif
+				result = [decryptedPart decode];
 #if 0
 				[decryptedPart getNumberOfAttachments:&numberOfAttachments isSigned:&isSigned isEncrypted:&isEncrypted];
 				[[encryptedMessage messageStore] setNumberOfAttachments:numberOfAttachments isSigned:(theDecodeOptions.mIsSigned) isEncrypted:(theDecodeOptions.mIsEncrypted) forMessage:encryptedMessage];
@@ -1466,14 +1458,10 @@ static IMP  MimePart_isEncrypted = NULL;
 	else{
         if(/*decryptedMessageBody*/decryptedPart != nil && GPGMailLoggingLevel > 0)
             NSLog(@"[DEBUG] PGP part %p has already been decrypted (cache)", self);
-#ifdef SNOW_LEOPARD
-		result = [/*[decryptedMessageBody topLevelPart]*/decryptedPart gpgBetterDecode]; // WRONG, in case of multiple encrypted parts
-#else
-		result = [/*[decryptedMessageBody topLevelPart]*/decryptedPart contentsForTextSystem]; // WRONG, in case of multiple encrypted parts
-#endif
+		result = [/*[decryptedMessageBody topLevelPart]*/decryptedPart decode]; // WRONG, in case of multiple encrypted parts
 	}
     if(GPGMailLoggingLevel)
-        NSLog(@"[DEBUG] Done: result = %p", result);
+        NSLog(@"[DEBUG] Done: result = %@", result);
 	
 	return result;
 }
@@ -1732,11 +1720,7 @@ static IMP  MimePart_isEncrypted = NULL;
 #endif
 //				decryptedPart = [decryptedMessageBody topLevelPart]; // FIXME: WRONG, in case of multiple encrypted parts
 				decryptedPart = [decryptedMessageBody partWithNumber:[self partNumber]]; // FIXME: WRONG, in case of PGP/MIME parts which result in multiple parts
-#ifdef SNOW_LEOPARD
-				result = [decryptedPart gpgBetterDecode]; // Can invoke _gpgDecodePGP
-#else
-				result = [decryptedPart contentsForTextSystem]; // Can invoke _gpgDecodePGP
-#endif
+				result = [decryptedPart decode]; // Can invoke _gpgDecodePGP
 #if 0
 				[decryptedPart getNumberOfAttachments:&numberOfAttachments isSigned:&isSigned isEncrypted:&isEncrypted];
 				[[encryptedMessage messageStore] setNumberOfAttachments:numberOfAttachments isSigned:(theDecodeOptions.mIsSigned) isEncrypted:(theDecodeOptions.mIsEncrypted) forMessage:encryptedMessage];
@@ -1767,42 +1751,17 @@ static IMP  MimePart_isEncrypted = NULL;
 	else{
         if(decryptedMessageBody != nil && GPGMailLoggingLevel > 0)
             NSLog(@"[DEBUG] PGP part %p has already been decrypted (cache)", self);
-#ifdef SNOW_LEOPARD
-		result = [[decryptedMessageBody topLevelPart] gpgBetterDecode]; // WRONG, in case of multiple encrypted parts
-#else
-		result = [[decryptedMessageBody topLevelPart] contentsForTextSystem]; // WRONG, in case of multiple encrypted parts
-#endif
+		result = [[decryptedMessageBody topLevelPart] decode]; // WRONG, in case of multiple encrypted parts
 	}
     if(GPGMailLoggingLevel)
-        NSLog(@"[DEBUG] Done: result = %p", result);
+        NSLog(@"[DEBUG] Done: result = %@", result);
 	
 	return result;
 }
 
-- gpgBetterDecode
+- /*gpgD*/decodeMultipartEncrypted
 {
-	if(GPGMailLoggingLevel)
-	    NSLog(@"Top level part: %@", self);
-	NSString *type = [NSString stringWithString:(NSString *)[self type]];
-	NSString *subtype = [NSString stringWithString:(NSString *)[self valueForKey:@"_subtype"]];
-	NSString *selector = [NSString stringWithFormat:@"decode%@%@", [type capitalizedString], [[subtype stringByReplacingOccurrencesOfString:@"-" withString:@"_"] capitalizedString]]; 
-	
-	/* Unfortunately calling decode (replacement of contentsForTextSystem) doesn't work anymore.
-	 * calling the appropriate decode method for the top part fixes the problem.
-	 */
-	if([self respondsToSelector:NSSelectorFromString(selector)]) {
-		[self performSelector:NSSelectorFromString(selector)];
-	}
-	else {
-	    /* Otherwise try it with decode. */
-	    if(GPGMailLoggingLevel)
-	        NSLog(@"Using decode anyway!");
-	    [self decode]; // Will force re-evaluation of the decode* methods. Will not raise an exception, because -contentsForTextSystem will catch it!
-	}
-}
-
-- gpgDecodeMultipartEncrypted
-{
+	NSLog(@"Is called, ain't it?");
     if(![GPGMailBundle gpgMailWorks]){
         if(MimePart_decodeMultipartEncrypted)
             return ((id (*)(id, SEL))MimePart_decodeMultipartEncrypted)(self, _cmd); // TESTME Test when PGPmail is present
@@ -1814,15 +1773,15 @@ static IMP  MimePart_isEncrypted = NULL;
         
         if(GPGMailLoggingLevel)
             NSLog(@"[DEBUG] %p decodeMultipartEncrypted", self);
-        @try{
+        NS_DURING
             //        [self setGpgException:nil];
             [(Message *)[[self mimeBody] message] setGpgException:nil];
             result = [self _gpgDecodePGP]; // Can raise an exception!        
-        }@catch(NSException *localException){
+        NS_HANDLER
             //        [localException raise]; // Exception will be caught by Mail and a message will be logged in console: '*** Exception Decryption failed was raised while decoding mime message part. Displaying as text/plain.'
             //        [self setGpgException:localException];
             [(Message *)[[self mimeBody] message] setGpgException:localException];
-        }
+        NS_ENDHANDLER
         
         if(!result){
             //        [encryptedMessage setGpgIsDecrypting:NO]; // Needed, else will try again to decrypt
@@ -1832,7 +1791,7 @@ static IMP  MimePart_isEncrypted = NULL;
                 result = [self decodeMultipart]; // Use default behavior (works!)
         }
         if(GPGMailLoggingLevel)
-            NSLog(@"[DEBUG] Done: result = %p", result);
+            NSLog(@"[DEBUG] Done: result = %@", result);
         return result;
     }
 }
@@ -1872,11 +1831,11 @@ static IMP  MimePart_isEncrypted = NULL;
 #else
         if(GPGMailLoggingLevel)
             NSLog(@"[DEBUG] %p gpgDecodeTextPlain", self);
-        @try{
+        NS_DURING
             result = [self _gpgDecodePGP]; // Can raise an exception!        
-        }@catch(NSException *localException){
+        NS_HANDLER
             [(Message *)[[self mimeBody] message] setGpgException:localException];
-        }
+        NS_ENDHANDLER
         
         if(!result)
             result = ((id (*)(id, SEL))MimePart_decodeTextPlain)(self, _cmd);
@@ -1900,19 +1859,21 @@ static IMP  MimePart_isEncrypted = NULL;
         if(!result)
             result = ((id (*)(id, SEL))MimePart_decodeTextHtml)(self, _cmd);
         if(GPGMailLoggingLevel)
-            NSLog(@"[DEBUG] Done: result = %p", result);
+            NSLog(@"[DEBUG] Done: result = %@", result);
         return result;
     }
 }
 
 - gpgDecodeApplicationOctet_stream
 {
+	NSLog(@"DDDDDO Decode");
     if(![GPGMailBundle gpgMailWorks])
 		return ((id (*)(id, SEL))MimePart_decodeApplicationOctet_stream)(self, _cmd);
     else{
         BOOL    doDecode = ![[self parentPart] gpgIsOpenPGPEncryptedContainerPart];
         id      result = nil;
-        
+        NSLog(@"gpgIsOpenPGPEncryptedContainerPart: %d", doDecode);
+		doDecode = YES;
         if(doDecode){
             if(GPGMailLoggingLevel)
                 NSLog(@"[DEBUG] %p gpgDecodeApplicationOctet_stream", self);
@@ -1922,7 +1883,7 @@ static IMP  MimePart_isEncrypted = NULL;
         if(!result)
             result = ((id (*)(id, SEL))MimePart_decodeApplicationOctet_stream)(self, _cmd);
         if(doDecode && GPGMailLoggingLevel)
-            NSLog(@"[DEBUG] Done: result = %p", result);
+            NSLog(@"[DEBUG] Done: result = %@", result);
         return result;
     }
 }
@@ -1936,11 +1897,11 @@ static IMP  MimePart_isEncrypted = NULL;
         
         if(GPGMailLoggingLevel)
             NSLog(@"[DEBUG] %p gpgDecodeApplicationPgp", self);
-        @try{
+        NS_DURING
             result = [self _gpgDecodePGP]; // Can raise an exception!        
-        }@catch(NSException *localException){
+        NS_HANDLER
             [(Message *)[[self mimeBody] message] setGpgException:localException];
-        }
+        NS_ENDHANDLER
         
         if(!result){
             if(MimePart_decodeApplicationPgp)
@@ -1967,10 +1928,10 @@ static IMP  MimePart_isEncrypted = NULL;
             [aMessage setGpgMessageSignatures:nil];
             ((void (*)(id, SEL))MimePart_clearCachedDescryptedMessageBody)(self, _cmd);
             if(GPGMailLoggingLevel)
-                NSLog(@"[DEBUG] Really did it", self);
+                NSLog(@"[DEBUG] Really did it: %@", self);
         }
         else if(GPGMailLoggingLevel)
-            NSLog(@"[DEBUG] Not yet", self);
+            NSLog(@"[DEBUG] Not yet: %@", self);
     }
 }
 

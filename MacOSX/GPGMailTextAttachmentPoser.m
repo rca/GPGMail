@@ -8,7 +8,7 @@
 
 #import "GPGMailTextAttachmentPoser.h"
 #import "GPGMailPatching.h"
-#import <MimePart.h>
+//#import <MimePart.h>
 
 // Currently useless, because Content-Description header is not parsed:
 // -contentDescription always returns nil

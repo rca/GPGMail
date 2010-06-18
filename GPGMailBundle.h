@@ -27,9 +27,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef SNOW_LEOPARD
 #import <MVMailBundle.h>
-#endif
 
 #import <MacGPGME/MacGPGME.h>
 #import <Foundation/NSDate.h>
@@ -85,15 +83,9 @@ enum {
     GPGMailDebug_SaveInputDataMask = 0x0001
 };
 
-#ifdef SNOW_LEOPARD
 NSBundle *GetGPGMailBundleBundle(void);
-#endif
 
-#ifdef SNOW_LEOPARD
 @interface GPGMailBundle : NSObject
-#else
-@interface GPGMailBundle : MVMailBundle
-#endif
 {
     IBOutlet NSMenuItem     *decryptMenuItem;
     IBOutlet NSMenuItem     *   authenticateMenuItem;
@@ -122,9 +114,6 @@ NSBundle *GetGPGMailBundleBundle(void);
     GPGEngine               *engine;
 }
 
-#ifdef SNOW_LEOPARD
-+ (void)addSnowLeopardCompatibility;
-#endif
 - (void) setAlwaysSignMessages:(BOOL)flag;
 - (BOOL) alwaysSignMessages;
 - (void) setAlwaysEncryptMessages:(BOOL)flag;
