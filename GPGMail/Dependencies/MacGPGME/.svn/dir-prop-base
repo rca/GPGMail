@@ -1,0 +1,7 @@
+K 10
+svn:ignore
+V 16
+build
+.DS_Store
+
+END

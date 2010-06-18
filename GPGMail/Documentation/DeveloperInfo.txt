@@ -1,0 +1,433 @@
+How to compile GPGMail?
+=======================
+GPGMail sources come with a copy of the official MacGPGME source code.
+
+You need first to download and install libgpg-error and libgpgme. Read the 
+README in MacGPGME folder for instructions. Then you can compile GPGMail project, 
+which will compile MacGPGME sources too.
+
+
+Release notes for v28:
+* Corrected sync problem of public key list when changing viewed attributes
+* Now checks presence of PGPmail
+* Hash algorithm is set dynamically again
+* No longer displays validity for secret keys, because not provided by gpg < 1.9
+* Enabled option to display full signature info immediately
+* Was no longer verifying decrypted messages (except MIME, in most cases)
+* Key search/download operations are now cancelable
+* No longer displays warning icon when verified signature's signer has unknown validity
+
+Release notes for v29:
+* Fingerprint is now always displayed formatted
+* Added Spanish localization by Sergio Rodr’guez Concha
+* Added German localization by Hauke MŸller
+* Corrected localization errors
+* Corrected crasher after downloading PGP keys
+* Added French localization by Michel Poulain
+* Better display of key validity in menus
+* Corrected date localization
+* Included binaries no longer have dependencies on external libraries
+
+Release notes for v30:
+* Panther: corrected size of banner for single message viewers
+* Removed debug logs
+* Added GPGMEProxyServer crash recovery strategy
+* Added Italian localization by Filippo Stefanelli
+* Corrected GPGMEProxyServer zombies(?)
+* Now Installer works also for /Network/Users(?)
+* Better error messages at startup when invalid gpg engine
+* Corrected "missing key" error message
+* Corrected bug with expired keys
+* Added partial Korean localization by Sangduk Park
+
+Release notes for v31:
+* Allow coexistence of GPGMail and PGPmail: one warning (no forced quit), then forget conflict.
+* No longer leaves orphans GPGMEProxyServer processes on quit or crash
+* Corrected error message when gpg misses some algorithm
+* Fixed resizing of fingerprint field in signature view
+* Key search results sometimes didn't display correct names (problem with accents)
+* Key search now displays "revoked" status in results
+* Now refreshes keys each time a volume has been (un)mounted
+* Added Finnish localization by Seppo Laaksonen
+* Added Japanese localization by Kory Talmage
+* Applied typographical rules to French localization
+* Corrected some resizing errors
+
+Release notes for v32:
+* Corrected installation problem with FileVault
+* Corrected installation problem with /Network/Users/
+* Corrected problem with some keys which have ISOLatin1 string encoding for the userIDs, when decrypting/signing
+* Now checks system version at installation and runtime
+* Not compatible with gpg 1.3.x (key search is OK, but all other ops fail due to the "Comment:" header, even from 1.3 to 1.3 clients!)
+* "Signed by (null)" GPGMail#2148+2107 + msg signed with gpg 1.3.3 => was due to bug in gpgme: does not return error for BADARMOR or CRC error
+
+Release notes for v33:
+* Panther: My only complaint is that is tends to leave a 'Done' message in the status bar, which means any further messages Mail would show (e.g. when receiving or sending mail) are hidden. -> check that (GPGMail#2248)
+* Added Korean localization by Sangduk Park
+* Corrected double line breaks for "German umlaut" signed messages. Problem with CRLF? GPGMail#2123
+* Replying/forwarding a decrypted message no longer quotes encrypted message
+* New FAQ: GPGMail preferences is not visible in some cases
+* New FAQ: can I exchange PGP messages with Outlook people?
+* New FAQ: why are all userIDs greyed out? I can't use them
+
+Release notes for v34:
+* New icons by Michel Poulain (thanks also to Moritz Guth)
+* Corrected default key selection restoration
+* Corrected Spanish localization
+* Corrected scrolling of signature banner title
+* Jaguar: no longer fails to load 10.3-compiled version, but catches error and reports it to user
+* New (hidden) option, GPGRefreshesKeysOnVolumeMount, to disable automatic refresh of keys when volume is (un)mounted; default value is YES.
+
+Release notes for v35:
+* New (hidden) option, GPGDisablesSMIME, to totally disable S/MIME encryption/signature. Default value is NO.
+* No longer considers text/plain attachments as potential PGP parts
+* Fixed incompatibility with PGP7/Outlook: for encrypted messages, always uses content-transfer-encoding: 7bit
+
+Release notes for v36:
+* When keychain passphrase was wrong, keychain item was not deleted
+* Fixed v35 linking
+* Corrected recognition of disabled/revoked secret/public keys
+* User could select revoked private key -> signed message was empty
+* NEW: if user shows all keys (no filter), then display key status (revoked/disabled/expired)
+* NEW: extended key server list, like in GPGPreferences
+* NEW: show alert when signer's key is revoked/disabled/...
+* Fixed: if you select passphrase encryption then turn it back off, the signing option is unticked (when it should be ticked).
+* New feature: after encryption failure due to missing keys, user can now select to send unencrypted
+* Fixed: Panther: Account pulldown menu in composer window is randomly greyed. Happens as soon as changing account changes PGP key, from now on.
+* 10.3: changed disclosure triangle in signature banner
+* Compose window: warning icon is now displayed in popdown menu
+
+Release notes for v37 (1.0.2):
+* Localized
+* WWW: added access to old versions
+* Added hidden option GPGUsesAlwaysCRLF to always use CRLF as line-ending for PGP-inline encryption/signing; default value is NO.
+* Corrected recognition of disabled/revoked public keys in compose panel
+* Fixed enabling/disabling of toolbar/menu items when multiple windows are open
+* Fixed rare dead-lock at startup
+
+Release notes for v38:
+* Fixed passphrase panel title when asking key for decryption
+* Fixed Japanese translation (courtesy of Hiroshi Hakoyama)
+* Fixed multiple display of revoked/invalid/expired/disabled in key description
+* Fixed invalid display of revoked/invalid/expired/disabled when there was at least a valid subkey
+* Fixed compatibility problem with Windows' EudoraGPG, thanks to Georg Wedemeyer
+* Fixed Finish translation (courtesy of Asko Kauppi)
+* Fixed case where invalid secret key was selected by default for signing, in case multiple secret with the same email address exist
+* Added basic support for groups: you need to define groups in gpg.conf, which have the same name (and content!) as AB groups
+* Now automatically encrypts reply to encrypted message, except when source message is in a detached viewer; new option GPGEncryptsReplyToEncryptedMessage
+* When searching for matching public keys during composition of encrypted message, now displays ALL matching keys, not only the first one
+* Added retrieval of people gpg options from their AB entry (set by Robert Goldsmith's ABKeyManager bundle) - not yet tested!
+* No longer tries to use invalid secret key when encrypting
+* Re-fixed bug with disabled-like sender account popup
+
+Release notes for v39:
+* Now links to GPGME.framework; got rid of GPGMEProxyServer, because gpgme is now LGPL
+* Much faster PGP operations, notably key listing
+* Fixed bug with gpg group recognition
+* Hidden option GPGEncryptsReplyToEncryptedMessage is now set to YES by default
+* When a draft is restored, the encryption and signature states are restored too
+* Added automatic gpg group synchronisation from AB groups, at startup, when keys are refreshed, or when AB changes
+* Fixed problem with attachments having non-ASCII filenames: now these chars are replaced by '_', but that doesn't affect final filename, except maybe on old mail clients.
+* Fixed bug with default private key which needed to be selected manually to get actually selected
+* First Tiger release (based on 8A351)
+* New option: encrypt if you can, but don't warn when missing keys (just disable encryption), except when one recipient explicitly wants encryption
+* New feature: full use of options set in address book, with conflict resolution panel on delivery
+
+Release notes for v40:
+* Fixed use of AB rules when replying to a message
+* Key download panel now uses small widgets
+
+Release notes for v41:
+* Tiger: fixed empty account/subject/cc bug
+* Tiger: fixed GUI glitch in key search result panel
+* In key search, revoked/expired keys are no longer selected by default and are also marked in red
+* New layout of preferences panel, and tooltips for all items
+* New public option: sign replies to signed messages
+* New public option: encrypt replies to encrypted messages
+* New public option: encrypt when all keys are available
+* New option: use rules defined in AddressBook entries
+* New public option: separate sign and encrypt operations (signature encapsulation)
+* New public option: refresh key list when a volume is (un)mounted
+* New public option: disable S/MIME
+* In preferences panel, added refresh key list button
+* If signer's key is chosen according to account and there is no match, message is not signed
+
+Release notes for v42 (1.1):
+* Review rules engine according to Robert's scheme (fixes most reported issues)
+* When selected account has no PGP key, and key is selected according to account, don't sign/encrypt
+* Added Tiger-specific toolbar icons
+* Now correctly recognizes revoked/disabled keys
+* No longer reports wrongly a hash algo choice error instead of the unability to sign
+* Only English, French, Finnish and German localizations are complete
+
+Release notes for v43:
+* Changed keyboard shortcuts for sign/encrypt/decrypt/verify, using same as PGP, because our ones didn't work on Tiger anylonger
+* Tiger: Fixed compatibility problem with Enigmail encrypted messages that could not get decrypted
+* Fixed unlocalized error message NO_VALID_PRIVATE_KEY
+* Tiger: added separator line to compose window (thanks to Felix Schaumburg)
+* Changed pref text: reply to _PGP_ encrypted/signed
+* Warning icon was no longer displayed when missing PGP keys
+* Tiger: toolbar icons take less space now
+* Tiger: Encryption/signing works again when performed from menu/toolbar buttons, without PGP buttons in composer
+* Tiger: it was no longer possible to choose any PGP keys manually
+* Spanish localization by Sergio Concha
+* Finnish localization fix by Seppo Laaksonen
+* Japanese localization by Tomio Arisaka
+* Sender's PGP information (sign/encrypt/MIME) stored in AddressBook is no longer evaluated by rules
+* When evaluating for reply/forwarded, don't use signed/encrypted information from S/MIME messages
+
+Release notes for v44 (1.1.1):
+* Fixed German, Spanish, Finnish, Japanese localizations
+* Added hidden option, GPGAddCustomHeaders
+* Tiger: Fixed install on 10.4.1 and later
+* Fixed alignment of some items in composer window
+* Now links to MacGPGME dynamically, to avoid license problem
+* ASCII signed messages: fixed problem with Usenet signatures
+* Tiger: fixed auto-decryption/auto-verification of unread messages
+* Tiger: fixed refresh problem of compose accessory view when To/CC fields get higher
+* Tiger: fixed iPhoto problem
+* Added Danish localization by Sebastian Adorj‡n Dyhr
+* Fixed some ASCII signature verification problems
+* Fixed UI bug when message is created by AppleScript
+* Tiger: Fixed assertion failure when verifying messages
+* Tiger: Was sometimes failing to report error
+
+Release notes for v45:
+* Now fills in automatically PGP Key Download search field as soon as a key is missing (except when already performing search/import)
+* Fixed passphrase encryption when signature was toggled on
+* Fixed zombie on message delivery failure
+* Fixed potential bug with NSBeginAlertSheet() message format
+* Added Dutch localization by Marc-Siebren Kwadijk
+* Now uses MacGPGME 1.1
+* Added hidden option, GPGOpenPGPExecutablePath
+* Fixed uncaught exceptions when gpg not configured correctly
+* Better error message when error related to specific key
+* Better key server-related error messages (not yet localized though)
+* Now accepts SHA-256, SHA-384 and SHA-512 hash algorithms
+* Fixed compatibility-problem with MailTags
+* Fixed crasher on Panther
+* Mail no longer freezes when with using untrusted keys for encryption
+* Fixed sorting of keys in key chooser dialog
+* Fixed bug when "only if message is unread" prefs were followed (when checked) even when automatic decryption/authentication was unchecked
+* Tiger: temporarily disabled display of PGP elements in composer window when window is created via AppleScript, to avoid unsolvable bug - you can still change PGP settings via menu Message/PGP.
+* Fixed problem where encryption was not settable until signing had been set, in some cases.
+* Tiger: built as Universal Binary (but not tested on Intel!)
+* Danish, Dutch, Finish, Italian, Japanese, Korean and Spanish GPGMail.strings files need update
+* Dutch nibs not fully localized - tooltips
+* No longer tries to decrypt text/plain attachments
+* Tries to decrypt/verify application/octet-stream attachments
+* Now needs gpg 1.4.x
+
+Release notes for v46 (1.1.2):
+* Changed some wordings on German version
+* Fixed alignments on new message window
+* Fixed (partly) some localizations
+
+Release notes for v47:
+* Some more debug logs
+* Fixed problem with GPGOpenPGPExecutablePath
+BUG: if there are (older) versions of libgpgme-thread and libgpgerror in /usr/local/lib, they are used instead of the embedded ones, and might crash GPGMail => use static libs (problem with fat libs!)
+* Fixed bug when sending signed+encrypted (ASCII) message with untrusted recipient, and GPGMail set to trust no key: an exception was logged, instead of being displayed to user.
+* Fixed bug: was still signing when automatic signing but no matching account
+
+Release notes for v48:
+* Fixed bug with manual choice of encryption keys: message might be sent without encryption/signature
+* Added Swedish localization by Erik Hedlund
+
+Release notes for v49:
+* First public beta running on Leopard (no Tiger release)
+* Fixed bug: draft additional headers were not removed when message was delivered
+* Fixed bug with manual choice of keys: choice was lost when displaying again key list
+* Fixed bug with AppleScript-generated messages, and redisplayed PGP buttons
+
+Release notes for v50:
+* Fixed dependency on /usr/local/bin/gpg (hash algo exception)
+* Fixed positioning of compose accessory view
+
+Release notes for v51:
+* Fixed bug with 'verbose' option in gpg.conf file
+* Added new keyserver to list (SKS)
+* Fixed toggle triangle state (showing/hiding the extended signature info)
+* Fixed case where public key choice was still automatic even after user chose keys manually
+* Fixed initial automatic choice of key according to account
+* Fixed initial sign/encrypt settings, when they should be set by default
+* Fixed grey banner bug displayed under PGP buttons, when message has been created by AppleScript
+* Fixed bug with disabled toolbar items on detached viewers
+* Fixed UI-compatibility problems with MailTags
+
+Release notes for v52:
+* KeyServers.plist file was missing
+* Fixed dead-lock in key search panel
+* Fixed bug with non-English locales
+* No longer supports Panther (10.3)
+* Some menu items were relocated in their menu
+* Enhanced key search panel automatic filling by adding sender's email (contained only missing key's fingerprint)
+* New license: BSD
+* Now on SourceForge.net
+
+Release notes for v53:
+* (r3) Fixed regression bug in v52: does no longer recognize signatures after decryption, for ASCII (separate sig or not), and MIME (non-separate sig); for MIME/separate sig, sig is not seen automatically, but verifiable
+* Was not able to search for keys, when only gpg2 was installed.
+* Fixed bug when gpg not installed
+* Now allows gpg-agent to be restarted
+* Automatic verification after decryption should work again
+
+Release notes for v54:
+* More information in case of General Error, when decrypting/verifying
+* Updated all localizations - thanks to Guillaume Gandreau
+* For ASCII encrypted/signed messages, enforces use of quoted-printable - more robust - Thanks to Greg A. Woods
+* FIXED: Reply to a message, whose sender you have the public key, but whose recipients you miss some public keys; message should be encrypted; click on the reply all button; message should not be encrypted (missing keys), but it is! GPGMail doesn't reevaluate the addresses.
+* Fixed edition of key presentation in Preferences/Misc (tableView)
+
+Release notes for v55:
+* Corrections of the Swedish translation, courtesy of Mischa Hammarnejd
+* CRITICAL: fixed compatibility with 10.5.6 (tested against 9G38); previous GPGMail releases crash under 10.5.6
+
+Release notes for v56 (1.2.0):
+* Corrections to the Spanish localization, courtesy of Charly
+* Added support for (obsolete) Content-Type: application/pgp; format="text"... (e.g. emails from biglumber.com)
+* Better recognition and decryption of encrypted parts/attachments (better compatibility with Outlook and others)
+* Fixed localizations of dates
+* Fixed French version
+
+Release notes for v57:
+* Fixed French translation, courtesy of Franck Zoccolo
+* No longer raises uncaught exception when trying to download no key
+* Recognizes incorrect MIME encrypted messages generated by FireGPG < 0.7.1
+* Started support for Snow Leopard (10.6)
+
+
+Bugs
+----
+2299458 - Korean translation is incomplete
+2299507 - Unable to forward decrypted message as decrypted attachment
+2299525 - Unable to decrypt attached encrypted message
+2299563 - PGP options not restored in drafts - still unable to; posing on ComposeBackEnd??
+2299636 - If encrypted message has associated TODO, then decrypting message masks TODO. Because can no longer make link from TODO to decrypted message?
+2299681 - Decrypted message ends with gpgkeys error log
+2299727 - when working offline, it may happen that a signature verification fails though signature is valid, in case there are attachments in message (except signature)
+2299748 - "reply" mark is not set when you reply to a decrypted message from the singleMessageViewer only.
+2299765 - "security header" not visible
+
+
+FIXME (Leopard) No support for Time Machine: when navigating in Time Machine, PGP controls are not available, thus messages can't be decrypted.
+FIXME Notice when GPGMail bundle has been installed in ~/Library and /Library -> avoid double-encryption
+FIXME When performing keysearch, now that we use email+keyID, filter out keys that don't match keyID - special case when done automatically
+FIXME When _receiving_ signed+encrypted message with attachment, GPGMail says it's unsigned
+FIXME Multiple encrypted parts
+TESTME Automatic decryption/verification - no deadlock? No.
+FIXME HTML when no alternate
+(FIXME Use key arrows in focussed decrypted message -> gets re-encrypted. Same when resizing window. But no problem when using page up/down buttons, nor space.) -- 10.5.5: seems OK
+FIXME Sometimes a decrypted message is displayed in plain text instead of rich text - HOW TO REPRODUCE?
+FIXME Crash when no secret key to decrypt, or cancelled password panel? Maybe automatic decryption? - HOW TO REPRODUCE?
+FIXME Invalid signatures when contains all usenet sig + attachment?
+FIXME Unable to decrypt encrypted attachments automatically - see Oct 23 2007
+FIXME With autoverification ON, when receiving a junk signed message, the junk banner disappears when signature banner is displayed
+TODO If HTML encrypted message misses plain text alternative, decode HTML and decrypt it?
+BUG Crash or infinite loop with auto-decryption of encrypted PGP inline message with encrypted attachment.
+BUG Invalid signature (or verification?) in PGP-MIME messages containing usenet ('-- ') signatures; works in PGP-inline messages
+BUG Sometimes OpenPGP-signed messages are generated with 2 empty lines after the 'Content-Type: multipart/alternative', instead of one, and some mail servers remove one of the empty lines, thus invalidating message signature - see Jim Syler, Mar 7 2006
+SOLVED Stack trace logs in console, due to MailTags; these exceptions are normally thrown and caught by GPGMail
+
+
+? PENDING BUG: Was returning a "No data" error WITHOUT decrypting data when decrypting message which was also signed, and key was not available, AND automatic key search WAS enabled. If no automatic search, then decrypts but warns it is missing key. -> correct gpgme first; asked bug-gpgme.
+??? Better problem reporting when using RSA key (signing) (GPGMail#2071+2244)
+? Panther: disable S/MIME signing and encryption when PGP signing or encryption is enabled. GPGMail#2256
+TODO Use all known keyservers when verifying/searching
+? "General Error" when using "by default use OpenPGP-MIME"? GPGMail#2297 - Unable to reproduce; similar to other problem GPGMail#2071?? Main key was missing uid.
+BUG installer: sometimes the OS9 Mail is launched instead -> use com.apple.mail as app
+
+? New FAQ: PGP & S/MIME are incompatible formats
+(? New FAQ: on 10.3, sig attachments are not shown)
+(New FAQ: GPGMail/gpg 1.2.x stuck when encrypting)
+New FAQ: How to remove undesired keys?
+New FAQ: Internal error: *** subrange... -> multiple encrypted parts
+New FAQ: timeout on keyserver operations + new GPGPreferences option
+New FAQ: 'No data' when decrypting signed message without signer's key; fixed with 1.4.x? (use sign+encrypt in one op to verify)
+New FAQ: more info about error message when hash algo not RFC3156 compliant + new option to accept it (with warning, once)
+New FAQ: a disabled key CAN sign, but not encrypt, unless used with --encrypt-to or --hidden-encrypt-to
+New FAQ: can I import/export keys?
+New FAQ: can I exchange emails with non-GPGMail clients?
+New FAQ: *-steps encryption - HOWTO
+New FAQ: messages MUST be cached on client-side, else verifying MIME signature doesn't work
+New FAQ: line wrapping param use
+New FAQ: Some mail servers break OpenPGP-signed messages by reordering some header contents (Wannadoo or .mac) - see G. Pineau, Mar 8 2006
+
+? KNOWN BUG: GPGMail doesn't support signing with RSA keys (old PGP keys).
+
+? Crash in gpgme:gpgme_op_keylist_start(); GPGMail#2418; seems it's a low memory condition crash
+? NEW FEATURE: after encryption failure due to missing keys, user can now select to send unencrypted to missing keys, and encrypted to keys -> multiple messages
+? Crash in gpgme:keylist_colon_handler(); GPGMail#2465 - forwarded to Markus Brinkmann
+? NEW FEATURE: send owner's key
+? NEW FEATURE: combine decrypt & verify menus/buttons, because only one can be active at the same time
+? New: use .pkg and modify defaults for all users, in /Library/Preferences/ (see GPGMail#...)
+? NEW FEATURE: add possibility to disable GPGMail (reenabled in prefs)
+? BUG GPGMail#2112: after decryption, banner shows verification state, not signature/error state!!! Key's not found.
+? BUG: invalid sig in discuss-gnustep#4362
+? 8bits chars are now allowed in SMTP -> remove assertions, if any, but only on receiving, because Mail still uses 7bit (except bug)
+? NEW: for passphrase timeout in prefs, use special widget
+? New: when reading clear-text PGP messages, use "Charset" PGP header when present. When encrypting, create that header. See RFC2440. Default is UTF-8.
+? NEW: display keyID in long format
+? NEW: when has only expired keys, suggest user to search for new key
+? NEW: use text attachments to display more info about keys, e.g. in sig verif view display an icon next to signer to show trust. Do it wherever possible.
+? BUG: some messages can't be verified by gpg 1.4, but are OK with gpg 1.2; see R. Goldsmith's messages. Related to new way of doing in gpg 1.4 AND bug (unstripped tailing spaces in messages) in GPGMail; new option in gpg 1.4.1
+
+TODO Tolerate non RFC3156 hash algo, but warn user (and allow changing algo)
+TODO Refactoring of prefs: regroup by theme, remove some? See Robert's email (encryptAll should be fully replaced by encryptWhenPossible?)
+TODO In pref pane, add reference (+link?) to ABKey plug-in
+TODO Add "Sign when recipients know PGP" (i.e. when there are PGP public keys for recipients)
+TODO In key chooser, add new column 'Additional Info' that shows 'expired', 'revoked', etc.
+TODO In key chooser, add new column ownertrust
+TODO Review key chooser: make non modal, in panel; user can search for keys (search field like for address panel), display lot of info, D&D(?), and pass selected keys to mainWindow -> can choose for encryption, for export
+
+v39
+TODO In menu items, mark in red revoked/expired keys
+(TODO Encryption progress panel: make it a sheet.) Impossible, because window is no longer displayed
+BUG Invalid (created?) signatures when format=flowed in MIME(really??); needs gpg 1.4.1 special option (which one??) to avoid that.
+BUG If AB entry says 'encrypt' or 'MIME' but there's no (valid or not) PGP key, ignore option
+TODO Use the headers to show signature information?
+TODO Show ownertrust info, with warning sign when owner not trusted
+TODO Add option to automatically remove inline PGP signatures in replies.
+BUG in Cocoa 10.4.2: impossible to type passphrase with composed characters, e.g. acute accent and e; no problem when keyboard provides accented character in one key press
+TODO Disable S/MIME on a per-message basis, e.g. when PGP encryption/signing is on
+BUG Automatic decryption fails often: still displays encrypted message
+TODO Use Smart Crash Report (10.4 only?) -> create SOPE app
+BUG Private key is actually unselected when it seems to be selected -> user might be unable to encrypt anything, due to rules
+TODO In pref pane, add 'export config' button to gather GPGMail userDefaults
+TODO No longer hide unusable keys, but explain why they are unusable, and prevent automatic choice
+BUG GPGMail not invoked when message created automatically by rule (because no UI) -> should provide applescript, or intercept the delivery
+TODO New toolbar button showing key caching state - clicking it clears cache (valid only for memory cache, not keychain)
+TODO Warn when replying/forwarding unencrypted to encrypted message
+(TODO Auto-decrypt when passphrase is in cache) -- unable to know that with gpg-agent
+TODO New pref to not even show passphrase-disclosure checkbox in passphrase panel
+TODO When showing signed message, display image in signer's key (if any) instead of sender's image (if any), with PGP icon/cert/padlock on it
+(TODO New mailbundle for PGP timestamping service (http://www.itconsult.co.uk/stamper/stampinf.htm)) No longer active? Very old.
+TODO Modify smart addresses tokens to display a PGP icon, when there is a key for the user; add PGP menu items too to the token popup menu - see AddressAttachment
+BUG/TODO Signature encapsulation is done only for OpenPGP/MIME, not for inline-PGP - either implement it, or change tooltip in prefs
+BUG Still too many gpg operations to retrieve keys: why is cache not used?
+BUG Even reloading keys doesn't recognize new private keys?
+TODO Automatic rules diagnosis available for user, i.e. display user all evaluated criteria
+TODO In keyserver list, display which server is main, and allow user to change main.
+TODO After user downloaded new keys, if current message failed to verify, relaunch message verification
+TODO Toolbar button to toggle MIME/inline (when possible)
+(TODO Can we now use progress info when encrypting? Not yet implemented with gpg 1.4.8/gpgme 1.4)
+TODO When BCC is used and BCC keys are not in non-BCC keys, then issue warning; also, change the pref to simply turn off that warning.
+BUG Sometimes OpenPGP-signed messages are generated with 2 empty lines after the 'Content-Type: multipart/alternative', instead of one, and some mail servers remove one of the empty lines, thus invalidating message signature - see Jim Syler, Mar 7 2006
+
+Following entries should be checked: are these still bugs in v1.2.0? Maybe they are simply duplicates of existing bugs.
+    GPGMail tells decrypted messages are not signed, even when they are; you need to perform validation manually, using toolbar button or menu.
+    When arrow keys are used to navigate through messages, decrypted messages appear encrypted again. Same problem when resizing window.
+    On Leopard, sometimes validation of valid signature fails, when there is an attachment
+    Toolbar buttons are sometimes duplicated, when you have multiple viewers.
+    Toolbar buttons are sometimes lost or moved.
+    Appearance of encrypted mail attachments changes over time.
+    Returns error "No data" when cannot find missing signature key from key server, instead of telling which key cannot be found
+    Do not set message viewers splitview to a too small height, else PGP part becomes unreadable.
+    When decrypting a signed and encrypted message whose signer's key cannot be found, returns a "No data" error without decrypting message, if automatic key retrieval is enabled.
+    Does not support RSA keys for signing/encrypting (no problem when receiving a message)
+    Sometimes GPGMail fails to verify messages with <code>format=flowed</code>
+    Sometimes GPGMail fails to verify messages containing usenet signatures
+    When working offline, it may happen that a signature verification fails though signature is valid, in case there are attachments in message (except signature)
+
+
+? OT: Charly's extras: detachable mailbox panel - keyboard shortcuts for rule creation - ability to add additional headers (x-...)

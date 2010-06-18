@@ -1,0 +1,66 @@
+Smart PGP
+=========
+
+User can set encryption/signing/OpenPGP default choice in preferences. He can override choices manually in composer window. Recipients can have settings too.
+How to react to these settings?
+
+We reset the manual flag after a new recipient has been added.
+
+Encryption
+Recipients  Default Manual
+    -          NO     -     ->  NO
+    -          NO     NO    ->  NO
+    -          NO    YES    -> YES
+    -         YES     -     -> YES
+    -         YES     NO    ->  NO
+    -         YES    YES    -> YES
+    NO         NO     -     ->  NO
+    NO         NO     NO    ->  NO
+    NO         NO    YES    -> YES, but warn user on delivery
+    NO        YES     -     ->  NO
+    NO        YES     NO    ->  NO
+    NO        YES    YES    -> YES, but warn user on delivery
+   YES         NO     -     -> YES
+   YES         NO     NO    ->  NO, but warn user on delivery
+   YES         NO    YES    -> YES
+   YES        YES     -     -> YES
+   YES        YES     NO    ->  NO, but warn user on delivery
+   YES        YES    YES    -> YES
+ YES+NO        NO     -     -> YES, but warn user on delivery
+ YES+NO        NO     NO    ->  NO, but warn user on delivery
+ YES+NO        NO    YES    -> YES, but warn user on delivery
+ YES+NO       YES     -     -> YES, but warn user on delivery
+ YES+NO       YES     NO    ->  NO, but warn user on delivery
+ YES+NO       YES    YES    -> YES, but warn user on delivery
+
+
+Signature
+Recipients  Default Manual
+    NO         NO     NO    ->
+    NO         NO    YES    ->
+    NO        YES     NO    ->
+    NO        YES    YES    ->
+   YES         NO     NO    ->
+   YES         NO    YES    ->
+   YES        YES     NO    ->
+   YES        YES    YES    ->
+ YES+NO        NO     NO    ->
+ YES+NO        NO    YES    ->
+ YES+NO       YES     NO    ->
+ YES+NO       YES    YES    ->
+
+MIME
+Recipients  Default Manual
+    NO         NO     NO    ->
+    NO         NO    YES    ->
+    NO        YES     NO    ->
+    NO        YES    YES    ->
+   YES         NO     NO    ->
+   YES         NO    YES    ->
+   YES        YES     NO    ->
+   YES        YES    YES    ->
+ YES+NO        NO     NO    ->
+ YES+NO        NO    YES    ->
+ YES+NO       YES     NO    ->
+ YES+NO       YES    YES    ->
+
