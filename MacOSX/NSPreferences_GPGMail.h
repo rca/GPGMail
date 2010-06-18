@@ -28,9 +28,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "NSPreferences.h"
+#import <NSPreferences.h>
 
-@class NSPreferences;
 
 @interface NSPreferences(GPGMail)
 @end

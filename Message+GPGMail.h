@@ -63,7 +63,7 @@
 
 - (BOOL) gpgIsPGPMIMEMessage;
 
-#if defined(LEOPARD) || defined(TIGER)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 - (GPGSignature *) gpgSignature;
 - (void) setGpgIsDecrypting:(BOOL)flag;
 - (BOOL) gpgIsDecrypting;

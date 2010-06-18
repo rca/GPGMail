@@ -8,18 +8,22 @@
 
 #import "GPGMailTextAttachmentPoser.h"
 #import "GPGMailPatching.h"
-//#import <MimePart.h>
+#import <MimePart.h>
 
 // Currently useless, because Content-Description header is not parsed:
 // -contentDescription always returns nil
 
+#ifdef SNOW_LEOPARD_64
+@implementation GPGMail_MailTextAttachment
+#else
 @implementation MailTextAttachment(GPGMail)
+#endif
 
 static IMP  MailTextAttachment_toolTip = NULL;
 
 + (void) load
 {
-    MailTextAttachment_toolTip = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(toolTip), [MailTextAttachment class], @selector(gpgToolTip), [MailTextAttachment class]);
+    MailTextAttachment_toolTip = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(toolTip), NSClassFromString(@"MailTextAttachment"), @selector(gpgToolTip), [self class]);
 }
 
 - gpgToolTip

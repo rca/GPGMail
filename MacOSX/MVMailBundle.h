@@ -2,7 +2,47 @@
 
 #import <Cocoa/Cocoa.h>
 
-#ifdef LEOPARD
+#ifdef SNOW_LEOPARD_64
+
+@interface MVMailBundle : NSObject
+{
+}
+
++ (id)allBundles;
++ (id)composeAccessoryViewOwners;
++ (void)registerBundle;
++ (id)sharedInstance;
++ (BOOL)hasPreferencesPanel;
++ (id)preferencesOwnerClassName;
++ (id)preferencesPanelName;
++ (BOOL)hasComposeAccessoryViewOwner;
++ (id)composeAccessoryViewOwnerClassName;
+- (void)dealloc;
+- (void)_registerBundleForNotifications;
+
+@end
+
+#elif defined(SNOW_LEOPARD)
+
+@interface MVMailBundle : NSObject
+{
+}
+
++ (id)allBundles;
++ (id)composeAccessoryViewOwners;
++ (void)registerBundle;
++ (id)sharedInstance;
++ (BOOL)hasPreferencesPanel;
++ (id)preferencesOwnerClassName;
++ (id)preferencesPanelName;
++ (BOOL)hasComposeAccessoryViewOwner;
++ (id)composeAccessoryViewOwnerClassName;
+- (void)dealloc;
+- (void)_registerBundleForNotifications;
+
+@end
+
+#elif defined(LEOPARD)
 
 @interface MVMailBundle : NSObject
 {

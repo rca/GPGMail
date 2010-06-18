@@ -1,6 +1,33 @@
 #import <Cocoa/Cocoa.h>
 
-#ifdef SLEOPARD
+#ifdef SNOW_LEOPARD_64
+
+@interface OptionalView : NSView
+{
+    NSButton *_optionSwitch;
+    NSView *_primaryView;
+    struct CGRect _originalFrame;
+    BOOL _isResizing;
+}
+
+- (id)initWithFrame:(struct CGRect)arg1;
+- (void)dealloc;
+- (void)awakeFromNib;
+- (void)didAddSubview:(id)arg1;
+- (void)willRemoveSubview:(id)arg1;
+- (void)subviewFrameDidChange:(id)arg1;
+- (id)primaryView;
+- (BOOL)isFlipped;
+- (BOOL)isOpaque;
+- (void)drawRect:(struct CGRect)arg1;
+- (id)optionSwitch;
+- (void)sizeToFit;
+- (double)minXIncludingOptionSwitch:(BOOL)arg1;
+- (double)minXOffsetIncludingOptionSwitch:(BOOL)arg1;
+
+@end
+
+#elif defined(SNOW_LEOPARD)
 
 @interface OptionalView : NSView
 {
@@ -33,12 +60,12 @@
 {
     NSButton *_optionSwitch;
     NSView *_primaryView;
-    struct CGRect _originalFrame;
+    struct _NSRect _originalFrame;
     BOOL _isResizing;
     BOOL _isCustomizing;
 }
 
-- (id)initWithFrame:(struct CGRect)fp8;
+- (id)initWithFrame:(struct _NSRect)fp8;
 - (void)dealloc;
 - (void)awakeFromNib;
 - (void)didAddSubview:(id)fp8;
@@ -47,7 +74,7 @@
 - (id)primaryView;
 - (BOOL)isFlipped;
 - (BOOL)isOpaque;
-- (void)drawRect:(struct CGRect)fp8;
+- (void)drawRect:(struct _NSRect)fp8;
 - (id)optionSwitch;
 - (void)sizeToFit;
 - (float)minXIncludingOptionSwitch:(BOOL)fp8;
@@ -61,12 +88,12 @@
 {
     NSButton *_optionSwitch;
     NSView *_primaryView;
-    struct CGRect _originalFrame;
+    struct _NSRect _originalFrame;
     BOOL _isResizing;
     BOOL _isCustomizing;
 }
 
-- (id)initWithFrame:(struct CGRect)fp8;
+- (id)initWithFrame:(struct _NSRect)fp8;
 - (void)dealloc;
 - (void)awakeFromNib;
 - (void)didAddSubview:(id)fp8;
@@ -75,7 +102,7 @@
 - (id)primaryView;
 - (BOOL)isFlipped;
 - (BOOL)isOpaque;
-- (void)drawRect:(struct CGRect)fp8;
+- (void)drawRect:(struct _NSRect)fp8;
 - (id)optionSwitch;
 - (void)sizeToFit;
 - (float)minXIncludingOptionSwitch:(BOOL)fp8;

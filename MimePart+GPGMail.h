@@ -58,6 +58,7 @@
 - (BOOL) gpgIsOpenPGPSignedContainerPart;
 
 - (void)resetGpgCache;
+- (id) gpgBetterDecode;
 
 @end
 

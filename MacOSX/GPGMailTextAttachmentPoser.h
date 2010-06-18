@@ -35,5 +35,9 @@
 #import <MailTextAttachment.h>
 
 
+#ifdef SNOW_LEOPARD_64
+@interface GPGMail_MailTextAttachment : NSObject
+#else
 @interface MailTextAttachment(GPGMail)
+#endif
 @end

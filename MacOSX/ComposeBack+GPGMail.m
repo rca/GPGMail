@@ -35,7 +35,11 @@
 #import <Foundation/Foundation.h>
 
 
+#ifdef SNOW_LEOPARD_64
 @implementation GPGMail_ComposeBackEnd
+#else
+@implementation ComposeBackEnd(GPGMail)
+#endif
 
 - (NSArray *) gpgRecipients
 {
@@ -46,7 +50,7 @@
         recipients = [recipients arrayByAddingObjectsFromArray:[[self valueForKey:@"_cleanHeaders"] objectForKey:@"cc"]];
     else
         recipients = [[self valueForKey:@"_cleanHeaders"] objectForKey:@"cc"];
-    
+
     if([[GPGMailBundle sharedInstance] usesBCCRecipients]){
         if(recipients != nil)
             recipients = [recipients arrayByAddingObjectsFromArray:[[self valueForKey:@"_cleanHeaders"] objectForKey:@"bcc"]];

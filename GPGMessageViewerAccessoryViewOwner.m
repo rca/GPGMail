@@ -38,6 +38,7 @@
 #import <Message+GPGMail.h>
 #import <NSString+Message.h>
 #import <NSString+GPGMail.h>
+#import <ExceptionHandling/NSExceptionHandler.h>
 
 
 @interface NSView(ColorBackgroundView)
@@ -62,7 +63,7 @@
         NSAssert([NSBundle loadNibNamed:@"GPGMessageViewerAccessoryView" owner:self], @"### GPGMail: -[GPGMessageViewerAccessoryViewOwner view]: Unable to load nib named GPGMessageViewerAccessoryView");
         [signatureUpperView retain];
 #warning Verify that we no longer need this
-#if !defined(LEOPARD) && !defined(TIGER)
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
         // Very hackish, but we have no other way to retrieve the MessageViewer...
         BOOL    isSingleMessageViewer = ([[[delegate documentView] window] delegate] != nil);
 //        BOOL    isSingleMessageViewer = [[[[delegate documentView] window] delegate] isKindOfClass:[NSClassFromString(@"SingleMessageViewer") class]];
@@ -212,12 +213,12 @@
     if(aString){
 		GPGContext	*aContext = [[GPGContext alloc] init];
 		
-		NS_DURING
+		@try{
 			signatureKey = [[aContext keyFromFingerprint:aString secretKey:NO] retain];
-		NS_HANDLER
+		}@catch(NSException *localException){
 			[aContext release];
 			[localException raise];
-		NS_ENDHANDLER
+		}
 		[aContext release];
     }
 
@@ -379,11 +380,11 @@
     if(GPGMailLoggingLevel)
         NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
     // TODO: Should be done async, in another thread
-#if !defined(LEOPARD) && !defined(TIGER)
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
     [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"AUTHENTICATING", @"GPGMail", [NSBundle bundleForClass:[self class]], "")];
 #endif
 
-    NS_DURING
+    @try{
         GPGSignature    *authenticationSignature;
 //        BOOL			hasValidSignature;
         
@@ -404,12 +405,12 @@
                 [message setMessageFlags:[message messageFlags] & 0xFF7FFFFF];*/
             //[[message messageFlags] setObject:??? forKey:@"GPGAuthenticated"];
         }
-    NS_HANDLER
+    }@catch(NSException *localException){
         NSBeginAlertSheet(NSLocalizedStringFromTableInBundle(@"AUTHENTICATION_TITLE_FAILED", @"GPGMail", [NSBundle bundleForClass:[self class]], ""), nil, nil, nil, [[self view] window], nil, NULL, NULL, NULL, @"%@", [[GPGMailBundle sharedInstance] descriptionForException:localException]);
         //[[message messageFlags] setObject:@"NO" forKey:@"GPGAuthenticated"];
-    NS_ENDHANDLER
+    }
 
-#if !defined(LEOPARD) && !defined(TIGER)
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
     [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"Done.", @"Message", [NSBundle bundleForClass:[Message class]], "")];
 #endif
 }
@@ -424,11 +425,11 @@
     BOOL			decrypted = NO;
     GPGMailBundle   *mailBundle = [GPGMailBundle sharedInstance];
 
-#if !defined(LEOPARD) && !defined(TIGER)
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
     [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"DECRYPTING", @"GPGMail", [NSBundle bundleForClass:[self class]], "")];
 #endif
 	
-    NS_DURING
+    @try{
 //        Message	*decryptedMessage = [[delegate gpgMessageForAccessoryViewOwner:self] gpgDecryptedMessageWithPassphraseDelegate:mailBundle signature:(id *)&signature];
         Message	*decryptedMessage = [delegate gpgMessageForAccessoryViewOwner:self];
         [decryptedMessage gpgDecryptMessageWithPassphraseDelegate:mailBundle messageSignatures:sigs];
@@ -438,21 +439,24 @@
         NSAssert(decryptedMessage != nil, @"Why is it nil? Which circumstances??"); // Would return nil in case method was called for a message which is not an encrypted one => programmation error
         // Let's support messages which have been signed then encrypted
         if([sigs count] == 0 && [decryptedMessage gpgHasSignature]){ // FIXME: The decryptedMessage we get here is still the original encrypted one -> headers are the encrypted ones, and cannot be the decrypted ones!
-#if !defined(LEOPARD) && !defined(TIGER)
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
             [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"AUTHENTICATING", @"GPGMail", [NSBundle bundleForClass:[self class]], "")];
 #endif
 			
             if(GPGMailLoggingLevel)
                 NSLog(@"[DEBUG] Extracting signatures");
-            NS_DURING
+            @try{
                 GPGSignature    *aSignature = [decryptedMessage gpgEmbeddedAuthenticationSignature]; // Can raise an exception
                 
                 if(aSignature != nil)
                     [sigs addObject:aSignature];
-            NS_HANDLER
+            }@catch(NSException *localException){
                 // Error during verification
                 authenticationException = localException;
-            NS_ENDHANDLER
+                NSLog(@"[DEBUG] authenticationException: %@", [[authenticationException userInfo] objectForKey:NSStackTraceKey]);
+                [self printStackTrace:authenticationException];
+                
+            }
             if(GPGMailLoggingLevel)
                 NSLog(@"[DEBUG] Done");
         }
@@ -466,12 +470,12 @@
         }
         isSignatureExtraViewVisible = NO;
         [delegate gpgAccessoryViewOwner:self displayMessage:decryptedMessage isSigned:([sigs count] > 0)];
-    NS_HANDLER
+    }@catch(NSException *localException){
         decryptionException = localException;
         // Error during decryption
-    NS_ENDHANDLER
+    }
 
-#if !defined(LEOPARD) && !defined(TIGER)
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
     [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"Done.", @"Message", [NSBundle bundleForClass:[Message class]], "")];
 #endif
 	
@@ -490,6 +494,9 @@
         }
     }
     else{ // Should we use a sheet instead?
+        // Log the stack trace of the exception to console.app for debugging.
+        NSLog(@"[DEBUG] decryptionException: %@", [[decryptionException userInfo] objectForKey:NSStackTraceKey]);
+        [self printStackTrace:decryptionException];
         if(![[decryptionException name] isEqualToString:GPGException] || [mailBundle gpgErrorCodeFromError:[[[decryptionException userInfo] objectForKey:GPGErrorKey] unsignedIntValue]] != GPGErrorCancelled){
             // "User canceled" => do not modify view
             [decryptedMessageTextField setStringValue:[mailBundle descriptionForException:decryptionException]];
@@ -499,6 +506,30 @@
         }
     }
 }
+
+- (void)printStackTrace:(NSException *)e
+{
+    NSString *stack = [[e userInfo] objectForKey:NSStackTraceKey];
+    if (stack) {
+        NSTask *ls = [[NSTask alloc] init];
+        NSString *pid = [[NSNumber numberWithInt:[[NSProcessInfo processInfo] processIdentifier]] stringValue];
+        NSMutableArray *args = [NSMutableArray arrayWithCapacity:20];
+        
+        [args addObject:@"-p"];
+        [args addObject:pid];
+        [args addObjectsFromArray:[stack componentsSeparatedByString:@"  "]];
+        // Note: function addresses are separated by double spaces, not a single space.
+        
+        [ls setLaunchPath:@"/usr/bin/atos"];
+        [ls setArguments:args];
+        [ls launch];
+        [ls release];
+        
+    } else {
+        NSLog(@"No stack trace available.");
+    }
+}
+
 
 - (void) messageChanged:(Message *)message
 {

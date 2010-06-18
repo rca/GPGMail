@@ -41,7 +41,7 @@
 @class Message;
 
 
-#if !defined(LEOPARD) && !defined(TIGER)
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
 NSString * const GPGKeyringChangedNotification;
 NSString * const GPGErrorKey;
 NSString * const GPGException;
@@ -83,9 +83,11 @@ enum {
     GPGMailDebug_SaveInputDataMask = 0x0001
 };
 
-NSBundle *GetGPGMailBundleBundle(void);
-
+#ifdef SNOW_LEOPARD_64
 @interface GPGMailBundle : NSObject
+#else
+@interface GPGMailBundle : MVMailBundle
+#endif
 {
     IBOutlet NSMenuItem     *decryptMenuItem;
     IBOutlet NSMenuItem     *   authenticateMenuItem;
@@ -114,6 +116,7 @@ NSBundle *GetGPGMailBundleBundle(void);
     GPGEngine               *engine;
 }
 
++ (void) addSnowLeopardCompatibility;
 - (void) setAlwaysSignMessages:(BOOL)flag;
 - (BOOL) alwaysSignMessages;
 - (void) setAlwaysEncryptMessages:(BOOL)flag;

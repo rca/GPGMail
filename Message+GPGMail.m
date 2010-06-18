@@ -49,7 +49,7 @@
 
 @implementation Message(GPGMail)
 
-#if defined(LEOPARD) || defined(TIGER)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 GPG_DECLARE_EXTRA_IVARS(Message)
 #endif
 
@@ -87,7 +87,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
         dummyMessage = [Message messageWithRFC822Data:someData];
         // WARNING: dummyMessage's headers now contain MIME headers, and body contains NO headers!
 
-        NS_DURING
+        @try{
             GPGMailFormat   usedFormat = mailFormat;
             NSData          *encryptedData = [(MessageBody *)[dummyMessage messageBody] gpgEncryptForRecipients:recipients trustAllKeys:trustsAllKeys signWithKey:key passphraseDelegate:passphraseDelegate format:&usedFormat headers:&newHeaders]; // Can raise an exception
             
@@ -101,12 +101,12 @@ GPG_DECLARE_EXTRA_IVARS(Message)
             }
             else
                 [someData setData:encryptedData];
-        NS_HANDLER
+        }@catch(NSException *localException){
             [localException retain];
             [localAP release];
             [[localException autorelease] raise];
-        NS_ENDHANDLER
-#if defined(LEOPARD)
+        }
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
         [self performSelector:@selector(setMutableHeaders:) withObject:newHeaders]; // OutgoingMessage
         [[self messageBody] setRawData:someData]; // No effect on Message data
 		// We need to recreate the whole raw data, headers + body.
@@ -137,26 +137,13 @@ GPG_DECLARE_EXTRA_IVARS(Message)
     @try{
         [self setGpgIsDecrypting:YES];
         if(GPGMailLoggingLevel)
-            NSLog(@"[DEBUG] Decrypting...: %i", [self gpgIsDecrypting]);
-        NSLog(@"Top level part: %@", [[self messageBody] topLevelPart]);
-		NSString *type = [NSString stringWithString:(NSString *)[[[self messageBody] topLevelPart] type]];
-		NSString *subtype = [NSString stringWithString:(NSString *)[[[self messageBody] topLevelPart] valueForKey:@"_subtype"]];
-		NSLog(@"Type: %@/%@", type, subtype);
-		NSString *selector = [NSString stringWithFormat:@"decode%@%@", [type capitalizedString], [[subtype stringByReplacingOccurrencesOfString:@"-" withString:@"_"] capitalizedString]]; 
-		NSLog(@"Results in selector: %@", selector);
-		
-		/* Unfortunately calling decode (replacement of contentsForTextSystem) doesn't work anymore.
-		 * calling the appropriate decode method for the top part fixes the problem.
-		 */
-		if([[[self messageBody] topLevelPart] respondsToSelector:NSSelectorFromString(selector)]) {
-			[[[self messageBody] topLevelPart] performSelector:NSSelectorFromString(selector)];
-		}
-		else {
-			/* Otherwise try it with decode. */
-			NSLog(@"Using decode anyway!");
-			[[[self messageBody] topLevelPart] decode]; // Will force re-evaluation of the decode* methods. Will not raise an exception, because -contentsForTextSystem will catch it!
-        }
-		if(GPGMailLoggingLevel)
+            NSLog(@"[DEBUG] Decrypting...");
+#ifndef SNOW_LEOPARD
+        [[[self messageBody] topLevelPart] contentsForTextSystem]; // Will force re-evaluation of the decode* methods. Will not raise an exception, because -contentsForTextSystem will catch it!
+#else
+		[[[self messageBody] topLevelPart] gpgBetterDecode]; // Evaluate the decode method matching [part type].
+#endif
+        if(GPGMailLoggingLevel)
             NSLog(@"[DEBUG] Finished Decrypting");
         [messageSignatures addObjectsFromArray:[self gpgMessageSignatures]];
     }
@@ -193,7 +180,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
         // that's why we create a new Message from our headers' and body's data.
         dummyMessage = [Message messageWithRFC822Data:someData];
         
-        NS_DURING
+        @try{
             GPGMailFormat   usedFormat = mailFormat;
 			NSData          *signedData = [(MessageBody *)[dummyMessage messageBody] gpgSignWithKey:key passphraseDelegate:passphraseDelegate format:&usedFormat headers:&newHeaders]; // Can raise an exception            
             
@@ -207,13 +194,13 @@ GPG_DECLARE_EXTRA_IVARS(Message)
             }
             else
                 [someData setData:signedData];
-        NS_HANDLER
+        }@catch(NSException *localException){
             [localException retain];
             [localAP release];
             [[localException autorelease] raise];
-        NS_ENDHANDLER
+        }
 #if 1
-#if defined(LEOPARD)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
         [self performSelector:@selector(setMutableHeaders:) withObject:newHeaders]; // OutgoingMessage
         [[self messageBody] setRawData:someData]; // No effect on Message data
 		// We need to recreate the whole raw data, headers + body.
@@ -273,7 +260,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
     return [[self messageBody] gpgIsPGPMIMEMessage];
 }
 
-#if defined(LEOPARD) || defined(TIGER)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 + (void) load
 {
     [self gpgInitExtraIvars];
@@ -321,7 +308,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 /*
 - (id)pgpDecryptedMessageBody
 {
-#ifdef LEOPARD
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     // See -[MimePart(PGPMail) _pgpDecodePGP] for an explanation
     const PGPMailDecodeOptions  *ioOptionsPtr = [self pgpDecodeOptions];
     MessageBody                 *messageBody = ((ioOptionsPtr != NULL && ioOptionsPtr->mDecryptedMessageBody != nil) ? ioOptionsPtr->mDecryptedMessageBody : [[(MimeBody *)[self messageBody] topLevelPart] decryptedMessageBodyIsEncrypted:NULL isSigned:NULL]);

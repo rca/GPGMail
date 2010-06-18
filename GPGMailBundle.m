@@ -28,29 +28,28 @@
  */
 
 #import "GPGMailBundle.h"
-//#import "MessageContentController+GPGMail.h"
-//#import "MessageViewer+GPGMail.h"
+#import "MessageContentController+GPGMail.h"
+#import "MessageViewer+GPGMail.h"
 #import "MessageBody+GPGMail.h"
 #import "Message+GPGMail.h"
-#import "ComposeBackEnd+GPGMail.h"
 #import "GPGMailPatching.h"
 
 #import <Message.h>
 #import <MessageHeaders.h>
 #import <MessageBody.h>
-//#import <MailToolbarItem.h>
+#import <MailToolbarItem.h>
 
-//#import "MessageEditor+GPGMail.h"
+#import "MessageEditor+GPGMail.h"
 #import "GPG.subproj/GPGPassphraseController.h"
-//#import "GPG.subproj/GPGProgressIndicatorController.h"
+#import "GPG.subproj/GPGProgressIndicatorController.h"
 #import "GPGMailPreferences.h"
-//#import "TableViewManager+GPGMail.h"
+#import "TableViewManager+GPGMail.h"
 #import "GPGKeyDownload.h"
-#if !defined(LEOPARD) && !defined(TIGER)
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
 #import "../MacGPGME/GPGMailAdditions.h"
 #endif
-//#import "GPGMailComposeAccessoryViewOwner.h"
 
+#import <ExceptionHandling/NSExceptionHandler.h>
 #import <AppKit/AppKit.h>
 #include <mach-o/dyld.h>
 
@@ -60,19 +59,19 @@ NSString	*GPGAuthenticateMessageToolbarItemIdentifier = @"GPGAuthenticateMessage
 NSString	*GPGDecryptMessageToolbarItemIdentifier = @"GPGDecryptMessageToolbarItem";
 NSString	*GPGSignMessageToolbarItemIdentifier = @"GPGGPGSignMessageToolbarItemIdentifier";
 NSString	*GPGEncryptMessageToolbarItemIdentifier = @"GPGEncryptMessageToolbarItem";
-//
+
 NSString	*GPGKeyListWasInvalidatedNotification = @"GPGKeyListWasInvalidatedNotification";
 NSString	*GPGPreferencesDidChangeNotification = @"GPGPreferencesDidChangeNotification";
-//
-NSString	*GPGMailException = @"GPGMailException";
-//
-NSString	*GPGKeyGroupsChangedNotification = @"GPGKeyGroupsChangedNotification";
-//
-NSString	*GPGMissingKeysNotification = @"GPGMissingKeysNotification";
-//
-int  GPGMailLoggingLevel = 10;
 
-#if !defined(LEOPARD) && !defined(TIGER)
+NSString	*GPGMailException = @"GPGMailException";
+
+NSString	*GPGKeyGroupsChangedNotification = @"GPGKeyGroupsChangedNotification";
+
+NSString	*GPGMissingKeysNotification = @"GPGMissingKeysNotification";
+
+int  GPGMailLoggingLevel = 1;
+
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
 // Linker will complain about multiple definitions of these symbols,
 // but hopefully will use our definitions,
 // not the broken ones in the weakly-linked framework.
@@ -85,16 +84,16 @@ NSString * const GPGAsynchronousOperationDidTerminateNotification = @"GPGAsynchr
 #endif
 
 static BOOL	gpgMailWorks = YES;
-//
+
 @interface NSObject(GPGMailBundle)
 // Service implemented by Mail.app
 - (void) mailTo:(NSPasteboard *)pasteboard userData:(NSString *)userData error:(NSString **)error;
 @end
-//
+
 @interface NSApplication(GPGMailBundle_Revealed)
 - (NSArray *) messageEditors;
 @end
-//
+
 @interface GPGEngine(GPGMailBundle_Revealed)
 - (NSString *) debugDescription;
 @end
@@ -113,91 +112,11 @@ static BOOL	gpgMailWorks = YES;
 - (void) flushKeyCache:(BOOL)flag;
 @end
 
-NSBundle *GetGPGMailBundleBundle(void) {
-	return [NSBundle bundleForClass:[GPGMailBundle class]];
-}
-
-@interface NSApplication(GPGMail_Observer)
-
-@end
-
-//@implementation NSApplication(GPGMailBundle_Observer)
-//
-//- (BOOL)respondsToSelector:(SEL)aSelector {
-//    const char *name = sel_getName(aSelector);
-//    NSLog(@"NSApplication %s", name);
-//    return [super respondsToSelector:aSelector];
-//}
-//
-//@end
-
-//#import "MessageViewer.h"
-
-//@interface MessageViewer(GPGMail_Observer)
-//
-//@end
-
-//@implementation MessageViewer(GPGMail_Observer)
-//
-//- (BOOL)respondsToSelector:(SEL)aSelector {
-//    const char *name = sel_getName(aSelector);
-//    NSLog(@"NSApplication %s", name);
-//    return [super respondsToSelector:aSelector];
-//}
-//
-//
-//@end
-
-@interface MyEditor : NSObject	
-
-- (IBAction) send:(id)sender;
-- (void) ohMan;
-@end
-
-@implementation MyEditor
-- (IBAction) send:(id)sender {
-	NSLog(@"My sender: %@", sender);
-	NSLog(@"I'm sending");
-	NSLog(@"Calling a function I added");
-	
-	[self ohMan];
-	NSLog(@"Calling original one!");
-	NSLog(@"IMP: %p", [GPGMailSwizzler originalMethodForName:@"MailDocumentEditor.send:"]);
-	(*[GPGMailSwizzler originalMethodForName:@"MailDocumentEditor.send:"])(self, _cmd, sender);
-}
-- (void) ohMan {
-	NSLog(@"OOOOOOOh Man...");
-	NSLog(@"This is me: %@", self);
-}
-
-@end
-
-
-
 #include <objc/objc.h>
 #include <objc/objc-class.h>
 @implementation GPGMailBundle
 
-#if defined(SLEOPARD)
-static Class HeadersEditorClass;
-static Class ComposeBackEndClass;
-static Class MailDocumentEditorClass;
-static Class MVComposeAccessoryViewOwnerClass;
-static Class MessageViewerClass;
-
-static Class GPGMail_HeadersEditorClass;
-static Class GPGMail_MailDocumentEditorClass;
-
-static Class GPGMailComposeAccessoryViewOwnerClass;
-static Class GPGMail_MessageViewerClass;
-
-static Class MessageContentControllerClass;
-static Class GPGMail_MessageContentControllerClass;
-
-#endif
-
-
-#if !defined(LEOPARD) && !defined(TIGER)
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
 + (void) initializeMacGPGMEUse
 {
     // MacGPGME framework is weakly linked, because we wrapped it in bundle, but its path is not in the standard framework lookup paths,
@@ -213,27 +132,60 @@ static Class GPGMail_MessageContentControllerClass;
 }
 #endif
 
-//+ (void)load
-//{
-//    GPGMailLoggingLevel = [[NSUserDefaults standardUserDefaults] integerForKey:@"GPGMailDebug"];
-//}
++ (void)load
+{
+    GPGMailLoggingLevel = [[NSUserDefaults standardUserDefaults] integerForKey:@"GPGMailDebug"];
+    [[NSExceptionHandler defaultExceptionHandler] setExceptionHandlingMask: NSLogOtherExceptionMask | NSLogTopLevelExceptionMask];
+}
+
++ (void)addSnowLeopardCompatibility
+{
+    NSLog(@"Adding Snow Leopard Compatibility");
+    
+    /* Adding methods for ComposeBackEnd. */
+    [GPGMailSwizzler addMethodsFromClass:NSClassFromString(@"GPGMail_ComposeBackEnd") toClass:NSClassFromString(@"ComposeBackEnd")];
+    
+    /* Adding methods for HeadersEditor. */
+    [GPGMailSwizzler addMethodsFromClass:NSClassFromString(@"GPGMail_HeadersEditor") toClass:NSClassFromString(@"HeadersEditor")];
+    /* Adding methods for MailDocumentEditor. */
+    [GPGMailSwizzler addMethodsFromClass:NSClassFromString(@"GPGMail_MailDocumentEditor") toClass:NSClassFromString(@"MailDocumentEditor")];
+    
+    /* Add Methods from GPGMail Message Viewer to Message Viewer. */
+    [GPGMailSwizzler addMethodsFromClass:NSClassFromString(@"GPGMail_MessageViewer") toClass:NSClassFromString(@"MessageViewer")];
+    
+    /* Add methods of GPGMail Message Content Controller to Message Content Controller. */
+    [GPGMailSwizzler addMethodsFromClass:NSClassFromString(@"GPGMail_MessageContentController") toClass:NSClassFromString(@"MessageContentController")];
+    
+    /* Swizzling method for the contextual menu of the table view manager. */
+    [GPGMailSwizzler addMethodsFromClass:NSClassFromString(@"GPGMail_TableViewManager") toClass:NSClassFromString(@"TableViewManager")];
+
+    /* Emulate categories for MailTextAttachment. */
+    [GPGMailSwizzler addMethodsFromClass:NSClassFromString(@"GPGMail_MailTextAttachment") toClass:NSClassFromString(@"MailTextAttachment")];
+}
 
 + (void) initialize
 {
+    if(class_getSuperclass([self class]) != NSClassFromString(@"MVMailBundle")) {
+        [super initialize];
+        
+        Class mvMailBundleClass = NSClassFromString(@"MVMailBundle");
+        if(mvMailBundleClass)
+            class_setSuperclass([self class], mvMailBundleClass);
+        
+        [GPGMailBundle addSnowLeopardCompatibility];
+    }
+	NSBundle        *myBundle;
 	
-	Class mvMailBundleClass = NSClassFromString(@"MVMailBundle");
-	if(mvMailBundleClass)
-		class_setSuperclass([self class], mvMailBundleClass);
-	NSLog(@"Set superclass: MVMailBundle");
-	NSBundle *myBundle = GetGPGMailBundleBundle();
-    
-#if !defined(LEOPARD) && !defined(TIGER)
+    // Do not call super - see +initialize documentation
+    myBundle = [NSBundle bundleForClass:self];    
+
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
     [self initializeMacGPGMEUse];
 #endif
     
 	// We need to load images and name them, because all images are searched by their name; as they are not located in the main bundle,
 	// +[NSImage imageNamed:] does not find them.
-#ifdef LEOPARD
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"encrypted-Leopard"]] setName:@"gpgEncrypted"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"clear-Leopard"]] setName:@"gpgClear"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"signed-Leopard"]] setName:@"gpgSigned"];
@@ -259,86 +211,23 @@ static Class GPGMail_MessageContentControllerClass;
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"InvalidBadge"]] setName:@"gpgInvalidBadge"];
 	// Do NOT release images!
         
-    NSLog(@"Loaded GPGMail");
-	NSLog(@"GPGKey object: %@", [[GPGKey alloc] init]);
-	NSLog(@"GPGMailPreferences class: %@", NSClassFromString(@"GPGMailPreferences"));
-	NSLog(@"MVMailBundle: %@", NSClassFromString(@"MVMailBundle"));
-	NSLog(@"SegmentedToolBarItem: %@", NSClassFromString(@"SegmentedToolbarItem"));
-	
-#ifdef SLEOPARD
-	HeadersEditorClass = NSClassFromString(@"HeadersEditor");
-	ComposeBackEndClass = NSClassFromString(@"ComposeBackEnd");
-	GPGMail_HeadersEditorClass = NSClassFromString(@"GPGMail_HeadersEditor");
-	GPGMail_MailDocumentEditorClass = NSClassFromString(@"GPGMail_MailDocumentEditor");
-	MailDocumentEditorClass = NSClassFromString(@"MailDocumentEditor");
-	GPGMailComposeAccessoryViewOwnerClass = NSClassFromString(@"GPGMailComposeAccessoryViewOwner");
-	MVComposeAccessoryViewOwnerClass = NSClassFromString(@"MVComposeAccessoryViewOwner");
-	GPGMail_MessageViewerClass = NSClassFromString(@"GPGMail_MessageViewer");
-	MessageViewerClass = NSClassFromString(@"MessageViewer");
-	MessageContentControllerClass = NSClassFromString(@"MessageContentController");
-	GPGMail_MessageContentControllerClass = NSClassFromString(@"GPGMail_MessageContentController");
-	NSLog(@"SOOOOOOOOO ON SLEOPARD");
-#endif
-	NSLog(@"GPGMail_HeadersEditorClass: %@", NSStringFromClass(GPGMail_HeadersEditorClass));
-	NSLog(@"Replacing Mail.apps send:");
-	[GPGMailSwizzler swizzleMethod:@selector(send:) fromClass:NSClassFromString(@"MailDocumentEditor") withMethod:@selector(send:) ofClass:[MyEditor class]];
-	//GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(send:), NSClassFromString(@"MailDocumentEditor"), @selector(send:), [MyEditor class]);
-	[GPGMailSwizzler addMethod:@selector(ohMan) fromClass:[MyEditor class] toClass:NSClassFromString(@"MailDocumentEditor")];
-	
-	/* Adding methods for ComposeBackEnd. */
-	[GPGMailSwizzler addMethod:@selector(gpgRecipients) fromClass:[GPGMail_ComposeBackEnd class] toClass:ComposeBackEndClass];
-	
-	/* Adding methods for HeadersEditor. */
-	[GPGMailSwizzler addMethodsFromClass:GPGMail_HeadersEditorClass toClass:HeadersEditorClass];
-	/* Adding methods for MailDocumentEditor. */
-	[GPGMailSwizzler addMethodsFromClass:GPGMail_MailDocumentEditorClass toClass:MailDocumentEditorClass];
-	/* Swizzling methods needed to be overrided. */
-	[GPGMailSwizzler swizzleMethod:@selector(backEndDidLoadInitialContent:) fromClass:MailDocumentEditorClass withMethod:@selector(gpgBackEndDidLoadInitialContent:) ofClass:MailDocumentEditorClass];
-	[GPGMailSwizzler swizzleMethod:@selector(backEnd:shouldDeliverMessage:) fromClass:MailDocumentEditorClass withMethod:@selector(gpgBackEnd:shouldDeliverMessage:) ofClass:MailDocumentEditorClass];
-	[GPGMailSwizzler swizzleMethod:@selector(showOrHideStationery:) fromClass:MailDocumentEditorClass withMethod:@selector(gpgShowOrHideStationery:) ofClass:MailDocumentEditorClass];
-	[GPGMailSwizzler swizzleMethod:@selector(animationDidEnd:) fromClass:MailDocumentEditorClass withMethod:@selector(gpgAnimationDidEnd:) ofClass:MailDocumentEditorClass];
-	[GPGMailSwizzler swizzleMethod:@selector(changeReplyMode:) fromClass:MailDocumentEditorClass withMethod:@selector(gpgChangeReplyMode:) ofClass:MailDocumentEditorClass];	
-	
-	[GPGMailSwizzler swizzleMethod:@selector(changeFromHeader:) fromClass:HeadersEditorClass withMethod:@selector(gpgChangeFromHeader:) ofClass:GPGMail_HeadersEditorClass];
-	//[[[NSClassFromString(@"MailDocumentEditor") alloc] init] send:nil];
-	//[GPGMailSwizzler swizzleMethod:@selector(respondsToSelector:) fromClass:MVComposeAccessoryViewOwnerClass withMethod:@selector(gpgRespondsToSelector:) ofClass:GPGMailComposeAccessoryViewOwnerClass];
-	
-	/* Swizzling methods for Message Viewer. */
-	[GPGMailSwizzler swizzleMethod:@selector(_replyMessageWithType:) fromClass:MessageViewerClass withMethod:@selector(gpg_replyMessageWithType:) ofClass:GPGMail_MessageViewerClass];
-	[GPGMailSwizzler swizzleMethod:@selector(forwardMessage:) fromClass:MessageViewerClass withMethod:@selector(gpgForwardMessage:) ofClass:GPGMail_MessageViewerClass];
-	[GPGMailSwizzler swizzleMethod:@selector(validateMenuItem:) fromClass:MessageViewerClass withMethod:@selector(gpgValidateMenuItem:) ofClass:GPGMail_MessageViewerClass];
-	
-	/* Add methods of GPGMail Message Content Controller to Message Content Controller. */
-	[GPGMailSwizzler addMethodsFromClass:GPGMail_MessageContentControllerClass toClass:MessageContentControllerClass];
-	
-	/* Swizzling methods for Message Content Controller. */
-	[GPGMailSwizzler swizzleClassMethod:@selector(load) fromClass:MessageContentControllerClass withMethod:@selector(gpgLoad) ofClass:GPGMail_MessageContentControllerClass];
-	[GPGMailSwizzler swizzleMethod:@selector(_updateDisplay) fromClass:MessageContentControllerClass withMethod:@selector(gpg_updateDisplay) ofClass:GPGMail_MessageContentControllerClass];
-	[GPGMailSwizzler swizzleMethod:@selector(validateMenuItem:) fromClass:MessageContentControllerClass withMethod:@selector(gpgValidateMenuItem:) ofClass:GPGMail_MessageContentControllerClass];
-	[GPGMailSwizzler swizzleMethod:@selector(setMessage:headerOrder:) fromClass:MessageContentControllerClass withMethod:@selector(gpgSetMessage:headerOrder:) ofClass:GPGMail_MessageContentControllerClass];
-	[GPGMailSwizzler swizzleMethod:@selector(_setMessage:headerOrder:) fromClass:MessageContentControllerClass withMethod:@selector(gpg_setMessage:headerOrder:) ofClass:GPGMail_MessageContentControllerClass];
-    [GPGMailSwizzler swizzleMethod:@selector(fadeToEmpty) fromClass:MessageContentControllerClass withMethod:@selector(gpgFadeToEmpty) ofClass:GPGMail_MessageContentControllerClass];
-	
-	
-	[GPGMailBundle registerBundle]; // To force registering composeAccessoryView and preferences
+    [self registerBundle]; // To force registering composeAccessoryView and preferences
+    NSLog(@"Loaded GPGMail %@", [(GPGMailBundle *)[self sharedInstance] version]);
 }
 
 + (BOOL) hasPreferencesPanel
 {
-	NSLog(@"hasPreferencesPanel: %d", gpgMailWorks);
     return gpgMailWorks; // LEOPARD Invoked on +initialize. Else, invoked from +registerBundle
 }
 
 + (NSString *) preferencesOwnerClassName
 {
-    NSLog(@"preferencesOwnerClassName");
-	return NSStringFromClass([GPGMailPreferences class]);
+    return NSStringFromClass([GPGMailPreferences class]);
 }
 
 + (NSString *) preferencesPanelName
 {
-    NSLog(@"preferencesPanelName");
-	return NSLocalizedStringFromTableInBundle(@"PGP_PREFERENCES", @"GPGMail", [NSBundle bundleForClass:self], "PGP preferences panel name");
+    return NSLocalizedStringFromTableInBundle(@"PGP_PREFERENCES", @"GPGMail", [NSBundle bundleForClass:self], "PGP preferences panel name");
 }
 
 + (BOOL) gpgMailWorks
@@ -422,7 +311,7 @@ static Class GPGMail_MessageContentControllerClass;
     if(gpgMailWorks){
 		SEL	targetSelector;
 		
-#if defined(LEOPARD) || defined(TIGER)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 		targetSelector = @selector(toggleThreadedMode:);
 #else
 		targetSelector = @selector(showMailboxesPanel:);
@@ -454,12 +343,9 @@ static Class GPGMail_MessageContentControllerClass;
 
 - (id) realDelegateForToolbar:(NSToolbar *)toolbar
 {
-	NSLog(@"realDelegateForToolbar: %@", toolbar);
 //#warning This won't work if other controller usurps delegate!
 //    if([toolbar delegate] != self){
-    NSLog(@"Delegate: %@", [toolbar delegate]);
-	NSLog(@"Delegate Class: %d", [[toolbar delegate] isKindOfClass:NSClassFromString(@"MVMailBundle")]);
-	if(![[toolbar delegate] isKindOfClass:NSClassFromString(@"MVMailBundle")]){
+    if(![[toolbar delegate] isKindOfClass:NSClassFromString(@"MVMailBundle")]){
         [realToolbarDelegates removeObjectForKey:[NSValue valueWithNonretainedObject:toolbar]];
         return nil;
     }
@@ -467,12 +353,10 @@ static Class GPGMail_MessageContentControllerClass;
         return [[realToolbarDelegates objectForKey:[NSValue valueWithNonretainedObject:toolbar]] nonretainedObjectValue];
 }
 
-- (void) addAdditionalContextualMenuItemsToMessageViewer:(/*MessageViewer */id)viewer
+- (void) addAdditionalContextualMenuItemsToMessageViewer:(MessageViewer *)viewer
 {
-    NSLog(@"gpgTableManager");
-	NSMenu      *menu = [[viewer tableManager] tableViewGetDefaultMenu:[[viewer tableManager] tableView]];
-    NSLog(@"NSMenu: %@", menu);
-	NSMenu      *pgpMenu = [[self encryptsNewMessageMenuItem] menu];
+    NSMenu      *menu = [[viewer gpgTableManager] gpgContextualMenu];
+    NSMenu      *pgpMenu = [[self encryptsNewMessageMenuItem] menu];
     NSMenuItem  *newMenuItem;
 
     // We need to take care of not adding items more than once!
@@ -508,8 +392,7 @@ static Class GPGMail_MessageContentControllerClass;
         // In case other bundles usurp delegation too, they probably do it my way ;-)
         else if([realDelegate respondsToSelector:@selector(realDelegateForToolbar:)]){
             id	usurpedDelegate = [realDelegate realDelegateForToolbar:toolbar];
-
-            if([usurpedDelegate isKindOfClass:NSClassFromString(@"MessageViewer")])
+            if([usurpedDelegate isKindOfClass:NSClassFromString(@"MessageViewer")])            
                 [self addAdditionalContextualMenuItemsToMessageViewer:usurpedDelegate];
         }
         [realToolbarDelegates setObject:[NSValue valueWithNonretainedObject:realDelegate] forKey:[NSValue valueWithNonretainedObject:toolbar]];
@@ -524,11 +407,9 @@ static Class GPGMail_MessageContentControllerClass;
 
 - (NSToolbarItem *) createToolbarItemWithItemIdentifier:(NSString *)itemIdentifier label:(NSString *)label altLabel:(NSString *)altLabel paletteLabel:(NSString *)paletteLabel tooltip:(NSString *)tooltip target:(id)target action:(SEL)action imageNamed:(NSString *)imageName forToolbar:(NSToolbar *)toolbar
 {
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     NSBundle				*myBundle = [NSBundle bundleForClass:[self class]];
-#ifdef LEOPARD
-	NSLog(@"Identifier: %@", itemIdentifier);
-	/*SegmentedToolbarItem*/id	anItem = [[NSClassFromString(@"SegmentedToolbarItem") alloc] initWithItemIdentifier:itemIdentifier];
-    
+    SegmentedToolbarItem	*anItem = [[NSClassFromString(@"SegmentedToolbarItem") alloc] initWithItemIdentifier:itemIdentifier];
 	// By default has already one segment - no need to create it
 	[[[anItem subitems] objectAtIndex:0] setImage:[NSImage imageNamed:imageName]];
 	[anItem setLabel:NSLocalizedStringFromTableInBundle(label, @"GPGMail", myBundle, "") forSegment:0];
@@ -784,11 +665,11 @@ static Class GPGMail_MessageContentControllerClass;
     if(![anEngine usesCustomExecutablePath]){        
         if([availableExecutablePaths count] == 1){
             chosenPath = [availableExecutablePaths lastObject];
-            NS_DURING
+            @try{
                 [[GPGEngine engineForProtocol:GPGOpenPGPProtocol] setExecutablePath:chosenPath];
-            NS_HANDLER
+            }@catch(NSException *localException){
                 chosenPath = nil;
-            NS_ENDHANDLER
+            }
         }
         else{
             // Give choice to user: either from availables, or custom, or cancel
@@ -841,7 +722,7 @@ static Class GPGMail_MessageContentControllerClass;
 	BOOL	isCompatibleSystem;
 
 #warning CHECK - change for leopard!
-#ifdef LEOPARD
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     isCompatibleSystem = (NSClassFromString(@"NSGarbageCollector") != Nil);
 #elif defined(TIGER)
 	isCompatibleSystem = ![[MessageViewer class] instancesRespondToSelector:@selector(showStatusMessage:)];
@@ -866,11 +747,11 @@ static Class GPGMail_MessageContentControllerClass;
     // if they are instantiated programmatically
     NSAssert([NSBundle loadNibNamed:@"GPGMenu" owner:self], @"### GPGMail: -[GPGMailBundle init]: Unable to load nib named GPGMenu");
     // If we disable usurpation, we can't set contextual menu?!
-    NSEnumerator	*anEnum = [[NSClassFromString(@"MessageViewer") allMessageViewers] objectEnumerator];
-    /*MessageViewer*/id	aViewer;
-    
+    NSEnumerator	*anEnum = [[NSClassFromString(@"MessageViewer") allMessageViewers] objectEnumerator];    
+    MessageViewer	*aViewer;
+
     realToolbarDelegates = [[NSMutableDictionary allocWithZone:[self zone]] init];
-#ifdef LEOPARD
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     additionalToolbarItemIdentifiersPerToolbarIdentifier = [[NSDictionary allocWithZone:[self zone]] initWithObjectsAndKeys:[NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"MainWindow", [NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"SingleMessageViewer", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeWindow_NewMessage", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeWindow_ReplyOrForward", nil];
 #elif defined(TIGER)
     additionalToolbarItemIdentifiersPerToolbarIdentifier = [[NSDictionary allocWithZone:[self zone]] initWithObjectsAndKeys:[NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"MessageViewerTiger", [NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"TornOffViewerTiger", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeNewOrDraftTiger", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeReplyOrForwardTiger", nil];
@@ -882,7 +763,7 @@ static Class GPGMail_MessageContentControllerClass;
     while(aViewer = [anEnum nextObject])
         [self usurpToolbarDelegate:[aViewer gpgToolbar]];
     
-    [NSClassFromString(@"GPGPassphraseController") setCachesPassphrases:[self remembersPassphrasesDuringSession]];
+    [GPGPassphraseController setCachesPassphrases:[self remembersPassphrasesDuringSession]];
     [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(workspaceDidMount:) name:NSWorkspaceDidMountNotification object:[NSWorkspace sharedWorkspace]];
     [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(workspaceDidUnmount:) name:NSWorkspaceDidUnmountNotification object:[NSWorkspace sharedWorkspace]];
     [allUserIDsMenuItem setState:([self displaysAllUserIDs] ? NSOnState:NSOffState)];
@@ -895,7 +776,7 @@ static Class GPGMail_MessageContentControllerClass;
         [aMenuItem setTarget:self];
     }
     
-#ifdef LEOPARD
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     // Addition which has nothing to do with GPGMail
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"GPGEnableMessageURLCopy"]){
         aMenuItem = [self newMenuItemWithTitle:NSLocalizedStringFromTableInBundle(@"COPY_MSG_URL_MENUITEM", @"GPGMail", [NSBundle bundleForClass:[self class]], "<Copy Message URL> menuItem title") action:@selector(gpgCopyMessageURL:) andKeyEquivalent:@"" inMenu:[[NSApplication sharedApplication] mainMenu] relativeToItemWithSelector:@selector(pasteAsQuotation:) offset:0];
@@ -920,8 +801,7 @@ static Class GPGMail_MessageContentControllerClass;
 - (id) init
 {
     if(self = [super init]){
-		NSLog(@"Loaded GPGMail again!");
-		NSBundle		*myBundle = [NSBundle bundleForClass:[self class]];
+        NSBundle		*myBundle = [NSBundle bundleForClass:[self class]];
         NSDictionary	*defaultsDictionary = [NSDictionary dictionaryWithContentsOfFile:[myBundle pathForResource:@"GPGMailBundle" ofType:@"defaults"]];
         
         if(gpgMailWorks)
@@ -975,7 +855,8 @@ static Class GPGMail_MessageContentControllerClass;
     [[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self name:nil object:nil];
     [locale release];
 
-    [super dealloc];
+	struct objc_super s = { self, [self superclass] };
+	objc_msgSendSuper(&s, @selector(dealloc));
 }
 
 - (NSString *) versionDescription
@@ -1055,7 +936,6 @@ static Class GPGMail_MessageContentControllerClass;
 
 + (NSString *) composeAccessoryViewOwnerClassName
 {
-	NSLog(@"composeAccessoryViewOwnerClassName");
     // TIGER/LEOPARD Never invoked!
     return @"GPGMailComposeAccessoryViewOwner";
 }
@@ -1164,7 +1044,7 @@ static Class GPGMail_MessageContentControllerClass;
 - (void) setRemembersPassphrasesDuringSession:(BOOL)flag
 {
     [[NSUserDefaults standardUserDefaults] setBool:flag forKey:@"GPGRemembersPassphrasesDuringSession"];
-    [NSClassFromString(@"GPGPassphraseController") setCachesPassphrases:flag];
+    [GPGPassphraseController setCachesPassphrases:flag];
     [self preferencesDidChange:_cmd];
 }
 
@@ -1602,23 +1482,21 @@ static Class GPGMail_MessageContentControllerClass;
 
 - (id) messageViewerOrEditorForToolbarItem:(NSToolbarItem *)item
 {
-	NSLog(@"messageViewerOrEditorForToolbarItem");
-    NSEnumerator	*anEnum = [[NSClassFromString(@"MessageViewer") allMessageViewers] objectEnumerator];
-    /*MessageViewer*/	id aViewer;
-    /*MessageViewer*/   id anEditor;
+    NSEnumerator	*anEnum = [[NSClassFromString(@"MessageViewer") allMessageViewers] objectEnumerator];    
+    MessageViewer	*aViewer;
+    MessageViewer   *anEditor;
 
     while(aViewer = [anEnum nextObject]){
         NSToolbar	*aToolbar = [aViewer gpgToolbar];
 
         if([[aToolbar items] containsObject:item])
             return aViewer;
-#ifdef LEOPARD
-        if([item isKindOfClass:NSClassFromString(@"SegmentedToolbarItemSegmentItem")] && [[aToolbar items] containsObject:[(/*SegmentedToolbarItemSegmentItem **/id)item parent]])
+
+        if([item isKindOfClass:[NSClassFromString(@"SegmentedToolbarItemSegmentItem") class]] && [[aToolbar items] containsObject:[(SegmentedToolbarItemSegmentItem *)item parent]])
             return aViewer;
-#endif
     }
     // These "messageEditors" are not real message editors, but detached viewers (no mailbox)...
-#ifdef LEOPARD
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     anEnum = [[NSClassFromString(@"MailDocumentEditor") documentEditors] objectEnumerator];
 #else
     anEnum = [(NSArray *)[NSApp messageEditors] objectEnumerator];
@@ -1628,10 +1506,8 @@ static Class GPGMail_MessageContentControllerClass;
 
         if([[aToolbar items] containsObject:item])
             return anEditor;
-#ifdef LEOPARD
-        if([item isKindOfClass:NSClassFromString(@"SegmentedToolbarItemSegmentItem")] && [[aToolbar items] containsObject:[(/*SegmentedToolbarItemSegmentItem **/id)item parent]])
+        if([item isKindOfClass:[NSClassFromString(@"SegmentedToolbarItemSegmentItem") class]] && [[aToolbar items] containsObject:[(id)item parent]])
             return anEditor;
-#endif
     }
 
     anEnum = [[NSClassFromString(@"MessageViewer") allSingleMessageViewers] objectEnumerator];
@@ -1640,10 +1516,9 @@ static Class GPGMail_MessageContentControllerClass;
 
         if([[aToolbar items] containsObject:item])
             return aViewer;
-#ifdef LEOPARD
-        if([item isKindOfClass:[NSClassFromString(@"SegmentedToolbarItemSegmentItem") class]] && [[aToolbar items] containsObject:[(/*SegmentedToolbarItemSegmentItem **/id)item parent]])
+
+        if([item isKindOfClass:[NSClassFromString(@"SegmentedToolbarItemSegmentItem") class]] && [[aToolbar items] containsObject:[(SegmentedToolbarItemSegmentItem *)item parent]])
             return aViewer;
-#endif
     }
 
     return nil; // May happen, while new compose window is being set up.
@@ -1654,16 +1529,16 @@ static Class GPGMail_MessageContentControllerClass;
     if(item == nil){
         // item is nil when validating menu items => menu items apply to
         // first responder (or use responder chain)
-        /*MessageViewer*/id		messageViewer = [[NSApplication sharedApplication] targetForAction:@selector(gpgTextViewer:)];
-        /*MessageContentController*/id	viewer = [messageViewer gpgTextViewer:nil];
+        MessageViewer		*messageViewer = [[NSApplication sharedApplication] targetForAction:@selector(gpgTextViewer:)];
+        MessageContentController	*viewer = [messageViewer gpgTextViewer:nil];
         
         return [viewer gpgMessage];
     }
     else{
-        NSEnumerator	*anEnum = [[NSClassFromString("MessageViewer") allMessageViewers] objectEnumerator];
-        /*MessageViewer*/id	aViewer;
-        /*MessageViewer*/id   anEditor;
-            
+        NSEnumerator	*anEnum = [[NSClassFromString(@"MessageViewer") allMessageViewers] objectEnumerator];    
+        MessageViewer	*aViewer;
+        MessageViewer   *anEditor;
+       
         while(aViewer = [anEnum nextObject]){
             NSToolbar	*aToolbar = [aViewer gpgToolbar];
             
@@ -1672,7 +1547,7 @@ static Class GPGMail_MessageContentControllerClass;
         }
 
         // These "messageEditors" are not real message editors, but detached viewers (no mailbox)...
-#ifdef LEOPARD
+#if defined(LEOPARD) || defined(SNOW_LEOPARD)
         anEnum = [[NSClassFromString(@"MailDocumentEditor") documentEditors] objectEnumerator];
 #else
         anEnum = [(NSArray *)[NSApp messageEditors] objectEnumerator];
@@ -1683,7 +1558,7 @@ static Class GPGMail_MessageContentControllerClass;
             if([[aToolbar items] containsObject:item])
                 return [[anEditor gpgTextViewer:nil] gpgMessage];
         }
-        
+
         anEnum = [[NSClassFromString(@"MessageViewer") allSingleMessageViewers] objectEnumerator];
         while(aViewer = [anEnum nextObject]){
             NSToolbar	*aToolbar = [aViewer gpgToolbar];
@@ -1719,14 +1594,14 @@ static Class GPGMail_MessageContentControllerClass;
     }
     else if(anAction == @selector(gpgDecrypt:) || anAction == @selector(gpgAuthenticate:)){
         if(menuItem){
-            /*MessageViewer*/id		messageViewer = [[NSApplication sharedApplication] targetForAction:@selector(gpgTextViewer:)];
-            /*MessageContentController*/id	viewer = [messageViewer gpgTextViewer:nil];
+            MessageViewer		*messageViewer = [[NSApplication sharedApplication] targetForAction:@selector(gpgTextViewer:)];
+            MessageContentController	*viewer = [messageViewer gpgTextViewer:nil];
 
             return [viewer validateMenuItem:menuItem];
         }
         else{
-            /*MessageViewer*/id		messageViewer = [self messageViewerOrEditorForToolbarItem:item];
-            /*MessageContentController*/id	viewer = [messageViewer gpgTextViewer:nil];
+            MessageViewer		*messageViewer = [self messageViewerOrEditorForToolbarItem:item];
+            MessageContentController	*viewer = [messageViewer gpgTextViewer:nil];
             
             return [viewer gpgValidateAction:anAction];
         }
@@ -1774,7 +1649,7 @@ static Class GPGMail_MessageContentControllerClass;
     return [self _validateAction:[theItem action] toolbarItem:theItem menuItem:nil];
 }
 
-#if defined(LEOPARD) || defined(TIGER)
+#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 - (BOOL)validateToolbarItem:(id)fp8 forSegment:(int)fp12
 {
     return [self _validateAction:[fp8 actionForSegment:fp12] toolbarItem:fp8 menuItem:nil];
@@ -1783,21 +1658,21 @@ static Class GPGMail_MessageContentControllerClass;
 
 - (IBAction) gpgDecrypt:(id)sender
 {
-    /*MessageViewer*/id		messageViewer = [[NSApplication sharedApplication] targetForAction:@selector(gpgTextViewer:)];
-    /*MessageContentController*/id	viewer = [messageViewer gpgTextViewer:nil];
+    MessageViewer		*messageViewer = [[NSApplication sharedApplication] targetForAction:@selector(gpgTextViewer:)];
+    MessageContentController	*viewer = [messageViewer gpgTextViewer:nil];
 
     [viewer gpgDecrypt:sender];
 }
 
 - (IBAction) gpgAuthenticate:(id)sender
 {
-    /*MessageViewer*/id		messageViewer = [[NSApplication sharedApplication] targetForAction:@selector(gpgTextViewer:)];
-    /*MessageContentController*/id       viewer = [messageViewer gpgTextViewer:nil];
+    MessageViewer		*messageViewer = [[NSApplication sharedApplication] targetForAction:@selector(gpgTextViewer:)];
+    MessageContentController	*viewer = [messageViewer gpgTextViewer:nil];
 
     [viewer gpgAuthenticate:sender];
 }
 
-- (void) progressIndicatorDidCancel:(/*GPGProgressIndicatorController **/id)controller
+- (void) progressIndicatorDidCancel:(GPGProgressIndicatorController *)controller
 {
 //    [[GPGHandler defaultHandler] cancelOperation];
 }
@@ -1811,7 +1686,7 @@ static Class GPGMail_MessageContentControllerClass;
 
 - (IBAction) gpgSearchKeys:(id)sender
 {
-    [[NSClassFromString(@"GPGKeyDownload") sharedInstance] gpgSearchKeys:sender];
+    [[GPGKeyDownload sharedInstance] gpgSearchKeys:sender];
 }
 
 - (void) flushKeyCache:(BOOL)refresh
@@ -1865,7 +1740,7 @@ static Class GPGMail_MessageContentControllerClass;
 			BOOL            found = NO;
 			
 			while((eachUserID = [uidEnum nextObject])){
-				if([searchPatterns containsObject:[eachUserID valueForKeyPath:attributeKeyPath]]){
+				if([searchPatterns containsObject:[eachUserID valueForKeyPath:attributeKeyPath]]){ // FIXME: Zombie(?) of searchPatterns crash in -isEqual:
 					found = YES;
 					break;
 				}
@@ -1888,22 +1763,21 @@ static Class GPGMail_MessageContentControllerClass;
         GPGKey          *aKey;
         BOOL			filterKeys = [self filtersOutUnusableKeys];
         
-        NS_DURING
+        @try{
             anEnum = [aContext keyEnumeratorForSearchPattern:@"" secretKeysOnly:YES];
 			
 			while(aKey = [anEnum nextObject]){
 				// BUG in gpg <= 1.2.x: secret keys have no capabilities when listed in batch!
 				// That's why we refresh key.
 				aKey = [aContext refreshKey:aKey];
-				NSLog(@"A Key: %@", aKey);
 				if(!filterKeys || [self canKeyBeUsedForSigning:aKey])
 					[anArray addObject:aKey];
 			}
-		NS_HANDLER
+		}@catch(NSException *localException){
 			[aContext release];
 			[anArray release];
 			[localException raise];
-        NS_ENDHANDLER
+        }
         cachedPersonalKeys = anArray;
         [aContext release];
         if([cachedPersonalKeys count] == 0 && ![self warnedAboutMissingPrivateKeys])
@@ -1934,18 +1808,18 @@ static Class GPGMail_MessageContentControllerClass;
         GPGKey          *aKey;
         BOOL			filterKeys = [self filtersOutUnusableKeys];
 
-        NS_DURING
+        @try{
             anEnum = [aContext keyEnumeratorForSearchPattern:@"" secretKeysOnly:NO];
 			
 			while(aKey = [anEnum nextObject]){
 				if(!filterKeys || [self canKeyBeUsedForEncryption:aKey])
 					[anArray addObject:aKey];
 			}
-		NS_HANDLER
+		}@catch(NSException *localException){
 			[aContext release];
 			[anArray release];
 			[localException raise];
-        NS_ENDHANDLER
+        }
         cachedPublicKeys = anArray;
         [aContext release];
     }
@@ -2019,7 +1893,7 @@ static Class GPGMail_MessageContentControllerClass;
     return aPublicKey;
 }
 
-//#warning On 10.3, create new method to return attributed string -> can be red/italic/... when expired/disabled/revoked, or have (composed) image prefix
+#warning On 10.3, create new method to return attributed string -> can be red/italic/... when expired/disabled/revoked, or have (composed) image prefix
 - (NSString *) menuItemTitleForKey:(GPGKey *)key
 {
     NSEnumerator	*anEnum;
@@ -2297,7 +2171,7 @@ static Class GPGMail_MessageContentControllerClass;
         case GPG_SHA512HashAlgorithm:
             return @"sha512";
         default:{
-#if !defined(LEOPARD) && !defined(TIGER)
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
             NSString    *hashAlgorithmDescription = [GPGKey gpgHashAlgorithmDescription:algorithm];
 #else
             NSString    *hashAlgorithmDescription = GPGHashAlgorithmDescription(algorithm);
@@ -2314,7 +2188,7 @@ static Class GPGMail_MessageContentControllerClass;
 
 - (id) locale
 {
-#ifdef LEOPARD
+#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 //    return [NSLocale autoupdatingCurrentLocale]; // FIXME: does not work as expected
     return [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
 #else
@@ -2363,7 +2237,7 @@ static Class GPGMail_MessageContentControllerClass;
 */
 - (NSString *) gpgErrorDescription:(GPGError)error
 {
-#if !defined(LEOPARD) && !defined(TIGER)
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
     return [NSException gpgErrorDescription:error];
 #else
     return GPGErrorDescription(error);
@@ -2372,7 +2246,7 @@ static Class GPGMail_MessageContentControllerClass;
 
 - (GPGErrorCode) gpgErrorCodeFromError:(GPGError)error
 {
-#if !defined(LEOPARD) && !defined(TIGER)
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
     return [NSException gpgErrorCodeFromError:error];
 #else
     return GPGErrorCodeFromError(error);
@@ -2381,7 +2255,7 @@ static Class GPGMail_MessageContentControllerClass;
 
 - (GPGErrorSource) gpgErrorSourceFromError:(GPGError)error
 {
-#if !defined(LEOPARD) && !defined(TIGER)
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
     return [NSException gpgErrorSourceFromError:error];
 #else
     return GPGErrorSourceFromError(error);
@@ -2390,22 +2264,15 @@ static Class GPGMail_MessageContentControllerClass;
 
 - (GPGError) gpgMakeErrorWithSource:(GPGErrorSource)source code:(GPGErrorCode)code
 {
-#if !defined(LEOPARD) && !defined(TIGER)
+#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
     return [NSException gpgMakeErrorWithSource:source code:code];
 #else
     return GPGMakeError(source, code);
 #endif
 }
 
-
-//- (BOOL)respondsToSelector:(SEL)aSelector {
-//    const char *name = sel_getName(aSelector);
-//    NSLog(@"GPGMailBundle %s", name);
-//    return [super respondsToSelector:aSelector];
-//}
-
 @end
-//
+
 #import <AddressBook/AddressBook.h>
 
 @interface ABGroup(GPGMail)
@@ -2445,7 +2312,7 @@ static Class GPGMail_MessageContentControllerClass;
     GPGKeyGroup     *aKeyGroup;
     BOOL            groupsChanged = NO;
     
-	NS_DURING
+	@try{
 		gpgGroups = [aContext keyGroups];
 		while((aGroup = [abGroupEnum nextObject])){
 			NSEnumerator    *memberEnum = [[aGroup gpgFlattenedMembers] objectEnumerator];
@@ -2525,21 +2392,21 @@ static Class GPGMail_MessageContentControllerClass;
                     else
                         NSLog(@"[DEBUG] Will create group %@ with keys\n%@", aGroupName, [futureGroupKeys valueForKey:@"keyID"]);
                 }
-				NS_DURING
+				@try{
 					(void)[GPGKeyGroup createKeyGroupNamed:aGroupName withKeys:futureGroupKeys];
 					groupsChanged = YES;
-				NS_HANDLER
+				}@catch(NSException *localException){
 					// FIXME: Report to user that group name is invalid?
 					// Let's ignore the error
-				NS_ENDHANDLER
+				}
 			}
 		}
-	NS_HANDLER
+	}@catch(NSException *localException){
 		// FIXME: Report to user that group name is invalid?
 		// Let's ignore the error
 		[aContext release];
 		[localException raise];
-    NS_ENDHANDLER
+    }
 	[aContext release];
 			
     if(groupsChanged)

@@ -88,13 +88,13 @@ int main(int argc, char **argv){
                     plist = [NSMutableDictionary dictionary];
                 }
                 // Value is written as a plist if possible, else as a string
-                NS_DURING
+                @try{
                     id	aPlist = [[arguments objectAtIndex:4] propertyList];
                     
                     [plist setObject:aPlist forKey:[arguments objectAtIndex:3]];
-                NS_HANDLER
+                }@catch(NSException *localException){
                     [plist setObject:[arguments objectAtIndex:4] forKey:[arguments objectAtIndex:3]];
-                NS_ENDHANDLER
+                }
                 terminationStatus = ![plist writeToFile:filename atomically:YES];
             }
             else{
