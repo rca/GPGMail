@@ -32,6 +32,11 @@
 		1B343483107B399400F590EF /* MessageContentController+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80770838E9B10052F47C /* MessageContentController+GPGMail.m */; };
 		1B3434A2107B3AFB00F590EF /* GPGKeyDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A806D0838E9B10052F47C /* GPGKeyDownload.m */; };
 		1B3434BB107B42CC00F590EF /* MessageContentController+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A808C0838EA1C0052F47C /* MessageContentController+GPGMail.m */; };
+		1B45A53411CC97A600ED4663 /* MacGPGME.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B1949E111CC52350092B810 /* MacGPGME.framework */; };
+		1B45A53C11CC98AB00ED4663 /* MessageViewer+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B45A53B11CC98AB00ED4663 /* MessageViewer+GPGMail.m */; };
+		1B6B7DF411CD1C600055F528 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6B7DF311CD1C600055F528 /* Sparkle.framework */; };
+		1B6B7E2C11CD1C810055F528 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B6B7DF311CD1C600055F528 /* Sparkle.framework */; };
+		1B6B7E5211CD24440055F528 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 1B6B7E5111CD24440055F528 /* dsa_pub.pem */; };
 		1BAA17EA108E8E7500FBC3E4 /* TableViewManager+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80910838EA1C0052F47C /* TableViewManager+GPGMail.m */; };
 		1BB95C84105EE82A00A4CAE4 /* GPGMail.mailbundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D5B49B6048680CD000E48DA /* GPGMail.mailbundle */; };
 		1BCEE1E311CC051500488D19 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BCEE1E211CC051500488D19 /* LICENSE.txt */; };
@@ -102,33 +107,44 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 1B1949D711CC52350092B810 /* MacGPGME.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 554B55C0069F0111005E1C92 /* MacGPGME.framework */;
+			remoteGlobalIDString = 554B55C0069F0111005E1C92;
 			remoteInfo = MacGPGME;
 		};
 		1B1949E211CC52350092B810 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1B1949D711CC52350092B810 /* MacGPGME.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 554B55EB069F0245005E1C92 /* GPGTester.app */;
+			remoteGlobalIDString = 554B55EB069F0245005E1C92;
 			remoteInfo = GPGTester;
 		};
 		1B1949E411CC52350092B810 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1B1949D711CC52350092B810 /* MacGPGME.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 551DF42B0B2886420061FE17 /* MacGPGMETesting.octest */;
+			remoteGlobalIDString = 551DF42B0B2886420061FE17;
 			remoteInfo = MacGPGMETesting;
 		};
-		1B1949E711CC52430092B810 /* PBXContainerItemProxy */ = {
+		1B45A51B11CC973700ED4663 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1B1949D711CC52350092B810 /* MacGPGME.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 554B558F069F0111005E1C92 /* MacGPGME */;
-			remoteInfo = MacGPGME;
+			remoteGlobalIDString = 1B45A4E311CC967000ED4663;
+			remoteInfo = "Build and Install";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		1B45A52111CC977700ED4663 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				1B6B7E2C11CD1C810055F528 /* Sparkle.framework in CopyFiles */,
+				1B45A53411CC97A600ED4663 /* MacGPGME.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1BB95C80105EE80C00A4CAE4 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
@@ -136,15 +152,6 @@
 			dstSubfolderSpec = 0;
 			files = (
 				1BB95C84105EE82A00A4CAE4 /* GPGMail.mailbundle in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		559A81640838F2A80052F47C /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +284,9 @@
 		1B194BE611CC58740092B810 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = Resources/Japanese.lproj/GPGMessageViewerAccessoryView.nib; sourceTree = "<group>"; };
 		1B194BE711CC58760092B810 /* ko */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = ko; path = Resources/ko.lproj/GPGMessageViewerAccessoryView.nib; sourceTree = "<group>"; };
 		1B194BEA11CC58BC0092B810 /* OutgoingMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OutgoingMessage.h; path = Source/PrivateHeaders/OutgoingMessage.h; sourceTree = "<group>"; };
+		1B45A53B11CC98AB00ED4663 /* MessageViewer+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MessageViewer+GPGMail.m"; path = "Source/MessageViewer+GPGMail.m"; sourceTree = "<group>"; };
+		1B6B7DF311CD1C600055F528 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
+		1B6B7E5111CD24440055F528 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		1B859A6E109331A6009E469A /* MVTerminationHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MVTerminationHandler.h; path = Source/PrivateHeaders/MVTerminationHandler.h; sourceTree = "<group>"; };
 		1BCEE1E211CC051500488D19 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE.txt; path = Documentation/LICENSE.txt; sourceTree = "<group>"; };
 		1BF51A6F108FCD1900AC8268 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
@@ -423,6 +433,7 @@
 				559A81330838EEFD0052F47C /* Security.framework in Frameworks */,
 				559A81340838EEFD0052F47C /* System.framework in Frameworks */,
 				1BF51A70108FCD1900AC8268 /* ExceptionHandling.framework in Frameworks */,
+				1B6B7DF411CD1C600055F528 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +472,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				1B6B7E5111CD24440055F528 /* dsa_pub.pem */,
 				1B194B9A11CC57820092B810 /* GPGKeyDownload.nib */,
 				1B194B9C11CC57820092B810 /* GPGMailCompose.nib */,
 				1B194B9E11CC57820092B810 /* GPGMailComposeTiger.nib */,
@@ -493,6 +505,7 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1B6B7DF311CD1C600055F528 /* Sparkle.framework */,
 				559A812B0838EEFD0052F47C /* AddressBook.framework */,
 				559A812C0838EEFD0052F47C /* Carbon.framework */,
 				559A812D0838EEFD0052F47C /* Message.framework */,
@@ -672,6 +685,7 @@
 		559A806B0838E96A0052F47C /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				1B45A53B11CC98AB00ED4663 /* MessageViewer+GPGMail.m */,
 				559A80720838E9B10052F47C /* GPGMEAdditions.m */,
 				559A806E0838E9B10052F47C /* GPGMailBundle.m */,
 				559A806F0838E9B10052F47C /* GPGMailComposeAccessoryViewOwner.m */,
@@ -753,17 +767,17 @@
 			buildConfigurationList = 55541F4C085AE6B100548474 /* Build configuration list for PBXNativeTarget "GPGMail" */;
 			buildPhases = (
 				8D5B49AF048680CD000E48DA /* Resources */,
-				559A81640838F2A80052F47C /* CopyFiles */,
 				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
 				1BB95C80105EE80C00A4CAE4 /* CopyFiles */,
+				1B45A52111CC977700ED4663 /* CopyFiles */,
 			);
 			buildRules = (
 				552507E90BAD561900466016 /* PBXBuildRule */,
 			);
 			comments = "Old working:\nheader_search_path ..\nlibrary_style static\nother_linker_flags -force_flat_namespace -undefined suppress \nmacosx deployment target: default\n\n-weak_framework MacGPGME -bundle_loader /Applications/Mail.app/Contents/MacOS/Mail  -undefined dynamic_lookup\n";
 			dependencies = (
-				1B1949E811CC52430092B810 /* PBXTargetDependency */,
+				1B45A51C11CC973700ED4663 /* PBXTargetDependency */,
 			);
 			name = GPGMail;
 			productInstallPath = "$(HOME)/Library/Bundles";
@@ -876,6 +890,7 @@
 				1B194BA911CC57820092B810 /* GPGMailPreferences.nib in Resources */,
 				1B194BAA11CC57820092B810 /* GPGMenu.nib in Resources */,
 				1B194BAB11CC57820092B810 /* GPGMessageViewerAccessoryView.nib in Resources */,
+				1B6B7E5211CD24440055F528 /* dsa_pub.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -911,16 +926,17 @@
 				1B3434BB107B42CC00F590EF /* MessageContentController+GPGMail.m in Sources */,
 				1B141AA410800EA8007BE344 /* GPGProgressIndicatorController.m in Sources */,
 				1BAA17EA108E8E7500FBC3E4 /* TableViewManager+GPGMail.m in Sources */,
+				1B45A53C11CC98AB00ED4663 /* MessageViewer+GPGMail.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		1B1949E811CC52430092B810 /* PBXTargetDependency */ = {
+		1B45A51C11CC973700ED4663 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = MacGPGME;
-			targetProxy = 1B1949E711CC52430092B810 /* PBXContainerItemProxy */;
+			name = "Build and Install";
+			targetProxy = 1B45A51B11CC973700ED4663 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1134,7 +1150,11 @@
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 52;
-				FRAMEWORK_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/../Release";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(BUILT_PRODUCTS_DIR)/../Release",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/Frameworks\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -1175,7 +1195,11 @@
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 52;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/../Release";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(BUILT_PRODUCTS_DIR)/../Release",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GPGMail_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
