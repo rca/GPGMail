@@ -81,6 +81,7 @@
 		559A81340838EEFD0052F47C /* System.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559A812F0838EEFD0052F47C /* System.framework */; };
 		559FD1250BBC428000C8FE50 /* KeyServers.plist in Resources */ = {isa = PBXBuildFile; fileRef = 559A80E80838ED6D0052F47C /* KeyServers.plist */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
+		AC674FC411CCB4F60050960D /* MacGPGME.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC674FC311CCB4F60050960D /* MacGPGME.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -102,28 +103,28 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 1B1949D711CC52350092B810 /* MacGPGME.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 554B55C0069F0111005E1C92 /* MacGPGME.framework */;
+			remoteGlobalIDString = 554B55C0069F0111005E1C92;
 			remoteInfo = MacGPGME;
 		};
 		1B1949E211CC52350092B810 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1B1949D711CC52350092B810 /* MacGPGME.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 554B55EB069F0245005E1C92 /* GPGTester.app */;
+			remoteGlobalIDString = 554B55EB069F0245005E1C92;
 			remoteInfo = GPGTester;
 		};
 		1B1949E411CC52350092B810 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1B1949D711CC52350092B810 /* MacGPGME.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 551DF42B0B2886420061FE17 /* MacGPGMETesting.octest */;
+			remoteGlobalIDString = 551DF42B0B2886420061FE17;
 			remoteInfo = MacGPGMETesting;
 		};
 		1B1949E711CC52430092B810 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1B1949D711CC52350092B810 /* MacGPGME.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 554B558F069F0111005E1C92 /* MacGPGME */;
+			remoteGlobalIDString = 554B558F069F0111005E1C92;
 			remoteInfo = MacGPGME;
 		};
 /* End PBXContainerItemProxy section */
@@ -408,6 +409,7 @@
 		559A81860838F3C30052F47C /* Info-GPGMail.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-GPGMail.plist"; path = "Plists/Info-GPGMail.plist"; sourceTree = "<group>"; };
 		559A819C0838F87E0052F47C /* Installer.applescript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.applescript; name = Installer.applescript; path = Release/Installer.applescript; sourceTree = "<group>"; };
 		8D5B49B6048680CD000E48DA /* GPGMail.mailbundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPGMail.mailbundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC674FC311CCB4F60050960D /* MacGPGME.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacGPGME.framework; path = Dependencies/MacGPGME/build/Debug/MacGPGME.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -423,6 +425,7 @@
 				559A81330838EEFD0052F47C /* Security.framework in Frameworks */,
 				559A81340838EEFD0052F47C /* System.framework in Frameworks */,
 				1BF51A70108FCD1900AC8268 /* ExceptionHandling.framework in Frameworks */,
+				AC674FC411CCB4F60050960D /* MacGPGME.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,6 +496,7 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AC674FC311CCB4F60050960D /* MacGPGME.framework */,
 				559A812B0838EEFD0052F47C /* AddressBook.framework */,
 				559A812C0838EEFD0052F47C /* Carbon.framework */,
 				559A812D0838EEFD0052F47C /* Message.framework */,
@@ -1134,7 +1138,11 @@
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 52;
-				FRAMEWORK_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/../Release";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(BUILT_PRODUCTS_DIR)/../Release",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Dependencies/MacGPGME/build/Debug\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -1175,7 +1183,11 @@
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 52;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/../Release";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(BUILT_PRODUCTS_DIR)/../Release",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Dependencies/MacGPGME/build/Debug\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GPGMail_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
