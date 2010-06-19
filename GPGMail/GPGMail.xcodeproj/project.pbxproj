@@ -409,7 +409,7 @@
 		559A81860838F3C30052F47C /* Info-GPGMail.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-GPGMail.plist"; path = "Plists/Info-GPGMail.plist"; sourceTree = "<group>"; };
 		559A819C0838F87E0052F47C /* Installer.applescript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.applescript; name = Installer.applescript; path = Release/Installer.applescript; sourceTree = "<group>"; };
 		8D5B49B6048680CD000E48DA /* GPGMail.mailbundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPGMail.mailbundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		AC674FC311CCB4F60050960D /* MacGPGME.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacGPGME.framework; path = Dependencies/MacGPGME/build/Debug/MacGPGME.framework; sourceTree = SOURCE_ROOT; };
+		AC674FC311CCB4F60050960D /* MacGPGME.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacGPGME.framework; path = Dependencies/MacGPGME/build/Release/MacGPGME.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
