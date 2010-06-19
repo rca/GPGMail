@@ -53,6 +53,8 @@
 #import <AppKit/AppKit.h>
 #include <mach-o/dyld.h>
 
+#include <Sparkle/Sparkle.h>
+
 
 // The following strings are used as toolbarItem identifiers and userDefault keys (value is the position index)
 NSString	*GPGAuthenticateMessageToolbarItemIdentifier = @"GPGAuthenticateMessageToolbarItem";
@@ -210,10 +212,28 @@ static BOOL	gpgMailWorks = YES;
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"ValidBadge"]] setName:@"gpgValidBadge"];
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"InvalidBadge"]] setName:@"gpgInvalidBadge"];
 	// Do NOT release images!
-        
+    
+    SUUpdater *updater = [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
+    updater.delegate = self;
+    [updater resetUpdateCycle];
+    NSLog(@"Last update: %@", [updater lastUpdateCheckDate]);
+    NSLog(@"Interval: %@", [updater updateCheckInterval]);
+    NSLog(@"URL: %@", [updater feedURL]);
+    [updater checkForUpdateInformation];
+    
     [self registerBundle]; // To force registering composeAccessoryView and preferences
     NSLog(@"Loaded GPGMail %@", [(GPGMailBundle *)[self sharedInstance] version]);
 }
+
+- (BOOL)updaterShouldPromptForPermissionToCheckForUpdates:(SUUpdater *)bundle {
+    NSLog(@"SUUpdater -> is this called?");
+    return YES;
+}
+
+- (void)updater:(SUUpdater *)updater didFinishLoadingAppcast:(SUAppcast *)appcast {
+    NSLog(@"Did finish loading appcast: %@", appcast);
+}
+
 
 + (BOOL) hasPreferencesPanel
 {
