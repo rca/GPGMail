@@ -213,27 +213,20 @@ static BOOL	gpgMailWorks = YES;
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"InvalidBadge"]] setName:@"gpgInvalidBadge"];
 	// Do NOT release images!
     
-    SUUpdater *updater = [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
-    updater.delegate = self;
-    [updater resetUpdateCycle];
-    NSLog(@"Last update: %@", [updater lastUpdateCheckDate]);
-    NSLog(@"Interval: %@", [updater updateCheckInterval]);
-    NSLog(@"URL: %@", [updater feedURL]);
-    [updater checkForUpdateInformation];
-    
     [self registerBundle]; // To force registering composeAccessoryView and preferences
+    
     NSLog(@"Loaded GPGMail %@", [(GPGMailBundle *)[self sharedInstance] version]);
+
+    SUUpdater *updater = [SUUpdater updaterForBundle:[NSBundle bundleWithIdentifier:@"ch.sente.gpgmail"]];
+    updater.delegate = [self sharedInstance];
+    [updater setAutomaticallyChecksForUpdates:YES];
+    [updater resetUpdateCycle];
+#warning Sparkle should automatically start to check, but sometimes doesn't.
 }
 
-- (BOOL)updaterShouldPromptForPermissionToCheckForUpdates:(SUUpdater *)bundle {
-    NSLog(@"SUUpdater -> is this called?");
-    return YES;
+- (NSString *)pathToRelaunchForUpdater:(SUUpdater *)updater {
+    return @"/Applications/Mail.app";
 }
-
-- (void)updater:(SUUpdater *)updater didFinishLoadingAppcast:(SUAppcast *)appcast {
-    NSLog(@"Did finish loading appcast: %@", appcast);
-}
-
 
 + (BOOL) hasPreferencesPanel
 {

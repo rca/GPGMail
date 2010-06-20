@@ -27,13 +27,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <Sparkle/Sparkle.h>
 #import "GPGMailPreferences.h"
 #import "GPGMailBundle.h"
 
 #import "GPG.subproj/GPGPassphraseController.h"
 
-
 @implementation GPGMailPreferences
+
+- (SUUpdater *)updater {
+    return [SUUpdater updaterForBundle:[NSBundle bundleWithIdentifier:@"ch.sente.gpgmail"]];
+}
+
 
 - (void) refreshKeyIdentifiersDisplay
 {
