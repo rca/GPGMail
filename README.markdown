@@ -1,24 +1,13 @@
 # GPGMail
 
-This is the source code for the GPG plugin for OS X's Mail.app
+This is the source code for the GPG plugin for OS X's Mail.app.
 
-The latest version of the plugin for OS X 10.6.4 can be found in the Downloads
-section at [http://github.com/gpgmail/GPGMail/downloads](http://github.com/gpgmail/GPGMail/downloads).
+The latest version of the plugin can be found in the Downloads section at [http://github.com/gpgmail/GPGMail/downloads](http://github.com/gpgmail/GPGMail/downloads).
 
-This project is currently in a heavy state of development. For the latest
-news and updates check out the mailing list at
+The project is currently in a heavy state of development. For the latest news and updates check out the web site [http://gpgmail.org](http://gpgmail.org) and the mailing lists at
 
-* [http://lists.gpgmail.org/mailman/listinfo/gpgmail-announce](http://lists.gpgmail.org/mailman/listinfo/gpgmail-announce).
-* [http://lists.gpgmail.org/mailman/listinfo/gpgmail-users](http://lists.gpgmail.org/mailman/listinfo/gpgmail-users).
-* [http://lists.gpgmail.org/mailman/listinfo/gpgmail-devel](http://lists.gpgmail.org/mailman/listinfo/gpgmail-devel).
+* [http://lists.gpgmail.org/mailman/listinfo/gpgmail-announce](http://lists.gpgmail.org/mailman/listinfo/gpgmail-announce)
+* [http://lists.gpgmail.org/mailman/listinfo/gpgmail-users](http://lists.gpgmail.org/mailman/listinfo/gpgmail-users)
+* [http://lists.gpgmail.org/mailman/listinfo/gpgmail-devel](http://lists.gpgmail.org/mailman/listinfo/gpgmail-devel)
 
-To build this project first run the following from the root of the repository:
-
-    git submodule init
-    git submodule update
-
-Once that brings in the MacGPGME submodule, the project can be built from the
-command line by running:
-
-    make
-
+For instructions on how to build the code and further information have look at the wiki at [http://wiki.github.com/gpgmail/GPGMail/](http://wiki.github.com/gpgmail/GPGMail/).
