@@ -7,6 +7,7 @@ section at [http://github.com/gpgmail/GPGMail/downloads](http://github.com/gpgma
 
 This project is currently in a heavy state of development. For the latest
 news and updates check out the mailing list at
+
 * [http://lists.gpgmail.org/mailman/listinfo/gpgmail-announce](http://lists.gpgmail.org/mailman/listinfo/gpgmail-announce).
 * [http://lists.gpgmail.org/mailman/listinfo/gpgmail-users](http://lists.gpgmail.org/mailman/listinfo/gpgmail-users).
 * [http://lists.gpgmail.org/mailman/listinfo/gpgmail-devel](http://lists.gpgmail.org/mailman/listinfo/gpgmail-devel).
