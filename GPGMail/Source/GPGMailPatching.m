@@ -230,7 +230,8 @@ IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(
 	if(GPGMailLoggingLevel)
 		NSLog(@"Original method: %@", NSStringFromClass(aClass));
 	if(aClass == NULL) {
-		NSLog(@"Class can't be null!");
+		if(GPGMailLoggingLevel)
+            NSLog(@"Class can't be null!");
 		return;
 	}
 	Method * classMethods = class_copyMethodList(aClass, &methodCount);

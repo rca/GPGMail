@@ -34,6 +34,7 @@
 		1B3434BB107B42CC00F590EF /* MessageContentController+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A808C0838EA1C0052F47C /* MessageContentController+GPGMail.m */; };
 		1B45A53411CC97A600ED4663 /* MacGPGME.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B1949E111CC52350092B810 /* MacGPGME.framework */; };
 		1B45A53C11CC98AB00ED4663 /* MessageViewer+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B45A53B11CC98AB00ED4663 /* MessageViewer+GPGMail.m */; };
+		1B648B5111D1081A00807F9A /* GPGMailTextAttachmentPoser.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80990838EA560052F47C /* GPGMailTextAttachmentPoser.m */; };
 		1B6B7DF411CD1C600055F528 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6B7DF311CD1C600055F528 /* Sparkle.framework */; };
 		1B6B7E2C11CD1C810055F528 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B6B7DF311CD1C600055F528 /* Sparkle.framework */; };
 		1B6B7E5211CD24440055F528 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 1B6B7E5111CD24440055F528 /* dsa_pub.pem */; };
@@ -931,6 +932,7 @@
 				1B141AA410800EA8007BE344 /* GPGProgressIndicatorController.m in Sources */,
 				1BAA17EA108E8E7500FBC3E4 /* TableViewManager+GPGMail.m in Sources */,
 				1B45A53C11CC98AB00ED4663 /* MessageViewer+GPGMail.m in Sources */,
+				1B648B5111D1081A00807F9A /* GPGMailTextAttachmentPoser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
