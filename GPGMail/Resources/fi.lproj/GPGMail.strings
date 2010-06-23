@@ -100,7 +100,7 @@
 "GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail ei voi toimia. Se löysi GnuPG (%@) version %@, mutta tarvitaan ainakin versio %@. Lopeta Mail-ohjelma, asenna vaadittava GnuPG versio (esim MacGPG Group:lta, http://macgpg.sourceforge.net/), ja käynnistä tämän jälkeen Mail-ohjelma uudelleen."; // First arg is path to gpg, second and third are version strings
 "GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail ei voi toimia. Se ei löytänyt GnuPG (%@). Tarvitaan ainakin versio %@. Lopeta Mail-ohjelma, asenna vaadittava GnuPG versio (esim MacGPG Group:lta, http://macgpg.sourceforge.net/), ja käynnistä tämän jälkeen Mail-ohjelma uudelleen."; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "GPGMail-versiosi ei ole yhteensopiva Mail-ohjelman versiosi kanssa.."; /* Title of alert sheet */
-"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "Lataa ja asenna GPGMail-versio, joka vastaa käyttöjärjestelmäversiotasi. Löydät sen osoitteesta http://www.sente.ch/software/GPGMail/";
+"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "Lataa ja asenna GPGMail-versio, joka vastaa käyttöjärjestelmäversiotasi. Löydät sen osoitteesta http://gpgmail.org/";
 
 /* Validity */
 "VALIDITY: " = "varmuus: ";

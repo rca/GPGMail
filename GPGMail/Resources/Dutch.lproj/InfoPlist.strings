@@ -1,6 +1,6 @@
 /* Localized versions of Info.plist keys */
 
 CFBundleShortVersionString = "1.2.3 (v62)";
-CFBundleGetInfoHTML = "<A HREF=\"http://www.sente.ch/software/GPGMail/\">GPGMail</A> versie 1.2.3 (v62), Copyright 2000-2008, St&eacute;phane Corth&eacute;sy.";
+CFBundleGetInfoHTML = "<A HREF=\"http://gpgmail.org/\">GPGMail</A> versie 1.2.3 (v62), Copyright 2000-2008, St&eacute;phane Corth&eacute;sy.";
 CFBundleGetInfoString = "GPGMail versie 1.2.3 (v62), Copyright 2000-2008, Stéphane Corthésy.";
 NSHumanReadableCopyright = "© Stéphane Corthésy, 2000-2008";

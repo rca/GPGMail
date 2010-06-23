@@ -100,7 +100,7 @@
 "GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail이 작동할 수 없습니다. GnuPG (%@) 버전 %@을 발견했지만, 최소한 버전 %@ 이상이어야 합니다. 메일을 종료하고, 적절한 버전의 GnuPG(가령, MacGPG의 배포판, http://macgpg.sourceforge.net/)를 설치한 후 메일을 다시 시작하세요."; // First arg is path to gpg, second and third are version strings
 "GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail이 작동할 수 없습니다. 최소 요구 버전 %@의 GnuPG (%@)를 찾지 못했습니다. 메일을 종료하고, 적절한 GnuPG 버전(예를 들면  MacGPG 그룹의 배포판, http://macgpg.sourceforge.net/)을 설치하고, 메일을 다시 시작 하세요."; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "사용하고 있는 GPGMail 버전은 지금 사용하고 있는 메일의 버전과 호환되지 않습니다."; /* Title of alert sheet */
-"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "현재 사용하고 있는 오에스에 맞는 버전의 GPGMail을 사용해야 합니다. http://www.sente.ch/software/GPGMail/ 에서 다운로드하여 설치 하세요.";
+"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "현재 사용하고 있는 오에스에 맞는 버전의 GPGMail을 사용해야 합니다. http://gpgmail.org/ 에서 다운로드하여 설치 하세요.";
 
 /* Validity */
 "VALIDITY: " = "신뢰 정도: ";
