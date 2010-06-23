@@ -15,7 +15,7 @@
 	<key>CFBundleExecutable</key>
 	<string>GPGMail</string>
 	<key>CFBundleGetInfoHTML</key>
-	<string>&lt;A HREF=&quot;http://www.sente.ch/software/GPGMail/&quot;&gt;GPGMail&lt;/A&gt; version 1.2.3 (v62), Copyright 2000-2010, St&amp;eacute;phane Corth&amp;eacute;sy.</string>
+	<string>&lt;A HREF=&quot;http://gpgmail.org/&quot;&gt;GPGMail&lt;/A&gt; version 1.2.3 (v62), Copyright 2000-2010, St&amp;eacute;phane Corth&amp;eacute;sy.</string>
 	<key>CFBundleGetInfoString</key>
 	<string>GPGMail version 1.2.3 (v62), Copyright 2000-2010, Stéphane Corthésy.</string>
 	<key>CFBundleIconFile</key>
