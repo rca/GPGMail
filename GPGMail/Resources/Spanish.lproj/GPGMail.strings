@@ -100,7 +100,7 @@
 "GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail no puede funcionar. Se ha encontrado GnuPG (%@) versión %@, pero se necesita al menos la versión %@. Por favor, salga de la aplicación Mail, instale una versión de GnuPG adecuada (por ejemplo, la de MacGPG Project, http://macgpg.sourceforge.net/), y entonces inicie de nuevo Mail."; // First arg is path to gpg, second and third are version strings
 "GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail no puede funcionar. No se ha podido encontrar GnuPG (%@) con, al menos, la versión %@. Por favor, salga de la aplicación Mail, instale una versión de GnuPG adecuada (por ejemplo, la de MacGPG Project, http://macgpg.sourceforge.net/), y entonces inicie de nuevo Mail."; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "La versión instalada de GPGMail no es compatible con la versión instalada de Mail."; /* Title of alert sheet */
-"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "Es necesario instalar una versión de GPGMail compatible con la versión de sistema operativo. Por favor, vaya a http://gpgmail.org/ para obtenerla.";
+"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "Es necesario instalar una versión de GPGMail compatible con la versión de sistema operativo. Por favor, vaya a http://www.gpgmail.org/ para obtenerla.";
 
 /* Validity */
 "VALIDITY: " = "validez: ";

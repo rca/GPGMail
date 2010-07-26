@@ -10,8 +10,8 @@
 		    <sparkle:releaseNotesLink>
 		        http://you.com/app/2.0.html
 		    </sparkle:releaseNotesLink>
-		    <pubDate>Sat, 19 Jan 2010 18:04:11 +0200</pubDate>
-		    <enclosure url="http://gpgmail.leftandleaving.com/GPGMail.mailbundle-1.2.3-v63-10.6.4.zip"
+		    <pubDate>Sat, 26 Jul 2010 18:04:11 +0200</pubDate>
+		    <enclosure url="http://gpgmail.leftandleaving.com/GPGMail.mailbundle-1.3.0.zip"
 		               sparkle:version="63"
 					   sparkle:dsaSignature="MC0CFQCpnCAF48ktUuwLOEgsty6ZiptVYAIUKETLB/6pmqOjrYda7zhp7pUy/jM="
 		               length="2380967"

@@ -100,7 +100,7 @@
 "GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMailは動作できません。GnuPG (%@) のバージョン %@ が見つかりましたが、少なくともバージョン %@ が必要です。Mailを終了してから、適合するGnuPGのバージョンをインストールして下さい(例えば MacGPG Project, http://macgpg.sourceforge.net/ から入手します)。それからMailを再起動して下さい。"; // First arg is path to gpg, second and third are version strings
 "GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMailは動作できません。GnuPG (%@) の少なくともバージョン %@ を見つけられませんでした。Mailを終了してから、適合するGnuPGのバージョンをインストールして下さい(例えば MacGPG Project, http://macgpg.sourceforge.net/ から入手します)。それからMailを再起動して下さい"; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "あなたのGPGMailのバージョンは、あなたのMailのバージョンとは互換性がありません。"; /* Title of alert sheet */
-"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "あなたのOSバージョンに適合したGPGMailのバージョンをダウンロードしてインストールする必要があります。入手先は http://gpgmail.org/ です。";
+"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "あなたのOSバージョンに適合したGPGMailのバージョンをダウンロードしてインストールする必要があります。入手先は http://www.gpgmail.org/ です。";
 
 /* Validity */
 "VALIDITY: " = "有効性: ";
