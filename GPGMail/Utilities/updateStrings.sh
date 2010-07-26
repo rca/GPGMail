@@ -1,9 +1,21 @@
+#!/bin/bash
+###############################################
+# Update some strings in the project.
+#
+# @author   Alexander Willner <alex@willner.ws>
+# @version  2010-07-27
+###############################################
 
-
+###############################################
+# Setup
+###############################################
 ext=( `echo strings plist xml` );
-regs=( `echo "s/\/gpgmail.org/\/www.gpgmail.org/" \"\"` );
+###############################################
 
 
+###############################################
+# Change strings
+###############################################
 for ((i=0; i<${#ext[*]}; i++)) do
     for ((j=0; j<${#regs[*]}; j++)) do
 	find . -iname "*.${ext[$i]}" -type f -exec sed -i "" "s/\/gpgmail.org/\/www.gpgmail.org/" {} \;
@@ -14,9 +26,4 @@ for ((i=0; i<${#ext[*]}; i++)) do
 	find . -iname "*.${ext[$i]}" -type f -exec sed -i "" "s/St&eacute;phane Corth&eacute;sy/GPGMail Project Team/" {} \;
     done
 done
-
-exit 0 
-
-
-
-
+###############################################
