@@ -2,11 +2,11 @@
 //  GPGTextDocumentViewerPoser.h
 //  GPGMail
 //
-//  Created by Stéphane Corthésy on Mon Sep 16 2002.
+//  Created by GPGMail Project Team on Mon Sep 16 2002.
 //
 
 /*
- *	Copyright Stephane Corthesy (stephane@sente.ch), 2000-2003
+ *	Copyright GPGMail Project Team (gpgmail-devel@lists.gpgmail.org), 2000-2010
  *	(see LICENSE.txt file for license information)
  */
 

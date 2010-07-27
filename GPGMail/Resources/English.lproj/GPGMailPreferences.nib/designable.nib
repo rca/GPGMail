@@ -103,7 +103,7 @@
 											<object class="NSTextFieldCell" key="NSCell" id="44204">
 												<int key="NSCellFlags">69336577</int>
 												<int key="NSCellFlags2">4194304</int>
-												<string key="NSContents">Copyright (c) 2000-2008 - Stéphane Corthésy</string>
+												<string key="NSContents">Copyright (c) 2000-2010 - GPGMail Project Team</string>
 												<reference key="NSSupport" ref="22"/>
 												<reference key="NSControlView" ref="158307562"/>
 												<reference key="NSBackgroundColor" ref="693655191"/>
@@ -141,7 +141,7 @@
 											<object class="NSTextFieldCell" key="NSCell" id="974526207">
 												<int key="NSCellFlags">69336577</int>
 												<int key="NSCellFlags2">71434240</int>
-												<string key="NSContents">http://www.sente.ch/software/GPGMail/</string>
+												<string key="NSContents">http://www.gpgmail.org/</string>
 												<reference key="NSSupport" ref="22"/>
 												<reference key="NSControlView" ref="940660531"/>
 												<reference key="NSBackgroundColor" ref="693655191"/>

@@ -96,7 +96,7 @@
 
 /* Title */
 /* Error messages */
-"GPGMAIL_CANNOT_WORK" = "GPGMail cannot work because its companion application could not be started. Try to restart Mail and if error persists, send a message to gpgmail@sente.ch";
+"GPGMAIL_CANNOT_WORK" = "GPGMail cannot work because its companion application could not be started. Try to restart Mail and if error persists, send a message to gpgmail-devel@lists.gpgmail.org";
 "GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail cannot work. It found GnuPG (%@) version %@, but it needs at least version %@. Please quit Mail, install a matching GnuPG version (for example from MacGPG Project, http://macgpg.sourceforge.net/), then restart Mail."; // First arg is path to gpg, second and third are version strings
 "GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail cannot work. It didn't find GnuPG (%@) with at least version %@. Please quit Mail, install a matching GnuPG version (for example from MacGPG Project, http://macgpg.sourceforge.net/), then restart Mail."; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "Your version of GPGMail is not compatible with your version of Mail."; /* Title of alert sheet */

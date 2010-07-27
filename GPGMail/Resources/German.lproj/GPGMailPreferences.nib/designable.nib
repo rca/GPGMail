@@ -3,15 +3,16 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
 		<string key="IBDocument.SystemVersion">10F569</string>
-		<string key="IBDocument.InterfaceBuilderVersion">788</string>
+		<string key="IBDocument.InterfaceBuilderVersion">762</string>
 		<string key="IBDocument.AppKitVersion">1038.29</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">788</string>
+			<string key="NS.object.0">762</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="9"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -67,7 +68,6 @@
 											<int key="NSvFlags">292</int>
 											<string key="NSFrame">{{17, 16}, {261, 11}}</string>
 											<reference key="NSSuperview" ref="23599769"/>
-											<reference key="NSWindow"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="168646082">
 												<int key="NSCellFlags">69336577</int>
@@ -100,12 +100,11 @@
 											<int key="NSvFlags">292</int>
 											<string key="NSFrame">{{17, 29}, {261, 17}}</string>
 											<reference key="NSSuperview" ref="23599769"/>
-											<reference key="NSWindow"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="161197816">
 												<int key="NSCellFlags">69336577</int>
 												<int key="NSCellFlags2">4194304</int>
-												<string key="NSContents">Copyright (c) 2000-2008 - Stéphane Corthésy</string>
+												<string key="NSContents">Copyright (c) 2000-2010 - GPGMail Project Team</string>
 												<reference key="NSSupport" ref="22"/>
 												<string key="NSPlaceholderString"/>
 												<reference key="NSControlView" ref="644182368"/>
@@ -121,7 +120,6 @@
 											<int key="NSvFlags">289</int>
 											<string key="NSFrame">{{280, 35}, {261, 11}}</string>
 											<reference key="NSSuperview" ref="23599769"/>
-											<reference key="NSWindow"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="16868414">
 												<int key="NSCellFlags">69336577</int>
@@ -140,14 +138,13 @@
 										<object class="NSTextField" id="313276485">
 											<reference key="NSNextResponder" ref="23599769"/>
 											<int key="NSvFlags">289</int>
-											<string key="NSFrame">{{280, 16}, {261, 11}}</string>
+											<string key="NSFrame">{{280, 13}, {261, 14}}</string>
 											<reference key="NSSuperview" ref="23599769"/>
-											<reference key="NSWindow"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="623061375">
 												<int key="NSCellFlags">69336577</int>
 												<int key="NSCellFlags2">71434240</int>
-												<string type="base64-UTF8" key="NSContents">aHR0cDovL3d3dy5zZW50ZS5jaC9zb2Z0d2FyZS9HUEdNYWlsLwo</string>
+												<string key="NSContents">http://www.gpgmail.org/</string>
 												<reference key="NSSupport" ref="22"/>
 												<string key="NSPlaceholderString"/>
 												<reference key="NSControlView" ref="313276485"/>
@@ -163,7 +160,6 @@
 											<int key="NSvFlags">274</int>
 											<string key="NSFrame">{{13, 44}, {532, 353}}</string>
 											<reference key="NSSuperview" ref="23599769"/>
-											<reference key="NSWindow"/>
 											<object class="NSMutableArray" key="NSTabViewItems">
 												<bool key="EncodedWithXMLCoder">YES</bool>
 												<object class="NSTabViewItem" id="303277230">
@@ -1686,7 +1682,6 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{15, 262}, {225, 18}}</string>
 																<reference key="NSSuperview" ref="433665037"/>
-																<reference key="NSWindow"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSButtonCell" key="NSCell" id="21671379">
 																	<int key="NSCellFlags">-2080244224</int>
@@ -1709,7 +1704,6 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{15, 160}, {174, 18}}</string>
 																<reference key="NSSuperview" ref="433665037"/>
-																<reference key="NSWindow"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSButtonCell" key="NSCell" id="127774097">
 																	<int key="NSCellFlags">-2080244224</int>
@@ -1732,7 +1726,6 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{15, 198}, {248, 18}}</string>
 																<reference key="NSSuperview" ref="433665037"/>
-																<reference key="NSWindow"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSButtonCell" key="NSCell" id="500461670">
 																	<int key="NSCellFlags">-2080244224</int>
@@ -1755,7 +1748,6 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{30, 225}, {185, 26}}</string>
 																<reference key="NSSuperview" ref="433665037"/>
-																<reference key="NSWindow"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSPopUpButtonCell" key="NSCell" id="401429195">
 																	<int key="NSCellFlags">-2076049856</int>
@@ -1837,7 +1829,6 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{222, 230}, {136, 17}}</string>
 																<reference key="NSSuperview" ref="433665037"/>
-																<reference key="NSWindow"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSTextFieldCell" key="NSCell" id="365296771">
 																	<int key="NSCellFlags">68288064</int>
@@ -1852,7 +1843,6 @@
 														</object>
 														<string key="NSFrame">{{10, 33}, {512, 307}}</string>
 														<reference key="NSSuperview" ref="889059863"/>
-														<reference key="NSWindow"/>
 													</object>
 													<string key="NSLabel">Updates</string>
 													<reference key="NSColor" ref="368920381"/>
@@ -1872,12 +1862,10 @@
 									</object>
 									<string key="NSFrameSize">{558, 403}</string>
 									<reference key="NSSuperview" ref="620934148"/>
-									<reference key="NSWindow"/>
 								</object>
 							</object>
 							<string key="NSFrame">{{0, 84}, {558, 403}}</string>
 							<reference key="NSSuperview" ref="815298805"/>
-							<reference key="NSWindow"/>
 							<string key="NSOffsets">{0, 0}</string>
 							<object class="NSTextFieldCell" key="NSTitleCell">
 								<int key="NSCellFlags">67239424</int>
@@ -1903,7 +1891,6 @@
 					</object>
 					<string key="NSFrameSize">{648, 487}</string>
 					<reference key="NSSuperview"/>
-					<reference key="NSWindow"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{213, 129}</string>
@@ -4852,180 +4839,6 @@
 							<string>id</string>
 						</object>
 					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>changeDefaultKey:</string>
-							<string>changeLineWrapping:</string>
-							<string>changePassphraseStrategy:</string>
-							<string>changePassphraseTimeout:</string>
-							<string>exportGPGMailConfiguration:</string>
-							<string>flushCachedPassphrases:</string>
-							<string>refreshKeys:</string>
-							<string>toggleAlwaysEncryptMessages:</string>
-							<string>toggleAlwaysSignMessages:</string>
-							<string>toggleAuthenticateUnreadMessagesAutomatically:</string>
-							<string>toggleAuthenticatesMessagesAutomatically:</string>
-							<string>toggleAutomaticPersonalKeyChoice:</string>
-							<string>toggleBCCRecipientsUse:</string>
-							<string>toggleButtonsBehavior:</string>
-							<string>toggleDecryptsMessagesAutomatically:</string>
-							<string>toggleDecryptsUnreadMessagesAutomatically:</string>
-							<string>toggleDisplayAccessoryView:</string>
-							<string>toggleEncryptToSelf:</string>
-							<string>toggleEncryptWhenPossible:</string>
-							<string>toggleEncryptedReplyToEncryptedMessage:</string>
-							<string>toggleExtendedInformation:</string>
-							<string>toggleFilterKeys:</string>
-							<string>toggleKeyRefresh:</string>
-							<string>toggleOpenPGPMIME:</string>
-							<string>toggleSMIME:</string>
-							<string>toggleSeparatePGPOperations:</string>
-							<string>toggleShowKeyInformation:</string>
-							<string>toggleShowPassphrase:</string>
-							<string>toggleShowUserIDs:</string>
-							<string>toggleSignWhenEncrypting:</string>
-							<string>toggleSignedReplyToSignedMessage:</string>
-							<string>toggleSmartRules:</string>
-							<string>toggleTrustAllKeys:</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBActionInfo">
-								<string key="name">changeDefaultKey:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">changeLineWrapping:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">changePassphraseStrategy:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">changePassphraseTimeout:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">exportGPGMailConfiguration:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">flushCachedPassphrases:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">refreshKeys:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleAlwaysEncryptMessages:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleAlwaysSignMessages:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleAuthenticateUnreadMessagesAutomatically:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleAuthenticatesMessagesAutomatically:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleAutomaticPersonalKeyChoice:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleBCCRecipientsUse:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleButtonsBehavior:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleDecryptsMessagesAutomatically:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleDecryptsUnreadMessagesAutomatically:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleDisplayAccessoryView:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleEncryptToSelf:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleEncryptWhenPossible:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleEncryptedReplyToEncryptedMessage:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleExtendedInformation:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleFilterKeys:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleKeyRefresh:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleOpenPGPMIME:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleSMIME:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleSeparatePGPOperations:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleShowKeyInformation:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleShowPassphrase:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleShowUserIDs:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleSignWhenEncrypting:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleSignedReplyToSignedMessage:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleSmartRules:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleTrustAllKeys:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-						</object>
-					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
@@ -5103,185 +4916,6 @@
 							<string>NSTextField</string>
 						</object>
 					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>alwaysEncryptSwitchButton</string>
-							<string>alwaysSignSwitchButton</string>
-							<string>authenticateUnreadMessagesSwitchButton</string>
-							<string>automaticallyAuthenticateMessagesSwitchButton</string>
-							<string>automaticallyDecryptMessagesSwitchButton</string>
-							<string>buttonsShowStateSwitchButton</string>
-							<string>choosesPersonalKeyAccordingToAccountSwitchButton</string>
-							<string>contactTextField</string>
-							<string>decryptUnreadMessagesSwitchButton</string>
-							<string>disableSMIMESwitchButton</string>
-							<string>displayButtonInComposeWindowSwitchButton</string>
-							<string>encryptReplyToEncryptedMessageSwitchButton</string>
-							<string>encryptToSelfSwitchButton</string>
-							<string>encryptWhenAllKeysAvailableSwitchButton</string>
-							<string>extendedInfoSwitchButton</string>
-							<string>filtersKeysSwitchButton</string>
-							<string>keyIdentifiersPopUpButton</string>
-							<string>keyIdentifiersTableView</string>
-							<string>lineWrappingFormCell</string>
-							<string>openPGPMIMESwitchButton</string>
-							<string>passphraseStrategyMatrix</string>
-							<string>passphraseTimeoutFormCell</string>
-							<string>personalKeysPopUpButton</string>
-							<string>refreshKeysOnVolumeChangeSwitchButton</string>
-							<string>separateSignAndEncryptOperationsSwitchButton</string>
-							<string>showUserIDsSwitchButton</string>
-							<string>showsPassphraseSwitchButton</string>
-							<string>signReplyToSignedMessageSwitchButton</string>
-							<string>signWhenEncryptingSwitchButton</string>
-							<string>trustAllKeysSwitchButton</string>
-							<string>useBCCRecipientsSwitchButton</string>
-							<string>useSmartRulesSwitchButton</string>
-							<string>versionTextField</string>
-							<string>webSiteTextField</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">alwaysEncryptSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">alwaysSignSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">authenticateUnreadMessagesSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">automaticallyAuthenticateMessagesSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">automaticallyDecryptMessagesSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">buttonsShowStateSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">choosesPersonalKeyAccordingToAccountSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">contactTextField</string>
-								<string key="candidateClassName">NSTextField</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">decryptUnreadMessagesSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">disableSMIMESwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">displayButtonInComposeWindowSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">encryptReplyToEncryptedMessageSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">encryptToSelfSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">encryptWhenAllKeysAvailableSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">extendedInfoSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">filtersKeysSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">keyIdentifiersPopUpButton</string>
-								<string key="candidateClassName">NSPopUpButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">keyIdentifiersTableView</string>
-								<string key="candidateClassName">NSTableView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">lineWrappingFormCell</string>
-								<string key="candidateClassName">NSFormCell</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">openPGPMIMESwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">passphraseStrategyMatrix</string>
-								<string key="candidateClassName">NSMatrix</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">passphraseTimeoutFormCell</string>
-								<string key="candidateClassName">NSFormCell</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">personalKeysPopUpButton</string>
-								<string key="candidateClassName">NSPopUpButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">refreshKeysOnVolumeChangeSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">separateSignAndEncryptOperationsSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">showUserIDsSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">showsPassphraseSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">signReplyToSignedMessageSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">signWhenEncryptingSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">trustAllKeysSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">useBCCRecipientsSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">useSmartRulesSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">versionTextField</string>
-								<string key="candidateClassName">NSTextField</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">webSiteTextField</string>
-								<string key="candidateClassName">NSTextField</string>
-							</object>
-						</object>
-					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Source/GPGMailPreferences.h</string>
@@ -5344,13 +4978,6 @@
 					<object class="NSMutableDictionary" key="outlets">
 						<string key="NS.key.0">preferencesView</string>
 						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">preferencesView</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
-							<string key="name">preferencesView</string>
-							<string key="candidateClassName">id</string>
-						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>

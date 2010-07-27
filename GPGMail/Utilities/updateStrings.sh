@@ -28,6 +28,7 @@ updateFile() {
 	gsed -r -i "s/\/www\.sente\.ch\/software\/GPGMail/\/www.gpgmail.org/" "$_filename";
 	gsed -r -i "s/\/gpgmail.org/\/www.gpgmail.org/" "$_filename";
 	gsed -r -i "s/1\.2\.3( \(v62\))?/1.3.0/" "$_filename";
+	gsed -r -i "s/ch\.sente\.gpgmail/org.gpgmail/" "$_filename";
 	gsed -r -i "s/2000-200[0-9]/2000-2010/" "$_filename";
 	gsed -r -i "s/ST.PHANE CORTH.SY/GPGMAIL PROJECT TEAM/" "$_filename";
 	gsed -r -i "s/St.phane Corth.sy/GPGMail Project Team/" "$_filename";
@@ -52,9 +53,11 @@ ext=( `echo strings plist xml applescript h m` );
 ###############################################
 # Change strings
 ###############################################
+echo "Searching in 'designable.nib' files...";
 find . -iname "designable.nib" -type f -exec sh -c '"updateFile" {}' \;
 for ((i=0; i<${#ext[*]}; i++)) do
     echo "Searching in '${ext[$i]}' files...";
 	find . -iname "*.${ext[$i]}" -type f -exec sh -c '"updateFile" {}' \;
 done
 ###############################################
+
