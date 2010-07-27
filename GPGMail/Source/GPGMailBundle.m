@@ -1417,7 +1417,7 @@ static BOOL	gpgMailWorks = YES;
 
     (void)[aPasteboard declareTypes:pbTypes owner:nil];
     (void)[aPasteboard addTypes:pbTypes owner:nil];
-    (void)[aPasteboard setString:@"gpgmail@sente.ch" forType:NSStringPboardType];
+    (void)[aPasteboard setString:@"gpgmail-devel@lists.gpgmail.org" forType:NSStringPboardType];
 
     // Invoke <MailViewer/Mail To> service
     if([serviceProvider respondsToSelector:@selector(mailTo:userData:error:)])

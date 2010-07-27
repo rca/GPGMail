@@ -323,7 +323,7 @@
 
     [pStyle setAlignment:NSRightTextAlignment];
     [versionTextField setStringValue:[[GPGMailBundle sharedInstance] versionDescription]];
-    anAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:[contactTextField stringValue], @"gpgmail@sente.ch"] attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSURL URLWithString:@"mailto:gpgmail@sente.ch"], NSLinkAttributeName, pStyle, NSParagraphStyleAttributeName, nil]];
+    anAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:[contactTextField stringValue], @"gpgmail-devel@lists.gpgmail.org"] attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSURL URLWithString:@"mailto:gpgmail-devel@lists.gpgmail.org"], NSLinkAttributeName, pStyle, NSParagraphStyleAttributeName, nil]];
     [contactTextField setAttributedStringValue:anAttributedString]; // FIXME: No effect on Panther!
     [anAttributedString release];
     anAttributedString = [[NSAttributedString alloc] initWithString:[webSiteTextField stringValue] attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSURL URLWithString:[webSiteTextField stringValue]], NSLinkAttributeName, pStyle, NSParagraphStyleAttributeName, nil]];

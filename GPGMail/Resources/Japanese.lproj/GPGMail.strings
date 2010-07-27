@@ -96,7 +96,7 @@
 
 /* Title */
 /* Error messages */
-"GPGMAIL_CANNOT_WORK" = "GPGMailは、対をなすアプリケーションが起動できないために動作できません。Mailの再起動を試みて下さい。それでもエラーが続くようなら、gpgmail@sente.ch 宛に連絡して下さい";
+"GPGMAIL_CANNOT_WORK" = "GPGMailは、対をなすアプリケーションが起動できないために動作できません。Mailの再起動を試みて下さい。それでもエラーが続くようなら、gpgmail-devel@lists.gpgmail.org 宛に連絡して下さい";
 "GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMailは動作できません。GnuPG (%@) のバージョン %@ が見つかりましたが、少なくともバージョン %@ が必要です。Mailを終了してから、適合するGnuPGのバージョンをインストールして下さい(例えば MacGPG Project, http://macgpg.sourceforge.net/ から入手します)。それからMailを再起動して下さい。"; // First arg is path to gpg, second and third are version strings
 "GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMailは動作できません。GnuPG (%@) の少なくともバージョン %@ を見つけられませんでした。Mailを終了してから、適合するGnuPGのバージョンをインストールして下さい(例えば MacGPG Project, http://macgpg.sourceforge.net/ から入手します)。それからMailを再起動して下さい"; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "あなたのGPGMailのバージョンは、あなたのMailのバージョンとは互換性がありません。"; /* Title of alert sheet */

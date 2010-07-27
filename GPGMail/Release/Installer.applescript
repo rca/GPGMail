@@ -48,7 +48,7 @@ if (system_string < 4176) then
 else
 	local emailAddress
 	local packageName
-	set emailAddress to "gpgmail@sente.ch"
+	set emailAddress to "gpgmail-devel@lists.gpgmail.org"
 	set packageName to "GPGMail.mailbundle"
 	try
 		local destinationFolder
