@@ -65,7 +65,7 @@
         BUG: if there are (older) versions of libgpgme-thread and libgpgerror in /usr/local/lib, they are used instead of the embedded ones, and might crash GPGMail => use static libs (problem with fat libs!)
 		Fixed bug when sending signed+encrypted (ASCII) message with untrusted recipient, and GPGMail set to trust no key: an exception was logged, instead of being displayed to user.
 		Fixed bug: was still signing when automatic signing but no matching account
-1.1.2   v46
+1.1.2   v46 (Feb 5th, 2006)
 		Changed some wordings on German version
 		Fixed alignments on new message window
 		Fixed (partly) some localizations
@@ -94,7 +94,7 @@
 		No longer tries to decrypt text/plain attachments
 		Tries to decrypt/verify application/octet-stream attachments
 		Now needs gpg 1.4.x
-1.1.1   v44
+1.1.1   v44 (Jul 17th, 2005)
 		Fixed German, Spanish, Finnish, Japanese localizations
 		Added hidden option, GPGAddCustomHeaders
 		Tiger: Fixed install on 10.4.1 and later
@@ -124,7 +124,7 @@
 		Japanese localization by Tomio Arisaka
 		Sender's PGP information (sign/encrypt/MIME) stored in AddressBook is no longer evaluated by rules
 		When evaluating for reply/forwarded, don't use signed/encrypted information from S/MIME messages
-1.1.0   v42
+1.1.0   v42 (Apr 29th, 2005)
 		Review rules engine according to Robert's scheme (fixes most reported issues)
 		When selected account has no PGP key, and key is selected according to account, don't sign/encrypt
 		Added Tiger-specific toolbar icons
@@ -174,7 +174,7 @@
 		Added retrieval of people gpg options from their AB entry (set by Robert Goldsmith's ABKeyManager bundle) - not yet tested!
 		No longer tries to use invalid secret key when encrypting
 		Re-fixed bug with disabled-like sender account popup
-1.0.2   v37
+1.0.2   v37 (May 14th, 2004)
 		Localized
 		WWW: added access to old versions
 		Added hidden option GPGUsesAlwaysCRLF to always use CRLF as line-ending for PGP-inline encryption/signing; default value is NO.
@@ -205,7 +205,7 @@
 		Corrected scrolling of signature banner title
 		Jaguar: no longer fails to load 10.3-compiled version, but catches error and reports it to user
 		New (hidden) option, GPGRefreshesKeysOnVolumeMount, to disable automatic refresh of keys when volume is (un)mounted; default value is YES.
-1.0.2   v33
+1.0.2   v33 (Nov 17th, 2003)
 		Panther: My only complaint is that is tends to leave a 'Done' message in the status bar, which means any further messages Mail would show (e.g. when receiving or sending mail) are hidden. -> check that (GPGMail#2248)
 		Added Korean localization by Sangduk Park
 		Corrected double line breaks for "German umlaut" signed messages. Problem with CRLF? GPGMail#2123
@@ -232,7 +232,7 @@
 		Added Japanese localization by Kory Talmage
 		Applied typographical rules to French localization
 		Corrected some resizing errors
-1.0.2   v30
+1.0.2   v30 (Oct 25th, 2003) 
 		Panther: corrected size of banner for single message viewers
 		Removed debug logs
 		Added GPGMEProxyServer crash recovery strategy
@@ -334,7 +334,7 @@
         Hash algorithm is set according to your gpg preferences
         Dropped support for 10.1
         Added support for 10.3
-0.5.4	Sep 10 2002
+0.5.4	v22 (Sep 10 2002)
         Added Swedish translation from Daniel Aarno
         Corrected bugs in passphrase panel behavior
         Added Italian translation from Filippo Stefanelli
