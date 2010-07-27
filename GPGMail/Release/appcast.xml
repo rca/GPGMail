@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
    <channel>
 		<title>GPGMail Changelog</title>
-		<link>http://gpgmail.leftandleaving.com/appcast.xml</link>
-		<description>Most recent changes with links to updates.</description>
+		<link>http://www.gpgmail.org/appcast.xml</link>
+		<description>New GPGMail version</description>
 		<language>en</language>
 		<item>
-		    <title>Version 2.0 (2 bugs fixed; 3 new features)</title>
+		    <title>Version 1.3.0</title>
 		    <sparkle:releaseNotesLink>
-		        http://you.com/app/2.0.html
+		        http://github.com/gpgmail/GPGMail/raw/master/CHANGELOG
 		    </sparkle:releaseNotesLink>
-		    <pubDate>Sat, 26 Jul 2010 18:04:11 +0200</pubDate>
-		    <enclosure url="http://gpgmail.leftandleaving.com/GPGMail.mailbundle-1.3.0.zip"
-		               sparkle:version="63"
-					   sparkle:dsaSignature="MC0CFQCpnCAF48ktUuwLOEgsty6ZiptVYAIUKETLB/6pmqOjrYda7zhp7pUy/jM="
-		               length="2380967"
+		    <pubDate>Sat, 27 Jul 2010 19:00:00 +0200</pubDate>
+		    <enclosure url="http://github.com/downloads/gpgmail/GPGMail/GPGMail-1.3.0.zip"
+		               sparkle:version="1.4.0"
+					   sparkle:dsaSignature="MCwCFB2NF0lf7ZH6yI209xg31PCcniplAhRccZMIUECWtTuAe3S3OWRfXOC0dw=="
+		               length="2451799"
 		               type="application/octet-stream" />
 		</item>
 	</channel>
