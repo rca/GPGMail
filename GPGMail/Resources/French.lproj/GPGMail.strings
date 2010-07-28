@@ -22,7 +22,7 @@
 "VERSION: %@" = "Version : %@";
 
 /* PGP preferences panel name */
-"PGP_PREFERENCES" = "PGP";
+"PGP_PREFERENCES" = "GPGMail";
 
 /* Alert title and message */
 "MSG_DECRYPTION_ALERT_TITLE_NOT_SIGNED" = "Déchiffrement du message";
