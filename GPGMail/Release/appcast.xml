@@ -8,7 +8,7 @@
 		<item>
 		    <title>Version 1.3.1-beta1</title>
 		    <sparkle:releaseNotesLink>
-		        http://github.com/gpgmail/GPGMail/raw/master/CHANGELOG
+		        http://github.com/gpgmail/GPGMail/raw/1.3.1-beta1/CHANGELOG
 		    </sparkle:releaseNotesLink>
 		    <pubDate>Sat, 27 Jul 2010 19:00:00 +0200</pubDate>
 		    <enclosure url="http://github.com/downloads/gpgmail/GPGMail/GPGMail-1.3.1-beta1.zip"
