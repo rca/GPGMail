@@ -1,10 +1,11 @@
 1.3.1	not released yet
 		Issue 14: Added make clean
+		Issue 98: renamed preference pane to GPGMail
 1.3.0   Jul 27 2010
-        Added Sparkle updates
-        Changed web site, author, copyright, and e-mail address information to reflect the new project structure
+        	Added Sparkle updates
+        	Changed web site, author, copyright, and e-mail address information to reflect the new project structure
 1.2.3   v58-v62
-        Unknown.
+        	Unknown.
 1.2.0   v57
 		Fixed French translation, courtesy of Franck Zoccolo
 		No longer raises uncaught exception when trying to download no key
@@ -64,7 +65,7 @@
 1.1.2   v47
 		Some more debug logs
 		Fixed problem with GPGOpenPGPExecutablePath
-        BUG: if there are (older) versions of libgpgme-thread and libgpgerror in /usr/local/lib, they are used instead of the embedded ones, and might crash GPGMail => use static libs (problem with fat libs!)
+	        BUG: if there are (older) versions of libgpgme-thread and libgpgerror in /usr/local/lib, they are used instead of the embedded ones, and might crash GPGMail => use static libs (problem with fat libs!)
 		Fixed bug when sending signed+encrypted (ASCII) message with untrusted recipient, and GPGMail set to trust no key: an exception was logged, instead of being displayed to user.
 		Fixed bug: was still signing when automatic signing but no matching account
 1.1.2   v46 (Feb 5th, 2006)
@@ -265,7 +266,7 @@
 		Key search/download operations are now cancelable
 		No longer displays warning icon when verified signature's signer has unknown validity
 1.0.2	May 14 2004
-        New icons by Michel Poulain (thanks also to Moritz Guth)
+       	New icons by Michel Poulain (thanks also to Moritz Guth)
         Corrected default key selection restoration
         Corrected Spanish localization
         Corrected scrolling of signature banner title
