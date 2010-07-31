@@ -1,4 +1,4 @@
-{
+an OpenPGP{
 /* Passphrase panel titles */
 "MESSAGE_AUTHENTICATION_TITLE" = "Message Authentication";
 "MESSAGE_DECRYPTION_PASSPHRASE_TITLE" = "Message Decryption";
@@ -8,9 +8,9 @@
 "ENCRYPTING" = "Encrypting...";
 
 /* <PGP> submenu title */
-"PGP_MENU" = "PGP";
+"PGP_MENU" = "OpenPGP";
 /* <PGP Keys> submenu title */
-"PGP_KEYS_MENU" = "PGP Keys";
+"PGP_KEYS_MENU" = "OpenPGP Keys";
 
 /* <PGP> submenu items */
 "DECRYPT_MENU" = "Decrypt";
@@ -21,7 +21,7 @@
 /* Description of version prefixed with <Version:> */
 "VERSION: %@" = "Version: %@";
 
-/* PGP preferences panel name */
+/* GPGMail preferences panel name */
 "PGP_PREFERENCES" = "GPGMail";
 
 /* Alert title and message */
@@ -62,13 +62,13 @@
 "DECRYPT_ITEM_TOOLTIP" = "Decrypt PGP-encrypted message";
 "AUTHENTICATE_ITEM_TOOLTIP" = "Authenticate PGP-signed message";
 "MAKE_CLEAR_ITEM_TOOLTIP" = "Click to send a message in clear";
-"MAKE_ENCRYPTED_ITEM_TOOLTIP" = "Click to use PGP encryption";
-"MAKE_UNSIGNED_ITEM_TOOLTIP" = "Click to send a message without PGP authentication";
-"MAKE_SIGNED_ITEM_TOOLTIP" = "Click to use PGP authentication";
+"MAKE_ENCRYPTED_ITEM_TOOLTIP" = "Click to use OpenPGP encryption";
+"MAKE_UNSIGNED_ITEM_TOOLTIP" = "Click to send a message without OpenPGP authentication";
+"MAKE_SIGNED_ITEM_TOOLTIP" = "Click to use OpenPGP authentication";
 "ENCRYPTED_ITEM_TOOLTIP" = "Message will be encrypted; click to send a message in clear";
-"CLEAR_ITEM_TOOLTIP" = "Message will be in clear; click to use PGP encryption";
-"SIGNED_ITEM_TOOLTIP" = "Message will be PGP-signed; click to send a message without PGP authentication";
-"UNSIGNED_ITEM_TOOLTIP" = "Message will not have a PGP signature; click to use PGP authentication";
+"CLEAR_ITEM_TOOLTIP" = "Message will be in clear; click to use OpenPGP encryption";
+"SIGNED_ITEM_TOOLTIP" = "Message will be PGP-signed; click to send a message without OpenPGP authentication";
+"UNSIGNED_ITEM_TOOLTIP" = "Message will not have an OpenPGP signature; click to use OpenPGP authentication";
 
 /* Signature information */
 "Bad policy!"  = "Bad policy! "; // Followed by a list of policy URLs
@@ -91,7 +91,7 @@
 "MISSING KEY %@." = "Missing key %@."; // Param is a key ID in hexadecimal
 "Signature summary 0x%04x - Signature status %u." = "Unknown error: signature summary 0x%04x - signature status %u."; // Generic error message; first param is a hex status flag value, second is a decimal status value
 "EXCEPTION: %@" = "Internal error: %@"; // Generic error message; param is a string (exception reason, maybe not localized)
-"AUTHENTICATING" = "Verifying PGP signature...";
+"AUTHENTICATING" = "Verifying OpenPGP signature...";
 "UNTRUSTED RECIPIENTS" = "At least one of the keys is not trusted";
 
 /* Title */
@@ -163,7 +163,7 @@
 "SIGNATURE_IS_NOT_GOOD" = "Signature is not good; message has been modified";
 
 /* PGP Key Download panel */
-"PGP_SEARCH_KEYS_MENUITEM" = "PGP Key Search";
+"PGP_SEARCH_KEYS_MENUITEM" = "OpenPGP Key Search";
 "SEARCH" = "Search";
 "CANCEL_SEARCH" = "Cancel";
 "SEARCHING" = "Searching...";
@@ -172,8 +172,8 @@
 "DOWNLOAD" = "Download";
 "DOWNLOADING" = "Downloading...";
 "DOWNLOADED" = "Downloaded and imported key(s)";
-"SEARCH_KEYS_ON_SERVER" = "Search PGP keys on key server";
-"DOWNLOAD_KEYS_FROM_SERVER" = "Download PGP keys from key server";
+"SEARCH_KEYS_ON_SERVER" = "Search OpenPGP keys on key server";
+"DOWNLOAD_KEYS_FROM_SERVER" = "Download OpenPGP keys from key server";
 "SEARCH_ERROR" = "An error occured during search";
 "DOWNLOAD_ERROR" = "An error occured during download";
 " (%u bits)" = " (%u bits)";
@@ -183,8 +183,8 @@
 "REVOKED_KEY - " = "Revoked - "; // Prefixes found key description, when necessary; followed by keyID, userID, etc.
 
 /* Unmatched PGP keys for receipts - sheet */
-"MISSING_KEYS: DOWNLOAD" = "Some addresses match no PGP key. Search for keys?"; // Title
-"UNMATCHED_ADDRESSES: %@" = "The following email addresses have no matching PGP key:\n%@"; // Message
+"MISSING_KEYS: DOWNLOAD" = "Some addresses match no OpenPGP key. Search for keys?"; // Title
+"UNMATCHED_ADDRESSES: %@" = "The following email addresses have no matching OpenPGP key:\n%@"; // Message
 "SEARCH_MATCHING_KEYS" = "Search"; // Default button
 "SEND_IN_CLEAR" = "Send in Clear"; // Other button
 
@@ -212,8 +212,8 @@
 "NO_VALID_PRIVATE_KEY" = "No valid personal key has been found. Either none was selected, or selected key is revoked, disabled or has expired."; // Could be displayed after encryption
 
 /* Alert when user has no PGP key */
-"NO PGP PRIVATE KEY - TITLE" = "You don't have any PGP key. You can't use GPGMail to encrypt or sign messages.";
-"NO PGP PRIVATE KEY - MESSAGE" = "If you want to be able to encrypt or sign messages with PGP, you need a personal PGP key. To create a PGP key, download and install MacGPG's GPG Keychain Access from http://macgpg.sourceforge.net/";
+"NO PGP PRIVATE KEY - TITLE" = "You don't have any OpenPGP key. You can't use GPGMail to encrypt or sign messages.";
+"NO PGP PRIVATE KEY - MESSAGE" = "If you want to be able to encrypt or sign messages with OpenPGP, you need a personal OpenPGP key. To create an OpenPGP key, download and install MacGPG's GPG Keychain Access from http://macgpg.sourceforge.net/";
 
 /* Conflict resolution panel*/
 "<ME>" = "Me";

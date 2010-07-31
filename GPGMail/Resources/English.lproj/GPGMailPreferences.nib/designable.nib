@@ -668,7 +668,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 																<object class="NSButtonCell" key="NSCell" id="600295350">
 																	<int key="NSCellFlags">67239424</int>
 																	<int key="NSCellFlags2">131072</int>
-																	<string key="NSContents">Show PGP items in new message windows</string>
+																	<string key="NSContents">Show OpenPGP items in new message windows</string>
 																	<reference key="NSSupport" ref="26"/>
 																	<reference key="NSControlView" ref="543120491"/>
 																	<int key="NSButtonFlags">1211912703</int>
@@ -4316,7 +4316,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<object class="IBToolTipAttribute" key="NS.object.0">
 							<string key="name">ToolTip</string>
 							<reference key="object" ref="543120491"/>
-							<string key="toolTip">Show PGP user interface elements (checkboxes and drop-down menus) in new message windows</string>
+							<string key="toolTip">Show OpenPGP user interface elements (checkboxes and drop-down menus) in new message windows</string>
 						</object>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -4354,7 +4354,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<object class="IBToolTipAttribute" key="NS.object.0">
 							<string key="name">ToolTip</string>
 							<reference key="object" ref="129017728"/>
-							<string key="toolTip">Store PGP key passphrases in user's keychain</string>
+							<string key="toolTip">Store OpenPGP key passphrases in user's keychain</string>
 						</object>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -4414,7 +4414,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<object class="IBToolTipAttribute" key="NS.object.0">
 							<string key="name">ToolTip</string>
 							<reference key="object" ref="731140837"/>
-							<string key="toolTip">Use modern format, using MIME attachments, instead of old inline PGP armored format</string>
+							<string key="toolTip">Use modern format, using MIME attachments, instead of old inline OpenPGP armored format</string>
 						</object>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>

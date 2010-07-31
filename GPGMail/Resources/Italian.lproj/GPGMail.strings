@@ -8,7 +8,7 @@
 "ENCRYPTING" = "Sto cifrando...";
 
 /* <PGP> submenu title */
-"PGP_MENU" = "PGP";
+"PGP_MENU" = "OpenPGP";
 /* <PGP Keys> submenu title */
 "PGP_KEYS_MENU" = "Chiavi PGP";
 

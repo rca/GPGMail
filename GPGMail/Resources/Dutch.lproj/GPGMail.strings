@@ -8,9 +8,9 @@
 "ENCRYPTING" = "Decoderen...";
 
 /* <PGP> submenu title */
-"PGP_MENU" = "PGP";
+"PGP_MENU" = "OpenPGP";
 /* <PGP Keys> submenu title */
-"PGP_KEYS_MENU" = "PGP sleutels";
+"PGP_KEYS_MENU" = "OpenPGP sleutels";
 
 /* <PGP> submenu items */
 "DECRYPT_MENU" = "Decodeer";
@@ -163,7 +163,7 @@
 "SIGNATURE_IS_NOT_GOOD" = "De ondertekening is niet goed; het bericht is veranderd na ondertekening";
 
 /* PGP Key Download panel */
-"PGP_SEARCH_KEYS_MENUITEM" = "PGP sleutel zoeken";
+"PGP_SEARCH_KEYS_MENUITEM" = "OpenPGP sleutel zoeken";
 "SEARCH" = "Zoek";
 "CANCEL_SEARCH" = "Annuleer";
 "SEARCHING" = "Zoeken...";

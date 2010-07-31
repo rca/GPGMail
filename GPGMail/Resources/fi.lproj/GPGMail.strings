@@ -8,9 +8,9 @@
 "ENCRYPTING" = "Salaan...";
 
 /* <PGP> submenu title */
-"PGP_MENU" = "PGP";
+"PGP_MENU" = "OpenPGP";
 /* <PGP Keys> submenu title */
-"PGP_KEYS_MENU" = "PGP-avaimet";
+"PGP_KEYS_MENU" = "OpenPGP-avaimet";
 
 /* <PGP> submenu items */
 "DECRYPT_MENU" = "Salauksen purku";
@@ -163,7 +163,7 @@
 "SIGNATURE_IS_NOT_GOOD" = "Allekirjoitus ei ole kunnossa; viestiä on muokattu";
 
 /* PGP Key Download panel */
-"PGP_SEARCH_KEYS_MENUITEM" = "PGP-avaimen etsintä";
+"PGP_SEARCH_KEYS_MENUITEM" = "OpenPGP-avaimen etsintä";
 "SEARCH" = "Etsi";
 "CANCEL_SEARCH" = "Kumoa";
 "SEARCHING" = "Etsin...";

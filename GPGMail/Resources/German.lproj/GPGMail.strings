@@ -8,9 +8,9 @@
 "ENCRYPTING" = "Verschlüsseln...";
 
 /* <PGP> submenu title */
-"PGP_MENU" = "PGP";
+"PGP_MENU" = "OpenPGP";
 /* <PGP Keys> submenu title */
-"PGP_KEYS_MENU" = "PGP Schlüssel";
+"PGP_KEYS_MENU" = "OpenPGP Schlüssel";
 
 /* <PGP> submenu items */
 "DECRYPT_MENU" = "Entschlüsseln";
@@ -21,7 +21,7 @@
 /* Description of version prefixed with <Version:> */
 "VERSION: %@" = "Version: %@";
 
-/* PGP preferences panel name */
+/*GPGMail preferences panel name */
 "PGP_PREFERENCES" = "GPGMail";
 
 /* Alert title and message */
@@ -37,7 +37,7 @@
 "AUTHENTICATION_TITLE_OK" = "PGP Authentifizierung";
 
 /**/
-"AUTHENTICATION_TITLE_FAILED" = "Fehlerhafte PGP Authentifizierung";
+"AUTHENTICATION_TITLE_FAILED" = "Fehlerhafte OpenPGP Authentifizierung";
 "TRY_AGAIN" = "Wiederholen";
 "CANCEL_DELIVERY" = "Abbrechen";
 "CANCEL_DECRYPTION" = "Abbrechen";
@@ -59,8 +59,8 @@
 "UNSIGNED_ITEM" = "Unsigniert";
 
 /* Toolbar item tooltips  */
-"DECRYPT_ITEM_TOOLTIP" = "Entschlüsselt die PGP E-Mail";
-"AUTHENTICATE_ITEM_TOOLTIP" = "Überprüft die PGP Signatur der E-Mail";
+"DECRYPT_ITEM_TOOLTIP" = "Entschlüsselt die OpenPGP E-Mail";
+"AUTHENTICATE_ITEM_TOOLTIP" = "Überprüft die OpenPGP Signatur der E-Mail";
 "MAKE_CLEAR_ITEM_TOOLTIP" = "Klicken Sie hier, um nicht zu verschlüsseln";
 "MAKE_ENCRYPTED_ITEM_TOOLTIP" = "Klicken Sie hier, um zu verschlüsseln";
 "MAKE_UNSIGNED_ITEM_TOOLTIP" = "Kicken Sie hier, um nicht zu signieren";
@@ -91,7 +91,7 @@
 "MISSING KEY %@." = "Fehlender Schlüssel %@."; // Param is a key ID in hexadecimal
 "Signature summary 0x%04x - Signature status %u." = "Unbekannter Fehler: Signaturübersicht 0x%04x - Signaturstatus %u."; // Generic error message; first param is a hex status flag value, second is a decimal status value
 "EXCEPTION: %@" = "Interner Fehler: %@"; // Generic error message; param is a string (exception reason, maybe not localized)
-"AUTHENTICATING" = "Überprüfe PGP Signatur...";
+"AUTHENTICATING" = "Überprüfe OpenPGP Signatur...";
 "UNTRUSTED RECIPIENTS" = "Mindestens ein Schlüssel ist nicht vertrauenswürdig";
 
 /* Title */
@@ -163,7 +163,7 @@
 "SIGNATURE_IS_NOT_GOOD" = "Ungültige Signatur; Nachricht wurde verändert";
 
 /* PGP Key Download panel */
-"PGP_SEARCH_KEYS_MENUITEM" = "PGP Schlüsselsuche";
+"PGP_SEARCH_KEYS_MENUITEM" = "OpenPGP Schlüsselsuche";
 "SEARCH" = "Suchen";
 "CANCEL_SEARCH" = "Abbrechen";
 "SEARCHING" = "Suche...";
@@ -184,7 +184,7 @@
 
 /* Unmatched PGP keys for receipts - sheet */
 "MISSING_KEYS: DOWNLOAD" = "Für einige Empfänger sind keine Schlüssel vorhanden. Suche auf Schlüsselserver?"; // Title
-"UNMATCHED_ADDRESSES: %@" = "Folgende Empfänger haben keine PGP Schlüssel:\n%@"; // Message
+"UNMATCHED_ADDRESSES: %@" = "Folgende Empfänger haben keine OpenPGP Schlüssel:\n%@"; // Message
 "SEARCH_MATCHING_KEYS" = "Suchen"; // Default button
 "SEND_IN_CLEAR" = "Klartext senden"; // button title; used in dialog after delivery failure due to missing public keys
 
@@ -212,8 +212,8 @@
 "NO_VALID_PRIVATE_KEY" = "Es konnte kein gültiger privater Schlüssel gefunden werden. Entweder wurde keiner ausgewählt oder der gewählte Schlüssel ist widerrufen, deaktiviert oder ist abgelaufen"; // Could be displayed after encryption
 
 /* Alert when user has no PGP key */
-"NO PGP PRIVATE KEY - TITLE" = "Sie besitzen keinen PGP Schlüssel. Sie können GPGMail nicht zum verschlüsseln oder signieren von Nachrichten benutzen. ";
-"NO PGP PRIVATE KEY - MESSAGE" = "Falls Sie mit PGP Nachrichten verschlüsseln oder signieren möchten, benötigen Sie einen persönlichen Schlüssel. Um einen PGP Schlüssel zu erzeugen, laden Sie MacGPG's GPG Keychain Access von http://macgpg.sourceforge.net/ herunter.";
+"NO PGP PRIVATE KEY - TITLE" = "Sie besitzen keinen OpenPGP Schlüssel. Sie können GPGMail nicht zum verschlüsseln oder signieren von Nachrichten benutzen. ";
+"NO PGP PRIVATE KEY - MESSAGE" = "Falls Sie mit OpenPGP Nachrichten verschlüsseln oder signieren möchten, benötigen Sie einen persönlichen Schlüssel. Um einen OpenPGP Schlüssel zu erzeugen, laden Sie MacGPG's GPG Keychain Access von http://macgpg.sourceforge.net/ herunter.";
 
 /* Conflict resolution panel*/
 "<ME>" = "Ich";

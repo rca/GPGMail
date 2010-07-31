@@ -29,6 +29,9 @@ updateFile() {
  	#gsed -r -i "s/2000-200[0-9]/2000-2010/" "$_filename";
 
     # not needed anymore
+#	gsed -r -i 's/"PGP_SEARCH_KEYS_MENUITEM" = "PGP/"PGP_SEARCH_KEYS_MENUITEM" = "OpenPGP/' "$_filename";
+#	gsed -r -i 's/"PGP_KEYS_MENU" = "PGP/"PGP_KEYS_MENU" = "OpenPGP/' "$_filename";
+#	gsed -r -i 's/"PGP_MENU" = "PGP"/"PGP_MENU" = "OpenPGP"/' "$_filename";
 #	gsed -r -i 's/"PGP_PREFERENCES" = "PGP"/"PGP_PREFERENCES" = "GPGMail"/' "$_filename";
 #	gsed -r -i "s/\/www\.sente\.ch\/software\/GPGMail/\/www.gpgmail.org/" "$_filename";
 #	gsed -r -i "s/\/gpgmail.org/\/www.gpgmail.org/" "$_filename";

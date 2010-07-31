@@ -8,9 +8,9 @@
 "ENCRYPTING" = "암호화  중입니다...";
 
 /* <PGP> submenu title */
-"PGP_MENU" = "PGP";
+"PGP_MENU" = "OpenPGP";
 /* <PGP Keys> submenu title */
-"PGP_KEYS_MENU" = "PGP 키";
+"PGP_KEYS_MENU" = "OpenPGP 키";
 
 /* <PGP> submenu items */
 "DECRYPT_MENU" = "암호해독";
@@ -163,7 +163,7 @@
 "SIGNATURE_IS_NOT_GOOD" = "서명이 좋지 못합니다; 메세지가 원본과 다릅니다";
 
 /* PGP Key Download panel */
-"PGP_SEARCH_KEYS_MENUITEM" = "PGP 키 검색";
+"PGP_SEARCH_KEYS_MENUITEM" = "OpenPGP 키 검색";
 "SEARCH" = "검색";
 "CANCEL_SEARCH" = "취소";
 "SEARCHING" = "검색 중...";

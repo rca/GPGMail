@@ -950,7 +950,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="778562569">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">4194304</int>
-								<string key="NSContents">There are conflicts between the current PGP options and the options set in the PGP keys used here. You need to manually solve the conflict.</string>
+								<string key="NSContents">There are conflicts between the current OpenPGP options and the options set in the OpenPGP keys used here. You need to manually solve the conflict.</string>
 								<reference key="NSSupport" ref="1026290275"/>
 								<reference key="NSControlView" ref="166782888"/>
 								<reference key="NSBackgroundColor" ref="773080469"/>
@@ -2498,7 +2498,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="145734688"/>
-						<string key="toolTip">Choose whether you want to encrypt the message with PGP or not</string>
+						<string key="toolTip">Choose whether you want to encrypt the message with OpenPGP or not</string>
 					</object>
 				</object>
 				<string key="35.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2508,7 +2508,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="739033656"/>
-						<string key="toolTip">Choose whether you want an electronic PGP signature or not</string>
+						<string key="toolTip">Choose whether you want an electronic OpenPGP signature or not</string>
 					</object>
 				</object>
 				<string key="36.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

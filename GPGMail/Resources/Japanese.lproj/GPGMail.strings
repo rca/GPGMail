@@ -8,9 +8,9 @@
 "ENCRYPTING" = "暗号化中...";
 
 /* <PGP> submenu title */
-"PGP_MENU" = "PGP";
+"PGP_MENU" = "OpenPGP";
 /* <PGP Keys> submenu title */
-"PGP_KEYS_MENU" = "PGPの鍵";
+"PGP_KEYS_MENU" = "OpenPGPの鍵";
 
 /* <PGP> submenu items */
 "DECRYPT_MENU" = "解読する";
@@ -163,7 +163,7 @@
 "SIGNATURE_IS_NOT_GOOD" = "不正な署名です; メッセージは変更されています";
 
 /* PGP Key Download panel */
-"PGP_SEARCH_KEYS_MENUITEM" = "PGP鍵の検索";
+"PGP_SEARCH_KEYS_MENUITEM" = "OpenPGP鍵の検索";
 "SEARCH" = "検索";
 "CANCEL_SEARCH" = "キャンセル";
 "SEARCHING" = "検索中...";

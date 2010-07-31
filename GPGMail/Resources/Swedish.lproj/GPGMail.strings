@@ -8,9 +8,9 @@
 "ENCRYPTING" = "Krypterar...";
 
 /* <PGP> submenu title */
-"PGP_MENU" = "PGP";
+"PGP_MENU" = "OpenPGP";
 /* <PGP Keys> submenu title */
-"PGP_KEYS_MENU" = "PGP-Nycklar";
+"PGP_KEYS_MENU" = "OpenPGP-Nycklar";
 
 /* <PGP> submenu items */
 "DECRYPT_MENU" = "Dekryptera";
@@ -163,7 +163,7 @@
 "SIGNATURE_IS_NOT_GOOD" = "Signaturen är dålig; meddelandet har förändrats";
 
 /* PGP Key Download panel */
-"PGP_SEARCH_KEYS_MENUITEM" = "PGP-Nyckelsökning";
+"PGP_SEARCH_KEYS_MENUITEM" = "OpenPGP-Nyckelsökning";
 "SEARCH" = "Sök";
 "CANCEL_SEARCH" = "Avbryt";
 "SEARCHING" = "Söker...";
