@@ -134,7 +134,7 @@
         Tiger: fixed auto-decryption/auto-verification of unread messages
         Tiger: fixed refresh problem of compose accessory view when To/CC fields get higher
         Tiger: fixed iPhoto problem
-        Added Danish localization by Sebastian Adorj‡n Dyhr
+        Added Danish localization by Sebastian AdorjÂ‡n Dyhr
         Fixed some ASCII signature verification problems
         Fixed UI bug when message is created by AppleScript
         Tiger: Fixed assertion failure when verifying messages
@@ -149,7 +149,7 @@
         Tiger: toolbar icons take less space now
         Tiger: Encryption/signing works again when performed from menu/toolbar buttons, without PGP buttons in composer
         Tiger: it was no longer possible to choose any PGP keys manually
-        Spanish localization by Sergio Concha
+        Spanish localization by Sergio RodrÃ­guez Concha
         Finnish localization fix by Seppo Laaksonen
         Japanese localization by Tomio Arisaka
         Sender's PGP information (sign/encrypt/MIME) stored in AddressBook is no longer evaluated by rules
@@ -275,8 +275,8 @@
         Added partial Korean localization by Sangduk Park
 1.0.2   v29
         Fingerprint is now always displayed formatted
-        Added Spanish localization by Sergio Rodr’guez Concha
-        Added German localization by Hauke MŸller
+        Added Spanish localization by Sergio RodrÃ­guezÂ’ Concha
+        Added German localization by Hauke MÃ¼ller
         Corrected localization errors
         Corrected crasher after downloading PGP keys
         Added French localization by Michel Poulain
@@ -339,7 +339,7 @@
         Replying/forwarding/redirecting a decrypted message now quotes the decrypted message
 1.0     Oct 25 2003
         Completely reviewed code; now uses GPGME (indirectly)
-        Replaced most of modal dialogs by non-modal ones, ˆ la Junk Mail
+        Replaced most of modal dialogs by non-modal ones, Ã¡ la Junk Mail
         Added support for KeyChain, thanks to Annard Brouwer
         Added support for multiple secret keys
         User can now choose private/public keys; automatically, or manually
@@ -378,7 +378,7 @@
         Decryption no longer adds an empty line
         Corrected compatibility problem between contextual menu and other Mail plug-ins
 0.5.3   Jun 23 2002
-        Added Spanish translation from Sergio Rodr’guez Concha
+        Added Spanish translation from Sergio RodrÃ­guezÂ’ Concha
         Added French translation from Michel Poulain
         Added Japanese translation from Tomio Arisaka
         Added beautiful icons from Michel Poulain
@@ -390,7 +390,7 @@
         Corrected header decoding bug
         Corrected signature bug
         Added support for encapsulated signatures (RFC1847) - default mechanism
-        Added German translation from Hauke MŸller
+        Added German translation from Hauke MÃ¼ller
         Added Danish translation from Thomas Dyhr
         Corrected state of newly added toolbar buttons
         Corrected problems due to charsets (no longer forces UTF8)
