@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">10B504</string>
-		<string key="IBDocument.InterfaceBuilderVersion">732</string>
-		<string key="IBDocument.AppKitVersion">1038.2</string>
-		<string key="IBDocument.HIToolboxVersion">437.00</string>
+		<string key="IBDocument.SystemVersion">10F569</string>
+		<string key="IBDocument.InterfaceBuilderVersion">788</string>
+		<string key="IBDocument.AppKitVersion">1038.29</string>
+		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">732</string>
+			<string key="NS.object.0">788</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs"/>
 		<array key="IBDocument.PluginDependencies">
@@ -26,7 +26,7 @@
 				<string key="NSClassName">NSApplication</string>
 			</object>
 			<object class="NSCustomView" id="76927603">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSImageView" id="892436932">
@@ -42,6 +42,7 @@
 						</set>
 						<string key="NSFrame">{{20, 4}, {32, 32}}</string>
 						<reference key="NSSuperview" ref="76927603"/>
+						<reference key="NSWindow"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSImageCell" key="NSCell" id="338989745">
 							<int key="NSCellFlags">130560</int>
@@ -62,6 +63,7 @@
 						<int key="NSvFlags">289</int>
 						<string key="NSFrame">{{404, 2}, {77, 32}}</string>
 						<reference key="NSSuperview" ref="76927603"/>
+						<reference key="NSWindow"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="916634982">
 							<int key="NSCellFlags">67239424</int>
@@ -95,11 +97,12 @@
 						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{57, 12}, {348, 17}}</string>
 						<reference key="NSSuperview" ref="76927603"/>
+						<reference key="NSWindow"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="1020119242">
 							<int key="NSCellFlags">68288064</int>
 							<int key="NSCellFlags2">4195328</int>
-							<string key="NSContents">The message has been signed with PGP.</string>
+							<string key="NSContents">The message has been signed with OpenPGP.</string>
 							<reference key="NSSupport" ref="124134063"/>
 							<reference key="NSControlView" ref="749041246"/>
 							<object class="NSColor" key="NSBackgroundColor" id="848460034">
@@ -124,11 +127,13 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{495, 40}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<string key="NSClassName">ColorBackgroundView</string>
 				<string key="NSExtension">NSView</string>
 			</object>
 			<object class="NSCustomView" id="221697039">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSImageView" id="156043462">
@@ -144,6 +149,7 @@
 						</set>
 						<string key="NSFrame">{{20, 4}, {32, 32}}</string>
 						<reference key="NSSuperview" ref="221697039"/>
+						<reference key="NSWindow"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSImageCell" key="NSCell" id="230944714">
 							<int key="NSCellFlags">130560</int>
@@ -161,6 +167,7 @@
 						<int key="NSvFlags">289</int>
 						<string key="NSFrame">{{392, 2}, {89, 32}}</string>
 						<reference key="NSSuperview" ref="221697039"/>
+						<reference key="NSWindow"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="134390818">
 							<int key="NSCellFlags">67239424</int>
@@ -186,11 +193,12 @@
 						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{57, 12}, {336, 17}}</string>
 						<reference key="NSSuperview" ref="221697039"/>
+						<reference key="NSWindow"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="535247318">
 							<int key="NSCellFlags">68288064</int>
 							<int key="NSCellFlags2">4195328</int>
-							<string key="NSContents">The message has been encrypted with PGP.</string>
+							<string key="NSContents">The message has been encrypted with OpenPGP.</string>
 							<reference key="NSSupport" ref="124134063"/>
 							<reference key="NSControlView" ref="308288205"/>
 							<reference key="NSBackgroundColor" ref="848460034"/>
@@ -199,6 +207,8 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{495, 40}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<string key="NSClassName">ColorBackgroundView</string>
 				<string key="NSExtension">NSView</string>
 			</object>
@@ -1287,10 +1297,32 @@
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
 				<string key="-3.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="-3.ImportedFromIB2"/>
+				<string key="104.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="105.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="106.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="107.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="108.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="109.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="11.IBEditorWindowLastContentRect">{{126, 956}, {495, 40}}</string>
 				<string key="11.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="11.ImportedFromIB2"/>
+				<string key="110.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="111.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="112.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="113.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="114.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="115.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="116.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="117.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="118.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="119.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="12.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="12.ImportedFromIB2"/>
+				<string key="120.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="121.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="122.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="123.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="124.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="13.ImportedFromIB2"/>
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1301,10 +1333,12 @@
 				<boolean value="YES" key="16.ImportedFromIB2"/>
 				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="17.ImportedFromIB2"/>
+				<string key="18.IBEditorWindowLastContentRect">{{105, 979}, {495, 40}}</string>
 				<string key="18.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="18.ImportedFromIB2"/>
 				<string key="19.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="19.ImportedFromIB2"/>
+				<string key="22.IBEditorWindowLastContentRect">{{84, 927}, {474, 115}}</string>
 				<string key="22.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="22.ImportedFromIB2"/>
 				<string key="24.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1335,6 +1369,7 @@
 				<boolean value="YES" key="66.ImportedFromIB2"/>
 				<string key="67.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="67.ImportedFromIB2"/>
+				<string key="75.IBEditorWindowLastContentRect">{{63, 1025}, {495, 40}}</string>
 				<string key="75.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="75.ImportedFromIB2"/>
 				<string key="76.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1373,15 +1408,7 @@
 					<string key="superclassName">NSView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">MacOSX/ColorBackgroundView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">ColorBackgroundView</string>
-					<string key="superclassName">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">MailHeaders/ColorBackgroundView.h</string>
+						<string key="minorKey">Source/PrivateHeaders/ColorBackgroundView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1394,9 +1421,17 @@
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">FirstResponder</string>
+					<string key="superclassName">NSObject</string>
 					<object class="NSMutableDictionary" key="actions">
 						<string key="NS.key.0">:</string>
 						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
@@ -1412,6 +1447,28 @@
 						<string key="gpgAuthenticate:">id</string>
 						<string key="gpgDecrypt:">id</string>
 						<string key="toggleSignatureExtraView:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="authenticate:">
+							<string key="name">authenticate:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="decrypt:">
+							<string key="name">decrypt:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="gpgAuthenticate:">
+							<string key="name">gpgAuthenticate:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="gpgDecrypt:">
+							<string key="name">gpgDecrypt:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="toggleSignatureExtraView:">
+							<string key="name">toggleSignatureExtraView:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="authenticationButton">NSButton</string>
@@ -1440,9 +1497,111 @@
 						<string key="trustAlertIconView">NSImageView</string>
 						<string key="userIDsPopDownButton">NSPopUpButton</string>
 					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="840199180">
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="authenticationButton">
+							<string key="name">authenticationButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="authenticationView">
+							<string key="name">authenticationView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="decryptedIconView">
+							<string key="name">decryptedIconView</string>
+							<string key="candidateClassName">NSImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="decryptedInfoView">
+							<string key="name">decryptedInfoView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="decryptedMessageTextField">
+							<string key="name">decryptedMessageTextField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="decryptionButton">
+							<string key="name">decryptionButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="decryptionView">
+							<string key="name">decryptionView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="delegate">
+							<string key="name">delegate</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="disclosureButton">
+							<string key="name">disclosureButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="expirationAlertIconView">
+							<string key="name">expirationAlertIconView</string>
+							<string key="candidateClassName">NSImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="generalAlertIconView">
+							<string key="name">generalAlertIconView</string>
+							<string key="candidateClassName">NSImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="policyAlertIconView">
+							<string key="name">policyAlertIconView</string>
+							<string key="candidateClassName">NSImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="signatureBadPolicyAlertTextField">
+							<string key="name">signatureBadPolicyAlertTextField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="signatureCreationDateTextField">
+							<string key="name">signatureCreationDateTextField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="signatureExpirationDateTextField">
+							<string key="name">signatureExpirationDateTextField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="signatureIconView">
+							<string key="name">signatureIconView</string>
+							<string key="candidateClassName">NSImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="signatureKeyFingerprintTextField">
+							<string key="name">signatureKeyFingerprintTextField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="signatureLowerView">
+							<string key="name">signatureLowerView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="signatureMessageTextField">
+							<string key="name">signatureMessageTextField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="signatureToggleButton">
+							<string key="name">signatureToggleButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="signatureUpperView">
+							<string key="name">signatureUpperView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="signatureValidityTextField">
+							<string key="name">signatureValidityTextField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="signatureView">
+							<string key="name">signatureView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="trustAlertIconView">
+							<string key="name">trustAlertIconView</string>
+							<string key="candidateClassName">NSImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="userIDsPopDownButton">
+							<string key="name">userIDsPopDownButton</string>
+							<string key="candidateClassName">NSPopUpButton</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="79950356">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">GPGMessageViewerAccessoryViewOwner.h</string>
+						<string key="minorKey">Source/GPGMessageViewerAccessoryViewOwner.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1454,35 +1613,28 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">NSControl</string>
+					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">MailHeaders/NSControl-MailAdditions.h</string>
+						<string key="minorKey">Source/GPG.subproj/GPGProgressIndicatorController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">GPG.subproj/GPGProgressIndicatorController.h</string>
+						<string key="minorKey">Source/GPGMailPatching.h</string>
 					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<reference key="sourceIdentifier" ref="79950356"/>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">GPGMailPatching.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<reference key="sourceIdentifier" ref="840199180"/>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSObject+GPGMail.h</string>
+						<string key="minorKey">Source/NSObject+GPGMail.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1490,105 +1642,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSPopUpButton</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">MailHeaders/NSPopUpButton-MailAdditions.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSTextFieldCell</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">MailHeaders/NSTextFieldCell-ShouldntTheAppKitBeDoingThis.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">MailHeaders/NSView-AttachmentDragSession.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">MailHeaders/NSView-LocatingFrameViews.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">MailHeaders/NSView-MailAppKitAdditions.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">MailHeaders/NSView-MailQuickLookAdditions.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">MailHeaders/NSView-ResizingAnimation.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">MailHeaders/NSView-TilingSupport.h</string>
-					</object>
-				</object>
-			</array>
-			<array class="NSMutableArray" key="referencedPartialClassDescriptionsV3.1+">
-				<object class="IBPartialClassDescription">
-					<string key="className">GPGMessageViewerAccessoryViewOwner</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="authenticate:">id</string>
-						<string key="decrypt:">id</string>
-						<string key="gpgAuthenticate:">id</string>
-						<string key="gpgDecrypt:">id</string>
-						<string key="toggleSignatureExtraView:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="authenticationButton">id</string>
-						<string key="authenticationView">id</string>
-						<string key="decryptedIconView">id</string>
-						<string key="decryptedInfoView">id</string>
-						<string key="decryptedMessageTextField">id</string>
-						<string key="decryptionButton">id</string>
-						<string key="decryptionView">id</string>
-						<string key="disclosureButton">id</string>
-						<string key="expirationAlertIconView">id</string>
-						<string key="generalAlertIconView">id</string>
-						<string key="policyAlertIconView">id</string>
-						<string key="signatureBadPolicyAlertTextField">id</string>
-						<string key="signatureCreationDateTextField">id</string>
-						<string key="signatureExpirationDateTextField">id</string>
-						<string key="signatureIconView">id</string>
-						<string key="signatureKeyFingerprintTextField">id</string>
-						<string key="signatureLowerView">id</string>
-						<string key="signatureMessageTextField">id</string>
-						<string key="signatureToggleButton">id</string>
-						<string key="signatureUpperView">id</string>
-						<string key="signatureValidityTextField">id</string>
-						<string key="signatureView">id</string>
-						<string key="trustAlertIconView">id</string>
-						<string key="userIDsPopDownButton">id</string>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBDocumentRelativeSource</string>
-						<string key="minorKey">../../../Library/Mail/Bundles/SexyGPG.mailbundle/Contents/Resources/GPGMail/GPGMessageViewerAccessoryViewOwner.py</string>
 					</object>
 				</object>
 			</array>
@@ -1854,6 +1907,13 @@
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">ExceptionHandling.framework/Headers/NSExceptionHandler.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">Foundation.framework/Headers/NSArchiver.h</string>
 					</object>
 				</object>
@@ -1998,6 +2058,20 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">Sparkle.framework/Headers/SUAppcast.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">Sparkle.framework/Headers/SUUpdater.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">NSPopUpButton</string>
 					<string key="superclassName">NSButton</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -2070,6 +2144,7 @@
 			</array>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
+		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
 			<integer value="1050" key="NS.object.0"/>
@@ -2081,5 +2156,15 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<string key="IBDocument.LastKnownRelativeProjectPath">../../GPGMail.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="GPGMail32">{32, 32}</string>
+			<string key="NSMenuCheckmark">{9, 8}</string>
+			<string key="NSMenuMixedState">{7, 2}</string>
+			<string key="SmallAlert12">{12, 12}</string>
+			<string key="SmallAlert16">{16, 16}</string>
+			<string key="signed">{32, 32}</string>
+			<string key="triangle">{13, 7}</string>
+			<string key="unsigned">{32, 32}</string>
+		</dictionary>
 	</data>
 </archive>

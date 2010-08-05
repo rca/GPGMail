@@ -1,4 +1,4 @@
- OpenPGP <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
@@ -4284,7 +4284,7 @@
 						<object class="IBToolTipAttribute" key="NS.object.0">
 							<string key="name">ToolTip</string>
 							<reference key="object" ref="995818697"/>
-							<string key="toolTip">Die OpenPGP Symbole werden beim Erstellen einer neuen Email angezeigt</string>
+							<string key="toolTip">Die PGP Symbole werden beim Erstellen einer neuen Email angezeigt</string>
 						</object>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -4382,7 +4382,7 @@
 						<object class="IBToolTipAttribute" key="NS.object.0">
 							<string key="name">ToolTip</string>
 							<reference key="object" ref="938639705"/>
-							<string key="toolTip">Das modernere MIME Format wird anstatt des veralteten OpenPGP Text Formates bei der Nachrichtenerstellung verwendet</string>
+							<string key="toolTip">Das modernere MIME Format wird anstatt des veralteten PGP Text Formates bei der Nachrichtenerstellung verwendet</string>
 						</object>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
