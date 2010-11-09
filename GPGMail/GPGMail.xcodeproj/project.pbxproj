@@ -53,6 +53,7 @@
 		1BED94C61079EADE00D22B4C /* MessageEditor+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A808D0838EA1C0052F47C /* MessageEditor+GPGMail.m */; };
 		1BED95871079FE6200D22B4C /* GPGMailComposeAccessoryViewOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A806F0838E9B10052F47C /* GPGMailComposeAccessoryViewOwner.m */; };
 		1BF51A70108FCD1900AC8268 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BF51A6F108FCD1900AC8268 /* ExceptionHandling.framework */; };
+		30B90DE21284656500B3FA6A /* GPGDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B90DE11284656500B3FA6A /* GPGDefaults.m */; };
 		550692320CD510D300CA0BA2 /* clear-Leopard.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 5506922E0CD510D300CA0BA2 /* clear-Leopard.tiff */; };
 		550692330CD510D300CA0BA2 /* encrypted-Leopard.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 5506922F0CD510D300CA0BA2 /* encrypted-Leopard.tiff */; };
 		550692340CD510D300CA0BA2 /* signed-Leopard.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 550692300CD510D300CA0BA2 /* signed-Leopard.tiff */; };
@@ -292,6 +293,8 @@
 		1B859A6E109331A6009E469A /* MVTerminationHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MVTerminationHandler.h; path = Source/PrivateHeaders/MVTerminationHandler.h; sourceTree = "<group>"; };
 		1BCEE1E211CC051500488D19 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		1BF51A6F108FCD1900AC8268 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
+		30B90DE01284656500B3FA6A /* GPGDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPGDefaults.h; path = Source/GPGDefaults.h; sourceTree = "<group>"; };
+		30B90DE11284656500B3FA6A /* GPGDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GPGDefaults.m; path = Source/GPGDefaults.m; sourceTree = "<group>"; };
 		32DBCF630370AF2F00C91783 /* GPGMail_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPGMail_Prefix.pch; sourceTree = "<group>"; };
 		5506922E0CD510D300CA0BA2 /* clear-Leopard.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "clear-Leopard.tiff"; path = "Resources/clear-Leopard.tiff"; sourceTree = "<group>"; };
 		5506922F0CD510D300CA0BA2 /* encrypted-Leopard.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "encrypted-Leopard.tiff"; path = "Resources/encrypted-Leopard.tiff"; sourceTree = "<group>"; };
@@ -344,7 +347,7 @@
 		559A804E0838E7830052F47C /* TableViewManager.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = TableViewManager.h; path = Source/PrivateHeaders/TableViewManager.h; sourceTree = "<group>"; };
 		559A804F0838E7950052F47C /* OptionalView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = OptionalView.h; path = Source/PrivateHeaders/OptionalView.h; sourceTree = "<group>"; };
 		559A80510838E8300052F47C /* GPGKeyDownload.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GPGKeyDownload.h; path = Source/GPGKeyDownload.h; sourceTree = "<group>"; };
-		559A80520838E8300052F47C /* GPGMailBundle.h */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 30; name = GPGMailBundle.h; path = Source/GPGMailBundle.h; sourceTree = "<group>"; };
+		559A80520838E8300052F47C /* GPGMailBundle.h */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 30; name = GPGMailBundle.h; path = Source/GPGMailBundle.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		559A80530838E8300052F47C /* GPGMailComposeAccessoryViewOwner.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GPGMailComposeAccessoryViewOwner.h; path = Source/GPGMailComposeAccessoryViewOwner.h; sourceTree = "<group>"; };
 		559A80540838E8300052F47C /* GPGMailPatching.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GPGMailPatching.h; path = Source/GPGMailPatching.h; sourceTree = "<group>"; };
 		559A80550838E8300052F47C /* GPGMailPreferences.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GPGMailPreferences.h; path = Source/GPGMailPreferences.h; sourceTree = "<group>"; };
@@ -638,6 +641,7 @@
 				559A80560838E8300052F47C /* GPGMEAdditions.h */,
 				558C390E0CF9720500998406 /* NSObject+GPGMail.h */,
 				558C39990CFAB0DF00998406 /* GPGMessageSignature.h */,
+				30B90DE01284656500B3FA6A /* GPGDefaults.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -696,6 +700,7 @@
 				559A806F0838E9B10052F47C /* GPGMailComposeAccessoryViewOwner.m */,
 				559A80730838E9B10052F47C /* GPGComposeWindowStorePoser.m */,
 				559A80710838E9B10052F47C /* GPGMailPreferences.m */,
+				559A806D0838E9B10052F47C /* GPGKeyDownload.m */,
 				559A80740838E9B10052F47C /* GPGMessageViewerAccessoryViewOwner.m */,
 				559A80750838E9B10052F47C /* Message+GPGMail.m */,
 				559A80760838E9B10052F47C /* MessageBody+GPGMail.m */,
@@ -710,11 +715,11 @@
 				559A80910838EA1C0052F47C /* TableViewManager+GPGMail.m */,
 				559A80900838EA1C0052F47C /* NSPreferences_GPGMail.m */,
 				559A80990838EA560052F47C /* GPGMailTextAttachmentPoser.m */,
-				559A806D0838E9B10052F47C /* GPGKeyDownload.m */,
 				559A80700838E9B10052F47C /* GPGMailPatching.m */,
 				559A808F0838EA1C0052F47C /* MessageKeychainManager+GPGMail.m */,
 				559A808C0838EA1C0052F47C /* MessageContentController+GPGMail.m */,
 				558C399A0CFAB0DF00998406 /* GPGMessageSignature.m */,
+				30B90DE11284656500B3FA6A /* GPGDefaults.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -797,6 +802,7 @@
 			isa = PBXProject;
 			buildConfigurationList = 55541F56085AE6B100548474 /* Build configuration list for PBXProject "GPGMail" */;
 			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -933,6 +939,7 @@
 				1BAA17EA108E8E7500FBC3E4 /* TableViewManager+GPGMail.m in Sources */,
 				1B45A53C11CC98AB00ED4663 /* MessageViewer+GPGMail.m in Sources */,
 				1B648B5111D1081A00807F9A /* GPGMailTextAttachmentPoser.m in Sources */,
+				30B90DE21284656500B3FA6A /* GPGDefaults.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

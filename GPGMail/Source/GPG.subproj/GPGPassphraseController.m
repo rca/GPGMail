@@ -363,7 +363,7 @@ static NSTimer				*_flushTimer = nil;
 
 // Constants for Keychain support
 #define PASSPHRASE_DATA_LENGTH 1024
-#define GPG_SERVICE_NAME       "GPGMail"
+#define GPG_SERVICE_NAME       "GnuPG"
 // Should be "PGP" or "GnuPG" instead
 
 - (BOOL) usesKeychain

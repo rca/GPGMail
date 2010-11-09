@@ -49,6 +49,7 @@
 #import <ColorBackgroundView.h>
 #import <AddressBook/AddressBook.h>
 
+#import "GPGDefaults.h"
 
 // Encoded/decoded Body: perhaps we should use notif MessageBodyWasEncodedNotification
 // On messageWillBeDelivered:, let's be observer of MessageBodyWasEncodedNotification and call -[MessageBody setEncodedBody:] when
@@ -689,15 +690,15 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     while(aColumn = [anEnum nextObject])
         [columnIdentifiers addObject:[aColumn identifier]];
 
-    sortingTableColumn = [[allTableColumns objectAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"GPGSortingTableColumnTag"]] retain];
-    ascendingOrder = [[NSUserDefaults standardUserDefaults] boolForKey:@"GPGAscendingSorting"];
+    sortingTableColumn = [[allTableColumns objectAtIndex:[[GPGDefaults standardDefaults] integerForKey:@"GPGSortingTableColumnTag"]] retain];
+    ascendingOrder = [[GPGDefaults standardDefaults] boolForKey:@"GPGAscendingSorting"];
 
     // Let's restore column widths
-    tableColumnWidths = [[NSUserDefaults standardUserDefaults] arrayForKey:@"GPGTableColumnWidths"];
+    tableColumnWidths = [[GPGDefaults standardDefaults] arrayForKey:@"GPGTableColumnWidths"];
     anEnum = [tableColumnWidths objectEnumerator];
     if([tableColumnWidths count] != tableColumnCount)
         // Seems we lost the widths! Let's use the default ones
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GPGTableColumnWidths"];
+        [[GPGDefaults standardDefaults] removeObjectForKey:@"GPGTableColumnWidths"];
     else{
         i = 0;
         // Table column order is always the same
@@ -706,7 +707,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     }
 
     // Let's reorder visible columns
-    visibleTableColumnTags = [[NSUserDefaults standardUserDefaults] arrayForKey:@"GPGVisibleTableColumnTags"];
+    visibleTableColumnTags = [[GPGDefaults standardDefaults] arrayForKey:@"GPGVisibleTableColumnTags"];
     anEnum = [visibleTableColumnTags objectEnumerator];
     i = 0;
     while(aNumber = [anEnum nextObject]){
@@ -1574,7 +1575,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     if([sender state] != NSOnState){
         int				anIndex = [sender tag];
         NSTableColumn	*aColumn = [allTableColumns objectAtIndex:anIndex];
-        NSArray			*defaultColumnWidths = [[NSUserDefaults standardUserDefaults] arrayForKey:@"GPGTableColumnWidths"];
+        NSArray			*defaultColumnWidths = [[GPGDefaults standardDefaults] arrayForKey:@"GPGTableColumnWidths"];
 
         if(defaultColumnWidths != nil)
             [aColumn setWidth:[[defaultColumnWidths objectAtIndex:anIndex] floatValue]];
@@ -1730,11 +1731,11 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     NSTableColumn	*aColumn;
     NSMutableArray	*visibleColumnTags = [NSMutableArray array];
     
-    [[NSUserDefaults standardUserDefaults] setInteger:[allTableColumns indexOfObject:sortingTableColumn] forKey:@"GPGSortingTableColumnTag"];
-    [[NSUserDefaults standardUserDefaults] setBool:ascendingOrder forKey:@"GPGAscendingSorting"];
+    [[GPGDefaults standardDefaults] setInteger:[allTableColumns indexOfObject:sortingTableColumn] forKey:@"GPGSortingTableColumnTag"];
+    [[GPGDefaults standardDefaults] setBool:ascendingOrder forKey:@"GPGAscendingSorting"];
     while(aColumn = [anEnum nextObject])
         [visibleColumnTags addObject:[NSString stringWithFormat:@"%u", [allTableColumns indexOfObject:aColumn]]];
-    [[NSUserDefaults standardUserDefaults] setObject:visibleColumnTags forKey:@"GPGVisibleTableColumnTags"];
+    [[GPGDefaults standardDefaults] setObject:visibleColumnTags forKey:@"GPGVisibleTableColumnTags"];
     
     [publicKeysPanel orderOut:sender];
     [[NSApplication sharedApplication] endSheet:publicKeysPanel returnCode:[[sender selectedCell] tag]];
@@ -1764,7 +1765,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 
     while(aColumn = [anEnum nextObject])
         [widths addObject:[NSNumber numberWithFloat:[aColumn width]]];
-    [[NSUserDefaults standardUserDefaults] setObject:widths forKey:@"GPGTableColumnWidths"];
+    [[GPGDefaults standardDefaults] setObject:widths forKey:@"GPGTableColumnWidths"];
 }
 
 - (id) outlineView:(NSOutlineView *)outlineView child:(int)index ofItem:(id)item

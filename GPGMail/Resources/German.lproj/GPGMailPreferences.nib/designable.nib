@@ -3,29 +3,24 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
 		<string key="IBDocument.SystemVersion">10F569</string>
-		<string key="IBDocument.InterfaceBuilderVersion">788</string>
+		<string key="IBDocument.InterfaceBuilderVersion">804</string>
 		<string key="IBDocument.AppKitVersion">1038.29</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">788</string>
+			<string key="NS.object.0">804</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="6"/>
+			<integer value="158"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.Metadata">
-			<bool key="EncodedWithXMLCoder">YES</bool>
-			<object class="NSArray" key="dict.sortedKeys" id="0">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-			</object>
-			<object class="NSMutableArray" key="dict.values">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-			</object>
+			<string key="NS.key.0">PluginDependencyRecalculationVersion</string>
+			<integer value="1" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.RootObjects" id="187260241">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -167,7 +162,7 @@
 														<characters key="NS.bytes">1</characters>
 													</object>
 													<object class="NSView" key="NSView" id="836223592">
-														<nil key="NSNextResponder"/>
+														<reference key="NSNextResponder" ref="889059863"/>
 														<int key="NSvFlags">256</int>
 														<object class="NSMutableArray" key="NSSubviews">
 															<bool key="EncodedWithXMLCoder">YES</bool>
@@ -571,6 +566,7 @@
 															</object>
 														</object>
 														<string key="NSFrame">{{10, 33}, {512, 307}}</string>
+														<reference key="NSSuperview" ref="889059863"/>
 													</object>
 													<string key="NSLabel">Schlüssel</string>
 													<reference key="NSColor" ref="368920381"/>
@@ -1673,7 +1669,7 @@
 												<object class="NSTabViewItem" id="471917852">
 													<string key="NSIdentifier">updates</string>
 													<object class="NSView" key="NSView" id="433665037">
-														<reference key="NSNextResponder" ref="889059863"/>
+														<nil key="NSNextResponder"/>
 														<int key="NSvFlags">256</int>
 														<object class="NSMutableArray" key="NSSubviews">
 															<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1862,21 +1858,20 @@
 															</object>
 														</object>
 														<string key="NSFrame">{{10, 33}, {512, 307}}</string>
-														<reference key="NSSuperview" ref="889059863"/>
 													</object>
 													<string key="NSLabel">Updates</string>
 													<reference key="NSColor" ref="368920381"/>
 													<reference key="NSTabView" ref="889059863"/>
 												</object>
 											</object>
-											<reference key="NSSelectedTabViewItem" ref="471917852"/>
+											<reference key="NSSelectedTabViewItem" ref="303277230"/>
 											<reference key="NSFont" ref="806594264"/>
 											<int key="NSTvFlags">0</int>
 											<bool key="NSAllowTruncatedLabels">YES</bool>
 											<bool key="NSDrawsBackground">YES</bool>
 											<object class="NSMutableArray" key="NSSubviews">
 												<bool key="EncodedWithXMLCoder">YES</bool>
-												<reference ref="433665037"/>
+												<reference ref="836223592"/>
 											</object>
 										</object>
 									</object>
@@ -1941,9 +1936,11 @@
 						</object>
 						<object class="NSAttributedString" id="715019853">
 							<string key="NSString">NaN</string>
-							<object class="NSDictionary" key="NSAttributes" id="95560004">
+							<object class="NSDictionary" key="NSAttributes" id="782788198">
 								<bool key="EncodedWithXMLCoder">YES</bool>
-								<reference key="dict.sortedKeys" ref="0"/>
+								<object class="NSArray" key="dict.sortedKeys" id="0">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+								</object>
 								<object class="NSMutableArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 								</object>
@@ -1951,7 +1948,7 @@
 						</object>
 						<object class="NSAttributedString" id="753959677">
 							<string key="NSString">0</string>
-							<reference key="NSAttributes" ref="95560004"/>
+							<reference key="NSAttributes" ref="782788198"/>
 						</object>
 						<string>,</string>
 						<integer value="1000"/>
@@ -2018,11 +2015,11 @@
 						</object>
 						<object class="NSAttributedString" id="579600082">
 							<string key="NSString">NaN</string>
-							<reference key="NSAttributes" ref="95560004"/>
+							<reference key="NSAttributes" ref="782788198"/>
 						</object>
 						<object class="NSAttributedString" id="473743806">
 							<string key="NSString">0</string>
-							<reference key="NSAttributes" ref="95560004"/>
+							<reference key="NSAttributes" ref="782788198"/>
 						</object>
 						<string>.</string>
 						<integer value="1000"/>

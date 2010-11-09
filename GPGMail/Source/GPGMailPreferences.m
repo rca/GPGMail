@@ -32,11 +32,12 @@
 #import "GPGMailBundle.h"
 
 #import "GPG.subproj/GPGPassphraseController.h"
+#import "GPGDefaults.h"
 
 @implementation GPGMailPreferences
 
 - (SUUpdater *)updater {
-    return [SUUpdater updaterForBundle:[NSBundle bundleWithIdentifier:@"org.gpgmail"]];
+    return [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
 }
 
 
@@ -409,6 +410,7 @@
 - (IBAction) flushCachedPassphrases:(id)sender
 {
     [GPGPassphraseController flushCachedPassphrases];
+	[GPGConfiguration gpgAgentFlush];
 }
 
 - (void) preferencesDidChange:(NSNotification *)notification
@@ -437,7 +439,7 @@
 
 - (IBAction) exportGPGMailConfiguration:(id)sender
 {
-    NSDictionary        *aDict = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    NSDictionary        *aDict = [[GPGDefaults gpgDefaults] dictionaryRepresentation];
     NSEnumerator        *keyEnum = [aDict keyEnumerator];
     NSString            *aKey;
     NSMutableDictionary *exportedDict = [NSMutableDictionary dictionaryWithCapacity:20];
