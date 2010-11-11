@@ -219,7 +219,7 @@ static BOOL	gpgMailWorks = YES;
 
     SUUpdater *updater = [SUUpdater updaterForBundle:[NSBundle bundleWithIdentifier:@"org.gpgmail"]];
     updater.delegate = [self sharedInstance];
-    [updater setAutomaticallyChecksForUpdates:YES];
+    //[updater setAutomaticallyChecksForUpdates:YES];
     [updater resetUpdateCycle];
 #warning Sparkle should automatically start to check, but sometimes doesn't.
 }
