@@ -156,43 +156,42 @@ static NSMutableDictionary *_sharedInstances = nil;
 //Private
 
 - (void)setGPGConf:(id)value forKey:(NSString *)defaultName {
-	GPGConfiguration *conf;
-	NSString *key;
-	
-	
 	if ([defaultName isEqualToString:@"GPGPassphraseFlushTimeout"]) {
-		conf = [GPGConfiguration gpgAgentConf];
-		
+		GPGAgentOptions *agentOptions = [[GPGAgentOptions new] autorelease];
+				
 		NSInteger cacheTime = [value integerValue];
 		if (cacheTime == 0) {
 			cacheTime = 600;
 		}
-		[conf setString:[NSString stringWithFormat:@"%i", cacheTime] forKey:@"default-cache-ttl"];
+		[agentOptions setOptionValue:[NSString stringWithFormat:@"%i", cacheTime] forName:@"default-cache-ttl"];
 
 		cacheTime *= 12;
 		if (cacheTime <= 600) {
 			cacheTime = 600;
 		}
-		[conf setString:[NSString stringWithFormat:@"%i", cacheTime] forKey:@"max-cache-ttl"];
+		[agentOptions setOptionValue:[NSString stringWithFormat:@"%i", cacheTime] forName:@"max-cache-ttl"];
 		
-		[GPGConfiguration gpgAgentFlush]; // gpg-agent should read the new configuration.
+		[agentOptions saveOptions];
+		[GPGAgentOptions gpgAgentFlush]; // gpg-agent should read the new configuration.
 	} else if ([defaultName isEqualToString:@"GPGDefaultKeyFingerprint"]) {
-		conf = [GPGConfiguration gpgConf];
-		[conf setString:value forKey:@"default-key"];
+		GPGOptions *gpgOptions = [[GPGOptions new] autorelease];
+		[gpgOptions setOptionValue:value forName:@"default-key"];
 	} else if ([defaultName isEqualToString:@"GPGRemembersPassphrasesDuringSession"]) {
-		conf = [GPGConfiguration gpgAgentConf];
+		GPGAgentOptions *agentOptions = [[GPGAgentOptions new] autorelease];
 		
 		if ([value boolValue]) {
-			NSInteger cacheTime = [[conf stringForKey:@"default-cache-ttl"] integerValue];
+			
+			NSInteger cacheTime = [[agentOptions optionValueForName:@"default-cache-ttl"] integerValue];
 			if (cacheTime <= 600) {
 				cacheTime = 600;
 			}
-			[conf setString:[NSString stringWithFormat:@"%i", cacheTime] forKey:@"max-cache-ttl"];
+			[agentOptions setOptionValue:[NSString stringWithFormat:@"%i", cacheTime] forName:@"max-cache-ttl"];
 		} else {
-			[conf setString:@"0" forKey:@"max-cache-ttl"];
+			[agentOptions setOptionValue:@"0" forName:@"max-cache-ttl"];
 		}
 
-		[GPGConfiguration gpgAgentFlush]; // gpg-agent should read the new configuration.
+		[agentOptions saveOptions];
+		[GPGAgentOptions gpgAgentFlush]; // gpg-agent should read the new configuration.
 	}
 }
 
@@ -243,138 +242,25 @@ static NSMutableDictionary *_sharedInstances = nil;
 
 @end
 
-@implementation GPGConfiguration
-@synthesize confFile;
+
+@interface GPGOptions (hidden)
++ (NSString *) homeDirectory;
+@end
+
+
+@implementation GPGAgentOptions
+
++ (NSString *) optionsFilename {
+    return [[self homeDirectory] stringByAppendingPathComponent:@"gpg-agent.conf"];
+}
 
 + (void)gpgAgentFlush {
 	system("killall -SIGHUP gpg-agent");	
 }
-+ (id)gpgConf {
-	GPGConfiguration *obj = [[self alloc] initWithConfFile:[@"~/.gnupg/gpg.conf" stringByExpandingTildeInPath]];
-	return obj;
-}
-+ (id)gpgAgentConf {
-	GPGConfiguration *obj = [[self alloc] initWithConfFile:[@"~/.gnupg/gpg-agent.conf" stringByExpandingTildeInPath]];
-	return obj;
-}
-- (id)initWithConfFile:(NSString *)path {
-	if ([self init]) {
-		self.confFile = path;
-	}
-	return self;
-}
-
-- (void)setString:(NSString *)value forKey:(NSString *)key {
-	NSError *error;
-	NSStringEncoding encoding;
-	NSMutableString *confText = [NSMutableString stringWithContentsOfFile:confFile usedEncoding:&encoding error:&error];
-	
-	
-	BOOL edited = NO;
-	if (confText == nil) {
-		if ([error code] != 260) {
-			return;
-		}
-		edited = YES;
-		confText = [NSMutableString string];
-		encoding = NSUTF8StringEncoding;
-	}
-	
-	NSString *rawKey, *rawNoKey;
-	if ([key hasPrefix:@"no-"]) {
-		rawKey = [key substringFromIndex:3];
-		rawNoKey = key;
-	} else {
-		rawKey = key;
-		rawNoKey = [@"no-" stringByAppendingString:key];
-	}
-	
-	
-	NSUInteger length = [confText length];
-	NSInteger foundPos = -1;
-	NSRange range, lineRange, searchRange;
-	searchRange.location = 0;
-	searchRange.length = length;
-	
-	while ((range = [confText rangeOfString:rawKey options:NSCaseInsensitiveSearch range:searchRange]).length > 0) {
-		lineRange = [confText lineRangeForRange:range];
-		NSString *lineText = [[confText substringWithRange:lineRange] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-		
-		NSUInteger charPos = [lineText rangeOfCharacterFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].location;
-		
-		if ([lineText hasPrefix:rawKey] && [rawKey length] == charPos || [lineText hasPrefix:rawNoKey] && [rawNoKey length] == charPos) {
-			edited = YES;
-			[confText deleteCharactersInRange:lineRange];
-			foundPos = lineRange.location;
-			length -= lineRange.length;
-			lineRange.length = 0;			
-		}
-		
-		searchRange.location = lineRange.location + lineRange.length;
-		searchRange.length = length - searchRange.location;
-	}
-	
-	if (value) {
-		edited = YES;
-		if (foundPos == -1) {
-			foundPos = length;
-		}
-		[confText insertString:[NSString stringWithFormat:@"%@ %@\n", key, value] atIndex:foundPos];		
-	}
-	if (edited) {
-		[confText writeToFile:confFile atomically:YES encoding:encoding error:nil];
-	}
-}
-
-- (NSString *)stringForKey:(NSString *)key {
-	NSMutableString *confText = [NSMutableString stringWithContentsOfFile:confFile usedEncoding:nil error:nil];
-	if (confText == nil) {
-		return nil;
-	}
-	
-	
-	NSString *rawKey, *rawNoKey;
-	if ([key hasPrefix:@"no-"]) {
-		rawKey = [key substringFromIndex:3];
-		rawNoKey = key;
-	} else {
-		rawKey = key;
-		rawNoKey = [@"no-" stringByAppendingString:key];
-	}
-	
-	
-	NSUInteger length = [confText length];
-	NSRange range, lineRange, searchRange;
-	searchRange.location = 0;
-	searchRange.length = length;
-	
-	while ((range = [confText rangeOfString:rawKey options:NSCaseInsensitiveSearch range:searchRange]).length > 0) {
-		lineRange = [confText lineRangeForRange:range];
-		NSString *lineText = [[confText substringWithRange:lineRange] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-		
-		NSUInteger charPos = [lineText rangeOfCharacterFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].location;
-		
-		if ([lineText hasPrefix:rawKey] && [rawKey length] == charPos) {
-			range.location = [rawKey length] + 1;
-			range.length = lineRange.length - range.location - 1;
-			NSString *retText = [[lineText substringWithRange:range] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-			if ([retText length] == 0) {
-				return rawKey;
-			} else {
-				return retText;
-			}
-		} else if ([lineText hasPrefix:rawNoKey] && [rawNoKey length] == charPos) {
-			return rawNoKey;
-		}
-		
-		searchRange.location = lineRange.location + lineRange.length;
-		searchRange.length = length - searchRange.location;
-	}
-	return nil;
-}
-
 
 @end
+
+
 
 
 

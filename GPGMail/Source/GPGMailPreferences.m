@@ -410,7 +410,7 @@
 - (IBAction) flushCachedPassphrases:(id)sender
 {
     [GPGPassphraseController flushCachedPassphrases];
-	[GPGConfiguration gpgAgentFlush];
+	[GPGAgentOptions gpgAgentFlush];
 }
 
 - (void) preferencesDidChange:(NSNotification *)notification

@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <MacGPGME/MacGPGME.h>
 
 
 @interface GPGDefaults : NSObject {
@@ -46,19 +47,10 @@
 
 @end
 
-@interface GPGConfiguration : NSObject {
-	NSString *confFile;
-}
 
-@property (retain) NSString *confFile;
+@interface GPGAgentOptions : GPGOptions {}
 
 + (void)gpgAgentFlush;
-+ (id)gpgConf;
-+ (id)gpgAgentConf;
-- (id)initWithConfFile:(NSString *)path;
-
-- (void)setString:(NSString *)value forKey:(NSString *)key;
-- (NSString *)stringForKey:(NSString *)key;
 
 @end
 
