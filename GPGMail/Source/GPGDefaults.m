@@ -182,6 +182,7 @@ static NSMutableDictionary *_sharedInstances = nil;
 		if ([value boolValue]) {
 			
 			NSInteger cacheTime = [[agentOptions optionValueForName:@"default-cache-ttl"] integerValue];
+			cacheTime *= 12;
 			if (cacheTime <= 600) {
 				cacheTime = 600;
 			}
@@ -192,6 +193,16 @@ static NSMutableDictionary *_sharedInstances = nil;
 
 		[agentOptions saveOptions];
 		[GPGAgentOptions gpgAgentFlush]; // gpg-agent should read the new configuration.
+	} else if ([defaultName isEqualToString:@"GPGUsesKeychain"]) {
+		GPGAgentOptions *agentOptions = [[GPGAgentOptions new] autorelease];
+		if ([value boolValue]) {
+			[agentOptions setOptionValue:nil forName:@"no-use-macosx-keychain"];
+			[agentOptions setOptionState:YES forName:@"use-macosx-keychain"];
+		} else {
+			[agentOptions setOptionValue:nil forName:@"use-macosx-keychain"];
+			[agentOptions setOptionState:YES forName:@"no-use-macosx-keychain"];
+		}
+		[agentOptions saveOptions];
 	}
 }
 
