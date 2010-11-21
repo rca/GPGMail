@@ -116,6 +116,7 @@ enum {
     GPGEngine               *engine;
 }
 
++ (id) sharedInstance;
 + (void) addSnowLeopardCompatibility;
 - (void) setAlwaysSignMessages:(BOOL)flag;
 - (BOOL) alwaysSignMessages;
