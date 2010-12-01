@@ -52,7 +52,7 @@
 		308B8FD712A6AE5F00C99BD2 /* GPGMailPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8FA812A6AE5F00C99BD2 /* GPGMailPreferences.xib */; };
 		308B8FD812A6AE5F00C99BD2 /* GPGPassphrase.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8FBF12A6AE5F00C99BD2 /* GPGPassphrase.xib */; };
 		308B8FD912A6AE5F00C99BD2 /* GPGProgressIndicatorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8FCB12A6AE5F00C99BD2 /* GPGProgressIndicatorController.xib */; };
-		308B921512A6B0C400C99BD2 /* GPGMail.mailbundle in Resources */ = {isa = PBXBuildFile; fileRef = 8D5B49B6048680CD000E48DA /* GPGMail.mailbundle */; };
+		308F903D12A6BBD7003783EB /* GPGMail.mailbundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D5B49B6048680CD000E48DA /* GPGMail.mailbundle */; };
 		30B90DE21284656500B3FA6A /* GPGDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B90DE11284656500B3FA6A /* GPGDefaults.m */; };
 		550692320CD510D300CA0BA2 /* clear-Leopard.png in Resources */ = {isa = PBXBuildFile; fileRef = 5506922E0CD510D300CA0BA2 /* clear-Leopard.png */; };
 		550692330CD510D300CA0BA2 /* encrypted-Leopard.png in Resources */ = {isa = PBXBuildFile; fileRef = 5506922F0CD510D300CA0BA2 /* encrypted-Leopard.png */; };
@@ -88,7 +88,6 @@
 		559A81340838EEFD0052F47C /* System.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559A812F0838EEFD0052F47C /* System.framework */; };
 		559FD1250BBC428000C8FE50 /* KeyServers.plist in Resources */ = {isa = PBXBuildFile; fileRef = 559A80E80838ED6D0052F47C /* KeyServers.plist */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
-		AC48AFAC11CDEE0300393D2C /* MacGPGME.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC48AFAB11CDEE0300393D2C /* MacGPGME.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -154,6 +153,7 @@
 			dstPath = "~/Library/Mail/Bundles/";
 			dstSubfolderSpec = 0;
 			files = (
+				308F903D12A6BBD7003783EB /* GPGMail.mailbundle in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,7 +428,6 @@
 				559A81340838EEFD0052F47C /* System.framework in Frameworks */,
 				1BF51A70108FCD1900AC8268 /* ExceptionHandling.framework in Frameworks */,
 				1B6B7DF411CD1C600055F528 /* Sparkle.framework in Frameworks */,
-				AC48AFAC11CDEE0300393D2C /* MacGPGME.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -873,7 +872,6 @@
 				308B8FD712A6AE5F00C99BD2 /* GPGMailPreferences.xib in Resources */,
 				308B8FD812A6AE5F00C99BD2 /* GPGPassphrase.xib in Resources */,
 				308B8FD912A6AE5F00C99BD2 /* GPGProgressIndicatorController.xib in Resources */,
-				308B921512A6B0C400C99BD2 /* GPGMail.mailbundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
