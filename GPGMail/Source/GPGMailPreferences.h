@@ -31,9 +31,9 @@
 
 #import <AppKit/AppKit.h>
 
+@class GPGMailBundle;
 
-@interface GPGMailPreferences : NSPreferencesModule
-{
+@interface GPGMailPreferences : NSPreferencesModule {
     IBOutlet NSPopUpButton	*personalKeysPopUpButton;
     IBOutlet NSButton		*choosesPersonalKeyAccordingToAccountSwitchButton;
     IBOutlet NSMatrix		*passphraseStrategyMatrix;
@@ -70,9 +70,9 @@
     IBOutlet NSButton       *refreshKeysOnVolumeChangeSwitchButton;
     IBOutlet NSButton       *disableSMIMESwitchButton;
     
-    IBOutlet NSTextField	*versionTextField;
-    IBOutlet NSTextField	*contactTextField;
-    IBOutlet NSTextField	*webSiteTextField;
+    //IBOutlet NSTextField	*versionTextField;
+    //IBOutlet NSTextField	*contactTextField;
+    //IBOutlet NSTextField	*webSiteTextField;
 
     BOOL					initializingPrefs;
 }
@@ -114,5 +114,12 @@
 - (IBAction) toggleSMIME:(id)sender;
 
 - (IBAction) exportGPGMailConfiguration:(id)sender;
+
+@property (readonly) NSString *versionDescription;
+@property (readonly) NSString *copyright;
+@property (readonly) NSAttributedString *credits;
+@property (readonly) NSAttributedString *websiteLink;
+
+
 
 @end

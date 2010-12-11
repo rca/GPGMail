@@ -193,31 +193,31 @@ static BOOL	gpgMailWorks = YES;
     
 	// We need to load images and name them, because all images are searched by their name; as they are not located in the main bundle,
 	// +[NSImage imageNamed:] does not find them.
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"encrypted-Leopard"]] setName:@"gpgEncrypted"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"clear-Leopard"]] setName:@"gpgClear"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"signed-Leopard"]] setName:@"gpgSigned"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"unsigned-Leopard"]] setName:@"gpgUnsigned"];
-#elif defined(TIGER)
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"encrypted-Tiger"]] setName:@"gpgEncrypted"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"clear-Tiger"]] setName:@"gpgClear"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"signed-Tiger"]] setName:@"gpgSigned"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"unsigned-Tiger"]] setName:@"gpgUnsigned"];
-#else
+#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"encrypted"]] setName:@"gpgEncrypted"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"clear"]] setName:@"gpgClear"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"signed"]] setName:@"gpgSigned"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"unsigned"]] setName:@"gpgUnsigned"];
+#else
+	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"encrypted-old"]] setName:@"gpgEncrypted"];
+	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"clear-old"]] setName:@"gpgClear"];
+	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"signed-old"]] setName:@"gpgSigned"];
+	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"unsigned-old"]] setName:@"gpgUnsigned"];
 #endif
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GPGMail"]] setName:@"GPGMail"];
+    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"MacGPG"]] setName:@"MacGPG"];
+    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GPGMail32"]] setName:@"GPGMail32"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GPGMailPreferences"]] setName:@"GPGMailPreferences"];
+
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"questionMark"]] setName:@"gpgQuestionMark"];
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"SmallAlert12"]] setName:@"gpgSmallAlert12"];
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"SmallAlert16"]] setName:@"gpgSmallAlert16"];
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"EmptyImage"]] setName:@"gpgEmptyImage"];
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"ValidBadge"]] setName:@"gpgValidBadge"];
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"InvalidBadge"]] setName:@"gpgInvalidBadge"];
+    
 	// Do NOT release images!
+    
     
     [self registerBundle]; // To force registering composeAccessoryView and preferences
     
@@ -1324,13 +1324,13 @@ static BOOL	gpgMailWorks = YES;
 
 - (void) setLineWrappingLength:(int)value
 {
-    [[GPGDefaults gpgDefaults] setInteger:value forKey:@"LineLength"];
+    [[NSUserDefaults standardUserDefaults] setInteger:value forKey:@"LineLength"];
     [self preferencesDidChange:_cmd];
 }
 
 - (int) lineWrappingLength
 {
-    return [[GPGDefaults gpgDefaults] integerForKey:@"LineLength"];
+    return [[NSUserDefaults standardUserDefaults] integerForKey:@"LineLength"];
 }
 
 - (void) setIgnoresPGPPresence:(BOOL)flag

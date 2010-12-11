@@ -36,6 +36,34 @@
 
 @implementation GPGMailPreferences
 
+
+- (NSString *)versionDescription {
+	return [[GPGMailBundle sharedInstance] versionDescription];
+}
+- (NSString *)copyright {
+	return [[[NSBundle bundleForClass:[self class]] infoDictionary] objectForKey:@"NSHumanReadableCopyright"];
+}
+- (NSAttributedString *)credits {
+	NSBundle *mailBundle = [NSBundle bundleForClass:[self class]];
+	NSAttributedString *credits = [[[NSAttributedString alloc] initWithURL:[mailBundle URLForResource:@"Credits" withExtension:@"rtf"] documentAttributes:nil] autorelease];
+	return credits;
+}
+- (NSAttributedString *)websiteLink {
+    NSMutableParagraphStyle *pStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+	[pStyle setAlignment:NSRightTextAlignment];
+	
+	NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+								pStyle, NSParagraphStyleAttributeName, 
+								@"http://www.gpgmail.org/", NSLinkAttributeName, 
+								[NSColor blueColor], NSForegroundColorAttributeName, 
+								[NSFont fontWithName:@"Lucida Grande" size:9], NSFontAttributeName, 
+								[NSNumber numberWithInt:1], NSUnderlineStyleAttributeName, 
+								nil];
+	
+	return [[[NSAttributedString alloc] initWithString:@"http://www.gpgmail.org" attributes:attributes] autorelease];
+}
+
+
 - (SUUpdater *)updater {
     return [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
 }
@@ -315,22 +343,11 @@
     [self refreshPersonalKeys];
 }
 
-- (void) awakeFromNib
-{
+- (void) awakeFromNib {
     NSEnumerator            *anEnum = [[keyIdentifiersTableView tableColumns] objectEnumerator];
     NSTableColumn           *aColumn;
-    NSAttributedString      *anAttributedString;
-    NSMutableParagraphStyle *pStyle = [[NSMutableParagraphStyle alloc] init];
-
-    [pStyle setAlignment:NSRightTextAlignment];
-    [versionTextField setStringValue:[[GPGMailBundle sharedInstance] versionDescription]];
-    anAttributedString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:[contactTextField stringValue], @"gpgmail-users@lists.gpgmail.org"] attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSURL URLWithString:@"mailto:gpgmail-users@lists.gpgmail.org"], NSLinkAttributeName, pStyle, NSParagraphStyleAttributeName, nil]];
-    [contactTextField setAttributedStringValue:anAttributedString]; // FIXME: No effect on Panther!
-    [anAttributedString release];
-    anAttributedString = [[NSAttributedString alloc] initWithString:[webSiteTextField stringValue] attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSURL URLWithString:[webSiteTextField stringValue]], NSLinkAttributeName, pStyle, NSParagraphStyleAttributeName, nil]];
-    [webSiteTextField setAttributedStringValue:anAttributedString]; // FIXME: No effect on Panther!
-    [anAttributedString release];
-    [pStyle release];
+	
+	
     tableColumnPerIdentifier = [[NSMutableDictionary alloc] init];
     [personalKeysPopUpButton setAutoenablesItems:NO];
 

@@ -28,6 +28,7 @@
  */
 
 #import "GPGHandler.h"
+#import "GPGDefaults.h"
 
 #import <MacGPGME/MacGPGME.h>
 #import <Foundation/Foundation.h>
@@ -214,7 +215,7 @@ static NSString *stringForEncoding(CFStringEncoding encoding)
 + (NSString *) defaultHashAlgorithm
 {
     if(_defaultHashAlgorithm == nil){
-        NSString	*anAlgo = [[NSUserDefaults standardUserDefaults] stringForKey:@"GPGHashAlgorithm"];
+        NSString	*anAlgo = [[GPGDefaults gpgDefaults] stringForKey:@"GPGHashAlgorithm"];
 
         if(anAlgo == nil || [anAlgo length] == 0)
             anAlgo = [[self knownHashAlgorithms] objectAtIndex:0];
@@ -280,7 +281,7 @@ static NSArray *recipientArgumentsFromSenderAndArguments(NSString *sender, NSArr
         [recipientArgs addObject:aRecipient];
     }
 
-    if(![recipientArgs containsObject:sender] && [[NSUserDefaults standardUserDefaults] boolForKey:@"GPGEncryptsToSelf"]){
+    if(![recipientArgs containsObject:sender] && [[GPGDefaults gpgDefaults] boolForKey:@"GPGEncryptsToSelf"]){
         [recipientArgs addObject:@"--recipient"];
         [recipientArgs addObject:sender];
     }
@@ -373,7 +374,7 @@ static NSArray *recipientArgumentsFromSenderAndArguments(NSString *sender, NSArr
     [environment setObject:@"en_US.UTF-8" forKey:@"LC_MESSAGE"];
     [currentTask setEnvironment:environment];
 
-    if([[NSUserDefaults standardUserDefaults] boolForKey:@"GPGTraceEnabled"])
+    if([[GPGDefaults gpgDefaults] boolForKey:@"GPGTraceEnabled"])
         NSLog(@"----------\n%@ %@", [currentTask launchPath], [[currentTask arguments] componentsJoinedByString:@" "]);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readStderr:) name:NSFileHandleReadToEndOfFileCompletionNotification object:[stderrPipe fileHandleForReading]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readStdout:) name:NSFileHandleReadToEndOfFileCompletionNotification object:[stdoutPipe fileHandleForReading]];
@@ -420,7 +421,7 @@ static NSArray *recipientArgumentsFromSenderAndArguments(NSString *sender, NSArr
             [inputData writeToFile:[NSTemporaryDirectory() stringByAppendingPathComponent:[@"stdin-" stringByAppendingString:[[NSProcessInfo processInfo] globallyUniqueString]]] atomically:NO];
 #endif
             @try{
-                if([[NSUserDefaults standardUserDefaults] boolForKey:@"GPGTraceEnabled"]){
+                if([[GPGDefaults gpgDefaults] boolForKey:@"GPGTraceEnabled"]){
                     CFStringRef	aString = CFStringCreateFromExternalRepresentation(NULL, (CFDataRef)inputData, encoding);
                     
                     NSLog(@"IN: %@", aString);
@@ -443,7 +444,7 @@ static NSArray *recipientArgumentsFromSenderAndArguments(NSString *sender, NSArr
 
         [currentTask waitUntilExit]; // Couldn't we put this call before the rendez-vous?!
 
-        if([[NSUserDefaults standardUserDefaults] boolForKey:@"GPGLogStderrEnabled"]){
+        if([[GPGDefaults gpgDefaults] boolForKey:@"GPGLogStderrEnabled"]){
             CFStringRef	aString = CFStringCreateFromExternalRepresentation(NULL, (CFDataRef)stderrData, encoding);
             
             NSLog(@"%@", aString);
@@ -453,12 +454,12 @@ static NSArray *recipientArgumentsFromSenderAndArguments(NSString *sender, NSArr
 #ifdef DEBUG
             [stdoutData writeToFile:[NSTemporaryDirectory() stringByAppendingPathComponent:[@"stdout-" stringByAppendingString:[[NSProcessInfo processInfo] globallyUniqueString]]] atomically:NO];
 #endif
-            if([[NSUserDefaults standardUserDefaults] boolForKey:@"GPGTraceEnabled"]){
+            if([[GPGDefaults gpgDefaults] boolForKey:@"GPGTraceEnabled"]){
                 CFStringRef	aString = CFStringCreateFromExternalRepresentation(NULL, (CFDataRef)stdoutData, encoding);
                 
                 NSLog(@"=> %@", aString);
                 CFRelease(aString);
-                if([[NSUserDefaults standardUserDefaults] boolForKey:@"GPGLogStderrEnabled"])
+                if([[GPGDefaults gpgDefaults] boolForKey:@"GPGLogStderrEnabled"])
                     NSLog(@"#Termination status: %d", [currentTask terminationStatus]);
                 else{
                     aString = CFStringCreateFromExternalRepresentation(NULL, (CFDataRef)stderrData, encoding);
@@ -499,7 +500,7 @@ static NSArray *recipientArgumentsFromSenderAndArguments(NSString *sender, NSArr
             [stderrData release];
             stderrData = nil;
             result = [NSException exceptionWithName:GPGHandlerException reason:NSLocalizedStringFromTableInBundle(@"gpg execution manually interrupted", @"GPG", [NSBundle bundleForClass:[self class]], "") userInfo:nil];
-            if([[NSUserDefaults standardUserDefaults] boolForKey:@"GPGTraceEnabled"])
+            if([[GPGDefaults gpgDefaults] boolForKey:@"GPGTraceEnabled"])
                 NSLog(@"## gpg manually interrupted");
         }
         if(outputData != NULL)

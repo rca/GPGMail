@@ -15,11 +15,13 @@
 	<key>CFBundleExecutable</key>
 	<string>GPGMail</string>
 	<key>CFBundleGetInfoHTML</key>
-	<string>&lt;A HREF=&quot;http://www.gpgmail.org/&quot;&gt;GPGMail&lt;/A&gt; version 1.3.1, Copyright 2000-2010, GPGMail Project Team.</string>
+	<string>&lt;A HREF=&quot;http://www.gpgmail.org/&quot;&gt;GPGMail&lt;/A&gt; version 1.3.2beta1, Copyright 2000-2010, GPGMail Project Team.</string>
 	<key>CFBundleGetInfoString</key>
-	<string>GPGMail version 1.3.1, Copyright 2000-2010, GPGMail Project Team.</string>
+	<string>GPGMail version 1.3.2beta1, Copyright 2000-2010, GPGMail Project Team.</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright 2000-2010, GPGMail Project Team</string>
 	<key>CFBundleIconFile</key>
-	<string>GPGMail</string>
+	<string>GPGMail.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.gpgtools.gpgmail</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -29,11 +31,11 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3.1</string>
+	<string>1.3.2beta1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.3.1</string>
+	<string>1.3.2beta1</string>
 	<key>NSPrincipalClass</key>
 	<string>GPGMailBundle</string>
 	<key>SupportedPluginCompatibilityUUIDs</key>

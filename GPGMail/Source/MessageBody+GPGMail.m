@@ -31,6 +31,7 @@
 #import "NSData+GPGMail.h"
 #import "NSString+GPGMail.h"
 #import "GPGMailBundle.h"
+#import "GPGDefaults.h"
 
 #import <NSData+Message.h>
 #import <NSString+Message.h>
@@ -86,7 +87,7 @@ NSString	*GPGMailHeaderKey = @"X-PGP-Agent";
     // content-transfer-encoding, because PGP7 plug-in uses encoded data when decrypting,
     // and fails to, when content-transfer-encoding is not 7bit!
     BOOL					keepsOriginalContentTransferEncoding = (recipients == nil);
-    BOOL                    useCRLF = [[NSUserDefaults standardUserDefaults] boolForKey:@"GPGUsesAlwaysCRLF"];
+    BOOL                    useCRLF = [[GPGDefaults gpgDefaults] boolForKey:@"GPGUsesAlwaysCRLF"];
 
     NSAssert1([dataToModify length] > 0, @"### %s: No data to encrypt/sign!", __PRETTY_FUNCTION__);
 

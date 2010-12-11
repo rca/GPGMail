@@ -44,6 +44,7 @@
 		1BED94C61079EADE00D22B4C /* MessageEditor+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A808D0838EA1C0052F47C /* MessageEditor+GPGMail.m */; };
 		1BED95871079FE6200D22B4C /* GPGMailComposeAccessoryViewOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A806F0838E9B10052F47C /* GPGMailComposeAccessoryViewOwner.m */; };
 		1BF51A70108FCD1900AC8268 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BF51A6F108FCD1900AC8268 /* ExceptionHandling.framework */; };
+		302ED23A12B2FD2C0094DECD /* GPGMailPreferences.xib.strings in Resources */ = {isa = PBXBuildFile; fileRef = 302ED23812B2FD2C0094DECD /* GPGMailPreferences.xib.strings */; };
 		308B8F8512A6AE2D00C99BD2 /* GPGKeyDownload.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8F7B12A6AE2D00C99BD2 /* GPGKeyDownload.xib */; };
 		308B8F8612A6AE2D00C99BD2 /* GPGMailCompose.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8F7D12A6AE2D00C99BD2 /* GPGMailCompose.xib */; };
 		308B8F8712A6AE2D00C99BD2 /* GPGMailComposeTiger.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8F7F12A6AE2D00C99BD2 /* GPGMailComposeTiger.xib */; };
@@ -53,33 +54,31 @@
 		308B8FD812A6AE5F00C99BD2 /* GPGPassphrase.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8FBF12A6AE5F00C99BD2 /* GPGPassphrase.xib */; };
 		308B8FD912A6AE5F00C99BD2 /* GPGProgressIndicatorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8FCB12A6AE5F00C99BD2 /* GPGProgressIndicatorController.xib */; };
 		308F903D12A6BBD7003783EB /* GPGMail.mailbundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D5B49B6048680CD000E48DA /* GPGMail.mailbundle */; };
+		30913B4612B19B3B00327FDF /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 30913B4512B19B3B00327FDF /* Credits.rtf */; };
 		30B90DE21284656500B3FA6A /* GPGDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B90DE11284656500B3FA6A /* GPGDefaults.m */; };
-		550692320CD510D300CA0BA2 /* clear-Leopard.png in Resources */ = {isa = PBXBuildFile; fileRef = 5506922E0CD510D300CA0BA2 /* clear-Leopard.png */; };
-		550692330CD510D300CA0BA2 /* encrypted-Leopard.png in Resources */ = {isa = PBXBuildFile; fileRef = 5506922F0CD510D300CA0BA2 /* encrypted-Leopard.png */; };
-		550692340CD510D300CA0BA2 /* signed-Leopard.png in Resources */ = {isa = PBXBuildFile; fileRef = 550692300CD510D300CA0BA2 /* signed-Leopard.png */; };
-		550692350CD510D300CA0BA2 /* unsigned-Leopard.png in Resources */ = {isa = PBXBuildFile; fileRef = 550692310CD510D300CA0BA2 /* unsigned-Leopard.png */; };
-		559A7F830838E2B30052F47C /* GPG.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A7F820838E2B30052F47C /* GPG.png */; };
-		559A80A80838EB270052F47C /* clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80A40838EB270052F47C /* clear.png */; };
-		559A80A90838EB270052F47C /* encrypted.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80A50838EB270052F47C /* encrypted.png */; };
-		559A80AA0838EB270052F47C /* signed.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80A60838EB270052F47C /* signed.png */; };
-		559A80AB0838EB270052F47C /* unsigned.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80A70838EB270052F47C /* unsigned.png */; };
-		559A80B10838EB450052F47C /* clear-Tiger.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80AD0838EB450052F47C /* clear-Tiger.png */; };
-		559A80B20838EB450052F47C /* encrypted-Tiger.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80AE0838EB450052F47C /* encrypted-Tiger.png */; };
-		559A80B30838EB450052F47C /* signed-Tiger.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80AF0838EB450052F47C /* signed-Tiger.png */; };
-		559A80B40838EB450052F47C /* unsigned-Tiger.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80B00838EB450052F47C /* unsigned-Tiger.png */; };
-		559A80BF0838EBA60052F47C /* CheckMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80B50838EBA60052F47C /* CheckMark.png */; };
-		559A80C00838EBA60052F47C /* EmptyImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80B60838EBA60052F47C /* EmptyImage.png */; };
-		559A80C10838EBA60052F47C /* InvalidBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80B70838EBA60052F47C /* InvalidBadge.png */; };
-		559A80C20838EBA60052F47C /* questionMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80B80838EBA60052F47C /* questionMark.png */; };
-		559A80C30838EBA60052F47C /* RefreshNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80B90838EBA60052F47C /* RefreshNormal.png */; };
-		559A80C40838EBA60052F47C /* RefreshPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80BA0838EBA60052F47C /* RefreshPressed.png */; };
-		559A80C50838EBA60052F47C /* SmallAlert12.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80BB0838EBA60052F47C /* SmallAlert12.png */; };
-		559A80C60838EBA60052F47C /* SmallAlert16.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80BC0838EBA60052F47C /* SmallAlert16.png */; };
-		559A80C70838EBA60052F47C /* triangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80BD0838EBA60052F47C /* triangle.png */; };
-		559A80C80838EBA60052F47C /* ValidBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80BE0838EBA60052F47C /* ValidBadge.png */; };
-		559A80DF0838ECB40052F47C /* GPGMail.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80DD0838ECB40052F47C /* GPGMail.png */; };
-		559A80E00838ECB40052F47C /* GPGMailPreferences.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80DE0838ECB40052F47C /* GPGMailPreferences.png */; };
-		559A80E20838ECEF0052F47C /* GPGMail32.png in Resources */ = {isa = PBXBuildFile; fileRef = 559A80E10838ECEF0052F47C /* GPGMail32.png */; };
+		30E4F6BF12B3B1350093608D /* CheckMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6A712B3B1350093608D /* CheckMark.png */; };
+		30E4F6C012B3B1350093608D /* clear-old.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6A812B3B1350093608D /* clear-old.png */; };
+		30E4F6C112B3B1350093608D /* clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6A912B3B1350093608D /* clear.png */; };
+		30E4F6C212B3B1350093608D /* EmptyImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6AA12B3B1350093608D /* EmptyImage.png */; };
+		30E4F6C312B3B1350093608D /* encrypted-old.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6AB12B3B1350093608D /* encrypted-old.png */; };
+		30E4F6C412B3B1350093608D /* encrypted.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6AC12B3B1350093608D /* encrypted.png */; };
+		30E4F6C512B3B1350093608D /* GPGMail.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6AD12B3B1350093608D /* GPGMail.png */; };
+		30E4F6C612B3B1350093608D /* GPGMail32.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6AE12B3B1350093608D /* GPGMail32.png */; };
+		30E4F6C712B3B1350093608D /* GPGMailPreferences.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6AF12B3B1350093608D /* GPGMailPreferences.png */; };
+		30E4F6C812B3B1350093608D /* InvalidBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B012B3B1350093608D /* InvalidBadge.png */; };
+		30E4F6C912B3B1350093608D /* MacGPG.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B112B3B1350093608D /* MacGPG.png */; };
+		30E4F6CB12B3B1350093608D /* OHZap.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B312B3B1350093608D /* OHZap.png */; };
+		30E4F6CC12B3B1350093608D /* questionMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B412B3B1350093608D /* questionMark.png */; };
+		30E4F6CD12B3B1350093608D /* RefreshNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B512B3B1350093608D /* RefreshNormal.png */; };
+		30E4F6CE12B3B1350093608D /* RefreshPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B612B3B1350093608D /* RefreshPressed.png */; };
+		30E4F6CF12B3B1350093608D /* signed-old.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B712B3B1350093608D /* signed-old.png */; };
+		30E4F6D012B3B1350093608D /* signed.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B812B3B1350093608D /* signed.png */; };
+		30E4F6D112B3B1350093608D /* SmallAlert12.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B912B3B1350093608D /* SmallAlert12.png */; };
+		30E4F6D212B3B1350093608D /* SmallAlert16.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6BA12B3B1350093608D /* SmallAlert16.png */; };
+		30E4F6D312B3B1350093608D /* triangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6BB12B3B1350093608D /* triangle.png */; };
+		30E4F6D412B3B1350093608D /* unsigned-old.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6BC12B3B1350093608D /* unsigned-old.png */; };
+		30E4F6D512B3B1350093608D /* unsigned.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6BD12B3B1350093608D /* unsigned.png */; };
+		30E4F6D612B3B1350093608D /* ValidBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6BE12B3B1350093608D /* ValidBadge.png */; };
 		559A80E70838ED590052F47C /* GPGMailBundle.defaults in Resources */ = {isa = PBXBuildFile; fileRef = 559A80E60838ED590052F47C /* GPGMailBundle.defaults */; };
 		559A81300838EEFD0052F47C /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559A812B0838EEFD0052F47C /* AddressBook.framework */; };
 		559A81310838EEFD0052F47C /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559A812C0838EEFD0052F47C /* Carbon.framework */; };
@@ -202,6 +201,9 @@
 		1B859A6E109331A6009E469A /* MVTerminationHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MVTerminationHandler.h; path = Source/PrivateHeaders/MVTerminationHandler.h; sourceTree = "<group>"; };
 		1BCEE1E211CC051500488D19 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		1BF51A6F108FCD1900AC8268 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
+		302ED23912B2FD2C0094DECD /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = German; path = Resources/German.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
+		302ED23B12B2FD350094DECD /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = Resources/English.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
+		307E1C6612B17CFF0012F3DF /* GPGMailBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPGMailBundle.h; path = Source/GPGMailBundle.h; sourceTree = "<group>"; };
 		308B8F7C12A6AE2D00C99BD2 /* Danish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Danish; path = Resources/Danish.lproj/GPGKeyDownload.xib; sourceTree = "<group>"; };
 		308B8F7E12A6AE2D00C99BD2 /* Danish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Danish; path = Resources/Danish.lproj/GPGMailCompose.xib; sourceTree = "<group>"; };
 		308B8F8012A6AE2D00C99BD2 /* Danish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Danish; path = Resources/Danish.lproj/GPGMailComposeTiger.xib; sourceTree = "<group>"; };
@@ -281,13 +283,33 @@
 		308B8FD412A6AE5F00C99BD2 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Japanese; path = Resources/GPG.subproj/Japanese.lproj/GPGProgressIndicatorController.xib; sourceTree = "<group>"; };
 		308B8FD512A6AE5F00C99BD2 /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ko; path = Resources/GPG.subproj/ko.lproj/GPGProgressIndicatorController.xib; sourceTree = "<group>"; };
 		308B8FD612A6AE5F00C99BD2 /* Swedish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Swedish; path = Resources/GPG.subproj/Swedish.lproj/GPGProgressIndicatorController.xib; sourceTree = "<group>"; };
+		30913B4312B19B3500327FDF /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = Resources/English.lproj/Credits.rtf; sourceTree = "<group>"; };
 		30B90DE01284656500B3FA6A /* GPGDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPGDefaults.h; path = Source/GPGDefaults.h; sourceTree = "<group>"; };
 		30B90DE11284656500B3FA6A /* GPGDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GPGDefaults.m; path = Source/GPGDefaults.m; sourceTree = "<group>"; };
+		30E4F6A712B3B1350093608D /* CheckMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CheckMark.png; path = Resources/Images/CheckMark.png; sourceTree = "<group>"; };
+		30E4F6A812B3B1350093608D /* clear-old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clear-old.png"; path = "Resources/Images/clear-old.png"; sourceTree = "<group>"; };
+		30E4F6A912B3B1350093608D /* clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = clear.png; path = Resources/Images/clear.png; sourceTree = "<group>"; };
+		30E4F6AA12B3B1350093608D /* EmptyImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EmptyImage.png; path = Resources/Images/EmptyImage.png; sourceTree = "<group>"; };
+		30E4F6AB12B3B1350093608D /* encrypted-old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "encrypted-old.png"; path = "Resources/Images/encrypted-old.png"; sourceTree = "<group>"; };
+		30E4F6AC12B3B1350093608D /* encrypted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = encrypted.png; path = Resources/Images/encrypted.png; sourceTree = "<group>"; };
+		30E4F6AD12B3B1350093608D /* GPGMail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GPGMail.png; path = Resources/Images/GPGMail.png; sourceTree = "<group>"; };
+		30E4F6AE12B3B1350093608D /* GPGMail32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GPGMail32.png; path = Resources/Images/GPGMail32.png; sourceTree = "<group>"; };
+		30E4F6AF12B3B1350093608D /* GPGMailPreferences.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GPGMailPreferences.png; path = Resources/Images/GPGMailPreferences.png; sourceTree = "<group>"; };
+		30E4F6B012B3B1350093608D /* InvalidBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = InvalidBadge.png; path = Resources/Images/InvalidBadge.png; sourceTree = "<group>"; };
+		30E4F6B112B3B1350093608D /* MacGPG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MacGPG.png; path = Resources/Images/MacGPG.png; sourceTree = "<group>"; };
+		30E4F6B312B3B1350093608D /* OHZap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OHZap.png; path = Resources/Images/OHZap.png; sourceTree = "<group>"; };
+		30E4F6B412B3B1350093608D /* questionMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = questionMark.png; path = Resources/Images/questionMark.png; sourceTree = "<group>"; };
+		30E4F6B512B3B1350093608D /* RefreshNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RefreshNormal.png; path = Resources/Images/RefreshNormal.png; sourceTree = "<group>"; };
+		30E4F6B612B3B1350093608D /* RefreshPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RefreshPressed.png; path = Resources/Images/RefreshPressed.png; sourceTree = "<group>"; };
+		30E4F6B712B3B1350093608D /* signed-old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "signed-old.png"; path = "Resources/Images/signed-old.png"; sourceTree = "<group>"; };
+		30E4F6B812B3B1350093608D /* signed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = signed.png; path = Resources/Images/signed.png; sourceTree = "<group>"; };
+		30E4F6B912B3B1350093608D /* SmallAlert12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmallAlert12.png; path = Resources/Images/SmallAlert12.png; sourceTree = "<group>"; };
+		30E4F6BA12B3B1350093608D /* SmallAlert16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmallAlert16.png; path = Resources/Images/SmallAlert16.png; sourceTree = "<group>"; };
+		30E4F6BB12B3B1350093608D /* triangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = triangle.png; path = Resources/Images/triangle.png; sourceTree = "<group>"; };
+		30E4F6BC12B3B1350093608D /* unsigned-old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "unsigned-old.png"; path = "Resources/Images/unsigned-old.png"; sourceTree = "<group>"; };
+		30E4F6BD12B3B1350093608D /* unsigned.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unsigned.png; path = Resources/Images/unsigned.png; sourceTree = "<group>"; };
+		30E4F6BE12B3B1350093608D /* ValidBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ValidBadge.png; path = Resources/Images/ValidBadge.png; sourceTree = "<group>"; };
 		32DBCF630370AF2F00C91783 /* GPGMail_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPGMail_Prefix.pch; sourceTree = "<group>"; };
-		5506922E0CD510D300CA0BA2 /* clear-Leopard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clear-Leopard.png"; path = "Resources/clear-Leopard.png"; sourceTree = "<group>"; };
-		5506922F0CD510D300CA0BA2 /* encrypted-Leopard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "encrypted-Leopard.png"; path = "Resources/encrypted-Leopard.png"; sourceTree = "<group>"; };
-		550692300CD510D300CA0BA2 /* signed-Leopard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "signed-Leopard.png"; path = "Resources/signed-Leopard.png"; sourceTree = "<group>"; };
-		550692310CD510D300CA0BA2 /* unsigned-Leopard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "unsigned-Leopard.png"; path = "Resources/unsigned-Leopard.png"; sourceTree = "<group>"; };
 		5582E2A40CE61FCE001ADBF3 /* ComposeHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ComposeHeaderView.h; path = Source/PrivateHeaders/ComposeHeaderView.h; sourceTree = "<group>"; };
 		558C390E0CF9720500998406 /* NSObject+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+GPGMail.h"; path = "Source/NSObject+GPGMail.h"; sourceTree = "<group>"; };
 		558C39990CFAB0DF00998406 /* GPGMessageSignature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPGMessageSignature.h; path = Source/GPGMessageSignature.h; sourceTree = "<group>"; };
@@ -296,7 +318,6 @@
 		558D4E280D3A695F0007E29A /* rfc4880.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = rfc4880.txt; path = Documentation/rfc4880.txt; sourceTree = "<group>"; };
 		558D74410CDCD67800BA33EC /* ColorBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColorBackgroundView.h; path = Source/PrivateHeaders/ColorBackgroundView.h; sourceTree = "<group>"; };
 		558D75310CDD033A00BA33EC /* Subdata.h */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 4; name = Subdata.h; path = Source/PrivateHeaders/Subdata.h; sourceTree = "<group>"; };
-		559A7F820838E2B30052F47C /* GPG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GPG.png; path = Resources/GPG.subproj/GPG.png; sourceTree = "<group>"; };
 		559A7FA90838E4040052F47C /* GPGHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GPGHandler.h; path = Source/GPG.subproj/GPGHandler.h; sourceTree = "<group>"; };
 		559A7FAA0838E4040052F47C /* GPGPassphraseController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GPGPassphraseController.h; path = Source/GPG.subproj/GPGPassphraseController.h; sourceTree = "<group>"; };
 		559A7FAB0838E4040052F47C /* GPGProgressIndicatorController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GPGProgressIndicatorController.h; path = Source/GPG.subproj/GPGProgressIndicatorController.h; sourceTree = "<group>"; };
@@ -335,7 +356,6 @@
 		559A804E0838E7830052F47C /* TableViewManager.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = TableViewManager.h; path = Source/PrivateHeaders/TableViewManager.h; sourceTree = "<group>"; };
 		559A804F0838E7950052F47C /* OptionalView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = OptionalView.h; path = Source/PrivateHeaders/OptionalView.h; sourceTree = "<group>"; };
 		559A80510838E8300052F47C /* GPGKeyDownload.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GPGKeyDownload.h; path = Source/GPGKeyDownload.h; sourceTree = "<group>"; };
-		559A80520838E8300052F47C /* GPGMailBundle.h */ = {isa = PBXFileReference; explicitFileType = file; fileEncoding = 4; name = GPGMailBundle.h; path = Source/GPGMailBundle.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		559A80530838E8300052F47C /* GPGMailComposeAccessoryViewOwner.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GPGMailComposeAccessoryViewOwner.h; path = Source/GPGMailComposeAccessoryViewOwner.h; sourceTree = "<group>"; };
 		559A80540838E8300052F47C /* GPGMailPatching.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GPGMailPatching.h; path = Source/GPGMailPatching.h; sourceTree = "<group>"; };
 		559A80550838E8300052F47C /* GPGMailPreferences.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GPGMailPreferences.h; path = Source/GPGMailPreferences.h; sourceTree = "<group>"; };
@@ -380,27 +400,6 @@
 		559A80900838EA1C0052F47C /* NSPreferences_GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSPreferences_GPGMail.m; path = Source/NSPreferences_GPGMail.m; sourceTree = "<group>"; };
 		559A80910838EA1C0052F47C /* TableViewManager+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = "TableViewManager+GPGMail.m"; path = "Source/TableViewManager+GPGMail.m"; sourceTree = "<group>"; };
 		559A80990838EA560052F47C /* GPGMailTextAttachmentPoser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GPGMailTextAttachmentPoser.m; path = Source/GPGMailTextAttachmentPoser.m; sourceTree = "<group>"; };
-		559A80A40838EB270052F47C /* clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = clear.png; path = Resources/clear.png; sourceTree = "<group>"; };
-		559A80A50838EB270052F47C /* encrypted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = encrypted.png; path = Resources/encrypted.png; sourceTree = "<group>"; };
-		559A80A60838EB270052F47C /* signed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = signed.png; path = Resources/signed.png; sourceTree = "<group>"; };
-		559A80A70838EB270052F47C /* unsigned.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unsigned.png; path = Resources/unsigned.png; sourceTree = "<group>"; };
-		559A80AD0838EB450052F47C /* clear-Tiger.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clear-Tiger.png"; path = "Resources/clear-Tiger.png"; sourceTree = "<group>"; };
-		559A80AE0838EB450052F47C /* encrypted-Tiger.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "encrypted-Tiger.png"; path = "Resources/encrypted-Tiger.png"; sourceTree = "<group>"; };
-		559A80AF0838EB450052F47C /* signed-Tiger.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "signed-Tiger.png"; path = "Resources/signed-Tiger.png"; sourceTree = "<group>"; };
-		559A80B00838EB450052F47C /* unsigned-Tiger.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "unsigned-Tiger.png"; path = "Resources/unsigned-Tiger.png"; sourceTree = "<group>"; };
-		559A80B50838EBA60052F47C /* CheckMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CheckMark.png; path = Resources/CheckMark.png; sourceTree = "<group>"; };
-		559A80B60838EBA60052F47C /* EmptyImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EmptyImage.png; path = Resources/EmptyImage.png; sourceTree = "<group>"; };
-		559A80B70838EBA60052F47C /* InvalidBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = InvalidBadge.png; path = Resources/InvalidBadge.png; sourceTree = "<group>"; };
-		559A80B80838EBA60052F47C /* questionMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = questionMark.png; path = Resources/questionMark.png; sourceTree = "<group>"; };
-		559A80B90838EBA60052F47C /* RefreshNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RefreshNormal.png; path = Resources/RefreshNormal.png; sourceTree = "<group>"; };
-		559A80BA0838EBA60052F47C /* RefreshPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RefreshPressed.png; path = Resources/RefreshPressed.png; sourceTree = "<group>"; };
-		559A80BB0838EBA60052F47C /* SmallAlert12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmallAlert12.png; path = Resources/SmallAlert12.png; sourceTree = "<group>"; };
-		559A80BC0838EBA60052F47C /* SmallAlert16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmallAlert16.png; path = Resources/SmallAlert16.png; sourceTree = "<group>"; };
-		559A80BD0838EBA60052F47C /* triangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = triangle.png; path = Resources/triangle.png; sourceTree = "<group>"; };
-		559A80BE0838EBA60052F47C /* ValidBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ValidBadge.png; path = Resources/ValidBadge.png; sourceTree = "<group>"; };
-		559A80DD0838ECB40052F47C /* GPGMail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GPGMail.png; path = Resources/GPGMail.png; sourceTree = "<group>"; };
-		559A80DE0838ECB40052F47C /* GPGMailPreferences.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GPGMailPreferences.png; path = Resources/GPGMailPreferences.png; sourceTree = "<group>"; };
-		559A80E10838ECEF0052F47C /* GPGMail32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GPGMail32.png; path = Resources/GPGMail32.png; sourceTree = "<group>"; };
 		559A80E60838ED590052F47C /* GPGMailBundle.defaults */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = GPGMailBundle.defaults; path = Resources/GPGMailBundle.defaults; sourceTree = "<group>"; };
 		559A80E80838ED6D0052F47C /* KeyServers.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; name = KeyServers.plist; path = Plists/KeyServers.plist; sourceTree = "<group>"; };
 		559A812B0838EEFD0052F47C /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = /System/Library/Frameworks/AddressBook.framework; sourceTree = "<absolute>"; };
@@ -446,14 +445,13 @@
 				559A806B0838E96A0052F47C /* Classes */,
 				32C88E010371C26100C91783 /* Other Sources */,
 				089C167CFE841241C02AAC07 /* Resources */,
-				559A81860838F3C30052F47C /* Info-GPGMail.plist */,
-				089C1671FE841209C02AAC07 /* Frameworks and Libraries */,
+				089C1671FE841209C02AAC07 /* Frameworks */,
 				19C28FB8FE9D52D311CA2CBB /* Products */,
 			);
 			name = GPGMail;
 			sourceTree = "<group>";
 		};
-		089C1671FE841209C02AAC07 /* Frameworks and Libraries */ = {
+		089C1671FE841209C02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				1B6B7DF311CD1C600055F528 /* Sparkle.framework */,
@@ -466,25 +464,21 @@
 				AC48AFAB11CDEE0300393D2C /* MacGPGME.framework */,
 				1BF51A6F108FCD1900AC8268 /* ExceptionHandling.framework */,
 			);
-			name = "Frameworks and Libraries";
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				1B6B7E5111CD24440055F528 /* dsa_pub.pem */,
-				308B8FA812A6AE5F00C99BD2 /* GPGMailPreferences.xib */,
-				308B8F7B12A6AE2D00C99BD2 /* GPGKeyDownload.xib */,
-				308B8F7D12A6AE2D00C99BD2 /* GPGMailCompose.xib */,
-				308B8F7F12A6AE2D00C99BD2 /* GPGMailComposeTiger.xib */,
-				308B8F8112A6AE2D00C99BD2 /* GPGMenu.xib */,
-				308B8F8312A6AE2D00C99BD2 /* GPGMessageViewerAccessoryView.xib */,
-				1B194B8D11CC57250092B810 /* InfoPlist.strings */,
-				1B194B5911CC55A80092B810 /* GPGMail.strings */,
 				1B19481A11CC43450092B810 /* GPG */,
+				30CDB07312B2D44700F5F8B7 /* XIBs */,
 				559A80DC0838EC770052F47C /* Images */,
+				30CDB07412B2D45900F5F8B7 /* Strings */,
 				559A80E60838ED590052F47C /* GPGMailBundle.defaults */,
 				559A80E80838ED6D0052F47C /* KeyServers.plist */,
+				559A81860838F3C30052F47C /* Info-GPGMail.plist */,
+				30913B4512B19B3B00327FDF /* Credits.rtf */,
+				1B6B7E5111CD24440055F528 /* dsa_pub.pem */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -516,7 +510,6 @@
 				308B8FBF12A6AE5F00C99BD2 /* GPGPassphrase.xib */,
 				308B8FCB12A6AE5F00C99BD2 /* GPGProgressIndicatorController.xib */,
 				1B194B6611CC56520092B810 /* GPG.strings */,
-				559A7F820838E2B30052F47C /* GPG.png */,
 			);
 			name = GPG;
 			sourceTree = "<group>";
@@ -547,23 +540,46 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		30CDB07312B2D44700F5F8B7 /* XIBs */ = {
+			isa = PBXGroup;
+			children = (
+				308B8FA812A6AE5F00C99BD2 /* GPGMailPreferences.xib */,
+				308B8F7B12A6AE2D00C99BD2 /* GPGKeyDownload.xib */,
+				308B8F7D12A6AE2D00C99BD2 /* GPGMailCompose.xib */,
+				308B8F7F12A6AE2D00C99BD2 /* GPGMailComposeTiger.xib */,
+				308B8F8112A6AE2D00C99BD2 /* GPGMenu.xib */,
+				308B8F8312A6AE2D00C99BD2 /* GPGMessageViewerAccessoryView.xib */,
+			);
+			name = XIBs;
+			sourceTree = "<group>";
+		};
+		30CDB07412B2D45900F5F8B7 /* Strings */ = {
+			isa = PBXGroup;
+			children = (
+				302ED23812B2FD2C0094DECD /* GPGMailPreferences.xib.strings */,
+				1B194B8D11CC57250092B810 /* InfoPlist.strings */,
+				1B194B5911CC55A80092B810 /* GPGMail.strings */,
+			);
+			name = Strings;
+			sourceTree = "<group>";
+		};
+		30E4F6D812B3B13A0093608D /* old */ = {
+			isa = PBXGroup;
+			children = (
+				30E4F6A812B3B1350093608D /* clear-old.png */,
+				30E4F6AB12B3B1350093608D /* encrypted-old.png */,
+				30E4F6B712B3B1350093608D /* signed-old.png */,
+				30E4F6BC12B3B1350093608D /* unsigned-old.png */,
+			);
+			name = old;
+			sourceTree = "<group>";
+		};
 		32C88E010371C26100C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
 				32DBCF630370AF2F00C91783 /* GPGMail_Prefix.pch */,
 			);
 			name = "Other Sources";
-			sourceTree = "<group>";
-		};
-		5506922D0CD5108D00CA0BA2 /* Leopard */ = {
-			isa = PBXGroup;
-			children = (
-				5506922E0CD510D300CA0BA2 /* clear-Leopard.png */,
-				5506922F0CD510D300CA0BA2 /* encrypted-Leopard.png */,
-				550692300CD510D300CA0BA2 /* signed-Leopard.png */,
-				550692310CD510D300CA0BA2 /* unsigned-Leopard.png */,
-			);
-			name = Leopard;
 			sourceTree = "<group>";
 		};
 		559A7FB30838E4200052F47C /* Documentation */ = {
@@ -587,7 +603,7 @@
 				559A80350838E6B50052F47C /* Mail */,
 				559A80580838E8300052F47C /* GPGMessageViewerAccessoryViewOwner.h */,
 				559A80620838E8890052F47C /* ComposeBackEnd+GPGMail.h */,
-				559A80520838E8300052F47C /* GPGMailBundle.h */,
+				307E1C6612B17CFF0012F3DF /* GPGMailBundle.h */,
 				559A80530838E8300052F47C /* GPGMailComposeAccessoryViewOwner.h */,
 				559A80570838E8300052F47C /* GPGMessageEditorPoser.h */,
 				559A80540838E8300052F47C /* GPGMailPatching.h */,
@@ -693,47 +709,29 @@
 			name = Classes;
 			sourceTree = "<group>";
 		};
-		559A80A30838EAFA0052F47C /* Panther */ = {
-			isa = PBXGroup;
-			children = (
-				559A80A40838EB270052F47C /* clear.png */,
-				559A80A50838EB270052F47C /* encrypted.png */,
-				559A80A60838EB270052F47C /* signed.png */,
-				559A80A70838EB270052F47C /* unsigned.png */,
-			);
-			name = Panther;
-			sourceTree = "<group>";
-		};
-		559A80AC0838EB2D0052F47C /* Tiger */ = {
-			isa = PBXGroup;
-			children = (
-				559A80AD0838EB450052F47C /* clear-Tiger.png */,
-				559A80AE0838EB450052F47C /* encrypted-Tiger.png */,
-				559A80AF0838EB450052F47C /* signed-Tiger.png */,
-				559A80B00838EB450052F47C /* unsigned-Tiger.png */,
-			);
-			name = Tiger;
-			sourceTree = "<group>";
-		};
 		559A80DC0838EC770052F47C /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				559A80A30838EAFA0052F47C /* Panther */,
-				559A80AC0838EB2D0052F47C /* Tiger */,
-				5506922D0CD5108D00CA0BA2 /* Leopard */,
-				559A80B70838EBA60052F47C /* InvalidBadge.png */,
-				559A80BE0838EBA60052F47C /* ValidBadge.png */,
-				559A80B90838EBA60052F47C /* RefreshNormal.png */,
-				559A80BA0838EBA60052F47C /* RefreshPressed.png */,
-				559A80BD0838EBA60052F47C /* triangle.png */,
-				559A80DD0838ECB40052F47C /* GPGMail.png */,
-				559A80DE0838ECB40052F47C /* GPGMailPreferences.png */,
-				559A80B50838EBA60052F47C /* CheckMark.png */,
-				559A80B80838EBA60052F47C /* questionMark.png */,
-				559A80BB0838EBA60052F47C /* SmallAlert12.png */,
-				559A80BC0838EBA60052F47C /* SmallAlert16.png */,
-				559A80B60838EBA60052F47C /* EmptyImage.png */,
-				559A80E10838ECEF0052F47C /* GPGMail32.png */,
+				30E4F6D812B3B13A0093608D /* old */,
+				30E4F6A712B3B1350093608D /* CheckMark.png */,
+				30E4F6A912B3B1350093608D /* clear.png */,
+				30E4F6AA12B3B1350093608D /* EmptyImage.png */,
+				30E4F6AC12B3B1350093608D /* encrypted.png */,
+				30E4F6AD12B3B1350093608D /* GPGMail.png */,
+				30E4F6AE12B3B1350093608D /* GPGMail32.png */,
+				30E4F6AF12B3B1350093608D /* GPGMailPreferences.png */,
+				30E4F6B012B3B1350093608D /* InvalidBadge.png */,
+				30E4F6B112B3B1350093608D /* MacGPG.png */,
+				30E4F6B312B3B1350093608D /* OHZap.png */,
+				30E4F6B412B3B1350093608D /* questionMark.png */,
+				30E4F6B512B3B1350093608D /* RefreshNormal.png */,
+				30E4F6B612B3B1350093608D /* RefreshPressed.png */,
+				30E4F6B812B3B1350093608D /* signed.png */,
+				30E4F6B912B3B1350093608D /* SmallAlert12.png */,
+				30E4F6BA12B3B1350093608D /* SmallAlert16.png */,
+				30E4F6BB12B3B1350093608D /* triangle.png */,
+				30E4F6BD12B3B1350093608D /* unsigned.png */,
+				30E4F6BE12B3B1350093608D /* ValidBadge.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -745,12 +743,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55541F4C085AE6B100548474 /* Build configuration list for PBXNativeTarget "GPGMail" */;
 			buildPhases = (
+				30DA468812B2D5E800E20039 /* Localize XIBs */,
 				8D5B49AF048680CD000E48DA /* Resources */,
+				308B026412B22993001A31BB /* ShellScript */,
 				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
-				3075CE6012A5BD1300ED84D7 /* ShellScript */,
-				1BB95C80105EE80C00A4CAE4 /* CopyFiles */,
 				1B45A52111CC977700ED4663 /* CopyFiles */,
+				1BB95C80105EE80C00A4CAE4 /* CopyFiles */,
 			);
 			buildRules = (
 				552507E90BAD561900466016 /* PBXBuildRule */,
@@ -831,34 +830,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				559A7F830838E2B30052F47C /* GPG.png in Resources */,
-				559A80A80838EB270052F47C /* clear.png in Resources */,
-				559A80A90838EB270052F47C /* encrypted.png in Resources */,
-				559A80AA0838EB270052F47C /* signed.png in Resources */,
-				559A80AB0838EB270052F47C /* unsigned.png in Resources */,
-				559A80B10838EB450052F47C /* clear-Tiger.png in Resources */,
-				559A80B20838EB450052F47C /* encrypted-Tiger.png in Resources */,
-				559A80B30838EB450052F47C /* signed-Tiger.png in Resources */,
-				559A80B40838EB450052F47C /* unsigned-Tiger.png in Resources */,
-				559A80BF0838EBA60052F47C /* CheckMark.png in Resources */,
-				559A80C00838EBA60052F47C /* EmptyImage.png in Resources */,
-				559A80C10838EBA60052F47C /* InvalidBadge.png in Resources */,
-				559A80C20838EBA60052F47C /* questionMark.png in Resources */,
-				559A80C30838EBA60052F47C /* RefreshNormal.png in Resources */,
-				559A80C40838EBA60052F47C /* RefreshPressed.png in Resources */,
-				559A80C50838EBA60052F47C /* SmallAlert12.png in Resources */,
-				559A80C60838EBA60052F47C /* SmallAlert16.png in Resources */,
-				559A80C70838EBA60052F47C /* triangle.png in Resources */,
-				559A80C80838EBA60052F47C /* ValidBadge.png in Resources */,
-				559A80DF0838ECB40052F47C /* GPGMail.png in Resources */,
-				559A80E00838ECB40052F47C /* GPGMailPreferences.png in Resources */,
-				559A80E20838ECEF0052F47C /* GPGMail32.png in Resources */,
 				559A80E70838ED590052F47C /* GPGMailBundle.defaults in Resources */,
 				559FD1250BBC428000C8FE50 /* KeyServers.plist in Resources */,
-				550692320CD510D300CA0BA2 /* clear-Leopard.png in Resources */,
-				550692330CD510D300CA0BA2 /* encrypted-Leopard.png in Resources */,
-				550692340CD510D300CA0BA2 /* signed-Leopard.png in Resources */,
-				550692350CD510D300CA0BA2 /* unsigned-Leopard.png in Resources */,
 				1BCEE1E311CC051500488D19 /* LICENSE in Resources */,
 				1B194B5B11CC55A80092B810 /* GPGMail.strings in Resources */,
 				1B194B6811CC56520092B810 /* GPG.strings in Resources */,
@@ -872,13 +845,38 @@
 				308B8FD712A6AE5F00C99BD2 /* GPGMailPreferences.xib in Resources */,
 				308B8FD812A6AE5F00C99BD2 /* GPGPassphrase.xib in Resources */,
 				308B8FD912A6AE5F00C99BD2 /* GPGProgressIndicatorController.xib in Resources */,
+				30913B4612B19B3B00327FDF /* Credits.rtf in Resources */,
+				302ED23A12B2FD2C0094DECD /* GPGMailPreferences.xib.strings in Resources */,
+				30E4F6BF12B3B1350093608D /* CheckMark.png in Resources */,
+				30E4F6C012B3B1350093608D /* clear-old.png in Resources */,
+				30E4F6C112B3B1350093608D /* clear.png in Resources */,
+				30E4F6C212B3B1350093608D /* EmptyImage.png in Resources */,
+				30E4F6C312B3B1350093608D /* encrypted-old.png in Resources */,
+				30E4F6C412B3B1350093608D /* encrypted.png in Resources */,
+				30E4F6C512B3B1350093608D /* GPGMail.png in Resources */,
+				30E4F6C612B3B1350093608D /* GPGMail32.png in Resources */,
+				30E4F6C712B3B1350093608D /* GPGMailPreferences.png in Resources */,
+				30E4F6C812B3B1350093608D /* InvalidBadge.png in Resources */,
+				30E4F6C912B3B1350093608D /* MacGPG.png in Resources */,
+				30E4F6CB12B3B1350093608D /* OHZap.png in Resources */,
+				30E4F6CC12B3B1350093608D /* questionMark.png in Resources */,
+				30E4F6CD12B3B1350093608D /* RefreshNormal.png in Resources */,
+				30E4F6CE12B3B1350093608D /* RefreshPressed.png in Resources */,
+				30E4F6CF12B3B1350093608D /* signed-old.png in Resources */,
+				30E4F6D012B3B1350093608D /* signed.png in Resources */,
+				30E4F6D112B3B1350093608D /* SmallAlert12.png in Resources */,
+				30E4F6D212B3B1350093608D /* SmallAlert16.png in Resources */,
+				30E4F6D312B3B1350093608D /* triangle.png in Resources */,
+				30E4F6D412B3B1350093608D /* unsigned-old.png in Resources */,
+				30E4F6D512B3B1350093608D /* unsigned.png in Resources */,
+				30E4F6D612B3B1350093608D /* ValidBadge.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3075CE6012A5BD1300ED84D7 /* ShellScript */ = {
+		308B026412B22993001A31BB /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -889,7 +887,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "SetFile -a B \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"\n";
+			shellScript = "# Set bundle bit\nSetFile -a B \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"\n\n# Set icon\n\"$SRCROOT/Utilities/setIcon\" \"$SRCROOT/Resources/GPGMail.icns\" \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"";
+		};
+		30DA468812B2D5E800E20039 /* Localize XIBs */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Localize XIBs";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "pushd $SRCROOT > /dev/null\n\n\nUtilities/localizeXIB Resources/English.lproj/GPGMailPreferences.xib German\n\n\n\npopd > /dev/null\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -992,6 +1004,15 @@
 				1B194B9911CC57420092B810 /* ko */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		302ED23812B2FD2C0094DECD /* GPGMailPreferences.xib.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				302ED23B12B2FD350094DECD /* English */,
+				302ED23912B2FD2C0094DECD /* German */,
+			);
+			name = GPGMailPreferences.xib.strings;
 			sourceTree = "<group>";
 		};
 		308B8F7B12A6AE2D00C99BD2 /* GPGKeyDownload.xib */ = {
@@ -1129,14 +1150,24 @@
 			name = GPGProgressIndicatorController.xib;
 			sourceTree = "<group>";
 		};
+		30913B4512B19B3B00327FDF /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				30913B4312B19B3500327FDF /* English */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		55541F4D085AE6B100548474 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				ARCHS = (
+					x86_64,
+					i386,
+				);
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 52;
@@ -1155,6 +1186,7 @@
 				GCC_PREFIX_HEADER = GPGMail_Prefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				INFOPLIST_FILE = "Plists/Info-GPGMail.plist";
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
@@ -1197,6 +1229,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GPGMail_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = Dependencies;
 				INFOPLIST_FILE = "Plists/Info-GPGMail.plist";
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
