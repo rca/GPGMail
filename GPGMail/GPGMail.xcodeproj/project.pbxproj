@@ -284,6 +284,7 @@
 		308B8FD512A6AE5F00C99BD2 /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ko; path = Resources/GPG.subproj/ko.lproj/GPGProgressIndicatorController.xib; sourceTree = "<group>"; };
 		308B8FD612A6AE5F00C99BD2 /* Swedish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Swedish; path = Resources/GPG.subproj/Swedish.lproj/GPGProgressIndicatorController.xib; sourceTree = "<group>"; };
 		30913B4312B19B3500327FDF /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = Resources/English.lproj/Credits.rtf; sourceTree = "<group>"; };
+		30B18F1C12B3C7FB008353F5 /* German */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = German; path = Resources/German.lproj/Credits.rtf; sourceTree = "<group>"; };
 		30B90DE01284656500B3FA6A /* GPGDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPGDefaults.h; path = Source/GPGDefaults.h; sourceTree = "<group>"; };
 		30B90DE11284656500B3FA6A /* GPGDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GPGDefaults.m; path = Source/GPGDefaults.m; sourceTree = "<group>"; };
 		30E4F6A712B3B1350093608D /* CheckMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CheckMark.png; path = Resources/Images/CheckMark.png; sourceTree = "<group>"; };
@@ -1154,6 +1155,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				30913B4312B19B3500327FDF /* English */,
+				30B18F1C12B3C7FB008353F5 /* German */,
 			);
 			name = Credits.rtf;
 			sourceTree = "<group>";
