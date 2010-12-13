@@ -27,27 +27,33 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Sparkle/Sparkle.h>
 #import "GPGMailPreferences.h"
+#import <Sparkle/Sparkle.h>
 #import "GPGMailBundle.h"
-
 #import "GPG.subproj/GPGPassphraseController.h"
 #import "GPGDefaults.h"
 
 @implementation GPGMailPreferences
 
-
-- (NSString *)versionDescription {
-	return [[GPGMailBundle sharedInstance] versionDescription];
+- (GPGMailBundle *)bundle {
+	return [GPGMailBundle sharedInstance];
 }
+
+- (SUUpdater *)updater {
+    return [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
+}
+
+
 - (NSString *)copyright {
 	return [[[NSBundle bundleForClass:[self class]] infoDictionary] objectForKey:@"NSHumanReadableCopyright"];
 }
+
 - (NSAttributedString *)credits {
 	NSBundle *mailBundle = [NSBundle bundleForClass:[self class]];
 	NSAttributedString *credits = [[[NSAttributedString alloc] initWithURL:[mailBundle URLForResource:@"Credits" withExtension:@"rtf"] documentAttributes:nil] autorelease];
 	return credits;
 }
+
 - (NSAttributedString *)websiteLink {
     NSMutableParagraphStyle *pStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
 	[pStyle setAlignment:NSRightTextAlignment];
@@ -64,13 +70,8 @@
 }
 
 
-- (SUUpdater *)updater {
-    return [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
-}
 
-
-- (void) refreshKeyIdentifiersDisplay
-{
+- (void)refreshKeyIdentifiersDisplay {
     GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
     NSEnumerator	*anEnum; // = [[mailBundle allDisplayedKeyIdentifiers] objectEnumerator];
     NSString		*anIdentifier;
@@ -87,8 +88,7 @@
     [mailBundle refreshKeyIdentifiersDisplayInMenu:[keyIdentifiersPopUpButton menu]];
 }
 
-- (void) refreshPersonalKeys
-{
+- (void)refreshPersonalKeys {
     GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
     NSEnumerator	*keyEnum = [[mailBundle personalKeys] objectEnumerator];
     GPGKey          *aKey;
@@ -116,194 +116,33 @@
     }
 }
 
-- (NSImage *) imageForPreferenceNamed:(NSString *)aName
-{
+- (NSImage *)imageForPreferenceNamed:(NSString *)aName {
     return [NSImage imageNamed:@"GPGMailPreferences"];
 }
 
-- (IBAction) toggleAlwaysSignMessages:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setAlwaysSignMessages:([sender state] == NSOnState)];
-}
 
-- (IBAction) toggleAlwaysEncryptMessages:(id)sender
-{
+- (IBAction)toggleAlwaysEncryptMessages:(id)sender {
     [[GPGMailBundle sharedInstance] setAlwaysEncryptMessages:([sender state] == NSOnState)];
 }
 
-- (IBAction) toggleBCCRecipientsUse:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setUsesBCCRecipients:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleTrustAllKeys:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setTrustsAllKeys:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleOpenPGPMIME:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setUsesOnlyOpenPGPStyle:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleAuthenticatesMessagesAutomatically:(id)sender
-{
-    BOOL	flag = ([sender state] == NSOnState);
-
-    [[GPGMailBundle sharedInstance] setAuthenticatesMessagesAutomatically:flag];
-    [authenticateUnreadMessagesSwitchButton setEnabled:flag];
-}
-
-- (IBAction) toggleExtendedInformation:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setAutomaticallyShowsAllInfo:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleDecryptsMessagesAutomatically:(id)sender
-{
-    BOOL	flag = ([sender state] == NSOnState);
-
-    [[GPGMailBundle sharedInstance] setDecryptsMessagesAutomatically:flag];
-    [decryptUnreadMessagesSwitchButton setEnabled:flag];
-}
-
-- (IBAction) changeDefaultKey:(id)sender
-{
+- (IBAction)changeDefaultKey:(id)sender {
     [[GPGMailBundle sharedInstance] setDefaultKey:[[personalKeysPopUpButton selectedItem] representedObject]];
 }
 
-- (IBAction) toggleAutomaticPersonalKeyChoice:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setChoosesPersonalKeyAccordingToAccount:([sender state] == NSOnState)];
-}
-
-- (IBAction) changePassphraseStrategy:(id)sender
-{
-    switch([sender selectedRow]){
-        case 0:
-            [[GPGMailBundle sharedInstance] setUsesKeychain:YES];
-            [[GPGMailBundle sharedInstance] setRemembersPassphrasesDuringSession:NO];
-            [passphraseTimeoutFormCell setEnabled:NO];
-            break;
-        case 1:
-            [[GPGMailBundle sharedInstance] setUsesKeychain:NO];
-            [[GPGMailBundle sharedInstance] setRemembersPassphrasesDuringSession:NO];
-            [passphraseTimeoutFormCell setEnabled:NO];
-            break;
-        case 2:
-            [[GPGMailBundle sharedInstance] setUsesKeychain:NO];
-            [[GPGMailBundle sharedInstance] setRemembersPassphrasesDuringSession:YES];
-            [passphraseTimeoutFormCell setEnabled:YES];
-    }
-}
-
-- (IBAction) changePassphraseTimeout:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setPassphraseFlushTimeout:[passphraseTimeoutFormCell floatValue]];
-}
-
-- (IBAction) toggleEncryptToSelf:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setEncryptsToSelf:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleDecryptsUnreadMessagesAutomatically:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setDecryptsOnlyUnreadMessagesAutomatically:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleAuthenticateUnreadMessagesAutomatically:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setAuthenticatesOnlyUnreadMessagesAutomatically:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleDisplayAccessoryView:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setDisplaysButtonsInComposeWindow:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleButtonsBehavior:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setButtonsShowState:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleSignWhenEncrypting:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setSignWhenEncrypting:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleShowUserIDs:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setDisplaysAllUserIDs:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleShowKeyInformation:(id)sender
-{
+- (IBAction)toggleShowKeyInformation:(id)sender {
     [[GPGMailBundle sharedInstance] gpgToggleShowKeyInformation:sender];
 }
 
-- (IBAction) toggleFilterKeys:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setFiltersOutUnusableKeys:([sender state] == NSOnState)];
-}
 
-- (IBAction) toggleShowPassphrase:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setShowsPassphrase:([sender state] == NSOnState)];
-}
-
-- (IBAction) changeLineWrapping:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setLineWrappingLength:[lineWrappingFormCell intValue]];
-}
-
-- (IBAction) toggleSmartRules:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setUsesABEntriesRules:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleSignedReplyToSignedMessage:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setSignsReplyToSignedMessage:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleEncryptedReplyToEncryptedMessage:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setEncryptsReplyToEncryptedMessage:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleEncryptWhenPossible:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setEncryptMessagesWhenPossible:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleSeparatePGPOperations:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setUsesEncapsulatedSignature:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleKeyRefresh:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setRefreshesKeysOnVolumeMount:([sender state] == NSOnState)];
-}
-
-- (IBAction) toggleSMIME:(id)sender
-{
-    [[GPGMailBundle sharedInstance] setDisablesSMIME:([sender state] == NSOnState)];
-}
-
-- (int) numberOfRowsInTableView:(NSTableView *)tableView
-{
+- (int)numberOfRowsInTableView:(NSTableView *)tableView {
     return 0;
 }
 
-- (id) tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(int)row
-{
+- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(int)row {
     return nil;
 }
 
-- (void) tableViewColumnDidMove:(NSNotification *)notification
-{
+- (void)tableViewColumnDidMove:(NSNotification *)notification {
     if(!initializingPrefs){
         GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
         NSMutableArray	*anArray = [NSMutableArray arrayWithArray:[mailBundle displayedKeyIdentifiers]];
@@ -320,8 +159,8 @@
     }
 }
 
-- (id) init
-{
+
+- (id)init {
     if(self = [super init]){
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyListWasInvalidated:) name:GPGKeyListWasInvalidatedNotification object:[GPGMailBundle sharedInstance]];
     }
@@ -329,8 +168,7 @@
     return self;
 }
 
-- (void) dealloc
-{
+- (void)dealloc {
     [tableColumnPerIdentifier release];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GPGPreferencesDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GPGKeyListWasInvalidatedNotification object:nil];
@@ -338,12 +176,11 @@
     [super dealloc];
 }
 
-- (void) keyListWasInvalidated:(NSNotification *)notification
-{
+- (void)keyListWasInvalidated:(NSNotification *)notification {
     [self refreshPersonalKeys];
 }
 
-- (void) awakeFromNib {
+- (void)awakeFromNib {
     NSEnumerator            *anEnum = [[keyIdentifiersTableView tableColumns] objectEnumerator];
     NSTableColumn           *aColumn;
 	
@@ -371,101 +208,39 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferencesDidChange:) name:GPGPreferencesDidChangeNotification object:[GPGMailBundle sharedInstance]];
 }
 
-- (void) initializeFromDefaults
-{
-    GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
-    BOOL			flag;
-
+- (void)initializeFromDefaults {
     initializingPrefs = YES;
-    [super initializeFromDefaults];
-    [choosesPersonalKeyAccordingToAccountSwitchButton setState:([mailBundle choosesPersonalKeyAccordingToAccount] ? NSOnState:NSOffState)];
-    flag = [mailBundle usesKeychain];
-    if([mailBundle remembersPassphrasesDuringSession]){
-        [passphraseTimeoutFormCell setEnabled:YES];
-        [passphraseStrategyMatrix selectCellAtRow:2 column:0];
-    }
-    else{
-        [passphraseTimeoutFormCell setEnabled:NO];
-        [passphraseStrategyMatrix selectCellAtRow:(flag ? 0:1) column:0];
-    }
-    [passphraseTimeoutFormCell setFloatValue:[mailBundle passphraseFlushTimeout]];
-    [alwaysSignSwitchButton setState:([mailBundle alwaysSignMessages] ? NSOnState:NSOffState)];
-    [alwaysEncryptSwitchButton setState:([mailBundle alwaysEncryptMessages] ? NSOnState:NSOffState)];
-    [useBCCRecipientsSwitchButton setState:([mailBundle usesBCCRecipients] ? NSOnState:NSOffState)];
-    [trustAllKeysSwitchButton setState:([mailBundle trustsAllKeys] ? NSOnState:NSOffState)];
-    [openPGPMIMESwitchButton setState:([mailBundle usesOnlyOpenPGPStyle] ? NSOnState:NSOffState)];
-    flag = [mailBundle authenticatesMessagesAutomatically];
-    [automaticallyAuthenticateMessagesSwitchButton setState:(flag ? NSOnState:NSOffState)];
-    [authenticateUnreadMessagesSwitchButton setEnabled:flag];
-    [authenticateUnreadMessagesSwitchButton setState:([mailBundle authenticatesOnlyUnreadMessagesAutomatically] ? NSOnState:NSOffState)];
+    
+	[super initializeFromDefaults];
     [self refreshPersonalKeys];
-    flag = [mailBundle decryptsMessagesAutomatically];
-    [automaticallyDecryptMessagesSwitchButton setState:(flag ? NSOnState:NSOffState)];
-    [decryptUnreadMessagesSwitchButton setEnabled:flag];
-    [decryptUnreadMessagesSwitchButton setState:([mailBundle decryptsOnlyUnreadMessagesAutomatically] ? NSOnState:NSOffState)];
-    [encryptToSelfSwitchButton setState:([mailBundle encryptsToSelf] ? NSOnState:NSOffState)];
-    [displayButtonInComposeWindowSwitchButton setState:([mailBundle displaysButtonsInComposeWindow] ? NSOnState:NSOffState)];
-    [extendedInfoSwitchButton setState:([mailBundle automaticallyShowsAllInfo] ? NSOnState:NSOffState)];
-    [buttonsShowStateSwitchButton setState:([mailBundle buttonsShowState] ? NSOnState:NSOffState)];
-    [signWhenEncryptingSwitchButton setState:([mailBundle signWhenEncrypting] ? NSOnState:NSOffState)];
-    [showUserIDsSwitchButton setState:([mailBundle displaysAllUserIDs] ? NSOnState:NSOffState)];
-    [filtersKeysSwitchButton setState:([mailBundle filtersOutUnusableKeys] ? NSOnState:NSOffState)];
-    [showsPassphraseSwitchButton setState:([mailBundle showsPassphrase] ? NSOnState:NSOffState)];
     [self refreshKeyIdentifiersDisplay];
-    [lineWrappingFormCell setIntValue:[mailBundle lineWrappingLength]];
-    [useSmartRulesSwitchButton setState:([mailBundle usesABEntriesRules] ? NSOnState:NSOffState)];
-    [signReplyToSignedMessageSwitchButton setState:([mailBundle signsReplyToSignedMessage] ? NSOnState:NSOffState)];
-    [encryptReplyToEncryptedMessageSwitchButton setState:([mailBundle encryptsReplyToEncryptedMessage] ? NSOnState:NSOffState)];
-    [encryptWhenAllKeysAvailableSwitchButton setState:([mailBundle encryptMessagesWhenPossible] ? NSOnState:NSOffState)];
-    [separateSignAndEncryptOperationsSwitchButton setState:([mailBundle usesEncapsulatedSignature] ? NSOnState:NSOffState)];
-    [refreshKeysOnVolumeChangeSwitchButton setState:([mailBundle refreshesKeysOnVolumeMount] ? NSOnState:NSOffState)];
-    [disableSMIMESwitchButton setState:([mailBundle disablesSMIME] ? NSOnState:NSOffState)];
 
     initializingPrefs = NO;
 }
 
-- (IBAction) flushCachedPassphrases:(id)sender
-{
+- (IBAction)flushCachedPassphrases:(id)sender {
     [GPGPassphraseController flushCachedPassphrases];
 	[GPGAgentOptions gpgAgentFlush];
 }
 
-- (void) preferencesDidChange:(NSNotification *)notification
-{
+- (void)preferencesDidChange:(NSNotification *)notification {
     NSString		*aKey = [[notification userInfo] objectForKey:@"key"];
     GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
 
-    if([aKey isEqualToString:@"displaysAllUserIDs"]){
-        [showUserIDsSwitchButton setState:([mailBundle displaysAllUserIDs] ? NSOnState:NSOffState)];
+    if([aKey isEqualToString:@"displaysAllUserIDs"]) {
         [self refreshPersonalKeys];
-    }
-    else if([aKey isEqualToString:@"displayedKeyIdentifiers"]){
+    } else if([aKey isEqualToString:@"displayedKeyIdentifiers"]) {
         [self refreshKeyIdentifiersDisplay];
         [self refreshPersonalKeys];
-    }
-    else if([aKey isEqualToString:@"filtersOutUnusableKeys"]){
+    } else if([aKey isEqualToString:@"filtersOutUnusableKeys"]) {
         [self refreshPersonalKeys];
     }
 }
 
-- (IBAction) refreshKeys:(id)sender
-{
+- (IBAction)refreshKeys:(id)sender {
     [[GPGMailBundle sharedInstance] gpgReloadPGPKeys:sender];
     [sender setState:NSOffState];
 }
 
-- (IBAction) exportGPGMailConfiguration:(id)sender
-{
-    NSDictionary        *aDict = [[GPGDefaults gpgDefaults] dictionaryRepresentation];
-    NSEnumerator        *keyEnum = [aDict keyEnumerator];
-    NSString            *aKey;
-    NSMutableDictionary *exportedDict = [NSMutableDictionary dictionaryWithCapacity:20];
-    
-    while(aKey = [keyEnum nextObject]){
-        if([aKey hasPrefix:@"GPG"])
-            [exportedDict setObject:[aDict objectForKey:aKey] forKey:aKey];
-    }
-    NSLog(@"GPGMail %@ configuration:\n%@", [(GPGMailBundle *)[GPGMailBundle sharedInstance] version], exportedDict);
-}
-
 @end
+

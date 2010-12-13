@@ -148,13 +148,13 @@
 		};
 		1BB95C80105EE80C00A4CAE4 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 8;
 			dstPath = "~/Library/Mail/Bundles/";
 			dstSubfolderSpec = 0;
 			files = (
 				308F903D12A6BBD7003783EB /* GPGMail.mailbundle in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 

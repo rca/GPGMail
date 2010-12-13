@@ -171,8 +171,13 @@ static BOOL	gpgMailWorks = YES;
     [GPGMailSwizzler addMethodsFromClass:NSClassFromString(@"GPGMail_MailTextAttachment") toClass:NSClassFromString(@"MailTextAttachment")];
 }
 
-+ (void) initialize
-{
++ (void) initialize {
+    static BOOL initialized = NO;
+    if (initialized) {
+        return;
+    }
+    initialized = YES;
+    
     if(class_getSuperclass([self class]) != NSClassFromString(@"MVMailBundle")) {
         [super initialize];
         

@@ -107,7 +107,7 @@
 															<object class="NSPopUpButton" id="56008511">
 																<reference key="NSNextResponder" ref="497935044"/>
 																<int key="NSvFlags">266</int>
-																<string key="NSFrame">{{17, 277}, {462, 26}}</string>
+																<string key="NSFrame">{{14, 274}, {462, 26}}</string>
 																<reference key="NSSuperview" ref="497935044"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSPopUpButtonCell" key="NSCell" id="284783325">
@@ -185,7 +185,7 @@
 															<object class="NSTextField" id="746688942">
 																<reference key="NSNextResponder" ref="497935044"/>
 																<int key="NSvFlags">266</int>
-																<string key="NSFrame">{{17, 309}, {478, 17}}</string>
+																<string key="NSFrame">{{14, 306}, {484, 17}}</string>
 																<reference key="NSSuperview" ref="497935044"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSTextFieldCell" key="NSCell" id="18749429">
@@ -209,7 +209,7 @@
 															<object class="NSButton" id="943736642">
 																<reference key="NSNextResponder" ref="497935044"/>
 																<int key="NSvFlags">266</int>
-																<string key="NSFrame">{{18, 245}, {476, 18}}</string>
+																<string key="NSFrame">{{15, 242}, {476, 18}}</string>
 																<reference key="NSSuperview" ref="497935044"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSButtonCell" key="NSCell" id="675018273">
@@ -220,7 +220,7 @@
 																	<reference key="NSControlView" ref="943736642"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<object class="NSCustomResource" key="NSNormalImage" id="864539456">
+																	<object class="NSCustomResource" key="NSNormalImage" id="16678691">
 																		<string key="NSClassName">NSImage</string>
 																		<string key="NSResourceName">NSSwitch</string>
 																	</object>
@@ -236,13 +236,13 @@
 															<object class="NSButton" id="654084483">
 																<reference key="NSNextResponder" ref="497935044"/>
 																<int key="NSvFlags">265</int>
-																<string key="NSFrame">{{344, 114}, {166, 32}}</string>
+																<string key="NSFrame">{{324, 156}, {177, 32}}</string>
 																<reference key="NSSuperview" ref="497935044"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSButtonCell" key="NSCell" id="942878478">
 																	<int key="NSCellFlags">67239424</int>
 																	<int key="NSCellFlags2">137887744</int>
-																	<string key="NSContents">Kennwort verwerfen</string>
+																	<string key="NSContents">Passphrase verwerfen</string>
 																	<object class="NSFont" key="NSSupport">
 																		<string key="NSName">LucidaGrande</string>
 																		<double key="NSSize">13</double>
@@ -262,148 +262,10 @@
 																	<int key="NSPeriodicInterval">25</int>
 																</object>
 															</object>
-															<object class="NSForm" id="199725624">
-																<reference key="NSNextResponder" ref="497935044"/>
-																<int key="NSvFlags">268</int>
-																<string key="NSFrame">{{36, 122}, {116, 22}}</string>
-																<reference key="NSSuperview" ref="497935044"/>
-																<bool key="NSEnabled">YES</bool>
-																<int key="NSNumRows">1</int>
-																<int key="NSNumCols">1</int>
-																<object class="NSMutableArray" key="NSCells">
-																	<bool key="EncodedWithXMLCoder">YES</bool>
-																	<object class="NSFormCell" id="652434072">
-																		<int key="NSCellFlags">343014976</int>
-																		<int key="NSCellFlags2">4195328</int>
-																		<string key="NSContents"/>
-																		<reference key="NSSupport" ref="706304668"/>
-																		<reference key="NSControlView" ref="199725624"/>
-																		<double key="NSTitleWidth">61</double>
-																		<object class="NSCell" key="NSTitleCell">
-																			<int key="NSCellFlags">67239424</int>
-																			<int key="NSCellFlags2">67108864</int>
-																			<string key="NSContents">Timeout:</string>
-																			<reference key="NSSupport" ref="706304668"/>
-																			<reference key="NSControlView" ref="199725624"/>
-																		</object>
-																	</object>
-																</object>
-																<string key="NSCellSize">{116, 22}</string>
-																<string key="NSIntercellSpacing">{1, 8}</string>
-																<int key="NSMatrixFlags">67633152</int>
-																<string key="NSCellClass">NSActionCell</string>
-																<object class="NSFormCell" key="NSProtoCell" id="117965047">
-																	<int key="NSCellFlags">343014976</int>
-																	<int key="NSCellFlags2">4195328</int>
-																	<string key="NSContents"/>
-																	<reference key="NSSupport" ref="706304668"/>
-																	<double key="NSTitleWidth">61</double>
-																	<object class="NSCell" key="NSTitleCell">
-																		<int key="NSCellFlags">67239424</int>
-																		<int key="NSCellFlags2">67108864</int>
-																		<string key="NSContents">Field:</string>
-																		<reference key="NSSupport" ref="706304668"/>
-																	</object>
-																</object>
-																<int key="NSSelectedRow">-1</int>
-																<int key="NSSelectedCol">-1</int>
-																<reference key="NSBackgroundColor" ref="693655191"/>
-																<object class="NSColor" key="NSCellBackgroundColor" id="438638973">
-																	<int key="NSColorSpace">3</int>
-																	<bytes key="NSWhite">MQA</bytes>
-																</object>
-															</object>
-															<object class="NSMatrix" id="459330763">
-																<reference key="NSNextResponder" ref="497935044"/>
-																<int key="NSvFlags">266</int>
-																<string key="NSFrame">{{18, 150}, {476, 58}}</string>
-																<reference key="NSSuperview" ref="497935044"/>
-																<bool key="NSEnabled">YES</bool>
-																<int key="NSNumRows">3</int>
-																<int key="NSNumCols">1</int>
-																<object class="NSMutableArray" key="NSCells">
-																	<bool key="EncodedWithXMLCoder">YES</bool>
-																	<object class="NSButtonCell" id="129017728">
-																		<int key="NSCellFlags">-2080244224</int>
-																		<int key="NSCellFlags2">0</int>
-																		<string key="NSContents">Kennwort im Schlüsselbund speichern</string>
-																		<reference key="NSSupport" ref="706304668"/>
-																		<reference key="NSControlView" ref="459330763"/>
-																		<int key="NSButtonFlags">1211912703</int>
-																		<int key="NSButtonFlags2">0</int>
-																		<object class="NSCustomResource" key="NSNormalImage" id="1040928254">
-																			<string key="NSClassName">NSImage</string>
-																			<string key="NSResourceName">NSRadioButton</string>
-																		</object>
-																		<object class="NSButtonImageSource" key="NSAlternateImage" id="606160521">
-																			<string key="NSImageName">NSRadioButton</string>
-																		</object>
-																		<string key="NSAlternateContents"/>
-																		<object class="NSMutableString" key="NSKeyEquivalent" id="92333784">
-																			<characters key="NS.bytes"/>
-																		</object>
-																		<int key="NSPeriodicDelay">200</int>
-																		<int key="NSPeriodicInterval">25</int>
-																	</object>
-																	<object class="NSButtonCell" id="674977066">
-																		<int key="NSCellFlags">67239424</int>
-																		<int key="NSCellFlags2">0</int>
-																		<string key="NSContents">Immer das Kennwort abfragen</string>
-																		<reference key="NSSupport" ref="706304668"/>
-																		<reference key="NSControlView" ref="459330763"/>
-																		<int key="NSTag">2</int>
-																		<int key="NSButtonFlags">1211912703</int>
-																		<int key="NSButtonFlags2">0</int>
-																		<reference key="NSNormalImage" ref="1040928254"/>
-																		<reference key="NSAlternateImage" ref="606160521"/>
-																		<string key="NSAlternateContents"/>
-																		<int key="NSPeriodicDelay">400</int>
-																		<int key="NSPeriodicInterval">75</int>
-																	</object>
-																	<object class="NSButtonCell" id="21397550">
-																		<int key="NSCellFlags">67239424</int>
-																		<int key="NSCellFlags2">0</int>
-																		<string key="NSContents">Kennwort während der Sitzung speichern</string>
-																		<reference key="NSSupport" ref="706304668"/>
-																		<reference key="NSControlView" ref="459330763"/>
-																		<int key="NSTag">1</int>
-																		<int key="NSButtonFlags">1211912703</int>
-																		<int key="NSButtonFlags2">0</int>
-																		<reference key="NSNormalImage" ref="1040928254"/>
-																		<reference key="NSAlternateImage" ref="606160521"/>
-																		<string key="NSAlternateContents"/>
-																		<reference key="NSKeyEquivalent" ref="92333784"/>
-																		<int key="NSPeriodicDelay">200</int>
-																		<int key="NSPeriodicInterval">25</int>
-																	</object>
-																</object>
-																<string key="NSCellSize">{476, 18}</string>
-																<string key="NSIntercellSpacing">{4, 2}</string>
-																<int key="NSMatrixFlags">1143472128</int>
-																<string key="NSCellClass">NSActionCell</string>
-																<object class="NSButtonCell" key="NSProtoCell" id="761177805">
-																	<int key="NSCellFlags">67239424</int>
-																	<int key="NSCellFlags2">0</int>
-																	<string key="NSContents">Radio</string>
-																	<reference key="NSSupport" ref="706304668"/>
-																	<int key="NSButtonFlags">1211912703</int>
-																	<int key="NSButtonFlags2">0</int>
-																	<reference key="NSNormalImage" ref="1040928254"/>
-																	<reference key="NSAlternateImage" ref="606160521"/>
-																	<string key="NSAlternateContents"/>
-																	<string key="NSKeyEquivalent"/>
-																	<int key="NSPeriodicDelay">400</int>
-																	<int key="NSPeriodicInterval">75</int>
-																</object>
-																<reference key="NSSelectedCell" ref="129017728"/>
-																<reference key="NSBackgroundColor" ref="693655191"/>
-																<reference key="NSCellBackgroundColor" ref="438638973"/>
-																<reference key="NSFont" ref="706304668"/>
-															</object>
 															<object class="NSBox" id="929109821">
 																<reference key="NSNextResponder" ref="497935044"/>
 																<int key="NSvFlags">266</int>
-																<string key="NSFrame">{{12, 224}, {488, 5}}</string>
+																<string key="NSFrame">{{9, 224}, {494, 5}}</string>
 																<reference key="NSSuperview" ref="497935044"/>
 																<string key="NSOffsets">{0, 0}</string>
 																<object class="NSTextFieldCell" key="NSTitleCell">
@@ -415,7 +277,10 @@
 																		<int key="NSColorSpace">6</int>
 																		<string key="NSCatalogName">System</string>
 																		<string key="NSColorName">textBackgroundColor</string>
-																		<reference key="NSColor" ref="438638973"/>
+																		<object class="NSColor" key="NSColor" id="438638973">
+																			<int key="NSColorSpace">3</int>
+																			<bytes key="NSWhite">MQA</bytes>
+																		</object>
 																	</object>
 																	<object class="NSColor" key="NSTextColor">
 																		<int key="NSColorSpace">3</int>
@@ -430,7 +295,7 @@
 															<object class="NSTextField" id="889607162">
 																<reference key="NSNextResponder" ref="497935044"/>
 																<int key="NSvFlags">268</int>
-																<string key="NSFrame">{{157, 124}, {147, 17}}</string>
+																<string key="NSFrame">{{250, 166}, {72, 17}}</string>
 																<reference key="NSSuperview" ref="497935044"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSTextFieldCell" key="NSCell" id="919104896">
@@ -446,18 +311,18 @@
 															<object class="NSButton" id="495651112">
 																<reference key="NSNextResponder" ref="497935044"/>
 																<int key="NSvFlags">266</int>
-																<string key="NSFrame">{{18, 84}, {476, 18}}</string>
+																<string key="NSFrame">{{15, 128}, {476, 18}}</string>
 																<reference key="NSSuperview" ref="497935044"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSButtonCell" key="NSCell" id="413930833">
 																	<int key="NSCellFlags">67239424</int>
 																	<int key="NSCellFlags2">0</int>
-																	<string key="NSContents">Kennwort anzeigen</string>
+																	<string key="NSContents">Passphrase anzeigen</string>
 																	<reference key="NSSupport" ref="706304668"/>
 																	<reference key="NSControlView" ref="495651112"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -468,7 +333,7 @@
 															<object class="NSButton" id="299100639">
 																<reference key="NSNextResponder" ref="497935044"/>
 																<int key="NSvFlags">265</int>
-																<string key="NSFrame">{{482, 284}, {12, 13}}</string>
+																<string key="NSFrame">{{479, 281}, {12, 13}}</string>
 																<reference key="NSSuperview" ref="497935044"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSButtonCell" key="NSCell" id="317896397">
@@ -497,6 +362,72 @@
 																	</object>
 																	<int key="NSPeriodicDelay">200</int>
 																	<int key="NSPeriodicInterval">25</int>
+																</object>
+															</object>
+															<object class="NSButton" id="707809519">
+																<reference key="NSNextResponder" ref="497935044"/>
+																<int key="NSvFlags">268</int>
+																<string key="NSFrame">{{15, 191}, {272, 18}}</string>
+																<reference key="NSSuperview" ref="497935044"/>
+																<bool key="NSEnabled">YES</bool>
+																<object class="NSButtonCell" key="NSCell" id="108603082">
+																	<int key="NSCellFlags">-2080244224</int>
+																	<int key="NSCellFlags2">0</int>
+																	<string key="NSContents">Passphrase im Schlüsselbund speichern</string>
+																	<reference key="NSSupport" ref="706304668"/>
+																	<reference key="NSControlView" ref="707809519"/>
+																	<int key="NSButtonFlags">1211912703</int>
+																	<int key="NSButtonFlags2">2</int>
+																	<reference key="NSNormalImage" ref="16678691"/>
+																	<reference key="NSAlternateImage" ref="34556240"/>
+																	<string key="NSAlternateContents"/>
+																	<string key="NSKeyEquivalent"/>
+																	<int key="NSPeriodicDelay">200</int>
+																	<int key="NSPeriodicInterval">25</int>
+																</object>
+															</object>
+															<object class="NSButton" id="175377605">
+																<reference key="NSNextResponder" ref="497935044"/>
+																<int key="NSvFlags">268</int>
+																<string key="NSFrame">{{15, 165}, {171, 18}}</string>
+																<reference key="NSSuperview" ref="497935044"/>
+																<bool key="NSEnabled">YES</bool>
+																<object class="NSButtonCell" key="NSCell" id="874775405">
+																	<int key="NSCellFlags">-2080244224</int>
+																	<int key="NSCellFlags2">0</int>
+																	<string key="NSContents">Passphrase merken für:</string>
+																	<reference key="NSSupport" ref="706304668"/>
+																	<reference key="NSControlView" ref="175377605"/>
+																	<int key="NSButtonFlags">1211912703</int>
+																	<int key="NSButtonFlags2">2</int>
+																	<reference key="NSNormalImage" ref="16678691"/>
+																	<reference key="NSAlternateImage" ref="34556240"/>
+																	<string key="NSAlternateContents"/>
+																	<string key="NSKeyEquivalent"/>
+																	<int key="NSPeriodicDelay">200</int>
+																	<int key="NSPeriodicInterval">25</int>
+																</object>
+															</object>
+															<object class="NSTextField" id="847907567">
+																<reference key="NSNextResponder" ref="497935044"/>
+																<int key="NSvFlags">268</int>
+																<string key="NSFrame">{{192, 164}, {53, 22}}</string>
+																<reference key="NSSuperview" ref="497935044"/>
+																<bool key="NSEnabled">YES</bool>
+																<object class="NSTextFieldCell" key="NSCell" id="667678957">
+																	<int key="NSCellFlags">-1804468671</int>
+																	<int key="NSCellFlags2">272630784</int>
+																	<string key="NSContents"/>
+																	<reference key="NSSupport" ref="706304668"/>
+																	<reference key="NSControlView" ref="847907567"/>
+																	<bool key="NSDrawsBackground">YES</bool>
+																	<reference key="NSBackgroundColor" ref="543996142"/>
+																	<object class="NSColor" key="NSTextColor">
+																		<int key="NSColorSpace">6</int>
+																		<string key="NSCatalogName">System</string>
+																		<string key="NSColorName">textColor</string>
+																		<reference key="NSColor" ref="556747485"/>
+																	</object>
 																</object>
 															</object>
 														</object>
@@ -532,7 +463,7 @@
 																	<reference key="NSControlView" ref="384813929"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -554,7 +485,7 @@
 																	<reference key="NSControlView" ref="613295424"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -576,7 +507,7 @@
 																	<reference key="NSControlView" ref="543120491"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -598,7 +529,7 @@
 																	<reference key="NSControlView" ref="233206793"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -636,7 +567,7 @@
 																	<reference key="NSControlView" ref="410037199"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -658,7 +589,7 @@
 																	<reference key="NSControlView" ref="731140837"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -680,7 +611,7 @@
 																	<reference key="NSControlView" ref="351897220"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -702,7 +633,7 @@
 																	<reference key="NSControlView" ref="42598044"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -724,7 +655,7 @@
 																	<reference key="NSControlView" ref="260695165"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -746,7 +677,7 @@
 																	<reference key="NSControlView" ref="636679545"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -768,7 +699,7 @@
 																	<reference key="NSControlView" ref="230166196"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -790,7 +721,7 @@
 																	<reference key="NSControlView" ref="546073030"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -812,7 +743,7 @@
 																	<reference key="NSControlView" ref="1054482268"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -834,7 +765,7 @@
 																	<reference key="NSControlView" ref="976852141"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -856,7 +787,7 @@
 																	<reference key="NSControlView" ref="416065849"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -891,7 +822,7 @@
 																	<reference key="NSControlView" ref="102833942"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -913,7 +844,7 @@
 																	<reference key="NSControlView" ref="875395612"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -935,7 +866,7 @@
 																	<reference key="NSControlView" ref="727155713"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -957,7 +888,7 @@
 																	<reference key="NSControlView" ref="708993464"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -979,7 +910,7 @@
 																	<reference key="NSControlView" ref="1004412340"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -1469,7 +1400,7 @@
 																	<reference key="NSControlView" ref="19990702"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -1555,7 +1486,7 @@
 																	<reference key="NSControlView" ref="996841843"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -1577,7 +1508,7 @@
 																	<reference key="NSControlView" ref="1071025327"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -1613,7 +1544,7 @@
 																	<reference key="NSControlView" ref="25931962"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -1731,7 +1662,7 @@
 																	<reference key="NSControlView" ref="1060992480"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -1753,7 +1684,7 @@
 																	<reference key="NSControlView" ref="812740794"/>
 																	<int key="NSButtonFlags">1211912703</int>
 																	<int key="NSButtonFlags2">2</int>
-																	<reference key="NSNormalImage" ref="864539456"/>
+																	<reference key="NSNormalImage" ref="16678691"/>
 																	<reference key="NSAlternateImage" ref="34556240"/>
 																	<string key="NSAlternateContents"/>
 																	<string key="NSKeyEquivalent"/>
@@ -2038,7 +1969,7 @@
 											<object class="NSTextFieldCell" key="NSCell" id="556590561">
 												<int key="NSCellFlags">70385217</int>
 												<int key="NSCellFlags2">1145312256</int>
-												<string key="NSContents">Label</string>
+												<string key="NSContents">http://www.gpgmail.org</string>
 												<reference key="NSSupport" ref="22"/>
 												<reference key="NSControlView" ref="11378849"/>
 												<reference key="NSBackgroundColor" ref="693655191"/>
@@ -2240,54 +2171,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">alwaysSignSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="613295424"/>
-					</object>
-					<int key="connectionID">120</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">authenticateUnreadMessagesSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="875395612"/>
-					</object>
-					<int key="connectionID">121</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">automaticallyAuthenticateMessagesSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="102833942"/>
-					</object>
-					<int key="connectionID">122</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">decryptUnreadMessagesSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="708993464"/>
-					</object>
-					<int key="connectionID">124</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">displayButtonInComposeWindowSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="543120491"/>
-					</object>
-					<int key="connectionID">125</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">encryptToSelfSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="384813929"/>
-					</object>
-					<int key="connectionID">126</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">personalKeysPopUpButton</string>
 						<reference key="source" ref="359798784"/>
 						<reference key="destination" ref="56008511"/>
@@ -2303,76 +2186,12 @@
 					<int key="connectionID">134</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleEncryptToSelf:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="384813929"/>
-					</object>
-					<int key="connectionID">135</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleAlwaysSignMessages:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="613295424"/>
-					</object>
-					<int key="connectionID">137</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleAuthenticatesMessagesAutomatically:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="102833942"/>
-					</object>
-					<int key="connectionID">138</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleAuthenticateUnreadMessagesAutomatically:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="875395612"/>
-					</object>
-					<int key="connectionID">139</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleDecryptsMessagesAutomatically:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="727155713"/>
-					</object>
-					<int key="connectionID">140</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleDecryptsUnreadMessagesAutomatically:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="708993464"/>
-					</object>
-					<int key="connectionID">141</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleDisplayAccessoryView:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="543120491"/>
-					</object>
-					<int key="connectionID">142</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">initialFirstResponder</string>
 						<reference key="source" ref="262504321"/>
 						<reference key="destination" ref="56008511"/>
 					</object>
 					<int key="connectionID">143</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">automaticallyDecryptMessagesSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="727155713"/>
-					</object>
-					<int key="connectionID">156</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -2384,171 +2203,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">choosesPersonalKeyAccordingToAccountSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="943736642"/>
-					</object>
-					<int key="connectionID">194</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">openPGPMIMESwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="731140837"/>
-					</object>
-					<int key="connectionID">195</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">passphraseStrategyMatrix</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="459330763"/>
-					</object>
-					<int key="connectionID">196</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">passphraseTimeoutFormCell</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="652434072"/>
-					</object>
-					<int key="connectionID">197</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">trustAllKeysSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="410037199"/>
-					</object>
-					<int key="connectionID">198</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">useBCCRecipientsSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="233206793"/>
-					</object>
-					<int key="connectionID">199</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changePassphraseStrategy:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="459330763"/>
-					</object>
-					<int key="connectionID">200</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changePassphraseTimeout:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="199725624"/>
-					</object>
-					<int key="connectionID">201</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleBCCRecipientsUse:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="233206793"/>
-					</object>
-					<int key="connectionID">203</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleTrustAllKeys:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="410037199"/>
-					</object>
-					<int key="connectionID">204</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleOpenPGPMIME:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="731140837"/>
-					</object>
-					<int key="connectionID">205</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">extendedInfoSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="1004412340"/>
-					</object>
-					<int key="connectionID">206</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleExtendedInformation:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="1004412340"/>
-					</object>
-					<int key="connectionID">207</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleAutomaticPersonalKeyChoice:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="943736642"/>
-					</object>
-					<int key="connectionID">208</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">signWhenEncryptingSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="351897220"/>
-					</object>
-					<int key="connectionID">215</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleSignWhenEncrypting:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="351897220"/>
-					</object>
-					<int key="connectionID">216</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">buttonsShowStateSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="42598044"/>
-					</object>
-					<int key="connectionID">243</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleButtonsBehavior:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="42598044"/>
-					</object>
-					<int key="connectionID">244</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">keyIdentifiersTableView</string>
 						<reference key="source" ref="359798784"/>
 						<reference key="destination" ref="559412043"/>
 					</object>
 					<int key="connectionID">245</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">showUserIDsSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="19990702"/>
-					</object>
-					<int key="connectionID">246</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleShowUserIDs:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="19990702"/>
-					</object>
-					<int key="connectionID">247</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -2623,22 +2282,6 @@
 					<int key="connectionID">257</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">filtersKeysSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="260695165"/>
-					</object>
-					<int key="connectionID">260</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleFilterKeys:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="260695165"/>
-					</object>
-					<int key="connectionID">261</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">toggleShowKeyInformation:</string>
 						<reference key="source" ref="359798784"/>
@@ -2647,180 +2290,12 @@
 					<int key="connectionID">266</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">showsPassphraseSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="495651112"/>
-					</object>
-					<int key="connectionID">268</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleShowPassphrase:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="495651112"/>
-					</object>
-					<int key="connectionID">269</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleAlwaysEncryptMessages:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="636679545"/>
-					</object>
-					<int key="connectionID">271</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">alwaysEncryptSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="636679545"/>
-					</object>
-					<int key="connectionID">272</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">lineWrappingFormCell</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="713678598"/>
-					</object>
-					<int key="connectionID">278</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeLineWrapping:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="713678598"/>
-					</object>
-					<int key="connectionID">279</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">disableSMIMESwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="1071025327"/>
-					</object>
-					<int key="connectionID">308</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">encryptReplyToEncryptedMessageSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="1054482268"/>
-					</object>
-					<int key="connectionID">309</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">encryptWhenAllKeysAvailableSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="416065849"/>
-					</object>
-					<int key="connectionID">310</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">refreshKeysOnVolumeChangeSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="996841843"/>
-					</object>
-					<int key="connectionID">311</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">separateSignAndEncryptOperationsSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="976852141"/>
-					</object>
-					<int key="connectionID">312</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">signReplyToSignedMessageSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="546073030"/>
-					</object>
-					<int key="connectionID">313</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">useSmartRulesSwitchButton</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="230166196"/>
-					</object>
-					<int key="connectionID">314</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleSmartRules:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="230166196"/>
-					</object>
-					<int key="connectionID">333</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleSignedReplyToSignedMessage:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="546073030"/>
-					</object>
-					<int key="connectionID">334</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleEncryptedReplyToEncryptedMessage:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="1054482268"/>
-					</object>
-					<int key="connectionID">335</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleEncryptWhenPossible:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="416065849"/>
-					</object>
-					<int key="connectionID">336</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleSeparatePGPOperations:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="976852141"/>
-					</object>
-					<int key="connectionID">337</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleKeyRefresh:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="996841843"/>
-					</object>
-					<int key="connectionID">338</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleSMIME:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="1071025327"/>
-					</object>
-					<int key="connectionID">339</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">refreshKeys:</string>
 						<reference key="source" ref="359798784"/>
 						<reference key="destination" ref="299100639"/>
 					</object>
 					<int key="connectionID">340</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">formatter</string>
-						<reference key="source" ref="652434072"/>
-						<reference key="destination" ref="36007415"/>
-					</object>
-					<int key="connectionID">419</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -2912,22 +2387,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: versionDescription</string>
-						<reference key="source" ref="348415438"/>
-						<reference key="destination" ref="359798784"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="348415438"/>
-							<reference key="NSDestination" ref="359798784"/>
-							<string key="NSLabel">value: versionDescription</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">versionDescription</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">550</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: copyright</string>
 						<reference key="source" ref="886837323"/>
 						<reference key="destination" ref="359798784"/>
@@ -2993,19 +2452,555 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: versionDescription</string>
+						<string key="label">value: bundle.usesKeychain</string>
+						<reference key="source" ref="707809519"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="707809519"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.usesKeychain</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.usesKeychain</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">624</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.remembersPassphrasesDuringSession</string>
+						<reference key="source" ref="175377605"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="175377605"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.remembersPassphrasesDuringSession</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.remembersPassphrasesDuringSession</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">625</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.passphraseFlushTimeout</string>
+						<reference key="source" ref="847907567"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="847907567"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.passphraseFlushTimeout</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.passphraseFlushTimeout</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">626</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: bundle.remembersPassphrasesDuringSession</string>
+						<reference key="source" ref="847907567"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="847907567"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">enabled: bundle.remembersPassphrasesDuringSession</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">bundle.remembersPassphrasesDuringSession</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">627</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.versionDescription</string>
+						<reference key="source" ref="348415438"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="348415438"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.versionDescription</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.versionDescription</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">628</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.versionDescription</string>
 						<reference key="source" ref="1007621592"/>
 						<reference key="destination" ref="359798784"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="1007621592"/>
 							<reference key="NSDestination" ref="359798784"/>
-							<string key="NSLabel">value: versionDescription</string>
+							<string key="NSLabel">value: bundle.versionDescription</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">versionDescription</string>
+							<string key="NSKeyPath">bundle.versionDescription</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">603</int>
+					<int key="connectionID">629</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">formatter</string>
+						<reference key="source" ref="847907567"/>
+						<reference key="destination" ref="36007415"/>
+					</object>
+					<int key="connectionID">630</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.alwaysSignMessages</string>
+						<reference key="source" ref="613295424"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="613295424"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.alwaysSignMessages</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.alwaysSignMessages</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">631</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.signWhenEncrypting</string>
+						<reference key="source" ref="351897220"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="351897220"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.signWhenEncrypting</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.signWhenEncrypting</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">633</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.signsReplyToSignedMessage</string>
+						<reference key="source" ref="546073030"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="546073030"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.signsReplyToSignedMessage</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.signsReplyToSignedMessage</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">634</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.alwaysEncryptMessages</string>
+						<reference key="source" ref="636679545"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="636679545"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.alwaysEncryptMessages</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.alwaysEncryptMessages</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">635</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.encryptsReplyToEncryptedMessage</string>
+						<reference key="source" ref="1054482268"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1054482268"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.encryptsReplyToEncryptedMessage</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.encryptsReplyToEncryptedMessage</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">636</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.encryptMessagesWhenPossible</string>
+						<reference key="source" ref="416065849"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="416065849"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.encryptMessagesWhenPossible</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.encryptMessagesWhenPossible</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">640</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.encryptsToSelf</string>
+						<reference key="source" ref="384813929"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="384813929"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.encryptsToSelf</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.encryptsToSelf</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">641</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.usesABEntriesRules</string>
+						<reference key="source" ref="230166196"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="230166196"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.usesABEntriesRules</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.usesABEntriesRules</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">642</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.trustsAllKeys</string>
+						<reference key="source" ref="410037199"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="410037199"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.trustsAllKeys</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.trustsAllKeys</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">643</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.filtersOutUnusableKeys</string>
+						<reference key="source" ref="260695165"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="260695165"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.filtersOutUnusableKeys</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.filtersOutUnusableKeys</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">644</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.usesOnlyOpenPGPStyle</string>
+						<reference key="source" ref="731140837"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="731140837"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.usesOnlyOpenPGPStyle</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.usesOnlyOpenPGPStyle</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">645</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.usesBCCRecipients</string>
+						<reference key="source" ref="233206793"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="233206793"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.usesBCCRecipients</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.usesBCCRecipients</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">646</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.displaysButtonsInComposeWindow</string>
+						<reference key="source" ref="543120491"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="543120491"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.displaysButtonsInComposeWindow</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.displaysButtonsInComposeWindow</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">647</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.buttonsShowState</string>
+						<reference key="source" ref="42598044"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="42598044"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.buttonsShowState</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.buttonsShowState</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">648</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.usesEncapsulatedSignature</string>
+						<reference key="source" ref="976852141"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="976852141"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.usesEncapsulatedSignature</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.usesEncapsulatedSignature</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">649</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.authenticatesMessagesAutomatically</string>
+						<reference key="source" ref="102833942"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="102833942"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.authenticatesMessagesAutomatically</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.authenticatesMessagesAutomatically</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">650</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: bundle.authenticatesMessagesAutomatically</string>
+						<reference key="source" ref="875395612"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="875395612"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">enabled: bundle.authenticatesMessagesAutomatically</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">bundle.authenticatesMessagesAutomatically</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">651</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.authenticatesOnlyUnreadMessagesAutomatically</string>
+						<reference key="source" ref="875395612"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="875395612"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.authenticatesOnlyUnreadMessagesAutomatically</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.authenticatesOnlyUnreadMessagesAutomatically</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">652</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.decryptsMessagesAutomatically</string>
+						<reference key="source" ref="727155713"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="727155713"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.decryptsMessagesAutomatically</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.decryptsMessagesAutomatically</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">653</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: bundle.decryptsMessagesAutomatically</string>
+						<reference key="source" ref="708993464"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="708993464"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">enabled: bundle.decryptsMessagesAutomatically</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">bundle.decryptsMessagesAutomatically</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">654</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.decryptsOnlyUnreadMessagesAutomatically</string>
+						<reference key="source" ref="708993464"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="708993464"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.decryptsOnlyUnreadMessagesAutomatically</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.decryptsOnlyUnreadMessagesAutomatically</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">655</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.automaticallyShowsAllInfo</string>
+						<reference key="source" ref="1004412340"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1004412340"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.automaticallyShowsAllInfo</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.automaticallyShowsAllInfo</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">656</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.showsPassphrase</string>
+						<reference key="source" ref="495651112"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="495651112"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.showsPassphrase</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.showsPassphrase</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">657</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.choosesPersonalKeyAccordingToAccount</string>
+						<reference key="source" ref="943736642"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="943736642"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.choosesPersonalKeyAccordingToAccount</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.choosesPersonalKeyAccordingToAccount</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">658</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.displaysAllUserIDs</string>
+						<reference key="source" ref="19990702"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="19990702"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.displaysAllUserIDs</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.displaysAllUserIDs</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">659</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.lineWrappingLength</string>
+						<reference key="source" ref="713678598"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="713678598"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.lineWrappingLength</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.lineWrappingLength</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">660</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.refreshesKeysOnVolumeMount</string>
+						<reference key="source" ref="996841843"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="996841843"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.refreshesKeysOnVolumeMount</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.refreshesKeysOnVolumeMount</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">661</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.disablesSMIME</string>
+						<reference key="source" ref="1071025327"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1071025327"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.disablesSMIME</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.disablesSMIME</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">662</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3069,13 +3064,13 @@
 						<int key="objectID">209</int>
 						<reference key="object" ref="36007415"/>
 						<reference key="parent" ref="0"/>
-						<string key="objectName">Number Formatter</string>
+						<string key="objectName">Remember time Formatter</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">277</int>
 						<reference key="object" ref="1063738897"/>
 						<reference key="parent" ref="0"/>
-						<string key="objectName">Number Formatter-1</string>
+						<string key="objectName">Line length Formatter</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">12</int>
@@ -3394,15 +3389,16 @@
 						<reference key="object" ref="497935044"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="56008511"/>
+							<reference ref="746688942"/>
+							<reference ref="943736642"/>
 							<reference ref="299100639"/>
+							<reference ref="929109821"/>
+							<reference ref="707809519"/>
+							<reference ref="175377605"/>
 							<reference ref="495651112"/>
 							<reference ref="889607162"/>
-							<reference ref="929109821"/>
-							<reference ref="459330763"/>
-							<reference ref="199725624"/>
-							<reference ref="943736642"/>
-							<reference ref="746688942"/>
-							<reference ref="56008511"/>
+							<reference ref="847907567"/>
 							<reference ref="654084483"/>
 						</object>
 						<reference key="parent" ref="312595118"/>
@@ -3437,28 +3433,6 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">182</int>
 						<reference key="object" ref="929109821"/>
-						<reference key="parent" ref="497935044"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">174</int>
-						<reference key="object" ref="459330763"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="761177805"/>
-							<reference ref="674977066"/>
-							<reference ref="21397550"/>
-							<reference ref="129017728"/>
-						</object>
-						<reference key="parent" ref="497935044"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">170</int>
-						<reference key="object" ref="199725624"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="117965047"/>
-							<reference ref="652434072"/>
-						</object>
 						<reference key="parent" ref="497935044"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -3546,36 +3520,6 @@
 						<int key="objectID">448</int>
 						<reference key="object" ref="675018273"/>
 						<reference key="parent" ref="943736642"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">463</int>
-						<reference key="object" ref="117965047"/>
-						<reference key="parent" ref="199725624"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">173</int>
-						<reference key="object" ref="652434072"/>
-						<reference key="parent" ref="199725624"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">464</int>
-						<reference key="object" ref="761177805"/>
-						<reference key="parent" ref="459330763"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">179</int>
-						<reference key="object" ref="674977066"/>
-						<reference key="parent" ref="459330763"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">178</int>
-						<reference key="object" ref="21397550"/>
-						<reference key="parent" ref="459330763"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">177</int>
-						<reference key="object" ref="129017728"/>
-						<reference key="parent" ref="459330763"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">449</int>
@@ -4257,6 +4201,48 @@
 						<reference key="object" ref="556590561"/>
 						<reference key="parent" ref="11378849"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">607</int>
+						<reference key="object" ref="707809519"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="108603082"/>
+						</object>
+						<reference key="parent" ref="497935044"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">608</int>
+						<reference key="object" ref="108603082"/>
+						<reference key="parent" ref="707809519"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">609</int>
+						<reference key="object" ref="175377605"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="874775405"/>
+						</object>
+						<reference key="parent" ref="497935044"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">610</int>
+						<reference key="object" ref="874775405"/>
+						<reference key="parent" ref="175377605"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">611</int>
+						<reference key="object" ref="847907567"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="667678957"/>
+						</object>
+						<reference key="parent" ref="497935044"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">612</int>
+						<reference key="object" ref="667678957"/>
+						<reference key="parent" ref="847907567"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -4306,29 +4292,17 @@
 					<string>162.ImportedFromIB2</string>
 					<string>169.IBAttributePlaceholdersKey</string>
 					<string>169.IBPluginDependency</string>
+					<string>169.IBViewBoundsToFrameTransform</string>
 					<string>169.ImportedFromIB2</string>
-					<string>170.IBPluginDependency</string>
-					<string>170.ImportedFromIB2</string>
-					<string>173.IBPluginDependency</string>
-					<string>173.ImportedFromIB2</string>
-					<string>174.IBPluginDependency</string>
-					<string>174.ImportedFromIB2</string>
-					<string>177.IBAttributePlaceholdersKey</string>
-					<string>177.IBPluginDependency</string>
-					<string>177.ImportedFromIB2</string>
-					<string>178.IBAttributePlaceholdersKey</string>
-					<string>178.IBPluginDependency</string>
-					<string>178.ImportedFromIB2</string>
-					<string>179.IBAttributePlaceholdersKey</string>
-					<string>179.IBPluginDependency</string>
-					<string>179.ImportedFromIB2</string>
 					<string>180.IBPluginDependency</string>
 					<string>180.ImportedFromIB2</string>
 					<string>181.IBPluginDependency</string>
 					<string>181.ImportedFromIB2</string>
 					<string>182.IBPluginDependency</string>
+					<string>182.IBViewBoundsToFrameTransform</string>
 					<string>182.ImportedFromIB2</string>
 					<string>184.IBPluginDependency</string>
+					<string>184.IBViewBoundsToFrameTransform</string>
 					<string>184.ImportedFromIB2</string>
 					<string>185.IBAttributePlaceholdersKey</string>
 					<string>185.IBPluginDependency</string>
@@ -4396,6 +4370,7 @@
 					<string>238.ImportedFromIB2</string>
 					<string>241.IBAttributePlaceholdersKey</string>
 					<string>241.IBPluginDependency</string>
+					<string>241.IBViewBoundsToFrameTransform</string>
 					<string>241.ImportedFromIB2</string>
 					<string>259.IBAttributePlaceholdersKey</string>
 					<string>259.IBPluginDependency</string>
@@ -4406,6 +4381,7 @@
 					<string>265.ImportedFromIB2</string>
 					<string>267.IBAttributePlaceholdersKey</string>
 					<string>267.IBPluginDependency</string>
+					<string>267.IBViewBoundsToFrameTransform</string>
 					<string>267.ImportedFromIB2</string>
 					<string>270.IBAttributePlaceholdersKey</string>
 					<string>270.IBPluginDependency</string>
@@ -4441,6 +4417,7 @@
 					<string>289.ImportedFromIB2</string>
 					<string>330.IBAttributePlaceholdersKey</string>
 					<string>330.IBPluginDependency</string>
+					<string>330.IBViewBoundsToFrameTransform</string>
 					<string>330.ImportedFromIB2</string>
 					<string>425.IBPluginDependency</string>
 					<string>429.IBPluginDependency</string>
@@ -4477,8 +4454,6 @@
 					<string>460.IBPluginDependency</string>
 					<string>461.IBPluginDependency</string>
 					<string>462.IBPluginDependency</string>
-					<string>463.IBPluginDependency</string>
-					<string>464.IBPluginDependency</string>
 					<string>465.IBPluginDependency</string>
 					<string>466.IBPluginDependency</string>
 					<string>466.IBShouldRemoveOnLegacySave</string>
@@ -4549,6 +4524,15 @@
 					<string>6.IBPluginDependency</string>
 					<string>6.ImportedFromIB2</string>
 					<string>600.IBPluginDependency</string>
+					<string>607.IBPluginDependency</string>
+					<string>607.IBViewBoundsToFrameTransform</string>
+					<string>608.IBPluginDependency</string>
+					<string>609.IBPluginDependency</string>
+					<string>609.IBViewBoundsToFrameTransform</string>
+					<string>610.IBPluginDependency</string>
+					<string>611.IBPluginDependency</string>
+					<string>611.IBViewBoundsToFrameTransform</string>
+					<string>612.IBPluginDependency</string>
 					<string>9.IBPluginDependency</string>
 					<string>9.ImportedFromIB2</string>
 					<string>92.IBPluginDependency</string>
@@ -4556,12 +4540,14 @@
 					<string>93.IBPluginDependency</string>
 					<string>93.ImportedFromIB2</string>
 					<string>94.IBPluginDependency</string>
+					<string>94.IBViewBoundsToFrameTransform</string>
 					<string>94.ImportedFromIB2</string>
 					<string>95.IBPluginDependency</string>
 					<string>95.ImportedFromIB2</string>
 					<string>96.IBPluginDependency</string>
 					<string>96.ImportedFromIB2</string>
 					<string>97.IBPluginDependency</string>
+					<string>97.IBViewBoundsToFrameTransform</string>
 					<string>97.ImportedFromIB2</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
@@ -4573,12 +4559,12 @@
 						<object class="IBToolTipAttribute" key="NS.object.0">
 							<string key="name">ToolTip</string>
 							<reference key="object" ref="654084483"/>
-							<string key="toolTip">Das Kennwort wird aus dem Speicher gelöscht</string>
+							<string key="toolTip">Die Passphrase wird aus dem Speicher gelöscht</string>
 						</object>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">P4AAAL+AAABDrAAAwvYAAA</bytes>
+						<bytes key="NSTransformStruct">P4AAAL+AAABDqYAAwzoAAA</bytes>
 					</object>
 					<boolean value="YES"/>
 					<object class="NSMutableDictionary">
@@ -4678,50 +4664,23 @@
 						</object>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<boolean value="YES"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<boolean value="YES"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<boolean value="YES"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<boolean value="YES"/>
-					<object class="NSMutableDictionary">
-						<string key="NS.key.0">ToolTip</string>
-						<object class="IBToolTipAttribute" key="NS.object.0">
-							<string key="name">ToolTip</string>
-							<reference key="object" ref="129017728"/>
-							<string key="toolTip">Das Kennwort wird im Schlüsselbund des Benutzers gespeichert</string>
-						</object>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABBkAAAw4KAAA</bytes>
 					</object>
+					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="YES"/>
-					<object class="NSMutableDictionary">
-						<string key="NS.key.0">ToolTip</string>
-						<object class="IBToolTipAttribute" key="NS.object.0">
-							<string key="name">ToolTip</string>
-							<reference key="object" ref="21397550"/>
-							<string key="toolTip">Das Kennwort wird eine Weile zwischen gespeichert</string>
-						</object>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<boolean value="YES"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">AUFAAABDYAAAA</bytes>
 					</object>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="YES"/>
-					<object class="NSMutableDictionary">
-						<string key="NS.key.0">ToolTip</string>
-						<object class="IBToolTipAttribute" key="NS.object.0">
-							<string key="name">ToolTip</string>
-							<reference key="object" ref="674977066"/>
-							<string key="toolTip">Das Kennwort wird nicht zwischen gespeichert</string>
-						</object>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABDioAAwzQAAA</bytes>
 					</object>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<boolean value="YES"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<boolean value="YES"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<boolean value="YES"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<boolean value="YES"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="YES"/>
 					<object class="NSMutableDictionary">
 						<string key="NS.key.0">ToolTip</string>
@@ -4852,6 +4811,9 @@
 						</object>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABBkAAAw4UAAA</bytes>
+					</object>
 					<boolean value="YES"/>
 					<object class="NSMutableDictionary">
 						<string key="NS.key.0">ToolTip</string>
@@ -4872,10 +4834,13 @@
 						<object class="IBToolTipAttribute" key="NS.object.0">
 							<string key="name">ToolTip</string>
 							<reference key="object" ref="495651112"/>
-							<string key="toolTip">Das Kennwort wird während der Eingabe angezeigt</string>
+							<string key="toolTip">Die Passphrase wird während der Eingabe angezeigt</string>
 						</object>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABBcAAAwwQAAA</bytes>
+					</object>
 					<boolean value="YES"/>
 					<object class="NSMutableDictionary">
 						<string key="NS.key.0">ToolTip</string>
@@ -4974,9 +4939,10 @@
 						</object>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABD8QAAw5OAAA</bytes>
+					</object>
 					<boolean value="YES"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -5047,9 +5013,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{560, 523}, {558, 401}}</string>
+					<string>{{705, 596}, {558, 401}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{560, 523}, {558, 401}}</string>
+					<string>{{705, 596}, {558, 401}}</string>
 					<boolean value="YES"/>
 					<boolean value="YES"/>
 					<string>{1.79769e+308, 1.79769e+308}</string>
@@ -5095,7 +5061,20 @@
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<boolean value="YES"/>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABBcAAAw0gAAA</bytes>
+					</object>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABBcAAAwy4AAA</bytes>
+					</object>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABDWwAAwzcAAA</bytes>
+					</object>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -5103,10 +5082,18 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABBiAAAw5aAAA</bytes>
+					</object>
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<boolean value="YES"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABBiAAAw6IAAA</bytes>
+					</object>
 					<boolean value="YES"/>
 				</object>
 			</object>
@@ -5126,7 +5113,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">606</int>
+			<int key="maxID">666</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -5147,69 +5134,13 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>changeDefaultKey:</string>
-							<string>changeLineWrapping:</string>
-							<string>changePassphraseStrategy:</string>
-							<string>changePassphraseTimeout:</string>
 							<string>exportGPGMailConfiguration:</string>
 							<string>flushCachedPassphrases:</string>
 							<string>refreshKeys:</string>
-							<string>toggleAlwaysEncryptMessages:</string>
-							<string>toggleAlwaysSignMessages:</string>
-							<string>toggleAuthenticateUnreadMessagesAutomatically:</string>
-							<string>toggleAuthenticatesMessagesAutomatically:</string>
-							<string>toggleAutomaticPersonalKeyChoice:</string>
-							<string>toggleBCCRecipientsUse:</string>
-							<string>toggleButtonsBehavior:</string>
-							<string>toggleDecryptsMessagesAutomatically:</string>
-							<string>toggleDecryptsUnreadMessagesAutomatically:</string>
-							<string>toggleDisplayAccessoryView:</string>
-							<string>toggleEncryptToSelf:</string>
-							<string>toggleEncryptWhenPossible:</string>
-							<string>toggleEncryptedReplyToEncryptedMessage:</string>
-							<string>toggleExtendedInformation:</string>
-							<string>toggleFilterKeys:</string>
-							<string>toggleKeyRefresh:</string>
-							<string>toggleOpenPGPMIME:</string>
-							<string>toggleSMIME:</string>
-							<string>toggleSeparatePGPOperations:</string>
 							<string>toggleShowKeyInformation:</string>
-							<string>toggleShowPassphrase:</string>
-							<string>toggleShowUserIDs:</string>
-							<string>toggleSignWhenEncrypting:</string>
-							<string>toggleSignedReplyToSignedMessage:</string>
-							<string>toggleSmartRules:</string>
-							<string>toggleTrustAllKeys:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -5222,55 +5153,15 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>changeDefaultKey:</string>
-							<string>changeLineWrapping:</string>
-							<string>changePassphraseStrategy:</string>
-							<string>changePassphraseTimeout:</string>
 							<string>exportGPGMailConfiguration:</string>
 							<string>flushCachedPassphrases:</string>
 							<string>refreshKeys:</string>
-							<string>toggleAlwaysEncryptMessages:</string>
-							<string>toggleAlwaysSignMessages:</string>
-							<string>toggleAuthenticateUnreadMessagesAutomatically:</string>
-							<string>toggleAuthenticatesMessagesAutomatically:</string>
-							<string>toggleAutomaticPersonalKeyChoice:</string>
-							<string>toggleBCCRecipientsUse:</string>
-							<string>toggleButtonsBehavior:</string>
-							<string>toggleDecryptsMessagesAutomatically:</string>
-							<string>toggleDecryptsUnreadMessagesAutomatically:</string>
-							<string>toggleDisplayAccessoryView:</string>
-							<string>toggleEncryptToSelf:</string>
-							<string>toggleEncryptWhenPossible:</string>
-							<string>toggleEncryptedReplyToEncryptedMessage:</string>
-							<string>toggleExtendedInformation:</string>
-							<string>toggleFilterKeys:</string>
-							<string>toggleKeyRefresh:</string>
-							<string>toggleOpenPGPMIME:</string>
-							<string>toggleSMIME:</string>
-							<string>toggleSeparatePGPOperations:</string>
 							<string>toggleShowKeyInformation:</string>
-							<string>toggleShowPassphrase:</string>
-							<string>toggleShowUserIDs:</string>
-							<string>toggleSignWhenEncrypting:</string>
-							<string>toggleSignedReplyToSignedMessage:</string>
-							<string>toggleSmartRules:</string>
-							<string>toggleTrustAllKeys:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBActionInfo">
 								<string key="name">changeDefaultKey:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">changeLineWrapping:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">changePassphraseStrategy:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">changePassphraseTimeout:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -5286,107 +5177,7 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">toggleAlwaysEncryptMessages:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleAlwaysSignMessages:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleAuthenticateUnreadMessagesAutomatically:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleAuthenticatesMessagesAutomatically:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleAutomaticPersonalKeyChoice:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleBCCRecipientsUse:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleButtonsBehavior:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleDecryptsMessagesAutomatically:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleDecryptsUnreadMessagesAutomatically:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleDisplayAccessoryView:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleEncryptToSelf:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleEncryptWhenPossible:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleEncryptedReplyToEncryptedMessage:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleExtendedInformation:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleFilterKeys:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleKeyRefresh:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleOpenPGPMIME:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleSMIME:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleSeparatePGPOperations:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
 								<string key="name">toggleShowKeyInformation:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleShowPassphrase:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleShowUserIDs:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleSignWhenEncrypting:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleSignedReplyToSignedMessage:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleSmartRules:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleTrustAllKeys:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>
@@ -5395,171 +5186,27 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>alwaysEncryptSwitchButton</string>
-							<string>alwaysSignSwitchButton</string>
-							<string>authenticateUnreadMessagesSwitchButton</string>
-							<string>automaticallyAuthenticateMessagesSwitchButton</string>
-							<string>automaticallyDecryptMessagesSwitchButton</string>
-							<string>buttonsShowStateSwitchButton</string>
-							<string>choosesPersonalKeyAccordingToAccountSwitchButton</string>
-							<string>decryptUnreadMessagesSwitchButton</string>
-							<string>disableSMIMESwitchButton</string>
-							<string>displayButtonInComposeWindowSwitchButton</string>
-							<string>encryptReplyToEncryptedMessageSwitchButton</string>
-							<string>encryptToSelfSwitchButton</string>
-							<string>encryptWhenAllKeysAvailableSwitchButton</string>
-							<string>extendedInfoSwitchButton</string>
-							<string>filtersKeysSwitchButton</string>
 							<string>keyIdentifiersPopUpButton</string>
 							<string>keyIdentifiersTableView</string>
-							<string>lineWrappingFormCell</string>
-							<string>openPGPMIMESwitchButton</string>
-							<string>passphraseStrategyMatrix</string>
-							<string>passphraseTimeoutFormCell</string>
 							<string>personalKeysPopUpButton</string>
-							<string>refreshKeysOnVolumeChangeSwitchButton</string>
-							<string>separateSignAndEncryptOperationsSwitchButton</string>
-							<string>showUserIDsSwitchButton</string>
-							<string>showsPassphraseSwitchButton</string>
-							<string>signReplyToSignedMessageSwitchButton</string>
-							<string>signWhenEncryptingSwitchButton</string>
-							<string>trustAllKeysSwitchButton</string>
-							<string>useBCCRecipientsSwitchButton</string>
-							<string>useSmartRulesSwitchButton</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
 							<string>NSPopUpButton</string>
 							<string>NSTableView</string>
-							<string>NSFormCell</string>
-							<string>NSButton</string>
-							<string>NSMatrix</string>
-							<string>NSFormCell</string>
 							<string>NSPopUpButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>alwaysEncryptSwitchButton</string>
-							<string>alwaysSignSwitchButton</string>
-							<string>authenticateUnreadMessagesSwitchButton</string>
-							<string>automaticallyAuthenticateMessagesSwitchButton</string>
-							<string>automaticallyDecryptMessagesSwitchButton</string>
-							<string>buttonsShowStateSwitchButton</string>
-							<string>choosesPersonalKeyAccordingToAccountSwitchButton</string>
-							<string>decryptUnreadMessagesSwitchButton</string>
-							<string>disableSMIMESwitchButton</string>
-							<string>displayButtonInComposeWindowSwitchButton</string>
-							<string>encryptReplyToEncryptedMessageSwitchButton</string>
-							<string>encryptToSelfSwitchButton</string>
-							<string>encryptWhenAllKeysAvailableSwitchButton</string>
-							<string>extendedInfoSwitchButton</string>
-							<string>filtersKeysSwitchButton</string>
 							<string>keyIdentifiersPopUpButton</string>
 							<string>keyIdentifiersTableView</string>
-							<string>lineWrappingFormCell</string>
-							<string>openPGPMIMESwitchButton</string>
-							<string>passphraseStrategyMatrix</string>
-							<string>passphraseTimeoutFormCell</string>
 							<string>personalKeysPopUpButton</string>
-							<string>refreshKeysOnVolumeChangeSwitchButton</string>
-							<string>separateSignAndEncryptOperationsSwitchButton</string>
-							<string>showUserIDsSwitchButton</string>
-							<string>showsPassphraseSwitchButton</string>
-							<string>signReplyToSignedMessageSwitchButton</string>
-							<string>signWhenEncryptingSwitchButton</string>
-							<string>trustAllKeysSwitchButton</string>
-							<string>useBCCRecipientsSwitchButton</string>
-							<string>useSmartRulesSwitchButton</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">alwaysEncryptSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">alwaysSignSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">authenticateUnreadMessagesSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">automaticallyAuthenticateMessagesSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">automaticallyDecryptMessagesSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">buttonsShowStateSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">choosesPersonalKeyAccordingToAccountSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">decryptUnreadMessagesSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">disableSMIMESwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">displayButtonInComposeWindowSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">encryptReplyToEncryptedMessageSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">encryptToSelfSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">encryptWhenAllKeysAvailableSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">extendedInfoSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">filtersKeysSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">keyIdentifiersPopUpButton</string>
 								<string key="candidateClassName">NSPopUpButton</string>
@@ -5569,60 +5216,8 @@
 								<string key="candidateClassName">NSTableView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">lineWrappingFormCell</string>
-								<string key="candidateClassName">NSFormCell</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">openPGPMIMESwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">passphraseStrategyMatrix</string>
-								<string key="candidateClassName">NSMatrix</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">passphraseTimeoutFormCell</string>
-								<string key="candidateClassName">NSFormCell</string>
-							</object>
-							<object class="IBToOneOutletInfo">
 								<string key="name">personalKeysPopUpButton</string>
 								<string key="candidateClassName">NSPopUpButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">refreshKeysOnVolumeChangeSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">separateSignAndEncryptOperationsSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">showUserIDsSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">showsPassphraseSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">signReplyToSignedMessageSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">signWhenEncryptingSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">trustAllKeysSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">useBCCRecipientsSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">useSmartRulesSwitchButton</string>
-								<string key="candidateClassName">NSButton</string>
 							</object>
 						</object>
 					</object>
@@ -5772,7 +5367,6 @@
 				<string>GPGMail</string>
 				<string>NSMenuCheckmark</string>
 				<string>NSMenuMixedState</string>
-				<string>NSRadioButton</string>
 				<string>NSSwitch</string>
 				<string>RefreshNormal</string>
 				<string>RefreshPressed</string>
@@ -5782,7 +5376,6 @@
 				<string>{512, 512}</string>
 				<string>{9, 8}</string>
 				<string>{7, 2}</string>
-				<string>{16, 15}</string>
 				<string>{15, 15}</string>
 				<string>{12, 13}</string>
 				<string>{12, 13}</string>

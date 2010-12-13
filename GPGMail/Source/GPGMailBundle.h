@@ -136,8 +136,9 @@ enum {
 - (BOOL) displaysButtonsInComposeWindow;
 - (void) setEncryptsToSelf:(BOOL)flag;
 - (BOOL) encryptsToSelf;
-- (void) setUsesKeychain:(BOOL)flag;
-- (BOOL) usesKeychain;
+//- (void) setUsesKeychain:(BOOL)flag;
+//- (BOOL) usesKeychain;
+@property BOOL usesKeychain;
 - (void) setDecryptsOnlyUnreadMessagesAutomatically:(BOOL)flag;
 - (BOOL) decryptsOnlyUnreadMessagesAutomatically;
 - (void) setAuthenticatesOnlyUnreadMessagesAutomatically:(BOOL)flag;

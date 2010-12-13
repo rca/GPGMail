@@ -28,98 +28,29 @@
  */
 
 #import <NSPreferences.h>
-
 #import <AppKit/AppKit.h>
 
 @class GPGMailBundle;
 
 @interface GPGMailPreferences : NSPreferencesModule {
     IBOutlet NSPopUpButton	*personalKeysPopUpButton;
-    IBOutlet NSButton		*choosesPersonalKeyAccordingToAccountSwitchButton;
-    IBOutlet NSMatrix		*passphraseStrategyMatrix;
-    IBOutlet NSFormCell		*passphraseTimeoutFormCell;
-    IBOutlet NSButton		*showsPassphraseSwitchButton;
-
-    IBOutlet NSButton		*useSmartRulesSwitchButton;
-    IBOutlet NSButton		*alwaysSignSwitchButton;
-    IBOutlet NSButton		*signReplyToSignedMessageSwitchButton;
-    IBOutlet NSButton		*signWhenEncryptingSwitchButton;
-    IBOutlet NSButton		*alwaysEncryptSwitchButton;
-    IBOutlet NSButton		*encryptReplyToEncryptedMessageSwitchButton;
-    IBOutlet NSButton		*encryptWhenAllKeysAvailableSwitchButton;
-    IBOutlet NSButton		*encryptToSelfSwitchButton;
-    IBOutlet NSButton		*trustAllKeysSwitchButton;
-    IBOutlet NSButton		*filtersKeysSwitchButton;
-    IBOutlet NSButton		*openPGPMIMESwitchButton;
-    IBOutlet NSButton		*useBCCRecipientsSwitchButton;
-    IBOutlet NSButton		*buttonsShowStateSwitchButton;
-    IBOutlet NSButton		*displayButtonInComposeWindowSwitchButton;
-    IBOutlet NSButton		*separateSignAndEncryptOperationsSwitchButton;
-
-    IBOutlet NSButton		*automaticallyAuthenticateMessagesSwitchButton;
-    IBOutlet NSButton		*authenticateUnreadMessagesSwitchButton;
-    IBOutlet NSButton		*decryptUnreadMessagesSwitchButton;
-    IBOutlet NSButton		*automaticallyDecryptMessagesSwitchButton;
-    IBOutlet NSButton		*extendedInfoSwitchButton;
 
     NSMutableDictionary		*tableColumnPerIdentifier;
     IBOutlet NSTableView	*keyIdentifiersTableView;
-    IBOutlet NSButton		*showUserIDsSwitchButton;
     IBOutlet NSPopUpButton	*keyIdentifiersPopUpButton;
-    IBOutlet NSFormCell		*lineWrappingFormCell;
-    IBOutlet NSButton       *refreshKeysOnVolumeChangeSwitchButton;
-    IBOutlet NSButton       *disableSMIMESwitchButton;
     
-    //IBOutlet NSTextField	*versionTextField;
-    //IBOutlet NSTextField	*contactTextField;
-    //IBOutlet NSTextField	*webSiteTextField;
-
     BOOL					initializingPrefs;
 }
 
 - (IBAction) changeDefaultKey:(id)sender;
-- (IBAction) toggleAutomaticPersonalKeyChoice:(id)sender;
-- (IBAction) changePassphraseStrategy:(id)sender;
-- (IBAction) changePassphraseTimeout:(id)sender;
 - (IBAction) flushCachedPassphrases:(id)sender;
-- (IBAction) toggleShowPassphrase:(id)sender;
 - (IBAction) refreshKeys:(id)sender;
-
-- (IBAction) toggleDisplayAccessoryView:(id)sender;
-- (IBAction) toggleEncryptToSelf:(id)sender;
-- (IBAction) toggleAlwaysSignMessages:(id)sender;
-- (IBAction) toggleAlwaysEncryptMessages:(id)sender;
-- (IBAction) toggleBCCRecipientsUse:(id)sender;
-- (IBAction) toggleTrustAllKeys:(id)sender;
-- (IBAction) toggleOpenPGPMIME:(id)sender;
-- (IBAction) toggleSignWhenEncrypting:(id)sender;
-- (IBAction) toggleButtonsBehavior:(id)sender;
-- (IBAction) toggleFilterKeys:(id)sender;
-- (IBAction) toggleSmartRules:(id)sender;
-- (IBAction) toggleSignedReplyToSignedMessage:(id)sender;
-- (IBAction) toggleEncryptedReplyToEncryptedMessage:(id)sender;
-- (IBAction) toggleEncryptWhenPossible:(id)sender;
-- (IBAction) toggleSeparatePGPOperations:(id)sender;
-
-- (IBAction) toggleAuthenticatesMessagesAutomatically:(id)sender;
-- (IBAction) toggleAuthenticateUnreadMessagesAutomatically:(id)sender;
-- (IBAction) toggleDecryptsMessagesAutomatically:(id)sender;
-- (IBAction) toggleDecryptsUnreadMessagesAutomatically:(id)sender;
-- (IBAction) toggleExtendedInformation:(id)sender;
-
-- (IBAction) toggleShowUserIDs:(id)sender;
 - (IBAction) toggleShowKeyInformation:(id)sender;
-- (IBAction) changeLineWrapping:(id)sender;
-- (IBAction) toggleKeyRefresh:(id)sender;
-- (IBAction) toggleSMIME:(id)sender;
 
-- (IBAction) exportGPGMailConfiguration:(id)sender;
-
-@property (readonly) NSString *versionDescription;
 @property (readonly) NSString *copyright;
 @property (readonly) NSAttributedString *credits;
 @property (readonly) NSAttributedString *websiteLink;
-
-
+@property (readonly) GPGMailBundle *bundle;
 
 @end
+
