@@ -124,12 +124,12 @@
 			remoteGlobalIDString = 551DF42B0B2886420061FE17;
 			remoteInfo = MacGPGMETesting;
 		};
-		1B45A51B11CC973700ED4663 /* PBXContainerItemProxy */ = {
+		3058FEAD12B8225700CAF723 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1B1949D711CC52350092B810 /* MacGPGME.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 1B45A4E311CC967000ED4663;
-			remoteInfo = "Build and Install";
+			remoteGlobalIDString = 554B558F069F0111005E1C92;
+			remoteInfo = MacGPGME;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -746,7 +746,7 @@
 			);
 			comments = "Old working:\nheader_search_path ..\nlibrary_style static\nother_linker_flags -force_flat_namespace -undefined suppress \nmacosx deployment target: default\n\n-weak_framework MacGPGME -bundle_loader /Applications/Mail.app/Contents/MacOS/Mail  -undefined dynamic_lookup\n";
 			dependencies = (
-				1B45A51C11CC973700ED4663 /* PBXTargetDependency */,
+				3058FEAE12B8225700CAF723 /* PBXTargetDependency */,
 			);
 			name = GPGMail;
 			productInstallPath = "$(HOME)/Library/Bundles";
@@ -905,7 +905,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "DEST_PATH=~/Library/Mail/Bundles/\"$FULL_PRODUCT_NAME\"\nif [ \\( ! -L \"$DEST_PATH\" \\) -a -d \"$DEST_PATH\" ] ;then\n\trm -r \"$DEST_PATH\"\nelse\n\trm \"$DEST_PATH\"\nfi\n\nif [ \"$INSTALL\" -eq \"1\" ] ;then\n\t# Copy the Bundle \n\tcp -RH \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\nelse\n\t# Create a symbolic link\n\tln -Ffs \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\nfi\n";
+			shellScript = "DEST_PATH=~/Library/Mail/Bundles/\"$FULL_PRODUCT_NAME\"\nif [ \\( ! -L \"$DEST_PATH\" \\) -a -d \"$DEST_PATH\" ] ;then\n\trm -r \"$DEST_PATH\"\nelse\n\trm \"$DEST_PATH\"\nfi\n\nif [ \"$INSTALL_GPGMAIL\" -eq \"1\" ] ;then\n\t# Copy the Bundle \n\tcp -RH \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\nelse\n\t# Create a symbolic link\n\tln -Ffs \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -948,10 +948,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		1B45A51C11CC973700ED4663 /* PBXTargetDependency */ = {
+		3058FEAE12B8225700CAF723 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Build and Install";
-			targetProxy = 1B45A51B11CC973700ED4663 /* PBXContainerItemProxy */;
+			name = MacGPGME;
+			targetProxy = 3058FEAD12B8225700CAF723 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
