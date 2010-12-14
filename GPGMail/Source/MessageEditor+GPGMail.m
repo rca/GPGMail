@@ -35,6 +35,8 @@
 #import <MessageEditor.h>
 #import <ComposeHeaderView.h>
 #import <Cocoa/Cocoa.h>
+#import "Message+GPGMail.h"
+
 
 #ifdef TIGER
 #warning Copy LEOPARD code
@@ -113,8 +115,7 @@ static IMP  MailDocumentEditor_animationDidEnd = NULL;
 //static IMP  MailDocumentEditor_backEnd_willCreateMessageWithHeaders = NULL; // Invoked only when saving message as draft
 static IMP  MailDocumentEditor_changeReplyMode = NULL;
 
-+ (void)load
-{
++ (void)load {
 	MailDocumentEditor_backEndDidLoadInitialContent = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(backEndDidLoadInitialContent:), NSClassFromString(@"MailDocumentEditor"), @selector(gpgBackEndDidLoadInitialContent:), [self class]);
 	MailDocumentEditor_backEnd_shouldDeliverMessage = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(backEnd:shouldDeliverMessage:), NSClassFromString(@"MailDocumentEditor"), @selector(gpgBackEnd:shouldDeliverMessage:), [self class]);
 	MailDocumentEditor_showOrHideStationery = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(showOrHideStationery:), NSClassFromString(@"MailDocumentEditor"), @selector(gpgShowOrHideStationery:), [self class]);
@@ -122,8 +123,10 @@ static IMP  MailDocumentEditor_changeReplyMode = NULL;
 	MailDocumentEditor_changeReplyMode = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(changeReplyMode:), NSClassFromString(@"MailDocumentEditor"), @selector(gpgChangeReplyMode:), [self class]);
 }
 
-- (GPGMailComposeAccessoryViewOwner *)gpgMyComposeAccessoryViewOwner
-{
+
+
+
+- (GPGMailComposeAccessoryViewOwner *)gpgMyComposeAccessoryViewOwner {
     NSEnumerator				*theEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
     MVComposeAccessoryViewOwner	*anOwner;
 
@@ -136,8 +139,7 @@ static IMP  MailDocumentEditor_changeReplyMode = NULL;
     return nil;
 }
 
-- (void)gpgShowOrHideStationery:(id)fp8
-{
+- (void)gpgShowOrHideStationery:(id)fp8 {
     if([GPGMailBundle gpgMailWorks]){
         if(![self stationeryPaneIsVisible]){
             NSView  *accessoryView = [[self gpgMyComposeAccessoryViewOwner] composeAccessoryView];
@@ -174,13 +176,11 @@ static IMP  MailDocumentEditor_changeReplyMode = NULL;
     }
 }
 
-- (void) gpgAddAccessoryViewOwner:(MVComposeAccessoryViewOwner *)owner
-{
+- (void) gpgAddAccessoryViewOwner:(MVComposeAccessoryViewOwner *)owner {
 	[[(HeadersEditor *)[self headersEditor] gpgAccessoryViewOwners] addObject:owner];
 }
 
-- (void)gpgInsertComposeAccessoryViewOfOwner:(MVComposeAccessoryViewOwner *)owner
-{
+- (void)gpgInsertComposeAccessoryViewOfOwner:(MVComposeAccessoryViewOwner *)owner {
     NSView  *accessoryView = [owner composeAccessoryView];
     NSView  *containerView = [[self valueForKey:@"composeWebView"] superview];
     NSRect  aRect = [accessoryView frame];
@@ -198,8 +198,7 @@ static IMP  MailDocumentEditor_changeReplyMode = NULL;
     [[self valueForKey:@"composeWebView"] setFrame:aRect];
 }
 
-- (void)gpgBackEndDidLoadInitialContent:(id)fp8
-{
+- (void)gpgBackEndDidLoadInitialContent:(id)fp8 {
     // WARNING That method can be invoked more than once, when message is created by AppleScript (bug?).
 	((void (*)(id, SEL, id))MailDocumentEditor_backEndDidLoadInitialContent)(self, _cmd, fp8);
 
@@ -216,11 +215,28 @@ static IMP  MailDocumentEditor_changeReplyMode = NULL;
         }
         if(createNewAccessoryViewOwner){
             MVComposeAccessoryViewOwner	*myComposeAccessoryViewOwner = [NSClassFromString(@"GPGMailComposeAccessoryViewOwner") composeAccessoryViewOwner];
-
+			
             [self gpgAddAccessoryViewOwner:myComposeAccessoryViewOwner];
             [myComposeAccessoryViewOwner setupUIForMessage:[fp8 message]]; // Toolbar already finished
             [self gpgInsertComposeAccessoryViewOfOwner:myComposeAccessoryViewOwner]; // Must be called after setUIForMessage:, which loads the nib	
-        }
+			
+			
+			Message *originalMessage = [fp8 originalMessage];
+			if (originalMessage) {
+				GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+				NSMutableDictionary *options = [NSMutableDictionary dictionaryWithCapacity:3];
+				
+				BOOL shouldEncrypted = [mailBundle signsReplyToSignedMessage] && [originalMessage gpgIsEncrypted];
+				BOOL shouldSigned = [mailBundle encryptsReplyToEncryptedMessage] && [originalMessage gpgHasSignature];
+				BOOL shouldMIME = ([originalMessage gpgIsEncrypted] || [originalMessage gpgHasSignature]) && [originalMessage gpgIsPGPMIMEMessage];
+				
+				[options setObject:[NSNumber numberWithBool:shouldEncrypted] forKey:@"encrypted"];
+				[options setObject:[NSNumber numberWithBool:shouldSigned] forKey:@"signed"];
+				[options setObject:[NSNumber numberWithBool:shouldMIME] forKey:@"MIME"];
+				
+				[(GPGMailComposeAccessoryViewOwner*)myComposeAccessoryViewOwner gpgSetOptions:options];
+			}
+		}
     }
 }
 
@@ -335,7 +351,6 @@ static IMP  MailDocumentEditor_changeReplyMode = NULL;
     // Forwarded by GPGMailBundle, from menuItem action
     NSEnumerator	*anEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
     id				anOwner;
-    
     while(anOwner = [anEnum nextObject])
         if([anOwner respondsToSelector:action])
             [anOwner performSelector:action withObject:sender];
