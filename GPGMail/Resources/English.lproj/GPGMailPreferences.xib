@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="161"/>
+			<integer value="487"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -101,7 +101,7 @@
 														<characters key="NS.bytes">1</characters>
 													</object>
 													<object class="NSView" key="NSView" id="497935044">
-														<reference key="NSNextResponder" ref="904080724"/>
+														<nil key="NSNextResponder"/>
 														<int key="NSvFlags">256</int>
 														<object class="NSMutableArray" key="NSSubviews">
 															<bool key="EncodedWithXMLCoder">YES</bool>
@@ -435,7 +435,6 @@
 															</object>
 														</object>
 														<string key="NSFrame">{{10, 33}, {512, 326}}</string>
-														<reference key="NSSuperview" ref="904080724"/>
 													</object>
 													<string key="NSLabel">Keys</string>
 													<reference key="NSColor" ref="693655191"/>
@@ -936,7 +935,7 @@
 																			<object class="NSTableView" id="559412043">
 																				<reference key="NSNextResponder" ref="257647846"/>
 																				<int key="NSvFlags">256</int>
-																				<string key="NSFrameSize">{458, 19}</string>
+																				<string key="NSFrameSize">{458, 1}</string>
 																				<reference key="NSSuperview" ref="257647846"/>
 																				<bool key="NSEnabled">YES</bool>
 																				<object class="NSTableHeaderView" key="NSHeaderView" id="727036868">
@@ -1218,7 +1217,6 @@
 																<reference key="NSHScroller" ref="820971284"/>
 																<reference key="NSContentView" ref="257647846"/>
 																<reference key="NSHeaderClipView" ref="587700975"/>
-																<reference key="NSCornerView" ref="190797269"/>
 																<bytes key="NSScrollAmts">QSAAAEEgAABBmAAAQZgAAA</bytes>
 															</object>
 															<object class="NSPopUpButton" id="921937106">
@@ -1511,7 +1509,7 @@
 												<object class="NSTabViewItem" id="745450447">
 													<string key="NSIdentifier">Item 4</string>
 													<object class="NSView" key="NSView" id="479577067">
-														<nil key="NSNextResponder"/>
+														<reference key="NSNextResponder" ref="904080724"/>
 														<int key="NSvFlags">256</int>
 														<object class="NSMutableArray" key="NSSubviews">
 															<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1684,7 +1682,7 @@
 																<reference key="NSSuperview" ref="479577067"/>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSButtonCell" key="NSCell" id="689828414">
-																	<int key="NSCellFlags">604110336</int>
+																	<int key="NSCellFlags">67239424</int>
 																	<int key="NSCellFlags2">134217728</int>
 																	<string key="NSContents">Check Now</string>
 																	<reference key="NSSupport" ref="706304668"/>
@@ -1699,6 +1697,7 @@
 															</object>
 														</object>
 														<string key="NSFrame">{{10, 33}, {512, 326}}</string>
+														<reference key="NSSuperview" ref="904080724"/>
 													</object>
 													<string key="NSLabel">Update</string>
 													<reference key="NSColor" ref="693655191"/>
@@ -1935,14 +1934,14 @@
 													<reference key="NSTabView" ref="904080724"/>
 												</object>
 											</object>
-											<reference key="NSSelectedTabViewItem" ref="312595118"/>
+											<reference key="NSSelectedTabViewItem" ref="745450447"/>
 											<reference key="NSFont" ref="706304668"/>
 											<int key="NSTvFlags">0</int>
 											<bool key="NSAllowTruncatedLabels">YES</bool>
 											<bool key="NSDrawsBackground">YES</bool>
 											<object class="NSMutableArray" key="NSSubviews">
 												<bool key="EncodedWithXMLCoder">YES</bool>
-												<reference ref="497935044"/>
+												<reference ref="479577067"/>
 											</object>
 										</object>
 										<object class="NSTextField" id="11378849">
@@ -2354,22 +2353,6 @@
 						</object>
 					</object>
 					<int key="connectionID">515</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: updater.automaticallyDownloadsUpdates</string>
-						<reference key="source" ref="872677117"/>
-						<reference key="destination" ref="359798784"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="872677117"/>
-							<reference key="NSDestination" ref="359798784"/>
-							<string key="NSLabel">enabled: updater.automaticallyDownloadsUpdates</string>
-							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">updater.automaticallyDownloadsUpdates</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">517</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -2987,6 +2970,42 @@
 						</object>
 					</object>
 					<int key="connectionID">662</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">target: updater</string>
+						<reference key="source" ref="361336920"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="361336920"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">target: updater</string>
+							<string key="NSBinding">target</string>
+							<string key="NSKeyPath">updater</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSSelectorName</string>
+								<string key="NS.object.0">checkForUpdates:</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">668</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: updater.automaticallyChecksForUpdates</string>
+						<reference key="source" ref="872677117"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="872677117"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">enabled: updater.automaticallyChecksForUpdates</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">updater.automaticallyChecksForUpdates</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">669</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -5097,7 +5116,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">666</int>
+			<int key="maxID">669</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -5118,14 +5137,12 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>changeDefaultKey:</string>
-							<string>exportGPGMailConfiguration:</string>
 							<string>flushCachedPassphrases:</string>
 							<string>refreshKeys:</string>
 							<string>toggleShowKeyInformation:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -5137,7 +5154,6 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>changeDefaultKey:</string>
-							<string>exportGPGMailConfiguration:</string>
 							<string>flushCachedPassphrases:</string>
 							<string>refreshKeys:</string>
 							<string>toggleShowKeyInformation:</string>
@@ -5146,10 +5162,6 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBActionInfo">
 								<string key="name">changeDefaultKey:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">exportGPGMailConfiguration:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
