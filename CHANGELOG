@@ -1,3 +1,10 @@
+1.3.2   Dec XX 2010
+        New icons
+        New shared preferences for different GPG tools
+        Issue 79: Fixed the 'reply encrypted to an encrypted message' bug
+        Issue 81: Fixed the 'update now' button
+        Issue 97: Fixed the 'check for update' pulldown menu
+	Issue 110: Fixed the 'password chaching/timeout' issue
 1.3.1   Nov 11 2010
         Issue 221: Fixed compatibility with 10.6.5
         Issue 223: Updated the GPG Keychain Access application
