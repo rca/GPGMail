@@ -894,8 +894,10 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
             
             (void)[aContext verifySignatureData:signatureInputData againstData:inputData /*encoding:[self textEncoding]*/]; // Can raise an exception
 
-            if(!(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask))
-                (void)[[NSFileManager defaultManager] removeFileAtPath:signatureFile handler:nil];
+            if(!(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask)) {
+				[[NSFileManager defaultManager] removeItemAtPath:signatureFile error:nil];
+			}
+			
             aSignature = [[[[aContext signatures] lastObject] retain] autorelease]; // Because context will be released
 #warning Workaround for gpgme 0.4.x bug: does not return an error when CRC or BADARMOR error!
             if(aSignature == nil)
@@ -905,9 +907,10 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
             [signatureInputData release];
             return aSignature;
         }@catch(NSException *localException){
-            if(!(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask))
-                (void)[[NSFileManager defaultManager] removeFileAtPath:signatureFile handler:nil];
-
+            if(!(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask)) {
+				[[NSFileManager defaultManager] removeItemAtPath:signatureFile error:nil];
+			}
+				
             [inputData release];
             [signatureInputData release];
             if([[localException name] isEqualToString:GPGException]){

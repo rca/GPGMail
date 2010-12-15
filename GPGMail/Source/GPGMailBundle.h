@@ -76,9 +76,9 @@ enum {
 };
 
 #ifdef SNOW_LEOPARD_64
-@interface GPGMailBundle : NSObject
+@interface GPGMailBundle : NSObject <NSToolbarDelegate>
 #else
-@interface GPGMailBundle : MVMailBundle
+@interface GPGMailBundle : MVMailBundle <NSToolbarDelegate>
 #endif
 {
     IBOutlet NSMenuItem     *decryptMenuItem;

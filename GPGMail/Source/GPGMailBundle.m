@@ -54,6 +54,8 @@
 
 #import "GPGDefaults.h"
 
+#import "MVMailBundle.h"
+
 
 // The following strings are used as toolbarItem identifiers and userDefault keys (value is the position index)
 NSString	*GPGAuthenticateMessageToolbarItemIdentifier = @"GPGAuthenticateMessageToolbarItem";
@@ -63,14 +65,10 @@ NSString	*GPGEncryptMessageToolbarItemIdentifier = @"GPGEncryptMessageToolbarIte
 
 NSString	*GPGKeyListWasInvalidatedNotification = @"GPGKeyListWasInvalidatedNotification";
 NSString	*GPGPreferencesDidChangeNotification = @"GPGPreferencesDidChangeNotification";
-
-NSString	*GPGMailException = @"GPGMailException";
-
 NSString	*GPGKeyGroupsChangedNotification = @"GPGKeyGroupsChangedNotification";
-
 NSString	*GPGMissingKeysNotification = @"GPGMissingKeysNotification";
 
-
+NSString	*GPGMailException = @"GPGMailException";
 
 
 
@@ -149,6 +147,7 @@ static BOOL	gpgMailWorks = YES;
     }
     initialized = YES;
     
+    
     if(class_getSuperclass([self class]) != NSClassFromString(@"MVMailBundle")) {
         [super initialize];
         
@@ -158,10 +157,10 @@ static BOOL	gpgMailWorks = YES;
         
         [GPGMailBundle addSnowLeopardCompatibility];
     }
-	NSBundle        *myBundle;
+	NSBundle *myBundle = [NSBundle bundleForClass:self];
 	
     // Do not call super - see +initialize documentation
-    myBundle = [NSBundle bundleForClass:self];    
+       
 
     
 	// We need to load images and name them, because all images are searched by their name; as they are not located in the main bundle,
@@ -563,8 +562,10 @@ static BOOL	gpgMailWorks = YES;
     for(i = 0; i < GPGENCRYPTION_MENU_ITEMS_COUNT; i++)
         [anEnum nextObject]; // Skip some items
 
-    while(anItem = [anEnum nextObject])
+    while(anItem = [anEnum nextObject]) {
         [aSubmenu removeItem:anItem];
+    }
+    
 #warning Duplicated code!
     anEnum = [[self personalKeys] objectEnumerator]; // This is not an error to use personalKeys...
     if([self encryptsToSelf] && theDefaultKey){
@@ -1832,7 +1833,6 @@ static BOOL	gpgMailWorks = YES;
     return aPublicKey;
 }
 
-#warning On 10.3, create new method to return attributed string -> can be red/italic/... when expired/disabled/revoked, or have (composed) image prefix
 - (NSString *) menuItemTitleForKey:(GPGKey *)key
 {
     NSEnumerator	*anEnum;
