@@ -25,6 +25,6 @@ make > $0.log 2>&1
 if [ "$?" == "0" ]; then echo "PASS"; else echo "FAIL"; exit 1; fi
 
 echo -n " * Is installed: ";
-if [ -e "~/Library/Mail/Bundles/GPGMail.mailbundle"]; then echo "PASS"; else echo "FAIL"; exit 1; fi
+if [ -e ~/Library/Mail/Bundles/GPGMail.mailbundle ]; then echo "PASS"; else echo "FAIL"; exit 1; fi
 
 rm $0.log
