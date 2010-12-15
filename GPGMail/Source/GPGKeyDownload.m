@@ -480,8 +480,7 @@ static GPGKeyDownload	*_sharedInstance = nil;
     [cell setEnabled:!isImporting];
 }
 
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
-// Not necessary on 10.3; on Tiger the switch cell is displayed!
+
 - (void)outlineView:(NSOutlineView *)ov willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
 	if([[tableColumn identifier] isEqualToString:@"selection"])
@@ -496,7 +495,7 @@ static GPGKeyDownload	*_sharedInstance = nil;
 	else
 		return nil;
 }
-#endif
+
 
 - (BOOL) shouldCloseDocument
 {

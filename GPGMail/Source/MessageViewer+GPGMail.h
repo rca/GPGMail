@@ -35,7 +35,6 @@
 #ifdef SNOW_LEOPARD_64
 @interface GPGMail_MessageViewer : NSObject
 #else
-
 @interface MessageViewer(GPGMail)
 #endif
 

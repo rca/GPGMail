@@ -44,18 +44,15 @@
 @implementation MessageViewer(GPGMail)
 #endif
 
-- (MessageContentController *) gpgTextViewer:(id)dummy
-{
+- (MessageContentController *) gpgTextViewer:(id)dummy {
     return [self valueForKey:@"_contentController"];
 }
 
-- (NSToolbar *) gpgToolbar
-{
+- (NSToolbar *) gpgToolbar {
     return [self valueForKey:@"_toolbar"];
 }
 
-- (TableViewManager *) gpgTableManager
-{
+- (TableViewManager *) gpgTableManager {
 	return [self valueForKey:@"_tableManager"];
 }
 
@@ -63,34 +60,24 @@
 // And it works!
 static IMP MessageViewer__replyMessageWithType = NULL;
 static IMP MessageViewer_forwardMessage = NULL;
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 static IMP MessageViewer_validateMenuItem = NULL;
-#endif
 
-+ (void) load
-{
++ (void) load {
     MessageViewer__replyMessageWithType = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(_replyMessageWithType:), self, @selector(gpg_replyMessageWithType:), self);
     MessageViewer_forwardMessage = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(forwardMessage:), self, @selector(gpgForwardMessage:), self);
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     MessageViewer_validateMenuItem = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(validateMenuItem:), self, @selector(gpgValidateMenuItem:), self);
-#endif
 }
 
-- (void)gpg_replyMessageWithType:(int)fp8
-{
-    if(![GPGMailBundle gpgMailWorks]){
+- (void)gpg_replyMessageWithType:(int)fp8 {
+    if(![GPGMailBundle gpgMailWorks]) {
         ((void (*)(id, SEL, int))MessageViewer__replyMessageWithType)(self, _cmd, fp8);
         return;
     }
     
     // When message is encrypted and user has not selected anything, 
     // then we temporarily select all body content
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 #warning CHECK
     BOOL    changedSelection = ([self currentDisplayedMessage] != nil && [[self currentDisplayedMessage] gpgIsEncrypted] && [[self gpgTextViewer:nil] selectedText] == nil);
-#else
-    BOOL    changedSelection = ([self currentDisplayedMessage] != nil && [[self currentDisplayedMessage] gpgIsEncrypted] && [[self gpgTextViewer:nil] currentSelection] == nil);
-#endif
     
     if(changedSelection){
         [[[self gpgTextViewer:nil] textView] originalSelectAll:nil]; // If we use -selectAll:, headers are also selected, and we don't want it, else, on deselection, headers are still selected!
@@ -101,35 +88,28 @@ static IMP MessageViewer_validateMenuItem = NULL;
     }
 }
 
-- (void)gpgForwardMessage:fp12
-{
+- (void)gpgForwardMessage:fp12 {
     if(![GPGMailBundle gpgMailWorks]){
         ((void (*)(id, SEL, id))MessageViewer_forwardMessage)(self, _cmd, fp12);
         return;
     }
     
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 #warning CHECK
     BOOL    changedSelection = ([self currentDisplayedMessage] != nil && [[self currentDisplayedMessage] gpgIsEncrypted] && [[self gpgTextViewer:nil] selectedText] == nil);
-#else
-    BOOL    changedSelection = ([self currentDisplayedMessage] != nil && [[self currentDisplayedMessage] gpgIsEncrypted] && [[self gpgTextViewer:nil] currentSelection] == nil);
-#endif
     
-    if(changedSelection){
+    if(changedSelection) {
         [[[self gpgTextViewer:nil] textView] originalSelectAll:nil];
     }
     ((void (*)(id, SEL, id))MessageViewer_forwardMessage)(self, _cmd, fp12);
-    if(changedSelection){
+    if(changedSelection) {
         [[[self gpgTextViewer:nil] textView] selectText:nil];
     }
 }
 
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
-- (IBAction)gpgCopyMessageURL:(id)sender
-{
+- (IBAction)gpgCopyMessageURL:(id)sender {
     Message *message = [self currentDisplayedMessage];
     
-    if(message != nil){
+    if(message != nil) {
         NSPasteboard    *pb = [NSPasteboard generalPasteboard];
         NSArray         *types = [NSArray arrayWithObjects:@"public.url", NSStringPboardType, @"public.url-name", nil];
         NSString        *urlString = [message URL];
@@ -147,14 +127,12 @@ static IMP MessageViewer_validateMenuItem = NULL;
         NSBeep();
 }
 
-- (BOOL)gpgValidateMenuItem:(id)fp8
-{
-    if([fp8 action] == @selector(gpgCopyMessageURL:)){
+- (BOOL)gpgValidateMenuItem:(id)fp8 {
+    if([fp8 action] == @selector(gpgCopyMessageURL:)) {
         return [self currentDisplayedMessage] != nil;
     }
     else
         return ((BOOL (*)(id, SEL, id))MessageViewer_validateMenuItem)(self, _cmd, fp8);
 }
-#endif
 
 @end

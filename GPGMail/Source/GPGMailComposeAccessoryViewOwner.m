@@ -73,11 +73,7 @@
 - (void) reloadPersonalKeys;
 - (void) refreshPublicKeysMenu;
 - (void) refreshPublicKeysPopDownButton:(NSNotification *)notification;
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 - (MailDocumentEditor *) messageEditor;
-#else
-- (MessageEditor *) messageEditor;
-#endif
 - (void) toggleEncryptionForNewMessage;
 - (void) searchKnownPersonsOptions;
 - (void) setUsesOnlyOpenPGPStyle:(BOOL)flag;
@@ -147,9 +143,8 @@
     [publicKeysOutlineView setDelegate:nil];
     [publicKeysPanel setDelegate:nil];
 
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 //    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSViewFrameDidChangeNotification object:nil];
-#endif
+
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSControlTextDidEndEditingNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSPopUpButtonWillPopUpNotification object:publicKeysPopDownButton];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidResignMainNotification object:nil];
@@ -478,11 +473,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
                 // WARNING A disabled key can sign but not encrypt
                 // We always need to verify that even user's key can be used
                 if([mailBundle choosesPersonalKeyAccordingToAccount]){
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
                     MailDocumentEditor	*editor = [self messageEditor];
-#else
-                    MessageEditor       *editor = [self messageEditor];
-#endif
                     
                     aRecipient = [[[editor gpgFromPopup] selectedItem] title];
                 }
@@ -748,9 +739,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
         verifyRulesConflicts = YES;
         pgpOptionsPerEmail = [[NSMutableDictionary alloc] init];
         displaysButtonsInComposeWindow = [[GPGMailBundle sharedInstance] displaysButtonsInComposeWindow];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
+
 		NSAssert([NSBundle loadNibNamed:@"GPGMailComposeTiger" owner:self], @"### Unable to load GPGMailComposeTiger nib");
-#endif
     }
 
     return self;
@@ -761,11 +751,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     // Called only once, after composeAccessoryView has been placed onto Compose window
     NSView              *view = [self composeAccessoryView];
     NSWindow            *window = [view window];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     MailDocumentEditor	*messageEditor;
-#else
-    MessageEditor       *messageEditor;
-#endif
 
     NSAssert(window != nil, @"### GPGMail: expects view to be in final window!");
     // Let's force GPGMailComposeAccessoryViewOwner be the last
@@ -785,22 +771,6 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidResignMain:) name:NSWindowDidResignMainNotification object:window];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidBecomeMain:) name:NSWindowDidBecomeMainNotification object:window];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowWillClose:) name:NSWindowWillCloseNotification object:window];
-#ifdef TIGER
-	NSRect	containerRect = [[view superview] frame];
-	float	addedHeight = NSHeight([optionalView frame]);
-	
-#warning FIXME: should be done in MessageEditor
-	[[view superview] setFrame:NSMakeRect(containerRect.origin.x, containerRect.origin.y - addedHeight, containerRect.size.width, containerRect.size.height + addedHeight)];
-	[optionalView setFrame:NSMakeRect(0, 0, containerRect.size.width, addedHeight)];
-	[[view superview] addSubview:optionalView];
-	NSView	*editorView = [[[[view superview] superview] subviews] objectAtIndex:2];
-	[editorView setFrameSize:NSMakeSize(NSWidth([editorView frame]), NSHeight([editorView frame]) - addedHeight)];
-//	[accessoryView autorelease];
-//	accessoryView = [optionalView retain];
-#elif !defined(SNOW_LEOPARD) && !defined(LEOPARD)
-    if(view != emptyView)
-        [[view superview] setTitle:NSLocalizedStringFromTableInBundle(@"PGP:", @"GPGMail", [NSBundle bundleForClass:[self class]], "Title of PGP accessory view") forView:view];
-#endif
     // It is not possible to set an iconView at the left of our accessoryView
     // because the superview, a TilingView, forces alignement of its subviews.
     // We'd need to place our iconView over the TilingView, but in this case we should
@@ -859,20 +829,10 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 - (void) toolbarWillAddItem:(NSNotification *)notif
 {
     if([notif object] == [[[self composeAccessoryView] window] toolbar]){
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
         SegmentedToolbarItem    *anItem = [[notif userInfo] objectForKey:@"item"];
-#elif defined(TIGER)
-        MailToolbarItem	*anItem = [[notif userInfo] objectForKey:@"item"];
-#else
-        NSToolbarItem	*anItem = [[notif userInfo] objectForKey:@"item"];
-#endif
 
         if([[anItem itemIdentifier] isEqualToString:GPGEncryptMessageToolbarItemIdentifier] || [[anItem itemIdentifier] isEqualToString:GPGSignMessageToolbarItemIdentifier]){
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
             [anItem setTarget:self forSegment:0];
-#else
-            [anItem setTarget:self];
-#endif
             [self performSelector:@selector(updateToolbarAndMenuItems) withObject:nil afterDelay:0.0]; // If we don't delay call, then call -[NSToolbar items] will recursively send the toolbarWillAddItem: notification!
         }
     }
@@ -890,14 +850,12 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 #endif
 }
 
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 - (void) refreshAccessoryView:(NSNotification *)notif
 {
     // Sometimes, when To/CC fields are adapted to new height, our view is not refreshed (why?), that's
     // why we force refresh each time our superview changes its frame. Seems to work, though too many refreshes are done.
     [[self composeAccessoryView] setNeedsDisplay:YES];
 }
-#endif
 
 #ifdef SNOW_LEOPARD_64
 - (void)awakeFromNib {
@@ -967,7 +925,6 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 //    [self updateWarningImage];
     [[publicKeysPopDownButton menu] setAutoenablesItems:NO];
 	
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 	[[self composeAccessoryView] setFrame:[[optionalView primaryView] frame]];
 	[[[optionalView primaryView] superview] replaceSubview:[optionalView primaryView] with:[self composeAccessoryView]];
     [optionalViewBackgroundView setBackgroundColor:[NSColor windowBackgroundColor]];
@@ -987,14 +944,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     }
     else
         accessoryView = [optionalView retain];
-#else
-#warning Check memory leak
-    if(![self displaysButtonsInComposeWindow]){
-        accessoryView = [emptyView retain];
-    }
-    else
-        [accessoryView retain];
-#endif
+
     [personalKeysPopUpButton setAutoenablesItems:NO]; // Needed!
 	
     [self reloadPersonalKeys];
@@ -1008,13 +958,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 - (void) doSetEncryptsMessage:(BOOL)flag
 {
     NSEnumerator	*anEnum = [[[[[self composeAccessoryView] window] toolbar] items] objectEnumerator];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     SegmentedToolbarItem    *anItem;
-#elif defined(TIGER)
-    MailToolbarItem	*anItem;
-#else
-    NSToolbarItem	*anItem;
-#endif
     NSBundle		*aBundle = [NSBundle bundleForClass:[self class]];
     BOOL			buttonsShowState = [[GPGMailBundle sharedInstance] buttonsShowState];
 
@@ -1034,38 +978,16 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     while(anItem = [anEnum nextObject])
         if([[anItem itemIdentifier] isEqualToString:GPGEncryptMessageToolbarItemIdentifier]){
             if(buttonsShowState){
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
                 [anItem setLabel:NSLocalizedStringFromTableInBundle(encryptsMessage ? @"ENCRYPTED_ITEM":@"CLEAR_ITEM", @"GPGMail", aBundle, "") forSegment:0];
                 [anItem setPaletteLabel:NSLocalizedStringFromTableInBundle(@"ENCRYPTED_ITEM", @"GPGMail", aBundle, "") forSegment:0];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
                 [[[anItem subitems] objectAtIndex:0] setImage:[NSImage imageNamed:(encryptsMessage ? @"gpgEncrypted":@"gpgClear")]];
-#else
-                [anItem setImage:[NSImage imageNamed:(encryptsMessage ? @"gpgEncrypted":@"gpgClear")] forSegment:0];
-#endif
                 [anItem setToolTip:NSLocalizedStringFromTableInBundle(encryptsMessage ? @"ENCRYPTED_ITEM_TOOLTIP":@"CLEAR_ITEM_TOOLTIP", @"GPGMail", aBundle, "") forSegment:0];
-#else
-                [anItem setLabel:NSLocalizedStringFromTableInBundle(encryptsMessage ? @"ENCRYPTED_ITEM":@"CLEAR_ITEM", @"GPGMail", aBundle, "")];
-                [anItem setPaletteLabel:NSLocalizedStringFromTableInBundle(@"ENCRYPTED_ITEM", @"GPGMail", aBundle, "")];
-                [anItem setImage:[NSImage imageNamed:(encryptsMessage ? @"gpgEncrypted":@"gpgClear")]];
-                [anItem setToolTip:NSLocalizedStringFromTableInBundle(encryptsMessage ? @"ENCRYPTED_ITEM_TOOLTIP":@"CLEAR_ITEM_TOOLTIP", @"GPGMail", aBundle, "")];
-#endif
             }
             else{
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
                 [anItem setLabel:NSLocalizedStringFromTableInBundle(encryptsMessage ? @"MAKE_CLEAR_ITEM":@"MAKE_ENCRYPTED_ITEM", @"GPGMail", aBundle, "") forSegment:0];
                 [anItem setPaletteLabel:NSLocalizedStringFromTableInBundle(@"MAKE_ENCRYPTED_ITEM", @"GPGMail", aBundle, "") forSegment:0];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
                 [[[anItem subitems] objectAtIndex:0] setImage:[NSImage imageNamed:(encryptsMessage ? @"gpgClear":@"gpgEncrypted")]];
-#else
-                [anItem setImage:[NSImage imageNamed:(encryptsMessage ? @"gpgClear":@"gpgEncrypted")] forSegment:0];
-#endif
                 [anItem setToolTip:NSLocalizedStringFromTableInBundle(encryptsMessage ? @"MAKE_CLEAR_ITEM_TOOLTIP":@"MAKE_ENCRYPTED_ITEM_TOOLTIP", @"GPGMail", aBundle, "") forSegment:0];
-#else
-                [anItem setLabel:NSLocalizedStringFromTableInBundle(encryptsMessage ? @"MAKE_CLEAR_ITEM":@"MAKE_ENCRYPTED_ITEM", @"GPGMail", aBundle, "")];
-                [anItem setPaletteLabel:NSLocalizedStringFromTableInBundle(@"MAKE_ENCRYPTED_ITEM", @"GPGMail", aBundle, "")];
-                [anItem setImage:[NSImage imageNamed:(encryptsMessage ? @"gpgClear":@"gpgEncrypted")]];
-                [anItem setToolTip:NSLocalizedStringFromTableInBundle(encryptsMessage ? @"MAKE_CLEAR_ITEM_TOOLTIP":@"MAKE_ENCRYPTED_ITEM_TOOLTIP", @"GPGMail", aBundle, "")];
-#endif
             }
         }
 	
@@ -1084,13 +1006,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 - (void) doSetSignsMessage:(BOOL)flag
 {
     NSEnumerator	*anEnum = [[[[[self composeAccessoryView] window] toolbar] items] objectEnumerator];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     SegmentedToolbarItem    *anItem;
-#elif defined(TIGER)
-    MailToolbarItem	*anItem;
-#else
-    NSToolbarItem	*anItem;
-#endif
     NSBundle		*aBundle = [NSBundle bundleForClass:[self class]];
     BOOL			buttonsShowState = [[GPGMailBundle sharedInstance] buttonsShowState];
 
@@ -1099,38 +1015,16 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     while(anItem = [anEnum nextObject])
         if([[anItem itemIdentifier] isEqualToString:GPGSignMessageToolbarItemIdentifier]){
             if(buttonsShowState){
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
                 [anItem setLabel:NSLocalizedStringFromTableInBundle(signsMessage ? @"SIGNED_ITEM":@"UNSIGNED_ITEM", @"GPGMail", aBundle, "") forSegment:0];
                 [anItem setPaletteLabel:NSLocalizedStringFromTableInBundle(@"SIGNED_ITEM", @"GPGMail", aBundle, "") forSegment:0];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
                 [[[anItem subitems] objectAtIndex:0] setImage:[NSImage imageNamed:(signsMessage ? @"gpgSigned":@"gpgUnsigned")]];
-#else
-                [anItem setImage:[NSImage imageNamed:(signsMessage ? @"gpgSigned":@"gpgUnsigned")] forSegment:0];
-#endif
                 [anItem setToolTip:NSLocalizedStringFromTableInBundle(signsMessage ? @"SIGNED_ITEM_TOOLTIP":@"UNSIGNED_ITEM_TOOLTIP", @"GPGMail", aBundle, "") forSegment:0];
-#else
-                [anItem setLabel:NSLocalizedStringFromTableInBundle(signsMessage ? @"SIGNED_ITEM":@"UNSIGNED_ITEM", @"GPGMail", aBundle, "")];
-                [anItem setPaletteLabel:NSLocalizedStringFromTableInBundle(@"SIGNED_ITEM", @"GPGMail", aBundle, "")];
-                [anItem setImage:[NSImage imageNamed:(signsMessage ? @"gpgSigned":@"gpgUnsigned")]];
-                [anItem setToolTip:NSLocalizedStringFromTableInBundle(signsMessage ? @"SIGNED_ITEM_TOOLTIP":@"UNSIGNED_ITEM_TOOLTIP", @"GPGMail", aBundle, "")];
-#endif
             }
             else{
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
                 [anItem setLabel:NSLocalizedStringFromTableInBundle(signsMessage ? @"MAKE_UNSIGNED_ITEM":@"MAKE_SIGNED_ITEM", @"GPGMail", aBundle, "") forSegment:0];
                 [anItem setPaletteLabel:NSLocalizedStringFromTableInBundle(@"MAKE_SIGNED_ITEM", @"GPGMail", aBundle, "") forSegment:0];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
                 [[[anItem subitems] objectAtIndex:0] setImage:[NSImage imageNamed:(signsMessage ? @"gpgUnsigned":@"gpgSigned")]];
-#else
-                [anItem setImage:[NSImage imageNamed:(signsMessage ? @"gpgUnsigned":@"gpgSigned")] forSegment:0];
-#endif
                 [anItem setToolTip:NSLocalizedStringFromTableInBundle(signsMessage ? @"MAKE_UNSIGNED_ITEM_TOOLTIP":@"MAKE_SIGNED_ITEM_TOOLTIP", @"GPGMail", aBundle, "") forSegment:0];
-#else
-                [anItem setLabel:NSLocalizedStringFromTableInBundle(signsMessage ? @"MAKE_UNSIGNED_ITEM":@"MAKE_SIGNED_ITEM", @"GPGMail", aBundle, "")];
-                [anItem setPaletteLabel:NSLocalizedStringFromTableInBundle(@"MAKE_SIGNED_ITEM", @"GPGMail", aBundle, "")];
-                [anItem setImage:[NSImage imageNamed:(signsMessage ? @"gpgUnsigned":@"gpgSigned")]];
-                [anItem setToolTip:NSLocalizedStringFromTableInBundle(signsMessage ? @"MAKE_UNSIGNED_ITEM_TOOLTIP":@"MAKE_SIGNED_ITEM_TOOLTIP", @"GPGMail", aBundle, "")];
-#endif
             }
         }
 
@@ -1288,7 +1182,6 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
             [(MutableMessageHeaders *)[message headers] setHeader:[states componentsJoinedByString:@","] forKey:@"X-Gpgmail-State"];
         else
             [(MutableMessageHeaders *)[message headers] removeHeaderForKey:@"X-Gpgmail-State"];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
         MutableMessageHeaders   *newHeaders = [message headers];
         NSData                  *bodyData = [[message bodyData] copy];
         newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[newHeaders encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]]; // Needed, to ensure _data ivar is updated
@@ -1300,7 +1193,6 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
         [message setRawData:newRawData offsetOfBody:[(NSData *)[newHeaders headerData] length]];
         [newHeaders release];
         [bodyData release];
-#endif
     }
 
     // Runtime super call - CORRECT !
@@ -1312,7 +1204,6 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 {
     // We use that in order to avoid re-encrypting/signing a message
     // after delivery failed.
-//#ifdef TIGER
 //#warning FIXME: This will not work when we do not add custom headers!
 #if 0
     // Even on Tiger we have the same problem: our header customization has been lost
@@ -1415,7 +1306,6 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
      // Remove draft headers
 #warning CHECKME LEOPARD
     [(MutableMessageHeaders *)[message headers] removeHeaderForKey:@"X-Gpgmail-State"];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     MutableMessageHeaders   *newHeaders = [message headers];
     NSData                  *bodyData = [[message bodyData] copy];
     newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[newHeaders encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]]; // Needed, to ensure _data ivar is updated
@@ -1427,7 +1317,6 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     [message setRawData:newRawData offsetOfBody:[(NSData *)[newHeaders headerData] length]];
     [newHeaders release];
     [bodyData release];
-#endif
     
 #if 0
     // Look for keys
@@ -1856,8 +1745,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     return !![item respondsToSelector:@selector(userIDs)] && [[tableColumn identifier] isEqualToString:@"isSelected"];
 }
 
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
-// Not necessary on 10.3; on Tiger the switch cell is displayed!
+
 - (void)outlineView:(NSOutlineView *)ov willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
 	if([[tableColumn identifier] isEqualToString:@"isSelected"]){
@@ -1873,18 +1761,12 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 	else
 		return nil;
 }*/
-#endif
+
 
 - (BOOL) validateToolbarItem:(NSToolbarItem *)theItem
 {
     // Forwarded by GPGComposeWindowStorePoser or MessageEditor
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     SEL anAction = ([theItem isKindOfClass:NSClassFromString(@"SegmentedToolbarItem")] ? [(SegmentedToolbarItem *)theItem actionForSegment:0] : [theItem action]);
-#elif defined(TIGER)
-    SEL	anAction = [(MailToolbarItem *)theItem actionForSegment:0];
-#else
-    SEL	anAction = [theItem action];
-#endif
 	
     if(anAction == @selector(gpgToggleEncryptionForNewMessage:))
         return YES;
@@ -2212,11 +2094,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
     [[GPGKeyDownload sharedInstance] searchKeysMatchingPatterns:[missingPublicKeyEmails allObjects]];
 }
 
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 - (MailDocumentEditor *) messageEditor
-#else
-- (MessageEditor *) messageEditor
-#endif
 {
     return [[[self composeAccessoryView] window] delegate];
 }

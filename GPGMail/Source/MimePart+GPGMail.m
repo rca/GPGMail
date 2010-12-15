@@ -42,9 +42,7 @@
 #import <NSString+Message.h>
 #import <MessageStore.h>
 #import <MutableMessageHeaders.h>
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 #import <NSDataMessageStore.h>
-#endif
 
 #import <ExceptionHandling/NSExceptionHandler.h>
 #import <Foundation/Foundation.h>
@@ -414,9 +412,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
         [NSException raise:NSGenericException format:NSLocalizedStringFromTableInBundle(@"DATA_NOT_AVAILABLE", @"GPGMail", [NSBundle bundleForClass:[GPGHandler class]], "")];
         return nil;
     }
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     return nil; // Never reached, but mutes gcc warning
-#endif
 }
 
 - (NSData *) _gpgDecryptedInlineDataWithPassphraseDelegate:(id)passphraseDelegate signatures:(NSArray **)signaturesPtr
@@ -1096,9 +1092,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
     }
     else
         return nil;
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     return nil; // Never reached, but mutes gcc warning
-#endif
 }
 
 /*
@@ -1133,7 +1127,6 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
     return [[self bodyData] writeToFile:fp12 atomically:NO];
 }
 
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 
 // The decode* methods return a NSAttributedString; they are invoked automatically by -[MimePart(DecodingSupport) contentsForTextSystem]
 
@@ -1156,28 +1149,10 @@ static IMP  MimePart_isEncrypted = NULL;
 	Method	existingMethod = class_getInstanceMethod([self class], selector);
 	
 	if(existingMethod == NULL){
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 		Method	replacementMethod = class_getInstanceMethod([self class], implementationSelector);
 		
 		if(!class_addMethod([self class], selector, method_getImplementation(replacementMethod), method_getTypeEncoding(replacementMethod)))
 			NSLog(@"### ERROR: unable to add -[MimePart %@]", NSStringFromSelector(selector));
-#else
-		struct objc_method_list	aMethodList;
-		struct objc_method		aNewMethod;
-		Method					replacementMethod = class_getInstanceMethod([self class], implementationSelector);
-		
-		aNewMethod.method_name = selector;
-		aNewMethod.method_types = replacementMethod->method_types;
-		aNewMethod.method_imp = replacementMethod->method_imp;
-		
-		aMethodList.obsolete = NULL;
-		aMethodList.method_count = 1;
-		aMethodList.method_list[0] = aNewMethod;
-		
-		class_addMethods([self class], &aMethodList);
-		if(class_getInstanceMethod([self class], selector) == NULL)
-			NSLog(@"### ERROR: unable to add -[MimePart %@]", NSStringFromSelector(selector));
-#endif
 	}
 	else{
 		*implementationPtr = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeMultipartEncrypted), [MimePart class], implementationSelector, [MimePart class]);
@@ -1193,11 +1168,7 @@ static IMP  MimePart_isEncrypted = NULL;
 	MimePart_decodeTextHtml = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeTextHtml), [MimePart class], @selector(gpgDecodeTextHtml), [MimePart class]);
 	MimePart_decodeApplicationOctet_stream = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeApplicationOctet_stream), [MimePart class], @selector(gpgDecodeApplicationOctet_stream), [MimePart class]);
 	MimePart_decodeMultipartSigned = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(decodeMultipartSigned), [MimePart class], @selector(gpgDecodeMultipartSigned), [MimePart class]);
-#ifdef SNOW_LEOPARD
 	MimePart_clearCachedDescryptedMessageBody = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(clearCachedDecryptedMessageBody), [MimePart class], @selector(gpgClearCachedDescryptedMessageBody), [MimePart class]);
-#else
-	MimePart_clearCachedDescryptedMessageBody = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(clearCachedDescryptedMessageBody), [MimePart class], @selector(gpgClearCachedDescryptedMessageBody), [MimePart class]);
-#endif
     [self gpgAddMethodForSelector:@selector(decodeMultipartEncrypted) implementationSelector:@selector(gpgDecodeMultipartEncrypted) implementation:&MimePart_decodeMultipartEncrypted];
     [self gpgAddMethodForSelector:@selector(decodeApplicationPgp) implementationSelector:@selector(gpgDecodeApplicationPgp) implementation:&MimePart_decodeApplicationPgp];
 
@@ -1426,7 +1397,6 @@ static IMP  MimePart_isEncrypted = NULL;
 				decryptedMessageBody = [decryptedMessage messageBody]; // OK for Leopard, even for embedded message
                 if(GPGMailLoggingLevel > 0)
                     NSLog(@"[DEBUG] Caching decrypted PGP part %p", self);
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
                 [self _setDecryptedMessageBody:decryptedMessageBody isEncrypted:YES isSigned:(aSignature != nil)];
                 // We need to store that decrypted message body, because for embedded messages,
                 // their messageBody is re-created at every call, and it is impossible to cache (inside Message)
@@ -1435,15 +1405,8 @@ static IMP  MimePart_isEncrypted = NULL;
                 // via -[Message(PGPMail) pgpDecrypedMessageBody]
 #warning FIXME: LEOPARD We need to cache the decryptedBody
                 //                theDecodeOptions.mDecryptedMessageBody = [decryptedMessageBody retain];
-#else
-				[self _setDecryptedMessageBody:decryptedMessageBody]; // FIXME: Will not work for multiple encrypted parts? Too early?
-#endif
 				decryptedPart = [decryptedMessageBody topLevelPart]; // FIXME: WRONG, in case of multiple encrypted parts
-#ifdef SNOW_LEOPARD
 				result = [decryptedPart gpgBetterDecode];
-#else
-				result = [decryptedPart contentsForTextSystem];
-#endif
 #if 0
 				[decryptedPart getNumberOfAttachments:&numberOfAttachments isSigned:&isSigned isEncrypted:&isEncrypted];
 				[[encryptedMessage messageStore] setNumberOfAttachments:numberOfAttachments isSigned:(theDecodeOptions.mIsSigned) isEncrypted:(theDecodeOptions.mIsEncrypted) forMessage:encryptedMessage];
@@ -1465,11 +1428,7 @@ static IMP  MimePart_isEncrypted = NULL;
 	else{
         if(/*decryptedMessageBody*/decryptedPart != nil && GPGMailLoggingLevel > 0)
             NSLog(@"[DEBUG] PGP part %p has already been decrypted (cache)", self);
-#ifdef SNOW_LEOPARD
 		result = [/*[decryptedMessageBody topLevelPart]*/decryptedPart gpgBetterDecode]; // WRONG, in case of multiple encrypted parts
-#else
-		result = [/*[decryptedMessageBody topLevelPart]*/decryptedPart contentsForTextSystem]; // WRONG, in case of multiple encrypted parts
-#endif
 	}
     if(GPGMailLoggingLevel)
         NSLog(@"[DEBUG] Done: result = %p", result);
@@ -1522,11 +1481,7 @@ static IMP  MimePart_isEncrypted = NULL;
 
 - (id) _gpgDecodePGP
 {
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 	MimeBody	*decryptedMessageBody = [self decryptedMessageBodyIsEncrypted:NULL isSigned:NULL];
-#else
-	MimeBody	*decryptedMessageBody = [self decryptedMessageBody]; // FIXME: decryptedMessageBody could be partial, in case of PGP7 inline style!
-#endif
 	id			result = nil;
 	Message		*encryptedMessage = (Message *)[[self mimeBody] message];
 	
@@ -1717,7 +1672,6 @@ static IMP  MimePart_isEncrypted = NULL;
                     NSLog(@"ERROR: decryptedMessageBody should not be nil!");
                 if(GPGMailLoggingLevel > 0)
                     NSLog(@"[DEBUG] Caching decrypted PGP part %p", self);
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
                 [/*self*/[[self mimeBody] topLevelPart] _setDecryptedMessageBody:decryptedMessageBody isEncrypted:YES isSigned:(aSignature != nil)];
                 // We need to store that decrypted message body, because for embedded messages,
                 // their messageBody is re-created at every call, and it is impossible to cache (inside Message)
@@ -1726,16 +1680,9 @@ static IMP  MimePart_isEncrypted = NULL;
                 // via -[Message(PGPMail) pgpDecrypedMessageBody]
 #warning FIXME: LEOPARD We need to cache the decryptedBody
 //                theDecodeOptions.mDecryptedMessageBody = [decryptedMessageBody retain];
-#else
-				[/*self*/[[self mimeBody] topLevelPart] _setDecryptedMessageBody:decryptedMessageBody]; // FIXME: Will not work for multiple encrypted parts? Too early?
-#endif
 //				decryptedPart = [decryptedMessageBody topLevelPart]; // FIXME: WRONG, in case of multiple encrypted parts
 				decryptedPart = [decryptedMessageBody partWithNumber:[self partNumber]]; // FIXME: WRONG, in case of PGP/MIME parts which result in multiple parts
-#ifdef SNOW_LEOPARD
 				result = [decryptedPart gpgBetterDecode]; // Can invoke _gpgDecodePGP
-#else
-				result = [decryptedPart contentsForTextSystem]; // Can invoke _gpgDecodePGP
-#endif
 #if 0
 				[decryptedPart getNumberOfAttachments:&numberOfAttachments isSigned:&isSigned isEncrypted:&isEncrypted];
 				[[encryptedMessage messageStore] setNumberOfAttachments:numberOfAttachments isSigned:(theDecodeOptions.mIsSigned) isEncrypted:(theDecodeOptions.mIsEncrypted) forMessage:encryptedMessage];
@@ -1766,11 +1713,7 @@ static IMP  MimePart_isEncrypted = NULL;
 	else{
         if(decryptedMessageBody != nil && GPGMailLoggingLevel > 0)
             NSLog(@"[DEBUG] PGP part %p has already been decrypted (cache)", self);
-#ifdef SNOW_LEOPARD
 		result = [[decryptedMessageBody topLevelPart] gpgBetterDecode]; // WRONG, in case of multiple encrypted parts
-#else
-		result = [[decryptedMessageBody topLevelPart] contentsForTextSystem]; // WRONG, in case of multiple encrypted parts
-#endif
 	}
     if(GPGMailLoggingLevel)
         NSLog(@"[DEBUG] Done: result = %p", result);
@@ -1972,7 +1915,5 @@ static IMP  MimePart_isEncrypted = NULL;
             NSLog(@"[DEBUG] Not yet");
     }
 }
-
-#endif
 
 @end

@@ -62,36 +62,7 @@
     if(authenticationView == nil){
         NSAssert([NSBundle loadNibNamed:@"GPGMessageViewerAccessoryView" owner:self], @"### GPGMail: -[GPGMessageViewerAccessoryViewOwner view]: Unable to load nib named GPGMessageViewerAccessoryView");
         [signatureUpperView retain];
-#warning Verify that we no longer need this
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-        // Very hackish, but we have no other way to retrieve the MessageViewer...
-        BOOL    isSingleMessageViewer = ([[[delegate documentView] window] delegate] != nil);
-//        BOOL    isSingleMessageViewer = [[[[delegate documentView] window] delegate] isKindOfClass:[NSClassFromString(@"SingleMessageViewer") class]];
 
-        if(!isSingleMessageViewer){
-            NSRect  aRect = [authenticationView frame];
-            
-            aRect.size.height -= 4;
-            [authenticationView setFrame:aRect];
-            [authenticationView setTag:0];
-            aRect = [signatureView frame];
-            aRect.size.height -= 4;
-            [signatureView setFrame:aRect];
-            [signatureView setTag:1];
-            aRect = [signatureUpperView frame];
-            aRect.size.height -= 4;
-            [signatureUpperView setFrame:aRect];
-            [signatureUpperView setTag:2];
-            aRect = [decryptionView frame];
-            aRect.size.height -= 4;
-            [decryptionView setFrame:aRect];
-            [decryptionView setTag:3];
-            aRect = [decryptedInfoView frame];
-            aRect.size.height -= 4;
-            [decryptedInfoView setFrame:aRect];
-            [decryptedInfoView setTag:4];
-        }
-#endif
         [[disclosureButton cell] setControlSize:NSRegularControlSize];
         [[disclosureButton cell] setBezelStyle:NSDisclosureBezelStyle];
         [[disclosureButton cell] setImage:nil];
@@ -380,9 +351,6 @@
     if(GPGMailLoggingLevel)
         NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
     // TODO: Should be done async, in another thread
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-    [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"AUTHENTICATING", @"GPGMail", [NSBundle bundleForClass:[self class]], "")];
-#endif
 
     @try{
         GPGSignature    *authenticationSignature;
@@ -410,9 +378,6 @@
         //[[message messageFlags] setObject:@"NO" forKey:@"GPGAuthenticated"];
     }
 
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-    [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"Done.", @"Message", [NSBundle bundleForClass:[Message class]], "")];
-#endif
 }
 
 - (IBAction) decrypt:(id)sender
@@ -425,9 +390,6 @@
     BOOL			decrypted = NO;
     GPGMailBundle   *mailBundle = [GPGMailBundle sharedInstance];
 
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-    [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"DECRYPTING", @"GPGMail", [NSBundle bundleForClass:[self class]], "")];
-#endif
 	
     @try{
 //        Message	*decryptedMessage = [[delegate gpgMessageForAccessoryViewOwner:self] gpgDecryptedMessageWithPassphraseDelegate:mailBundle signature:(id *)&signature];
@@ -439,9 +401,6 @@
         NSAssert(decryptedMessage != nil, @"Why is it nil? Which circumstances??"); // Would return nil in case method was called for a message which is not an encrypted one => programmation error
         // Let's support messages which have been signed then encrypted
         if([sigs count] == 0 && [decryptedMessage gpgHasSignature]){ // FIXME: The decryptedMessage we get here is still the original encrypted one -> headers are the encrypted ones, and cannot be the decrypted ones!
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-            [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"AUTHENTICATING", @"GPGMail", [NSBundle bundleForClass:[self class]], "")];
-#endif
 			
             if(GPGMailLoggingLevel)
                 NSLog(@"[DEBUG] Extracting signatures");
@@ -475,9 +434,6 @@
         // Error during decryption
     }
 
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-    [delegate gpgAccessoryViewOwner:self showStatusMessage:NSLocalizedStringFromTableInBundle(@"Done.", @"Message", [NSBundle bundleForClass:[Message class]], "")];
-#endif
 	
     if(decryptionException == nil){
         decrypted = YES;

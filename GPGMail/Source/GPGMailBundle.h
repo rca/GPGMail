@@ -41,14 +41,6 @@
 @class Message;
 
 
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-NSString * const GPGKeyringChangedNotification;
-NSString * const GPGErrorKey;
-NSString * const GPGException;
-NSString * const GPGAdditionalReasonKey;
-NSString * const GPGContextKey;
-NSString * const GPGAsynchronousOperationDidTerminateNotification;
-#endif
 
 // The following strings are used as toolbarItem identifiers and userDefault keys (value is the position index)
 extern NSString	*GPGAuthenticateMessageToolbarItemIdentifier;

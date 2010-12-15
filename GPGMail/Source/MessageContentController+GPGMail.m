@@ -176,13 +176,8 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 	
     [[self gpgMessageViewerAccessoryViewOwner] messageChanged:aMessage];
     if(compareFlags){
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
         [self gpgSetMessageReadStatusHasChanged:([aMessage messageFlags] & 0x00000001) == 0]; // We check once if message is marked as unread; we will set it as read ourselves, as sometimes Mail does it only asynchronously
          // Since Tiger, MessageStoreMessageFlagsChanged poster is no longer message's messageStore; and flag change is sometimes done async
-#else
-        [self gpgSetMessageReadStatusHasChanged:NO];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gpgMessageStoreMessageFlagsChanged:) name:@"MessageStoreMessageFlagsChanged" object:[aMessage messageStore]];
-#endif
     }
     
     //[super _updateDisplay];
@@ -251,21 +246,13 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 
     if(compareFlags){
         readStatusChanged = [self gpgMessageReadStatusHasChanged];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
         // Ensure 'read' flag has been set...
         if(!([aMessage messageFlags] & 0x00000001)){
 #warning CHECK Is this here that we cause problems with the read status??
-#ifdef SNOW_LEOPARD
             [aMessage setMessageFlags:[aMessage messageFlags] mask:0x00000001];
-#else
-            [aMessage setMessageFlags:[aMessage messageFlags] | 0x00000001];
-#endif
             if(GPGMailLoggingLevel)
                 NSLog(@"[DEBUG] Changed messageFlags");
         }
-#else
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"MessageStoreMessageFlagsChanged" object:[aMessage messageStore]];
-#endif
     }
     
 	[NSRunLoop cancelPreviousPerformRequestsWithTarget:self selector:@selector(gpgAuthenticate:) object:nil];
@@ -371,11 +358,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
             if(GPGMailLoggingLevel)
                 NSLog(@"[DEBUG] Message changed(2)");
             if([self message] != nil)
-#ifdef SNOW_LEOPARD
                 [[(MimeBody *)[[self message] messageBody] topLevelPart] clearCachedDecryptedMessageBody]; // FIXME: problem is that it's not the right part!
-#else
-                [[(MimeBody *)[[self message] messageBody] topLevelPart] clearCachedDescryptedMessageBody]; // FIXME: problem is that it's not the right part!
-#endif
             [self gpgSetMessageWasInFactSigned:NO];
             [self gpgSetMessageHasBeenDecrypted:NO];
             if(GPGMailLoggingLevel)
@@ -403,13 +386,8 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 
     if((GPGMailLoggingLevel > 0))
         NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     // First subview is the NSScrollView or EditingMessageWebView (for notes)
     NSAssert1([resizedView isKindOfClass:[NSScrollView class]] || [resizedView isKindOfClass:NSClassFromString(@"EditingMessageWebView")], @"### GPGMail: views are not ordered the expected way! First view is %@", resizedView);
-#else
-    // First subview is the NSScrollView
-    NSAssert1([resizedView isKindOfClass:[NSScrollView class]], @"### GPGMail: views are not ordered the expected way! First view is %@", resizedView);
-#endif
     if(additionalViewsCount > 0)
         additionalViews = [[[self valueForKey:@"contentContainerView"] subviews] subarrayWithRange:NSMakeRange(1, additionalViewsCount)];
     originalRect = aRect = [resizedView frame];
@@ -452,12 +430,8 @@ static IMP MessageContentController_fadeToEmpty = NULL;
     if((GPGMailLoggingLevel > 0))
         NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
     NSAssert([accessoryView ancestorSharedWithView:resizedView] != nil, @"Trying to remove unattached view!");
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     // First subview is the NSScrollView or EditingMessageWebView
     NSAssert1([resizedView isKindOfClass:[NSScrollView class]] || [resizedView isKindOfClass:NSClassFromString(@"EditingMessageWebView")], @"### GPGMail: views are not ordered the expected way! First view is %@", resizedView);
-#else
-    NSAssert1([resizedView isKindOfClass:[NSScrollView class]], @"### GPGMail: views are not ordered the expected way! First view is %@", resizedView);
-#endif
     originalRect = [resizedView frame];
     originalRect.size.height += NSHeight([accessoryView frame]);
     if(flag)
@@ -573,8 +547,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
     [self _gpg2AddAccessoryView:view];
 }
 
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
-#else
+#if 0
 - (void) gpgAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner showStatusMessage:(NSString *)message
 {
     if([[[[self textView] window] delegate] respondsToSelector:@selector(showStatusMessage:)]){
@@ -595,13 +568,8 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 	
     if(GPGMailLoggingLevel)
         NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
     // WARNING: we must ask to the very part that we set the decrypted message body! - see -[MimePart _gpgDecodePGP]
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 	MessageBody	*messageBody = [[(MimeBody *)[message messageBody] topLevelPart] decryptedMessageBodyIsEncrypted:NULL isSigned:NULL];
-#else
-	MessageBody	*messageBody = [[(MimeBody *)[message messageBody] topLevelPart] decryptedMessageBody];
-#endif
 	Message		*decryptedMessage = message;
 	
     viewingState = [NSClassFromString(@"MessageHeaderDisplay") copyViewingState:viewingState];
@@ -627,50 +595,6 @@ static IMP MessageContentController_fadeToEmpty = NULL;
     [self setMessage:/*message*/decryptedMessage headerOrder:[viewingState headerOrder]]; // WARNING: will clear decrypted body cache!
     [viewingState setHeaderAttributedString:[[message headers] attributedStringShowingHeaderDetailLevel:[self headerDetailLevel]]]; // FIXME: Empty, because no headers... -> copy and update headers when decrypting; this very call is useless!!!
 	[message gpgSetMayClearCachedDecryptedMessageBody:YES];
-#else
-#if 1
-    // Works, but headers are not up-to-date
-    //[inViewer clearCache];
-    ///////////////////////    [self setMessage:message headerOrder:[[self viewingState] headerOrder]]; // If this line was commented out, no header would appear at all!
-    //  [inViewer _setMessage:decodedMessage headerOrder:[[inViewer viewingState] headerOrder]];
-    //  [inViewer _fetchContentsForMessage:decodedMessage fromStore:[decodedMessage messageStore] withViewingState:[inViewer viewingState]];
-    //  [inViewer viewerPreferencesChanged:nil];
-    //  [inViewer _updateDisplay];
-    
-    viewingState = [NSClassFromString(@"MessageHeaderDisplay") copyViewingState:viewingState];
-    [viewingState setHeaderAttributedString:[(MessageHeaders *)[message headers] attributedStringShowingHeaderDetailLevel:[self headerDetailLevel]]];
-	//    NSLog(@"$$$ HeaderAttributedString = %@", [viewingState headerAttributedString]);
-    if(/*[message numberOfAttachments]*/[[(MessageBody *)[message messageBody] attachments] count] == 0) // numberOfAttachments not up-to-date! Wrapper's
-        [viewingState setAttachmentsDescription:nil];
-    else
-        [viewingState setAttachmentsDescription:[NSClassFromString(@"MessageHeaderDisplay") formattedAttachmentsSizeForMessage:message]];
-	//    NSLog(@"$$$ AttachmentsDescription = %@", [viewingState attachmentsDescription]);
-    [viewingState setValue:[message messageBody] forKey:@"mimeBody"];
-	//    viewingState->preferredAlternative = -1; // Does nothing
-	//    ((MessageViewingState *)[self viewingState])->preferredAlternative = -1; // Does nothing
-	/////////////    viewingState->preferredEncoding = ((MessageViewingState *)[self viewingState])->preferredEncoding; // Because it was not copied
-    [self cacheViewingState:viewingState forMessage:message];
-    [self setMessage:message headerOrder:[viewingState headerOrder]];
-#else
-    //  id  viewingState = [MessageHeaderDisplay copyViewingState:[inViewer viewingState]];
-    //  id  viewingState = [[inViewer viewingState] retain];
-    
-    //  [inViewer->headerDisplay displayAttributedString:[MessageHeaderDisplay copyHeadersForMessage:decodedMessage viewingState:viewingState]];
-    //  [inViewer setMessage:decodedMessage headerOrder:[viewingState headerOrder]];
-    //  inViewer->_message = [decodedMessage retain];
-    //  inViewer->textDisplay->messageBody = [decodedMessage messageBody];
-    //  inViewer->textDisplay->needsSetUp = YES;
-    [inViewer->headerDisplay setUp];
-    //  [inViewer->headerDisplay display:[[decodedMessage headers] attributedStringShowingHeaderDetailLevel:[inViewer headerDetailLevel]]];
-    [inViewer->headerDisplay displayAttributedString:[[decodedMessage headers] attributedStringShowingHeaderDetailLevel:[inViewer headerDetailLevel]]];
-    //  [inViewer->textDisplay displayAttributedString:[decodedMessage attributedString]];
-    //  [MessageHeaderDisplay setUpEncryptionAndSignatureImageForMessage:decodedMessage viewingState:viewingState];
-    //  [viewingState release];
-    //  inViewer->_viewingState = viewingState;
-    //  [inViewer setMostRecentHeaderOrder:[viewingState headerOrder]];
-    //  [viewingState release];
-#endif
-#endif
 
     // Now update messageView content
     // If we want to add a fade-out effect, we'll need to wait to the fade-out effect
@@ -686,16 +610,12 @@ static IMP MessageContentController_fadeToEmpty = NULL;
         [self gpgSetDoNotResetFlags:YES];
     }
 #endif
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 	// reloadDocument does quite nothing
 	//	[self _updateDisplay];
 	//	[self clearCache];
 		[self reloadCurrentMessage]; // Needed, to get flag change notif via _updateDisplay
 	//	((void (*)(id, SEL))MessageContentController__updateDisplay)(self, _cmd);
 	//  [self setMessage:decryptedMessage headerOrder:[[self viewingState] headerOrder]]; // will display decrypted one, but without headers!
-#else
-    [self reloadCurrentMessage];
-#endif
 
     if(GPGMailLoggingLevel)
         NSLog(@"[DEBUG] Callback from accessoryViewOwner");

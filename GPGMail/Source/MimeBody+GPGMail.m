@@ -124,12 +124,8 @@ if(0){
             tempHeaders = [[MessageHeaders alloc] initWithHeaderData:headerData encoding:kCFStringEncodingUTF8]; // Core Foundation encoding!
             orderEnum = [[headers _decodeHeaderKeysFromData:headerData] objectEnumerator];
             while(aKey = [orderEnum nextObject])
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 #warning FIXME: LEOPARD - which method??
 				[headers setHeader:[tempHeaders firstHeaderForKey:aKey] forKey:aKey];
-#else
-                [headers setHeader:[tempHeaders _headerValueForKey:aKey] forKey:aKey];
-#endif
             [tempHeaders release];
         }
         else{
@@ -147,16 +143,10 @@ if(0){
         {
             MimeBody	*decryptedBody = [[MimeBody alloc] init];
             
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 #warning FIXME: No longer needed - done differently?
 	//            [((MessageStore *)[[self message] messageStore])->_caches.objectCaches._bodyDataCache setObject:decryptedData forKey:[NSValue valueWithNonretainedObject:decryptedBody]];
 	//            [((MessageStore *)[[self message] messageStore])->_caches.objectCaches._headerCache setObject:headerData forKey:[NSValue valueWithNonretainedObject:decryptedBody]];
 	return [NSDictionary dictionaryWithObjectsAndKeys:headerData, @"headerData", decryptedData, @"decryptedData", [decryptedBody autorelease], @"decryptedBody", nil];
-#else
-	[((MessageStore *)[[self message] messageStore])->_bodyDataCache setObject:decryptedData forKey:decryptedBody];
-            [((MessageStore *)[[self message] messageStore])->_headerCache setObject:headerData forKey:decryptedBody];
-            return [decryptedBody autorelease];
-#endif
         }
     }
     return nil;
@@ -291,9 +281,7 @@ if(0){
     [newHeaders setHeader:[NSString stringWithFormat:@"multipart/encrypted; protocol=\"application/pgp-encrypted\";\n\tboundary=\"%@\"", newBoundary] forKey:@"content-type"];
     if([[GPGMailBundle sharedInstance] addsCustomHeaders])
         [newHeaders setHeader:[@"GPGMail " stringByAppendingString:[(GPGMailBundle *)[GPGMailBundle sharedInstance] version]] forKey:GPGMailHeaderKey];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 	newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[[newHeaders autorelease] encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]]; // Needed, to ensure _data ivar is updated
-#endif
     if(headersPtr != NULL)
         *headersPtr = newHeaders;
     [newHeaders autorelease];
@@ -524,9 +512,7 @@ if(0){
         [newHeaders setHeader:@"7bit" forKey:@"content-transfer-encoding"];
         if([[GPGMailBundle sharedInstance] addsCustomHeaders])
             [newHeaders setHeader:[@"GPGMail " stringByAppendingString:[(GPGMailBundle *)[GPGMailBundle sharedInstance] version]] forKey:GPGMailHeaderKey];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 		newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[[newHeaders autorelease] encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]]; // Needed, to ensure _data ivar is updated
-#endif
         if(headersPtr != NULL)
             *headersPtr = newHeaders;
     }

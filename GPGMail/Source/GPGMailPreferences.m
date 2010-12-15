@@ -190,12 +190,8 @@
 
     while(aColumn = [anEnum nextObject])
         [tableColumnPerIdentifier setObject:aColumn forKey:[aColumn identifier]];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
     [keyIdentifiersTableView setColumnAutoresizingStyle:NSTableViewUniformColumnAutoresizingStyle];
-#else
-    [keyIdentifiersTableView setAutoresizesAllColumnsToFit:YES];
-#endif
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
+
     // Since 10.5, we can no longer reorder column when tableView data height is null.
     // As a workaround, we add 1 pixel.
     // FIXME: replace that tableView by NSTokenField
@@ -204,7 +200,6 @@
     aFrame.origin.y -= 1;
     aFrame.size.height += 1;
     [[keyIdentifiersTableView enclosingScrollView] setFrame:aFrame];
-#endif
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferencesDidChange:) name:GPGPreferencesDidChangeNotification object:[GPGMailBundle sharedInstance]];
 }
 

@@ -114,9 +114,6 @@ enum {
 
 @interface NSObject(GPGMessageViewerAccessoryViewOwnerDelegate)
 - (void) gpgAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner replaceViewWithView:(NSView *)view;
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-- (void) gpgAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner showStatusMessage:(NSString *)messageString;
-#endif
 - (void) gpgAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner displayMessage:(Message *)message isSigned:(BOOL)isSigned;
 - (Message *) gpgMessageForAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner;
 @end

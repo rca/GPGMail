@@ -66,15 +66,6 @@
     return [super validateMenuItem:menuItem];
 }
 
-#ifndef MACOSX
-- (void) textDidChange:(NSNotification *)notification
-{
-    if([notification object] != [composeView textObject])
-        [self gpgForwardAction:_cmd sender:notification];
-
-    [super textDidChange:notification];
-}
-#endif
 
 - (void) textDidEndEditing:(NSNotification *)notification
 {

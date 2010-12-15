@@ -63,7 +63,6 @@
 
 - (BOOL) gpgIsPGPMIMEMessage;
 
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 - (GPGSignature *) gpgSignature;
 - (void) setGpgIsDecrypting:(BOOL)flag;
 - (BOOL) gpgIsDecrypting;
@@ -73,7 +72,6 @@
 - (void) setGpgException:(NSException *)exception;
 - (NSArray *) gpgMessageSignatures;
 - (void) setGpgMessageSignatures:(NSArray *)messageSignatures;
-#endif
 
 - (NSString *) gpgDescription;
 

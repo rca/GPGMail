@@ -45,9 +45,6 @@
 #import "GPGMailPreferences.h"
 #import "TableViewManager+GPGMail.h"
 #import "GPGKeyDownload.h"
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-#import "../MacGPGME/GPGMailAdditions.h"
-#endif
 
 #import <ExceptionHandling/NSExceptionHandler.h>
 #import <AppKit/AppKit.h>
@@ -79,17 +76,6 @@ NSString	*GPGMissingKeysNotification = @"GPGMissingKeysNotification";
 
 int  GPGMailLoggingLevel = 1;
 
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-// Linker will complain about multiple definitions of these symbols,
-// but hopefully will use our definitions,
-// not the broken ones in the weakly-linked framework.
-NSString * const GPGKeyringChangedNotification = @"GPGKeyringChangedNotification";
-NSString * const GPGErrorKey = @"GPGErrorKey";
-NSString * const GPGException = @"GPGException";
-NSString * const GPGAdditionalReasonKey = @"GPGAdditionalReasonKey";
-NSString * const GPGContextKey = @"GPGContextKey";
-NSString * const GPGAsynchronousOperationDidTerminateNotification = @"GPGAsynchronousOperationDidTerminateNotification";
-#endif
 
 static BOOL	gpgMailWorks = YES;
 
@@ -124,21 +110,6 @@ static BOOL	gpgMailWorks = YES;
 #include <objc/objc-class.h>
 @implementation GPGMailBundle
 
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-+ (void) initializeMacGPGMEUse
-{
-    // MacGPGME framework is weakly linked, because we wrapped it in bundle, but its path is not in the standard framework lookup paths,
-    // that's why we needed to weakly linked it. We need to load framework manually.
-    // ObjC symbols are loaded automatically, but C symbols (globals/functions) are not and cannot be used!
-    // See http://developer.apple.com/documentation/MacOSX/Conceptual/BPFrameworks/Concepts/WeakLinking.html    
-	NSBundle	*myBundle;
-    NSBundle    *frameworkBundle;
-    
-    myBundle = [NSBundle bundleForClass:self];
-    frameworkBundle = [NSBundle bundleWithPath:[[myBundle bundlePath] stringByAppendingPathComponent:@"Contents/Frameworks/MacGPGME.framework"]]; // FIXME: Linking problem on Panther during execution!!!
-    NSAssert1([frameworkBundle load], @"### GPGMail: unable to load framework %@", frameworkBundle);
-}
-#endif
 
 + (void)load
 {
@@ -192,23 +163,14 @@ static BOOL	gpgMailWorks = YES;
     // Do not call super - see +initialize documentation
     myBundle = [NSBundle bundleForClass:self];    
 
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-    [self initializeMacGPGMEUse];
-#endif
     
 	// We need to load images and name them, because all images are searched by their name; as they are not located in the main bundle,
 	// +[NSImage imageNamed:] does not find them.
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"encrypted"]] setName:@"gpgEncrypted"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"clear"]] setName:@"gpgClear"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"signed"]] setName:@"gpgSigned"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"unsigned"]] setName:@"gpgUnsigned"];
-#else
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"encrypted-old"]] setName:@"gpgEncrypted"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"clear-old"]] setName:@"gpgClear"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"signed-old"]] setName:@"gpgSigned"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"unsigned-old"]] setName:@"gpgUnsigned"];
-#endif
+
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GPGMail"]] setName:@"GPGMail"];
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"MacGPG"]] setName:@"MacGPG"];
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GPGMail32"]] setName:@"GPGMail32"];
@@ -335,11 +297,7 @@ static BOOL	gpgMailWorks = YES;
     if(gpgMailWorks){
 		SEL	targetSelector;
 		
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 		targetSelector = @selector(toggleThreadedMode:);
-#else
-		targetSelector = @selector(showMailboxesPanel:);
-#endif
         pgpViewMenuItem = [self newMenuItemWithTitle:NSLocalizedStringFromTableInBundle(@"PGP_KEYS_MENU", @"GPGMail", [NSBundle bundleForClass:[self class]], "<PGP Keys> submenu title") action:NULL andKeyEquivalent:@"" inMenu:[[NSApplication sharedApplication] mainMenu] relativeToItemWithSelector:targetSelector offset:-1];
 
         if(!pgpViewMenuItem)
@@ -431,7 +389,6 @@ static BOOL	gpgMailWorks = YES;
 
 - (NSToolbarItem *) createToolbarItemWithItemIdentifier:(NSString *)itemIdentifier label:(NSString *)label altLabel:(NSString *)altLabel paletteLabel:(NSString *)paletteLabel tooltip:(NSString *)tooltip target:(id)target action:(SEL)action imageNamed:(NSString *)imageName forToolbar:(NSToolbar *)toolbar
 {
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     NSBundle				*myBundle = [NSBundle bundleForClass:[self class]];
     SegmentedToolbarItem	*anItem = [[NSClassFromString(@"SegmentedToolbarItem") alloc] initWithItemIdentifier:itemIdentifier];
 	// By default has already one segment - no need to create it
@@ -443,27 +400,6 @@ static BOOL	gpgMailWorks = YES;
 	[anItem setTag:-1 forSegment:0];
 	[anItem setTarget:target forSegment:0];
 	[anItem setAction:action forSegment:0];
-#elif defined(TIGER)
-	MailToolbarItemSegment	*aSegment = [[MailToolbarItemSegment alloc] initWithImage:[NSImage imageNamed:imageName] 
-																				label:NSLocalizedStringFromTableInBundle(label, @"GPGMail", myBundle, "") 
-																		 paletteLabel:NSLocalizedStringFromTableInBundle(paletteLabel, @"GPGMail", myBundle, "") 
-																			 altLabel:NSLocalizedStringFromTableInBundle(altLabel, @"GPGMail", myBundle, "")
-																			  tooltip:NSLocalizedStringFromTableInBundle(tooltip, @"GPGMail", myBundle, "") 
-																				  tag:-1 
-																			   target:target
-																			   action:action];
-    MailToolbarItem			*anItem = [[MailToolbarItem alloc] initWithItemIdentifier:itemIdentifier segments:[NSArray arrayWithObject:aSegment] bordered:YES toolbar:toolbar];
-#else
-    NSToolbarItem	*anItem = [[NSToolbarItem alloc] initWithItemIdentifier:itemIdentifier];
-    NSBundle		*myBundle = [NSBundle bundleForClass:[self class]];
-    
-    [anItem setLabel:NSLocalizedStringFromTableInBundle(label, @"GPGMail", myBundle, "")];
-    [anItem setPaletteLabel:NSLocalizedStringFromTableInBundle(paletteLabel, @"GPGMail", myBundle, "")];
-    [anItem setToolTip:NSLocalizedStringFromTableInBundle(tooltip, @"GPGMail", myBundle, "")];
-    [anItem setTarget:target];
-    [anItem setAction:action];
-    [anItem setImage:[NSImage imageNamed:imageName]];
-#endif
 
     return [anItem autorelease];
 }
@@ -748,13 +684,7 @@ static BOOL	gpgMailWorks = YES;
 	BOOL	isCompatibleSystem;
 
 #warning CHECK - change for leopard!
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     isCompatibleSystem = (NSClassFromString(@"NSGarbageCollector") != Nil);
-#elif defined(TIGER)
-	isCompatibleSystem = ![[MessageViewer class] instancesRespondToSelector:@selector(showStatusMessage:)];
-#else
-    isCompatibleSystem = (NSClassFromString(@"NSMetadataQuery") == Nil); // OK
-#endif
 	
 	if(!isCompatibleSystem){
         NSBundle	*aBundle = [NSBundle bundleForClass:[self class]];
@@ -777,13 +707,8 @@ static BOOL	gpgMailWorks = YES;
     MessageViewer	*aViewer;
 
     realToolbarDelegates = [[NSMutableDictionary allocWithZone:[self zone]] init];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     additionalToolbarItemIdentifiersPerToolbarIdentifier = [[NSDictionary allocWithZone:[self zone]] initWithObjectsAndKeys:[NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"MainWindow", [NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"SingleMessageViewer", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeWindow_NewMessage", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeWindow_ReplyOrForward", nil];
-#elif defined(TIGER)
-    additionalToolbarItemIdentifiersPerToolbarIdentifier = [[NSDictionary allocWithZone:[self zone]] initWithObjectsAndKeys:[NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"MessageViewerTiger", [NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"TornOffViewerTiger", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeNewOrDraftTiger", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeReplyOrForwardTiger", nil];
-#else
-    additionalToolbarItemIdentifiersPerToolbarIdentifier = [[NSDictionary allocWithZone:[self zone]] initWithObjectsAndKeys:[NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"MessageViewer", [NSArray arrayWithObjects:GPGDecryptMessageToolbarItemIdentifier, GPGAuthenticateMessageToolbarItemIdentifier, nil], @"TornOffViewer", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeNewOrDraft", [NSArray arrayWithObjects:GPGEncryptMessageToolbarItemIdentifier, GPGSignMessageToolbarItemIdentifier, nil], @"ComposeReplyOrForward", nil];
-#endif
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(anyToolbarWillAddItem:) name:NSToolbarWillAddItemNotification object:nil];
     // LEOPARD - list is always empty. If too early, then it's OK for us. No instance has yet been created, and we will do the work through -anyToolbarWillAddItem:
     while(aViewer = [anEnum nextObject])
@@ -802,12 +727,10 @@ static BOOL	gpgMailWorks = YES;
         [aMenuItem setTarget:self];
     }
     
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     // Addition which has nothing to do with GPGMail
     if([[GPGDefaults gpgDefaults] boolForKey:@"GPGEnableMessageURLCopy"]){
         aMenuItem = [self newMenuItemWithTitle:NSLocalizedStringFromTableInBundle(@"COPY_MSG_URL_MENUITEM", @"GPGMail", [NSBundle bundleForClass:[self class]], "<Copy Message URL> menuItem title") action:@selector(gpgCopyMessageURL:) andKeyEquivalent:@"" inMenu:[[NSApplication sharedApplication] mainMenu] relativeToItemWithSelector:@selector(pasteAsQuotation:) offset:0];
     }
-#endif
     
     [self performSelector:@selector(checkPGPmailPresence) withObject:nil afterDelay:0];
     /*            if([[GPGDefaults gpgDefaults] boolForKey:@"GPGAddServiceReplacement"]){
@@ -1522,11 +1445,7 @@ static BOOL	gpgMailWorks = YES;
             return aViewer;
     }
     // These "messageEditors" are not real message editors, but detached viewers (no mailbox)...
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     anEnum = [[NSClassFromString(@"MailDocumentEditor") documentEditors] objectEnumerator];
-#else
-    anEnum = [(NSArray *)[NSApp messageEditors] objectEnumerator];
-#endif
     while(anEditor = [anEnum nextObject]){
         NSToolbar	*aToolbar = [anEditor gpgToolbar];
 
@@ -1573,11 +1492,7 @@ static BOOL	gpgMailWorks = YES;
         }
 
         // These "messageEditors" are not real message editors, but detached viewers (no mailbox)...
-#if defined(LEOPARD) || defined(SNOW_LEOPARD)
         anEnum = [[NSClassFromString(@"MailDocumentEditor") documentEditors] objectEnumerator];
-#else
-        anEnum = [(NSArray *)[NSApp messageEditors] objectEnumerator];
-#endif
         while(anEditor = [anEnum nextObject]){
             NSToolbar	*aToolbar = [anEditor gpgToolbar];
             
@@ -1675,12 +1590,10 @@ static BOOL	gpgMailWorks = YES;
     return [self _validateAction:[theItem action] toolbarItem:theItem menuItem:nil];
 }
 
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 - (BOOL)validateToolbarItem:(id)fp8 forSegment:(int)fp12
 {
     return [self _validateAction:[fp8 actionForSegment:fp12] toolbarItem:fp8 menuItem:nil];
 }
-#endif
 
 - (IBAction) gpgDecrypt:(id)sender
 {
@@ -2197,11 +2110,7 @@ static BOOL	gpgMailWorks = YES;
         case GPG_SHA512HashAlgorithm:
             return @"sha512";
         default:{
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-            NSString    *hashAlgorithmDescription = [GPGKey gpgHashAlgorithmDescription:algorithm];
-#else
             NSString    *hashAlgorithmDescription = GPGHashAlgorithmDescription(algorithm);
-#endif
             
             if(hashAlgorithmDescription == nil)
                 hashAlgorithmDescription = [NSString stringWithFormat:@"%d", algorithm];
@@ -2214,31 +2123,8 @@ static BOOL	gpgMailWorks = YES;
 
 - (id) locale
 {
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 //    return [NSLocale autoupdatingCurrentLocale]; // FIXME: does not work as expected
     return [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
-#else
-    // Maybe I don't understand APIs, but descriptions of dates never use the user's language!
-    // I need to explicitely pass the locale.
-    if(locale == nil){
-        NSMutableDictionary	*aDict = [[NSMutableDictionary alloc] init];
-        NSUserDefaults		*defaults = [NSUserDefaults standardUserDefaults];
-        NSArray				*keys = [NSArray arrayWithObjects:NSWeekDayNameArray, NSShortWeekDayNameArray, NSMonthNameArray, NSShortMonthNameArray, NSTimeFormatString, NSDateFormatString, NSTimeDateFormatString, NSShortTimeDateFormatString, NSCurrencySymbol, NSDecimalSeparator, NSThousandsSeparator, NSDecimalDigits, NSAMPMDesignation, NSHourNameDesignations, NSYearMonthWeekDesignations, NSEarlierTimeDesignations, NSLaterTimeDesignations, NSThisDayDesignations, NSNextDayDesignations, NSNextNextDayDesignations, NSPriorDayDesignations, NSDateTimeOrdering, NSInternationalCurrencyString, NSShortDateFormatString, NSPositiveCurrencyFormatString, NSNegativeCurrencyFormatString, nil]; // All keys are defined in NSUserDefaults.h
-        NSEnumerator		*keyEnum = [keys objectEnumerator];
-        NSString			*aKey;
-
-        while(aKey = [keyEnum nextObject]){
-            id	aValue = [defaults objectForKey:aKey];
-
-            if(aValue != nil)
-                [aDict setObject:aValue forKey:aKey];
-        }
-
-        locale = aDict;
-    }
-
-    return locale;
-#endif
 }
 
 /*
@@ -2263,38 +2149,22 @@ static BOOL	gpgMailWorks = YES;
 */
 - (NSString *) gpgErrorDescription:(GPGError)error
 {
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-    return [NSException gpgErrorDescription:error];
-#else
     return GPGErrorDescription(error);
-#endif
 }
 
 - (GPGErrorCode) gpgErrorCodeFromError:(GPGError)error
 {
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-    return [NSException gpgErrorCodeFromError:error];
-#else
     return GPGErrorCodeFromError(error);
-#endif
 }
 
 - (GPGErrorSource) gpgErrorSourceFromError:(GPGError)error
 {
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-    return [NSException gpgErrorSourceFromError:error];
-#else
     return GPGErrorSourceFromError(error);
-#endif
 }
 
 - (GPGError) gpgMakeErrorWithSource:(GPGErrorSource)source code:(GPGErrorCode)code
 {
-#if !defined(SNOW_LEOPARD) && !defined(LEOPARD) && !defined(TIGER)
-    return [NSException gpgMakeErrorWithSource:source code:code];
-#else
     return GPGMakeError(source, code);
-#endif
 }
 
 @end

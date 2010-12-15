@@ -1,4 +1,3 @@
-#ifdef SNOW_LEOPARD
 
 #import <Foundation/NSObject.h>
 
@@ -7,4 +6,3 @@
 - (void)nowWouldBeAGoodTimeToTerminate:(id)arg1;
 @end
 
-#endif

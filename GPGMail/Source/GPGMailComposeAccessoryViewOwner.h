@@ -91,11 +91,9 @@
     IBOutlet NSButton       *conflictSignatureButton;
     IBOutlet NSButton       *conflictMIMEButton;
     NSMutableDictionary     *pgpOptionsPerEmail;
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 	IBOutlet OptionalView	*optionalView;
 	IBOutlet NSTextField	*optionalViewTitleField;
 	IBOutlet ColorBackgroundView	*optionalViewBackgroundView;
-#endif
     BOOL                    displaysButtonsInComposeWindow;
     BOOL                    windowWillClose;
     BOOL                    setupUI;

@@ -31,33 +31,12 @@
 #import <AppKit/NSNibDeclarations.h>
 
 
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 
 #ifdef SNOW_LEOPARD_64
 @interface GPGMail_MailDocumentEditor : NSObject
 #else
 @interface MailDocumentEditor(GPGMail)
 #endif
-- (IBAction) gpgToggleEncryptionForNewMessage:(id)sender;
-- (IBAction) gpgToggleSignatureForNewMessage:(id)sender;
-- (IBAction) gpgChoosePublicKeys:(id)sender;
-- (IBAction) gpgChoosePersonalKey:(id)sender;
-- (IBAction) gpgChoosePublicKey:(id)sender;
-- (IBAction) gpgToggleAutomaticPublicKeysChoice:(id)sender;
-- (IBAction) gpgToggleSymetricEncryption:(id)sender;
-- (IBAction) gpgToggleUsesOnlyOpenPGPStyle:(id)sender;
-- (NSArray *) gpgAccessoryViewOwners;
-- (void) gpgSetAccessoryViewOwners:(NSArray *)newOwners;
-- (BOOL) gpgIsRealEditor;
-- (NSToolbar *) gpgToolbar;
-- (BOOL) gpgValidateMenuItem:(NSMenuItem *)theItem;
-- (BOOL) gpgValidateToolbarItem:(NSToolbarItem *)theItem;
-- (NSPopUpButton *) gpgFromPopup;
-@end
-
-#else
-
-@interface MessageEditor(GPGMail)
 
 - (IBAction) gpgToggleEncryptionForNewMessage:(id)sender;
 - (IBAction) gpgToggleSignatureForNewMessage:(id)sender;
@@ -74,7 +53,4 @@
 - (BOOL) gpgValidateMenuItem:(NSMenuItem *)theItem;
 - (BOOL) gpgValidateToolbarItem:(NSToolbarItem *)theItem;
 - (NSPopUpButton *) gpgFromPopup;
-
 @end
-
-#endif

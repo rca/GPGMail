@@ -59,15 +59,13 @@ NSString	*GPGMailHeaderKey = @"X-PGP-Agent";
 
 - (void) gpgSetEncodedBody:(NSData *)data
 {
-#if defined(SNOW_LEOPARD) || defined(LEOPARD) || defined(TIGER)
 	// Hopefully not necessary to play with cache
-#else
-    if([[self message] messageStore])
+	
+	/*if([[self message] messageStore])
         [((MessageStore *)[[self message] messageStore])->_bodyDataCache setObject:data forKey:[self message]];
     else{
         NSLog(@"### GPGMail: Unable to modify encodedBody");
-    }
-#endif
+    }*/
 }
 
 - (NSData *) gpgEncryptForRecipients:(NSArray *)recipients trustAllKeys:(BOOL)trustsAllKeys signWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate format:(GPGMailFormat *)mailFormatPtr headers:(MutableMessageHeaders **)headersPtr
@@ -215,9 +213,7 @@ NSString	*GPGMailHeaderKey = @"X-PGP-Agent";
     }
     if([[GPGMailBundle sharedInstance] addsCustomHeaders])
         [newHeaders setHeader:[@"GPGMail " stringByAppendingString:[(GPGMailBundle *)[GPGMailBundle sharedInstance] version]] forKey:GPGMailHeaderKey];
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[[newHeaders autorelease] encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]]; // Needed, to ensure _data ivar is updated
-#endif
     if(headersPtr != NULL)
         *headersPtr = newHeaders;
     [newHeaders autorelease];
@@ -284,11 +280,7 @@ NSString	*GPGMailHeaderKey = @"X-PGP-Agent";
 
 - (NSData *)gpgRawData
 {
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
 	return [[[self message] messageStore] bodyDataForMessage:[self message]]; // Always returns new instance
-#else
-	return [self rawData];
-#endif
 }
 
 @end

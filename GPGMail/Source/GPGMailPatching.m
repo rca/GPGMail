@@ -37,7 +37,6 @@
 
 IMP GPGMail_ReplaceImpOfClassSelectorOfClassWithImpOfClassSelectorOfClass(SEL aSelector, Class aClass, SEL newSelector, Class newClass)
 {
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     Method	aMethod, newMethod;
     IMP		anIMP, newIMP;
     
@@ -55,28 +54,10 @@ IMP GPGMail_ReplaceImpOfClassSelectorOfClassWithImpOfClassSelectorOfClass(SEL aS
 	NSCAssert(method_getImplementation(aMethod) == newIMP, @"Replacement failed!");
 	
     return anIMP;
-#else
-    Method	aMethod, newMethod;
-    IMP		anIMP, newIMP;
-    
-    aMethod = class_getClassMethod(aClass, aSelector);
-    if(aMethod == NULL)
-        return NULL;
-    anIMP = aMethod->method_imp;
-    
-    newMethod = class_getClassMethod(newClass, newSelector);
-    if(newMethod == NULL)
-        return NULL;
-    newIMP = newMethod->method_imp;
-    
-    aMethod->method_imp = newIMP;
-    return anIMP;
-#endif
 }
 
 IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(SEL aSelector, Class aClass, SEL newSelector, Class newClass)
 {
-#if defined(SNOW_LEOPARD) || defined(LEOPARD)
     Method	aMethod, newMethod;
     IMP		anIMP, newIMP;
     
@@ -94,23 +75,6 @@ IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(
 	NSCAssert(method_getImplementation(aMethod) == newIMP, @"Replacement failed!");
 	
     return anIMP;
-#else
-    Method	aMethod, newMethod;
-    IMP		anIMP, newIMP;
-    
-    aMethod = class_getInstanceMethod(aClass, aSelector);
-    if(aMethod == NULL)
-        return NULL;
-    anIMP = aMethod->method_imp;
-    
-    newMethod = class_getInstanceMethod(newClass, newSelector);
-    if(newMethod == NULL)
-        return NULL;
-    newIMP = newMethod->method_imp;
-    
-    aMethod->method_imp = newIMP;
-    return anIMP;
-#endif
 }
 
 #define NUM_OF_METHODS 2
