@@ -12,6 +12,9 @@ clean-gpgmail:
 
 clean: clean-gpgme clean-gpgmail
 
+check-all-warnings: clean-gpgmail
+	make | grep "warning: "
+
 check-warnings: clean-gpgmail
 	make | grep "warning: "|grep -v "#warnings"
 
@@ -24,7 +27,6 @@ check: clean-gpgmail
 	@scan-build --use-cc clang -o build/report xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release build 2>error.log|grep "is deprecated"
 	@echo "";
 	@echo "Now have a look at build/report/ or at error.log";
-
 
 style:
 	@if [ "`which uncrustify`" == "" ]; then echo 'usage: PATH=$$PATH:path_to_uncrustify make style'; echo "see: https://github.com/bengardner/uncrustify"; exit; fi
