@@ -801,6 +801,7 @@ static BOOL gpgMailWorks = YES;
 @synthesize allUserIDsMenuItem;
 
 
+
 + (BOOL)hasComposeAccessoryViewOwner {
 	return gpgMailWorks;                 // TIGER + LEOPARD Invoked on +initialize
 }
@@ -1672,10 +1673,10 @@ static BOOL gpgMailWorks = YES;
 
     for (GPGKey *aPublicKey in [self publicKeys]) {
 		if ([[aPublicKey fingerprint] isEqualToString:aFingerprint]) {
-			break;
+			return aPublicKey;
 		}
     }
-	return aPublicKey;
+	return nil;
 }
 
 - (NSString *)menuItemTitleForKey:(GPGKey *)key {
