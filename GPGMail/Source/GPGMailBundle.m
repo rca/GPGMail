@@ -599,7 +599,7 @@ static BOOL gpgMailWorks = YES;
  *          chosenPath = [availableExecutablePaths lastObject];
  *          @try {
  *              [[GPGEngine engineForProtocol:GPGOpenPGPProtocol] setExecutablePath:chosenPath];
- *          }@catch(NSException *localException){
+ *          } @catch(NSException *localException){
  *              chosenPath = nil;
  *          }
  *      }
@@ -787,53 +787,19 @@ static BOOL gpgMailWorks = YES;
 	return [[[NSBundle bundleForClass:[self class]] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 }
 
-- (NSMenuItem *)decryptMenuItem {
-	return decryptMenuItem;
-}
+@synthesize decryptMenuItem;
+@synthesize authenticateMenuItem;
+@synthesize encryptsNewMessageMenuItem;
+@synthesize signsNewMessageMenuItem;
+@synthesize personalKeysMenuItem;
+@synthesize choosePublicKeysMenuItem;
+@synthesize automaticPublicKeysMenuItem;
+@synthesize symetricEncryptionMenuItem;
+@synthesize usesOnlyOpenPGPStyleMenuItem;
+@synthesize pgpMenuItem;
+@synthesize pgpViewMenuItem;
+@synthesize allUserIDsMenuItem;
 
-- (NSMenuItem *)authenticateMenuItem {
-	return authenticateMenuItem;
-}
-
-- (NSMenuItem *)encryptsNewMessageMenuItem {
-	return encryptsNewMessageMenuItem;
-}
-
-- (NSMenuItem *)signsNewMessageMenuItem {
-	return signsNewMessageMenuItem;
-}
-
-- (NSMenuItem *)personalKeysMenuItem {
-	return personalKeysMenuItem;
-}
-
-- (NSMenuItem *)choosePublicKeysMenuItem {
-	return choosePublicKeysMenuItem;
-}
-
-- (NSMenuItem *)automaticPublicKeysMenuItem {
-	return automaticPublicKeysMenuItem;
-}
-
-- (NSMenuItem *)symetricEncryptionMenuItem {
-	return symetricEncryptionMenuItem;
-}
-
-- (NSMenuItem *)usesOnlyOpenPGPStyleMenuItem {
-	return usesOnlyOpenPGPStyleMenuItem;
-}
-
-- (NSMenuItem *)pgpMenuItem {
-	return pgpMenuItem;
-}
-
-- (NSMenuItem *)pgpViewMenuItem {
-	return pgpViewMenuItem;
-}
-
-- (NSMenuItem *)allUserIDsMenuItem {
-	return allUserIDsMenuItem;
-}
 
 + (BOOL)hasComposeAccessoryViewOwner {
 	return gpgMailWorks;                 // TIGER + LEOPARD Invoked on +initialize
@@ -1589,12 +1555,13 @@ static BOOL gpgMailWorks = YES;
 			while (aKey = [anEnum nextObject]) {
 				// BUG in gpg <= 1.2.x: secret keys have no capabilities when listed in batch!
 				// That's why we refresh key.
-				aKey = [aContext refreshKey:aKey];
+				aKey = [aContext refreshKey:aKey]; // Still necessary?
+                
 				if (!filterKeys || [self canKeyBeUsedForSigning:aKey]) {
 					[anArray addObject:aKey];
 				}
 			}
-		}@catch (NSException *localException) {
+		} @catch (NSException *localException) {
 			[aContext release];
 			[anArray release];
 			[localException raise];
@@ -1631,11 +1598,12 @@ static BOOL gpgMailWorks = YES;
 		@try {
 			anEnum = [aContext keyEnumeratorForSearchPattern:@"" secretKeysOnly:NO];
 
-			while (aKey = [anEnum nextObject])
+			while (aKey = [anEnum nextObject]) {
 				if (!filterKeys || [self canKeyBeUsedForEncryption:aKey]) {
 					[anArray addObject:aKey];
 				}
-		}@catch (NSException *localException) {
+            }
+		} @catch (NSException *localException) {
 			[aContext release];
 			[anArray release];
 			[localException raise];
@@ -1658,21 +1626,21 @@ static BOOL gpgMailWorks = YES;
 	}
 	result = NSMapGet(cachedUserIDsPerKey, key);
 	if (result == nil) {
-		int aCount;
-
+        
 		result = [key userIDs];
-		aCount = [result count];
-		if (aCount > 1) {
+		if ([result count] > 1) {
 			NSEnumerator *anEnum = [result objectEnumerator];
 			NSMutableArray *anArray = [NSMutableArray array];
 			GPGUserID *aUserID;
 			BOOL filterKeys = [self filtersOutUnusableKeys];
 
-			(void)[anEnum nextObject];                                     // Skip primary userID
-			while (aUserID = [anEnum nextObject])
+            
+			[anEnum nextObject]; // Skip primary userID
+			while (aUserID = [anEnum nextObject]) {
 				if (!filterKeys || [self canUserIDBeUsed:aUserID]) {
 					[anArray addObject:aUserID];
 				}
+            }
 			result = anArray;
 		} else {
 			result = [NSArray array];
@@ -1699,25 +1667,21 @@ static BOOL gpgMailWorks = YES;
 - (GPGKey *)publicKeyForSecretKey:(GPGKey *)secretKey {
 	// Do not invoke -[GPGKey publicKey], because it will perform a gpg op
 	// Get key from cached public keys
-	NSEnumerator *keyEnum = [[self publicKeys] objectEnumerator];
 	NSString *aFingerprint = [secretKey fingerprint];
 	GPGKey *aPublicKey;
 
-	while (aPublicKey = [keyEnum nextObject])
+    for (GPGKey *aPublicKey in [self publicKeys]) {
 		if ([[aPublicKey fingerprint] isEqualToString:aFingerprint]) {
 			break;
 		}
-
+    }
 	return aPublicKey;
 }
 
 - (NSString *)menuItemTitleForKey:(GPGKey *)key {
-	NSEnumerator *anEnum;
-	NSString *anIdentifier;
 	NSMutableArray *components = [NSMutableArray array];
 	NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
 	GPGUserID *primaryUserID;
-	GPGSubkey *aSubkey;
 	BOOL isKeyRevoked, hasKeyExpired, isKeyDisabled, isKeyInvalid;
 	BOOL hasNonRevokedSubkey = NO, hasNonExpiredSubkey = NO, hasNonDisabledSubkey = NO, hasNonInvalidSubkey = NO;
 
@@ -1734,8 +1698,7 @@ static BOOL gpgMailWorks = YES;
 #warning We really need to filter keys according to SUBKEYS!
 	// Currently we filter only according to key -> we display disabled keys,
 	// whereas we shouldn't even show them
-	anEnum = [[key subkeys] objectEnumerator];
-	while (aSubkey = [anEnum nextObject]) {
+    for (GPGSubkey *aSubkey in [key subkeys]) {
 		if (![aSubkey isKeyRevoked]) {
 			hasNonRevokedSubkey = YES;
 		}
@@ -1748,12 +1711,6 @@ static BOOL gpgMailWorks = YES;
 		if (![aSubkey isKeyInvalid]) {
 			hasNonInvalidSubkey = YES;
 		}
-#if 0
-		isKeyRevoked = isKeyRevoked || [aSubkey isKeyRevoked];
-		hasKeyExpired = hasKeyExpired || [aSubkey hasKeyExpired];
-		isKeyDisabled = isKeyDisabled || [aSubkey isKeyDisabled];
-		isKeyInvalid = isKeyInvalid || [aSubkey isKeyInvalid];
-#endif
 	}
 
 	if (primaryUserID != nil) {
@@ -1778,8 +1735,7 @@ static BOOL gpgMailWorks = YES;
 		[components addObject:NSLocalizedStringFromTableInBundle(@"INVALID_KEY:", @"GPGMail", myBundle, "")];
 	}
 
-	anEnum = [[self displayedKeyIdentifiers] objectEnumerator];
-	while (anIdentifier = [anEnum nextObject]) {
+    for (NSString *anIdentifier in [self displayedKeyIdentifiers]) {
 		id aValue;
 		NSString *aComponent;
 
@@ -1827,8 +1783,6 @@ static BOOL gpgMailWorks = YES;
 }
 
 - (NSString *)menuItemTitleForUserID:(GPGUserID *)userID indent:(unsigned)indent {
-	NSEnumerator *anEnum = [[self displayedKeyIdentifiers] objectEnumerator];
-	NSString *anIdentifier;
 	NSMutableArray *titleElements = [NSMutableArray array];
 	NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
 
@@ -1840,7 +1794,7 @@ static BOOL gpgMailWorks = YES;
 		[titleElements addObject:NSLocalizedStringFromTableInBundle(@"INVALID_USER_ID:", @"GPGMail", myBundle, "")];
 	}
 
-	while (anIdentifier = [anEnum nextObject]) {
+    for (NSString *anIdentifier in [self displayedKeyIdentifiers]) {
 		id aValue;
 
 		if ([anIdentifier isEqualToString:@"fingerprint"] || [anIdentifier isEqualToString:@"keyID"] || [anIdentifier isEqualToString:@"algorithm"] || [anIdentifier isEqualToString:@"longKeyID"]) {
@@ -1880,13 +1834,12 @@ static BOOL gpgMailWorks = YES;
 	// A subkey can be expired, without the key being, thus making key useless because it has
 	// no other subkey...
 	// We don't care about ownerTrust, validity
-	NSEnumerator *anEnum = [[key subkeys] objectEnumerator];
-	GPGSubkey *aSubkey;
 
-	while (aSubkey = [anEnum nextObject])
+	for (GPGSubkey *aSubkey in [key subkeys]) {
 		if ([aSubkey canEncrypt] && ![aSubkey hasKeyExpired] && ![aSubkey isKeyRevoked] && ![aSubkey isKeyInvalid] && ![aSubkey isKeyDisabled]) {
 			return YES;
 		}
+    }
 	return NO;
 }
 
@@ -1894,8 +1847,6 @@ static BOOL gpgMailWorks = YES;
 	// A subkey can be expired, without the key being, thus making key useless because it has
 	// no other subkey...
 	// We don't care about ownerTrust, validity, subkeys
-	NSEnumerator *anEnum;
-	GPGSubkey *aSubkey;
 
 #warning FIXME: Secret keys are never marked as revoked! Check expired/disabled/invalid
 	key = [self publicKeyForSecretKey:key];
@@ -1905,11 +1856,11 @@ static BOOL gpgMailWorks = YES;
 		return YES;
 	}
 
-	anEnum = [[key subkeys] objectEnumerator];
-	while (aSubkey = [anEnum nextObject])
+	for (GPGSubkey *aSubkey in [key subkeys]) {
 		if ([aSubkey canSign] && ![aSubkey hasKeyExpired] && ![aSubkey isKeyRevoked] && ![aSubkey isKeyInvalid] && ![aSubkey isKeyDisabled]) {
 			return YES;
 		}
+    }
 	return NO;
 }
 
@@ -2066,11 +2017,10 @@ static BOOL gpgMailWorks = YES;
 
 - (NSArray *)gpgFlattenedMembers {
 	NSArray *gpgFlattenedMembers = [self members];
-	NSEnumerator *anEnum = [[self subgroups] objectEnumerator];
-	ABGroup *aGroup;
 
-	while ((aGroup = [anEnum nextObject]))
+    for (ABGroup *aGroup in [self subgroups]) {
 		gpgFlattenedMembers = [gpgFlattenedMembers arrayByAddingObjectsFromArray:[aGroup gpgFlattenedMembers]];
+    }
 
 	return gpgFlattenedMembers;
 }
@@ -2084,8 +2034,6 @@ static BOOL gpgMailWorks = YES;
 	// We try to create/update gpg groups according to AB groups
 	// We don't modify gpg groups not referenced in AB groups
 	// We create/modify only gpg groups which have keys for all members
-	NSEnumerator *abGroupEnum = [[[ABAddressBook sharedAddressBook] groups] objectEnumerator];
-	ABGroup *aGroup;
 	GPGContext *aContext = [[GPGContext alloc] init];
 	NSArray *gpgGroups;
 	GPGKeyGroup *aKeyGroup;
@@ -2093,24 +2041,21 @@ static BOOL gpgMailWorks = YES;
 
 	@try {
 		gpgGroups = [aContext keyGroups];
-		while ((aGroup = [abGroupEnum nextObject])) {
-			NSEnumerator *memberEnum = [[aGroup gpgFlattenedMembers] objectEnumerator];
-			ABPerson *aMember;
+        for (ABGroup *aGroup in [[ABAddressBook sharedAddressBook] groups]) {
 			BOOL someMemberHasNoEmail = NO;
 			BOOL someMemberHasNoKey = NO;
 			NSMutableArray *futureGroupKeys = [NSMutableArray array];
 			GPGKeyGroup *existingKeyGroup = nil;
-			NSEnumerator *keyGroupEnum = [gpgGroups objectEnumerator];
 			NSString *aGroupName = [aGroup valueForProperty:kABGroupNameProperty];
 
-			while ((aKeyGroup = [keyGroupEnum nextObject])) {
+            for (GPGKeyGroup *aKeyGroup in gpgGroups) {
 				if ([[aKeyGroup name] isEqualToString:aGroupName]) {
 					existingKeyGroup = aKeyGroup;
 					break;
 				}
 			}
 
-			while ((aMember = [memberEnum nextObject])) {
+            for (ABPerson *aMember in [aGroup gpgFlattenedMembers]) {
 				ABMultiValue *emailsValue = [aMember valueForProperty:kABEmailProperty];
 				unsigned aCount = [emailsValue count];
 
@@ -2135,10 +2080,7 @@ static BOOL gpgMailWorks = YES;
 							BOOL existingGroupHasKeyForMember = NO;
 
 							if (existingKeyGroup) {
-								NSEnumerator *keyEnumerator = [gpgKeys objectEnumerator];
-								GPGKey *aKey;
-
-								while ((aKey = [keyEnumerator nextObject])) {
+                                for (GPGKey *aKey in gpgKeys) {
 									if ([[existingKeyGroup keys] containsObject:aKey]) {
 										existingGroupHasKeyForMember = YES;
 										[futureGroupKeys addObject:aKey];
@@ -2177,13 +2119,13 @@ static BOOL gpgMailWorks = YES;
 				@try {
 					(void)[GPGKeyGroup createKeyGroupNamed:aGroupName withKeys:futureGroupKeys];
 					groupsChanged = YES;
-				}@catch (NSException *localException) {
+				} @catch (NSException *localException) {
 					// FIXME: Report to user that group name is invalid?
 					// Let's ignore the error
 				}
 			}
 		}
-	}@catch (NSException *localException) {
+	} @catch (NSException *localException) {
 		// FIXME: Report to user that group name is invalid?
 		// Let's ignore the error
 		[aContext release];

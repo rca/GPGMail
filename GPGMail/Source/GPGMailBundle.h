@@ -185,18 +185,19 @@ enum {
 - (void)setAddsCustomHeaders:(BOOL)flag;
 - (BOOL)addsCustomHeaders;
 
-- (NSMenuItem *)decryptMenuItem;
-- (NSMenuItem *)authenticateMenuItem;
-- (NSMenuItem *)encryptsNewMessageMenuItem;
-- (NSMenuItem *)signsNewMessageMenuItem;
-- (NSMenuItem *)personalKeysMenuItem;
-- (NSMenuItem *)choosePublicKeysMenuItem;
-- (NSMenuItem *)automaticPublicKeysMenuItem;
-- (NSMenuItem *)symetricEncryptionMenuItem;
-- (NSMenuItem *)usesOnlyOpenPGPStyleMenuItem;
-- (NSMenuItem *)pgpMenuItem;
-- (NSMenuItem *)pgpViewMenuItem;
-- (NSMenuItem *)allUserIDsMenuItem;
+@property (assign) NSMenuItem *decryptMenuItem;
+@property (assign) NSMenuItem *authenticateMenuItem;
+@property (assign) NSMenuItem *encryptsNewMessageMenuItem;
+@property (assign) NSMenuItem *signsNewMessageMenuItem;
+@property (assign) NSMenuItem *personalKeysMenuItem;
+@property (assign) NSMenuItem *choosePublicKeysMenuItem;
+@property (assign) NSMenuItem *automaticPublicKeysMenuItem;
+@property (assign) NSMenuItem *symetricEncryptionMenuItem;
+@property (assign) NSMenuItem *usesOnlyOpenPGPStyleMenuItem;
+@property (assign) NSMenuItem *pgpMenuItem;
+@property (assign) NSMenuItem *pgpViewMenuItem;
+@property (assign) NSMenuItem *allUserIDsMenuItem;
+
 
 - (NSString *)version;
 - (NSString *)versionDescription;
