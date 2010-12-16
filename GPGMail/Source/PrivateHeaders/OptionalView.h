@@ -4,10 +4,10 @@
 
 @interface OptionalView : NSView
 {
-    NSButton *_optionSwitch;
-    NSView *_primaryView;
-    struct CGRect _originalFrame;
-    BOOL _isResizing;
+	NSButton * _optionSwitch;
+	NSView * _primaryView;
+	struct CGRect _originalFrame;
+	BOOL _isResizing;
 }
 
 - (id)initWithFrame:(struct CGRect)arg1;
@@ -31,10 +31,10 @@
 
 @interface OptionalView : NSView
 {
-    NSButton *_optionSwitch;
-    NSView *_primaryView;
-    struct CGRect _originalFrame;
-    BOOL _isResizing;
+	NSButton * _optionSwitch;
+	NSView * _primaryView;
+	struct CGRect _originalFrame;
+	BOOL _isResizing;
 }
 
 - (id)initWithFrame:(struct CGRect)arg1;
@@ -55,4 +55,4 @@
 @end
 
 
-#endif
+#endif // ifdef SNOW_LEOPARD_64

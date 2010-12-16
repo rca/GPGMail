@@ -31,5 +31,5 @@
 #import <NSPreferences.h>
 
 
-@interface NSPreferences(GPGMail)
+@interface NSPreferences (GPGMail)
 @end

@@ -5,8 +5,8 @@
 
 @interface MutableMessageHeaders : MessageHeaders
 {
-    NSMutableDictionary *_headersAdded;
-    NSMutableArray *_headersRemoved;
+	NSMutableDictionary * _headersAdded;
+	NSMutableArray * _headersRemoved;
 }
 
 - (id)mutableCopy;
@@ -17,12 +17,12 @@
 - (id)_createHeaderValueForKey:(id)arg1;
 - (id)firstHeaderForKey:(id)arg1;
 - (void)removeHeaderForKey:(id)arg1;
-- (void)setHeader:(id)arg1 forKey:(id)arg2;
+- (void)setHeader:(id) arg1 forKey:(id)arg2;
 - (void)appendFromSpaceIfMissing;
-- (void)_appendHeaderKey:(id)arg1 value:(id)arg2 toData:(id)arg3;
-- (void)_appendAddedHeaderKey:(id)arg1 value:(id)arg2 toData:(id)arg3;
+- (void)_appendHeaderKey:(id) arg1 value:(id) arg2 toData:(id)arg3;
+- (void)_appendAddedHeaderKey:(id) arg1 value:(id) arg2 toData:(id)arg3;
 - (id)_encodedHeadersIncludingFromSpace:(BOOL)arg1;
-- (void)setAddressList:(id)arg1 forKey:(id)arg2;
+- (void)setAddressList:(id) arg1 forKey:(id)arg2;
 - (id)description;
 
 @end
@@ -31,8 +31,8 @@
 
 @interface MutableMessageHeaders : MessageHeaders
 {
-    NSMutableDictionary *_headersAdded;
-    NSMutableArray *_headersRemoved;
+	NSMutableDictionary * _headersAdded;
+	NSMutableArray * _headersRemoved;
 }
 
 - (id)mutableCopy;
@@ -43,15 +43,15 @@
 - (id)_createHeaderValueForKey:(id)arg1;
 - (id)firstHeaderForKey:(id)arg1;
 - (void)removeHeaderForKey:(id)arg1;
-- (void)setHeader:(id)arg1 forKey:(id)arg2;
+- (void)setHeader:(id) arg1 forKey:(id)arg2;
 - (void)appendFromSpaceIfMissing;
-- (void)_appendHeaderKey:(id)arg1 value:(id)arg2 toData:(id)arg3;
-- (void)_appendAddedHeaderKey:(id)arg1 value:(id)arg2 toData:(id)arg3;
+- (void)_appendHeaderKey:(id) arg1 value:(id) arg2 toData:(id)arg3;
+- (void)_appendAddedHeaderKey:(id) arg1 value:(id) arg2 toData:(id)arg3;
 - (id)_encodedHeadersIncludingFromSpace:(BOOL)arg1;
-- (void)setAddressList:(id)arg1 forKey:(id)arg2;
+- (void)setAddressList:(id) arg1 forKey:(id)arg2;
 - (id)description;
 
 @end
 
 
-#endif
+#endif // ifdef SNOW_LEOPARD_64

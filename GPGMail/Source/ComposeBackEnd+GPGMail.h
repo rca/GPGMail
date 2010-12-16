@@ -34,13 +34,13 @@
 #ifdef SNOW_LEOPARD_64
 @interface GPGMail_ComposeBackEnd : NSObject
 #else
-@interface ComposeBackEnd(GPGMail)
+@interface ComposeBackEnd (GPGMail)
 #endif
 
-- (NSArray *) gpgRecipients;
+- (NSArray *)gpgRecipients;
 // Returns email addresses of To, CC (but not BCC)
 
-- (NSArray *) gpgBCCRecipients;
+- (NSArray *)gpgBCCRecipients;
 // Returns email addresses of BCC
 
 @end

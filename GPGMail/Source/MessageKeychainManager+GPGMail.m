@@ -35,28 +35,27 @@
 static IMP MessageKeychainManager_canSignMessagesFromAddress = NULL;
 static IMP MessageKeychainManager_canEncryptMessagesToAddress = NULL;
 
-@implementation MessageKeychainManager(GPGMail)
+@implementation MessageKeychainManager (GPGMail)
 
-+ (void) load
-{
-    MessageKeychainManager_canSignMessagesFromAddress = GPGMail_ReplaceImpOfClassSelectorOfClassWithImpOfClassSelectorOfClass(@selector(canSignMessagesFromAddress:), self, @selector(gpgCanSignMessagesFromAddress:), self);
-    MessageKeychainManager_canEncryptMessagesToAddress = GPGMail_ReplaceImpOfClassSelectorOfClassWithImpOfClassSelectorOfClass(@selector(canEncryptMessagesToAddress:), self, @selector(gpgCanEncryptMessagesToAddress:), self);
++ (void)load {
+	MessageKeychainManager_canSignMessagesFromAddress = GPGMail_ReplaceImpOfClassSelectorOfClassWithImpOfClassSelectorOfClass(@selector(canSignMessagesFromAddress:), self, @selector(gpgCanSignMessagesFromAddress:), self);
+	MessageKeychainManager_canEncryptMessagesToAddress = GPGMail_ReplaceImpOfClassSelectorOfClassWithImpOfClassSelectorOfClass(@selector(canEncryptMessagesToAddress:), self, @selector(gpgCanEncryptMessagesToAddress:), self);
 }
 
-+ (char) gpgCanSignMessagesFromAddress:(id)fp8
-{
-    if([[GPGMailBundle sharedInstance] disablesSMIME])
-        return NO;
-    else
-        return ((char (*)(id, SEL, id))MessageKeychainManager_canSignMessagesFromAddress)(self, _cmd, fp8);
++ (char)gpgCanSignMessagesFromAddress:(id)fp8 {
+	if ([[GPGMailBundle sharedInstance] disablesSMIME]) {
+		return NO;
+	} else {
+		return ((char (*)(id, SEL, id))MessageKeychainManager_canSignMessagesFromAddress)(self, _cmd, fp8);
+	}
 }
 
-+ (char) gpgCanEncryptMessagesToAddress:(id)fp8
-{
-    if([[GPGMailBundle sharedInstance] disablesSMIME])
-        return NO;
-    else
-        return ((char (*)(id, SEL, id))MessageKeychainManager_canEncryptMessagesToAddress)(self, _cmd, fp8);
++ (char)gpgCanEncryptMessagesToAddress:(id)fp8 {
+	if ([[GPGMailBundle sharedInstance] disablesSMIME]) {
+		return NO;
+	} else {
+		return ((char (*)(id, SEL, id))MessageKeychainManager_canEncryptMessagesToAddress)(self, _cmd, fp8);
+	}
 }
 
 @end

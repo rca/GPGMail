@@ -33,26 +33,26 @@
 #import "Message+GPGMail.h"
 
 
-@interface NSTextView(GPGMail)
+@interface NSTextView (GPGMail)
 // In fact it is implemented in MessageTextView subclass
-- (void) originalSelectAll:(id)sender;
+- (void)originalSelectAll:(id)sender;
 @end
 
 #ifdef SNOW_LEOPARD_64
 @implementation GPGMail_MessageViewer
 #else
-@implementation MessageViewer(GPGMail)
+@implementation MessageViewer (GPGMail)
 #endif
 
-- (MessageContentController *) gpgTextViewer:(id)dummy {
-    return [self valueForKey:@"_contentController"];
+- (MessageContentController *)gpgTextViewer:(id)dummy {
+	return [self valueForKey:@"_contentController"];
 }
 
-- (NSToolbar *) gpgToolbar {
-    return [self valueForKey:@"_toolbar"];
+- (NSToolbar *)gpgToolbar {
+	return [self valueForKey:@"_toolbar"];
 }
 
-- (TableViewManager *) gpgTableManager {
+- (TableViewManager *)gpgTableManager {
 	return [self valueForKey:@"_tableManager"];
 }
 
@@ -62,77 +62,77 @@ static IMP MessageViewer__replyMessageWithType = NULL;
 static IMP MessageViewer_forwardMessage = NULL;
 static IMP MessageViewer_validateMenuItem = NULL;
 
-+ (void) load {
-    MessageViewer__replyMessageWithType = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(_replyMessageWithType:), self, @selector(gpg_replyMessageWithType:), self);
-    MessageViewer_forwardMessage = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(forwardMessage:), self, @selector(gpgForwardMessage:), self);
-    MessageViewer_validateMenuItem = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(validateMenuItem:), self, @selector(gpgValidateMenuItem:), self);
++ (void)load {
+	MessageViewer__replyMessageWithType = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(_replyMessageWithType:), self, @selector(gpg_replyMessageWithType:), self);
+	MessageViewer_forwardMessage = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(forwardMessage:), self, @selector(gpgForwardMessage:), self);
+	MessageViewer_validateMenuItem = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(validateMenuItem:), self, @selector(gpgValidateMenuItem:), self);
 }
 
 - (void)gpg_replyMessageWithType:(int)fp8 {
-    if(![GPGMailBundle gpgMailWorks]) {
-        ((void (*)(id, SEL, int))MessageViewer__replyMessageWithType)(self, _cmd, fp8);
-        return;
-    }
-    
-    // When message is encrypted and user has not selected anything, 
-    // then we temporarily select all body content
+	if (![GPGMailBundle gpgMailWorks]) {
+		((void (*)(id, SEL, int))MessageViewer__replyMessageWithType)(self, _cmd, fp8);
+		return;
+	}
+
+	// When message is encrypted and user has not selected anything,
+	// then we temporarily select all body content
 #warning CHECK
-    BOOL    changedSelection = ([self currentDisplayedMessage] != nil && [[self currentDisplayedMessage] gpgIsEncrypted] && [[self gpgTextViewer:nil] selectedText] == nil);
-    
-    if(changedSelection){
-        [[[self gpgTextViewer:nil] textView] originalSelectAll:nil]; // If we use -selectAll:, headers are also selected, and we don't want it, else, on deselection, headers are still selected!
-    }
-    ((void (*)(id, SEL, int))MessageViewer__replyMessageWithType)(self, _cmd, fp8);
-    if(changedSelection){
-        [[[self gpgTextViewer:nil] textView] selectText:nil];
-    }
+	BOOL changedSelection = ([self currentDisplayedMessage] != nil && [[self currentDisplayedMessage] gpgIsEncrypted] && [[self gpgTextViewer:nil] selectedText] == nil);
+
+	if (changedSelection) {
+		[[[self gpgTextViewer:nil] textView] originalSelectAll:nil];                 // If we use -selectAll:, headers are also selected, and we don't want it, else, on deselection, headers are still selected!
+	}
+	((void (*)(id, SEL, int))MessageViewer__replyMessageWithType)(self, _cmd, fp8);
+	if (changedSelection) {
+		[[[self gpgTextViewer:nil] textView] selectText:nil];
+	}
 }
 
 - (void)gpgForwardMessage:fp12 {
-    if(![GPGMailBundle gpgMailWorks]){
-        ((void (*)(id, SEL, id))MessageViewer_forwardMessage)(self, _cmd, fp12);
-        return;
-    }
-    
+	if (![GPGMailBundle gpgMailWorks]) {
+		((void (*)(id, SEL, id))MessageViewer_forwardMessage)(self, _cmd, fp12);
+		return;
+	}
+
 #warning CHECK
-    BOOL    changedSelection = ([self currentDisplayedMessage] != nil && [[self currentDisplayedMessage] gpgIsEncrypted] && [[self gpgTextViewer:nil] selectedText] == nil);
-    
-    if(changedSelection) {
-        [[[self gpgTextViewer:nil] textView] originalSelectAll:nil];
-    }
-    ((void (*)(id, SEL, id))MessageViewer_forwardMessage)(self, _cmd, fp12);
-    if(changedSelection) {
-        [[[self gpgTextViewer:nil] textView] selectText:nil];
-    }
+	BOOL changedSelection = ([self currentDisplayedMessage] != nil && [[self currentDisplayedMessage] gpgIsEncrypted] && [[self gpgTextViewer:nil] selectedText] == nil);
+
+	if (changedSelection) {
+		[[[self gpgTextViewer:nil] textView] originalSelectAll:nil];
+	}
+	((void (*)(id, SEL, id))MessageViewer_forwardMessage)(self, _cmd, fp12);
+	if (changedSelection) {
+		[[[self gpgTextViewer:nil] textView] selectText:nil];
+	}
 }
 
 - (IBAction)gpgCopyMessageURL:(id)sender {
-    Message *message = [self currentDisplayedMessage];
-    
-    if(message != nil) {
-        NSPasteboard    *pb = [NSPasteboard generalPasteboard];
-        NSArray         *types = [NSArray arrayWithObjects:@"public.url", NSStringPboardType, @"public.url-name", nil];
-        NSString        *urlString = [message URL];
-        NSString        *subject = [message subject];
-        const char      *urlBytes = [urlString UTF8String];
-        const char      *titleBytes = [subject UTF8String];
-        
-        [pb declareTypes:types owner:nil];
-        [pb addTypes:types owner:nil];
-        [pb setString:urlString forType:NSStringPboardType]; // Needed, because we want simple text editors to get the URL, not the subject
-        [pb setData:[NSData dataWithBytes:urlBytes length:strlen(urlBytes)] forType:@"public.url"]; // Includes NSURLPBoardType
-        [pb setData:[NSData dataWithBytes:titleBytes length:strlen(titleBytes)] forType:@"public.url-name"];
-    }
-    else
-        NSBeep();
+	Message * message = [self currentDisplayedMessage];
+
+	if (message != nil) {
+		NSPasteboard * pb = [NSPasteboard generalPasteboard];
+		NSArray * types = [NSArray arrayWithObjects:@"public.url", NSStringPboardType, @"public.url-name", nil];
+		NSString * urlString = [message URL];
+		NSString * subject = [message subject];
+		const char * urlBytes = [urlString UTF8String];
+		const char * titleBytes = [subject UTF8String];
+
+		[pb declareTypes:types owner:nil];
+		[pb addTypes:types owner:nil];
+		[pb setString:urlString forType:NSStringPboardType];                                        // Needed, because we want simple text editors to get the URL, not the subject
+		[pb setData:[NSData dataWithBytes:urlBytes length:strlen(urlBytes)] forType:@"public.url"]; // Includes NSURLPBoardType
+		[pb setData:[NSData dataWithBytes:titleBytes length:strlen(titleBytes)] forType:@"public.url-name"];
+	} else {
+		NSBeep();
+	}
 }
 
 - (BOOL)gpgValidateMenuItem:(id)fp8 {
-    if([fp8 action] == @selector(gpgCopyMessageURL:)) {
-        return [self currentDisplayedMessage] != nil;
-    }
-    else
-        return ((BOOL (*)(id, SEL, id))MessageViewer_validateMenuItem)(self, _cmd, fp8);
+	if ([fp8 action] == @selector(gpgCopyMessageURL:)) {
+		return [self currentDisplayedMessage] != nil;
+	} else {
+		return ((BOOL (*)(id, SEL, id))MessageViewer_validateMenuItem)(self, _cmd, fp8);
+	}
 }
 
 @end

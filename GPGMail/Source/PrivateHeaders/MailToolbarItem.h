@@ -16,24 +16,24 @@
 - (id)methodSignatureForSelector:(SEL)arg1;
 - (void)forwardInvocation:(id)arg1;
 - (id)labelForSegment:(long long)arg1;
-- (void)setLabel:(id)arg1 forSegment:(long long)arg2;
-- (void)setAlternateLabel:(id)arg1 forSegment:(long long)arg2;
+- (void)setLabel:(id) arg1 forSegment:(long long)arg2;
+- (void)setAlternateLabel:(id) arg1 forSegment:(long long)arg2;
 - (id)paletteLabelForSegment:(long long)arg1;
-- (void)setPaletteLabel:(id)arg1 forSegment:(long long)arg2;
+- (void)setPaletteLabel:(id) arg1 forSegment:(long long)arg2;
 - (SEL)actionForSegment:(long long)arg1;
-- (void)setAction:(SEL)arg1 forSegment:(long long)arg2;
+- (void)setAction:(SEL) arg1 forSegment:(long long)arg2;
 - (id)targetForSegment:(long long)arg1;
-- (void)setTarget:(id)arg1 forSegment:(long long)arg2;
+- (void)setTarget:(id) arg1 forSegment:(long long)arg2;
 - (void)setTag:(long long)arg1 forSegment:(long long)arg2;
-- (void)setToolTip:(id)arg1 forSegment:(long long)arg2;
-- (void)setMenu:(id)arg1 forSegment:(long long)arg2;
+- (void)setToolTip:(id) arg1 forSegment:(long long)arg2;
+- (void)setMenu:(id) arg1 forSegment:(long long)arg2;
 
 @end
 
 @interface SegmentedToolbarItemSegmentItem : NSToolbarItem
 {
-    SegmentedToolbarItem *parent;
-    long long segmentNumber;
+	SegmentedToolbarItem * parent;
+	long long segmentNumber;
 }
 
 - (id)menuFormRepresentation;
@@ -44,7 +44,7 @@
 - (void)setImage:(id)arg1;
 - (void)setMenu:(id)arg1;
 @property long long segmentNumber; // @synthesize segmentNumber;
-@property SegmentedToolbarItem *parent; // @synthesize parent;
+@property SegmentedToolbarItem * parent; // @synthesize parent;
 
 @end
 
@@ -72,24 +72,24 @@
 - (id)methodSignatureForSelector:(SEL)arg1;
 - (void)forwardInvocation:(id)arg1;
 - (id)labelForSegment:(long)arg1;
-- (void)setLabel:(id)arg1 forSegment:(long)arg2;
-- (void)setAlternateLabel:(id)arg1 forSegment:(long)arg2;
+- (void)setLabel:(id) arg1 forSegment:(long)arg2;
+- (void)setAlternateLabel:(id) arg1 forSegment:(long)arg2;
 - (id)paletteLabelForSegment:(long)arg1;
-- (void)setPaletteLabel:(id)arg1 forSegment:(long)arg2;
+- (void)setPaletteLabel:(id) arg1 forSegment:(long)arg2;
 - (SEL)actionForSegment:(long)arg1;
-- (void)setAction:(SEL)arg1 forSegment:(long)arg2;
+- (void)setAction:(SEL) arg1 forSegment:(long)arg2;
 - (id)targetForSegment:(long)arg1;
-- (void)setTarget:(id)arg1 forSegment:(long)arg2;
+- (void)setTarget:(id) arg1 forSegment:(long)arg2;
 - (void)setTag:(long)arg1 forSegment:(long)arg2;
-- (void)setToolTip:(id)arg1 forSegment:(long)arg2;
-- (void)setMenu:(id)arg1 forSegment:(long)arg2;
+- (void)setToolTip:(id) arg1 forSegment:(long)arg2;
+- (void)setMenu:(id) arg1 forSegment:(long)arg2;
 
 @end
 
 @interface SegmentedToolbarItemSegmentItem : NSToolbarItem
 {
-    SegmentedToolbarItem *parent;
-    int segmentNumber;
+	SegmentedToolbarItem * parent;
+	int segmentNumber;
 }
 
 - (id)menuFormRepresentation;
@@ -130,24 +130,24 @@
 - (id)methodSignatureForSelector:(SEL)fp8;
 - (void)forwardInvocation:(id)fp8;
 - (id)labelForSegment:(int)fp8;
-- (void)setLabel:(id)fp8 forSegment:(int)fp12;
-- (void)setAlternateLabel:(id)fp8 forSegment:(int)fp12;
+- (void)setLabel:(id) fp8 forSegment:(int)fp12;
+- (void)setAlternateLabel:(id) fp8 forSegment:(int)fp12;
 - (id)paletteLabelForSegment:(int)fp8;
-- (void)setPaletteLabel:(id)fp8 forSegment:(int)fp12;
+- (void)setPaletteLabel:(id) fp8 forSegment:(int)fp12;
 - (SEL)actionForSegment:(int)fp8;
-- (void)setAction:(SEL)fp8 forSegment:(int)fp12;
+- (void)setAction:(SEL) fp8 forSegment:(int)fp12;
 - (id)targetForSegment:(int)fp8;
-- (void)setTarget:(id)fp8 forSegment:(int)fp12;
+- (void)setTarget:(id) fp8 forSegment:(int)fp12;
 - (void)setTag:(int)fp8 forSegment:(int)fp12;
-- (void)setToolTip:(id)fp8 forSegment:(int)fp12;
-- (void)setMenu:(id)fp8 forSegment:(int)fp12;
+- (void)setToolTip:(id) fp8 forSegment:(int)fp12;
+- (void)setMenu:(id) fp8 forSegment:(int)fp12;
 
 @end
 
 @interface SegmentedToolbarItemSegmentItem : NSToolbarItem
 {
-    SegmentedToolbarItem *parent;
-    int segmentNumber;
+	SegmentedToolbarItem * parent;
+	int segmentNumber;
 }
 
 - (id)menuFormRepresentation;
@@ -167,38 +167,38 @@
 
 @interface MailToolbarItem : NSToolbarItem
 {
-    NSArray *_segments;
-    unsigned int _extraSegmentWidth;
-    unsigned int _extraHorizontalPadding;
-    unsigned int _borderless:1;
+	NSArray * _segments;
+	unsigned int _extraSegmentWidth;
+	unsigned int _extraHorizontalPadding;
+	unsigned int _borderless : 1;
 }
 
 - (id)initWithItemIdentifier:(id)fp8;
-- (id)initWithItemIdentifier:(id)fp8 segments:(id)fp12 bordered:(BOOL)fp16 toolbar:(id)fp20;
+- (id)initWithItemIdentifier:(id) fp8 segments:(id) fp12 bordered:(BOOL) fp16 toolbar:(id)fp20;
 - (void)dealloc;
 - (id)segments;
 - (unsigned int)segmentCount;
 - (id)segmentAtIndex:(int)fp8;
 - (id)itemView;
-- (void)setLabel:(id)fp8 forSegment:(int)fp12;
+- (void)setLabel:(id) fp8 forSegment:(int)fp12;
 - (id)labelForSegment:(int)fp8;
-- (void)setPaletteLabel:(id)fp8 forSegment:(int)fp12;
+- (void)setPaletteLabel:(id) fp8 forSegment:(int)fp12;
 - (id)paletteLabelForSegment:(int)fp8;
-- (void)setToolTip:(id)fp8 forSegment:(int)fp12;
+- (void)setToolTip:(id) fp8 forSegment:(int)fp12;
 - (id)toolTipForSegment:(int)fp8;
 - (void)setTag:(int)fp8 forSegment:(int)fp12;
 - (int)tagForSegment:(int)fp8;
-- (void)setTarget:(id)fp8 forSegment:(int)fp12;
+- (void)setTarget:(id) fp8 forSegment:(int)fp12;
 - (id)targetForSegment:(int)fp8;
-- (void)setAction:(SEL)fp8 forSegment:(int)fp12;
+- (void)setAction:(SEL) fp8 forSegment:(int)fp12;
 - (SEL)actionForSegment:(int)fp8;
-- (void)setEnabled:(BOOL)fp8 forSegment:(int)fp12;
+- (void)setEnabled:(BOOL) fp8 forSegment:(int)fp12;
 - (BOOL)isEnabledForSegment:(int)fp8;
-- (void)setImage:(id)fp8 forSegment:(int)fp12;
+- (void)setImage:(id) fp8 forSegment:(int)fp12;
 - (id)imageForSegment:(int)fp8;
-- (void)setInactiveImage:(id)fp8 forSegment:(int)fp12;
+- (void)setInactiveImage:(id) fp8 forSegment:(int)fp12;
 - (id)inactiveImageForSegment:(int)fp8;
-- (void)setPressedImage:(id)fp8 forSegment:(int)fp12;
+- (void)setPressedImage:(id) fp8 forSegment:(int)fp12;
 - (id)pressedImageForSegment:(int)fp8;
 - (BOOL)bordered;
 - (void)setExtraSegmentWidth:(unsigned int)fp8;
@@ -223,19 +223,19 @@
 
 @interface MailToolbarItemSegment : NSObject <NSCopying>
 {
-    NSImage *_image;
-    NSImage *_inactiveImage;
-    NSImage *_pressedImage;
-    NSString *_label;
-    NSString *_paletteLabel;
-    NSString *_altLabel;
-    NSString *_toolTip;
-    int _tag;
-    id _target;
-    SEL _action;
+	NSImage * _image;
+	NSImage * _inactiveImage;
+	NSImage * _pressedImage;
+	NSString * _label;
+	NSString * _paletteLabel;
+	NSString * _altLabel;
+	NSString * _toolTip;
+	int _tag;
+	id _target;
+	SEL _action;
 }
 
-- (id)initWithImage:(id)fp8 label:(id)fp12 paletteLabel:(id)fp16 altLabel:(id)fp20 tooltip:(id)fp24 tag:(int)fp28 target:(id)fp32 action:(SEL)fp36;
+- (id)initWithImage:(id) fp8 label:(id) fp12 paletteLabel:(id) fp16 altLabel:(id) fp20 tooltip:(id) fp24 tag:(int)fp28 target:(id) fp32 action:(SEL)fp36;
 - (id)copyWithZone:(struct _NSZone *)fp8;
 - (void)dealloc;
 - (id)image;
@@ -262,4 +262,4 @@
 
 @end
 
-#endif
+#endif // ifdef SNOW_LEOPARD_64

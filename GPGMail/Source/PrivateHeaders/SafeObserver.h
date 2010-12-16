@@ -4,8 +4,8 @@
 
 @interface SafeObserver : NSObject
 {
-    unsigned long long _retainCount;
-    BOOL _inDealloc;
+	unsigned long long _retainCount;
+	BOOL _inDealloc;
 }
 
 + (void)initialize;
@@ -24,8 +24,8 @@
 
 @interface SafeObserver : NSObject
 {
-    unsigned int _retainCount;
-    BOOL _inDealloc;
+	unsigned int _retainCount;
+	BOOL _inDealloc;
 }
 
 + (void)initialize;
@@ -41,4 +41,4 @@
 @end
 
 
-#endif
+#endif // ifdef SNOW_LEOPARD_64

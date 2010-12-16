@@ -31,96 +31,90 @@
 #import <AppKit/AppKit.h>
 
 
-@interface NSColor(GPGRevealed)
-+ (NSColor *) toolTipTextColor;
-+ (NSColor *) toolTipColor;
+@interface NSColor (GPGRevealed)
++ (NSColor *)toolTipTextColor;
++ (NSColor *)toolTipColor;
 @end
 
 
 @implementation GPGProgressIndicatorController
 
-static GPGProgressIndicatorController	*_sharedController = nil;
+static GPGProgressIndicatorController * _sharedController = nil;
 
-+ (GPGProgressIndicatorController *) sharedController
-{
-    if(_sharedController == nil)
-        _sharedController = [[self alloc] init];
++ (GPGProgressIndicatorController *)sharedController {
+	if (_sharedController == nil) {
+		_sharedController = [[self alloc] init];
+	}
 
-    return _sharedController;
+	return _sharedController;
 }
 
-- (id) init
-{
-    if((self = [super init]) != nil){
-        NSAssert([NSBundle loadNibNamed:@"GPGProgressIndicatorController" owner:self] == YES, @"### GPGMail: -[GPGProgressIndicatorController init]: Unable to load nib named 'GPGProgressIndicatorController'");
-        [progressIndicator setUsesThreadedAnimation:YES];
-        [enclosingBox retain];
-        [backgroundTextField setBackgroundColor:[NSColor toolTipColor]];
-        [titleTextField2 setTextColor:[NSColor toolTipTextColor]];
-        [[enclosingBox window] release];
-    }
+- (id)init {
+	if ((self = [super init]) != nil) {
+		NSAssert([NSBundle loadNibNamed:@"GPGProgressIndicatorController" owner:self] == YES, @"### GPGMail: -[GPGProgressIndicatorController init]: Unable to load nib named 'GPGProgressIndicatorController'");
+		[progressIndicator setUsesThreadedAnimation:YES];
+		[enclosingBox retain];
+		[backgroundTextField setBackgroundColor:[NSColor toolTipColor]];
+		[titleTextField2 setTextColor:[NSColor toolTipTextColor]];
+		[[enclosingBox window] release];
+	}
 
-    return self;
+	return self;
 }
 
-- (void) dealloc
-{
-    [[progressIndicator window] release];
-    [enclosingBox release];
+- (void)dealloc {
+	[[progressIndicator window] release];
+	[enclosingBox release];
 
-    [super dealloc];
+	[super dealloc];
 }
 
-- (void) startWithTitle:(NSString *)title delegate:(id)aDelegate
-{
-    delegate = aDelegate;
+- (void)startWithTitle:(NSString *)title delegate:(id)aDelegate {
+	delegate = aDelegate;
 //    [cancelButton setEnabled:(delegate != nil)];
-    // Currently, <cancel> does not work for gpg tasks
-    [cancelButton setEnabled:NO];
-    [[progressIndicator window] center];
-    [titleTextField setStringValue:title];
-    [[progressIndicator window] makeKeyAndOrderFront:nil];
-    [progressIndicator startAnimation:nil];
+	// Currently, <cancel> does not work for gpg tasks
+	[cancelButton setEnabled:NO];
+	[[progressIndicator window] center];
+	[titleTextField setStringValue:title];
+	[[progressIndicator window] makeKeyAndOrderFront:nil];
+	[progressIndicator startAnimation:nil];
 }
 
-- (void) startWithTitle:(NSString *)title view:(NSView *)view
-{
-    NSRect	newFrameRect = [enclosingBox frame];
+- (void)startWithTitle:(NSString *)title view:(NSView *)view {
+	NSRect newFrameRect = [enclosingBox frame];
 
-    [titleTextField2 setStringValue:title];
-    // Let's resize the box to accomodate to the ideal size of the title
-    newFrameRect.size.width += [[titleTextField2 cell] cellSize].width - NSWidth([titleTextField2 frame]);
-    newFrameRect.origin.x = NSMaxX([view frame]) - NSWidth(newFrameRect);
-    if([[view superview] isFlipped])
-        newFrameRect.origin.y = 0.0;
-    else
-        newFrameRect.origin.y = NSMaxY([view frame]) - NSHeight(newFrameRect);
-    [enclosingBox setFrame:newFrameRect];
+	[titleTextField2 setStringValue:title];
+	// Let's resize the box to accomodate to the ideal size of the title
+	newFrameRect.size.width += [[titleTextField2 cell] cellSize].width - NSWidth([titleTextField2 frame]);
+	newFrameRect.origin.x = NSMaxX([view frame]) - NSWidth(newFrameRect);
+	if ([[view superview] isFlipped]) {
+		newFrameRect.origin.y = 0.0;
+	} else {
+		newFrameRect.origin.y = NSMaxY([view frame]) - NSHeight(newFrameRect);
+	}
+	[enclosingBox setFrame:newFrameRect];
 
-    [[view superview] addSubview:enclosingBox];
-    
-    [progressIndicator2 startAnimation:nil];
+	[[view superview] addSubview:enclosingBox];
+
+	[progressIndicator2 startAnimation:nil];
 }
 
-- (void) _stop
-{
-    [progressIndicator stopAnimation:nil];
-    [progressIndicator2 stopAnimation:nil];
-    [[progressIndicator window] orderOut:nil];
-    [enclosingBox removeFromSuperview];
+- (void)_stop {
+	[progressIndicator stopAnimation:nil];
+	[progressIndicator2 stopAnimation:nil];
+	[[progressIndicator window] orderOut:nil];
+	[enclosingBox removeFromSuperview];
 }
 
-- (void) stop
-{
-    [self _stop];
-    delegate = nil;
+- (void)stop {
+	[self _stop];
+	delegate = nil;
 }
 
-- (IBAction) cancel:(id)sender
-{
-    [self _stop];
-    [delegate progressIndicatorDidCancel:self];
-    delegate = nil;
+- (IBAction)cancel:(id)sender {
+	[self _stop];
+	[delegate progressIndicatorDidCancel:self];
+	delegate = nil;
 }
 
 @end

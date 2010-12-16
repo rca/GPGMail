@@ -32,33 +32,33 @@
 #import <MacGPGME/MacGPGME.h>
 
 
-@interface MimePart(GPGMail)
+@interface MimePart (GPGMail)
 
-- (BOOL) gpgIsEncrypted;
+- (BOOL)gpgIsEncrypted;
 // Checks MIME headers/parameters; does not (currently) look in sub-parts
 
-- (NSData *) gpgDecryptedDataWithPassphraseDelegate:(id)passphraseDelegate signatures:(NSArray **)signaturesPtr;
+- (NSData *)gpgDecryptedDataWithPassphraseDelegate:(id) passphraseDelegate signatures:(NSArray **)signaturesPtr;
 // Decrypts self; does not (currently) look in sub-parts
 // Returns nil if nothing to decrypt
 // Can raise an exception
 
-- (BOOL) gpgHasSignature;
+- (BOOL)gpgHasSignature;
 // Returns YES if recognizes signature block in self; does not (currently) look in sub-parts
 
-- (GPGSignature *) gpgAuthenticationSignature;
+- (GPGSignature *)gpgAuthenticationSignature;
 // Returns the signature retrieved from self; does not (currently) look in sub-parts
 // Can raise an exception
 
-- (BOOL) gpgAllAttachmentsAreAvailable;
+- (BOOL)gpgAllAttachmentsAreAvailable;
 // Checks that part and subparts have downloaded all attachments. Needed for authentication.
 
-- (BOOL) gpgSaveBodyToFile:fp12;
+- (BOOL)gpgSaveBodyToFile:fp12;
 
-- (BOOL) gpgIsOpenPGPEncryptedContainerPart;
-- (BOOL) gpgIsOpenPGPSignedContainerPart;
+- (BOOL)gpgIsOpenPGPEncryptedContainerPart;
+- (BOOL)gpgIsOpenPGPSignedContainerPart;
 
 - (void)resetGpgCache;
-- (id) gpgBetterDecode;
+- (id)gpgBetterDecode;
 
 @end
 

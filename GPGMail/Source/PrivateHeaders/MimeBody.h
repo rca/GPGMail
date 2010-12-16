@@ -8,11 +8,11 @@
 
 @interface MimeBody : MessageBody
 {
-    MimePart *_topLevelPart;
-    unsigned int _preferredTextEncoding;
-    NSData *_bodyData;
-    unsigned int _preferredAlternative:16;
-    unsigned int _numAlternatives:16;
+	MimePart * _topLevelPart;
+	unsigned int _preferredTextEncoding;
+	NSData * _bodyData;
+	unsigned int _preferredAlternative : 16;
+	unsigned int _numAlternatives : 16;
 }
 
 + (void)initialize;
@@ -69,11 +69,11 @@
 
 @interface MimeBody : MessageBody
 {
-    MimePart *_topLevelPart;
-    unsigned int _preferredTextEncoding;
-    NSData *_bodyData;
-    unsigned int _preferredAlternative:16;
-    unsigned int _numAlternatives:16;
+	MimePart * _topLevelPart;
+	unsigned int _preferredTextEncoding;
+	NSData * _bodyData;
+	unsigned int _preferredAlternative : 16;
+	unsigned int _numAlternatives : 16;
 }
 
 + (void)initialize;
@@ -125,4 +125,4 @@
 @end
 
 
-#endif
+#endif // ifdef SNOW_LEOPARD_64

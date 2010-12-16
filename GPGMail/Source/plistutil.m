@@ -27,90 +27,89 @@
 
 #import <Foundation/Foundation.h>
 
-static void usage(const char *progname){
+static void usage(const char * progname){
 	fprintf(stderr, "%s: property-list file utility\n"
-                    "    -read plist key\n"
-                    "    -write plist key value\n"
-                    "    -delete plist key\n"
-            , progname);
+			"    -read plist key\n"
+			"    -write plist key value\n"
+			"    -delete plist key\n"
+			, progname);
 }
 
-int main(int argc, char **argv){
-    NSAutoreleasePool	*localAP = [[NSAutoreleasePool alloc] init];
-    NSArray				*arguments = [[NSProcessInfo processInfo] arguments];
-    BOOL				displayUsage = NO;
-    int					terminationStatus = 0;
-    NSString			*operation;
-    
-    switch([arguments count]){
-        case 4:
-            operation = [arguments objectAtIndex:1];
-            if([operation isEqualToString:@"-read"]){
-                NSDictionary	*plist = [NSDictionary dictionaryWithContentsOfFile:[arguments objectAtIndex:2]];
-                
-                if(plist == nil)
-                    terminationStatus = 1;
-                else{
-                    id	value = [plist objectForKey:[arguments objectAtIndex:3]];
-                    
-                    if(value == nil)
-                        terminationStatus = 1;
-                    else
-                        [(NSFileHandle *)[NSFileHandle fileHandleWithStandardOutput] writeData:[[value description] dataUsingEncoding:NSUTF8StringEncoding]];
-                }
-            }
-            else if([operation isEqualToString:@"-delete"]){
-                NSString			*filename = [arguments objectAtIndex:2];
-                NSMutableDictionary	*plist = [NSMutableDictionary dictionaryWithContentsOfFile:filename];
-                
-                if(plist == nil)
-                    terminationStatus = 1;
-                else{
-                    // Deleting a value for a key that doesn't exist is not considered as an error
-                    [plist removeObjectForKey:[arguments objectAtIndex:3]];
-                    terminationStatus = ![plist writeToFile:filename atomically:YES];
-                }
-            }
-            else{
-                displayUsage = YES;
-                terminationStatus = 1;
-            }
-            break;
-        case 5:
-            operation = [arguments objectAtIndex:1];
-            if([operation isEqualToString:@"-write"]){
-                NSString			*filename = [arguments objectAtIndex:2];
-                NSMutableDictionary	*plist = [NSMutableDictionary dictionaryWithContentsOfFile:filename];
-                
-                if(plist == nil){
-                    // Writing a key-value pair in a file that doesn't exist is not considered as an error
-                    // File will be created
-                    plist = [NSMutableDictionary dictionary];
-                }
-                // Value is written as a plist if possible, else as a string
-                @try{
-                    id	aPlist = [[arguments objectAtIndex:4] propertyList];
-                    
-                    [plist setObject:aPlist forKey:[arguments objectAtIndex:3]];
-                }@catch(NSException *localException){
-                    [plist setObject:[arguments objectAtIndex:4] forKey:[arguments objectAtIndex:3]];
-                }
-                terminationStatus = ![plist writeToFile:filename atomically:YES];
-            }
-            else{
-                displayUsage = YES;
-                terminationStatus = 1;
-            }
-            break;
-        default:
-            displayUsage = YES;
-            terminationStatus = 1;
-    }
-    
-    if(displayUsage)
-        usage([[arguments objectAtIndex:0] cString]);
-    
-    [localAP release];
-    exit(terminationStatus);
-    return terminationStatus;
+int main(int argc, char ** argv){
+	NSAutoreleasePool * localAP = [[NSAutoreleasePool alloc] init];
+	NSArray * arguments = [[NSProcessInfo processInfo] arguments];
+	BOOL displayUsage = NO;
+	int terminationStatus = 0;
+	NSString * operation;
+
+	switch ([arguments count]) {
+		case 4:
+			operation = [arguments objectAtIndex:1];
+			if ([operation isEqualToString:@"-read"]) {
+				NSDictionary * plist = [NSDictionary dictionaryWithContentsOfFile:[arguments objectAtIndex:2]];
+
+				if (plist == nil) {
+					terminationStatus = 1;
+				} else {
+					id value = [plist objectForKey:[arguments objectAtIndex:3]];
+
+					if (value == nil) {
+						terminationStatus = 1;
+					} else {
+						[(NSFileHandle *)[NSFileHandle fileHandleWithStandardOutput] writeData:[[value description] dataUsingEncoding:NSUTF8StringEncoding]];
+					}
+				}
+			} else if ([operation isEqualToString:@"-delete"]) {
+				NSString * filename = [arguments objectAtIndex:2];
+				NSMutableDictionary * plist = [NSMutableDictionary dictionaryWithContentsOfFile:filename];
+
+				if (plist == nil) {
+					terminationStatus = 1;
+				} else {
+					// Deleting a value for a key that doesn't exist is not considered as an error
+					[plist removeObjectForKey:[arguments objectAtIndex:3]];
+					terminationStatus = ![plist writeToFile:filename atomically:YES];
+				}
+			} else {
+				displayUsage = YES;
+				terminationStatus = 1;
+			}
+			break;
+		case 5:
+			operation = [arguments objectAtIndex:1];
+			if ([operation isEqualToString:@"-write"]) {
+				NSString * filename = [arguments objectAtIndex:2];
+				NSMutableDictionary * plist = [NSMutableDictionary dictionaryWithContentsOfFile:filename];
+
+				if (plist == nil) {
+					// Writing a key-value pair in a file that doesn't exist is not considered as an error
+					// File will be created
+					plist = [NSMutableDictionary dictionary];
+				}
+				// Value is written as a plist if possible, else as a string
+				@try{
+					id aPlist = [[arguments objectAtIndex:4] propertyList];
+
+					[plist setObject:aPlist forKey:[arguments objectAtIndex:3]];
+				}@catch (NSException * localException) {
+					[plist setObject:[arguments objectAtIndex:4] forKey:[arguments objectAtIndex:3]];
+				}
+				terminationStatus = ![plist writeToFile:filename atomically:YES];
+			} else {
+				displayUsage = YES;
+				terminationStatus = 1;
+			}
+			break;
+		default:
+			displayUsage = YES;
+			terminationStatus = 1;
+	}
+
+	if (displayUsage) {
+		usage([[arguments objectAtIndex:0] cString]);
+	}
+
+	[localAP release];
+	exit(terminationStatus);
+	return terminationStatus;
 }

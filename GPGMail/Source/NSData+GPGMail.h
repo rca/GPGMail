@@ -30,28 +30,28 @@
 #import <Foundation/NSData.h>
 
 
-@interface NSData(GPGMail)
+@interface NSData (GPGMail)
 
-- (NSData *) gpgStandardizedEOLsToCRLF;
-    // Converts all LF or CR end-of-lines to CRLF end-of-lines
-- (NSData *) gpgStandardizedEOLsToLF;
-    // Converts all CRLF or CR end-of-lines to LF end-of-lines
-- (BOOL) gpgContainsNonASCIICharacter;
-    // Returns YES if contains 8-bit values > 127
-- (NSData *) gpgNormalizedDataForVerifying;
+- (NSData *)gpgStandardizedEOLsToCRLF;
+// Converts all LF or CR end-of-lines to CRLF end-of-lines
+- (NSData *)gpgStandardizedEOLsToLF;
+// Converts all CRLF or CR end-of-lines to LF end-of-lines
+- (BOOL)gpgContainsNonASCIICharacter;
+// Returns YES if contains 8-bit values > 127
+- (NSData *)gpgNormalizedDataForVerifying;
 
-- (NSRange) gpgHeaderBodySeparationRange;
+- (NSRange)gpgHeaderBodySeparationRange;
 
-- (NSData *) gpgFormatFlowedFixedWithCRLF:(BOOL)useCRLF useQP:(BOOL)useQP;
-- (NSData *) gpgDeleteTrailingSpacesUseCRLF:(BOOL)useCRLF useQP:(BOOL)useQP;
-- (NSData *) gpgDecodeFlowedWithEncoding:(CFStringEncoding)encoding;
+- (NSData *)gpgFormatFlowedFixedWithCRLF:(BOOL) useCRLF useQP:(BOOL)useQP;
+- (NSData *)gpgDeleteTrailingSpacesUseCRLF:(BOOL) useCRLF useQP:(BOOL)useQP;
+- (NSData *)gpgDecodeFlowedWithEncoding:(CFStringEncoding)encoding;
 
 @end
 
-@interface NSMutableData(GPGMail)
-- (void) gpgNormalizeDataForSigning; // Normalizes EOLs
-- (void) gpgNormalizeDataForVerifying; // Normalizes EOLs
-- (BOOL) gpgApplyQuotedPrintableIfNeeded:(BOOL)alreadyUsesQuotedPrintable; // Returns YES if needed to quoted-printable (and alreadyUsesQuotedPrintable was NO)
-- (void) gpgASCIIfy; // Replaces all non-ASCII chars by '_'
+@interface NSMutableData (GPGMail)
+- (void)gpgNormalizeDataForSigning;  // Normalizes EOLs
+- (void)gpgNormalizeDataForVerifying;  // Normalizes EOLs
+- (BOOL)gpgApplyQuotedPrintableIfNeeded:(BOOL)alreadyUsesQuotedPrintable;  // Returns YES if needed to quoted-printable (and alreadyUsesQuotedPrintable was NO)
+- (void)gpgASCIIfy;  // Replaces all non-ASCII chars by '_'
 
 @end

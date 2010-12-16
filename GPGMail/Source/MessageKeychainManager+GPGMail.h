@@ -31,6 +31,6 @@
 #import <MessageKeychainManager.h>
 
 
-@interface MessageKeychainManager(GPGMail)
+@interface MessageKeychainManager (GPGMail)
 
 @end

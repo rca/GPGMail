@@ -16,25 +16,24 @@
 #ifdef SNOW_LEOPARD_64
 @implementation GPGMail_MailTextAttachment
 #else
-@implementation MailTextAttachment(GPGMail)
+@implementation MailTextAttachment (GPGMail)
 #endif
 
-static IMP  MailTextAttachment_toolTip = NULL;
+static IMP MailTextAttachment_toolTip = NULL;
 
-+ (void) load
-{
-    MailTextAttachment_toolTip = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(toolTip), NSClassFromString(@"MailTextAttachment"), @selector(gpgToolTip), [self class]);
++ (void)load {
+	MailTextAttachment_toolTip = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(toolTip), NSClassFromString(@"MailTextAttachment"), @selector(gpgToolTip), [self class]);
 }
 
 - gpgToolTip
 {
-    NSString	*toolTip = ((id (*)(id, SEL))MailTextAttachment_toolTip)(self, _cmd);
-    NSString	*contentDescription = [[self mimePart] contentDescription];
+	NSString * toolTip = ((id (*)(id, SEL))MailTextAttachment_toolTip)(self, _cmd);
+	NSString * contentDescription = [[self mimePart] contentDescription];
 
-    if(contentDescription != nil && [contentDescription length] > 0){
-        toolTip = [contentDescription stringByAppendingFormat:@"\n\n%@", toolTip];
-    }
-    return toolTip;
+	if (contentDescription != nil && [contentDescription length] > 0) {
+		toolTip = [contentDescription stringByAppendingFormat:@"\n\n%@", toolTip];
+	}
+	return toolTip;
 }
 
 @end

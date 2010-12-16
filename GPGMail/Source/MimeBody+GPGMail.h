@@ -35,24 +35,24 @@
 @class MutableMessageHeaders;
 
 
-@interface MimeBody(GPGMail)
+@interface MimeBody (GPGMail)
 
-- (BOOL) gpgIsEncrypted;
+- (BOOL)gpgIsEncrypted;
 
-- (NSData *) gpgEncryptForRecipients:(NSArray *)recipients trustAllKeys:(BOOL)trustsAllKeys signWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate format:(GPGMailFormat *)mailFormatPtr headers:(MutableMessageHeaders **)headersPtr;
+- (NSData *)gpgEncryptForRecipients:(NSArray *)recipients trustAllKeys:(BOOL) trustsAllKeys signWithKey:(GPGKey *)key passphraseDelegate:(id) passphraseDelegate format:(GPGMailFormat *)mailFormatPtr headers:(MutableMessageHeaders **)headersPtr;
 // Signs only if key is not nil; passphraseDelegate is necessary only if key is not nil.
 // Can raise an exception
 
-- (BOOL) gpgHasSignature;
-- (GPGSignature *) gpgAuthenticationSignature;
+- (BOOL)gpgHasSignature;
+- (GPGSignature *)gpgAuthenticationSignature;
 // Can raise an exception
-- (GPGSignature *) gpgEmbeddedAuthenticationSignature;
+- (GPGSignature *)gpgEmbeddedAuthenticationSignature;
 // Can raise an exception
 // Must be used for OpenPGP embedded signatures, to avoid some checks
 
-- (NSData *) gpgSignWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate format:(GPGMailFormat *)mailFormatPtr headers:(MutableMessageHeaders **)headersPtr;
+- (NSData *)gpgSignWithKey:(GPGKey *)key passphraseDelegate:(id) passphraseDelegate format:(GPGMailFormat *)mailFormatPtr headers:(MutableMessageHeaders **)headersPtr;
 // Can raise an exception
 
-- (BOOL) gpgIsPGPMIMEMessage;
+- (BOOL)gpgIsPGPMIMEMessage;
 
 @end

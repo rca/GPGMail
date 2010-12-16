@@ -2,7 +2,7 @@
 // File: /System/Library/Frameworks/Message.framework/Versions/B/Message
 
 /*
- -messageBody, -messageBodyIfAvailable always return a new instance on each invocation!
+ * -messageBody, -messageBodyIfAvailable always return a new instance on each invocation!
  */
 
 #import <Cocoa/Cocoa.h>
@@ -10,15 +10,15 @@
 #ifdef SNOW_LEOPARD_64
 
 typedef struct {
-    unsigned int colorHasBeenEvaluated:1;
-    unsigned int colorWasSetManually:1;
-    unsigned int redColor:8;
-    unsigned int greenColor:8;
-    unsigned int blueColor:8;
-    unsigned int loadingBody:1;
-    unsigned int firstUnused:2;
-    unsigned int isMarkedForOverwrite:1;
-    unsigned int unused:2;
+	unsigned int colorHasBeenEvaluated : 1;
+	unsigned int colorWasSetManually : 1;
+	unsigned int redColor : 8;
+	unsigned int greenColor : 8;
+	unsigned int blueColor : 8;
+	unsigned int loadingBody : 1;
+	unsigned int firstUnused : 2;
+	unsigned int isMarkedForOverwrite : 1;
+	unsigned int unused : 2;
 } CDStruct_accefccd;
 
 @class MessageStore;
@@ -26,24 +26,24 @@ typedef struct {
 
 @interface Message : NSObject
 {
-    long long _mf_retainCount;
-    double _dateSentInterval;
-    double _dateReceivedInterval;
-    double _dateLastViewedInterval;
-    MessageStore *_store;
-    NSString *_senderAddressComment;
-    NSString *_subject;
-    NSString *_to;
-    NSString *_sender;
-    NSString *_author;
-    NSData *_messageIDHeaderDigest;
-    NSData *_inReplyToHeaderDigest;
-    MFUUID *_documentID;
-    unsigned int _messageFlags;
-    CDStruct_accefccd _flags;
-    unsigned int _preferredEncoding;
-    BOOL _type;
-    unsigned char _subjectPrefixLength;
+	long long _mf_retainCount;
+	double _dateSentInterval;
+	double _dateReceivedInterval;
+	double _dateLastViewedInterval;
+	MessageStore * _store;
+	NSString * _senderAddressComment;
+	NSString * _subject;
+	NSString * _to;
+	NSString * _sender;
+	NSString * _author;
+	NSData * _messageIDHeaderDigest;
+	NSData * _inReplyToHeaderDigest;
+	MFUUID * _documentID;
+	unsigned int _messageFlags;
+	CDStruct_accefccd _flags;
+	unsigned int _preferredEncoding;
+	BOOL _type;
+	unsigned char _subjectPrefixLength;
 }
 
 + (void)initialize;
@@ -54,11 +54,11 @@ typedef struct {
 + (id)messageWithRFC822Data:(id)arg1;
 + (id)forwardedMessagePrefixWithSpacer:(BOOL)arg1;
 + (id)replyPrefixWithSpacer:(BOOL)arg1;
-+ (id)descriptionForType:(BOOL)arg1 plural:(BOOL)arg2;
++ (id)descriptionForType:(BOOL) arg1 plural:(BOOL)arg2;
 + (id)messageTypeKeyForMessageType:(BOOL)arg1;
 + (BOOL)_messageTypeForMessageTypeKey:(id)arg1;
 + (id)unreadMessagesFromMessages:(id)arg1;
-+ (BOOL)allMessages:(id)arg1 areSameType:(BOOL)arg2;
++ (BOOL)allMessages:(id) arg1 areSameType:(BOOL)arg2;
 + (BOOL)colorIsSetInMoreFlags:(CDStruct_accefccd)arg1;
 + (unsigned int)validatePriority:(unsigned int)arg1;
 + (unsigned long long)displayablePriorityForPriority:(unsigned int)arg1;
@@ -95,7 +95,7 @@ typedef struct {
 - (id)messageBodyForIndexingAttachments;
 - (id)messageBodyIfAvailableUpdatingFlags:(BOOL)arg1;
 - (id)messageDataIncludingFromSpace:(BOOL)arg1;
-- (id)messageDataIncludingFromSpace:(BOOL)arg1 newDocumentID:(id)arg2;
+- (id)messageDataIncludingFromSpace:(BOOL) arg1 newDocumentID:(id)arg2;
 - (BOOL)colorHasBeenEvaluated;
 - (id)color;
 - (int)colorIntValue;
@@ -103,7 +103,7 @@ typedef struct {
 - (void)setMarkedForOverwrite:(BOOL)arg1;
 - (void)setColor:(id)arg1;
 - (void)setColorHasBeenEvaluated:(BOOL)arg1;
-- (void)setColor:(id)arg1 hasBeenEvaluated:(BOOL)arg2 flags:(unsigned int)arg3 mask:(unsigned int)arg4;
+- (void)setColor:(id) arg1 hasBeenEvaluated:(BOOL) arg2 flags:(unsigned int)arg3 mask:(unsigned int)arg4;
 - (void)dealloc;
 - (void)finalize;
 - (unsigned long long)messageSize;
@@ -120,7 +120,7 @@ typedef struct {
 - (id)_inReplyToHeaderDigestIvar;
 - (long long)compareByNumberWithMessage:(id)arg1;
 - (BOOL)isMessageContentsLocallyAvailable;
-- (id)stringValueRenderMode:(int)arg1 updateBodyFlags:(BOOL)arg2 junkRecorder:(id)arg3;
+- (id)stringValueRenderMode:(int)arg1 updateBodyFlags:(BOOL) arg2 junkRecorder:(id)arg3;
 - (id)stringForIndexing;
 - (id)stringForIndexingUpdatingBodyFlags:(BOOL)arg1;
 - (id)stringForJunk;
@@ -132,15 +132,15 @@ typedef struct {
 - (int)priority;
 - (unsigned int)preferredEncoding;
 - (void)setPreferredEncoding:(unsigned int)arg1;
-- (id)rawSourceFromHeaders:(id)arg1 body:(id)arg2;
+- (id)rawSourceFromHeaders:(id) arg1 body:(id)arg2;
 - (BOOL)_doesDateAppearToBeSane:(id)arg1;
 - (id)_createDateFromReceivedHeadersInHeaders:(id)arg1;
-- (id)_createDateFromHeader:(id)arg1 inHeaders:(id)arg2;
+- (id)_createDateFromHeader:(id) arg1 inHeaders:(id)arg2;
 - (id)_createDateFromDateHeaderInHeaders:(id)arg1;
 - (id)_createDateFromCreatedDateHeaderInHeaders:(id)arg1;
 - (void)_setDateReceivedFromHeaders:(id)arg1;
 - (void)_setDateSentFromHeaders:(id)arg1;
-- (void)loadCachedHeaderValuesFromHeaders:(id)arg1 type:(BOOL)arg2;
+- (void)loadCachedHeaderValuesFromHeaders:(id) arg1 type:(BOOL)arg2;
 - (id)subjectAndPrefixLength:(unsigned long long *)arg1;
 - (id)subjectNotIncludingReAndFwdPrefix;
 - (id)subjectAddition;
@@ -161,12 +161,12 @@ typedef struct {
 - (void)setTo:(id)arg1;
 - (id)author;
 - (void)setAuthor:(id)arg1;
-- (void)setMessageInfo:(id)arg1 to:(id)arg2 sender:(id)arg3 type:(BOOL)arg4 dateReceivedTimeIntervalSince1970:(double)arg5 dateSentTimeIntervalSince1970:(double)arg6 messageIDHeaderDigest:(id)arg7 inReplyToHeaderDigest:(id)arg8;
-- (void)setMessageInfo:(id)arg1 to:(id)arg2 sender:(id)arg3 type:(BOOL)arg4 dateReceivedTimeIntervalSince1970:(double)arg5 dateSentTimeIntervalSince1970:(double)arg6 messageIDHeaderDigest:(id)arg7 inReplyToHeaderDigest:(id)arg8 dateLastViewedTimeIntervalSince1970:(double)arg9;
+- (void)setMessageInfo:(id) arg1 to:(id) arg2 sender:(id) arg3 type:(BOOL) arg4 dateReceivedTimeIntervalSince1970:(double)arg5 dateSentTimeIntervalSince1970:(double)arg6 messageIDHeaderDigest:(id) arg7 inReplyToHeaderDigest:(id)arg8;
+- (void)setMessageInfo:(id) arg1 to:(id) arg2 sender:(id) arg3 type:(BOOL) arg4 dateReceivedTimeIntervalSince1970:(double)arg5 dateSentTimeIntervalSince1970:(double)arg6 messageIDHeaderDigest:(id) arg7 inReplyToHeaderDigest:(id) arg8 dateLastViewedTimeIntervalSince1970:(double)arg9;
 - (void)setMessageInfoFromMessage:(id)arg1;
 - (id)references;
-@property(retain) Message *note;
-@property(retain) NSArray *todos;
+@property (retain) Message * note;
+@property (retain) NSArray * todos;
 - (void)invalidateTodos;
 - (id)remoteID;
 - (unsigned int)uid;
@@ -188,10 +188,10 @@ typedef struct {
 - (void)_calculateAttachmentInfoFromBody:(id)arg1;
 - (void)forceSetAttachmentInfoFromBody:(id)arg1;
 - (void)setAttachmentInfoFromBody:(id)arg1;
-- (void)setAttachmentInfoFromBody:(id)arg1 forced:(BOOL)arg2;
-- (BOOL)calculateAttachmentInfoFromBody:(id)arg1 numberOfAttachments:(unsigned int *)arg2 isSigned:(char *)arg3 isEncrypted:(char *)arg4;
-- (BOOL)calculateAttachmentInfoFromBody:(id)arg1 numberOfAttachments:(unsigned int *)arg2 isSigned:(char *)arg3 isEncrypted:(char *)arg4 force:(BOOL)arg5;
-- (void)setNumberOfAttachments:(unsigned int)arg1 isSigned:(BOOL)arg2 isEncrypted:(BOOL)arg3;
+- (void)setAttachmentInfoFromBody:(id) arg1 forced:(BOOL)arg2;
+- (BOOL)calculateAttachmentInfoFromBody:(id) arg1 numberOfAttachments:(unsigned int *)arg2 isSigned:(char *)arg3 isEncrypted:(char *)arg4;
+- (BOOL)calculateAttachmentInfoFromBody:(id) arg1 numberOfAttachments:(unsigned int *)arg2 isSigned:(char *)arg3 isEncrypted:(char *)arg4 force:(BOOL)arg5;
+- (void)setNumberOfAttachments:(unsigned int)arg1 isSigned:(BOOL) arg2 isEncrypted:(BOOL)arg3;
 @property BOOL messageTypeInternal; // @synthesize messageTypeInternal=_type;
 
 @end
@@ -205,14 +205,14 @@ typedef struct {
 @end
 
 @interface Message (ParentalControl)
-- (BOOL)isParentResponseMessage:(char *)arg1 isRejected:(char *)arg2 requestedAddresses:(id)arg3 requestIsForSenders:(char *)arg4;
-- (BOOL)isChildRequestMessage:(id)arg1 requestIsForSenders:(char *)arg2 childAddress:(id *)arg3 permissionRequestState:(int *)arg4;
+- (BOOL)isParentResponseMessage:(char *)arg1 isRejected:(char *)arg2 requestedAddresses:(id) arg3 requestIsForSenders:(char *)arg4;
+- (BOOL)isChildRequestMessage:(id) arg1 requestIsForSenders:(char *)arg2 childAddress:(id *)arg3 permissionRequestState:(int *)arg4;
 - (BOOL)isChildRequestMessage;
 @end
 
 @interface Message (ScriptingSupport)
 - (id)objectSpecifier;
-- (void)_setAppleScriptFlag:(id)arg1 state:(BOOL)arg2;
+- (void)_setAppleScriptFlag:(id) arg1 state:(BOOL)arg2;
 - (BOOL)isRead;
 - (void)setIsRead:(BOOL)arg1;
 - (BOOL)wasRepliedTo;
@@ -230,13 +230,13 @@ typedef struct {
 - (id)replyTo;
 - (id)scriptedMessageSize;
 - (id)content;
-- (void)_addRecipientsForKey:(id)arg1 toArray:(id)arg2;
+- (void)_addRecipientsForKey:(id) arg1 toArray:(id)arg2;
 - (id)recipients;
 - (id)toRecipients;
 - (id)ccRecipients;
 - (id)bccRecipients;
 - (id)container;
-- (void)_performBackgroundSetContainer:(id)arg1 command:(id)arg2;
+- (void)_performBackgroundSetContainer:(id) arg1 command:(id)arg2;
 - (void)setContainer:(id)arg1;
 - (id)messageIDHeader;
 - (id)rawSource;
@@ -256,9 +256,9 @@ typedef struct {
 @end
 
 @interface Message (Threads)
-@property(readonly) BOOL isThread;
-@property(readonly) BOOL containsOnlyNotes;
-@property(readonly) BOOL shouldUseSubjectForThreading;
+@property (readonly) BOOL isThread;
+@property (readonly) BOOL containsOnlyNotes;
+@property (readonly) BOOL shouldUseSubjectForThreading;
 @end
 
 #elif defined(SNOW_LEOPARD)
@@ -267,37 +267,37 @@ typedef struct {
 @class MFUUID;
 
 typedef struct {
-    unsigned int colorHasBeenEvaluated:1;
-    unsigned int colorWasSetManually:1;
-    unsigned int redColor:8;
-    unsigned int greenColor:8;
-    unsigned int blueColor:8;
-    unsigned int loadingBody:1;
-    unsigned int firstUnused:2;
-    unsigned int isMarkedForOverwrite:1;
-    unsigned int unused:2;
+	unsigned int colorHasBeenEvaluated : 1;
+	unsigned int colorWasSetManually : 1;
+	unsigned int redColor : 8;
+	unsigned int greenColor : 8;
+	unsigned int blueColor : 8;
+	unsigned int loadingBody : 1;
+	unsigned int firstUnused : 2;
+	unsigned int isMarkedForOverwrite : 1;
+	unsigned int unused : 2;
 } CDStruct_accefccd;
 
 @interface Message : NSObject
 {
-    int _mf_retainCount;
-    double _dateSentInterval;
-    double _dateReceivedInterval;
-    double _dateLastViewedInterval;
-    MessageStore *_store;
-    NSString *_senderAddressComment;
-    NSString *_subject;
-    NSString *_to;
-    NSString *_sender;
-    NSString *_author;
-    NSData *_messageIDHeaderDigest;
-    NSData *_inReplyToHeaderDigest;
-    MFUUID *_documentID;
-    unsigned int _messageFlags;
-    CDStruct_accefccd _flags;
-    unsigned int _preferredEncoding;
-    BOOL _type;
-    unsigned char _subjectPrefixLength;
+	int _mf_retainCount;
+	double _dateSentInterval;
+	double _dateReceivedInterval;
+	double _dateLastViewedInterval;
+	MessageStore * _store;
+	NSString * _senderAddressComment;
+	NSString * _subject;
+	NSString * _to;
+	NSString * _sender;
+	NSString * _author;
+	NSData * _messageIDHeaderDigest;
+	NSData * _inReplyToHeaderDigest;
+	MFUUID * _documentID;
+	unsigned int _messageFlags;
+	CDStruct_accefccd _flags;
+	unsigned int _preferredEncoding;
+	BOOL _type;
+	unsigned char _subjectPrefixLength;
 }
 
 + (void)initialize;
@@ -308,11 +308,11 @@ typedef struct {
 + (id)messageWithRFC822Data:(id)arg1;
 + (id)forwardedMessagePrefixWithSpacer:(BOOL)arg1;
 + (id)replyPrefixWithSpacer:(BOOL)arg1;
-+ (id)descriptionForType:(BOOL)arg1 plural:(BOOL)arg2;
++ (id)descriptionForType:(BOOL) arg1 plural:(BOOL)arg2;
 + (id)messageTypeKeyForMessageType:(BOOL)arg1;
 + (BOOL)_messageTypeForMessageTypeKey:(id)arg1;
 + (id)unreadMessagesFromMessages:(id)arg1;
-+ (BOOL)allMessages:(id)arg1 areSameType:(BOOL)arg2;
++ (BOOL)allMessages:(id) arg1 areSameType:(BOOL)arg2;
 + (BOOL)colorIsSetInMoreFlags:(CDStruct_accefccd)arg1;
 + (unsigned long)validatePriority:(unsigned long)arg1;
 + (unsigned int)displayablePriorityForPriority:(unsigned long)arg1;
@@ -349,7 +349,7 @@ typedef struct {
 - (id)messageBodyForIndexingAttachments;
 - (id)messageBodyIfAvailableUpdatingFlags:(BOOL)arg1;
 - (id)messageDataIncludingFromSpace:(BOOL)arg1;
-- (id)messageDataIncludingFromSpace:(BOOL)arg1 newDocumentID:(id)arg2;
+- (id)messageDataIncludingFromSpace:(BOOL) arg1 newDocumentID:(id)arg2;
 - (BOOL)colorHasBeenEvaluated;
 - (id)color;
 - (int)colorIntValue;
@@ -357,7 +357,7 @@ typedef struct {
 - (void)setMarkedForOverwrite:(BOOL)arg1;
 - (void)setColor:(id)arg1;
 - (void)setColorHasBeenEvaluated:(BOOL)arg1;
-- (void)setColor:(id)arg1 hasBeenEvaluated:(BOOL)arg2 flags:(unsigned long)arg3 mask:(unsigned long)arg4;
+- (void)setColor:(id) arg1 hasBeenEvaluated:(BOOL) arg2 flags:(unsigned long)arg3 mask:(unsigned long)arg4;
 - (void)dealloc;
 - (void)finalize;
 - (unsigned int)messageSize;
@@ -374,7 +374,7 @@ typedef struct {
 - (id)_inReplyToHeaderDigestIvar;
 - (int)compareByNumberWithMessage:(id)arg1;
 - (BOOL)isMessageContentsLocallyAvailable;
-- (id)stringValueRenderMode:(int)arg1 updateBodyFlags:(BOOL)arg2 junkRecorder:(id)arg3;
+- (id)stringValueRenderMode:(int)arg1 updateBodyFlags:(BOOL) arg2 junkRecorder:(id)arg3;
 - (id)stringForIndexing;
 - (id)stringForIndexingUpdatingBodyFlags:(BOOL)arg1;
 - (id)stringForJunk;
@@ -386,15 +386,15 @@ typedef struct {
 - (int)priority;
 - (unsigned long)preferredEncoding;
 - (void)setPreferredEncoding:(unsigned long)arg1;
-- (id)rawSourceFromHeaders:(id)arg1 body:(id)arg2;
+- (id)rawSourceFromHeaders:(id) arg1 body:(id)arg2;
 - (BOOL)_doesDateAppearToBeSane:(id)arg1;
 - (id)_createDateFromReceivedHeadersInHeaders:(id)arg1;
-- (id)_createDateFromHeader:(id)arg1 inHeaders:(id)arg2;
+- (id)_createDateFromHeader:(id) arg1 inHeaders:(id)arg2;
 - (id)_createDateFromDateHeaderInHeaders:(id)arg1;
 - (id)_createDateFromCreatedDateHeaderInHeaders:(id)arg1;
 - (void)_setDateReceivedFromHeaders:(id)arg1;
 - (void)_setDateSentFromHeaders:(id)arg1;
-- (void)loadCachedHeaderValuesFromHeaders:(id)arg1 type:(BOOL)arg2;
+- (void)loadCachedHeaderValuesFromHeaders:(id) arg1 type:(BOOL)arg2;
 - (id)subjectAndPrefixLength:(unsigned int *)arg1;
 - (id)subjectNotIncludingReAndFwdPrefix;
 - (id)subjectAddition;
@@ -415,8 +415,8 @@ typedef struct {
 - (void)setTo:(id)arg1;
 - (id)author;
 - (void)setAuthor:(id)arg1;
-- (void)setMessageInfo:(id)arg1 to:(id)arg2 sender:(id)arg3 type:(BOOL)arg4 dateReceivedTimeIntervalSince1970:(double)arg5 dateSentTimeIntervalSince1970:(double)arg6 messageIDHeaderDigest:(id)arg7 inReplyToHeaderDigest:(id)arg8;
-- (void)setMessageInfo:(id)arg1 to:(id)arg2 sender:(id)arg3 type:(BOOL)arg4 dateReceivedTimeIntervalSince1970:(double)arg5 dateSentTimeIntervalSince1970:(double)arg6 messageIDHeaderDigest:(id)arg7 inReplyToHeaderDigest:(id)arg8 dateLastViewedTimeIntervalSince1970:(double)arg9;
+- (void)setMessageInfo:(id) arg1 to:(id) arg2 sender:(id) arg3 type:(BOOL) arg4 dateReceivedTimeIntervalSince1970:(double)arg5 dateSentTimeIntervalSince1970:(double)arg6 messageIDHeaderDigest:(id) arg7 inReplyToHeaderDigest:(id)arg8;
+- (void)setMessageInfo:(id) arg1 to:(id) arg2 sender:(id) arg3 type:(BOOL) arg4 dateReceivedTimeIntervalSince1970:(double)arg5 dateSentTimeIntervalSince1970:(double)arg6 messageIDHeaderDigest:(id) arg7 inReplyToHeaderDigest:(id) arg8 dateLastViewedTimeIntervalSince1970:(double)arg9;
 - (void)setMessageInfoFromMessage:(id)arg1;
 - (id)references;
 - (id)note;
@@ -444,10 +444,10 @@ typedef struct {
 - (void)_calculateAttachmentInfoFromBody:(id)arg1;
 - (void)forceSetAttachmentInfoFromBody:(id)arg1;
 - (void)setAttachmentInfoFromBody:(id)arg1;
-- (void)setAttachmentInfoFromBody:(id)arg1 forced:(BOOL)arg2;
-- (BOOL)calculateAttachmentInfoFromBody:(id)arg1 numberOfAttachments:(unsigned int *)arg2 isSigned:(char *)arg3 isEncrypted:(char *)arg4;
-- (BOOL)calculateAttachmentInfoFromBody:(id)arg1 numberOfAttachments:(unsigned int *)arg2 isSigned:(char *)arg3 isEncrypted:(char *)arg4 force:(BOOL)arg5;
-- (void)setNumberOfAttachments:(unsigned long)arg1 isSigned:(BOOL)arg2 isEncrypted:(BOOL)arg3;
+- (void)setAttachmentInfoFromBody:(id) arg1 forced:(BOOL)arg2;
+- (BOOL)calculateAttachmentInfoFromBody:(id) arg1 numberOfAttachments:(unsigned int *)arg2 isSigned:(char *)arg3 isEncrypted:(char *)arg4;
+- (BOOL)calculateAttachmentInfoFromBody:(id) arg1 numberOfAttachments:(unsigned int *)arg2 isSigned:(char *)arg3 isEncrypted:(char *)arg4 force:(BOOL)arg5;
+- (void)setNumberOfAttachments:(unsigned long)arg1 isSigned:(BOOL) arg2 isEncrypted:(BOOL)arg3;
 - (BOOL)messageTypeInternal;
 - (void)setMessageTypeInternal:(BOOL)arg1;
 
@@ -463,7 +463,7 @@ typedef struct {
 
 @interface Message (ScriptingSupport)
 - (id)objectSpecifier;
-- (void)_setAppleScriptFlag:(id)arg1 state:(BOOL)arg2;
+- (void)_setAppleScriptFlag:(id) arg1 state:(BOOL)arg2;
 - (BOOL)isRead;
 - (void)setIsRead:(BOOL)arg1;
 - (BOOL)wasRepliedTo;
@@ -481,13 +481,13 @@ typedef struct {
 - (id)replyTo;
 - (id)scriptedMessageSize;
 - (id)content;
-- (void)_addRecipientsForKey:(id)arg1 toArray:(id)arg2;
+- (void)_addRecipientsForKey:(id) arg1 toArray:(id)arg2;
 - (id)recipients;
 - (id)toRecipients;
 - (id)ccRecipients;
 - (id)bccRecipients;
 - (id)container;
-- (void)_performBackgroundSetContainer:(id)arg1 command:(id)arg2;
+- (void)_performBackgroundSetContainer:(id) arg1 command:(id)arg2;
 - (void)setContainer:(id)arg1;
 - (id)messageIDHeader;
 - (id)rawSource;
@@ -513,8 +513,8 @@ typedef struct {
 @end
 
 @interface Message (ParentalControl)
-- (BOOL)isParentResponseMessage:(char *)arg1 isRejected:(char *)arg2 requestedAddresses:(id)arg3 requestIsForSenders:(char *)arg4;
-- (BOOL)isChildRequestMessage:(id)arg1 requestIsForSenders:(char *)arg2 childAddress:(id *)arg3 permissionRequestState:(int *)arg4;
+- (BOOL)isParentResponseMessage:(char *)arg1 isRejected:(char *)arg2 requestedAddresses:(id) arg3 requestIsForSenders:(char *)arg4;
+- (BOOL)isChildRequestMessage:(id) arg1 requestIsForSenders:(char *)arg2 childAddress:(id *)arg3 permissionRequestState:(int *)arg4;
 - (BOOL)isChildRequestMessage;
 @end
 
@@ -530,4 +530,4 @@ typedef struct {
 - (void)handleBounceMessage:(id)arg1;
 @end
 
-#endif
+#endif // ifdef SNOW_LEOPARD_64

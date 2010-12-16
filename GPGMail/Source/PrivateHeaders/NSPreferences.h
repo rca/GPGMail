@@ -30,23 +30,22 @@
 - (BOOL)preferencesWindowShouldClose;
 @end
 
-@interface NSPreferences : NSObject
-{
-    NSWindow *_preferencesPanel;
-    NSBox *_preferenceBox;
-    NSMatrix *_moduleMatrix;
-    NSButtonCell *_okButton;
-    NSButtonCell *_cancelButton;
-    NSButtonCell *_applyButton;
-    NSMutableArray *_preferenceTitles;
-    NSMutableArray *_preferenceModules;
-    NSMutableDictionary *_masterPreferenceViews;
-    NSMutableDictionary *_currentSessionPreferenceViews;
-    NSBox *_originalContentView;
-    BOOL _isModal;
-    double _constrainedWidth;
-    id _currentModule;
-    void *_reserved;
+@interface NSPreferences : NSObject {
+	NSWindow * _preferencesPanel;
+	NSBox * _preferenceBox;
+	NSMatrix * _moduleMatrix;
+	NSButtonCell * _okButton;
+	NSButtonCell * _cancelButton;
+	NSButtonCell * _applyButton;
+	NSMutableArray * _preferenceTitles;
+	NSMutableArray * _preferenceModules;
+	NSMutableDictionary * _masterPreferenceViews;
+	NSMutableDictionary * _currentSessionPreferenceViews;
+	NSBox * _originalContentView;
+	BOOL _isModal;
+	double _constrainedWidth;
+	id _currentModule;
+	void * _reserved;
 }
 
 + (id)sharedPreferences;
@@ -54,7 +53,7 @@
 + (Class)defaultPreferencesClass;
 - (id)init;
 - (void)dealloc;
-- (void)addPreferenceNamed:(id)arg1 owner:(id)arg2;
+- (void)addPreferenceNamed:(id) arg1 owner:(id)arg2;
 - (void)_setupToolbar;
 - (void)_setupUI;
 - (struct CGSize)preferencesContentSize;
@@ -67,26 +66,25 @@
 - (void)apply:(id)arg1;
 - (void)_selectModuleOwner:(id)arg1;
 - (id)windowTitle;
-- (void)confirmCloseSheetIsDone:(id)arg1 returnCode:(long long)arg2 contextInfo:(void *)arg3;
+- (void)confirmCloseSheetIsDone:(id) arg1 returnCode:(long long)arg2 contextInfo:(void *)arg3;
 - (BOOL)windowShouldClose:(id)arg1;
 - (void)windowDidResize:(id)arg1;
-- (struct CGSize)windowWillResize:(id)arg1 toSize:(struct CGSize)arg2;
+- (struct CGSize)windowWillResize:(id) arg1 toSize:(struct CGSize)arg2;
 - (BOOL)usesButtons;
 - (id)_itemIdentifierForModule:(id)arg1;
 - (void)toolbarItemClicked:(id)arg1;
-- (id)toolbar:(id)arg1 itemForItemIdentifier:(id)arg2 willBeInsertedIntoToolbar:(BOOL)arg3;
+- (id)toolbar:(id) arg1 itemForItemIdentifier:(id) arg2 willBeInsertedIntoToolbar:(BOOL)arg3;
 - (id)toolbarDefaultItemIdentifiers:(id)arg1;
 - (id)toolbarAllowedItemIdentifiers:(id)arg1;
 - (id)toolbarSelectableItemIdentifiers:(id)arg1;
 
 @end
 
-@interface NSPreferencesModule : NSObject <NSPreferencesModule>
-{
-    NSBox *_preferencesView;
-    struct CGSize _minSize;
-    BOOL _hasChanges;
-    void *_reserved;
+@interface NSPreferencesModule : NSObject <NSPreferencesModule> {
+	NSBox * _preferencesView;
+	struct CGSize _minSize;
+	BOOL _hasChanges;
+	void * _reserved;
 }
 
 + (id)sharedInstance;
@@ -129,23 +127,22 @@
 - (BOOL)preferencesWindowShouldClose;
 @end
 
-@interface NSPreferences : NSObject
-{
-    NSWindow *_preferencesPanel;
-    NSBox *_preferenceBox;
-    NSMatrix *_moduleMatrix;
-    NSButtonCell *_okButton;
-    NSButtonCell *_cancelButton;
-    NSButtonCell *_applyButton;
-    NSMutableArray *_preferenceTitles;
-    NSMutableArray *_preferenceModules;
-    NSMutableDictionary *_masterPreferenceViews;
-    NSMutableDictionary *_currentSessionPreferenceViews;
-    NSBox *_originalContentView;
-    BOOL _isModal;
-    float _constrainedWidth;
-    id _currentModule;
-    void *_reserved;
+@interface NSPreferences : NSObject {
+	NSWindow * _preferencesPanel;
+	NSBox * _preferenceBox;
+	NSMatrix * _moduleMatrix;
+	NSButtonCell * _okButton;
+	NSButtonCell * _cancelButton;
+	NSButtonCell * _applyButton;
+	NSMutableArray * _preferenceTitles;
+	NSMutableArray * _preferenceModules;
+	NSMutableDictionary * _masterPreferenceViews;
+	NSMutableDictionary * _currentSessionPreferenceViews;
+	NSBox * _originalContentView;
+	BOOL _isModal;
+	float _constrainedWidth;
+	id _currentModule;
+	void * _reserved;
 }
 
 + (id)sharedPreferences;
@@ -153,7 +150,7 @@
 + (Class)defaultPreferencesClass;
 - (id)init;
 - (void)dealloc;
-- (void)addPreferenceNamed:(id)arg1 owner:(id)arg2;
+- (void)addPreferenceNamed:(id) arg1 owner:(id)arg2;
 - (void)_setupToolbar;
 - (void)_setupUI;
 - (struct _NSSize)preferencesContentSize;
@@ -166,26 +163,25 @@
 - (void)apply:(id)arg1;
 - (void)_selectModuleOwner:(id)arg1;
 - (id)windowTitle;
-- (void)confirmCloseSheetIsDone:(id)arg1 returnCode:(int)arg2 contextInfo:(void *)arg3;
+- (void)confirmCloseSheetIsDone:(id) arg1 returnCode:(int)arg2 contextInfo:(void *)arg3;
 - (BOOL)windowShouldClose:(id)arg1;
 - (void)windowDidResize:(id)arg1;
-- (struct _NSSize)windowWillResize:(id)arg1 toSize:(struct _NSSize)arg2;
+- (struct _NSSize)windowWillResize:(id) arg1 toSize:(struct _NSSize)arg2;
 - (BOOL)usesButtons;
 - (id)_itemIdentifierForModule:(id)arg1;
 - (void)toolbarItemClicked:(id)arg1;
-- (id)toolbar:(id)arg1 itemForItemIdentifier:(id)arg2 willBeInsertedIntoToolbar:(BOOL)arg3;
+- (id)toolbar:(id) arg1 itemForItemIdentifier:(id) arg2 willBeInsertedIntoToolbar:(BOOL)arg3;
 - (id)toolbarDefaultItemIdentifiers:(id)arg1;
 - (id)toolbarAllowedItemIdentifiers:(id)arg1;
 - (id)toolbarSelectableItemIdentifiers:(id)arg1;
 
 @end
 
-@interface NSPreferencesModule : NSObject <NSPreferencesModule>
-{
-    NSBox *_preferencesView;
-    struct _NSSize _minSize;
-    BOOL _hasChanges;
-    void *_reserved;
+@interface NSPreferencesModule : NSObject <NSPreferencesModule> {
+	NSBox * _preferencesView;
+	struct _NSSize _minSize;
+	BOOL _hasChanges;
+	void * _reserved;
 }
 
 + (id)sharedInstance;
@@ -212,4 +208,4 @@
 
 @end
 
-#endif
+#endif // ifdef SNOW_LEOPARD_64

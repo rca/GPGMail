@@ -33,27 +33,27 @@
 #import "GPGMailBundle.h"
 #import "GPGMailPatching.h"
 
-@implementation NSPreferences(GPGMail)
+@implementation NSPreferences (GPGMail)
 
-static IMP  NSPreferences_sharedPreferences = NULL;
+static IMP NSPreferences_sharedPreferences = NULL;
 
-+ (void) load
-{
-    NSPreferences_sharedPreferences = GPGMail_ReplaceImpOfClassSelectorOfClassWithImpOfClassSelectorOfClass(@selector(sharedPreferences), [NSPreferences class], @selector(gpgSharedPreferences), [NSPreferences class]);
++ (void)load {
+	NSPreferences_sharedPreferences = GPGMail_ReplaceImpOfClassSelectorOfClassWithImpOfClassSelectorOfClass(@selector(sharedPreferences), [NSPreferences class], @selector(gpgSharedPreferences), [NSPreferences class]);
 }
 
 + gpgSharedPreferences
 {
-    static BOOL	added = NO;
-    id			preferences = ((id (*)(id, SEL))NSPreferences_sharedPreferences)(self, _cmd);
+	static BOOL added = NO;
+	id preferences = ((id (*)(id, SEL))NSPreferences_sharedPreferences)(self, _cmd);
 
-    if(preferences != nil && !added){
-        added = YES;
-        if([GPGMailBundle gpgMailWorks])
-            [preferences addPreferenceNamed:NSLocalizedStringFromTableInBundle(@"PGP_PREFERENCES", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "PGP preferences panel name") owner:[GPGMailPreferences sharedInstance]];
-    }
-    
-    return preferences;
+	if (preferences != nil && !added) {
+		added = YES;
+		if ([GPGMailBundle gpgMailWorks]) {
+			[preferences addPreferenceNamed:NSLocalizedStringFromTableInBundle(@"PGP_PREFERENCES", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "PGP preferences panel name") owner:[GPGMailPreferences sharedInstance]];
+		}
+	}
+
+	return preferences;
 }
 
 @end

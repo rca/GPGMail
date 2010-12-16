@@ -36,44 +36,44 @@
 @class NSArray;
 
 
-@interface Message(GPGMail)
+@interface Message (GPGMail)
 
-//- (NSArray *) gpgRecipients;
+// - (NSArray *) gpgRecipients;
 // Returns email addresses of To, CC (but not BCC)
 
-- (BOOL) gpgIsEncrypted;
-- (void) gpgEncryptForRecipients:(NSArray *)recipients trustAllKeys:(BOOL)trustsAllKeys signWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate format:(GPGMailFormat)mailFormat;
+- (BOOL)gpgIsEncrypted;
+- (void)gpgEncryptForRecipients:(NSArray *)recipients trustAllKeys:(BOOL) trustsAllKeys signWithKey:(GPGKey *)key passphraseDelegate:(id) passphraseDelegate format:(GPGMailFormat)mailFormat;
 // Doesn't encrypt empty messages
 // Signs only if key is not nil; passphraseDelegate is necessary only if key is not nil.
 // Can raise an exception
-//- (Message *) gpgDecryptedMessageWithPassphraseDelegate:(id)passphraseDelegate signature:(GPGSignature **)signature;
-- (void) gpgDecryptMessageWithPassphraseDelegate:(id)passphraseDelegate messageSignatures:(NSMutableArray *)messageSignatures;
+// - (Message *) gpgDecryptedMessageWithPassphraseDelegate:(id)passphraseDelegate signature:(GPGSignature **)signature;
+- (void)gpgDecryptMessageWithPassphraseDelegate:(id) passphraseDelegate messageSignatures:(NSMutableArray *)messageSignatures;
 // Can raise an exception
 // Returns a new Message
 
-- (BOOL) gpgHasSignature;
-- (void) gpgSignWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate format:(GPGMailFormat)mailFormat;
+- (BOOL)gpgHasSignature;
+- (void)gpgSignWithKey:(GPGKey *)key passphraseDelegate:(id) passphraseDelegate format:(GPGMailFormat)mailFormat;
 // Doesn't sign empty messages
 // Can raise an exception
-- (GPGSignature *) gpgAuthenticationSignature;
+- (GPGSignature *)gpgAuthenticationSignature;
 // Can raise an exception
-- (GPGSignature *) gpgEmbeddedAuthenticationSignature;
+- (GPGSignature *)gpgEmbeddedAuthenticationSignature;
 // Can raise an exception
 // Must be used for OpenPGP embedded signatures, to avoid some checks
 
-- (BOOL) gpgIsPGPMIMEMessage;
+- (BOOL)gpgIsPGPMIMEMessage;
 
-- (GPGSignature *) gpgSignature;
-- (void) setGpgIsDecrypting:(BOOL)flag;
-- (BOOL) gpgIsDecrypting;
-- (void) gpgSetMayClearCachedDecryptedMessageBody:(BOOL)flag;
-- (BOOL) gpgMayClearCachedDecryptedMessageBody;
-- (NSException *) gpgException;
-- (void) setGpgException:(NSException *)exception;
-- (NSArray *) gpgMessageSignatures;
-- (void) setGpgMessageSignatures:(NSArray *)messageSignatures;
+- (GPGSignature *)gpgSignature;
+- (void)setGpgIsDecrypting:(BOOL)flag;
+- (BOOL)gpgIsDecrypting;
+- (void)gpgSetMayClearCachedDecryptedMessageBody:(BOOL)flag;
+- (BOOL)gpgMayClearCachedDecryptedMessageBody;
+- (NSException *)gpgException;
+- (void)setGpgException:(NSException *)exception;
+- (NSArray *)gpgMessageSignatures;
+- (void)setGpgMessageSignatures:(NSArray *)messageSignatures;
 
-- (NSString *) gpgDescription;
+- (NSString *)gpgDescription;
 
 - (NSData *)gpgCurrentFullBodyPartDataAndHeaderDataIfReadilyAvailable:(NSData **)headerDataPtr;
 - (void)gpgUpdateCurrentFullBodyPartData:(NSData *)newData;

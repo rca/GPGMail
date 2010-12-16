@@ -34,32 +34,29 @@
 #import <Foundation/Foundation.h>
 
 
-@implementation NSString(GPGMail)
+@implementation NSString (GPGMail)
 
-+ (NSStringEncoding) gpgEncodingForMIMECharset:(NSString *)charset
-{
++ (NSStringEncoding)gpgEncodingForMIMECharset:(NSString *)charset {
 #warning Should no longer be needed...
-    CFStringEncoding	cfEncoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)charset);
-    NSStringEncoding	nsEncoding;
-    
-    NSAssert1(cfEncoding != kCFStringEncodingInvalidId, @"### GPGMail: unknown charset %@", charset);
-    nsEncoding = CFStringConvertEncodingToNSStringEncoding(cfEncoding);
-    NSAssert1(cfEncoding != kCFStringEncodingInvalidId, @"### GPGMail: unable to convert CoreFoundation charset %@ to Foundation's", charset);
-    return nsEncoding;
+	CFStringEncoding cfEncoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)charset);
+	NSStringEncoding nsEncoding;
+
+	NSAssert1(cfEncoding != kCFStringEncodingInvalidId, @"### GPGMail: unknown charset %@", charset);
+	nsEncoding = CFStringConvertEncodingToNSStringEncoding(cfEncoding);
+	NSAssert1(cfEncoding != kCFStringEncodingInvalidId, @"### GPGMail: unable to convert CoreFoundation charset %@ to Foundation's", charset);
+	return nsEncoding;
 }
 
-+ (NSString *) gpgMIMECharsetForEncoding:(NSStringEncoding)encoding
-{
++ (NSString *)gpgMIMECharsetForEncoding:(NSStringEncoding)encoding {
 #warning Should no longer be needed...
-    CFStringEncoding	cfEncoding = CFStringConvertNSStringEncodingToEncoding(encoding);
-    
-    NSAssert1(cfEncoding != kCFStringEncodingInvalidId, @"### GPGMail: unable to convert Foundation encoding %u to CoreFoundation's", encoding);
-    return (NSString *)CFStringConvertEncodingToIANACharSetName(cfEncoding);
+	CFStringEncoding cfEncoding = CFStringConvertNSStringEncodingToEncoding(encoding);
+
+	NSAssert1(cfEncoding != kCFStringEncodingInvalidId, @"### GPGMail: unable to convert Foundation encoding %u to CoreFoundation's", encoding);
+	return (NSString *)CFStringConvertEncodingToIANACharSetName(cfEncoding);
 }
 
-- (NSString *) gpgNormalizedEmail
-{
-    return [[self lowercaseString] uncommentedAddress];
+- (NSString *)gpgNormalizedEmail {
+	return [[self lowercaseString] uncommentedAddress];
 }
 
 @end

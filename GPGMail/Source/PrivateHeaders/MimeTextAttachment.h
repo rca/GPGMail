@@ -6,12 +6,12 @@
 
 @interface MimeTextAttachment : NSTextAttachment
 {
-    MimePart *_mimePart;
+	MimePart * _mimePart;
 }
 
-+ (id)attachmentWithInternalAppleAttachmentData:(id)arg1 mimeBody:(id)arg2;
++ (id)attachmentWithInternalAppleAttachmentData:(id) arg1 mimeBody:(id)arg2;
 - (void)dealloc;
-- (id)initWithMimePart:(id)arg1 andFileWrapper:(id)arg2;
+- (id)initWithMimePart:(id) arg1 andFileWrapper:(id)arg2;
 - (id)initWithFileWrapper:(id)arg1;
 - (id)initWithMimePart:(id)arg1;
 - (void)_forceDownloadOfFileWrapperInBackground:(id)arg1;
@@ -33,12 +33,12 @@
 
 @interface MimeTextAttachment : NSTextAttachment
 {
-    MimePart *_mimePart;
+	MimePart * _mimePart;
 }
 
-+ (id)attachmentWithInternalAppleAttachmentData:(id)arg1 mimeBody:(id)arg2;
++ (id)attachmentWithInternalAppleAttachmentData:(id) arg1 mimeBody:(id)arg2;
 - (void)dealloc;
-- (id)initWithMimePart:(id)arg1 andFileWrapper:(id)arg2;
+- (id)initWithMimePart:(id) arg1 andFileWrapper:(id)arg2;
 - (id)initWithFileWrapper:(id)arg1;
 - (id)initWithMimePart:(id)arg1;
 - (void)_forceDownloadOfFileWrapperInBackground:(id)arg1;
@@ -55,4 +55,4 @@
 @end
 
 
-#endif
+#endif // ifdef SNOW_LEOPARD_64

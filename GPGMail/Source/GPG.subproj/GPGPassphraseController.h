@@ -32,31 +32,31 @@
 
 @interface GPGPassphraseController : NSObject
 {
-    IBOutlet NSPanel		*panel;
-    IBOutlet NSTextField	*passphraseTextField;
-    IBOutlet NSTextField	*messageTextField;
-    IBOutlet NSTextField	*titleTextField;
-    IBOutlet NSTextField	*clearPassphraseTextField;
-    IBOutlet NSButton		*passphraseCheckBox;
-    IBOutlet NSTabView		*passphraseTabView;
-    BOOL					isInUse;
-    NSConditionLock			*lock;
+	IBOutlet NSPanel * panel;
+	IBOutlet NSTextField * passphraseTextField;
+	IBOutlet NSTextField * messageTextField;
+	IBOutlet NSTextField * titleTextField;
+	IBOutlet NSTextField * clearPassphraseTextField;
+	IBOutlet NSButton * passphraseCheckBox;
+	IBOutlet NSTabView * passphraseTabView;
+	BOOL isInUse;
+	NSConditionLock * lock;
 }
 
-+ (id) controller;
++ (id)controller;
 // Each call can return a different instance
 
-- (NSString *) passphraseForUser:(id)user title:(NSString *)title window:(NSWindow *)parentWindow;
-	// If result is nil, entry was cancelled.
-	// May return cached passphrase; not necessarily asks user for it.
-	// Automatically resets flush timer
-    // parentWindow is used only on MacOS X, for sheets
-- (IBAction) endModal:(id)sender;
-- (IBAction) toggleShowPassphrase:(id)sender;
+- (NSString *)passphraseForUser:(id) user title:(NSString *)title window:(NSWindow *)parentWindow;
+// If result is nil, entry was cancelled.
+// May return cached passphrase; not necessarily asks user for it.
+// Automatically resets flush timer
+// parentWindow is used only on MacOS X, for sheets
+- (IBAction)endModal:(id)sender;
+- (IBAction)toggleShowPassphrase:(id)sender;
 
-+ (void) setCachesPassphrases:(BOOL)flag;
-+ (BOOL) cachesPassphrases;
-+ (void) flushCachedPassphrases;
-+ (void) flushCachedPassphraseForUser:(id)user;
++ (void)setCachesPassphrases:(BOOL)flag;
++ (BOOL)cachesPassphrases;
++ (void)flushCachedPassphrases;
++ (void)flushCachedPassphraseForUser:(id)user;
 
 @end

@@ -43,15 +43,15 @@
 @end
 
 
-#endif
+#endif // ifdef SNOW_LEOPARD_64
 
 // The following methods are called if implemented:
-//- (MessageBody *) bodyWillBeEncoded:(MessageBody *)body forMessage:(Message *)message;
-//- (MessageBody *) bodyWasEncoded:(MessageBody *)body forMessage:(Message *)message;
-//- (NSData *) bodyWillBeDecoded:(NSData *)bodyData forMessage:(Message *)message;
-//- (MessageBody *) bodyWasDecoded:(MessageBody *)body forMessage:(Message *)message; // Comes before messageWillBeDisplayedInView: and bodyData is not nil!
-//- (MessageBody *) bodyWillBeForwarded:(MessageBody *)body forMessage:(Message *)message;
-//- (void) messageWillBeDisplayedInView:(NSNotification *)notification;
+// - (MessageBody *) bodyWillBeEncoded:(MessageBody *)body forMessage:(Message *)message;
+// - (MessageBody *) bodyWasEncoded:(MessageBody *)body forMessage:(Message *)message;
+// - (NSData *) bodyWillBeDecoded:(NSData *)bodyData forMessage:(Message *)message;
+// - (MessageBody *) bodyWasDecoded:(MessageBody *)body forMessage:(Message *)message; // Comes before messageWillBeDisplayedInView: and bodyData is not nil!
+// - (MessageBody *) bodyWillBeForwarded:(MessageBody *)body forMessage:(Message *)message;
+// - (void) messageWillBeDisplayedInView:(NSNotification *)notification;
 // with MessageKey = displayed message in userInfo
 // and MessageViewKey = view used for display
 

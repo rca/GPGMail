@@ -30,10 +30,10 @@
 #import <Foundation/NSString.h>
 
 
-@interface NSString(GPGMail)
+@interface NSString (GPGMail)
 
-+ (NSStringEncoding) gpgEncodingForMIMECharset:(NSString *)charset;
-+ (NSString *) gpgMIMECharsetForEncoding:(NSStringEncoding)encoding;
-- (NSString *) gpgNormalizedEmail;
++ (NSStringEncoding)gpgEncodingForMIMECharset:(NSString *)charset;
++ (NSString *)gpgMIMECharsetForEncoding:(NSStringEncoding)encoding;
+- (NSString *)gpgNormalizedEmail;
 
 @end

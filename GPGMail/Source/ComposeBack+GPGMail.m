@@ -30,7 +30,7 @@
 #import "ComposeBackEnd+GPGMail.h"
 #import "GPGMailBundle.h"
 #import "NSString+Message.h"
-#import "NSString+GPGMail.h" 
+#import "NSString+GPGMail.h"
 
 #import <Foundation/Foundation.h>
 
@@ -38,32 +38,32 @@
 #ifdef SNOW_LEOPARD_64
 @implementation GPGMail_ComposeBackEnd
 #else
-@implementation ComposeBackEnd(GPGMail)
+@implementation ComposeBackEnd (GPGMail)
 #endif
 
-- (NSArray *) gpgRecipients
-{
-    // Used only in GPGMailComposeAccessoryViewOwner => we could easily ask user for the recipients
-    NSArray *recipients = [[self valueForKey:@"_cleanHeaders"] objectForKey:@"to"];
+- (NSArray *)gpgRecipients {
+	// Used only in GPGMailComposeAccessoryViewOwner => we could easily ask user for the recipients
+	NSArray * recipients = [[self valueForKey:@"_cleanHeaders"] objectForKey:@"to"];
 
-    if(recipients != nil)
-        recipients = [recipients arrayByAddingObjectsFromArray:[[self valueForKey:@"_cleanHeaders"] objectForKey:@"cc"]];
-    else
-        recipients = [[self valueForKey:@"_cleanHeaders"] objectForKey:@"cc"];
+	if (recipients != nil) {
+		recipients = [recipients arrayByAddingObjectsFromArray:[[self valueForKey:@"_cleanHeaders"] objectForKey:@"cc"]];
+	} else {
+		recipients = [[self valueForKey:@"_cleanHeaders"] objectForKey:@"cc"];
+	}
 
-    if([[GPGMailBundle sharedInstance] usesBCCRecipients]){
-        if(recipients != nil)
-            recipients = [recipients arrayByAddingObjectsFromArray:[[self valueForKey:@"_cleanHeaders"] objectForKey:@"bcc"]];
-        else
-            recipients = [[self valueForKey:@"_cleanHeaders"] objectForKey:@"bcc"];
-    }
-    
-    return [recipients valueForKey:@"gpgNormalizedEmail"];
+	if ([[GPGMailBundle sharedInstance] usesBCCRecipients]) {
+		if (recipients != nil) {
+			recipients = [recipients arrayByAddingObjectsFromArray:[[self valueForKey:@"_cleanHeaders"] objectForKey:@"bcc"]];
+		} else {
+			recipients = [[self valueForKey:@"_cleanHeaders"] objectForKey:@"bcc"];
+		}
+	}
+
+	return [recipients valueForKey:@"gpgNormalizedEmail"];
 }
 
-- (NSArray *) gpgBCCRecipients
-{
-    return [[self valueForKey:@"_cleanHeaders"] objectForKey:@"bcc"];
+- (NSArray *)gpgBCCRecipients {
+	return [[self valueForKey:@"_cleanHeaders"] objectForKey:@"bcc"];
 }
 
 @end

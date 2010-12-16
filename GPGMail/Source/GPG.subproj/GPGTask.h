@@ -14,7 +14,7 @@
 
 
 /*
- *	We need to create our own NSTask's concrete subclass, as processes 
+ *	We need to create our own NSTask's concrete subclass, as processes
  *	launched by NSTask do not inherit file descriptors from their
  *	parent process, except stdin, stdout and stderr.
  *	Do NOT try to use this class for anything else, as the implementation
@@ -25,53 +25,53 @@
 
 @interface GPGTask : NSTask
 {
-    NSMutableDictionary	*_dictionary;
-    BOOL				_hasExeced;
-    BOOL				_isRunning;
-    pid_t				_pid;
-    int					_terminationStatus;
+	NSMutableDictionary * _dictionary;
+	BOOL _hasExeced;
+	BOOL _isRunning;
+	pid_t _pid;
+	int _terminationStatus;
 }
 
-////+ (id) allocWithZone:(NSZone *)zone;
-////+ currentTaskDictionary;
-////+ launchedTaskWithDictionary:fp12;
-+ (NSTask *) launchedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)arguments;
-////+ launchedTaskWithPath:fp12 arguments:fp16;
-- (int) terminationStatus;
-- (BOOL) isRunning;
-- (void) launch;
-- (void) setArguments:(NSArray *)arguments;
-- (void) setCurrentDirectoryPath:(NSString *)path;
-- (void) setEnvironment:(NSDictionary *)dict;
-- (void) setLaunchPath:(NSString *)path;
-- (void) interrupt;
-- (void) terminate;
-- (NSString *) launchPath;
-- (NSDictionary *) environment;
-- (NSArray *) arguments;
-- (NSString *) currentDirectoryPath;
-- (void) setStandardInput:(id)input;
-- (void) setStandardOutput:(id)output;
-- (void) setStandardError:(id)error;
-- (id) standardInput;
-- (id) standardOutput;
-- (id) standardError;
-- (id) init;
-- (void) dealloc;
+// //+ (id) allocWithZone:(NSZone *)zone;
+// //+ currentTaskDictionary;
+// //+ launchedTaskWithDictionary:fp12;
++ (NSTask *)launchedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)arguments;
+// //+ launchedTaskWithPath:fp12 arguments:fp16;
+- (int)terminationStatus;
+- (BOOL)isRunning;
+- (void)launch;
+- (void)setArguments:(NSArray *)arguments;
+- (void)setCurrentDirectoryPath:(NSString *)path;
+- (void)setEnvironment:(NSDictionary *)dict;
+- (void)setLaunchPath:(NSString *)path;
+- (void)interrupt;
+- (void)terminate;
+- (NSString *)launchPath;
+- (NSDictionary *)environment;
+- (NSArray *)arguments;
+- (NSString *)currentDirectoryPath;
+- (void)setStandardInput:(id)input;
+- (void)setStandardOutput:(id)output;
+- (void)setStandardError:(id)error;
+- (id)standardInput;
+- (id)standardOutput;
+- (id)standardError;
+- (id)init;
+- (void)dealloc;
 
-- (void) waitUntilExit;
-//- (void)launchWithDictionary:fp12;
-//- (void)setTaskDictionary:fp12;
-//- taskDictionary;
-//- (BOOL)taskExitedNormally;
-//- (void)terminateTask;
-//- (int)_procid;
-//- (unsigned int)processIdentifier;
-//- (void)_requestNotification;
-//- (void)handleMachMessage:(void *)fp12;
+- (void)waitUntilExit;
+// - (void)launchWithDictionary:fp12;
+// - (void)setTaskDictionary:fp12;
+// - taskDictionary;
+// - (BOOL)taskExitedNormally;
+// - (void)terminateTask;
+// - (int)_procid;
+// - (unsigned int)processIdentifier;
+// - (void)_requestNotification;
+// - (void)handleMachMessage:(void *)fp12;
 
 // gnupg specific!
-- (void) setStatusPipe:(NSPipe *)statusPipe;
-- (NSPipe *) statusPipe;
+- (void)setStatusPipe:(NSPipe *)statusPipe;
+- (NSPipe *)statusPipe;
 
 @end

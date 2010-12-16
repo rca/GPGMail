@@ -35,11 +35,11 @@
 #ifdef SNOW_LEOPARD_64
 @interface GPGMail_MessageViewer : NSObject
 #else
-@interface MessageViewer(GPGMail)
+@interface MessageViewer (GPGMail)
 #endif
 
-- (MessageContentController *) gpgTextViewer:(id)dummy;
-- (NSToolbar *) gpgToolbar;
-- (TableViewManager *) gpgTableManager;
+- (MessageContentController *)gpgTextViewer:(id)dummy;
+- (NSToolbar *)gpgToolbar;
+- (TableViewManager *)gpgTableManager;
 
 @end

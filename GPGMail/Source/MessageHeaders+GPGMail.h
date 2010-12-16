@@ -37,8 +37,8 @@
 @class NSArray;
 
 
-@interface MessageHeaders(GPGMail)
+@interface MessageHeaders (GPGMail)
 
-- (id) gpgEncodedHeadersExcludingFromSpace;
+- (id)gpgEncodedHeadersExcludingFromSpace;
 
 @end

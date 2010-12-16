@@ -39,11 +39,10 @@
 #import <Foundation/Foundation.h>
 
 
-@implementation MessageHeaders(GPGMail)
+@implementation MessageHeaders (GPGMail)
 
-- (id) gpgEncodedHeadersExcludingFromSpace
-{
-        return [self encodedHeadersIncludingFromSpace:NO];
+- (id)gpgEncodedHeadersExcludingFromSpace {
+	return [self encodedHeadersIncludingFromSpace:NO];
 }
 
 @end

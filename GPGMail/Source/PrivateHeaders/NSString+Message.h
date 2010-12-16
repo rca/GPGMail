@@ -8,7 +8,7 @@
 + (id)nameExtensions;
 + (id)nameExtensionsThatDoNotNeedCommas;
 + (id)partialSurnames;
-+ (id)formattedAddressWithName:(id)arg1 email:(id)arg2 useQuotes:(BOOL)arg3;
++ (id)formattedAddressWithName:(id) arg1 email:(id) arg2 useQuotes:(BOOL)arg3;
 - (id)uncommentedAddress;
 - (id)uncommentedAddressRespectingGroups;
 - (BOOL)isEmptyGroup;
@@ -61,13 +61,13 @@
 @interface NSString (NSStringUtils)
 + (id)messageIDStringWithDomainHint:(id)arg1;
 + (id)messageIDStringFromCidUrl:(id)arg1;
-+ (id)stringWithData:(id)arg1 encoding:(unsigned long long)arg2;
++ (id)stringWithData:(id) arg1 encoding:(unsigned long long)arg2;
 + (id)stringWithAttachmentCharacter;
 + (id)createUniqueIdString;
 - (unsigned int)hexIntValue;
 - (unsigned long long)hexLongLongValue;
 - (id)smartCapitalizedString;
-- (id)stringByReplacingString:(id)arg1 withString:(id)arg2;
+- (id)stringByReplacingString:(id) arg1 withString:(id)arg2;
 - (id)stringByRemovingCharactersInSet:(id)arg1;
 - (id)stringByApplyingBodyClassName:(id)arg1;
 - (id)createStringByApplyingBodyClassName:(id)arg1;
@@ -108,7 +108,7 @@
 @end
 
 @interface NSString (PathUtils)
-+ (id)pathWithDirectory:(id)arg1 filename:(id)arg2 extension:(id)arg3;
++ (id)pathWithDirectory:(id) arg1 filename:(id) arg2 extension:(id)arg3;
 - (id)uniquePathWithMaximumLength:(unsigned long long)arg1;
 - (BOOL)deletePath;
 - (BOOL)isSubdirectoryOfPath:(id)arg1;
@@ -131,7 +131,7 @@
 + (id)nameExtensions;
 + (id)nameExtensionsThatDoNotNeedCommas;
 + (id)partialSurnames;
-+ (id)formattedAddressWithName:(id)arg1 email:(id)arg2 useQuotes:(BOOL)arg3;
++ (id)formattedAddressWithName:(id) arg1 email:(id) arg2 useQuotes:(BOOL)arg3;
 - (id)uncommentedAddress;
 - (id)uncommentedAddressRespectingGroups;
 - (BOOL)isEmptyGroup;
@@ -193,13 +193,13 @@
 @interface NSString (NSStringUtils)
 + (id)messageIDStringWithDomainHint:(id)arg1;
 + (id)messageIDStringFromCidUrl:(id)arg1;
-+ (id)stringWithData:(id)arg1 encoding:(unsigned int)arg2;
++ (id)stringWithData:(id) arg1 encoding:(unsigned int)arg2;
 + (id)stringWithAttachmentCharacter;
 + (id)createUniqueIdString;
 - (unsigned int)hexIntValue;
 - (unsigned long long)hexLongLongValue;
 - (id)smartCapitalizedString;
-- (id)stringByReplacingString:(id)arg1 withString:(id)arg2;
+- (id)stringByReplacingString:(id) arg1 withString:(id)arg2;
 - (id)stringByRemovingCharactersInSet:(id)arg1;
 - (id)stringByApplyingBodyClassName:(id)arg1;
 - (id)createStringByApplyingBodyClassName:(id)arg1;
@@ -240,7 +240,7 @@
 @end
 
 @interface NSString (PathUtils)
-+ (id)pathWithDirectory:(id)arg1 filename:(id)arg2 extension:(id)arg3;
++ (id)pathWithDirectory:(id) arg1 filename:(id) arg2 extension:(id)arg3;
 - (id)uniquePathWithMaximumLength:(unsigned int)arg1;
 - (BOOL)deletePath;
 - (BOOL)isSubdirectoryOfPath:(id)arg1;
@@ -250,20 +250,20 @@
 
 @interface NSString (AtomicAddress)
 - (id)atomicAddress;
-- (id)atomicAddressStringForRepresentedRecord:(id)arg1 type:(int)arg2;
-- (id)atomicAddressStringForRepresentedRecord:(id)arg1 type:(int)arg2 showComma:(BOOL)arg3;
-- (id)atomicAddressArrayForRepresentedRecord:(id)arg1 type:(int)arg2;
-- (id)atomicAddressWithRepresentedRecord:(id)arg1 type:(int)arg2;
-- (id)atomicAddressWithRepresentedRecord:(id)arg1 type:(int)arg2 showComma:(BOOL)arg3;
+- (id)atomicAddressStringForRepresentedRecord:(id) arg1 type:(int)arg2;
+- (id)atomicAddressStringForRepresentedRecord:(id) arg1 type:(int)arg2 showComma:(BOOL)arg3;
+- (id)atomicAddressArrayForRepresentedRecord:(id) arg1 type:(int)arg2;
+- (id)atomicAddressWithRepresentedRecord:(id) arg1 type:(int)arg2;
+- (id)atomicAddressWithRepresentedRecord:(id) arg1 type:(int)arg2 showComma:(BOOL)arg3;
 @end
 
 @interface NSString (FindPanelSupport)
-- (struct _NSRange)findString:(id)arg1 selectedRange:(struct _NSRange)arg2 options:(unsigned long)arg3 wrap:(BOOL)arg4;
+- (struct _NSRange)findString:(id) arg1 selectedRange:(struct _NSRange)arg2 options:(unsigned long)arg3 wrap:(BOOL)arg4;
 @end
 
 @interface NSString (MailAdditions)
-- (void)_drawInRect:(struct CGRect)arg1 font:(id)arg2 color:(id)arg3 truncate:(BOOL)arg4;
-- (void)drawEtchedInRect:(struct CGRect)arg1 withTopColor:(id)arg2 bottomColor:(id)arg3 shadowBelow:(BOOL)arg4 font:(id)arg5 centered:(BOOL)arg6 flipped:(BOOL)arg7 truncate:(BOOL)arg8;
+- (void)_drawInRect:(struct CGRect)arg1 font:(id) arg2 color:(id) arg3 truncate:(BOOL)arg4;
+- (void)drawEtchedInRect:(struct CGRect)arg1 withTopColor:(id) arg2 bottomColor:(id) arg3 shadowBelow:(BOOL) arg4 font:(id) arg5 centered:(BOOL) arg6 flipped:(BOOL) arg7 truncate:(BOOL)arg8;
 - (BOOL)doesMatchLocalizedDateName:(id)arg1;
 - (BOOL)matchesLocalizedDateIntervalFrom:(id *)arg1 to:(id *)arg2;
 @end
@@ -275,9 +275,9 @@
 @end
 
 @interface NSString (ToDoAdditions)
-+ (id)nodeIDForTodoID:(id)arg1 nodeClass:(id)arg2;
++ (id)nodeIDForTodoID:(id) arg1 nodeClass:(id)arg2;
 - (id)todoIDFromNodeID:(id)arg1;
 @end
 
 
-#endif
+#endif // ifdef SNOW_LEOPARD_64

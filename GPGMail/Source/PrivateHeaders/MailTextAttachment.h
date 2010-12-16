@@ -4,22 +4,22 @@
 
 @interface MailTextAttachment : MimeTextAttachment
 {
-    unsigned int _isPossibleToDisplayAttachmentInline:1;
-    unsigned int _isPossibleToDisplayAttachmentAsView:1;
-    unsigned int _isDisplayingAttachmentInline:1;
-    unsigned int _shouldDisplayInlineByDefault:1;
-    unsigned int _isImageBeingResized:1;
-    NSFileWrapper *_originalFileWrapper;
-    NSImage *_originalImage;
-    struct CGSize _originalImageSize;
-    struct CGSize _maxImageSize;
-    struct CGSize _lastMaxImageSize;
+	unsigned int _isPossibleToDisplayAttachmentInline : 1;
+	unsigned int _isPossibleToDisplayAttachmentAsView : 1;
+	unsigned int _isDisplayingAttachmentInline : 1;
+	unsigned int _shouldDisplayInlineByDefault : 1;
+	unsigned int _isImageBeingResized : 1;
+	NSFileWrapper * _originalFileWrapper;
+	NSImage * _originalImage;
+	struct CGSize _originalImageSize;
+	struct CGSize _maxImageSize;
+	struct CGSize _lastMaxImageSize;
 }
 
 + (void)initialize;
 + (id)replacementAttachmentForAttachment:(id)arg1;
-- (id)initWithMimePart:(id)arg1 andFileWrapper:(id)arg2 iconOnly:(BOOL)arg3;
-- (id)initWithMimePart:(id)arg1 andFileWrapper:(id)arg2;
+- (id)initWithMimePart:(id) arg1 andFileWrapper:(id) arg2 iconOnly:(BOOL)arg3;
+- (id)initWithMimePart:(id) arg1 andFileWrapper:(id)arg2;
 - (void)dealloc;
 - (BOOL)shouldDisplayInlineByDefault;
 - (void)setShouldDisplayInlineByDefault:(BOOL)arg1;
@@ -28,7 +28,7 @@
 - (BOOL)isDisplayingAttachmentInline;
 - (void)setIsDisplayingAttachmentInline:(BOOL)arg1;
 - (BOOL)hasData;
-- (void)updateFromPath:(id)arg1 contentID:(id)arg2;
+- (void)updateFromPath:(id) arg1 contentID:(id)arg2;
 - (id)attachmentCell;
 - (id)_getInlineImage;
 - (void)_configureLabelForCell:(id)arg1;
@@ -45,13 +45,13 @@
 - (struct CGSize)maxImageSize;
 - (struct CGSize)originalImageSize;
 - (void)resizingStarted:(struct CGSize)arg1;
-- (void)resizingFinished:(id)arg1 imageSize:(struct CGSize)arg2 fileExtension:(id)arg3 fileType:(unsigned long)arg4 maxImageSize:(struct CGSize)arg5;
+- (void)resizingFinished:(id) arg1 imageSize:(struct CGSize)arg2 fileExtension:(id) arg3 fileType:(unsigned long)arg4 maxImageSize:(struct CGSize)arg5;
 
 @end
 
 @interface MailTextAttachment (CustomAttachmentViewManagement)
-+ (void)registerViewingClass:(Class)arg1 forMimeTypes:(id)arg2;
++ (void)registerViewingClass:(Class) arg1 forMimeTypes:(id)arg2;
 @end
 
 
-#endif
+#endif // ifdef SNOW_LEOPARD

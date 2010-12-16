@@ -39,68 +39,68 @@
 
 
 typedef enum {
-    GPGNoSignature,
-    GPGInlineSignature,			// Old-style
-    GPGDetachedSignature,		// OpenPGP: sign+encrypt in one operation
-    GPGEncapsulatedSignature	// OpenPGP: sign then encrypt => 2 operations
+	GPGNoSignature,
+	GPGInlineSignature,                 // Old-style
+	GPGDetachedSignature,               // OpenPGP: sign+encrypt in one operation
+	GPGEncapsulatedSignature            // OpenPGP: sign then encrypt => 2 operations
 }GPGMessageSignatureType;
 
 
-extern NSString	*GPGHandlerException;
-	// UserInfo:
-	//	TerminationStatus = task termination status (NSNumber)
-	//	Error = stderr (NSString)
+extern NSString * GPGHandlerException;
+// UserInfo:
+//	TerminationStatus = task termination status (NSNumber)
+//	Error = stderr (NSString)
 
 
 @interface GPGHandler : NSObject
 {
-    NSConditionLock	*readLock;
-    NSData			*stderrData;
-    NSData			*stdoutData;
-    NSData			*statusData;
-    NSTask			*currentTask;
-    BOOL            operationCancelled;
+	NSConditionLock * readLock;
+	NSData * stderrData;
+	NSData * stdoutData;
+	NSData * statusData;
+	NSTask * currentTask;
+	BOOL operationCancelled;
 }
 
 // All operations use options: --armor --utf8-strings
 
-+ (id) handler;
-+ (void) clearCache;
++ (id)handler;
++ (void)clearCache;
 
-+ (NSData *) convertedStringData:(NSData *)data fromEncoding:(CFStringEncoding)originalEncoding toEncoding:(CFStringEncoding *)newEncoding;
++ (NSData *)convertedStringData:(NSData *)data fromEncoding:(CFStringEncoding) originalEncoding toEncoding:(CFStringEncoding *)newEncoding;
 // Always use this method before passing data to a method:
 // gpg knows only very few encodings, and will convert data
 // to the one it knows.
 
-- (NSData *) encryptData:(NSData *)data withSignatureType:(GPGMessageSignatureType)signatureType sender:(NSString *)sender passphrase:(NSString *)passphrase recipients:(NSArray *)recipients encoding:(CFStringEncoding)encoding;
+- (NSData *)encryptData:(NSData *)data withSignatureType:(GPGMessageSignatureType) signatureType sender:(NSString *)sender passphrase:(NSString *)passphrase recipients:(NSArray *)recipients encoding:(CFStringEncoding)encoding;
 // Raises an exception in case of error.
 
-- (NSData *) decryptData:(NSData *)data passphrase:(NSString *)passphrase signature:(NSString **)signature encoding:(CFStringEncoding)encoding;
+- (NSData *)decryptData:(NSData *)data passphrase:(NSString *)passphrase signature:(NSString **)signature encoding:(CFStringEncoding)encoding;
 // Returns decrypted data. Signature (if any) is returned in *signature.
 // Raises an exception in case of error.
 
-- (NSData *) signData:(NSData *)data sender:(NSString *)sender passphrase:(NSString *)passphrase detachedSignature:(BOOL)detachedSignature encoding:(CFStringEncoding)encoding;
+- (NSData *)signData:(NSData *)data sender:(NSString *)sender passphrase:(NSString *)passphrase detachedSignature:(BOOL) detachedSignature encoding:(CFStringEncoding)encoding;
 // Returns either signed data, or detached signature.
 // Raises an exception in case of error.
 
-- (NSString *) authenticationSignatureFromData:(NSData *)signedData encoding:(CFStringEncoding)encoding;
+- (NSString *)authenticationSignatureFromData:(NSData *)signedData encoding:(CFStringEncoding)encoding;
 // Returns authenticated user-id (Real Name (Comment) <email>)
 // Raises an exception in case of error.
 
-- (NSString *) authenticationSignatureFromData:(NSData *)signedData signatureFile:(NSString *)signatureFile encoding:(CFStringEncoding)encoding;
+- (NSString *)authenticationSignatureFromData:(NSData *)signedData signatureFile:(NSString *)signatureFile encoding:(CFStringEncoding)encoding;
 // Returns authenticated user-id (Real Name (Comment) <email>)
 // Raises an exception in case of error.
 
-- (NSArray *) knownHashAlgorithms;
+- (NSArray *)knownHashAlgorithms;
 // Raises an exception in case of error.
-- (NSString *) defaultHashAlgorithm;
+- (NSString *)defaultHashAlgorithm;
 // Raises an exception in case of error.
 
 // The following two method expect normalized EndOfLines CRLF
-+ (NSRange) pgpSignatureBlockRangeInData:(NSData *)data;
-+ (NSRange) pgpEncryptionBlockRangeInData:(NSData *)data;
-+ (NSRange) pgpPublicKeyBlockRangeInData:(NSData *)data;
++ (NSRange)pgpSignatureBlockRangeInData:(NSData *)data;
++ (NSRange)pgpEncryptionBlockRangeInData:(NSData *)data;
++ (NSRange)pgpPublicKeyBlockRangeInData:(NSData *)data;
 
-- (void) cancelOperation;
+- (void)cancelOperation;
 
 @end

@@ -531,10 +531,10 @@
 		30CDB07312B2D44700F5F8B7 /* XIBs */ = {
 			isa = PBXGroup;
 			children = (
-				308B8FA812A6AE5F00C99BD2 /* GPGMailPreferences.xib */,
 				308B8F7B12A6AE2D00C99BD2 /* GPGKeyDownload.xib */,
 				308B8F7D12A6AE2D00C99BD2 /* GPGMailCompose.xib */,
 				308B8F7F12A6AE2D00C99BD2 /* GPGMailComposeTiger.xib */,
+				308B8FA812A6AE5F00C99BD2 /* GPGMailPreferences.xib */,
 				308B8F8112A6AE2D00C99BD2 /* GPGMenu.xib */,
 				308B8F8312A6AE2D00C99BD2 /* GPGMessageViewerAccessoryView.xib */,
 			);

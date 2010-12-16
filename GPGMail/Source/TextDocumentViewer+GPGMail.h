@@ -11,22 +11,22 @@
 @class GPGMessageViewerAccessoryViewOwner;
 
 
-@interface TextDocumentViewer(GPGMail)
+@interface TextDocumentViewer (GPGMail)
 
-- (Message *) gpgMessage;
+- (Message *)gpgMessage;
 
-- (void) gpgShowPGPSignatureBanner;
-- (void) gpgShowPGPEncryptedBanner;
-- (void) gpgHideBanner;
+- (void)gpgShowPGPSignatureBanner;
+- (void)gpgShowPGPEncryptedBanner;
+- (void)gpgHideBanner;
 
-- (BOOL) gpgValidateAction:(SEL)anAction;
+- (BOOL)gpgValidateAction:(SEL)anAction;
 
 // Actions connected to menus
-- (IBAction) gpgDecrypt:(id)sender;
-- (IBAction) gpgAuthenticate:(id)sender;
+- (IBAction)gpgDecrypt:(id)sender;
+- (IBAction)gpgAuthenticate:(id)sender;
 
-- (void) gpgForwardAction:(SEL)action from:(id)sender;
+- (void)gpgForwardAction:(SEL) action from:(id)sender;
 
-- (GPGMessageViewerAccessoryViewOwner *) gpgMessageViewerAccessoryViewOwner;
+- (GPGMessageViewerAccessoryViewOwner *)gpgMessageViewerAccessoryViewOwner;
 
 @end

@@ -18,14 +18,14 @@
 
 }
 
-- (void) gpgShowPGPSignatureBanner;
-- (void) gpgShowPGPEncryptedBanner;
-- (void) gpgHideBanner;
+- (void)gpgShowPGPSignatureBanner;
+- (void)gpgShowPGPEncryptedBanner;
+- (void)gpgHideBanner;
 
-- (BOOL) gpgValidateAction:(SEL)anAction;
+- (BOOL)gpgValidateAction:(SEL)anAction;
 
 // Actions connected to menus
-- (IBAction) gpgDecrypt:(id)sender;
-- (IBAction) gpgAuthenticate:(id)sender;
+- (IBAction)gpgDecrypt:(id)sender;
+- (IBAction)gpgAuthenticate:(id)sender;
 
 @end

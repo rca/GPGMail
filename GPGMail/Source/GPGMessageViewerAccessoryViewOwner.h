@@ -40,80 +40,79 @@
 
 
 enum {
-    gpgAuthenticationBanner,
-    gpgDecryptionBanner,
-    gpgSignatureInfoBanner,
-    gpgDecryptedInfoBanner,
-    gpgDecryptedSignatureInfoBanner
+	gpgAuthenticationBanner,
+	gpgDecryptionBanner,
+	gpgSignatureInfoBanner,
+	gpgDecryptedInfoBanner,
+	gpgDecryptedSignatureInfoBanner
 };
 
 
-@interface GPGMessageViewerAccessoryViewOwner : NSObject
-{
-    id						delegate;
-    int						bannerType;
-    GPGKey *		signatureKey;
+@interface GPGMessageViewerAccessoryViewOwner : NSObject {
+	id delegate;
+	int bannerType;
+	GPGKey * signatureKey;
 
-    IBOutlet NSView			*authenticationView;
-    IBOutlet NSButton		*authenticationButton;
+	IBOutlet NSView * authenticationView;
+	IBOutlet NSButton * authenticationButton;
 
-    IBOutlet NSView			*signatureView;
-    IBOutlet NSView			*signatureUpperView;
-    IBOutlet NSImageView	*signatureIconView;
-    IBOutlet NSTextField	*signatureMessageTextField;
-    IBOutlet NSButton		*signatureToggleButton;
-    IBOutlet NSView			*signatureLowerView;
-    IBOutlet NSTextField	*signatureCreationDateTextField;
-    IBOutlet NSTextField	*signatureValidityTextField;
-    IBOutlet NSTextField	*signatureExpirationDateTextField;
-    IBOutlet NSTextField	*signatureBadPolicyAlertTextField;
-    IBOutlet NSTextField	*signatureKeyFingerprintTextField;
-    BOOL					isSignatureExtraViewVisible;
-    IBOutlet NSImageView	*generalAlertIconView;
-    IBOutlet NSImageView	*expirationAlertIconView;
-    IBOutlet NSImageView	*policyAlertIconView;
-    IBOutlet NSImageView	*trustAlertIconView;
-    IBOutlet NSPopUpButton	*userIDsPopDownButton;
+	IBOutlet NSView * signatureView;
+	IBOutlet NSView * signatureUpperView;
+	IBOutlet NSImageView * signatureIconView;
+	IBOutlet NSTextField * signatureMessageTextField;
+	IBOutlet NSButton * signatureToggleButton;
+	IBOutlet NSView * signatureLowerView;
+	IBOutlet NSTextField * signatureCreationDateTextField;
+	IBOutlet NSTextField * signatureValidityTextField;
+	IBOutlet NSTextField * signatureExpirationDateTextField;
+	IBOutlet NSTextField * signatureBadPolicyAlertTextField;
+	IBOutlet NSTextField * signatureKeyFingerprintTextField;
+	BOOL isSignatureExtraViewVisible;
+	IBOutlet NSImageView * generalAlertIconView;
+	IBOutlet NSImageView * expirationAlertIconView;
+	IBOutlet NSImageView * policyAlertIconView;
+	IBOutlet NSImageView * trustAlertIconView;
+	IBOutlet NSPopUpButton * userIDsPopDownButton;
 
-    IBOutlet NSView			*decryptionView;
-    IBOutlet NSButton		*decryptionButton;
+	IBOutlet NSView * decryptionView;
+	IBOutlet NSButton * decryptionButton;
 
-    IBOutlet NSView			*decryptedInfoView;
-    IBOutlet NSTextField	*decryptedMessageTextField;
-    IBOutlet NSImageView	*decryptedIconView;
+	IBOutlet NSView * decryptedInfoView;
+	IBOutlet NSTextField * decryptedMessageTextField;
+	IBOutlet NSImageView * decryptedIconView;
 
-    IBOutlet NSButton		*disclosureButton;
+	IBOutlet NSButton * disclosureButton;
 
-    BOOL					isMessagePGPSigned;
-    BOOL					isMessagePGPEncrypted;
+	BOOL isMessagePGPSigned;
+	BOOL isMessagePGPEncrypted;
 }
 
-- (id) initWithDelegate:(id)delegate;
+- (id)initWithDelegate:(id)delegate;
 
-- (NSView *) view;
+- (NSView *)view;
 
-- (IBAction) authenticate:(id)sender;
-- (IBAction) decrypt:(id)sender;
-- (IBAction) toggleSignatureExtraView:(id)sender;
+- (IBAction)authenticate:(id)sender;
+- (IBAction)decrypt:(id)sender;
+- (IBAction)toggleSignatureExtraView:(id)sender;
 
-- (void) setBannerType:(int)bannerType;
-- (int) bannerType;
+- (void)setBannerType:(int)bannerType;
+- (int)bannerType;
 - (NSString *)bannerTypeDescription;
 
-- (BOOL) gpgValidateAction:(SEL)anAction;
+- (BOOL)gpgValidateAction:(SEL)anAction;
 
-- (IBAction) gpgAuthenticate:(id)sender;
-- (IBAction) gpgDecrypt:(id)sender;
+- (IBAction)gpgAuthenticate:(id)sender;
+- (IBAction)gpgDecrypt:(id)sender;
 
-- (BOOL) isMessagePGPEncrypted;
-- (BOOL) isMessagePGPSigned;
-- (void) messageChanged:(Message *)message;
+- (BOOL)isMessagePGPEncrypted;
+- (BOOL)isMessagePGPSigned;
+- (void)messageChanged:(Message *)message;
 - (void)printStackTrace:(NSException *)e;
 
 @end
 
-@interface NSObject(GPGMessageViewerAccessoryViewOwnerDelegate)
-- (void) gpgAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner replaceViewWithView:(NSView *)view;
-- (void) gpgAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner displayMessage:(Message *)message isSigned:(BOOL)isSigned;
-- (Message *) gpgMessageForAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner;
+@interface NSObject (GPGMessageViewerAccessoryViewOwnerDelegate)
+- (void)gpgAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner replaceViewWithView:(NSView *)view;
+- (void)gpgAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner displayMessage:(Message *)message isSigned:(BOOL)isSigned;
+- (Message *)gpgMessageForAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner;
 @end

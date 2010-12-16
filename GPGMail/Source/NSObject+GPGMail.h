@@ -31,7 +31,7 @@
  * Implementation note:
  * We cannot use 'self' as key in the extra ivars dictionary, because in -dealloc -gpgExtraIVars might be called when invoking original -dealloc
  * and thus puts 'self' back in mapTable; by using the NSValue and changing the dealloc order,
- * it corrects the problem. 
+ * it corrects the problem.
  */
 
 /*!
@@ -44,43 +44,43 @@
  *
  * @param clazz A class name.
  */
-#define GPG_DECLARE_EXTRA_IVARS(clazz)             \
-static NSMapTable	*clazz##_extraIVars = NULL;    \
-static NSLock		*clazz##_extraIVarsLock = nil; \
-static IMP          clazz##_dealloc = NULL;        \
+#define GPG_DECLARE_EXTRA_IVARS(clazz)									   \
+	static NSMapTable       * clazz ## _extraIVars = NULL;	  \
+	static NSLock * clazz ## _extraIVarsLock = nil;	\
+	static IMP clazz ## _dealloc = NULL;					\
 \
-+ (void) gpgInitExtraIvars \
-{ \
-    clazz##_extraIVars = NSCreateMapTableWithZone(NSObjectMapKeyCallBacks, NSObjectMapValueCallBacks, 100, [self zone]); \
-    clazz##_extraIVarsLock = [[NSLock alloc] init]; \
-    clazz##_dealloc = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(dealloc), [clazz class], @selector(gpgDealloc), [clazz class]); \
-} \
+	+(void)gpgInitExtraIvars \
+	{ \
+		clazz ## _extraIVars = NSCreateMapTableWithZone(NSObjectMapKeyCallBacks, NSObjectMapValueCallBacks, 100, [self zone]); \
+		clazz ## _extraIVarsLock = [[NSLock alloc] init]; \
+		clazz ## _dealloc = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(dealloc), [clazz class ], @selector(gpgDealloc), [clazz class ]);				\
+	} \
 \
-- (NSMutableDictionary *) gpgExtraIVars \
-{\
-    NSMutableDictionary	*aDict;\
-    NSValue             *aValue = [NSValue valueWithNonretainedObject:self];\
-    \
-    [clazz##_extraIVarsLock lock]; \
-    aDict = NSMapGet(clazz##_extraIVars, aValue); \
-    if(aDict == nil){ \
-        aDict = [NSMutableDictionary dictionaryWithCapacity:3]; \
-        NSMapInsert(clazz##_extraIVars, aValue, aDict); \
-    } \
-    [clazz##_extraIVarsLock unlock]; \
-    \
-    return aDict;\
-}\
+	-(NSMutableDictionary *)gpgExtraIVars \
+	{ \
+		NSMutableDictionary * aDict; \
+		NSValue * aValue = [NSValue valueWithNonretainedObject:self]; \
+				\
+		[clazz ## _extraIVarsLock lock]; \
+		aDict = NSMapGet(clazz ## _extraIVars, aValue);	\
+		if (aDict == nil) {				\
+			aDict = [NSMutableDictionary dictionaryWithCapacity:3];	\
+			NSMapInsert(clazz ## _extraIVars, aValue, aDict); \
+		} \
+		[clazz ## _extraIVarsLock unlock]; \
+				\
+		return aDict; \
+	} \
 \
-- (void) gpgDealloc \
-{ \
-    id	originalSelf = self; \
-    \
-    ((void (*)(id, SEL))clazz##_dealloc)(self, _cmd); \
-    [clazz##_extraIVarsLock lock]; \
-    NSMapRemove(clazz##_extraIVars, [NSValue valueWithNonretainedObject:originalSelf]); \
-    [clazz##_extraIVarsLock unlock]; \
-}
+	-(void)gpgDealloc \
+	{ \
+		id originalSelf = self;	\
+				\
+		((void (*)(id, SEL))clazz ## _dealloc)(self, _cmd);				\
+		[clazz ## _extraIVarsLock lock]; \
+		NSMapRemove(clazz ## _extraIVars, [NSValue valueWithNonretainedObject: originalSelf]); \
+		[clazz ## _extraIVarsLock unlock]; \
+	}
 
 /*!
  * Convenience macro to get extra variable named 'name'.
@@ -88,8 +88,8 @@ static IMP          clazz##_dealloc = NULL;        \
  * @param name  A string - never nil
  * @result An object, or nil.
  */
-#define GPG_GET_EXTRA_IVAR(name)\
-    [[self gpgExtraIVars] objectForKey:name]
+#define GPG_GET_EXTRA_IVAR(name) \
+	[[self gpgExtraIVars] objectForKey : name]
 
 /*!
  * Convenience macro to set extra variable value.
@@ -97,25 +97,25 @@ static IMP          clazz##_dealloc = NULL;        \
  * @param value An object, or nil
  * @param name  A string - never nil
  */
-#define GPG_SET_EXTRA_IVAR(value, name)\
-    { id __value = (value); id  __name = (name); if(__value == nil) [[self gpgExtraIVars] removeObjectForKey:__name]; else [[self gpgExtraIVars] setObject:__value forKey:__name]; }
+#define GPG_SET_EXTRA_IVAR(value, name)	\
+	{ id __value = (value); id __name = (name); if (__value == nil) { [[self gpgExtraIVars] removeObjectForKey : __name]; } else { [[self gpgExtraIVars] setObject : __value forKey : __name]; } }
 
-@interface NSObject(GPGMailExtraIVars)
+@interface NSObject (GPGMailExtraIVars)
 
 /*!
  * Initializes static vars, and reimplements -dealloc.
  * +gpgInitExtraIvars must be called in +load.
  */
-+ (void) gpgInitExtraIvars;
++ (void)gpgInitExtraIvars;
 
 /*!
  * @result NSMutableDictionary
  */
-- (NSMutableDictionary *) gpgExtraIVars;
+- (NSMutableDictionary *)gpgExtraIVars;
 
 /*!
  * Invoked automatically on -dealloc; removes all extra ivars.
  */
-- (void) gpgDealloc;
+- (void)gpgDealloc;
 
 @end

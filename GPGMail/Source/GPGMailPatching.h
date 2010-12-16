@@ -39,21 +39,21 @@
 IMP GPGMail_ReplaceImpOfClassSelectorOfClassWithImpOfClassSelectorOfClass(SEL aSelector, Class aClass, SEL newSelector, Class newClass);
 IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(SEL aSelector, Class aClass, SEL newSelector, Class newClass);
 
-@interface NSObject(GPGMailPatching)
-- (void) gpgSetClass:(Class)class;
+@interface NSObject (GPGMailPatching)
+- (void)gpgSetClass:(Class) class;
 @end
 
-static NSMutableDictionary *originalMethodsMap;
-static IMP *originalMethods = NULL; 
+static NSMutableDictionary * originalMethodsMap;
+static IMP * originalMethods = NULL;
 static int originalMethodsIndex = 0;
 static int methodsAllocatedCount = 0;
 
 @interface GPGMailSwizzler : NSObject
 
 + (IMP)originalMethodForName:(NSString *)aName;
-+ (void)swizzleMethod:(SEL)aSelector fromClass:(Class)aClass withMethod:(SEL)bSelector ofClass:(Class)bClass;
-+ (void)addMethod:(SEL)aSelector fromClass:(Class)aClass toClass:(Class)bClass;
-+ (void)addMethodsFromClass:(Class)aClass toClass:(Class)bClass;
-+ (void)extendClass:(Class)aClass withClass:(Class)bClass;
-+ (void)swizzleClassMethod:(SEL)aSelector fromClass:(Class)aClass withMethod:(SEL)bSelector ofClass:(Class)bClass;
++ (void)swizzleMethod:(SEL) aSelector fromClass:(Class) aClass withMethod:(SEL) bSelector ofClass:(Class)bClass;
++ (void)addMethod:(SEL) aSelector fromClass:(Class) aClass toClass:(Class)bClass;
++ (void)addMethodsFromClass:(Class) aClass toClass:(Class)bClass;
++ (void)extendClass:(Class) aClass withClass:(Class)bClass;
++ (void)swizzleClassMethod:(SEL) aSelector fromClass:(Class) aClass withMethod:(SEL) bSelector ofClass:(Class)bClass;
 @end

@@ -2,16 +2,16 @@
 
 #import <Cocoa/Cocoa.h>
 
-//extern NSString	*MessageBodyWillBeDecodedNotification;
-//extern NSString	*MessageBodyWasDecodedNotification;
-//extern NSString	*MessageBodyWillBeEncodedNotification;
-//extern NSString	*MessageBodyWasEncodedNotification;
+// extern NSString	*MessageBodyWillBeDecodedNotification;
+// extern NSString	*MessageBodyWasDecodedNotification;
+// extern NSString	*MessageBodyWillBeEncodedNotification;
+// extern NSString	*MessageBodyWasEncodedNotification;
 
 
 /*
- This class is totally abstract (no instance created).
- Messages have all MimeBody bodies, sometimes with type/subtype = nil/nil.
- Newly created messages use a private direct subclass of MessageBody, _OutgoingMessageBody.
+ * This class is totally abstract (no instance created).
+ * Messages have all MimeBody bodies, sometimes with type/subtype = nil/nil.
+ * Newly created messages use a private direct subclass of MessageBody, _OutgoingMessageBody.
  */
 
 #ifdef SNOW_LEOPARD_64
@@ -20,17 +20,17 @@
 
 @interface MessageBody : NSObject
 {
-    BOOL _hideCalendarMimePart;
-    Message *_message;
-    long long _messageID;
+	BOOL _hideCalendarMimePart;
+	Message * _message;
+	long long _messageID;
 }
 
 - (id)init;
-@property Message *message;
+@property Message * message;
 - (id)attributedString;
 - (BOOL)isHTML;
 - (BOOL)isRich;
-@property(readonly) BOOL isSignedByMe;
+@property (readonly) BOOL isSignedByMe;
 - (void)calculateNumberOfAttachmentsIfNeeded;
 - (void)calculateNumberOfAttachmentsDecodeIfNeeded;
 - (unsigned int)numberOfAttachmentsSigned:(char *)arg1 encrypted:(char *)arg2 numberOfTNEFAttachments:(unsigned int *)arg3;
@@ -41,7 +41,7 @@
 - (id)webArchive;
 - (void)dealloc;
 @property BOOL hideCalendarMimePart; // @synthesize hideCalendarMimePart=_hideCalendarMimePart;
-@property Message *actualMessage; // @synthesize actualMessage=_message;
+@property Message * actualMessage; // @synthesize actualMessage=_message;
 @property long long messageID; // @synthesize messageID=_messageID;
 
 @end
@@ -52,7 +52,7 @@
 
 @interface _OutgoingMessageBody : MessageBody
 {
-    NSMutableData *rawData;
+	NSMutableData * rawData;
 }
 
 - (void)setMessage:(id)arg1;
@@ -70,9 +70,9 @@
 
 @interface MessageBody : NSObject
 {
-    BOOL _hideCalendarMimePart;
-    Message *_message;
-    long long _messageID;
+	BOOL _hideCalendarMimePart;
+	Message * _message;
+	long long _messageID;
 }
 
 - (id)init;
@@ -106,7 +106,7 @@
 
 @interface _OutgoingMessageBody : MessageBody
 {
-    NSMutableData *rawData;
+	NSMutableData * rawData;
 }
 
 - (void)setMessage:(id)arg1;
@@ -119,4 +119,4 @@
 @end
 
 
-#endif
+#endif // ifdef SNOW_LEOPARD_64

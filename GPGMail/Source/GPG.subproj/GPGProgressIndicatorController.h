@@ -40,28 +40,28 @@
 
 @interface GPGProgressIndicatorController : NSObject
 {
-    IBOutlet NSProgressIndicator	*progressIndicator;
-    IBOutlet NSProgressIndicator	*progressIndicator2;
-    IBOutlet NSTextField			*titleTextField;
-    IBOutlet NSTextField			*titleTextField2;
-    IBOutlet NSTextField			*backgroundTextField;
-    IBOutlet NSButton				*cancelButton;
-    IBOutlet NSBox					*enclosingBox;
-    id								delegate;
+	IBOutlet NSProgressIndicator * progressIndicator;
+	IBOutlet NSProgressIndicator * progressIndicator2;
+	IBOutlet NSTextField * titleTextField;
+	IBOutlet NSTextField * titleTextField2;
+	IBOutlet NSTextField * backgroundTextField;
+	IBOutlet NSButton * cancelButton;
+	IBOutlet NSBox * enclosingBox;
+	id delegate;
 }
 
-+ (GPGProgressIndicatorController *) sharedController;
++ (GPGProgressIndicatorController *)sharedController;
 
-- (void) startWithTitle:(NSString *)title delegate:(id)delegate;
+- (void)startWithTitle:(NSString *)title delegate:(id)delegate;
 // If delegate is nil, cancel is not possible; if delegate is set, it must respond to -progressIndicatorDidCancel:
-- (void) startWithTitle:(NSString *)title view:(NSView *)view;
+- (void)startWithTitle:(NSString *)title view:(NSView *)view;
 // Adds a subview in the view's superview, positionned at the upper right corner, to display the progress bar
-- (void) stop;
+- (void)stop;
 
-- (IBAction) cancel:(id)sender;
+- (IBAction)cancel:(id)sender;
 
 @end
 
-@interface NSObject(GPGProgressIndicatorControllerDelegate)
-- (void) progressIndicatorDidCancel:(GPGProgressIndicatorController *)controller;
+@interface NSObject (GPGProgressIndicatorControllerDelegate)
+- (void)progressIndicatorDidCancel:(GPGProgressIndicatorController *)controller;
 @end

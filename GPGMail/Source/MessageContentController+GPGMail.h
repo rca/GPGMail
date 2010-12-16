@@ -33,23 +33,23 @@
 #ifdef SNOW_LEOPARD_64
 @interface GPGMail_MessageContentController : NSObject
 #else
-@interface MessageContentController(GPGMail)
+@interface MessageContentController (GPGMail)
 #endif
 
-- (Message *) gpgMessage;
+- (Message *)gpgMessage;
 
-- (void) gpgShowPGPSignatureBanner;
-- (void) gpgShowPGPEncryptedBanner;
-- (void) gpgHideBanner;
+- (void)gpgShowPGPSignatureBanner;
+- (void)gpgShowPGPEncryptedBanner;
+- (void)gpgHideBanner;
 
-- (BOOL) gpgValidateAction:(SEL)anAction;
+- (BOOL)gpgValidateAction:(SEL)anAction;
 
-	// Actions connected to menus
-- (IBAction) gpgDecrypt:(id)sender;
-- (IBAction) gpgAuthenticate:(id)sender;
+// Actions connected to menus
+- (IBAction)gpgDecrypt:(id)sender;
+- (IBAction)gpgAuthenticate:(id)sender;
 
-- (void) gpgForwardAction:(SEL)action from:(id)sender;
+- (void)gpgForwardAction:(SEL) action from:(id)sender;
 
-- (GPGMessageViewerAccessoryViewOwner *) gpgMessageViewerAccessoryViewOwner;
+- (GPGMessageViewerAccessoryViewOwner *)gpgMessageViewerAccessoryViewOwner;
 
 @end

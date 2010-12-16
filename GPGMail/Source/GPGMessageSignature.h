@@ -13,8 +13,8 @@
 
 
 @interface GPGMessageSignature : NSObject {
-    GPGSignature    *signature;
-    NSRange         signedRange;
+	GPGSignature * signature;
+	NSRange signedRange;
 }
 
 - (id)initWithSignature:(GPGSignature *)signature range:(NSRange)range;

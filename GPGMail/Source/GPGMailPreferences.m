@@ -40,7 +40,7 @@
 }
 
 - (SUUpdater *)updater {
-    return [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
+	return [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
 }
 
 
@@ -49,192 +49,194 @@
 }
 
 - (NSAttributedString *)credits {
-	NSBundle *mailBundle = [NSBundle bundleForClass:[self class]];
-	NSAttributedString *credits = [[[NSAttributedString alloc] initWithURL:[mailBundle URLForResource:@"Credits" withExtension:@"rtf"] documentAttributes:nil] autorelease];
+	NSBundle * mailBundle = [NSBundle bundleForClass:[self class]];
+	NSAttributedString * credits = [[[NSAttributedString alloc] initWithURL:[mailBundle URLForResource:@"Credits" withExtension:@"rtf"] documentAttributes:nil] autorelease];
+
 	return credits;
 }
 
 - (NSAttributedString *)websiteLink {
-    NSMutableParagraphStyle *pStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+	NSMutableParagraphStyle * pStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+
 	[pStyle setAlignment:NSRightTextAlignment];
-	
-	NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-								pStyle, NSParagraphStyleAttributeName, 
-								@"http://www.gpgmail.org/", NSLinkAttributeName, 
-								[NSColor blueColor], NSForegroundColorAttributeName, 
-								[NSFont fontWithName:@"Lucida Grande" size:9], NSFontAttributeName, 
-								[NSNumber numberWithInt:1], NSUnderlineStyleAttributeName, 
-								nil];
-	
+
+	NSDictionary * attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+								 pStyle, NSParagraphStyleAttributeName,
+								 @"http://www.gpgmail.org/", NSLinkAttributeName,
+								 [NSColor blueColor], NSForegroundColorAttributeName,
+								 [NSFont fontWithName:@"Lucida Grande" size:9], NSFontAttributeName,
+								 [NSNumber numberWithInt:1], NSUnderlineStyleAttributeName,
+								 nil];
+
 	return [[[NSAttributedString alloc] initWithString:@"http://www.gpgmail.org" attributes:attributes] autorelease];
 }
 
 
 
 - (void)refreshKeyIdentifiersDisplay {
-    GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
-    NSEnumerator	*anEnum; // = [[mailBundle allDisplayedKeyIdentifiers] objectEnumerator];
-    NSString		*anIdentifier;
-    NSEnumerator	*tableColumnEnum = [[NSArray arrayWithArray:[keyIdentifiersTableView tableColumns]] objectEnumerator];
-    NSTableColumn	*aColumn;
+	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
+	NSEnumerator * anEnum;               // = [[mailBundle allDisplayedKeyIdentifiers] objectEnumerator];
+	NSString * anIdentifier;
+	NSEnumerator * tableColumnEnum = [[NSArray arrayWithArray:[keyIdentifiersTableView tableColumns]] objectEnumerator];
+	NSTableColumn * aColumn;
 
-    while(aColumn = [tableColumnEnum nextObject])
-        [keyIdentifiersTableView removeTableColumn:aColumn];
+	while (aColumn = [tableColumnEnum nextObject])
+		[keyIdentifiersTableView removeTableColumn:aColumn];
 
-    anEnum = [[mailBundle displayedKeyIdentifiers] objectEnumerator];
-    while(anIdentifier = [anEnum nextObject])
-        [keyIdentifiersTableView addTableColumn:[tableColumnPerIdentifier objectForKey:anIdentifier]];
-    [keyIdentifiersTableView sizeToFit]; // No effect...
-    [mailBundle refreshKeyIdentifiersDisplayInMenu:[keyIdentifiersPopUpButton menu]];
+	anEnum = [[mailBundle displayedKeyIdentifiers] objectEnumerator];
+	while (anIdentifier = [anEnum nextObject])
+		[keyIdentifiersTableView addTableColumn:[tableColumnPerIdentifier objectForKey:anIdentifier]];
+	[keyIdentifiersTableView sizeToFit];         // No effect...
+	[mailBundle refreshKeyIdentifiersDisplayInMenu:[keyIdentifiersPopUpButton menu]];
 }
 
 - (void)refreshPersonalKeys {
-    GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
-    NSEnumerator	*keyEnum = [[mailBundle personalKeys] objectEnumerator];
-    GPGKey          *aKey;
-    NSString		*defaultKeyFingerprint = [[mailBundle defaultKey] fingerprint];
-    BOOL			displaysAllUserIDs = [mailBundle displaysAllUserIDs];
+	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
+	NSEnumerator * keyEnum = [[mailBundle personalKeys] objectEnumerator];
+	GPGKey * aKey;
+	NSString * defaultKeyFingerprint = [[mailBundle defaultKey] fingerprint];
+	BOOL displaysAllUserIDs = [mailBundle displaysAllUserIDs];
 
-    [personalKeysPopUpButton removeAllItems];
-    while(aKey = [keyEnum nextObject]){
-        NSMenuItem  *anItem;
-        
-        [personalKeysPopUpButton addItemWithTitle:[mailBundle menuItemTitleForKey:aKey]];
-        anItem = [personalKeysPopUpButton lastItem];
-        [anItem setRepresentedObject:aKey];
-        if(defaultKeyFingerprint && [[aKey fingerprint] isEqualToString:defaultKeyFingerprint])
-            [personalKeysPopUpButton selectItem:anItem];
-        if(displaysAllUserIDs){
-            NSEnumerator	*userIDEnum = [[mailBundle secondaryUserIDsForKey:aKey] objectEnumerator];
-            GPGUserID       *aUserID;
+	[personalKeysPopUpButton removeAllItems];
+	while (aKey = [keyEnum nextObject]) {
+		NSMenuItem * anItem;
 
-            while(aUserID = [userIDEnum nextObject]){
-                [personalKeysPopUpButton addItemWithTitle:[mailBundle menuItemTitleForUserID:aUserID indent:1]];
-                [[personalKeysPopUpButton lastItem] setEnabled:NO];
-            }
-        }
-    }
+		[personalKeysPopUpButton addItemWithTitle:[mailBundle menuItemTitleForKey:aKey]];
+		anItem = [personalKeysPopUpButton lastItem];
+		[anItem setRepresentedObject:aKey];
+		if (defaultKeyFingerprint && [[aKey fingerprint] isEqualToString:defaultKeyFingerprint]) {
+			[personalKeysPopUpButton selectItem:anItem];
+		}
+		if (displaysAllUserIDs) {
+			NSEnumerator * userIDEnum = [[mailBundle secondaryUserIDsForKey:aKey] objectEnumerator];
+			GPGUserID * aUserID;
+
+			while (aUserID = [userIDEnum nextObject]) {
+				[personalKeysPopUpButton addItemWithTitle:[mailBundle menuItemTitleForUserID:aUserID indent:1]];
+				[[personalKeysPopUpButton lastItem] setEnabled:NO];
+			}
+		}
+	}
 }
 
 - (NSImage *)imageForPreferenceNamed:(NSString *)aName {
-    return [NSImage imageNamed:@"GPGMailPreferences"];
+	return [NSImage imageNamed:@"GPGMailPreferences"];
 }
 
 
 - (IBAction)toggleAlwaysEncryptMessages:(id)sender {
-    [[GPGMailBundle sharedInstance] setAlwaysEncryptMessages:([sender state] == NSOnState)];
+	[[GPGMailBundle sharedInstance] setAlwaysEncryptMessages:([sender state] == NSOnState)];
 }
 
 - (IBAction)changeDefaultKey:(id)sender {
-    [[GPGMailBundle sharedInstance] setDefaultKey:[[personalKeysPopUpButton selectedItem] representedObject]];
+	[[GPGMailBundle sharedInstance] setDefaultKey:[[personalKeysPopUpButton selectedItem] representedObject]];
 }
 
 - (IBAction)toggleShowKeyInformation:(id)sender {
-    [[GPGMailBundle sharedInstance] gpgToggleShowKeyInformation:sender];
+	[[GPGMailBundle sharedInstance] gpgToggleShowKeyInformation:sender];
 }
 
 
 - (int)numberOfRowsInTableView:(NSTableView *)tableView {
-    return 0;
+	return 0;
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(int)row {
-    return nil;
+	return nil;
 }
 
 - (void)tableViewColumnDidMove:(NSNotification *)notification {
-    if(!initializingPrefs){
-        GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
-        NSMutableArray	*anArray = [NSMutableArray arrayWithArray:[mailBundle displayedKeyIdentifiers]];
-        int				anIndex = [[[notification userInfo] objectForKey:@"NSOldColumn"] intValue];
-        id				anObject = [[anArray objectAtIndex:anIndex] retain];
+	if (!initializingPrefs) {
+		GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
+		NSMutableArray * anArray = [NSMutableArray arrayWithArray:[mailBundle displayedKeyIdentifiers]];
+		int anIndex = [[[notification userInfo] objectForKey:@"NSOldColumn"] intValue];
+		id anObject = [[anArray objectAtIndex:anIndex] retain];
 
-        [anArray removeObjectAtIndex:anIndex];
-        anIndex = [[[notification userInfo] objectForKey:@"NSNewColumn"] intValue];
-        [anArray insertObject:anObject atIndex:anIndex];
-        [anObject release];
-        [mailBundle setDisplayedKeyIdentifiers:anArray];
-        [self refreshKeyIdentifiersDisplay];
-        [self refreshPersonalKeys];
-    }
+		[anArray removeObjectAtIndex:anIndex];
+		anIndex = [[[notification userInfo] objectForKey:@"NSNewColumn"] intValue];
+		[anArray insertObject:anObject atIndex:anIndex];
+		[anObject release];
+		[mailBundle setDisplayedKeyIdentifiers:anArray];
+		[self refreshKeyIdentifiersDisplay];
+		[self refreshPersonalKeys];
+	}
 }
 
 
 - (id)init {
-    if(self = [super init]){
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyListWasInvalidated:) name:GPGKeyListWasInvalidatedNotification object:[GPGMailBundle sharedInstance]];
-    }
+	if (self = [super init]) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyListWasInvalidated:) name:GPGKeyListWasInvalidatedNotification object:[GPGMailBundle sharedInstance]];
+	}
 
-    return self;
+	return self;
 }
 
 - (void)dealloc {
-    [tableColumnPerIdentifier release];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GPGPreferencesDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GPGKeyListWasInvalidatedNotification object:nil];
-    
-    [super dealloc];
+	[tableColumnPerIdentifier release];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:GPGPreferencesDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:GPGKeyListWasInvalidatedNotification object:nil];
+
+	[super dealloc];
 }
 
 - (void)keyListWasInvalidated:(NSNotification *)notification {
-    [self refreshPersonalKeys];
+	[self refreshPersonalKeys];
 }
 
 - (void)awakeFromNib {
-    NSEnumerator            *anEnum = [[keyIdentifiersTableView tableColumns] objectEnumerator];
-    NSTableColumn           *aColumn;
-	
-	
-    tableColumnPerIdentifier = [[NSMutableDictionary alloc] init];
-    [personalKeysPopUpButton setAutoenablesItems:NO];
+	NSEnumerator * anEnum = [[keyIdentifiersTableView tableColumns] objectEnumerator];
+	NSTableColumn * aColumn;
 
-    while(aColumn = [anEnum nextObject])
-        [tableColumnPerIdentifier setObject:aColumn forKey:[aColumn identifier]];
-    [keyIdentifiersTableView setColumnAutoresizingStyle:NSTableViewUniformColumnAutoresizingStyle];
 
-    // Since 10.5, we can no longer reorder column when tableView data height is null.
-    // As a workaround, we add 1 pixel.
-    // FIXME: replace that tableView by NSTokenField
-    NSRect  aFrame = [[keyIdentifiersTableView enclosingScrollView] frame];
-    
-    aFrame.origin.y -= 1;
-    aFrame.size.height += 1;
-    [[keyIdentifiersTableView enclosingScrollView] setFrame:aFrame];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferencesDidChange:) name:GPGPreferencesDidChangeNotification object:[GPGMailBundle sharedInstance]];
+	tableColumnPerIdentifier = [[NSMutableDictionary alloc] init];
+	[personalKeysPopUpButton setAutoenablesItems:NO];
+
+	while (aColumn = [anEnum nextObject])
+		[tableColumnPerIdentifier setObject:aColumn forKey:[aColumn identifier]];
+	[keyIdentifiersTableView setColumnAutoresizingStyle:NSTableViewUniformColumnAutoresizingStyle];
+
+	// Since 10.5, we can no longer reorder column when tableView data height is null.
+	// As a workaround, we add 1 pixel.
+	// FIXME: replace that tableView by NSTokenField
+	NSRect aFrame = [[keyIdentifiersTableView enclosingScrollView] frame];
+
+	aFrame.origin.y -= 1;
+	aFrame.size.height += 1;
+	[[keyIdentifiersTableView enclosingScrollView] setFrame:aFrame];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferencesDidChange:) name:GPGPreferencesDidChangeNotification object:[GPGMailBundle sharedInstance]];
 }
 
 - (void)initializeFromDefaults {
-    initializingPrefs = YES;
-    
-	[super initializeFromDefaults];
-    [self refreshPersonalKeys];
-    [self refreshKeyIdentifiersDisplay];
+	initializingPrefs = YES;
 
-    initializingPrefs = NO;
+	[super initializeFromDefaults];
+	[self refreshPersonalKeys];
+	[self refreshKeyIdentifiersDisplay];
+
+	initializingPrefs = NO;
 }
 
 - (IBAction)flushCachedPassphrases:(id)sender {
-    [GPGPassphraseController flushCachedPassphrases];
+	[GPGPassphraseController flushCachedPassphrases];
 	[GPGAgentOptions gpgAgentFlush];
 }
 
 - (void)preferencesDidChange:(NSNotification *)notification {
-    NSString		*aKey = [[notification userInfo] objectForKey:@"key"];
-    GPGMailBundle	*mailBundle = [GPGMailBundle sharedInstance];
+	NSString * aKey = [[notification userInfo] objectForKey:@"key"];
 
-    if([aKey isEqualToString:@"displaysAllUserIDs"]) {
-        [self refreshPersonalKeys];
-    } else if([aKey isEqualToString:@"displayedKeyIdentifiers"]) {
-        [self refreshKeyIdentifiersDisplay];
-        [self refreshPersonalKeys];
-    } else if([aKey isEqualToString:@"filtersOutUnusableKeys"]) {
-        [self refreshPersonalKeys];
-    }
+	if ([aKey isEqualToString:@"displaysAllUserIDs"]) {
+		[self refreshPersonalKeys];
+	} else if ([aKey isEqualToString:@"displayedKeyIdentifiers"]) {
+		[self refreshKeyIdentifiersDisplay];
+		[self refreshPersonalKeys];
+	} else if ([aKey isEqualToString:@"filtersOutUnusableKeys"]) {
+		[self refreshPersonalKeys];
+	}
 }
 
 - (IBAction)refreshKeys:(id)sender {
-    [[GPGMailBundle sharedInstance] gpgReloadPGPKeys:sender];
-    [sender setState:NSOffState];
+	[[GPGMailBundle sharedInstance] gpgReloadPGPKeys:sender];
+	[sender setState:NSOffState];
 }
 
 @end

@@ -15,7 +15,7 @@
 @end
 
 @interface NSMutableData (RFC2231Support)
-- (void)appendRFC2231CompliantValue:(id)arg1 forKey:(id)arg2 withEncodingHint:(unsigned int)arg3;
+- (void)appendRFC2231CompliantValue:(id) arg1 forKey:(id) arg2 withEncodingHint:(unsigned int)arg3;
 @end
 
 @interface NSData (HFSDataConversion)
@@ -27,7 +27,7 @@
 + (unsigned long long)quotedPrintableLengthOfHeaderBytes:(const char *)arg1 length:(unsigned long long)arg2;
 - (id)decodeQuotedPrintableForText:(BOOL)arg1;
 - (id)encodeQuotedPrintableForText:(BOOL)arg1;
-- (id)encodeQuotedPrintableForText:(BOOL)arg1 allowCancel:(BOOL)arg2;
+- (id)encodeQuotedPrintableForText:(BOOL) arg1 allowCancel:(BOOL)arg2;
 - (id)decodeBase64;
 - (BOOL)isValidBase64Data;
 - (id)encodeBase64WithoutLineBreaks;
@@ -45,11 +45,11 @@
 - (id)subdataToIndex:(unsigned long long)arg1;
 - (id)subdataFromIndex:(unsigned long long)arg1;
 - (struct _NSRange)rangeOfData:(id)arg1;
-- (struct _NSRange)rangeOfData:(id)arg1 options:(unsigned long long)arg2;
-- (struct _NSRange)rangeOfData:(id)arg1 options:(unsigned long long)arg2 range:(struct _NSRange)arg3;
+- (struct _NSRange)rangeOfData:(id) arg1 options:(unsigned long long)arg2;
+- (struct _NSRange)rangeOfData:(id) arg1 options:(unsigned long long)arg2 range:(struct _NSRange)arg3;
 - (struct _NSRange)rangeOfByteFromSet:(id)arg1;
-- (struct _NSRange)rangeOfByteFromSet:(id)arg1 options:(unsigned long long)arg2;
-- (struct _NSRange)rangeOfByteFromSet:(id)arg1 options:(unsigned long long)arg2 range:(struct _NSRange)arg3;
+- (struct _NSRange)rangeOfByteFromSet:(id) arg1 options:(unsigned long long)arg2;
+- (struct _NSRange)rangeOfByteFromSet:(id) arg1 options:(unsigned long long)arg2 range:(struct _NSRange)arg3;
 - (struct _NSRange)rangeOfCString:(const char *)arg1;
 - (struct _NSRange)rangeOfCString:(const char *)arg1 options:(unsigned long long)arg2;
 - (struct _NSRange)rangeOfCString:(const char *)arg1 options:(unsigned long long)arg2 range:(struct _NSRange)arg3;
@@ -64,7 +64,7 @@
 
 @interface NSData (UuEnDecode)
 - (id)uudecodedDataIntoFile:(id *)arg1 mode:(unsigned int *)arg2;
-- (id)uuencodedDataWithFile:(id)arg1 mode:(unsigned int)arg2;
+- (id)uuencodedDataWithFile:(id) arg1 mode:(unsigned int)arg2;
 @end
 
 #elif defined(SNOW_LEOPARD)
@@ -74,7 +74,7 @@
 @end
 
 @interface NSMutableData (RFC2231Support)
-- (void)appendRFC2231CompliantValue:(id)arg1 forKey:(id)arg2 withEncodingHint:(unsigned long)arg3;
+- (void)appendRFC2231CompliantValue:(id) arg1 forKey:(id) arg2 withEncodingHint:(unsigned long)arg3;
 @end
 
 @interface NSMutableData (NSDataUtils)
@@ -92,7 +92,7 @@
 + (unsigned int)quotedPrintableLengthOfHeaderBytes:(const char *)arg1 length:(unsigned int)arg2;
 - (id)decodeQuotedPrintableForText:(BOOL)arg1;
 - (id)encodeQuotedPrintableForText:(BOOL)arg1;
-- (id)encodeQuotedPrintableForText:(BOOL)arg1 allowCancel:(BOOL)arg2;
+- (id)encodeQuotedPrintableForText:(BOOL) arg1 allowCancel:(BOOL)arg2;
 - (id)decodeBase64;
 - (BOOL)isValidBase64Data;
 - (id)encodeBase64WithoutLineBreaks;
@@ -110,11 +110,11 @@
 - (id)subdataToIndex:(unsigned int)arg1;
 - (id)subdataFromIndex:(unsigned int)arg1;
 - (struct _NSRange)rangeOfData:(id)arg1;
-- (struct _NSRange)rangeOfData:(id)arg1 options:(unsigned int)arg2;
-- (struct _NSRange)rangeOfData:(id)arg1 options:(unsigned int)arg2 range:(struct _NSRange)arg3;
+- (struct _NSRange)rangeOfData:(id) arg1 options:(unsigned int)arg2;
+- (struct _NSRange)rangeOfData:(id) arg1 options:(unsigned int)arg2 range:(struct _NSRange)arg3;
 - (struct _NSRange)rangeOfByteFromSet:(id)arg1;
-- (struct _NSRange)rangeOfByteFromSet:(id)arg1 options:(unsigned int)arg2;
-- (struct _NSRange)rangeOfByteFromSet:(id)arg1 options:(unsigned int)arg2 range:(struct _NSRange)arg3;
+- (struct _NSRange)rangeOfByteFromSet:(id) arg1 options:(unsigned int)arg2;
+- (struct _NSRange)rangeOfByteFromSet:(id) arg1 options:(unsigned int)arg2 range:(struct _NSRange)arg3;
 - (struct _NSRange)rangeOfCString:(const char *)arg1;
 - (struct _NSRange)rangeOfCString:(const char *)arg1 options:(unsigned int)arg2;
 - (struct _NSRange)rangeOfCString:(const char *)arg1 options:(unsigned int)arg2 range:(struct _NSRange)arg3;
@@ -129,7 +129,7 @@
 
 @interface NSData (UuEnDecode)
 - (id)uudecodedDataIntoFile:(id *)arg1 mode:(unsigned int *)arg2;
-- (id)uuencodedDataWithFile:(id)arg1 mode:(unsigned int)arg2;
+- (id)uuencodedDataWithFile:(id) arg1 mode:(unsigned int)arg2;
 @end
 
-#endif
+#endif // ifdef SNOW_LEOPARD_64

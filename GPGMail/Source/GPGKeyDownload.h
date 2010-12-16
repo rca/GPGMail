@@ -30,40 +30,39 @@
 #import <AppKit/AppKit.h>
 #import "GPGMailBundle.h"
 
-extern NSString	*GPGDidFindKeysNotification;
+extern NSString * GPGDidFindKeysNotification;
 
-@interface GPGKeyDownload : NSWindowController
-{
-    IBOutlet NSTextField			*titleField;
-    IBOutlet NSTabView				*tabView;
-    IBOutlet NSTextField			*subtitleField;
-    IBOutlet NSOutlineView			*outlineView;
-    IBOutlet NSProgressIndicator	*searchProgressIndicator;
-    IBOutlet NSTextField			*searchProgressField;
-    IBOutlet NSProgressIndicator	*importProgressIndicator;
-    IBOutlet NSTextField			*importProgressField;
-    IBOutlet NSButton				*importButton;
-    IBOutlet NSFormCell				*emailCell;
-    IBOutlet NSComboBox				*serverComboBox;
-    IBOutlet NSButton				*searchButton;
-    NSArray							*foundKeys;
-    NSMutableSet					*selectedKeys;
-    GPGContext                      *context;
-    BOOL							isSearching;
-    BOOL							isImporting;
-    BOOL							cancelled;
-    NSArray							*serverList;
-    NSMutableCharacterSet           *validEmailAddressCharset;
-    NSArray							*defaultServerList;
+@interface GPGKeyDownload : NSWindowController {
+	IBOutlet NSTextField * titleField;
+	IBOutlet NSTabView * tabView;
+	IBOutlet NSTextField * subtitleField;
+	IBOutlet NSOutlineView * outlineView;
+	IBOutlet NSProgressIndicator * searchProgressIndicator;
+	IBOutlet NSTextField * searchProgressField;
+	IBOutlet NSProgressIndicator * importProgressIndicator;
+	IBOutlet NSTextField * importProgressField;
+	IBOutlet NSButton * importButton;
+	IBOutlet NSFormCell * emailCell;
+	IBOutlet NSComboBox * serverComboBox;
+	IBOutlet NSButton * searchButton;
+	NSArray * foundKeys;
+	NSMutableSet * selectedKeys;
+	GPGContext * context;
+	BOOL isSearching;
+	BOOL isImporting;
+	BOOL cancelled;
+	NSArray * serverList;
+	NSMutableCharacterSet * validEmailAddressCharset;
+	NSArray * defaultServerList;
 }
 
-+ (id) sharedInstance;
++ (id)sharedInstance;
 
-- (IBAction) gpgSearchKeys:(id)sender;
-- (IBAction) search:(id)sender;
-- (IBAction) cancel:(id)sender;
-- (IBAction) import:(id)sender;
+- (IBAction)gpgSearchKeys:(id)sender;
+- (IBAction)search:(id)sender;
+- (IBAction)cancel:(id)sender;
+- (IBAction)import:(id)sender;
 
-- (void) searchKeysMatchingPatterns:(NSArray *)patterns;
+- (void)searchKeysMatchingPatterns:(NSArray *)patterns;
 
 @end

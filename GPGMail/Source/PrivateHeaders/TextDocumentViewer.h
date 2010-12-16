@@ -15,16 +15,16 @@
 @class NSTimer;
 
 
-extern NSString	*MessageWillBeDisplayedInView;
+extern NSString * MessageWillBeDisplayedInView;
 // Object is TextDocumentViewer
 // UserInfo:
-// 	MessageKey = Message
-// 	MessageViewKey = MessageTextView
-extern NSString	*MessageWillNoLongerBeDisplayedInView;
+//  MessageKey = Message
+//  MessageViewKey = MessageTextView
+extern NSString * MessageWillNoLongerBeDisplayedInView;
 // Object is TextDocumentViewer
 // UserInfo:
-// 	MessageKey = Message
-// 	MessageViewKey = MessageTextView
+//  MessageKey = Message
+//  MessageViewKey = MessageTextView
 
 
 @class MessageViewingState;
@@ -32,29 +32,29 @@ extern NSString	*MessageWillNoLongerBeDisplayedInView;
 @class ObjectCache;
 @class InvocationQueue;
 
-@interface TextDocumentViewer:NSResponder
+@interface TextDocumentViewer : NSResponder
 {
-    Message *_message;
-    MessageViewingState *_viewingState;
-    ActivityMonitor *_documentMonitor;
-    NSScrollView *messageScroll;
-    MessageTextView *textView;
-    MessageTextContainer *specialContainer;
-    NSImageView *imageView;
-    NSView *contentContainerView;
-    NSView *junkMailView;
-    HTMLView *_htmlView;
-    NSView *_currentView;
-    NSTimer *_fadeTimer;
-    ObjectCache *_documentCache;
-    struct __CFSet *observedHTMLDocuments;
-    InvocationQueue *invocationQueue;
-    NSString *_messageIDToRestoreInitialStateFor;
-    struct _NSRect _initialVisibleRect;
-    struct _NSRange _initialSelectedRange;
-    int _fadeStepCounter:30;
-    int _attachmentsMayBeLoading:1;
-    int _textViewHasBeenInitialized:1;
+	Message * _message;
+	MessageViewingState * _viewingState;
+	ActivityMonitor * _documentMonitor;
+	NSScrollView * messageScroll;
+	MessageTextView * textView;
+	MessageTextContainer * specialContainer;
+	NSImageView * imageView;
+	NSView * contentContainerView;
+	NSView * junkMailView;
+	HTMLView * _htmlView;
+	NSView * _currentView;
+	NSTimer * _fadeTimer;
+	ObjectCache * _documentCache;
+	struct __CFSet * observedHTMLDocuments;
+	InvocationQueue * invocationQueue;
+	NSString * _messageIDToRestoreInitialStateFor;
+	struct _NSRect _initialVisibleRect;
+	struct _NSRange _initialSelectedRange;
+	int _fadeStepCounter : 30;
+	int _attachmentsMayBeLoading : 1;
+	int _textViewHasBeenInitialized : 1;
 }
 
 - (void)awakeFromNib;
@@ -115,7 +115,7 @@ extern NSString	*MessageWillNoLongerBeDisplayedInView;
 - (void)targetHtmlView:fp12 followLink:fp16;
 - (char)htmlView:fp12 clickedOnLink:fp16;
 - (char)currentlyViewingSource;
-- (char)_validateAction:(SEL)fp12 tag:(int)fp16;
+- (char)_validateAction:(SEL) fp12 tag:(int)fp16;
 - (char)validateToolbarItem:fp12;
 - (char)validateMenuItem:fp12;
 - (void)showAllHeaders:fp12;
