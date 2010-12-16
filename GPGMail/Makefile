@@ -16,7 +16,7 @@ check-all-warnings: clean-gpgmail
 	make | grep "warning: "
 
 check-warnings: clean-gpgmail
-	make | grep "warning: "|grep -v "#warnings"
+	make | grep "warning: "|grep -v "#warning"
 
 check: clean-gpgmail
 	@if [ "`which scan-build`" == "" ]; then echo 'usage: PATH=$$PATH:path_to_scan_build make check'; echo "see: http://clang-analyzer.llvm.org/"; exit; fi
@@ -24,7 +24,18 @@ check: clean-gpgmail
 	@echo "Have a closer look at these warnings:";
 	@echo "=====================================";
 	@echo "";
-	@scan-build --use-cc clang -o build/report xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release build 2>error.log|grep "is deprecated"
+	@scan-build -analyzer-check-objc-missing-dealloc \
+	            -analyzer-check-dead-stores \
+	            -analyzer-check-idempotent-operations \
+	            -analyzer-check-llvm-conventions \
+	            -analyzer-check-objc-mem \
+	            -analyzer-check-objc-methodsigs \
+	            -analyzer-check-objc-missing-dealloc \
+	            -analyzer-check-objc-unused-ivars \
+	            -analyzer-check-security-syntactic \
+	            --use-cc clang -o build/report xcodebuild \
+	            -project GPGMail.xcodeproj -target GPGMail \
+	            -configuration Release build 2>error.log|grep "is deprecated"
 	@echo "";
 	@echo "Now have a look at build/report/ or at error.log";
 
