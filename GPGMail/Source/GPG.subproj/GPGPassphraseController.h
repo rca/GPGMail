@@ -32,15 +32,15 @@
 
 @interface GPGPassphraseController : NSObject
 {
-	IBOutlet NSPanel * panel;
-	IBOutlet NSTextField * passphraseTextField;
-	IBOutlet NSTextField * messageTextField;
-	IBOutlet NSTextField * titleTextField;
-	IBOutlet NSTextField * clearPassphraseTextField;
-	IBOutlet NSButton * passphraseCheckBox;
-	IBOutlet NSTabView * passphraseTabView;
+	IBOutlet NSPanel *panel;
+	IBOutlet NSTextField *passphraseTextField;
+	IBOutlet NSTextField *messageTextField;
+	IBOutlet NSTextField *titleTextField;
+	IBOutlet NSTextField *clearPassphraseTextField;
+	IBOutlet NSButton *passphraseCheckBox;
+	IBOutlet NSTabView *passphraseTabView;
 	BOOL isInUse;
-	NSConditionLock * lock;
+	NSConditionLock *lock;
 }
 
 + (id)controller;

@@ -27,7 +27,7 @@
 
 #import <Foundation/Foundation.h>
 
-static void usage(const char * progname){
+static void usage(const char *progname){
 	fprintf(stderr, "%s: property-list file utility\n"
 			"    -read plist key\n"
 			"    -write plist key value\n"
@@ -35,18 +35,18 @@ static void usage(const char * progname){
 			, progname);
 }
 
-int main(int argc, char ** argv){
-	NSAutoreleasePool * localAP = [[NSAutoreleasePool alloc] init];
-	NSArray * arguments = [[NSProcessInfo processInfo] arguments];
+int main(int argc, char **argv){
+	NSAutoreleasePool *localAP = [[NSAutoreleasePool alloc] init];
+	NSArray *arguments = [[NSProcessInfo processInfo] arguments];
 	BOOL displayUsage = NO;
 	int terminationStatus = 0;
-	NSString * operation;
+	NSString *operation;
 
 	switch ([arguments count]) {
 		case 4:
 			operation = [arguments objectAtIndex:1];
 			if ([operation isEqualToString:@"-read"]) {
-				NSDictionary * plist = [NSDictionary dictionaryWithContentsOfFile:[arguments objectAtIndex:2]];
+				NSDictionary *plist = [NSDictionary dictionaryWithContentsOfFile:[arguments objectAtIndex:2]];
 
 				if (plist == nil) {
 					terminationStatus = 1;
@@ -60,8 +60,8 @@ int main(int argc, char ** argv){
 					}
 				}
 			} else if ([operation isEqualToString:@"-delete"]) {
-				NSString * filename = [arguments objectAtIndex:2];
-				NSMutableDictionary * plist = [NSMutableDictionary dictionaryWithContentsOfFile:filename];
+				NSString *filename = [arguments objectAtIndex:2];
+				NSMutableDictionary *plist = [NSMutableDictionary dictionaryWithContentsOfFile:filename];
 
 				if (plist == nil) {
 					terminationStatus = 1;
@@ -78,8 +78,8 @@ int main(int argc, char ** argv){
 		case 5:
 			operation = [arguments objectAtIndex:1];
 			if ([operation isEqualToString:@"-write"]) {
-				NSString * filename = [arguments objectAtIndex:2];
-				NSMutableDictionary * plist = [NSMutableDictionary dictionaryWithContentsOfFile:filename];
+				NSString *filename = [arguments objectAtIndex:2];
+				NSMutableDictionary *plist = [NSMutableDictionary dictionaryWithContentsOfFile:filename];
 
 				if (plist == nil) {
 					// Writing a key-value pair in a file that doesn't exist is not considered as an error
@@ -91,7 +91,7 @@ int main(int argc, char ** argv){
 					id aPlist = [[arguments objectAtIndex:4] propertyList];
 
 					[plist setObject:aPlist forKey:[arguments objectAtIndex:3]];
-				}@catch (NSException * localException) {
+				}@catch (NSException *localException) {
 					[plist setObject:[arguments objectAtIndex:4] forKey:[arguments objectAtIndex:3]];
 				}
 				terminationStatus = ![plist writeToFile:filename atomically:YES];

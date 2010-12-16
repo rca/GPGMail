@@ -147,9 +147,9 @@
 	while (aCount-- > 1)
 		[userIDsPopDownButton removeItemAtIndex:1];
 	if (key) {
-		NSEnumerator * anEnum = [[key userIDs] objectEnumerator];
-		GPGUserID * aUserID;
-		GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
+		NSEnumerator *anEnum = [[key userIDs] objectEnumerator];
+		GPGUserID *aUserID;
+		GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
 
 		while (aUserID = [anEnum nextObject])
 			[userIDsPopDownButton addItemWithTitle:[mailBundle menuItemTitleForUserID:aUserID indent:0]];
@@ -157,14 +157,14 @@
 }
 
 - (void)loadSignatureInfoViewWithSignature:(GPGSignature *)authenticationSignature {
-	NSCalendarDate * aDate;
-	NSString * aString;
-	NSBundle * aBundle = [NSBundle bundleForClass:[self class]];
-	NSString * iconName;
+	NSCalendarDate *aDate;
+	NSString *aString;
+	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
+	NSString *iconName;
 	BOOL hasExtraInfo = YES;
-	NSString * iconToolTip = @"";
-	NSArray * policyURLs = [authenticationSignature policyURLs];
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
+	NSString *iconToolTip = @"";
+	NSArray *policyURLs = [authenticationSignature policyURLs];
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
 	BOOL alertForExpiration = NO;
 	BOOL alertForPolicy = NO;
 	BOOL alertForTrust = NO;
@@ -174,11 +174,11 @@
 	signatureKey = nil;
 	aString = [authenticationSignature fingerprint];
 	if (aString) {
-		GPGContext * aContext = [[GPGContext alloc] init];
+		GPGContext *aContext = [[GPGContext alloc] init];
 
 		@try {
 			signatureKey = [[aContext keyFromFingerprint:aString secretKey:NO] retain];
-		}@catch (NSException * localException) {
+		}@catch (NSException *localException) {
 			[aContext release];
 			[localException raise];
 		}
@@ -207,7 +207,7 @@
 	if (aDate) {
 		[signatureCreationDateTextField setStringValue:[NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"Signed on %@", @"GPGMail", aBundle, ""), [aDate descriptionWithCalendarFormat:NSLocalizedStringFromTableInBundle(@"SIGNATURE_CREATION_DATE_FORMAT", @"GPGMail", aBundle, "") locale:[mailBundle locale]]]];
 	} else {
-		[signatureCreationDateTextField setStringValue:NSLocalizedStringFromTableInBundle(@"No signature creation date available", @"GPGMail", aBundle, "")];                  // Italicize it?
+		[signatureCreationDateTextField setStringValue:NSLocalizedStringFromTableInBundle(@"No signature creation date available", @"GPGMail", aBundle, "")];                          // Italicize it?
 
 	}
 	[self fillInUserIDListForKey:signatureKey];
@@ -224,7 +224,7 @@
 			// It's in fact a key ID!
 			aString = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"Key ID: 0x%@", @"GPGMail", aBundle, ""), aString];
 		} else {
-			aString = NSLocalizedStringFromTableInBundle(@"No key fingerprint/ID available", @"GPGMail", aBundle, "");                          // Italicize it?
+			aString = NSLocalizedStringFromTableInBundle(@"No key fingerprint/ID available", @"GPGMail", aBundle, "");                                      // Italicize it?
 		}
 	}
 	[signatureKeyFingerprintTextField setStringValue:aString];
@@ -281,11 +281,11 @@
 			iconToolTip = @"SIGNATURE_IS_NOT_GOOD";
 			break;
 		case GPGErrorNoPublicKey: {
-			NSArray * fingerprints = [NSArray arrayWithObject:[authenticationSignature fingerprint]];
-			NSArray * emails = [NSArray arrayWithObject:[[[delegate gpgMessageForAccessoryViewOwner:self] sender] uncommentedAddress]];
+			NSArray *fingerprints = [NSArray arrayWithObject:[authenticationSignature fingerprint]];
+			NSArray *emails = [NSArray arrayWithObject:[[[delegate gpgMessageForAccessoryViewOwner:self] sender] uncommentedAddress]];
 
 			aString = [NSMutableString stringWithFormat:NSLocalizedStringFromTableInBundle(@"MISSING KEY %@.", @"GPGMail", aBundle, ""), [authenticationSignature formattedFingerprint]];
-			[[NSNotificationCenter defaultCenter] postNotificationName:GPGMissingKeysNotification object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:fingerprints, @"fingerprints", emails, @"emails", nil]];                         // For some key servers, passing the fingerprint does not work, so let's pass the sender's email too
+			[[NSNotificationCenter defaultCenter] postNotificationName:GPGMissingKeysNotification object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:fingerprints, @"fingerprints", emails, @"emails", nil]];                                     // For some key servers, passing the fingerprint does not work, so let's pass the sender's email too
 			iconName = @"gpgUnsigned";
 			iconToolTip = nil;
 			break;
@@ -331,7 +331,7 @@
 	}
 	[policyAlertIconView setImage:[NSImage imageNamed:iconName]];
 
-	[signatureToggleButton setState:NSOffState];         // Always closed first
+	[signatureToggleButton setState:NSOffState];             // Always closed first
 #warning TODO: no information if key has been revoked!
 }
 
@@ -350,10 +350,10 @@
 	// TODO: Should be done async, in another thread
 
 	@try {
-		GPGSignature * authenticationSignature;
+		GPGSignature *authenticationSignature;
 //        BOOL			hasValidSignature;
 
-		authenticationSignature = [[delegate gpgMessageForAccessoryViewOwner:self] gpgAuthenticationSignature];                 // Can raise an exception
+		authenticationSignature = [[delegate gpgMessageForAccessoryViewOwner:self] gpgAuthenticationSignature];                         // Can raise an exception
 		if (authenticationSignature == nil && [self bannerType] == gpgDecryptedInfoBanner) {
 		} else {
 			[self loadSignatureInfoViewWithSignature:authenticationSignature];
@@ -370,7 +370,7 @@
  *              [message setMessageFlags:[message messageFlags] & 0xFF7FFFFF];*/
 			// [[message messageFlags] setObject:??? forKey:@"GPGAuthenticated"];
 		}
-	}@catch (NSException * localException) {
+	}@catch (NSException *localException) {
 		NSBeginAlertSheet(NSLocalizedStringFromTableInBundle(@"AUTHENTICATION_TITLE_FAILED", @"GPGMail", [NSBundle bundleForClass:[self class]], ""), nil, nil, nil, [[self view] window], nil, NULL, NULL, NULL, @"%@", [[GPGMailBundle sharedInstance] descriptionForException:localException]);
 		// [[message messageFlags] setObject:@"NO" forKey:@"GPGAuthenticated"];
 	}
@@ -382,34 +382,34 @@
 		NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
 	}
 	// TODO: Should be done async, in another thread
-	NSMutableArray * sigs = [NSMutableArray array];
-	NSException * decryptionException = nil, * authenticationException = nil;
+	NSMutableArray *sigs = [NSMutableArray array];
+	NSException *decryptionException = nil, *authenticationException = nil;
 	BOOL decrypted = NO;
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
 
 
 	@try {
 //        Message	*decryptedMessage = [[delegate gpgMessageForAccessoryViewOwner:self] gpgDecryptedMessageWithPassphraseDelegate:mailBundle signature:(id *)&signature];
-		Message * decryptedMessage = [delegate gpgMessageForAccessoryViewOwner:self];
+		Message *decryptedMessage = [delegate gpgMessageForAccessoryViewOwner:self];
 		[decryptedMessage gpgDecryptMessageWithPassphraseDelegate:mailBundle messageSignatures:sigs];
 
 		if (GPGMailLoggingLevel) {
 			NSLog(@"[DEBUG] Got decrypted message; signatures = %@", sigs);
 		}
-		NSAssert(decryptedMessage != nil, @"Why is it nil? Which circumstances??");                // Would return nil in case method was called for a message which is not an encrypted one => programmation error
+		NSAssert(decryptedMessage != nil, @"Why is it nil? Which circumstances??");                        // Would return nil in case method was called for a message which is not an encrypted one => programmation error
 		// Let's support messages which have been signed then encrypted
-		if ([sigs count] == 0 && [decryptedMessage gpgHasSignature]) {                             // FIXME: The decryptedMessage we get here is still the original encrypted one -> headers are the encrypted ones, and cannot be the decrypted ones!
+		if ([sigs count] == 0 && [decryptedMessage gpgHasSignature]) {                                     // FIXME: The decryptedMessage we get here is still the original encrypted one -> headers are the encrypted ones, and cannot be the decrypted ones!
 
 			if (GPGMailLoggingLevel) {
 				NSLog(@"[DEBUG] Extracting signatures");
 			}
 			@try {
-				GPGSignature * aSignature = [decryptedMessage gpgEmbeddedAuthenticationSignature]; // Can raise an exception
+				GPGSignature *aSignature = [decryptedMessage gpgEmbeddedAuthenticationSignature];                  // Can raise an exception
 
 				if (aSignature != nil) {
 					[sigs addObject:aSignature];
 				}
-			}@catch (NSException * localException) {
+			}@catch (NSException *localException) {
 				// Error during verification
 				authenticationException = localException;
 				NSLog(@"[DEBUG] authenticationException: %@", [[authenticationException userInfo] objectForKey:NSStackTraceKey]);
@@ -424,13 +424,13 @@
 		}
 
 		if ([sigs count] > 0) {
-			[self loadSignatureInfoViewWithSignature:[sigs objectAtIndex:0]];                         // TODO: display all signatures
+			[self loadSignatureInfoViewWithSignature:[sigs objectAtIndex:0]];                                     // TODO: display all signatures
 			[delegate gpgAccessoryViewOwner:self replaceViewWithView:signatureUpperView];
 			[self setBannerType:gpgDecryptedSignatureInfoBanner];
 		}
 		isSignatureExtraViewVisible = NO;
 		[delegate gpgAccessoryViewOwner:self displayMessage:decryptedMessage isSigned:([sigs count] > 0)];
-	}@catch (NSException * localException) {
+	}@catch (NSException *localException) {
 		decryptionException = localException;
 		// Error during decryption
 	}
@@ -450,7 +450,7 @@
 			[delegate gpgAccessoryViewOwner:self replaceViewWithView:decryptedInfoView];
 			[self setBannerType:gpgDecryptedInfoBanner];
 		}
-	} else {         // Should we use a sheet instead?
+	} else {             // Should we use a sheet instead?
 		// Log the stack trace of the exception to console.app for debugging.
 		NSLog(@"[DEBUG] decryptionException: %@", [[decryptionException userInfo] objectForKey:NSStackTraceKey]);
 		[self printStackTrace:decryptionException];
@@ -465,12 +465,12 @@
 }
 
 - (void)printStackTrace:(NSException *)e {
-	NSString * stack = [[e userInfo] objectForKey:NSStackTraceKey];
+	NSString *stack = [[e userInfo] objectForKey:NSStackTraceKey];
 
 	if (stack) {
-		NSTask * ls = [[NSTask alloc] init];
-		NSString * pid = [[NSNumber numberWithInt:[[NSProcessInfo processInfo] processIdentifier]] stringValue];
-		NSMutableArray * args = [NSMutableArray arrayWithCapacity:20];
+		NSTask *ls = [[NSTask alloc] init];
+		NSString *pid = [[NSNumber numberWithInt:[[NSProcessInfo processInfo] processIdentifier]] stringValue];
+		NSMutableArray *args = [NSMutableArray arrayWithCapacity:20];
 
 		[args addObject:@"-p"];
 		[args addObject:pid];
@@ -513,7 +513,7 @@
 	if (anAction == @selector(gpgDecrypt:)) {
 		// Check that there is a selected message in mainWindow, and that message
 		// is currently encrypted
-		Message * aMessage = [delegate gpgMessageForAccessoryViewOwner:self];
+		Message *aMessage = [delegate gpgMessageForAccessoryViewOwner:self];
 
 		if (aMessage != nil) {
 			return [self isMessagePGPEncrypted];
@@ -523,7 +523,7 @@
 	} else if (anAction == @selector(gpgAuthenticate:)) {
 		// Check that there is a selected message in mainWindow, and that message
 		// is currently signed
-		Message * aMessage = [delegate gpgMessageForAccessoryViewOwner:self];
+		Message *aMessage = [delegate gpgMessageForAccessoryViewOwner:self];
 
 		if (aMessage != nil) {
 			/*

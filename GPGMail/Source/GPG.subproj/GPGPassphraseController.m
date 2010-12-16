@@ -55,8 +55,8 @@
 // and eventually key (in case we still can't fetch a key during passphrase delegation)
 
 static NSMutableSet                     * _controllerPool = nil;
-static NSMutableDictionary * _cachedPassphrases = nil;
-static NSTimer * _flushTimer = nil;
+static NSMutableDictionary *_cachedPassphrases = nil;
+static NSTimer *_flushTimer = nil;
 
 + (void)initialize {
 	[super initialize];
@@ -67,8 +67,8 @@ static NSTimer * _flushTimer = nil;
 }
 
 + (id)controller {
-	NSEnumerator * anEnum = [_controllerPool objectEnumerator];
-	GPGPassphraseController * aController;
+	NSEnumerator *anEnum = [_controllerPool objectEnumerator];
+	GPGPassphraseController *aController;
 
 	while ((aController = [anEnum nextObject]) != nil) {
 		if (![aController isInUse]) {
@@ -139,8 +139,8 @@ static NSTimer * _flushTimer = nil;
 
 - (NSString *)passphraseForUser:(id)user title:(NSString *)title window:(NSWindow *)parentWindow {
 	// user is nil for symetric encryption
-	NSString * passphrase;
-	GPGKey * aKey = nil;
+	NSString *passphrase;
+	GPGKey *aKey = nil;
 	BOOL usesPGPKey = (user != nil && ![user isKindOfClass:[NSString class]]);
 
 // #warning The following assertion is no longer true!
@@ -157,9 +157,9 @@ static NSTimer * _flushTimer = nil;
 			passphrase = [_cachedPassphrases objectForKey:[aKey fingerprint]];
 		}
 	} else
-												#warning Should we cache/store passphrase for symetric encryption?
+																								#warning Should we cache/store passphrase for symetric encryption?
 	{
-		passphrase = nil;                  // Symetric encryption; we don't cache passphrases
+		passphrase = nil;                          // Symetric encryption; we don't cache passphrases
 
 	}
 	// WARNING: if cached passphrase is invalid, user cannot modify it without flushing cache!
@@ -253,7 +253,7 @@ static NSTimer * _flushTimer = nil;
 		// during 5 hours, then total timeout will be 5 hours and
 		// some minutes! Not very good for passphrase caching...
 		// What we do is to check firedate every 10 seconds.
-		NSDate * flushTime = [NSDate dateWithTimeIntervalSinceNow:[[GPGMailBundle sharedInstance] passphraseFlushTimeout]];
+		NSDate *flushTime = [NSDate dateWithTimeIntervalSinceNow:[[GPGMailBundle sharedInstance] passphraseFlushTimeout]];
 
 		_flushTimer = [[NSTimer scheduledTimerWithTimeInterval:10. target:self selector:@selector(flushTimeoutHasArrived) userInfo:flushTime repeats:YES] retain];
 		[[NSRunLoop currentRunLoop] addTimer:_flushTimer forMode:NSModalPanelRunLoopMode];
@@ -325,8 +325,8 @@ static NSTimer * _flushTimer = nil;
  * Called after cached passphrase was invalid.
  */
 + (void)flushCachedPassphraseForUser:(id)user {
-	GPGKey * aKey;
-	NSString * userID;
+	GPGKey *aKey;
+	NSString *userID;
 
 	NSParameterAssert(user != nil);
 
@@ -366,20 +366,20 @@ static NSTimer * _flushTimer = nil;
 // the name of this application to find it.
 {
 	SecKeychainRef keychain = NULL;
-	NSString * aPassphrase = nil;
+	NSString *aPassphrase = nil;
 
 	if (SecKeychainCopyDefault(&keychain) != errSecNoDefaultKeychain) {
-		void * passphraseData;
+		void *passphraseData;
 		OSStatus retVal = noErr;
-		const char * serviceName = GPG_SERVICE_NAME;
-		const char * accountName = [[key fingerprint] UTF8String];
+		const char *serviceName = GPG_SERVICE_NAME;
+		const char *accountName = [[key fingerprint] UTF8String];
 		UInt32 passphraseDataLen = 0;
 
 #warning Memory leak with passphraseData?
 		retVal = SecKeychainFindGenericPassword(NULL, strlen(serviceName), serviceName, strlen(accountName), accountName, &passphraseDataLen, &passphraseData, itemPtr);
 		switch (retVal) {
 			case noErr: {
-				NSData * pData;
+				NSData *pData;
 
 //                pData = [NSData dataWithBytes:passphraseData length:passphraseDataLen];
 				pData = [NSData dataWithBytesNoCopy:passphraseData length:passphraseDataLen freeWhenDone:YES];
@@ -414,7 +414,7 @@ static NSTimer * _flushTimer = nil;
 - (void)deletePassphraseForKey:(GPGKey *)key {
 	OSStatus retVal = 0;
 	SecKeychainRef keychain = NULL;
-	NSString * passphraseStr = nil;
+	NSString *passphraseStr = nil;
 	SecKeychainItemRef keychainItem = NULL;
 
 	// Find the password
@@ -439,16 +439,16 @@ static NSTimer * _flushTimer = nil;
    // Store aPhrase in the keychain for key, using a generic password key.
 {
 	OSStatus retVal = 0;
-	const char * serviceName = GPG_SERVICE_NAME;
-	NSString * accountName = [key fingerprint];
-	const char * passphraseData;
+	const char *serviceName = GPG_SERVICE_NAME;
+	NSString *accountName = [key fingerprint];
+	const char *passphraseData;
 	SecKeychainRef keychain = NULL;
-	NSString * passphraseStr = nil;
+	NSString *passphraseStr = nil;
 	BOOL canceled = NO;
 	SecKeychainItemRef keychainItem = NULL;
 	SecAccessRef accessRef;
 	SecKeychainAttributeList attrList;
-	SecKeychainAttribute * attributes;
+	SecKeychainAttribute *attributes;
 
 	if (![aPhrase length] || !key) {
 		return;
@@ -526,7 +526,7 @@ static NSTimer * _flushTimer = nil;
 
 	// Add a new passphrase
 #warning Check encoding
-	passphraseData = [aPhrase UTF8String];         // Use utf8 encoding for passphrase!
+	passphraseData = [aPhrase UTF8String];             // Use utf8 encoding for passphrase!
 
 //    retVal = SecKeychainAddGenericPassword(keychain, strlen(serviceName), serviceName, strlen(accountName), accountName, strlen(passphraseData), passphraseData, &keychainItem);
 	retVal = SecAccessCreate((CFStringRef)@"GPGMail", NULL, &accessRef);
@@ -539,27 +539,27 @@ static NSTimer * _flushTimer = nil;
 	attributes = (SecKeychainAttribute *)NSZoneMalloc(NSDefaultMallocZone(), 5 * sizeof(SecKeychainAttribute));
 	attrList.count = 5;
 	attrList.attr = attributes;
-	attributes[0].tag = kSecDescriptionItemAttr;         // Represents the 'kind' field
-	attributes[0].data = (void *)[@"PGP Key passphrase" UTF8String];         // Localize it?
+	attributes[0].tag = kSecDescriptionItemAttr;                     // Represents the 'kind' field
+	attributes[0].data = (void *)[@"PGP Key passphrase" UTF8String]; // Localize it?
 	attributes[0].length = strlen(attributes[0].data);
 	attributes[1].tag = kSecCommentItemAttr;
 	{
-		NSEnumerator * anEnum = [[key userIDs] objectEnumerator];
-		GPGUserID * aUID;
-		NSMutableArray * uids = [NSMutableArray array];
+		NSEnumerator *anEnum = [[key userIDs] objectEnumerator];
+		GPGUserID *aUID;
+		NSMutableArray *uids = [NSMutableArray array];
 
 		while ((aUID = [anEnum nextObject]) != nil)
 			[uids addObject:[aUID userID]];
 		attributes[1].data = (void *)[[uids componentsJoinedByString:@"\n"] UTF8String];
 	}
 	attributes[1].length = strlen(attributes[1].data);
-	attributes[2].tag = kSecLabelItemAttr;         // Represents the 'name' field
+	attributes[2].tag = kSecLabelItemAttr;             // Represents the 'name' field
 	attributes[2].data = (void *)[[NSString stringWithFormat:@"0x%@ - %@", [key shortKeyID], [key userID]] UTF8String];
 	attributes[2].length = strlen(attributes[2].data);
 	attributes[3].tag = kSecAccountItemAttr;
 	attributes[3].data = (void *)[[key fingerprint] UTF8String];
 	attributes[3].length = strlen(attributes[3].data);
-	attributes[4].tag = kSecServiceItemAttr;         // Represents the 'where' field
+	attributes[4].tag = kSecServiceItemAttr;           // Represents the 'where' field
 	attributes[4].data = (void *)GPG_SERVICE_NAME;
 	attributes[4].length = strlen(attributes[4].data);
 //    attributes[5].tag = kSecGenericItemAttr; // What is it for?

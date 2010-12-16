@@ -44,7 +44,7 @@ IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(
 @end
 
 static NSMutableDictionary * originalMethodsMap;
-static IMP * originalMethods = NULL;
+static IMP *originalMethods = NULL;
 static int originalMethodsIndex = 0;
 static int methodsAllocatedCount = 0;
 

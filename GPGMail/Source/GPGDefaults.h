@@ -20,13 +20,13 @@
 
 
 @interface GPGDefaults : NSObject {
-	NSString * _domain;
-	NSMutableDictionary * _defaults;
-	NSLock * _defaultsLock;
-	NSSet * _defaultDictionarys;
+	NSString *_domain;
+	NSMutableDictionary *_defaults;
+	NSLock *_defaultsLock;
+	NSSet *_defaultDictionarys;
 }
 
-@property (retain) NSString * domain;
+@property (retain) NSString *domain;
 
 + (id)gpgDefaults;
 + (id)standardDefaults;

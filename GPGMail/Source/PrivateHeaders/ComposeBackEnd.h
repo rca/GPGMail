@@ -14,26 +14,26 @@
 @interface ComposeBackEnd : NSObject
 {
 	id _delegate;
-	NSPort * _initializationPort;
-	StationeryController * _stationeryController;
-	NSArray * _originalMessages;
-	NSArray * generatedParsedMessages;
+	NSPort *_initializationPort;
+	StationeryController *_stationeryController;
+	NSArray *_originalMessages;
+	NSArray *generatedParsedMessages;
 	long long backgroundResourcesLeft;
-	DOMNode * stationerySignatureNode;
-	NSMutableDictionary * _originalMessageHeaders;
-	NSMutableDictionary * _originalMessageBodies;
-	ParsedMessage * _originalMessageParsedMessage;
-	NSURL * _originalMessageBaseURL;
-	NSMutableDictionary * _cleanHeaders;
-	NSMutableDictionary * _extraRecipients;
-	NSMutableDictionary * _directoriesByAttachment;
-	NSUndoManager * _undoManager;
-	MFUUID * _documentID;
-	NSMutableSet * _knownMessageIds;
-	InvocationQueue * _saveQueue;
+	DOMNode *stationerySignatureNode;
+	NSMutableDictionary *_originalMessageHeaders;
+	NSMutableDictionary *_originalMessageBodies;
+	ParsedMessage *_originalMessageParsedMessage;
+	NSURL *_originalMessageBaseURL;
+	NSMutableDictionary *_cleanHeaders;
+	NSMutableDictionary *_extraRecipients;
+	NSMutableDictionary *_directoriesByAttachment;
+	NSUndoManager *_undoManager;
+	MFUUID *_documentID;
+	NSMutableSet *_knownMessageIds;
+	InvocationQueue *_saveQueue;
 	BOOL _saveThreadCancelFlag;
-	NSString * _saveThreadMessageId;
-	MailboxUid * _saveThreadMailboxUid;
+	NSString *_saveThreadMessageId;
+	MailboxUid *_saveThreadMailboxUid;
 	struct {
 		unsigned int type : 4;
 		unsigned int sendFormat : 2;
@@ -72,16 +72,16 @@
 		unsigned int preferredEncoding;
 		unsigned int encodingHint;
 	} _flags;
-	NSString * _contentForAddressBookUpdate;
-	NSString * _vcardPathForAddressBookUpdate;
+	NSString *_contentForAddressBookUpdate;
+	NSString *_vcardPathForAddressBookUpdate;
 	BOOL _willCloseEditor;
 	BOOL _isSettingSenderFromGetter;
-	EditableWebMessageDocument * _document;
-	NSMutableDictionary * _contentsByMessage;
-	ParsedMessage * _initialParsedMessage;
-	ParsedMessage * _restoredParsedMessage;
-	NSMutableDictionary * _attachmentMimeBodiesByURL;
-	NSNumber * _uniqueID;
+	EditableWebMessageDocument *_document;
+	NSMutableDictionary *_contentsByMessage;
+	ParsedMessage *_initialParsedMessage;
+	ParsedMessage *_restoredParsedMessage;
+	NSMutableDictionary *_attachmentMimeBodiesByURL;
+	NSNumber *_uniqueID;
 }
 
 + (void)initialize;
@@ -120,10 +120,10 @@
 - (id)attachments;
 - (id)directoryForAttachment:(id)arg1;
 - (BOOL)preserveAddedArchiveBody;
-@property (retain) ParsedMessage * initialParsedMessage;
+@property (retain) ParsedMessage *initialParsedMessage;
 - (id)restoredParsedMessage;
 - (void)setRestoredParsedMessage:(id)arg1;
-@property (readonly) EditableWebMessageDocument * document;
+@property (readonly) EditableWebMessageDocument *document;
 - (void)generateParsedMessageFromOriginalMessages;
 - (void)configureLoadingOfRemoteAttachments;
 - (void)setTypeAndConfigureLoadingOfRemoteAttachments:(int)arg1;
@@ -138,13 +138,13 @@
 - (id)draftMessage;
 - (id)plainTextMessage;
 - (id)message;
-@property (retain) MailAccount * account;
+@property (retain) MailAccount *account;
 - (void)setDeliveryAccount:(id)arg1;
 - (id)deliveryAccount;
-@property (retain) NSString * sender;
+@property (retain) NSString *sender;
 - (id)cleanHeaders;
 - (void)setCleanHeaders:(id)arg1;
-@property (retain) NSString * subject;
+@property (retain) NSString *subject;
 - (id)messageID;
 - (void)setShowAllHeaders:(BOOL)arg1;
 @property BOOL includeHeaders;
@@ -227,10 +227,10 @@
 - (void)_saveThreadSaveContents:(id)arg1;
 - (void)_markForOverwrite:(id)arg1;
 - (BOOL)isExchangeNote;
-@property (retain) MailboxUid * saveThreadMailboxUid; // @synthesize saveThreadMailboxUid=_saveThreadMailboxUid;
-@property (copy) NSString * saveThreadMessageId; // @synthesize saveThreadMessageId=_saveThreadMessageId;
-@property (retain) MFUUID * documentID; // @synthesize documentID=_documentID;
-@property (retain) NSURL * originalMessageBaseURL; // @synthesize originalMessageBaseURL=_originalMessageBaseURL;
+@property (retain) MailboxUid *saveThreadMailboxUid;  // @synthesize saveThreadMailboxUid=_saveThreadMailboxUid;
+@property (copy) NSString *saveThreadMessageId;  // @synthesize saveThreadMessageId=_saveThreadMessageId;
+@property (retain) MFUUID *documentID;  // @synthesize documentID=_documentID;
+@property (retain) NSURL *originalMessageBaseURL;  // @synthesize originalMessageBaseURL=_originalMessageBaseURL;
 
 @end
 
@@ -281,7 +281,7 @@
 
 @interface ComposeBackEnd_Scripting : ComposeBackEnd
 {
-	NSTextStorage * _textStorage;
+	NSTextStorage *_textStorage;
 }
 
 - (void)dealloc;
@@ -308,26 +308,26 @@
 @interface ComposeBackEnd : NSObject
 {
 	id _delegate;
-	NSPort * _initializationPort;
-	StationeryController * _stationeryController;
-	NSArray * _originalMessages;
-	NSArray * generatedParsedMessages;
+	NSPort *_initializationPort;
+	StationeryController *_stationeryController;
+	NSArray *_originalMessages;
+	NSArray *generatedParsedMessages;
 	int backgroundResourcesLeft;
-	DOMNode * stationerySignatureNode;
-	NSMutableDictionary * _originalMessageHeaders;
-	NSMutableDictionary * _originalMessageBodies;
-	ParsedMessage * _originalMessageParsedMessage;
-	NSURL * _originalMessageBaseURL;
-	NSMutableDictionary * _cleanHeaders;
-	NSMutableDictionary * _extraRecipients;
-	NSMutableDictionary * _directoriesByAttachment;
-	NSUndoManager * _undoManager;
-	MFUUID * _documentID;
-	NSMutableSet * _knownMessageIds;
-	InvocationQueue * _saveQueue;
+	DOMNode *stationerySignatureNode;
+	NSMutableDictionary *_originalMessageHeaders;
+	NSMutableDictionary *_originalMessageBodies;
+	ParsedMessage *_originalMessageParsedMessage;
+	NSURL *_originalMessageBaseURL;
+	NSMutableDictionary *_cleanHeaders;
+	NSMutableDictionary *_extraRecipients;
+	NSMutableDictionary *_directoriesByAttachment;
+	NSUndoManager *_undoManager;
+	MFUUID *_documentID;
+	NSMutableSet *_knownMessageIds;
+	InvocationQueue *_saveQueue;
 	BOOL _saveThreadCancelFlag;
-	NSString * _saveThreadMessageId;
-	MailboxUid * _saveThreadMailboxUid;
+	NSString *_saveThreadMessageId;
+	MailboxUid *_saveThreadMailboxUid;
 	struct {
 		unsigned int type : 4;
 		unsigned int sendFormat : 2;
@@ -366,16 +366,16 @@
 		unsigned int preferredEncoding;
 		unsigned int encodingHint;
 	} _flags;
-	NSString * _contentForAddressBookUpdate;
-	NSString * _vcardPathForAddressBookUpdate;
+	NSString *_contentForAddressBookUpdate;
+	NSString *_vcardPathForAddressBookUpdate;
 	BOOL _willCloseEditor;
 	BOOL _isSettingSenderFromGetter;
-	EditableWebMessageDocument * _document;
-	NSMutableDictionary * _contentsByMessage;
-	ParsedMessage * _initialParsedMessage;
-	ParsedMessage * _restoredParsedMessage;
-	NSMutableDictionary * _attachmentMimeBodiesByURL;
-	NSNumber * _uniqueID;
+	EditableWebMessageDocument *_document;
+	NSMutableDictionary *_contentsByMessage;
+	ParsedMessage *_initialParsedMessage;
+	ParsedMessage *_restoredParsedMessage;
+	NSMutableDictionary *_attachmentMimeBodiesByURL;
+	NSNumber *_uniqueID;
 }
 
 + (void)initialize;
@@ -542,7 +542,7 @@
 
 @interface ComposeBackEnd_Scripting : ComposeBackEnd
 {
-	NSTextStorage * _textStorage;
+	NSTextStorage *_textStorage;
 }
 
 - (void)dealloc;

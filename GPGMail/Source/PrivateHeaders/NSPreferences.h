@@ -31,21 +31,21 @@
 @end
 
 @interface NSPreferences : NSObject {
-	NSWindow * _preferencesPanel;
-	NSBox * _preferenceBox;
-	NSMatrix * _moduleMatrix;
-	NSButtonCell * _okButton;
-	NSButtonCell * _cancelButton;
-	NSButtonCell * _applyButton;
-	NSMutableArray * _preferenceTitles;
-	NSMutableArray * _preferenceModules;
-	NSMutableDictionary * _masterPreferenceViews;
-	NSMutableDictionary * _currentSessionPreferenceViews;
-	NSBox * _originalContentView;
+	NSWindow *_preferencesPanel;
+	NSBox *_preferenceBox;
+	NSMatrix *_moduleMatrix;
+	NSButtonCell *_okButton;
+	NSButtonCell *_cancelButton;
+	NSButtonCell *_applyButton;
+	NSMutableArray *_preferenceTitles;
+	NSMutableArray *_preferenceModules;
+	NSMutableDictionary *_masterPreferenceViews;
+	NSMutableDictionary *_currentSessionPreferenceViews;
+	NSBox *_originalContentView;
 	BOOL _isModal;
 	double _constrainedWidth;
 	id _currentModule;
-	void * _reserved;
+	void *_reserved;
 }
 
 + (id)sharedPreferences;
@@ -81,10 +81,10 @@
 @end
 
 @interface NSPreferencesModule : NSObject <NSPreferencesModule> {
-	NSBox * _preferencesView;
+	NSBox *_preferencesView;
 	struct CGSize _minSize;
 	BOOL _hasChanges;
-	void * _reserved;
+	void *_reserved;
 }
 
 + (id)sharedInstance;
@@ -128,21 +128,21 @@
 @end
 
 @interface NSPreferences : NSObject {
-	NSWindow * _preferencesPanel;
-	NSBox * _preferenceBox;
-	NSMatrix * _moduleMatrix;
-	NSButtonCell * _okButton;
-	NSButtonCell * _cancelButton;
-	NSButtonCell * _applyButton;
-	NSMutableArray * _preferenceTitles;
-	NSMutableArray * _preferenceModules;
-	NSMutableDictionary * _masterPreferenceViews;
-	NSMutableDictionary * _currentSessionPreferenceViews;
-	NSBox * _originalContentView;
+	NSWindow *_preferencesPanel;
+	NSBox *_preferenceBox;
+	NSMatrix *_moduleMatrix;
+	NSButtonCell *_okButton;
+	NSButtonCell *_cancelButton;
+	NSButtonCell *_applyButton;
+	NSMutableArray *_preferenceTitles;
+	NSMutableArray *_preferenceModules;
+	NSMutableDictionary *_masterPreferenceViews;
+	NSMutableDictionary *_currentSessionPreferenceViews;
+	NSBox *_originalContentView;
 	BOOL _isModal;
 	float _constrainedWidth;
 	id _currentModule;
-	void * _reserved;
+	void *_reserved;
 }
 
 + (id)sharedPreferences;
@@ -178,10 +178,10 @@
 @end
 
 @interface NSPreferencesModule : NSObject <NSPreferencesModule> {
-	NSBox * _preferencesView;
+	NSBox *_preferencesView;
 	struct _NSSize _minSize;
 	BOOL _hasChanges;
-	void * _reserved;
+	void *_reserved;
 }
 
 + (id)sharedInstance;

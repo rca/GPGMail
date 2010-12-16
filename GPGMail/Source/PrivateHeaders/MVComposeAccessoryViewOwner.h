@@ -6,7 +6,7 @@
 
 @interface MVComposeAccessoryViewOwner : NSObject
 {
-	NSView * accessoryView;
+	NSView *accessoryView;
 }
 
 + (id)composeAccessoryViewOwner;
@@ -22,7 +22,7 @@
 
 @interface MVComposeAccessoryViewOwner : NSObject
 {
-	NSView * accessoryView;
+	NSView *accessoryView;
 }
 
 + (id)composeAccessoryViewOwner;

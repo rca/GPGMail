@@ -13,8 +13,8 @@
 @implementation GPGSignature
 
 + (id)signatureWithContents:(NSString *)contents {
-	NSScanner * aScanner = [NSScanner scannerWithString:contents];
-	GPGSignature * signature = nil;
+	NSScanner *aScanner = [NSScanner scannerWithString:contents];
+	GPGSignature *signature = nil;
 
 	// gpg: can't mmap pool of 16384 bytes: Invalid argument - using malloc
 	// gpg: Please note that you don't have secure memory on this system
@@ -24,7 +24,7 @@
 	//
 
 	if ([aScanner scanUpToString:@"Signature made " intoString:NULL] && ![aScanner isAtEnd]) {
-		NSString * aString;
+		NSString *aString;
 
 		signature = [[[self alloc] init] autorelease];
 

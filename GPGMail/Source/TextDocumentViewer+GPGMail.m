@@ -26,7 +26,7 @@
 @implementation TextDocumentViewer (GPGMail)
 
 static NSMapTable       * _extraIVars = NULL;
-static NSLock * _extraIVarsLock = nil;
+static NSLock *_extraIVarsLock = nil;
 
 // Posing no longer works correctly on 10.3, that's why we only overload single methods
 static IMP _updateDisplay_IMP = NULL;
@@ -44,8 +44,8 @@ static IMP setMessage_IMP = NULL;
 }
 
 - (NSMutableDictionary *)gpgExtraIVars {
-	NSMutableDictionary * aDict;
-	NSValue * aValue = [NSValue valueWithNonretainedObject:self];
+	NSMutableDictionary *aDict;
+	NSValue *aValue = [NSValue valueWithNonretainedObject:self];
 
 	// We cannot use self as key, because in -dealloc this method is called when invoking super's
 	// and thus puts self back in mapTable; by using the NSValue and changing the dealloc,
@@ -63,7 +63,7 @@ static IMP setMessage_IMP = NULL;
 }
 
 - (BOOL)gpgMessageWasInFactSigned {
-	NSNumber * aBoolValue = [[self gpgExtraIVars] objectForKey:@"messageWasInFactSigned"];
+	NSNumber *aBoolValue = [[self gpgExtraIVars] objectForKey:@"messageWasInFactSigned"];
 
 	return (aBoolValue != nil ? [aBoolValue boolValue] : NO);
 }
@@ -73,7 +73,7 @@ static IMP setMessage_IMP = NULL;
 }
 
 - (BOOL)gpgMessageHasBeenDecrypted {
-	NSNumber * aBoolValue = [[self gpgExtraIVars] objectForKey:@"messageHasBeenDecrypted"];
+	NSNumber *aBoolValue = [[self gpgExtraIVars] objectForKey:@"messageHasBeenDecrypted"];
 
 	return (aBoolValue != nil ? [aBoolValue boolValue] : NO);
 }
@@ -83,7 +83,7 @@ static IMP setMessage_IMP = NULL;
 }
 
 - (BOOL)gpgMessageReadStatusHasChanged {
-	NSNumber * aBoolValue = [[self gpgExtraIVars] objectForKey:@"messageReadStatusHasChanged"];
+	NSNumber *aBoolValue = [[self gpgExtraIVars] objectForKey:@"messageReadStatusHasChanged"];
 
 	return (aBoolValue != nil ? [aBoolValue boolValue] : NO);
 }
@@ -93,7 +93,7 @@ static IMP setMessage_IMP = NULL;
 }
 
 - (BOOL)gpgDoNotResetFlags {
-	NSNumber * aBoolValue = [[self gpgExtraIVars] objectForKey:@"doNotResetFlags"];
+	NSNumber *aBoolValue = [[self gpgExtraIVars] objectForKey:@"doNotResetFlags"];
 
 	return (aBoolValue != nil ? [aBoolValue boolValue] : NO);
 }
@@ -120,9 +120,9 @@ static IMP setMessage_IMP = NULL;
 
 - (void)gpgMessageStoreMessageFlagsChanged:(NSNotification *)notification {
 	if ([[[[notification userInfo] objectForKey:@"flags"] objectForKey:@"MessageIsRead"] isEqualToString:@"YES"]) {
-		NSEnumerator * anEnum = [[[notification userInfo] objectForKey:@"messages"] objectEnumerator];
-		Message * aMessage;
-		Message * myMessage = [self message];
+		NSEnumerator *anEnum = [[[notification userInfo] objectForKey:@"messages"] objectEnumerator];
+		Message *aMessage;
+		Message *myMessage = [self message];
 
 		while (aMessage = [anEnum nextObject]) {
 			if (aMessage == myMessage) {
@@ -134,8 +134,8 @@ static IMP setMessage_IMP = NULL;
 }
 
 - (void)gpg__updateDisplay {
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
-	Message * aMessage = [self message];
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+	Message *aMessage = [self message];
 	BOOL shouldAuthenticate = NO;
 	BOOL shouldDecrypt = NO;
 	BOOL compareFlags = ([aMessage messageStore] != nil && ([mailBundle decryptsOnlyUnreadMessagesAutomatically] || [mailBundle authenticatesOnlyUnreadMessagesAutomatically]));
@@ -155,12 +155,12 @@ static IMP setMessage_IMP = NULL;
 			[self gpgHideBanner];
 			//            [originalCertifBanner release]; originalCertifBanner = nil;
 		}
-	} else if ([aMessage gpgIsEncrypted]) {         // Do not get cached status from accessoryViewOwner, because it is not yet up-to-date!
+	} else if ([aMessage gpgIsEncrypted]) {             // Do not get cached status from accessoryViewOwner, because it is not yet up-to-date!
 		[self gpgShowPGPEncryptedBanner];
 		if ([mailBundle decryptsMessagesAutomatically]) {
 			shouldDecrypt = YES;
 		}
-	} else if ([aMessage gpgHasSignature]) {         // Do not get cached status from accessoryViewOwner, because it is not yet up-to-date!
+	} else if ([aMessage gpgHasSignature]) {            // Do not get cached status from accessoryViewOwner, because it is not yet up-to-date!
 		if ([mailBundle authenticatesMessagesAutomatically]) {
 			[self gpgShowPGPSignatureBanner];
 			shouldAuthenticate = YES;
@@ -184,7 +184,7 @@ static IMP setMessage_IMP = NULL;
 		//        [originalCertifBanner release]; originalCertifBanner = nil;
 	}
 
-	_updateDisplay_IMP(self, _cmd);         // Call original implementation
+	_updateDisplay_IMP(self, _cmd);             // Call original implementation
 
 	if (compareFlags) {
 		readStatusChanged = [self gpgMessageReadStatusHasChanged];
@@ -206,7 +206,7 @@ static IMP setMessage_IMP = NULL;
 - (void)gpg_dealloc {
 	id originalSelf = self;
 
-	dealloc_IMP(self, _cmd);         // Call original implementation; warning: will call -gpgExtraIVars!
+	dealloc_IMP(self, _cmd);             // Call original implementation; warning: will call -gpgExtraIVars!
 	[_extraIVarsLock lock];
 	NSMapRemove(_extraIVars, [NSValue valueWithNonretainedObject:originalSelf]);
 	[_extraIVarsLock unlock];
@@ -247,7 +247,7 @@ static IMP setMessage_IMP = NULL;
 		return [self gpgValidateAction:anAction];
 	}
 
-	return !!validateMenuItem_IMP(self, _cmd, menuItem);         // Call original implementation
+	return !!validateMenuItem_IMP(self, _cmd, menuItem);             // Call original implementation
 }
 /*
  * - (void)viewSource:fp12
@@ -271,7 +271,7 @@ static IMP setMessage_IMP = NULL;
 	if (fp12 == nil) {
 		[[self gpgMessageViewerAccessoryViewOwner] messageChanged:nil];
 	}
-	setMessage_IMP(self, _cmd, fp12);         // Call original implementation
+	setMessage_IMP(self, _cmd, fp12);             // Call original implementation
 }
 /*
  * - (void)_setMessage:fp12
@@ -286,8 +286,8 @@ static IMP setMessage_IMP = NULL;
 	NSRect aRect;
 	NSRect originalRect;
 	float aHeight;
-	NSView * resizedView = _currentView;            // [[self textView] enclosingScrollView];//(NSView *)messageScroll;
-	NSView * currentBannerView = junkMailView;
+	NSView *resizedView = _currentView;                 // [[self textView] enclosingScrollView];//(NSView *)messageScroll;
+	NSView *currentBannerView = junkMailView;
 
 	originalRect = aRect = [resizedView frame];
 	aHeight = NSHeight([accessoryView frame]);
@@ -306,8 +306,8 @@ static IMP setMessage_IMP = NULL;
 
 - (void)_gpgRemoveAccessoryView:(NSView *)accessoryView redisplay:(BOOL)flag {
 	NSRect originalRect;
-	NSView * resizedView = _currentView;            // [[self textView] enclosingScrollView];//(NSView *)messageScroll;
-	NSView * currentBannerView = junkMailView;
+	NSView *resizedView = _currentView;                 // [[self textView] enclosingScrollView];//(NSView *)messageScroll;
+	NSView *currentBannerView = junkMailView;
 
 	NSAssert([accessoryView ancestorSharedWithView:resizedView] != nil, @"Trying to remove unattached view!");
 	originalRect = [resizedView frame];
@@ -334,7 +334,7 @@ static IMP setMessage_IMP = NULL;
  */
 - (GPGMessageViewerAccessoryViewOwner *)gpgMessageViewerAccessoryViewOwner {
 	// WARNING: this limits us to 1 accessoryView per viewer
-	GPGMessageViewerAccessoryViewOwner * accessoryViewOwner = [[self gpgExtraIVars] objectForKey:@"messageViewerAccessoryViewOwner"];
+	GPGMessageViewerAccessoryViewOwner *accessoryViewOwner = [[self gpgExtraIVars] objectForKey:@"messageViewerAccessoryViewOwner"];
 
 	if (accessoryViewOwner == nil) {
 		accessoryViewOwner = [[GPGMessageViewerAccessoryViewOwner alloc] initWithDelegate:self];
@@ -350,7 +350,7 @@ static IMP setMessage_IMP = NULL;
 }
 
 - (void)_gpgShowBannerWithType:(int)bannerType {
-	GPGMessageViewerAccessoryViewOwner * anOwner = nil;
+	GPGMessageViewerAccessoryViewOwner *anOwner = nil;
 
 	if (![self _gpgBannerIsShown]) {
 		anOwner = [self gpgMessageViewerAccessoryViewOwner];
@@ -379,7 +379,7 @@ static IMP setMessage_IMP = NULL;
 
 - (void)gpgHideBanner {
 	if ([self _gpgBannerIsShown]) {
-		GPGMessageViewerAccessoryViewOwner * anOwner = [self gpgMessageViewerAccessoryViewOwner];
+		GPGMessageViewerAccessoryViewOwner *anOwner = [self gpgMessageViewerAccessoryViewOwner];
 
 		[self _gpgRemoveAccessoryView:[anOwner view] redisplay:YES];
 		//        [anOwner setMessage:nil];
@@ -432,7 +432,7 @@ static IMP setMessage_IMP = NULL;
 
 - (void)gpg_showFirstAlternative:(id)sender {
 	[self gpgSetDoNotResetFlags:YES];
-	[self showFirstAlternative:sender];         // Performs -_updateDisplay invocation, delayed!
+	[self showFirstAlternative:sender];             // Performs -_updateDisplay invocation, delayed!
 //    [self performSelector:@selector(gpg_resetFlags:) withObject:nil afterDelay:0.1];
 }
 

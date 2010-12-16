@@ -67,10 +67,10 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 	// Let's not try to encrypt empty messages.
 	// Note that signature (if any) has already been appended at this stage.
 	if ([(NSData *)[[self messageBody] rawData] length] > 0) {
-		NSAutoreleasePool * localAP;
-		NSMutableData * someData;
-		Message * dummyMessage;
-		MutableMessageHeaders * newHeaders = nil;
+		NSAutoreleasePool *localAP;
+		NSMutableData *someData;
+		Message *dummyMessage;
+		MutableMessageHeaders *newHeaders = nil;
 
 		NSAssert([[self messageBody] respondsToSelector:@selector(mutableData)], @"### GPGMail: -[Message(GPGMail) gpgEncryptForRecipients:signWithKey:passphraseDelegate:]: Oops, we can no longer use -[MessageBody mutableData]?!");
 
@@ -85,11 +85,11 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 
 		@try {
 			GPGMailFormat usedFormat = mailFormat;
-			NSData * encryptedData = [(MessageBody *)[dummyMessage messageBody] gpgEncryptForRecipients:recipients trustAllKeys:trustsAllKeys signWithKey:key passphraseDelegate:passphraseDelegate format:&usedFormat headers:&newHeaders];                                 // Can raise an exception
+			NSData *encryptedData = [(MessageBody *)[dummyMessage messageBody] gpgEncryptForRecipients:recipients trustAllKeys:trustsAllKeys signWithKey:key passphraseDelegate:passphraseDelegate format:&usedFormat headers:&newHeaders];                                              // Can raise an exception
 
 			if (usedFormat == GPGOpenPGPMailFormat) {
 				// FIXME: If we want to localize that description string, we need to encode it with qp or whatever, AND change headers; content-transfer-encoding is currently set to 7bit
-				NSData * descriptionData = [NSLocalizedStringFromTableInBundle (/*@"MULTIPART_ENCRYPTED_DESCRIPTION"*/ @"This is an OpenPGP/MIME encrypted message (RFC 2440 and 3156)", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "") dataUsingEncoding:NSASCIIStringEncoding];
+				NSData *descriptionData = [NSLocalizedStringFromTableInBundle (/*@"MULTIPART_ENCRYPTED_DESCRIPTION"*/ @"This is an OpenPGP/MIME encrypted message (RFC 2440 and 3156)", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "") dataUsingEncoding:NSASCIIStringEncoding];
 
 				[someData setData:descriptionData];
 				[someData appendData:[@"\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
@@ -97,17 +97,17 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 			} else {
 				[someData setData:encryptedData];
 			}
-		}@catch (NSException * localException) {
+		}@catch (NSException *localException) {
 			[localException retain];
 			[localAP release];
 			[[localException autorelease] raise];
 		}
-		[self performSelector:@selector(setMutableHeaders:) withObject:newHeaders]; // OutgoingMessage
-		[[self messageBody] setRawData:someData];                                   // No effect on Message data
+		[self performSelector:@selector(setMutableHeaders:) withObject:newHeaders];         // OutgoingMessage
+		[[self messageBody] setRawData:someData];                                           // No effect on Message data
 		// We need to recreate the whole raw data, headers + body.
-		NSMutableData * newRawData = [NSMutableData dataWithData:[newHeaders headerData]];
+		NSMutableData *newRawData = [NSMutableData dataWithData:[newHeaders headerData]];
 		[newRawData appendData:someData];
-		[[self valueForKey:@"rawData"] setData:newRawData];                         // And that works!
+		[[self valueForKey:@"rawData"] setData:newRawData];                                 // And that works!
 		[localAP release];
 		// Encrypted sent messages are stored in encrypted form.
 	}
@@ -120,7 +120,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
  * @throws GPGException
  */
 - (void)gpgDecryptMessageWithPassphraseDelegate:(id)passphraseDelegate messageSignatures:(NSMutableArray *)messageSignatures {
-	NSException * anException;
+	NSException *anException;
 
 	NSAssert(![self gpgIsDecrypting], @"May not already be decrypting");
 
@@ -129,13 +129,13 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 		if (GPGMailLoggingLevel) {
 			NSLog(@"[DEBUG] Decrypting...");
 		}
-		[[[self messageBody] topLevelPart] gpgBetterDecode];                         // Evaluate the decode method matching [part type].
+		[[[self messageBody] topLevelPart] gpgBetterDecode];                                 // Evaluate the decode method matching [part type].
 		if (GPGMailLoggingLevel) {
 			NSLog(@"[DEBUG] Finished Decrypting");
 		}
 		[messageSignatures addObjectsFromArray:[self gpgMessageSignatures]];
 	}
-	@catch (NSException * localException) {
+	@catch (NSException *localException) {
 		if (GPGMailLoggingLevel) {
 			NSLog(@"[DEBUG] Failed Decrypting");
 		}
@@ -154,10 +154,10 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 - (void)gpgSignWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate format:(GPGMailFormat)mailFormat {
 	// Let's not try to sign empty messages. Note that signature (if any) has already been appended at this stage.
 	if ([(NSData *)[[self messageBody] rawData] length] > 0) {
-		NSAutoreleasePool * localAP;
-		NSMutableData * someData;
-		Message * dummyMessage;
-		MutableMessageHeaders * newHeaders = nil;
+		NSAutoreleasePool *localAP;
+		NSMutableData *someData;
+		Message *dummyMessage;
+		MutableMessageHeaders *newHeaders = nil;
 
 		NSAssert([[self messageBody] respondsToSelector:@selector(mutableData)], @"### GPGMail: -[Message(GPGMail) gpgSignWithKey:passphraseDelegate:]: Oops, we can no longer use -[MessageBody mutableData]?!");
 
@@ -171,11 +171,11 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 
 		@try {
 			GPGMailFormat usedFormat = mailFormat;
-			NSData * signedData = [(MessageBody *)[dummyMessage messageBody] gpgSignWithKey:key passphraseDelegate:passphraseDelegate format:&usedFormat headers:&newHeaders];                                             // Can raise an exception
+			NSData *signedData = [(MessageBody *)[dummyMessage messageBody] gpgSignWithKey:key passphraseDelegate:passphraseDelegate format:&usedFormat headers:&newHeaders];                                                          // Can raise an exception
 
 			if (usedFormat == GPGOpenPGPMailFormat) {
 				// FIXME: If we want to localize that description string, we need to encode it with qp or whatever, AND change headers; content-transfer-encoding is currently set to 7bit
-				NSData * descriptionData = [NSLocalizedStringFromTableInBundle (/*@"MULTIPART_SIGNED_DESCRIPTION"*/ @"This is an OpenPGP/MIME signed message (RFC 2440 and 3156)", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "") dataUsingEncoding:NSASCIIStringEncoding];
+				NSData *descriptionData = [NSLocalizedStringFromTableInBundle (/*@"MULTIPART_SIGNED_DESCRIPTION"*/ @"This is an OpenPGP/MIME signed message (RFC 2440 and 3156)", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "") dataUsingEncoding:NSASCIIStringEncoding];
 
 				[someData setData:descriptionData];
 //                [someData appendData:[@"\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
@@ -183,27 +183,27 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 			} else {
 				[someData setData:signedData];
 			}
-		}@catch (NSException * localException) {
+		}@catch (NSException *localException) {
 			[localException retain];
 			[localAP release];
 			[[localException autorelease] raise];
 		}
 #if 1
-		[self performSelector:@selector(setMutableHeaders:) withObject:newHeaders]; // OutgoingMessage
-		[[self messageBody] setRawData:someData];                                   // No effect on Message data
+		[self performSelector:@selector(setMutableHeaders:) withObject:newHeaders];         // OutgoingMessage
+		[[self messageBody] setRawData:someData];                                           // No effect on Message data
 		// We need to recreate the whole raw data, headers + body.
-		NSMutableData * newRawData = [NSMutableData dataWithData:[newHeaders headerData]];
+		NSMutableData *newRawData = [NSMutableData dataWithData:[newHeaders headerData]];
 		[newRawData appendData:someData];
-		[[self valueForKey:@"rawData"] setData:newRawData];                         // And that works!
+		[[self valueForKey:@"rawData"] setData:newRawData];                                 // And that works!
 #else
 		// Q: what did I try here???
 //    [[self messageBody] flushEncodedBodyCache]; // Flush old data before modifying message => will recreate headers (warning: do not do it before!!)
 		[[[self messageBody] performSelector:@selector(mutableData)] setData:someData];
 		[self setHeaders:[dummyMessage headers]];
-		[[self headers] setMessage:self];                                           // Needed!
-		(void)[[self messageBody] rawData];                                         // NEEDED!
+		[[self headers] setMessage:self];                                                   // Needed!
+		(void)[[self messageBody] rawData];                                                 // NEEDED!
 		[self setHeaders:[dummyMessage headers]];
-		[[self headers] setMessage:self];                                           // Needed!
+		[[self headers] setMessage:self];                                                   // Needed!
 #endif
 		[localAP release];
 	}
@@ -218,7 +218,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
  * @throws GPGException
  */
 - (GPGSignature *)gpgAuthenticationSignature {
-	GPGSignature * aSignature = [[self messageBody] gpgAuthenticationSignature];           // Can raise an exception
+	GPGSignature *aSignature = [[self messageBody] gpgAuthenticationSignature];                // Can raise an exception
 
 	// No immediate effect, but OK after mailbox has been closed and reopened?
 	// #warning TEST update of messageStore
@@ -232,7 +232,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 
 /*! DEPRECATED */
 - (GPGSignature *)gpgEmbeddedAuthenticationSignature {
-	return [[self messageBody] gpgEmbeddedAuthenticationSignature];         // Can raise an exception
+	return [[self messageBody] gpgEmbeddedAuthenticationSignature];             // Can raise an exception
 }
 
 /*! DEPRECATED */
@@ -256,8 +256,8 @@ GPG_DECLARE_EXTRA_IVARS(Message)
  * @result Signature covering whole message, or nil when no signature, or signature(s) covering only part of the message
  */
 - (GPGSignature *)gpgSignature {
-	NSEnumerator * msgSigEnum = [[self gpgMessageSignatures] objectEnumerator];
-	GPGMessageSignature * eachMsgSig;
+	NSEnumerator *msgSigEnum = [[self gpgMessageSignatures] objectEnumerator];
+	GPGMessageSignature *eachMsgSig;
 
 	while (eachMsgSig = [msgSigEnum nextObject])
 		if ([eachMsgSig coversWholeMessage]) {
@@ -267,7 +267,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 }
 
 - (NSException *)gpgException {
-	NSException * cachedException;
+	NSException *cachedException;
 
 	cachedException = GPG_GET_EXTRA_IVAR(@"exception");
 
@@ -324,7 +324,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 			((_messageFlags & 0x00000010) ? @", flagged":@""),
 			((_messageFlags & 0x00000020) ? @", recent":@""),
 			((_messageFlags & 0x00000040) ? @", draft":@""),
-			((_messageFlags & 0x00000080) ? @", initial":@""),                             /* no longer used */
+			((_messageFlags & 0x00000080) ? @", initial":@""),                                         /* no longer used */
 			((_messageFlags & 0x00000100) ? @", forwarded":@""),
 			((_messageFlags & 0x00000200) ? @", redirected":@""),
 			((_messageFlags & 0x00800000) ? @", signed":@""),
@@ -343,7 +343,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
  * fullBodyData.
  */
 - (NSData *)gpgCurrentFullBodyPartDataAndHeaderDataIfReadilyAvailable:(NSData **)headerDataPtr {
-	NSData * cachedData = GPG_GET_EXTRA_IVAR(@"fullBodyData");
+	NSData *cachedData = GPG_GET_EXTRA_IVAR(@"fullBodyData");
 
 	if (cachedData == nil) {
 		cachedData = [[self messageStore] fullBodyDataForMessage:self andHeaderDataIfReadilyAvailable:headerDataPtr];

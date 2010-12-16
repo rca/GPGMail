@@ -35,7 +35,7 @@
 }
 
 - (BOOL)coversWholeMessage {
-	return YES;         // TODO:
+	return YES;             // TODO:
 }
 
 @end

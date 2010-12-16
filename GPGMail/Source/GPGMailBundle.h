@@ -43,18 +43,18 @@
 
 
 // The following strings are used as toolbarItem identifiers and userDefault keys (value is the position index)
-extern NSString * GPGAuthenticateMessageToolbarItemIdentifier;
-extern NSString * GPGDecryptMessageToolbarItemIdentifier;
-extern NSString * GPGSignMessageToolbarItemIdentifier;
-extern NSString * GPGEncryptMessageToolbarItemIdentifier;
+extern NSString *GPGAuthenticateMessageToolbarItemIdentifier;
+extern NSString *GPGDecryptMessageToolbarItemIdentifier;
+extern NSString *GPGSignMessageToolbarItemIdentifier;
+extern NSString *GPGEncryptMessageToolbarItemIdentifier;
 
-extern NSString * GPGKeyListWasInvalidatedNotification;
-extern NSString * GPGPreferencesDidChangeNotification;
+extern NSString *GPGKeyListWasInvalidatedNotification;
+extern NSString *GPGPreferencesDidChangeNotification;
 
-extern NSString * GPGMailException;
-extern NSString * GPGKeyGroupsChangedNotification;
+extern NSString *GPGMailException;
+extern NSString *GPGKeyGroupsChangedNotification;
 
-extern NSString * GPGMissingKeysNotification;
+extern NSString *GPGMissingKeysNotification;
 // Notification object can be anything; posted when misses key on message verification or message encryption
 // UserInfo: 'fingerprints' = NSArray of fingerprints as NSStrings,
 //           'emails' = NSArray of email addresses as NSStrings
@@ -81,31 +81,31 @@ enum {
 @interface GPGMailBundle : MVMailBundle <NSToolbarDelegate>
 #endif
 {
-	IBOutlet NSMenuItem * decryptMenuItem;
-	IBOutlet NSMenuItem * authenticateMenuItem;
-	IBOutlet NSMenuItem * encryptsNewMessageMenuItem;
-	IBOutlet NSMenuItem * signsNewMessageMenuItem;
-	IBOutlet NSMenuItem * personalKeysMenuItem;
-	IBOutlet NSMenuItem * choosePublicKeysMenuItem;
-	IBOutlet NSMenuItem * automaticPublicKeysMenuItem;
-	IBOutlet NSMenuItem * usesOnlyOpenPGPStyleMenuItem;
-	IBOutlet NSMenuItem * symetricEncryptionMenuItem;
-	GPGKey * defaultKey;
-	NSMutableDictionary * realToolbarDelegates;
-	NSMutableDictionary * additionalToolbarItemIdentifiersPerToolbarIdentifier;
-	NSArray * cachedPersonalKeys;
-	NSArray * cachedPublicKeys;
-	NSMapTable * cachedUserIDsPerKey;
-	NSArray * cachedKeyGroups;
+	IBOutlet NSMenuItem *decryptMenuItem;
+	IBOutlet NSMenuItem *authenticateMenuItem;
+	IBOutlet NSMenuItem *encryptsNewMessageMenuItem;
+	IBOutlet NSMenuItem *signsNewMessageMenuItem;
+	IBOutlet NSMenuItem *personalKeysMenuItem;
+	IBOutlet NSMenuItem *choosePublicKeysMenuItem;
+	IBOutlet NSMenuItem *automaticPublicKeysMenuItem;
+	IBOutlet NSMenuItem *usesOnlyOpenPGPStyleMenuItem;
+	IBOutlet NSMenuItem *symetricEncryptionMenuItem;
+	GPGKey *defaultKey;
+	NSMutableDictionary *realToolbarDelegates;
+	NSMutableDictionary *additionalToolbarItemIdentifiersPerToolbarIdentifier;
+	NSArray *cachedPersonalKeys;
+	NSArray *cachedPublicKeys;
+	NSMapTable *cachedUserIDsPerKey;
+	NSArray *cachedKeyGroups;
 #if 0
-	IBOutlet NSMenu * PGPMenu;                            // Do not remove that line! (kludge for IB)
-	IBOutlet NSMenu * PGPViewMenu;                        // Do not remove that line! (kludge for IB)
+	IBOutlet NSMenu *PGPMenu;                                 // Do not remove that line! (kludge for IB)
+	IBOutlet NSMenu *PGPViewMenu;                             // Do not remove that line! (kludge for IB)
 #endif
-	NSMenuItem * pgpMenuItem;
-	NSMenuItem * pgpViewMenuItem;
-	IBOutlet NSMenuItem * allUserIDsMenuItem;
-	NSDictionary * locale;
-	GPGEngine * engine;
+	NSMenuItem *pgpMenuItem;
+	NSMenuItem *pgpViewMenuItem;
+	IBOutlet NSMenuItem *allUserIDsMenuItem;
+	NSDictionary *locale;
+	GPGEngine *engine;
 }
 
 + (id)sharedInstance;

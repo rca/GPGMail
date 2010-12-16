@@ -78,7 +78,7 @@ static IMP HeadersEditor_changeFromHeader = NULL;
 
 - (void)gpgForwardAction:(SEL)action from:(id)sender {
 	// Forwarded by GPGMailBundle, from menuItem action
-	NSEnumerator * anEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
+	NSEnumerator *anEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
 	id anOwner;
 
 	while (anOwner = [anEnum nextObject])
@@ -90,7 +90,7 @@ static IMP HeadersEditor_changeFromHeader = NULL;
 - (void)gpgChangeFromHeader:(id)sender {
 	((void (*)(id, SEL, id))HeadersEditor_changeFromHeader)(self, _cmd, sender);
 	if ([GPGMailBundle gpgMailWorks]) {
-		[self gpgForwardAction:_cmd from:sender];                  // _cmd = changeFromHeader: !!!
+		[self gpgForwardAction:_cmd from:sender];                          // _cmd = changeFromHeader: !!!
 	}
 }
 
@@ -122,8 +122,8 @@ static IMP MailDocumentEditor_changeReplyMode = NULL;
 
 
 - (GPGMailComposeAccessoryViewOwner *)gpgMyComposeAccessoryViewOwner {
-	NSEnumerator * theEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
-	MVComposeAccessoryViewOwner * anOwner;
+	NSEnumerator *theEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
+	MVComposeAccessoryViewOwner *anOwner;
 
 	while (anOwner = [theEnum nextObject]) {
 		if ([anOwner isKindOfClass:[NSClassFromString (@"GPGMailComposeAccessoryViewOwner")class]]) {
@@ -138,7 +138,7 @@ static IMP MailDocumentEditor_changeReplyMode = NULL;
 - (void)gpgShowOrHideStationery:(id)fp8 {
 	if ([GPGMailBundle gpgMailWorks]) {
 		if (![self stationeryPaneIsVisible]) {
-			NSView * accessoryView = [[self gpgMyComposeAccessoryViewOwner] composeAccessoryView];
+			NSView *accessoryView = [[self gpgMyComposeAccessoryViewOwner] composeAccessoryView];
 
 			if (![accessoryView isHidden]) {
 				NSRect aRect = [[self valueForKey:@"composeWebView"] frame];
@@ -158,7 +158,7 @@ static IMP MailDocumentEditor_changeReplyMode = NULL;
 
 	if ([GPGMailBundle gpgMailWorks]) {
 		if (![self stationeryPaneIsVisible]) {
-			NSView * accessoryView = [[self gpgMyComposeAccessoryViewOwner] composeAccessoryView];
+			NSView *accessoryView = [[self gpgMyComposeAccessoryViewOwner] composeAccessoryView];
 
 			if ([accessoryView isHidden]) {
 				NSRect aRect = [[self valueForKey:@"composeWebView"] frame];
@@ -176,8 +176,8 @@ static IMP MailDocumentEditor_changeReplyMode = NULL;
 }
 
 - (void)gpgInsertComposeAccessoryViewOfOwner:(MVComposeAccessoryViewOwner *)owner {
-	NSView * accessoryView = [owner composeAccessoryView];
-	NSView * containerView = [[self valueForKey:@"composeWebView"] superview];
+	NSView *accessoryView = [owner composeAccessoryView];
+	NSView *containerView = [[self valueForKey:@"composeWebView"] superview];
 	NSRect aRect = [accessoryView frame];
 	float aHeight = NSHeight(aRect);
 
@@ -198,8 +198,8 @@ static IMP MailDocumentEditor_changeReplyMode = NULL;
 	((void (*)(id, SEL, id))MailDocumentEditor_backEndDidLoadInitialContent)(self, _cmd, fp8);
 
 	if ([GPGMailBundle gpgMailWorks]) {
-		NSEnumerator * anEnum = [[(HeadersEditor *)[self headersEditor] gpgAccessoryViewOwners] objectEnumerator];
-		MVComposeAccessoryViewOwner * eachOwner;
+		NSEnumerator *anEnum = [[(HeadersEditor *)[self headersEditor] gpgAccessoryViewOwners] objectEnumerator];
+		MVComposeAccessoryViewOwner *eachOwner;
 		BOOL createNewAccessoryViewOwner = YES;
 
 		while (eachOwner = [anEnum nextObject]) {
@@ -209,17 +209,17 @@ static IMP MailDocumentEditor_changeReplyMode = NULL;
 			}
 		}
 		if (createNewAccessoryViewOwner) {
-			MVComposeAccessoryViewOwner * myComposeAccessoryViewOwner = [NSClassFromString (@"GPGMailComposeAccessoryViewOwner")composeAccessoryViewOwner];
+			MVComposeAccessoryViewOwner *myComposeAccessoryViewOwner = [NSClassFromString (@"GPGMailComposeAccessoryViewOwner")composeAccessoryViewOwner];
 
 			[self gpgAddAccessoryViewOwner:myComposeAccessoryViewOwner];
-			[myComposeAccessoryViewOwner setupUIForMessage:[fp8 message]];                         // Toolbar already finished
-			[self gpgInsertComposeAccessoryViewOfOwner:myComposeAccessoryViewOwner];               // Must be called after setUIForMessage:, which loads the nib
+			[myComposeAccessoryViewOwner setupUIForMessage:[fp8 message]];                                     // Toolbar already finished
+			[self gpgInsertComposeAccessoryViewOfOwner:myComposeAccessoryViewOwner];                           // Must be called after setUIForMessage:, which loads the nib
 
 
-			Message * originalMessage = [fp8 originalMessage];
+			Message *originalMessage = [fp8 originalMessage];
 			if (originalMessage) {
-				GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
-				NSMutableDictionary * options = [NSMutableDictionary dictionaryWithCapacity:3];
+				GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+				NSMutableDictionary *options = [NSMutableDictionary dictionaryWithCapacity:3];
 
 				BOOL shouldEncrypted = [mailBundle signsReplyToSignedMessage] && [originalMessage gpgIsEncrypted];
 				BOOL shouldSigned = [mailBundle encryptsReplyToEncryptedMessage] && [originalMessage gpgHasSignature];
@@ -237,7 +237,7 @@ static IMP MailDocumentEditor_changeReplyMode = NULL;
 
 - (BOOL)gpgBackEnd:fp12 shouldDeliverMessage:fp16 {
 	if ([GPGMailBundle gpgMailWorks]) {
-		MVComposeAccessoryViewOwner * anOwner = [self gpgMyComposeAccessoryViewOwner];
+		MVComposeAccessoryViewOwner *anOwner = [self gpgMyComposeAccessoryViewOwner];
 
 		if (anOwner != nil && ![anOwner messageWillBeDelivered:fp16]) {
 			NSBeep();
@@ -275,7 +275,7 @@ static IMP MailDocumentEditor_changeReplyMode = NULL;
 	// Let's force reevaluation of PGP rules by accessoryView owner
 	((void (*)(id, SEL, id))MailDocumentEditor_changeReplyMode)(self, _cmd, fp8);
 
-	NSEnumerator * anEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
+	NSEnumerator *anEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
 	id anOwner;
 
 	while (anOwner = [anEnum nextObject])
@@ -306,7 +306,7 @@ static IMP MailDocumentEditor_changeReplyMode = NULL;
 
 - (BOOL)gpgValidateToolbarItem:(NSToolbarItem *)theItem {
 	// Forwarded by GPGMailBundle
-	NSEnumerator * anEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
+	NSEnumerator *anEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
 	id anOwner;
 	// That works because we use only single segment items...
 	SEL action = ([theItem isKindOfClass:NSClassFromString(@"SegmentedToolbarItem")] ? [(SegmentedToolbarItem *) theItem actionForSegment:0] : [theItem action]);
@@ -320,7 +320,7 @@ static IMP MailDocumentEditor_changeReplyMode = NULL;
 
 - (BOOL)gpgValidateMenuItem:(NSMenuItem *)theItem {
 	// Forwarded by GPGMailBundle
-	NSEnumerator * anEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
+	NSEnumerator *anEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
 	id anOwner;
 	SEL action = [theItem action];
 
@@ -333,7 +333,7 @@ static IMP MailDocumentEditor_changeReplyMode = NULL;
 
 - (void)gpgForwardAction:(SEL)action from:(id)sender {
 	// Forwarded by GPGMailBundle, from menuItem action
-	NSEnumerator * anEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
+	NSEnumerator *anEnum = [[self gpgAccessoryViewOwners] objectEnumerator];
 	id anOwner;
 
 	while (anOwner = [anEnum nextObject])

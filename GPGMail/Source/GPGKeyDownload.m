@@ -31,12 +31,12 @@
 #import "GPGMEAdditions.h"
 
 
-NSString * GPGDidFindKeysNotification = @"GPGDidFindKeysNotification";
+NSString *GPGDidFindKeysNotification = @"GPGDidFindKeysNotification";
 
 
 @implementation GPGKeyDownload
 
-static GPGKeyDownload * _sharedInstance = nil;
+static GPGKeyDownload *_sharedInstance = nil;
 
 + (void)load {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(missingKeysNotification:) name:GPGMissingKeysNotification object:nil];
@@ -55,7 +55,7 @@ static GPGKeyDownload * _sharedInstance = nil;
 		selectedKeys = [[NSMutableSet alloc] init];
 		[self setWindowFrameAutosaveName:@"GPGKeySearch"];
 		validEmailAddressCharset = [[NSMutableCharacterSet alphanumericCharacterSet] retain];
-		[validEmailAddressCharset addCharactersInString:@"@_-."];                 // FIXME: there are much more valid chars - maybe we shouldn't try to validate
+		[validEmailAddressCharset addCharactersInString:@"@_-."];                         // FIXME: there are much more valid chars - maybe we shouldn't try to validate
 		defaultServerList = [[NSArray alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"KeyServers" ofType:@"plist"]];
 	}
 
@@ -74,12 +74,12 @@ static GPGKeyDownload * _sharedInstance = nil;
 }
 
 - (void)refreshServerList {
-	GPGOptions * options = [[GPGOptions alloc] init];
-	NSString * currentServer = [[serverComboBox stringValue] copy];
+	GPGOptions *options = [[GPGOptions alloc] init];
+	NSString *currentServer = [[serverComboBox stringValue] copy];
 	unsigned anIndex;
-	NSMutableArray * aList;
-	NSEnumerator * anEnum = [defaultServerList objectEnumerator];
-	NSString * aServer;
+	NSMutableArray *aList;
+	NSEnumerator *anEnum = [defaultServerList objectEnumerator];
+	NSString *aServer;
 
 	[serverList release];
 	aList = [[options allOptionValuesForName:@"keyserver"] mutableCopy];
@@ -107,7 +107,7 @@ static GPGKeyDownload * _sharedInstance = nil;
 }
 
 - (void)windowDidLoad {
-	NSBundle * aBundle = [NSBundle bundleForClass:[self class]];
+	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
 
 	context = [[GPGContext alloc] init];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(operationDidTerminate:) name:GPGAsynchronousOperationDidTerminateNotification object:context];
@@ -147,7 +147,7 @@ static GPGKeyDownload * _sharedInstance = nil;
 }
 
 - (NSDictionary *)options {
-	NSString * selectedServer = [serverComboBox stringValue];
+	NSString *selectedServer = [serverComboBox stringValue];
 
 	if ([selectedServer rangeOfCharacterFromSet:[NSCharacterSet alphanumericCharacterSet]].length > 0) {
 		return [NSDictionary dictionaryWithObject:selectedServer forKey:@"keyserver"];
@@ -157,12 +157,12 @@ static GPGKeyDownload * _sharedInstance = nil;
 }
 
 - (IBAction)import:(id)sender {
-	NSDictionary * options = [self options];
+	NSDictionary *options = [self options];
 
 	if (!options || ([selectedKeys count] == 0)) {
 		NSBeep();
 	} else {
-		NSBundle * aBundle = [NSBundle bundleForClass:[self class]];
+		NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
 
 //        [titleField setStringValue:NSLocalizedStringFromTableInBundle(@"DOWNLOAD_KEYS_FROM_SERVER", @"GPGMail", aBundle, "")];
 //        [importButton setTitle:NSLocalizedStringFromTableInBundle(@"DOWNLOADING", @"GPGMail", aBundle, "")];
@@ -176,12 +176,12 @@ static GPGKeyDownload * _sharedInstance = nil;
 }
 
 - (void)doSearchKeysMatchingPatterns:(NSArray *)patterns {
-	NSDictionary * options = [self options];
+	NSDictionary *options = [self options];
 
 	if (!options) {
 		NSBeep();
 	} else {
-		NSBundle * aBundle = [NSBundle bundleForClass:[self class]];
+		NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
 
 		[titleField setStringValue:NSLocalizedStringFromTableInBundle(@"SEARCH_KEYS_ON_SERVER", @"GPGMail", aBundle, "")];
 		[emailCell setEnabled:NO];
@@ -198,7 +198,7 @@ static GPGKeyDownload * _sharedInstance = nil;
 }
 
 - (IBAction)cancelSearch:(id)sender {
-	NSBundle * aBundle = [NSBundle bundleForClass:[self class]];
+	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
 
 	[emailCell setEnabled:YES];
 	[serverComboBox setEnabled:YES];
@@ -214,9 +214,9 @@ static GPGKeyDownload * _sharedInstance = nil;
 }
 
 - (IBAction)search:(id)sender {
-	NSEnumerator * anEnum = [[[emailCell stringValue] componentsSeparatedByString:@","] objectEnumerator];
-	NSString * aString;
-	NSMutableArray * patterns = [NSMutableArray array];
+	NSEnumerator *anEnum = [[[emailCell stringValue] componentsSeparatedByString:@","] objectEnumerator];
+	NSString *aString;
+	NSMutableArray *patterns = [NSMutableArray array];
 
 	while (aString = [anEnum nextObject]) {
 		// We trim space characters
@@ -252,8 +252,8 @@ static GPGKeyDownload * _sharedInstance = nil;
 }
 
 - (void)foundKeys:(NSNotification *)notification {
-	NSBundle * aBundle = [NSBundle bundleForClass:[self class]];
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
+	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
 
 	[searchProgressIndicator stopAnimation:nil];
 	[emailCell setEnabled:YES];
@@ -267,13 +267,13 @@ static GPGKeyDownload * _sharedInstance = nil;
 
 		[self showWindow:nil];
 		if (anError != GPGErrorNoError) {
-			NSString * errorMessage;
+			NSString *errorMessage;
 
 			if ([mailBundle gpgErrorCodeFromError:anError] == GPGErrorKeyServerError) {
-				NSString * additionalMessage = [[notification userInfo] objectForKey:GPGAdditionalReasonKey];
+				NSString *additionalMessage = [[notification userInfo] objectForKey:GPGAdditionalReasonKey];
 
 				if (additionalMessage != nil) {
-					errorMessage = additionalMessage;                                         // FIXME: Not localized
+					errorMessage = additionalMessage;                                                             // FIXME: Not localized
 				} else {
 					errorMessage = [mailBundle descriptionForError:anError];
 				}
@@ -283,7 +283,7 @@ static GPGKeyDownload * _sharedInstance = nil;
 
 			NSBeginAlertSheet(NSLocalizedStringFromTableInBundle(@"SEARCH_ERROR", @"GPGMail", aBundle, ""), nil, nil, nil, [self window], nil, NULL, NULL, NULL, @"%@", errorMessage);
 		} else {
-			NSDictionary * aDict = [[notification object] operationResults];
+			NSDictionary *aDict = [[notification object] operationResults];
 
 			[foundKeys release];
 			foundKeys = nil;
@@ -292,8 +292,8 @@ static GPGKeyDownload * _sharedInstance = nil;
 				[searchProgressField setStringValue:NSLocalizedStringFromTableInBundle(@"NO_MATCHING_KEYS", @"GPGMail", aBundle, "")];
 				[outlineView reloadData];
 			} else {
-				NSEnumerator * anEnum;
-				GPGRemoteKey * anItem;
+				NSEnumerator *anEnum;
+				GPGRemoteKey *anItem;
 
 				foundKeys = [[aDict objectForKey:@"keys"] retain];
 				anEnum = [foundKeys objectEnumerator];
@@ -323,7 +323,7 @@ static GPGKeyDownload * _sharedInstance = nil;
 
 - (void)downloadedKeys:(NSNotification *)notification {
 	// TODO: Show more information (optional) to user (signatures, etc.) in a summary drawer?
-	NSBundle * aBundle = [NSBundle bundleForClass:[self class]];
+	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
 
 	[importProgressIndicator stopAnimation:nil];
 	[importButton setEnabled:YES];
@@ -408,10 +408,10 @@ static GPGKeyDownload * _sharedInstance = nil;
 	if ([[tableColumn identifier] isEqualToString:@"selection"]) {
 		return [NSNumber numberWithBool:[selectedKeys containsObject:item]];
 	} else if ([item canHaveChildren]) {
-		NSString * resultString = [NSString stringWithFormat:@"0x%@", [item keyID]];
-		NSString * aString = [item algorithmDescription];
-		NSCalendarDate * aDate;
-		NSBundle * aBundle = [NSBundle bundleForClass:[self class]];
+		NSString *resultString = [NSString stringWithFormat:@"0x%@", [item keyID]];
+		NSString *aString = [item algorithmDescription];
+		NSCalendarDate *aDate;
+		NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
 
 		if (aString) {
 			unsigned aLength = [(GPGKey *) item length];
@@ -473,7 +473,7 @@ static GPGKeyDownload * _sharedInstance = nil;
 - (NSString *)outlineView:(NSOutlineView *)ov toolTipForCell:(NSCell *)cell rect:(NSRectPointer)rect tableColumn:(NSTableColumn *)tc item:(id)item mouseLocation:(NSPoint)mouseLocation {
 	// Available only since Tiger
 	if ([[tc identifier] isEqualToString:@"description"]) {
-		return [self outlineView:ov objectValueForTableColumn:tc byItem:item];         // TODO: Use multi-line display for readability?
+		return [self outlineView:ov objectValueForTableColumn:tc byItem:item];                 // TODO: Use multi-line display for readability?
 	} else {
 		return nil;
 	}
@@ -486,9 +486,9 @@ static GPGKeyDownload * _sharedInstance = nil;
 
 - (void)missingKeysNotification:(NSNotification *)notification {
 	if ([GPGMailBundle gpgMailWorks] && !isSearching && !isImporting) {
-		NSArray * fingerprints = [[notification userInfo] objectForKey:@"fingerprints"];
-		NSArray * emails = [[notification userInfo] objectForKey:@"emails"];
-		NSArray * patterns = nil;
+		NSArray *fingerprints = [[notification userInfo] objectForKey:@"fingerprints"];
+		NSArray *emails = [[notification userInfo] objectForKey:@"emails"];
+		NSArray *patterns = nil;
 
 		if (fingerprints != nil && [fingerprints count] > 0) {
 			patterns = [NSArray arrayWithObject:[@"0x" stringByAppendingString:[fingerprints componentsJoinedByString:@", 0x"]]];
@@ -499,7 +499,7 @@ static GPGKeyDownload * _sharedInstance = nil;
 			patterns = emails;
 		}
 
-		[self window];                 // Ensures nib has been loaded
+		[self window];                         // Ensures nib has been loaded
 		if (patterns != nil && [patterns count] > 0) {
 			[emailCell setStringValue:[patterns componentsJoinedByString:@", "]];
 		}

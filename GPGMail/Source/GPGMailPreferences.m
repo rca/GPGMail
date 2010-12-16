@@ -49,24 +49,24 @@
 }
 
 - (NSAttributedString *)credits {
-	NSBundle * mailBundle = [NSBundle bundleForClass:[self class]];
-	NSAttributedString * credits = [[[NSAttributedString alloc] initWithURL:[mailBundle URLForResource:@"Credits" withExtension:@"rtf"] documentAttributes:nil] autorelease];
+	NSBundle *mailBundle = [NSBundle bundleForClass:[self class]];
+	NSAttributedString *credits = [[[NSAttributedString alloc] initWithURL:[mailBundle URLForResource:@"Credits" withExtension:@"rtf"] documentAttributes:nil] autorelease];
 
 	return credits;
 }
 
 - (NSAttributedString *)websiteLink {
-	NSMutableParagraphStyle * pStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+	NSMutableParagraphStyle *pStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
 
 	[pStyle setAlignment:NSRightTextAlignment];
 
-	NSDictionary * attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-								 pStyle, NSParagraphStyleAttributeName,
-								 @"http://www.gpgmail.org/", NSLinkAttributeName,
-								 [NSColor blueColor], NSForegroundColorAttributeName,
-								 [NSFont fontWithName:@"Lucida Grande" size:9], NSFontAttributeName,
-								 [NSNumber numberWithInt:1], NSUnderlineStyleAttributeName,
-								 nil];
+	NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+								pStyle, NSParagraphStyleAttributeName,
+								@"http://www.gpgmail.org/", NSLinkAttributeName,
+								[NSColor blueColor], NSForegroundColorAttributeName,
+								[NSFont fontWithName:@"Lucida Grande" size:9], NSFontAttributeName,
+								[NSNumber numberWithInt:1], NSUnderlineStyleAttributeName,
+								nil];
 
 	return [[[NSAttributedString alloc] initWithString:@"http://www.gpgmail.org" attributes:attributes] autorelease];
 }
@@ -74,11 +74,11 @@
 
 
 - (void)refreshKeyIdentifiersDisplay {
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
-	NSEnumerator * anEnum;               // = [[mailBundle allDisplayedKeyIdentifiers] objectEnumerator];
-	NSString * anIdentifier;
-	NSEnumerator * tableColumnEnum = [[NSArray arrayWithArray:[keyIdentifiersTableView tableColumns]] objectEnumerator];
-	NSTableColumn * aColumn;
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+	NSEnumerator *anEnum;                    // = [[mailBundle allDisplayedKeyIdentifiers] objectEnumerator];
+	NSString *anIdentifier;
+	NSEnumerator *tableColumnEnum = [[NSArray arrayWithArray:[keyIdentifiersTableView tableColumns]] objectEnumerator];
+	NSTableColumn *aColumn;
 
 	while (aColumn = [tableColumnEnum nextObject])
 		[keyIdentifiersTableView removeTableColumn:aColumn];
@@ -86,20 +86,20 @@
 	anEnum = [[mailBundle displayedKeyIdentifiers] objectEnumerator];
 	while (anIdentifier = [anEnum nextObject])
 		[keyIdentifiersTableView addTableColumn:[tableColumnPerIdentifier objectForKey:anIdentifier]];
-	[keyIdentifiersTableView sizeToFit];         // No effect...
+	[keyIdentifiersTableView sizeToFit];             // No effect...
 	[mailBundle refreshKeyIdentifiersDisplayInMenu:[keyIdentifiersPopUpButton menu]];
 }
 
 - (void)refreshPersonalKeys {
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
-	NSEnumerator * keyEnum = [[mailBundle personalKeys] objectEnumerator];
-	GPGKey * aKey;
-	NSString * defaultKeyFingerprint = [[mailBundle defaultKey] fingerprint];
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+	NSEnumerator *keyEnum = [[mailBundle personalKeys] objectEnumerator];
+	GPGKey *aKey;
+	NSString *defaultKeyFingerprint = [[mailBundle defaultKey] fingerprint];
 	BOOL displaysAllUserIDs = [mailBundle displaysAllUserIDs];
 
 	[personalKeysPopUpButton removeAllItems];
 	while (aKey = [keyEnum nextObject]) {
-		NSMenuItem * anItem;
+		NSMenuItem *anItem;
 
 		[personalKeysPopUpButton addItemWithTitle:[mailBundle menuItemTitleForKey:aKey]];
 		anItem = [personalKeysPopUpButton lastItem];
@@ -108,8 +108,8 @@
 			[personalKeysPopUpButton selectItem:anItem];
 		}
 		if (displaysAllUserIDs) {
-			NSEnumerator * userIDEnum = [[mailBundle secondaryUserIDsForKey:aKey] objectEnumerator];
-			GPGUserID * aUserID;
+			NSEnumerator *userIDEnum = [[mailBundle secondaryUserIDsForKey:aKey] objectEnumerator];
+			GPGUserID *aUserID;
 
 			while (aUserID = [userIDEnum nextObject]) {
 				[personalKeysPopUpButton addItemWithTitle:[mailBundle menuItemTitleForUserID:aUserID indent:1]];
@@ -147,8 +147,8 @@
 
 - (void)tableViewColumnDidMove:(NSNotification *)notification {
 	if (!initializingPrefs) {
-		GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
-		NSMutableArray * anArray = [NSMutableArray arrayWithArray:[mailBundle displayedKeyIdentifiers]];
+		GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+		NSMutableArray *anArray = [NSMutableArray arrayWithArray:[mailBundle displayedKeyIdentifiers]];
 		int anIndex = [[[notification userInfo] objectForKey:@"NSOldColumn"] intValue];
 		id anObject = [[anArray objectAtIndex:anIndex] retain];
 
@@ -184,8 +184,8 @@
 }
 
 - (void)awakeFromNib {
-	NSEnumerator * anEnum = [[keyIdentifiersTableView tableColumns] objectEnumerator];
-	NSTableColumn * aColumn;
+	NSEnumerator *anEnum = [[keyIdentifiersTableView tableColumns] objectEnumerator];
+	NSTableColumn *aColumn;
 
 
 	tableColumnPerIdentifier = [[NSMutableDictionary alloc] init];
@@ -222,7 +222,7 @@
 }
 
 - (void)preferencesDidChange:(NSNotification *)notification {
-	NSString * aKey = [[notification userInfo] objectForKey:@"key"];
+	NSString *aKey = [[notification userInfo] objectForKey:@"key"];
 
 	if ([aKey isEqualToString:@"displaysAllUserIDs"]) {
 		[self refreshPersonalKeys];

@@ -43,7 +43,7 @@
  */
 
 
-extern NSString * GPGMailHeaderKey;
+extern NSString *GPGMailHeaderKey;
 
 
 @interface MessageBody (GPGMail)

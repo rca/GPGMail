@@ -25,7 +25,7 @@
 
 @interface GPGTask : NSTask
 {
-	NSMutableDictionary * _dictionary;
+	NSMutableDictionary *_dictionary;
 	BOOL _hasExeced;
 	BOOL _isRunning;
 	pid_t _pid;

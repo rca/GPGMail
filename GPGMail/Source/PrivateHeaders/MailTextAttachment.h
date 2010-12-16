@@ -9,8 +9,8 @@
 	unsigned int _isDisplayingAttachmentInline : 1;
 	unsigned int _shouldDisplayInlineByDefault : 1;
 	unsigned int _isImageBeingResized : 1;
-	NSFileWrapper * _originalFileWrapper;
-	NSImage * _originalImage;
+	NSFileWrapper *_originalFileWrapper;
+	NSImage *_originalImage;
 	struct CGSize _originalImageSize;
 	struct CGSize _maxImageSize;
 	struct CGSize _lastMaxImageSize;

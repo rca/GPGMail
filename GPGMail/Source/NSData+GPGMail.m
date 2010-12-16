@@ -41,13 +41,13 @@
 #define CR '\r'
 #define LF '\n'
 	unsigned length = [self length];
-	NSData * result;
+	NSData *result;
 
 	if (length > 0) {
 		unsigned i = 0, newLength = 0;
 		BOOL foundCR = NO;
-		const unsigned char * oldBytes;
-		unsigned char aByte, * newBytes;
+		const unsigned char *oldBytes;
+		unsigned char aByte, *newBytes;
 
 		oldBytes = [self bytes];
 		newBytes = NSZoneMalloc(NSDefaultMallocZone(), 2 * length);
@@ -71,7 +71,7 @@
 			}
 		}
 		if (foundCR) {
-			newBytes[newLength++] = LF;                          // Last byte!
+			newBytes[newLength++] = LF;                                      // Last byte!
 
 		}
 		result = [NSData dataWithBytes:newBytes length:newLength];
@@ -90,13 +90,13 @@
 #define CR '\r'
 #define LF '\n'
 	unsigned length = [self length];
-	NSData * result;
+	NSData *result;
 
 	if (length > 0) {
 		unsigned i = 0, newLength = 0;
 		BOOL foundCR = NO;
-		const unsigned char * oldBytes;
-		unsigned char aByte, * newBytes;
+		const unsigned char *oldBytes;
+		unsigned char aByte, *newBytes;
 
 		oldBytes = [self bytes];
 		newBytes = NSZoneMalloc(NSDefaultMallocZone(), length);
@@ -131,7 +131,7 @@
 	unsigned i = [self length];
 
 	if (i > 0) {
-		const char * bytes = [self bytes];
+		const char *bytes = [self bytes];
 
 		do {
 			if (bytes[--i] & 0x80) {
@@ -143,7 +143,7 @@
 }
 
 - (NSData *)gpgNormalizedDataForVerifying {
-	NSMutableData * result = [NSMutableData dataWithData:self];
+	NSMutableData *result = [NSMutableData dataWithData:self];
 
 	[result gpgNormalizeDataForVerifying];
 
@@ -153,7 +153,7 @@
 - (NSRange)gpgHeaderBodySeparationRange {
 #define CR '\r'
 #define LF '\n'
-	const unsigned char * bytes = [self bytes];
+	const unsigned char *bytes = [self bytes];
 	const int length = [self length];
 	int i;
 	NSRange result = NSMakeRange(NSNotFound, 0);
@@ -217,12 +217,12 @@ enum {
 	// Replace line consisting of DASH DASH SPACE [SPACE] by DASH DASH
 	// WARNING Sometimes there is only 1 space!
 	unsigned length = [self length];
-	NSData * result;
+	NSData *result;
 
 	if (length > 0) {
 		unsigned i = 0, newLength = 0;
-		const unsigned char * oldBytes;
-		unsigned char aByte, * newBytes;
+		const unsigned char *oldBytes;
+		unsigned char aByte, *newBytes;
 		int state = lookingForFirstDash;
 
 		oldBytes = [self bytes];
@@ -302,12 +302,12 @@ enum {
 - (NSData *)gpgDeleteTrailingSpacesUseCRLF:(BOOL)useCRLF useQP:(BOOL)useQP {
 	// Delete trailing spaces, or replace the last one (on a line) by a quoted one
 	unsigned length = [self length];
-	NSData * result;
+	NSData *result;
 
 	if (length > 0) {
 		unsigned i = 0, newLength = 0;
-		const unsigned char * oldBytes;
-		unsigned char aByte, * newBytes;
+		const unsigned char *oldBytes;
+		unsigned char aByte, *newBytes;
 		BOOL lookingForCR = useCRLF, lookingForLF = !useCRLF;
 
 		oldBytes = [self bytes];
@@ -373,19 +373,19 @@ enum {
 	// Decode format=flowed data according to
 	// http://www.ietf.org/rfc/rfc2646.txt?number=2646
 	// FIXME: Does not support any UTF16
-	NSMutableData * outputData = [self mutableCopy];
+	NSMutableData *outputData = [self mutableCopy];
 	unsigned aLength = [self length];
 	unsigned i = 0;
 	BOOL lastCharWasSP = NO;
 	BOOL lastCharsWereSPCR = NO;
 	unsigned anOffset = 0;
-	const char * bytes = [self bytes];
+	const char *bytes = [self bytes];
 
 	for (; i < aLength; i++) {
 		char aChar = bytes[i];
 
 		if (aChar == '\n' && lastCharsWereSPCR) {
-			[outputData replaceBytesInRange:NSMakeRange(i - anOffset - 1, 2) withBytes:NULL length:0];                         // Delete CRLF
+			[outputData replaceBytesInRange:NSMakeRange(i - anOffset - 1, 2) withBytes:NULL length:0];                                     // Delete CRLF
 			lastCharsWereSPCR = NO;
 			lastCharWasSP = NO;
 			anOffset += 2;
@@ -409,7 +409,7 @@ enum {
 @implementation NSMutableData (GPGMail)
 
 - (void)gpgNormalizeDataForSigning {
-	[self setData:[self gpgStandardizedEOLsToCRLF]];         // All end-of-lines must be made with <CR><LF>
+	[self setData:[self gpgStandardizedEOLsToCRLF]];             // All end-of-lines must be made with <CR><LF>
 	// Let's remove/replace trailing whitespace
 #warning Remove trailing whitespaces!
 }
@@ -417,7 +417,7 @@ enum {
 - (void)gpgNormalizeDataForVerifying {
 	// Verifying can occur only on 7-bit data (OpenPGP)
 //    NSAssert(![self gpgContainsNonASCIICharacter], @"### -[NSMutableData(GPGMail) gpgNormalizeDataForVerifying]: Invalid signed content with 8-bit data?!");
-	[self setData:[self gpgStandardizedEOLsToCRLF]];         // All end-of-lines must be made with <CR><LF>
+	[self setData:[self gpgStandardizedEOLsToCRLF]];             // All end-of-lines must be made with <CR><LF>
 }
 
 - (BOOL)gpgApplyQuotedPrintableIfNeeded:(BOOL)alreadyUsesQuotedPrintable {
@@ -428,12 +428,12 @@ enum {
 	BOOL needsQuotedPrintable = NO;
 
 	if ([self gpgContainsNonASCIICharacter]) {
-		NSParameterAssert(alreadyUsesQuotedPrintable == NO);                 // How could it be possible?! Would be a bug.
+		NSParameterAssert(alreadyUsesQuotedPrintable == NO);                         // How could it be possible?! Would be a bug.
 		needsQuotedPrintable = YES;
 #warning Might need base64 instead
 		NSLog(@"### GPGMail: signature will be invalid. Cannot sign 8bit data in OpenPGP.");
 	} else {
-		NSString * aString = [[NSString alloc] initWithData:self encoding:NSASCIIStringEncoding];
+		NSString *aString = [[NSString alloc] initWithData:self encoding:NSASCIIStringEncoding];
 
 		needsQuotedPrintable = ([aString hasPrefix:@"From "] || [aString rangeOfString:@"\r\nFrom " options:NSLiteralSearch].length > 0);
 #warning Might need base64 instead
@@ -442,7 +442,7 @@ enum {
 
 	if (needsQuotedPrintable) {
 #if 0
-		NSMutableString * modifiedString;
+		NSMutableString *modifiedString;
 		unsigned stringLength;
 		NSRange searchRange;
 
@@ -489,7 +489,7 @@ enum {
 - (void)gpgASCIIfy {
 	// Replaces all non-ASCII chars by '_'
 	int i;
-	unsigned char * bytes = [self mutableBytes];
+	unsigned char *bytes = [self mutableBytes];
 
 	for (i = [self length] - 1; i >= 0; i--) {
 		if (bytes[i] > 127) {

@@ -16,20 +16,20 @@
 {
 	int _typeCode;
 	int _subtypeCode;
-	NSString * _type;
-	NSString * _subtype;
-	NSMutableDictionary * _bodyParameters;
-	NSString * _contentTransferEncoding;
+	NSString *_type;
+	NSString *_subtype;
+	NSMutableDictionary *_bodyParameters;
+	NSString *_contentTransferEncoding;
 	id _encryptSignLock;
 	BOOL _isMimeEncrypted;
 	BOOL _isMimeSigned;
-	MessageBody * _decryptedMessageBody;
-	Message * _decryptedMessage;
-	MessageStore * _decryptedMessageStore;
-	NSMutableDictionary * _otherIvars;
+	MessageBody *_decryptedMessageBody;
+	Message *_decryptedMessage;
+	MessageStore *_decryptedMessageStore;
+	NSMutableDictionary *_otherIvars;
 	struct _NSRange _range;
 	id _parentOrBody;
-	MimePart * _nextPart;
+	MimePart *_nextPart;
 }
 
 - (void)dealloc;
@@ -55,7 +55,7 @@
 - (void)setContentDescription:(id)arg1;
 - (id)contentID;
 - (void)setContentID:(id)arg1;
-@property (readonly) NSString * contentIDURLString;
+@property (readonly) NSString *contentIDURLString;
 - (id)contentLocation;
 - (void)setContentLocation:(id)arg1;
 - (id)languages;
@@ -130,12 +130,12 @@
 - (id)todoPart;
 - (void)clearCachedDecryptedMessageBody;
 - (void)_setDecryptedMessageBody:(id) arg1 isEncrypted:(BOOL) arg2 isSigned:(BOOL)arg3;
-@property (retain, nonatomic) MessageStore * decryptedMessageStore; // @synthesize decryptedMessageStore=_decryptedMessageStore;
-@property (retain, nonatomic) Message * decryptedMessage; // @synthesize decryptedMessage=_decryptedMessage;
-@property (retain, nonatomic) MessageBody * decryptedMessageBody; // @synthesize decryptedMessageBody=_decryptedMessageBody;
+@property (retain, nonatomic) MessageStore *decryptedMessageStore;  // @synthesize decryptedMessageStore=_decryptedMessageStore;
+@property (retain, nonatomic) Message *decryptedMessage;  // @synthesize decryptedMessage=_decryptedMessage;
+@property (retain, nonatomic) MessageBody *decryptedMessageBody;  // @synthesize decryptedMessageBody=_decryptedMessageBody;
 @property (nonatomic) BOOL isMimeSigned; // @synthesize isMimeSigned=_isMimeSigned;
 @property (nonatomic) BOOL isMimeEncrypted; // @synthesize isMimeEncrypted=_isMimeEncrypted;
-@property (copy) NSString * contentTransferEncoding; // @synthesize contentTransferEncoding=_contentTransferEncoding;
+@property (copy) NSString *contentTransferEncoding;  // @synthesize contentTransferEncoding=_contentTransferEncoding;
 
 @end
 
@@ -205,20 +205,20 @@
 {
 	int _typeCode;
 	int _subtypeCode;
-	NSString * _type;
-	NSString * _subtype;
-	NSMutableDictionary * _bodyParameters;
-	NSString * _contentTransferEncoding;
+	NSString *_type;
+	NSString *_subtype;
+	NSMutableDictionary *_bodyParameters;
+	NSString *_contentTransferEncoding;
 	id _encryptSignLock;
 	BOOL _isMimeEncrypted;
 	BOOL _isMimeSigned;
-	MessageBody * _decryptedMessageBody;
-	Message * _decryptedMessage;
-	MessageStore * _decryptedMessageStore;
-	NSMutableDictionary * _otherIvars;
+	MessageBody *_decryptedMessageBody;
+	Message *_decryptedMessage;
+	MessageStore *_decryptedMessageStore;
+	NSMutableDictionary *_otherIvars;
 	struct _NSRange _range;
 	id _parentOrBody;
-	MimePart * _nextPart;
+	MimePart *_nextPart;
 }
 
 - (void)dealloc;

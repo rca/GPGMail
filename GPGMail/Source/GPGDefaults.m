@@ -17,8 +17,8 @@
 
 #import "GPGDefaults.h"
 
-NSString * gpgDefaultsDomain = @"org.gpgtools.common";
-NSString * GPGDefaultsUpdatedNotification = @"org.gpgtools.GPGDefaultsUpdatedNotification";
+NSString *gpgDefaultsDomain = @"org.gpgtools.common";
+NSString *GPGDefaultsUpdatedNotification = @"org.gpgtools.GPGDefaultsUpdatedNotification";
 
 @interface GPGDefaults (Private)
 - (void)refreshDefaults;
@@ -30,7 +30,7 @@ NSString * GPGDefaultsUpdatedNotification = @"org.gpgtools.GPGDefaultsUpdatedNot
 
 
 @implementation GPGDefaults
-static NSMutableDictionary * _sharedInstances = nil;
+static NSMutableDictionary *_sharedInstances = nil;
 
 + (id)gpgDefaults {
 	return [self defaultsWithDomain:gpgDefaultsDomain];
@@ -42,7 +42,7 @@ static NSMutableDictionary * _sharedInstances = nil;
 	if (!_sharedInstances) {
 		_sharedInstances = [[NSMutableDictionary alloc] initWithCapacity:2];
 	}
-	GPGDefaults * defaultsController = [_sharedInstances objectForKey:domain];
+	GPGDefaults *defaultsController = [_sharedInstances objectForKey:domain];
 	if (!defaultsController) {
 		defaultsController = [[self alloc] initWithDomain:domain];
 		[_sharedInstances setObject:defaultsController forKey:domain];
@@ -68,7 +68,7 @@ static NSMutableDictionary * _sharedInstances = nil;
 
 - (void)setDomain:(NSString *)value {
 	if (value != _domain) {
-		NSString * old = _domain;
+		NSString *old = _domain;
 		_domain = [value retain];
 		[old release];
 	}
@@ -86,10 +86,10 @@ static NSMutableDictionary * _sharedInstances = nil;
 }
 - (id)objectForKey:(NSString *)defaultName {
 	[_defaultsLock lock];
-	NSDictionary * dict = self.defaults;
-	NSObject * obj = [dict objectForKey:defaultName];
+	NSDictionary *dict = self.defaults;
+	NSObject *obj = [dict objectForKey:defaultName];
 	if (!obj && _defaultDictionarys) {
-		for (NSDictionary * dictionary in _defaultDictionarys) {
+		for (NSDictionary *dictionary in _defaultDictionarys) {
 			obj = [dictionary objectForKey:defaultName];
 			if (obj) {
 				break;
@@ -129,7 +129,7 @@ static NSMutableDictionary * _sharedInstances = nil;
 }
 
 - (NSString *)stringForKey:(NSString *)defaultName {
-	NSString * obj = [self objectForKey:defaultName];
+	NSString *obj = [self objectForKey:defaultName];
 
 	if (obj && [obj isKindOfClass:[NSString class]]) {
 		return obj;
@@ -138,7 +138,7 @@ static NSMutableDictionary * _sharedInstances = nil;
 }
 
 - (NSArray *)arrayForKey:(NSString *)defaultName {
-	NSArray * obj = [self objectForKey:defaultName];
+	NSArray *obj = [self objectForKey:defaultName];
 
 	if (obj && [obj isKindOfClass:[NSArray class]]) {
 		return obj;
@@ -148,7 +148,7 @@ static NSMutableDictionary * _sharedInstances = nil;
 
 - (NSDictionary *)dictionaryRepresentation {
 	[_defaultsLock lock];
-	NSDictionary * retDict = [self.defaults copy];
+	NSDictionary *retDict = [self.defaults copy];
 	[_defaultsLock unlock];
 	return [retDict autorelease];
 }
@@ -157,7 +157,7 @@ static NSMutableDictionary * _sharedInstances = nil;
 	if (!_defaultDictionarys) {
 		_defaultDictionarys = [[NSSet alloc] initWithObjects:dictionary, nil];
 	} else {
-		NSSet * oldDictionary = _defaultDictionarys;
+		NSSet *oldDictionary = _defaultDictionarys;
 		_defaultDictionarys = [[_defaultDictionarys setByAddingObject:dictionary] retain];
 		[oldDictionary release];
 	}
@@ -175,7 +175,7 @@ static NSMutableDictionary * _sharedInstances = nil;
 
 - (void)setGPGConf:(id)value forKey:(NSString *)defaultName {
 	if ([defaultName isEqualToString:@"GPGPassphraseFlushTimeout"]) {
-		GPGAgentOptions * agentOptions = [[GPGAgentOptions new] autorelease];
+		GPGAgentOptions *agentOptions = [[GPGAgentOptions new] autorelease];
 
 		NSInteger cacheTime = [value integerValue];
 		if (cacheTime == 0) {
@@ -190,12 +190,12 @@ static NSMutableDictionary * _sharedInstances = nil;
 		[agentOptions setOptionValue:[NSString stringWithFormat:@"%i", cacheTime] forName:@"max-cache-ttl"];
 
 		[agentOptions saveOptions];
-		[GPGAgentOptions gpgAgentFlush];                         // gpg-agent should read the new configuration.
+		[GPGAgentOptions gpgAgentFlush];                                 // gpg-agent should read the new configuration.
 	} else if ([defaultName isEqualToString:@"GPGDefaultKeyFingerprint"]) {
-		GPGOptions * gpgOptions = [[GPGOptions new] autorelease];
+		GPGOptions *gpgOptions = [[GPGOptions new] autorelease];
 		[gpgOptions setOptionValue:value forName:@"default-key"];
 	} else if ([defaultName isEqualToString:@"GPGRemembersPassphrasesDuringSession"]) {
-		GPGAgentOptions * agentOptions = [[GPGAgentOptions new] autorelease];
+		GPGAgentOptions *agentOptions = [[GPGAgentOptions new] autorelease];
 
 		if ([value boolValue]) {
 
@@ -210,13 +210,13 @@ static NSMutableDictionary * _sharedInstances = nil;
 		}
 
 		[agentOptions saveOptions];
-		[GPGAgentOptions gpgAgentFlush];                         // gpg-agent should read the new configuration.
+		[GPGAgentOptions gpgAgentFlush];                                 // gpg-agent should read the new configuration.
 	}
 }
 
 - (void)refreshDefaults {
-	NSDictionary * dictionary = [[NSUserDefaults standardUserDefaults] persistentDomainForName:_domain];
-	NSMutableDictionary * old = _defaults;
+	NSDictionary *dictionary = [[NSUserDefaults standardUserDefaults] persistentDomainForName:_domain];
+	NSMutableDictionary *old = _defaults;
 
 	if (dictionary) {
 		_defaults = [[dictionary mutableCopy] retain];
@@ -238,12 +238,12 @@ static NSMutableDictionary * _sharedInstances = nil;
 	[[NSUserDefaults standardUserDefaults] setPersistentDomain:self.defaults forName:_domain];
 	[_defaultsLock unlock];
 
-	NSDictionary * userInfo = [NSDictionary dictionaryWithObjectsAndKeys:_domain, @"domain", [NSNumber numberWithInteger:(NSInteger)self], @"sender", nil];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:_domain, @"domain", [NSNumber numberWithInteger:(NSInteger)self], @"sender", nil];
 	[[NSDistributedNotificationCenter defaultCenter] postNotificationName:GPGDefaultsUpdatedNotification object:@"org.gpgtools.GPGDefaults" userInfo:userInfo];
 }
 
 - (void)defaultsDidUpdated:(NSNotification *)notification {
-	NSDictionary * userInfo = [notification userInfo];
+	NSDictionary *userInfo = [notification userInfo];
 
 	if ([[userInfo objectForKey:@"sender"] integerValue] != (NSInteger)self) {
 		if ([[userInfo objectForKey:@"domain"] isEqualToString:_domain]) {

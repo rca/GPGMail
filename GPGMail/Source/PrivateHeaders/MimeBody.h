@@ -8,9 +8,9 @@
 
 @interface MimeBody : MessageBody
 {
-	MimePart * _topLevelPart;
+	MimePart *_topLevelPart;
 	unsigned int _preferredTextEncoding;
-	NSData * _bodyData;
+	NSData *_bodyData;
 	unsigned int _preferredAlternative : 16;
 	unsigned int _numAlternatives : 16;
 }
@@ -69,9 +69,9 @@
 
 @interface MimeBody : MessageBody
 {
-	MimePart * _topLevelPart;
+	MimePart *_topLevelPart;
 	unsigned int _preferredTextEncoding;
-	NSData * _bodyData;
+	NSData *_bodyData;
 	unsigned int _preferredAlternative : 16;
 	unsigned int _numAlternatives : 16;
 }

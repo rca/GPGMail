@@ -40,13 +40,13 @@
 
 typedef enum {
 	GPGNoSignature,
-	GPGInlineSignature,                 // Old-style
-	GPGDetachedSignature,               // OpenPGP: sign+encrypt in one operation
-	GPGEncapsulatedSignature            // OpenPGP: sign then encrypt => 2 operations
+	GPGInlineSignature,                     // Old-style
+	GPGDetachedSignature,                   // OpenPGP: sign+encrypt in one operation
+	GPGEncapsulatedSignature                // OpenPGP: sign then encrypt => 2 operations
 }GPGMessageSignatureType;
 
 
-extern NSString * GPGHandlerException;
+extern NSString *GPGHandlerException;
 // UserInfo:
 //	TerminationStatus = task termination status (NSNumber)
 //	Error = stderr (NSString)
@@ -54,11 +54,11 @@ extern NSString * GPGHandlerException;
 
 @interface GPGHandler : NSObject
 {
-	NSConditionLock * readLock;
-	NSData * stderrData;
-	NSData * stdoutData;
-	NSData * statusData;
-	NSTask * currentTask;
+	NSConditionLock *readLock;
+	NSData *stderrData;
+	NSData *stdoutData;
+	NSData *statusData;
+	NSTask *currentTask;
 	BOOL operationCancelled;
 }
 

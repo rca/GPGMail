@@ -100,7 +100,7 @@
 }
 
 + (NSString *)composeAccessoryViewNibName {
-	return @"GPGMailCompose";         // Invoked by -[MVComposeAccessoryViewOwner setupUIForMessage:]
+	return @"GPGMailCompose";             // Invoked by -[MVComposeAccessoryViewOwner setupUIForMessage:]
 }
 
 - (BOOL)displaysButtonsInComposeWindow {
@@ -115,7 +115,7 @@
 
 - (void)updateMenusAccordingToSelf:(BOOL)accordingToSelf {
 	// Invoked when Compose window becomes/resigns main
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
 
 	if (accordingToSelf) {
 		[[mailBundle signsNewMessageMenuItem] setState:(signsMessage ? NSOnState:NSOffState)];
@@ -173,8 +173,8 @@
 	if (!selectedPersonalPublicKey) {
 		// Do not invoke -[GPGKey publicKey], because it will perform a gpg op
 		// Get key from cached public keys
-		NSEnumerator * keyEnum = [[self allPublicKeys] objectEnumerator];
-		NSString * aFingerprint = [selectedPersonalKey fingerprint];
+		NSEnumerator *keyEnum = [[self allPublicKeys] objectEnumerator];
+		NSString *aFingerprint = [selectedPersonalKey fingerprint];
 
 		while (selectedPersonalPublicKey = [keyEnum nextObject]) {
 			if ([[selectedPersonalPublicKey fingerprint] isEqualToString:aFingerprint]) {
@@ -211,9 +211,9 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:[notification name] object:[notification object]];
 }
 
-static NSComparisonResult compareKeysAccordingToSelection(id key, id otherKey, void * context){
+static NSComparisonResult compareKeysAccordingToSelection(id key, id otherKey, void *context){
 	BOOL ascendingOrder = [[(NSDictionary *) context objectForKey:@"ascending"] boolValue];
-	NSArray * selectedKeys = [(NSDictionary *) context objectForKey:@"selectedPublicKeys"];
+	NSArray *selectedKeys = [(NSDictionary *) context objectForKey:@"selectedPublicKeys"];
 	BOOL leftValue = [selectedKeys containsObject:key];
 	BOOL rightValue = [selectedKeys containsObject:otherKey];
 	NSComparisonResult result = (leftValue == rightValue ? NSOrderedSame : (leftValue ? NSOrderedDescending : NSOrderedAscending));
@@ -225,7 +225,7 @@ static NSComparisonResult compareKeysAccordingToSelection(id key, id otherKey, v
 	return result;
 }
 
-static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * context){
+static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *context){
 	BOOL ascendingOrder = [[(NSDictionary *) context objectForKey:@"ascending"] boolValue];
 	SEL selector = NSSelectorFromString([(NSDictionary *) context objectForKey:@"selector"]);
 	id leftValue = [key performSelector:selector];
@@ -235,7 +235,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	if ([leftValue isKindOfClass:[NSString class]]) {
 		result = [(NSString *) leftValue caseInsensitiveCompare:rightValue];
 	} else {
-		result = [(NSNumber *) leftValue compare:rightValue];                  // Cast is not correct; we put it just to avoid a gcc warning
+		result = [(NSNumber *) leftValue compare:rightValue];                          // Cast is not correct; we put it just to avoid a gcc warning
 
 	}
 	if (!ascendingOrder && result != NSOrderedSame) {
@@ -278,7 +278,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 
 - (NSArray *)sortedPublicKeys {
 	if (!publicKeysAreSorted) {
-		NSArray * sortedPublicKeys;
+		NSArray *sortedPublicKeys;
 
 		if ([[sortingTableColumn identifier] isEqualToString:@"isSelected"]) {
 			sortedPublicKeys = [[[self allPublicKeys] sortedArrayUsingFunction:compareKeysAccordingToSelection context:[NSDictionary dictionaryWithObjectsAndKeys:selectedPublicKeys, @"selectedPublicKeys", [NSNumber numberWithBool:ascendingOrder], @"ascending", nil]] retain];
@@ -301,14 +301,14 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 - (void)updateWarningImage {
 #if 0
 #warning FIXME: Should not modify any encrypt/sign/MIME setting, but only update UI
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
 
 	if (encryptsMessage || [mailBundle encryptMessagesWhenPossible]) {
 		BOOL hasAtLeastOneInvalidKey = NO;
 
 		if (!usesSymetricEncryption) {
-			NSEnumerator * anEnum = [selectedPublicKeys objectEnumerator];
-			GPGKey * aKey;
+			NSEnumerator *anEnum = [selectedPublicKeys objectEnumerator];
+			GPGKey *aKey;
 
 			while (aKey = [anEnum nextObject]) {
 				if (![mailBundle canKeyBeUsedForEncryption:aKey]) {
@@ -371,19 +371,19 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	// If it misses a key, it will prepend the email with a question mark
 	// in the menus, and item will be disabled. Not done in that method.
 	// Updates internal lists AND imageView
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
-	NSArray * recipients = [self recipients];                // Normalized
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+	NSArray *recipients = [self recipients];                     // Normalized
 
 	[selectedPublicKeys removeAllObjects];
 	[missingPublicKeyEmails removeAllObjects];
 
 	if ([recipients count] > 0) {
-		NSString * aRecipient;
-		NSEnumerator * anEnum;
-		GPGKey * aKey;
+		NSString *aRecipient;
+		NSEnumerator *anEnum;
+		GPGKey *aKey;
 		BOOL filterKeys = [mailBundle filtersOutUnusableKeys];
-		NSMutableArray * fetchedKeys = [[NSMutableArray alloc] init];
-		NSArray * keyGroups = [mailBundle keyGroups];
+		NSMutableArray *fetchedKeys = [[NSMutableArray alloc] init];
+		NSArray *keyGroups = [mailBundle keyGroups];
 
 		anEnum = [[mailBundle keysForSearchPatterns:recipients attributeName:@"normalizedEmail" secretKeys:NO] objectEnumerator];
 		while (aKey = [anEnum nextObject])
@@ -394,15 +394,15 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		// Now find whether we miss key; matching needs to be done manually
 		anEnum = [recipients objectEnumerator];
 		while (aRecipient = [anEnum nextObject]) {
-			NSEnumerator * keyEnum = [fetchedKeys objectEnumerator];
+			NSEnumerator *keyEnum = [fetchedKeys objectEnumerator];
 			BOOL found = NO;
-			NSString * normalizedRecipient = aRecipient;
+			NSString *normalizedRecipient = aRecipient;
 
 			// If there a multiple keys with the same
 			// emails, we want to list them all!
 			while (/*!found &&*/ (aKey = [keyEnum nextObject])) {
-				NSEnumerator * userIDEnum = [[aKey userIDs] objectEnumerator];
-				GPGUserID * aUserID;
+				NSEnumerator *userIDEnum = [[aKey userIDs] objectEnumerator];
+				GPGUserID *aUserID;
 
 				while (aUserID = [userIDEnum nextObject]) {
 					// FIXME: If multiple keys with matching email address, take the first one which is valid
@@ -422,8 +422,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 			// If there is a group with the same email address as a key, we don't search for that group.
 			// That should be very unlikely.
 			if (!found) {
-				GPGKeyGroup * aKeyGroup;
-				NSEnumerator * groupEnum = [keyGroups objectEnumerator];
+				GPGKeyGroup *aKeyGroup;
+				NSEnumerator *groupEnum = [keyGroups objectEnumerator];
 
 				while (!found && (aKeyGroup = [groupEnum nextObject])) {
 					// We compare case-insensitively now
@@ -437,7 +437,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 								}
 							}
 						}
-						found = YES;                                                 // Even when no key patched criteria
+						found = YES;                                                                         // Even when no key patched criteria
 						// TODO: It would be nice to display groups in some way in the UI (menus)
 					}
 				}
@@ -450,7 +450,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		[fetchedKeys release];
 
 		if ([mailBundle encryptsToSelf] && selectedPersonalKey) {
-			GPGKey * aKey = [self selectedPersonalPublicKey];
+			GPGKey *aKey = [self selectedPersonalPublicKey];
 
 			if (aKey && (!filterKeys || [mailBundle canKeyBeUsedForEncryption:aKey])) {
 				// We have to test that, because it might happen that there's no
@@ -459,12 +459,12 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 					[selectedPublicKeys addObject:aKey];
 				}
 			} else {
-				NSString * aRecipient;
+				NSString *aRecipient;
 
 				// WARNING A disabled key can sign but not encrypt
 				// We always need to verify that even user's key can be used
 				if ([mailBundle choosesPersonalKeyAccordingToAccount]) {
-					MailDocumentEditor * editor = [self messageEditor];
+					MailDocumentEditor *editor = [self messageEditor];
 
 					aRecipient = [[[editor gpgFromPopup] selectedItem] title];
 				} else {
@@ -479,7 +479,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		[[NSNotificationCenter defaultCenter] postNotificationName:GPGMissingKeysNotification object:nil userInfo:[NSDictionary dictionaryWithObject:[missingPublicKeyEmails allObjects] forKey:@"emails"]];
 	}
 #if 0
-	[self updateWarningImage];         // Warning only when encrypting and missing keys
+	[self updateWarningImage];             // Warning only when encrypting and missing keys
 #endif
 }
 /*
@@ -490,10 +490,10 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
  * }
  */
 - (void)reloadPersonalKeys {
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
-	NSEnumerator * keyEnum = [[mailBundle personalKeys] objectEnumerator];
-	GPGKey * aKey;
-	GPGKey * defaultKey = [[[personalKeysPopUpButton selectedItem] representedObject] retain];
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+	NSEnumerator *keyEnum = [[mailBundle personalKeys] objectEnumerator];
+	GPGKey *aKey;
+	GPGKey *defaultKey = [[[personalKeysPopUpButton selectedItem] representedObject] retain];
 	BOOL displaysAllUserIDs = [mailBundle displaysAllUserIDs];
 	BOOL hasAtLeastOneKey = NO;
 
@@ -502,7 +502,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	}
 	[personalKeysPopUpButton removeAllItems];
 	while (aKey = [keyEnum nextObject]) {
-		NSMenuItem * anItem;
+		NSMenuItem *anItem;
 
 		[personalKeysPopUpButton addItemWithTitle:[mailBundle menuItemTitleForKey:aKey]];
 		hasAtLeastOneKey = YES;
@@ -517,8 +517,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		}
 
 		if (displaysAllUserIDs) {
-			NSEnumerator * userIDEnum = [[mailBundle secondaryUserIDsForKey:aKey] objectEnumerator];
-			GPGUserID * aUserID;
+			NSEnumerator *userIDEnum = [[mailBundle secondaryUserIDsForKey:aKey] objectEnumerator];
+			GPGUserID *aUserID;
 
 			while (aUserID = [userIDEnum nextObject]) {
 				[personalKeysPopUpButton addItemWithTitle:[mailBundle menuItemTitleForUserID:aUserID indent:1]];
@@ -534,9 +534,9 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 
 - (void)fillInPublicKeysMenu:(NSMenu *)menu {
 	if ([selectedPublicKeys count] > 0) {
-		NSEnumerator * anEnum = [selectedPublicKeys objectEnumerator];
-		GPGKey * aKey;
-		GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
+		NSEnumerator *anEnum = [selectedPublicKeys objectEnumerator];
+		GPGKey *aKey;
+		GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
 		BOOL displaysAllUserIDs = [mailBundle displaysAllUserIDs];
 
 		while (aKey = [anEnum nextObject]) {
@@ -551,8 +551,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 			}
 
 			if (displaysAllUserIDs) {
-				NSEnumerator * userIDEnum = [[mailBundle secondaryUserIDsForKey:aKey] objectEnumerator];
-				GPGUserID * aUserID;
+				NSEnumerator *userIDEnum = [[mailBundle secondaryUserIDsForKey:aKey] objectEnumerator];
+				GPGUserID *aUserID;
 
 				while (aUserID = [userIDEnum nextObject]) {
 					anItem = [menu addItemWithTitle:[mailBundle menuItemTitleForUserID:aUserID indent:1] action:NULL keyEquivalent:@""];
@@ -562,15 +562,15 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		}
 	}
 	if (!useCustomPublicKeys && [missingPublicKeyEmails count] > 0) {
-		NSEnumerator * anEnum = [missingPublicKeyEmails objectEnumerator];
-		NSString * anEmail;
+		NSEnumerator *anEnum = [missingPublicKeyEmails objectEnumerator];
+		NSString *anEmail;
 
 		while (anEmail = [anEnum nextObject]) {
 			id anItem = [menu addItemWithTitle:[anEmail lowercaseString] action:NULL keyEquivalent:@""];
 
 			[anItem setImage:[NSImage imageNamed:@"gpgQuestionMark"]];
 			[anItem setEnabled:NO];
-			[anItem setTarget:[GPGMailBundle sharedInstance]];                         // Necessary, to control automaticValidation behavior
+			[anItem setTarget:[GPGMailBundle sharedInstance]];                                     // Necessary, to control automaticValidation behavior
 		}
 	}
 }
@@ -580,13 +580,13 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	// selected account. Optional.
 	// Sign switch, as well as popup, should be disabled
 	// when no (valid) signing key exists.
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
-	NSEnumerator * anEnum = [[[[mailBundle personalKeysMenuItem] submenu] itemArray] objectEnumerator];
-	NSMenuItem * anItem;
-	GPGKey * selectedKey = (flag ? selectedPersonalKey : [mailBundle defaultKey]);
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+	NSEnumerator *anEnum = [[[[mailBundle personalKeysMenuItem] submenu] itemArray] objectEnumerator];
+	NSMenuItem *anItem;
+	GPGKey *selectedKey = (flag ? selectedPersonalKey : [mailBundle defaultKey]);
 
 	while (anItem = [anEnum nextObject]) {
-		GPGKey * aKey = [anItem representedObject];
+		GPGKey *aKey = [anItem representedObject];
 
 		[anItem setState:((selectedKey && [aKey isEqual:selectedKey]) ? NSOnState:NSOffState)];
 		[anItem setEnabled:[mailBundle canKeyBeUsedForSigning:aKey]];
@@ -608,8 +608,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 
 - (void)refreshPublicKeysMenu:(NSMenu *)aSubmenu fromIndex:(int)index andFillIn:(BOOL)flag {
 #warning Duplicated code!
-	NSEnumerator * anEnum = [[NSArray arrayWithArray:[aSubmenu itemArray]] objectEnumerator];
-	NSMenuItem * anItem;
+	NSEnumerator *anEnum = [[NSArray arrayWithArray:[aSubmenu itemArray]] objectEnumerator];
+	NSMenuItem *anItem;
 	int i;
 
 	for (i = 0; i < index; i++) {
@@ -623,8 +623,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 			[self fillInPublicKeysMenu:aSubmenu];
 		}
 	} else {
-		GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
-		GPGKey * defaultKey = [mailBundle defaultKey];
+		GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+		GPGKey *defaultKey = [mailBundle defaultKey];
 
 		if ([mailBundle encryptsToSelf] && defaultKey) {
 			[aSubmenu addItemWithTitle:[mailBundle menuItemTitleForKey:defaultKey] action:NULL keyEquivalent:@""];
@@ -633,8 +633,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 			}
 
 			if ([mailBundle displaysAllUserIDs]) {
-				NSEnumerator * userIDEnum = [[mailBundle secondaryUserIDsForKey:defaultKey] objectEnumerator];
-				GPGUserID * aUserID;
+				NSEnumerator *userIDEnum = [[mailBundle secondaryUserIDsForKey:defaultKey] objectEnumerator];
+				GPGUserID *aUserID;
 
 				while (aUserID = [userIDEnum nextObject]) {
 					anItem = [aSubmenu addItemWithTitle:[mailBundle menuItemTitleForUserID:aUserID indent:1] action:NULL keyEquivalent:@""];
@@ -651,13 +651,13 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 }
 
 - (void)setupTableColumns {
-	NSArray * visibleTableColumnTags, * tableColumnWidths;
-	NSEnumerator * anEnum;
+	NSArray *visibleTableColumnTags, *tableColumnWidths;
+	NSEnumerator *anEnum;
 	int i;
 	int tableColumnCount;
-	NSMutableArray * columnIdentifiers;
-	NSTableColumn * aColumn;
-	NSNumber * aNumber;
+	NSMutableArray *columnIdentifiers;
+	NSTableColumn *aColumn;
+	NSNumber *aNumber;
 
 	ascendingOrderImage = [[NSImage imageNamed:@"NSAscendingSortIndicator"] retain];
 	descendingOrderImage = [[NSImage imageNamed:@"NSDescendingSortIndicator"] retain];
@@ -690,7 +690,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	anEnum = [visibleTableColumnTags objectEnumerator];
 	i = 0;
 	while (aNumber = [anEnum nextObject]) {
-		NSTableColumn * aColumn = [allTableColumns objectAtIndex:[aNumber intValue]];
+		NSTableColumn *aColumn = [allTableColumns objectAtIndex:[aNumber intValue]];
 		int currentColumn = [[publicKeysOutlineView tableColumns] indexOfObject:aColumn];
 
 		if (currentColumn != i) {
@@ -708,7 +708,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 
 	// And remove the invisible ones
 	for (i = 1; i < tableColumnCount; i++) {
-		NSString * aString = [NSString stringWithFormat:@"%d", i];
+		NSString *aString = [NSString stringWithFormat:@"%d", i];
 
 		if (![visibleTableColumnTags containsObject:aString]) {
 			aColumn = [allTableColumns objectAtIndex:i];
@@ -736,9 +736,9 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 
 - (void)finishUISetupWithStates:(NSArray *)savedStates {
 	// Called only once, after composeAccessoryView has been placed onto Compose window
-	NSView * view = [self composeAccessoryView];
-	NSWindow * window = [view window];
-	MailDocumentEditor * messageEditor;
+	NSView *view = [self composeAccessoryView];
+	NSWindow *window = [view window];
+	MailDocumentEditor *messageEditor;
 
 	NSAssert(window != nil, @"### GPGMail: expects view to be in final window!");
 	// Let's force GPGMailComposeAccessoryViewOwner be the last
@@ -746,7 +746,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	// will modify the message after us.
 	messageEditor = [self messageEditor];
 	if ([[messageEditor gpgAccessoryViewOwners] lastObject] != self) {
-		NSMutableArray * owners = [NSMutableArray arrayWithArray:[messageEditor gpgAccessoryViewOwners]];
+		NSMutableArray *owners = [NSMutableArray arrayWithArray:[messageEditor gpgAccessoryViewOwners]];
 
 		[self retain];
 		[owners removeObject:self];
@@ -793,7 +793,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 //        [self doSetSignsMessage:[[GPGMailBundle sharedInstance] alwaysSignMessages]];
 #if 0
 	if ([savedStates containsObject:@"encrypted"]) {
-		[self doSetEncryptsMessage:NO];                  // FIXME: Will sign too, if defaults ask to sign when encrypting, thus bypassing previous "signed" setting
+		[self doSetEncryptsMessage:NO];                          // FIXME: Will sign too, if defaults ask to sign when encrypting, thus bypassing previous "signed" setting
 	} else {
 		[self doSetEncryptsMessage:![[GPGMailBundle sharedInstance] alwaysEncryptMessages]];
 	}
@@ -812,11 +812,11 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 
 - (void)toolbarWillAddItem:(NSNotification *)notif {
 	if ([notif object] == [[[self composeAccessoryView] window] toolbar]) {
-		SegmentedToolbarItem * anItem = [[notif userInfo] objectForKey:@"item"];
+		SegmentedToolbarItem *anItem = [[notif userInfo] objectForKey:@"item"];
 
 		if ([[anItem itemIdentifier] isEqualToString:GPGEncryptMessageToolbarItemIdentifier] || [[anItem itemIdentifier] isEqualToString:GPGSignMessageToolbarItemIdentifier]) {
 			[anItem setTarget:self forSegment:0];
-			[self performSelector:@selector(updateToolbarAndMenuItems) withObject:nil afterDelay:0.0];                         // If we don't delay call, then call -[NSToolbar items] will recursively send the toolbarWillAddItem: notification!
+			[self performSelector:@selector(updateToolbarAndMenuItems) withObject:nil afterDelay:0.0];                                     // If we don't delay call, then call -[NSToolbar items] will recursively send the toolbarWillAddItem: notification!
 		}
 	}
 }
@@ -847,7 +847,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		return;
 	}
 
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
 
 	verifyRulesConflicts = YES;
 	selectedPublicKeys = [[NSMutableArray allocWithZone:[self zone]] init];
@@ -870,7 +870,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	// Nib file, hence every further call to composeAccessoryView will use our own implementation
 	// of composeAccessoryView, which will return the one of the views from our NIB.
 
-	[personalKeysPopUpButton setAutoenablesItems:NO];         // Needed!
+	[personalKeysPopUpButton setAutoenablesItems:NO];             // Needed!
 
 	[self reloadPersonalKeys];
 	[self refreshPersonalKeysMenuAccordingToSelf:YES];
@@ -882,8 +882,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 
 - (void)setupUIForMessage:(Message *)message {
 	// At that time, composeAccessoryView, which is going to be loaded, is not/cannot be in message view window
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
-	NSArray * states = [[[message headers] firstHeaderForKey:@"X-Gpgmail-State"] componentsSeparatedByString:@","];
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+	NSArray *states = [[[message headers] firstHeaderForKey:@"X-Gpgmail-State"] componentsSeparatedByString:@","];
 
 	// FIXME: Leopard: at that time, headers lost their custom entries
 
@@ -927,7 +927,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		accessoryView = [optionalView retain];
 	}
 
-	[personalKeysPopUpButton setAutoenablesItems:NO];         // Needed!
+	[personalKeysPopUpButton setAutoenablesItems:NO];             // Needed!
 
 	[self reloadPersonalKeys];
 	[self refreshPersonalKeysMenuAccordingToSelf:YES];
@@ -938,9 +938,9 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 }
 
 - (void)doSetEncryptsMessage:(BOOL)flag {
-	NSEnumerator * anEnum = [[[[[self composeAccessoryView] window] toolbar] items] objectEnumerator];
-	SegmentedToolbarItem * anItem;
-	NSBundle * aBundle = [NSBundle bundleForClass:[self class]];
+	NSEnumerator *anEnum = [[[[[self composeAccessoryView] window] toolbar] items] objectEnumerator];
+	SegmentedToolbarItem *anItem;
+	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
 	BOOL buttonsShowState = [[GPGMailBundle sharedInstance] buttonsShowState];
 
 	encryptsMessage = flag;
@@ -985,9 +985,9 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 #endif
 
 - (void)doSetSignsMessage:(BOOL)flag {
-	NSEnumerator * anEnum = [[[[[self composeAccessoryView] window] toolbar] items] objectEnumerator];
-	SegmentedToolbarItem * anItem;
-	NSBundle * aBundle = [NSBundle bundleForClass:[self class]];
+	NSEnumerator *anEnum = [[[[[self composeAccessoryView] window] toolbar] items] objectEnumerator];
+	SegmentedToolbarItem *anItem;
+	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
 	BOOL buttonsShowState = [[GPGMailBundle sharedInstance] buttonsShowState];
 
 	signsMessage = flag;
@@ -1058,7 +1058,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	// FIXME: not implemented for Leopard!
 #if 0
 #warning FIXME: Should not modify any encrypt/sign/MIME setting???
-	NSNumber * aNumber;
+	NSNumber *aNumber;
 
 //    NSLog(@"$$$ Flags derived from replied message: %@", options);
 	aNumber = [options objectForKey:@"signed"];
@@ -1068,7 +1068,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 
 	aNumber = [options objectForKey:@"encrypted"];
 	if (aNumber) {
-		[self doSetEncryptsMessage:[aNumber boolValue]];                 // Will sign too, if defaults ask to sign when encrypting
+		[self doSetEncryptsMessage:[aNumber boolValue]];                         // Will sign too, if defaults ask to sign when encrypting
 	}
 
 	aNumber = [options objectForKey:@"MIME"];
@@ -1101,14 +1101,14 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 }
 
 - (void)displayException:(NSException *)exception {
-	NSString * aTitle;
+	NSString *aTitle;
 
 	if (encryptsMessage) {
 		aTitle = NSLocalizedStringFromTableInBundle(@"MSG_ENCRYPTION_ALERT_TITLE", @"GPGMail", [NSBundle bundleForClass:[self class]], "");
 	} else {
 		aTitle = NSLocalizedStringFromTableInBundle(@"MSG_SIGNING_ALERT_TITLE", @"GPGMail", [NSBundle bundleForClass:[self class]], "");
 	}
-	if ([[exception reason] rangeOfString:@" failed: bad passphrase"].length > 0) {       /* sign+encrypt or signing */
+	if ([[exception reason] rangeOfString:@" failed: bad passphrase"].length > 0) {           /* sign+encrypt or signing */
 		NSBeginAlertSheet(aTitle, NSLocalizedStringFromTableInBundle(@"TRY_AGAIN", @"GPGMail", [NSBundle bundleForClass:[self class]], ""), NSLocalizedStringFromTableInBundle(@"CANCEL_DELIVERY", @"GPGMail", [NSBundle bundleForClass:[self class]], ""), nil, [[self composeAccessoryView] window], self, NULL, @selector(sheetDidDismiss:returnCode:contextInfo:), NULL, @"%@", [exception reason]);
 	} else {
 		NSBeginAlertSheet(aTitle, nil, nil, nil, [[self composeAccessoryView] window], nil, NULL, NULL, NULL, @"%@", [[GPGMailBundle sharedInstance] descriptionForException:exception]);
@@ -1116,7 +1116,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 }
 
 - (void)unmatchedAddressesSheetDidDismiss:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-	NSArray * addresses = (NSArray *)contextInfo;
+	NSArray *addresses = (NSArray *)contextInfo;
 
 	if (returnCode == NSAlertDefaultReturn) {
 		[[GPGKeyDownload sharedInstance] searchKeysMatchingPatterns:addresses];
@@ -1128,11 +1128,11 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 }
 
 - (void)missingKeysAlert:(NSArray *)addresses {
-	NSString * aTitle = NSLocalizedStringFromTableInBundle(@"MISSING_KEYS: DOWNLOAD", @"GPGMail", [NSBundle bundleForClass:[self class]], "");
-	NSString * cancelTitle = NSLocalizedStringFromTableInBundle(@"CANCEL_DELIVERY", @"GPGMail", [NSBundle bundleForClass:[self class]], "");
-	NSString * okTitle = NSLocalizedStringFromTableInBundle(@"SEARCH_MATCHING_KEYS", @"GPGMail", [NSBundle bundleForClass:[self class]], "");
-	NSString * inClearTitle = NSLocalizedStringFromTableInBundle(@"SEND_IN_CLEAR", @"GPGMail", [NSBundle bundleForClass:[self class]], "");
-	NSString * aMessage = NSLocalizedStringFromTableInBundle(@"UNMATCHED_ADDRESSES: %@", @"GPGMail", [NSBundle bundleForClass:[self class]], "");
+	NSString *aTitle = NSLocalizedStringFromTableInBundle(@"MISSING_KEYS: DOWNLOAD", @"GPGMail", [NSBundle bundleForClass:[self class]], "");
+	NSString *cancelTitle = NSLocalizedStringFromTableInBundle(@"CANCEL_DELIVERY", @"GPGMail", [NSBundle bundleForClass:[self class]], "");
+	NSString *okTitle = NSLocalizedStringFromTableInBundle(@"SEARCH_MATCHING_KEYS", @"GPGMail", [NSBundle bundleForClass:[self class]], "");
+	NSString *inClearTitle = NSLocalizedStringFromTableInBundle(@"SEND_IN_CLEAR", @"GPGMail", [NSBundle bundleForClass:[self class]], "");
+	NSString *aMessage = NSLocalizedStringFromTableInBundle(@"UNMATCHED_ADDRESSES: %@", @"GPGMail", [NSBundle bundleForClass:[self class]], "");
 
 	NSBeginAlertSheet(aTitle, okTitle, cancelTitle, inClearTitle, [[self composeAccessoryView] window], self, NULL, @selector(unmatchedAddressesSheetDidDismiss:returnCode:contextInfo:), [addresses retain], aMessage, [addresses componentsJoinedByString:@"\n"]);
 }
@@ -1144,7 +1144,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	// and chosen keys, maybe later).
 	// WARNING Also called when message is delivered!
 	if (![[[self messageEditor] backEnd] isDeliveringMessage]) {
-		NSMutableArray * states = [NSMutableArray array];
+		NSMutableArray *states = [NSMutableArray array];
 
 		if (explicitlySetEncryption) {
 			[states addObject:(encryptsMessage ? @"encrypted":@"!encrypted")];
@@ -1160,13 +1160,13 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		} else {
 			[(MutableMessageHeaders *)[message headers] removeHeaderForKey:@"X-Gpgmail-State"];
 		}
-		MutableMessageHeaders * newHeaders = [message headers];
-		NSData * bodyData = [[message bodyData] copy];
-		newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[newHeaders encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];                 // Needed, to ensure _data ivar is updated
+		MutableMessageHeaders *newHeaders = [message headers];
+		NSData *bodyData = [[message bodyData] copy];
+		newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[newHeaders encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];                         // Needed, to ensure _data ivar is updated
 		[message setMutableHeaders:newHeaders];
 
 		// We need to recreate the whole raw data, headers + body.
-		NSMutableData * newRawData = [NSMutableData dataWithData:[newHeaders headerData]];
+		NSMutableData *newRawData = [NSMutableData dataWithData:[newHeaders headerData]];
 		[newRawData appendData:bodyData];
 		[message setRawData:newRawData offsetOfBody:[(NSData *)[newHeaders headerData] length]];
 		[newHeaders release];
@@ -1184,7 +1184,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 // #warning FIXME: This will not work when we do not add custom headers!
 #if 0
 	// Even on Tiger we have the same problem: our header customization has been lost
-	if ([[message headers] hasHeaderForKey:GPGMailHeaderKey] /*|| ([[message headers] hasHeaderForKey:@"content-type"] && [[message headers] headersForKey:@"content-type"])*/) {       /* array of data */
+	if ([[message headers] hasHeaderForKey:GPGMailHeaderKey] /*|| ([[message headers] hasHeaderForKey:@"content-type"] && [[message headers] headersForKey:@"content-type"])*/) {           /* array of data */
 		return YES;
 	} else {
 		return NO;
@@ -1281,13 +1281,13 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	// Remove draft headers
 #warning CHECKME LEOPARD
 	[(MutableMessageHeaders *)[message headers] removeHeaderForKey:@"X-Gpgmail-State"];
-	MutableMessageHeaders * newHeaders = [message headers];
-	NSData * bodyData = [[message bodyData] copy];
-	newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[newHeaders encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];         // Needed, to ensure _data ivar is updated
+	MutableMessageHeaders *newHeaders = [message headers];
+	NSData *bodyData = [[message bodyData] copy];
+	newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[newHeaders encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];             // Needed, to ensure _data ivar is updated
 	[message setMutableHeaders:newHeaders];
 
 	// We need to recreate the whole raw data, headers + body.
-	NSMutableData * newRawData = [NSMutableData dataWithData:[newHeaders headerData]];
+	NSMutableData *newRawData = [NSMutableData dataWithData:[newHeaders headerData]];
 	[newRawData appendData:bodyData];
 	[message setRawData:newRawData offsetOfBody:[(NSData *)[newHeaders headerData] length]];
 	[newHeaders release];
@@ -1313,10 +1313,10 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 //    [self findMatchingPublicKeys]; // Again??
 
 	if (result && ((encryptsMessage || signsMessage) && ![self messageHasAlreadyBeenEncryptedOrSigned:message])) {
-		NSBundle * aBundle = [NSBundle bundleForClass:[self class]];
-		GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
+		NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
+		GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
 		GPGMailFormat mailFormat;
-		NSMutableArray * recipients = nil;
+		NSMutableArray *recipients = nil;
 		BOOL trustsAllKeys = [mailBundle trustsAllKeys];
 
 #warning S/MIME & PGP
@@ -1334,8 +1334,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		if (encryptsMessage) {
 			// Messages are indexed after having been encrypted or signed, i.e. after sending
 			if (!usesSymetricEncryption) {
-				GPGKey * aKey;
-				NSEnumerator * anEnum;
+				GPGKey *aKey;
+				NSEnumerator *anEnum;
 
 				recipients = [NSMutableArray array];
 				if (!useCustomPublicKeys) {
@@ -1356,7 +1356,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 					}
 				if ([recipients count] == 0) {
 					// Can happen, in some error situation (proxy died), that we have no selectedPublicKeys!
-					NSException * anException = [[NSException alloc] initWithName:GPGMailException reason:@"NO_VALID_PUBLIC_KEY" userInfo:nil];
+					NSException *anException = [[NSException alloc] initWithName:GPGMailException reason:@"NO_VALID_PUBLIC_KEY" userInfo:nil];
 
 					[self performSelector:@selector(displayException:) withObject:anException afterDelay:0.0];
 					[anException release];
@@ -1367,7 +1367,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 
 			if (signsMessage && ![mailBundle canKeyBeUsedForSigning:selectedPersonalKey]) {
 				// Can happen, in some error situation (proxy died), that we have no selectedPersonalKey!
-				NSException * anException = [[NSException alloc] initWithName:GPGMailException reason:@"NO_VALID_PRIVATE_KEY" userInfo:nil];
+				NSException *anException = [[NSException alloc] initWithName:GPGMailException reason:@"NO_VALID_PRIVATE_KEY" userInfo:nil];
 
 				[self performSelector:@selector(displayException:) withObject:anException afterDelay:0.0];
 				[anException release];
@@ -1377,7 +1377,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		} else {
 			if (![mailBundle canKeyBeUsedForSigning:selectedPersonalKey]) {
 				// Can happen, in some error situation (proxy died), that we have no selectedPersonalKey!
-				NSException * anException = [[NSException alloc] initWithName:GPGMailException reason:@"NO_VALID_PRIVATE_KEY" userInfo:nil];
+				NSException *anException = [[NSException alloc] initWithName:GPGMailException reason:@"NO_VALID_PRIVATE_KEY" userInfo:nil];
 
 				[self performSelector:@selector(displayException:) withObject:anException afterDelay:0.0];
 				[anException release];
@@ -1388,14 +1388,14 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 
 		// Finally, prepare PGP message for delivery
 		if (encryptsMessage) {
-			GPGProgressIndicatorController * aController = [GPGProgressIndicatorController sharedController];
+			GPGProgressIndicatorController *aController = [GPGProgressIndicatorController sharedController];
 
 #warning TODO: Use a sheet (-> no longer shared instance)
 			[aController startWithTitle:NSLocalizedStringFromTableInBundle(@"ENCRYPTING", @"GPGMail", aBundle, "") delegate:self];
 
 			@try {
 				[message gpgEncryptForRecipients:recipients trustAllKeys:trustsAllKeys signWithKey:(signsMessage ? selectedPersonalKey:nil) passphraseDelegate:self format:mailFormat];
-			}@catch (NSException * localException) {
+			}@catch (NSException *localException) {
 				result = NO;
 				if (![[localException name] isEqualToString:GPGException] || [mailBundle gpgErrorCodeFromError:[[[localException userInfo] objectForKey:GPGErrorKey] intValue]] != /*GPGErrorNoData*/ GPGErrorCancelled) {
 					[self performSelector:@selector(displayException:) withObject:localException afterDelay:0.0];
@@ -1406,7 +1406,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		} else {
 			@try {
 				[message gpgSignWithKey:selectedPersonalKey passphraseDelegate:self format:mailFormat];
-			}@catch (NSException * localException) {
+			}@catch (NSException *localException) {
 				result = NO;
 				if (![[localException name] isEqualToString:GPGException] || [mailBundle gpgErrorCodeFromError:[[[localException userInfo] objectForKey:GPGErrorKey] unsignedIntValue]] != /*GPGErrorNoData*/ GPGErrorCancelled) {
 					[self performSelector:@selector(displayException:) withObject:localException afterDelay:0.0];
@@ -1437,8 +1437,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 - (IBAction)toggleColumnDisplay:(id)sender {
 	if ([sender state] != NSOnState) {
 		int anIndex = [sender tag];
-		NSTableColumn * aColumn = [allTableColumns objectAtIndex:anIndex];
-		NSArray * defaultColumnWidths = [[GPGDefaults standardDefaults] arrayForKey:@"GPGTableColumnWidths"];
+		NSTableColumn *aColumn = [allTableColumns objectAtIndex:anIndex];
+		NSArray *defaultColumnWidths = [[GPGDefaults standardDefaults] arrayForKey:@"GPGTableColumnWidths"];
 
 		if (defaultColumnWidths != nil) {
 			[aColumn setWidth:[[defaultColumnWidths objectAtIndex:anIndex] floatValue]];
@@ -1447,7 +1447,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		[sender setState:NSOnState];
 	} else {
 		int anIndex = [sender tag];
-		NSTableColumn * aColumn = [allTableColumns objectAtIndex:anIndex];
+		NSTableColumn *aColumn = [allTableColumns objectAtIndex:anIndex];
 
 		[publicKeysOutlineView removeTableColumn:aColumn];
 		[sender setState:NSOffState];
@@ -1464,7 +1464,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 #if 0
 	[self refreshPublicKeysMenu];
 #else
-	[self evaluateRules];         // Necessary?
+	[self evaluateRules];             // Necessary?
 #endif
 }
 
@@ -1476,7 +1476,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 }
 
 - (void)keyChoiceSheetDidDismiss:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-	NSSet * originalPublicKeys = (NSSet *)contextInfo;
+	NSSet *originalPublicKeys = (NSSet *)contextInfo;
 
 	if (returnCode == NSAlertDefaultReturn) {
 		// User clicked on 'Choose' button, thus automatic choice must be disabled
@@ -1494,9 +1494,9 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 
 - (IBAction)gpgChoosePublicKeys:(id)sender {
 	// Sent by popup menu item, or forwarded by ComposeWindowStore
-	NSSet * originalPublicKeys;
+	NSSet *originalPublicKeys;
 
-	if (!useCustomPublicKeys) {       // Do not recompute list when was manually set
+	if (!useCustomPublicKeys) {           // Do not recompute list when was manually set
 		[self findMatchingPublicKeys];
 	}
 	[publicKeysOutlineView reloadData];
@@ -1517,8 +1517,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 
 - (IBAction)gpgChoosePersonalKey:(id)sender {
 	// Forwarded by GPGComposeWindowStorePoser
-	NSEnumerator * anEnum = [[personalKeysPopUpButton itemArray] objectEnumerator];
-	NSMenuItem * anItem;
+	NSEnumerator *anEnum = [[personalKeysPopUpButton itemArray] objectEnumerator];
+	NSMenuItem *anItem;
 	BOOL found = NO;
 
 #warning FIXME: Should not modify any encrypt/sign/MIME setting???
@@ -1579,9 +1579,9 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 }
 
 - (IBAction)endModal:(id)sender {
-	NSEnumerator * anEnum = [[publicKeysOutlineView tableColumns] objectEnumerator];
-	NSTableColumn * aColumn;
-	NSMutableArray * visibleColumnTags = [NSMutableArray array];
+	NSEnumerator *anEnum = [[publicKeysOutlineView tableColumns] objectEnumerator];
+	NSTableColumn *aColumn;
+	NSMutableArray *visibleColumnTags = [NSMutableArray array];
 
 	[[GPGDefaults standardDefaults] setInteger:[allTableColumns indexOfObject:sortingTableColumn] forKey:@"GPGSortingTableColumnTag"];
 	[[GPGDefaults standardDefaults] setBool:ascendingOrder forKey:@"GPGAscendingSorting"];
@@ -1609,9 +1609,9 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 }
 
 - (void)outlineViewColumnDidResize:(NSNotification *)aNotification {
-	NSEnumerator * anEnum = [allTableColumns objectEnumerator];
-	NSTableColumn * aColumn;
-	NSMutableArray * widths = [NSMutableArray array];
+	NSEnumerator *anEnum = [allTableColumns objectEnumerator];
+	NSTableColumn *aColumn;
+	NSMutableArray *widths = [NSMutableArray array];
 
 	while (aColumn = [anEnum nextObject])
 		[widths addObject:[NSNumber numberWithFloat:[aColumn width]]];
@@ -1656,8 +1656,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		} else {
 			// FIXME: Use red color for expired/revoked/etc.
 			if ([[tableColumn identifier] isEqualToString:@"validityDescription"]) {
-				NSNumber * aValue = [NSNumber numberWithInt:[item validity]];
-				NSString * aDesc = [NSString stringWithFormat:@"Validity=%@", aValue];
+				NSNumber *aValue = [NSNumber numberWithInt:[item validity]];
+				NSString *aDesc = [NSString stringWithFormat:@"Validity=%@", aValue];
 
 				return NSLocalizedStringFromTableInBundle(aDesc, @"GPGMail", [NSBundle bundleForClass:[self class]], "");
 			} else {
@@ -1676,8 +1676,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		} else {
 			// FIXME: Use red color for expired/revoked/etc.
 			if ([[tableColumn identifier] isEqualToString:@"validityDescription"]) {
-				NSNumber * aValue = [NSNumber numberWithInt:[item validity]];
-				NSString * aDesc = [NSString stringWithFormat:@"Validity=%@", aValue];
+				NSNumber *aValue = [NSNumber numberWithInt:[item validity]];
+				NSString *aDesc = [NSString stringWithFormat:@"Validity=%@", aValue];
 
 				return NSLocalizedStringFromTableInBundle(aDesc, @"GPGMail", [NSBundle bundleForClass:[self class]], "");
 			} else {
@@ -1779,8 +1779,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 }
 
 - (void)searchKnownPersonsOptions {
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
-	NSString * senderEmail = [self senderEmail];
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+	NSString *senderEmail = [self senderEmail];
 
 	// Reset everything
 	somePeopleWantEncryption = NO;
@@ -1799,28 +1799,28 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	// set by Robert Goldsmith's ABKeyManager bundle
 
 	if ([ABPerson typeOfProperty:@"GPGOptions"] == kABDictionaryProperty) {
-		NSArray * recipients = [self recipients];
-		NSEnumerator * anEnum = [recipients objectEnumerator];
-		NSString * anEmail;
-		NSMutableDictionary * optionDict = [[NSMutableDictionary alloc] initWithCapacity:3];
+		NSArray *recipients = [self recipients];
+		NSEnumerator *anEnum = [recipients objectEnumerator];
+		NSString *anEmail;
+		NSMutableDictionary *optionDict = [[NSMutableDictionary alloc] initWithCapacity:3];
 
 		// FIXME: We don't support groups!
 
 		// First, compare against cachedRecipients (case-insensitive email)
-		while ((anEmail = [anEnum nextObject])) {                 // Email addresses are already normalized
+		while ((anEmail = [anEnum nextObject])) {                         // Email addresses are already normalized
 			// FIXME: We don't evaluate sender's email address. Maybe optional.
 			if ([anEmail isEqualToString:senderEmail]) {
 				continue;
 			}
 
-			ABSearchElement * anElement = [ABPerson searchElementForProperty:kABEmailProperty label:nil key:nil value:anEmail comparison:kABEqualCaseInsensitive];
-			NSArray * matchingPersons = [[ABAddressBook sharedAddressBook] recordsMatchingSearchElement:anElement];
-			NSEnumerator * personEnum = [matchingPersons objectEnumerator];
-			ABPerson * aPerson;
+			ABSearchElement *anElement = [ABPerson searchElementForProperty:kABEmailProperty label:nil key:nil value:anEmail comparison:kABEqualCaseInsensitive];
+			NSArray *matchingPersons = [[ABAddressBook sharedAddressBook] recordsMatchingSearchElement:anElement];
+			NSEnumerator *personEnum = [matchingPersons objectEnumerator];
+			ABPerson *aPerson;
 
 			while ((aPerson = [personEnum nextObject])) {
-				NSDictionary * aDict = [aPerson valueForProperty:@"GPGOptions"];
-				NSNumber * aBoolNumber;
+				NSDictionary *aDict = [aPerson valueForProperty:@"GPGOptions"];
+				NSNumber *aBoolNumber;
 
 				[optionDict removeAllObjects];
 				aBoolNumber = [aDict objectForKey:@"GPGMailSign"];
@@ -1832,7 +1832,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 
 				aBoolNumber = [aDict objectForKey:@"GPGMailEncrypt"];
 				if (aBoolNumber) {
-					NSArray * someKeys = [mailBundle keysForSearchPatterns:[NSArray arrayWithObject:anEmail] attributeName:@"normalizedEmail" secretKeys:NO];                                            // Returns only valid (for encryption) keys
+					NSArray *someKeys = [mailBundle keysForSearchPatterns:[NSArray arrayWithObject:anEmail] attributeName:@"normalizedEmail" secretKeys:NO];                                                                 // Returns only valid (for encryption) keys
 
 					// If there is no (valid or not) PGP key for user, ignore option!
 					if ([someKeys count] > 0) {
@@ -1845,7 +1845,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 				aBoolNumber = [aDict objectForKey:@"GPGMailUseMime"];
 				if (aBoolNumber) {
 #if 0
-					NSArray * someKeys = [mailBundle keysForSearchPatterns:[NSArray arrayWithObject:anEmail] attributeName:@"normalizedEmail" secretKeys:NO];                                            // Returns only valid (for encryption) keys
+					NSArray *someKeys = [mailBundle keysForSearchPatterns:[NSArray arrayWithObject:anEmail] attributeName:@"normalizedEmail" secretKeys:NO];                                                                 // Returns only valid (for encryption) keys
 
 					// If there is no (valid or not) PGP key for user, ignore option!
 					// PROBLEM We shouldn't care about keys, when only signing, but at that
@@ -1863,9 +1863,9 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 				}
 
 				if ([optionDict count]) {
-					NSDictionary * aDict = [optionDict copy];
+					NSDictionary *aDict = [optionDict copy];
 
-					[pgpOptionsPerEmail setObject:aDict forKey:anEmail];                                         // FIXME: We don't support having multiple AB records for the same email address
+					[pgpOptionsPerEmail setObject:aDict forKey:anEmail];                                                             // FIXME: We don't support having multiple AB records for the same email address
 					[aDict release];
 				}
 			}
@@ -1910,7 +1910,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 }
 
 - (NSString *)context:(GPGContext *)context passphraseForKey:(GPGKey *)key again:(BOOL)again {
-	NSString * passphrase;
+	NSString *passphrase;
 
 	if (again && key != nil) {
 		[GPGPassphraseController flushCachedPassphraseForUser:key];
@@ -1926,13 +1926,13 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 }
 
 - (GPGKey *)evaluatedPersonalKey {
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
-	GPGKey * evaluatedPersonalKey = nil;
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+	GPGKey *evaluatedPersonalKey = nil;
 
 	if ([mailBundle choosesPersonalKeyAccordingToAccount]) {
-		NSEnumerator * anEnum = [[personalKeysPopUpButton itemArray] objectEnumerator];
-		NSMenuItem * anItem;
-		NSString * fromAddress = [self senderEmail];
+		NSEnumerator *anEnum = [[personalKeysPopUpButton itemArray] objectEnumerator];
+		NSMenuItem *anItem;
+		NSString *fromAddress = [self senderEmail];
 		BOOL found = NO;
 		BOOL filterKeys = [mailBundle filtersOutUnusableKeys];
 
@@ -1941,8 +1941,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 			// Keys not valid for signature have disabled menu items.
 			// See -reloadPersonalKeys
 			if ([anItem isEnabled]) {
-				NSEnumerator * uidEnum = [[[anItem representedObject] userIDs] objectEnumerator];
-				GPGUserID * aUserID;
+				NSEnumerator *uidEnum = [[[anItem representedObject] userIDs] objectEnumerator];
+				GPGUserID *aUserID;
 
 				while (!found && (aUserID = [uidEnum nextObject])) {
 					if (!filterKeys || [mailBundle canUserIDBeUsed:aUserID]) {
@@ -1962,11 +1962,11 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 }
 
 - (void)senderAccountDidChange {
-	GPGKey * evaluatedPersonalKey = [self evaluatedPersonalKey];
+	GPGKey *evaluatedPersonalKey = [self evaluatedPersonalKey];
 
 	if (evaluatedPersonalKey) {
-		NSEnumerator * anEnum = [[personalKeysPopUpButton itemArray] objectEnumerator];
-		NSMenuItem * anItem;
+		NSEnumerator *anEnum = [[personalKeysPopUpButton itemArray] objectEnumerator];
+		NSMenuItem *anItem;
 		BOOL found = NO;
 
 		while (!found && (anItem = [anEnum nextObject])) {
@@ -1985,7 +1985,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 #warning FIXME: Should not modify any encrypt/sign/MIME setting
 		if (!explicitlySetSignature && signsMessage) {
 			[self doSetSignsMessage:GPGNoSignature];
-			explicitlySetSignature = YES;                             // We do that to avoid our rules to compute signature and override that one
+			explicitlySetSignature = YES;                                         // We do that to avoid our rules to compute signature and override that one
 		}
 	}
 }
@@ -2013,7 +2013,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	[self invalidateAllPublicKeys];
 	[self reloadPersonalKeys];
 	if (selectedPersonalKey == nil) {
-		[self senderAccountDidChange];                 // Updates according to account, if option selected
+		[self senderAccountDidChange];                         // Updates according to account, if option selected
 		if (selectedPersonalKey == nil) {
 #warning FIXME: Ensure that key may be used
 			selectedPersonalKey = [[[GPGMailBundle sharedInstance] defaultKey] retain];
@@ -2030,7 +2030,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 
 - (void)preferencesDidChange:(NSNotification *)notification {
 	// Do not change current choices (selected personal key, sign/encrypt)
-	[self reloadPersonalKeys];         // We reload them, because maybe user changed the way to display them
+	[self reloadPersonalKeys];             // We reload them, because maybe user changed the way to display them
 //    [self refreshPublicKeysMenu]; // We reload them, because maybe user changed the way to display them
 	[self evaluateRules];
 }
@@ -2102,15 +2102,15 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 }
 
 - (int)numberOfRowsInTableView:(NSTableView *)aTableView {
-	return [[self recipients] count] + 1;         // WARNING Can be invoked before in UI -> no recipients
+	return [[self recipients] count] + 1;             // WARNING Can be invoked before in UI -> no recipients
 }
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex {
 	// FIXME: No support for symmetric encryption!
 	// First row is user's choice
 	// Then recipients'
-	NSString * anIdentifier = [aTableColumn identifier];
-	NSBundle * aBundle = [NSBundle bundleForClass:[self class]];
+	NSString *anIdentifier = [aTableColumn identifier];
+	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
 
 	if (rowIndex == 0) {
 		if ([anIdentifier isEqualToString:@"email"]) {
@@ -2141,8 +2141,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	} else {
 //            GPGKey          *aKey = [selectedPublicKeys objectAtIndex:(rowIndex - 1)];
 //            NSEnumerator    *uidEnum = [[aKey userIDs] objectEnumerator];
-		NSString * anEmail = [[self recipients] objectAtIndex:rowIndex - 1];
-		NSDictionary * options = [pgpOptionsPerEmail objectForKey:anEmail];
+		NSString *anEmail = [[self recipients] objectAtIndex:rowIndex - 1];
+		NSDictionary *options = [pgpOptionsPerEmail objectForKey:anEmail];
 		id aValue;
 
 		if ([anIdentifier isEqualToString:@"email"]) {
@@ -2179,7 +2179,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 }
 
 - (void)evaluateRules {
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
 	BOOL willEncrypt = NO;
 	BOOL willSign = NO;
 	BOOL willUseMIME = NO;
@@ -2191,10 +2191,10 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	}
 	needsWarning = NO;
 	signatureTurnedOnBecauseEncrypted = NO;
-	[self searchKnownPersonsOptions];         // This sets the somePeople* and pgpOptionsPerEmail ivars
+	[self searchKnownPersonsOptions];             // This sets the somePeople* and pgpOptionsPerEmail ivars
 
 	if (explicitlySetEncryption) {
-		willEncrypt = encryptsMessage;                 // Respect user's choice
+		willEncrypt = encryptsMessage;            // Respect user's choice
 		if (logging) {
 			NSLog(@"explicitlySetEncryption: willEncrypt = %@", (willEncrypt ? @"YES" : @"NO"));
 		}
@@ -2212,7 +2212,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		}
 
 		if (replyOptions) {
-			NSNumber * aNumber = [replyOptions objectForKey:@"encrypted"];
+			NSNumber *aNumber = [replyOptions objectForKey:@"encrypted"];
 
 			if (aNumber && [aNumber boolValue] && [mailBundle encryptsReplyToEncryptedMessage]) {
 				willEncrypt = YES;
@@ -2292,14 +2292,14 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 			NSLog(@"usesSymetricEncryption: willSign = %@", (willSign ? @"YES" : @"NO"));
 		}
 	} else if (explicitlySetSignature) {
-		willSign = signsMessage;                     // Respect user's choice
+		willSign = signsMessage;                             // Respect user's choice
 		if (logging) {
 			NSLog(@"explicitlySetSignature: willSign = signsMessage = %@", (willSign ? @"YES" : @"NO"));
 		}
 	} else {
 		if (willEncrypt && [mailBundle signWhenEncrypting]) {
 			willSign = YES;
-			signatureTurnedOnBecauseEncrypted = YES; // FIXME: No longer used
+			signatureTurnedOnBecauseEncrypted = YES;             // FIXME: No longer used
 			if (logging) {
 				NSLog(@"willEncrypt && signWhenEncrypting: willSign = %@", (willSign ? @"YES" : @"NO"));
 			}
@@ -2310,7 +2310,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 		}
 
 		if (replyOptions) {
-			NSNumber * aNumber = [replyOptions objectForKey:@"signed"];
+			NSNumber *aNumber = [replyOptions objectForKey:@"signed"];
 
 			if (aNumber && [aNumber boolValue] && [mailBundle signsReplyToSignedMessage]) {
 				willSign = YES;
@@ -2335,7 +2335,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 
 		// If there is no matching key for the account, do not sign message
 		if ([mailBundle choosesPersonalKeyAccordingToAccount]) {
-			GPGKey * evaluatedPersonalKey = [self evaluatedPersonalKey];
+			GPGKey *evaluatedPersonalKey = [self evaluatedPersonalKey];
 
 			if (evaluatedPersonalKey == nil) {
 				willSign = NO;
@@ -2353,7 +2353,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	}
 
 	if (explicitlySetOpenPGPStyle) {
-		willUseMIME = usesOnlyOpenPGPStyle;                 // Respect user's choice
+		willUseMIME = usesOnlyOpenPGPStyle;                         // Respect user's choice
 		if (logging) {
 			NSLog(@"explicitlySetOpenPGPStyle: willUseMIME = usesOnlyOpenPGPStyle = %@", (willUseMIME ? @"YES" : @"NO"));
 		}
@@ -2389,7 +2389,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void * co
 	[self setUsesOnlyOpenPGPStyle:willUseMIME];
 	[self refreshAutomaticChoiceInfo];
 	[self refreshPublicKeysMenu];
-	[self updateWarningImage];         // Warning only when encrypting and missing keys
+	[self updateWarningImage];             // Warning only when encrypting and missing keys
 }
 
 @end

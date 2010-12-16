@@ -18,9 +18,9 @@
 	BOOL _isWritingChangesToDisk;
 	BOOL _isTryingToClose;
 	BOOL _compactOnClose;
-	MailboxUid * _mailboxUid;
-	MailAccount * _account;
-	NSMutableArray * _allMessages;
+	MailboxUid *_mailboxUid;
+	MailAccount *_account;
+	NSMutableArray *_allMessages;
 	id _messageCountsAndSizesLock;
 	struct {
 		unsigned long long unreadCount;
@@ -30,15 +30,15 @@
 		unsigned long long deletedSize;
 	} _messageCountsAndSizes;
 	id _cacheLock;
-	NSCache * _headerDataCache;
-	NSCache * _headerCache;
-	NSCache * _bodyDataCache;
-	NSCache * _bodyCache;
-	NSMutableSet * _uniqueStrings;
+	NSCache *_headerDataCache;
+	NSCache *_headerCache;
+	NSCache *_bodyDataCache;
+	NSCache *_bodyCache;
+	NSMutableSet *_uniqueStrings;
 	int _storeState;
-	NSTimer * _timer;
-	ActivityMonitor * _openMonitor;
-	NSMutableDictionary * _fetchLockMap;
+	NSTimer *_timer;
+	ActivityMonitor *_openMonitor;
+	NSMutableDictionary *_fetchLockMap;
 }
 
 + (void)initialize;
@@ -178,7 +178,7 @@
 - (void)_releaseFetchLock:(id) arg1 forMessage:(id)arg2;
 @property BOOL forceInvalidation; // @synthesize forceInvalidation=_forceInvalidation;
 @property BOOL hasUnsavedChangesToMessageData; // @synthesize hasUnsavedChangesToMessageData=_hasUnsavedChangesToMessageData;
-@property (retain) ActivityMonitor * openMonitor; // @synthesize openMonitor=_openMonitor;
+@property (retain) ActivityMonitor *openMonitor;  // @synthesize openMonitor=_openMonitor;
 @property BOOL isReadOnly; // @synthesize isReadOnly=_isReadOnly;
 
 @end
@@ -263,9 +263,9 @@
 	BOOL _isWritingChangesToDisk;
 	BOOL _isTryingToClose;
 	BOOL _compactOnClose;
-	MailboxUid * _mailboxUid;
-	MailAccount * _account;
-	NSMutableArray * _allMessages;
+	MailboxUid *_mailboxUid;
+	MailAccount *_account;
+	NSMutableArray *_allMessages;
 	id _messageCountsAndSizesLock;
 	struct {
 		unsigned int unreadCount;
@@ -275,15 +275,15 @@
 		unsigned int deletedSize;
 	} _messageCountsAndSizes;
 	id _cacheLock;
-	NSCache * _headerDataCache;
-	NSCache * _headerCache;
-	NSCache * _bodyDataCache;
-	NSCache * _bodyCache;
-	NSMutableSet * _uniqueStrings;
+	NSCache *_headerDataCache;
+	NSCache *_headerCache;
+	NSCache *_bodyDataCache;
+	NSCache *_bodyCache;
+	NSMutableSet *_uniqueStrings;
 	int _storeState;
-	NSTimer * _timer;
-	ActivityMonitor * _openMonitor;
-	NSMutableDictionary * _fetchLockMap;
+	NSTimer *_timer;
+	ActivityMonitor *_openMonitor;
+	NSMutableDictionary *_fetchLockMap;
 }
 
 + (void)initialize;

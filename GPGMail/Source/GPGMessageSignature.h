@@ -13,7 +13,7 @@
 
 
 @interface GPGMessageSignature : NSObject {
-	GPGSignature * signature;
+	GPGSignature *signature;
 	NSRange signedRange;
 }
 

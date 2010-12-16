@@ -39,7 +39,7 @@
 
 @implementation GPGProgressIndicatorController
 
-static GPGProgressIndicatorController * _sharedController = nil;
+static GPGProgressIndicatorController *_sharedController = nil;
 
 + (GPGProgressIndicatorController *)sharedController {
 	if (_sharedController == nil) {

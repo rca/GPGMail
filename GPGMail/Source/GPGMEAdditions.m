@@ -51,8 +51,8 @@
 
 - (NSString *)additionalInfo {
 	// FIXME: Use that for key chooser
-	NSMutableArray * additionalInfo = [NSMutableArray array];
-	NSBundle * aBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+	NSMutableArray *additionalInfo = [NSMutableArray array];
+	NSBundle *aBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
 
 	if ([self isKeyDisabled]) {
 		[additionalInfo addObject:NSLocalizedStringFromTableInBundle(@"DISABLED_KEY_QUALIFIER", @"GPGMail", aBundle, @"")];
@@ -110,8 +110,8 @@
 
 - (NSString *)additionalInfo {
 	// FIXME: Use that for key chooser
-	NSMutableArray * additionalInfo = [NSMutableArray array];
-	NSBundle * aBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+	NSMutableArray *additionalInfo = [NSMutableArray array];
+	NSBundle *aBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
 
 	if ([self isInvalid]) {
 		[additionalInfo addObject:NSLocalizedStringFromTableInBundle(@"INVALID_USER_ID_QUALIFIER", @"GPGMail", aBundle, @"")];

@@ -27,8 +27,8 @@ static IMP MailTextAttachment_toolTip = NULL;
 
 - gpgToolTip
 {
-	NSString * toolTip = ((id (*)(id, SEL))MailTextAttachment_toolTip)(self, _cmd);
-	NSString * contentDescription = [[self mimePart] contentDescription];
+	NSString *toolTip = ((id (*)(id, SEL))MailTextAttachment_toolTip)(self, _cmd);
+	NSString *contentDescription = [[self mimePart] contentDescription];
 
 	if (contentDescription != nil && [contentDescription length] > 0) {
 		toolTip = [contentDescription stringByAppendingFormat:@"\n\n%@", toolTip];

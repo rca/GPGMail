@@ -15,12 +15,12 @@
 @class NSTimer;
 
 
-extern NSString * MessageWillBeDisplayedInView;
+extern NSString *MessageWillBeDisplayedInView;
 // Object is TextDocumentViewer
 // UserInfo:
 //  MessageKey = Message
 //  MessageViewKey = MessageTextView
-extern NSString * MessageWillNoLongerBeDisplayedInView;
+extern NSString *MessageWillNoLongerBeDisplayedInView;
 // Object is TextDocumentViewer
 // UserInfo:
 //  MessageKey = Message
@@ -34,22 +34,22 @@ extern NSString * MessageWillNoLongerBeDisplayedInView;
 
 @interface TextDocumentViewer : NSResponder
 {
-	Message * _message;
-	MessageViewingState * _viewingState;
-	ActivityMonitor * _documentMonitor;
-	NSScrollView * messageScroll;
-	MessageTextView * textView;
-	MessageTextContainer * specialContainer;
-	NSImageView * imageView;
-	NSView * contentContainerView;
-	NSView * junkMailView;
-	HTMLView * _htmlView;
-	NSView * _currentView;
-	NSTimer * _fadeTimer;
-	ObjectCache * _documentCache;
-	struct __CFSet * observedHTMLDocuments;
-	InvocationQueue * invocationQueue;
-	NSString * _messageIDToRestoreInitialStateFor;
+	Message *_message;
+	MessageViewingState *_viewingState;
+	ActivityMonitor *_documentMonitor;
+	NSScrollView *messageScroll;
+	MessageTextView *textView;
+	MessageTextContainer *specialContainer;
+	NSImageView *imageView;
+	NSView *contentContainerView;
+	NSView *junkMailView;
+	HTMLView *_htmlView;
+	NSView *_currentView;
+	NSTimer *_fadeTimer;
+	ObjectCache *_documentCache;
+	struct __CFSet *observedHTMLDocuments;
+	InvocationQueue *invocationQueue;
+	NSString *_messageIDToRestoreInitialStateFor;
 	struct _NSRect _initialVisibleRect;
 	struct _NSRange _initialSelectedRange;
 	int _fadeStepCounter : 30;

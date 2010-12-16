@@ -4,8 +4,8 @@
 
 @interface OptionalView : NSView
 {
-	NSButton * _optionSwitch;
-	NSView * _primaryView;
+	NSButton *_optionSwitch;
+	NSView *_primaryView;
 	struct CGRect _originalFrame;
 	BOOL _isResizing;
 }
@@ -31,8 +31,8 @@
 
 @interface OptionalView : NSView
 {
-	NSButton * _optionSwitch;
-	NSView * _primaryView;
+	NSButton *_optionSwitch;
+	NSView *_primaryView;
 	struct CGRect _originalFrame;
 	BOOL _isResizing;
 }

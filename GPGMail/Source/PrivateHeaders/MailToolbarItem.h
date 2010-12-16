@@ -32,7 +32,7 @@
 
 @interface SegmentedToolbarItemSegmentItem : NSToolbarItem
 {
-	SegmentedToolbarItem * parent;
+	SegmentedToolbarItem *parent;
 	long long segmentNumber;
 }
 
@@ -44,7 +44,7 @@
 - (void)setImage:(id)arg1;
 - (void)setMenu:(id)arg1;
 @property long long segmentNumber; // @synthesize segmentNumber;
-@property SegmentedToolbarItem * parent; // @synthesize parent;
+@property SegmentedToolbarItem *parent;  // @synthesize parent;
 
 @end
 
@@ -88,7 +88,7 @@
 
 @interface SegmentedToolbarItemSegmentItem : NSToolbarItem
 {
-	SegmentedToolbarItem * parent;
+	SegmentedToolbarItem *parent;
 	int segmentNumber;
 }
 
@@ -146,7 +146,7 @@
 
 @interface SegmentedToolbarItemSegmentItem : NSToolbarItem
 {
-	SegmentedToolbarItem * parent;
+	SegmentedToolbarItem *parent;
 	int segmentNumber;
 }
 
@@ -167,7 +167,7 @@
 
 @interface MailToolbarItem : NSToolbarItem
 {
-	NSArray * _segments;
+	NSArray *_segments;
 	unsigned int _extraSegmentWidth;
 	unsigned int _extraHorizontalPadding;
 	unsigned int _borderless : 1;
@@ -223,13 +223,13 @@
 
 @interface MailToolbarItemSegment : NSObject <NSCopying>
 {
-	NSImage * _image;
-	NSImage * _inactiveImage;
-	NSImage * _pressedImage;
-	NSString * _label;
-	NSString * _paletteLabel;
-	NSString * _altLabel;
-	NSString * _toolTip;
+	NSImage *_image;
+	NSImage *_inactiveImage;
+	NSImage *_pressedImage;
+	NSString *_label;
+	NSString *_paletteLabel;
+	NSString *_altLabel;
+	NSString *_toolTip;
 	int _tag;
 	id _target;
 	SEL _action;

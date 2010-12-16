@@ -51,37 +51,37 @@ enum {
 @interface GPGMessageViewerAccessoryViewOwner : NSObject {
 	id delegate;
 	int bannerType;
-	GPGKey * signatureKey;
+	GPGKey *signatureKey;
 
-	IBOutlet NSView * authenticationView;
-	IBOutlet NSButton * authenticationButton;
+	IBOutlet NSView *authenticationView;
+	IBOutlet NSButton *authenticationButton;
 
-	IBOutlet NSView * signatureView;
-	IBOutlet NSView * signatureUpperView;
-	IBOutlet NSImageView * signatureIconView;
-	IBOutlet NSTextField * signatureMessageTextField;
-	IBOutlet NSButton * signatureToggleButton;
-	IBOutlet NSView * signatureLowerView;
-	IBOutlet NSTextField * signatureCreationDateTextField;
-	IBOutlet NSTextField * signatureValidityTextField;
-	IBOutlet NSTextField * signatureExpirationDateTextField;
-	IBOutlet NSTextField * signatureBadPolicyAlertTextField;
-	IBOutlet NSTextField * signatureKeyFingerprintTextField;
+	IBOutlet NSView *signatureView;
+	IBOutlet NSView *signatureUpperView;
+	IBOutlet NSImageView *signatureIconView;
+	IBOutlet NSTextField *signatureMessageTextField;
+	IBOutlet NSButton *signatureToggleButton;
+	IBOutlet NSView *signatureLowerView;
+	IBOutlet NSTextField *signatureCreationDateTextField;
+	IBOutlet NSTextField *signatureValidityTextField;
+	IBOutlet NSTextField *signatureExpirationDateTextField;
+	IBOutlet NSTextField *signatureBadPolicyAlertTextField;
+	IBOutlet NSTextField *signatureKeyFingerprintTextField;
 	BOOL isSignatureExtraViewVisible;
-	IBOutlet NSImageView * generalAlertIconView;
-	IBOutlet NSImageView * expirationAlertIconView;
-	IBOutlet NSImageView * policyAlertIconView;
-	IBOutlet NSImageView * trustAlertIconView;
-	IBOutlet NSPopUpButton * userIDsPopDownButton;
+	IBOutlet NSImageView *generalAlertIconView;
+	IBOutlet NSImageView *expirationAlertIconView;
+	IBOutlet NSImageView *policyAlertIconView;
+	IBOutlet NSImageView *trustAlertIconView;
+	IBOutlet NSPopUpButton *userIDsPopDownButton;
 
-	IBOutlet NSView * decryptionView;
-	IBOutlet NSButton * decryptionButton;
+	IBOutlet NSView *decryptionView;
+	IBOutlet NSButton *decryptionButton;
 
-	IBOutlet NSView * decryptedInfoView;
-	IBOutlet NSTextField * decryptedMessageTextField;
-	IBOutlet NSImageView * decryptedIconView;
+	IBOutlet NSView *decryptedInfoView;
+	IBOutlet NSTextField *decryptedMessageTextField;
+	IBOutlet NSImageView *decryptedIconView;
 
-	IBOutlet NSButton * disclosureButton;
+	IBOutlet NSButton *disclosureButton;
 
 	BOOL isMessagePGPSigned;
 	BOOL isMessagePGPEncrypted;

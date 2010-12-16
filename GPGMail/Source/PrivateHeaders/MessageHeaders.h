@@ -6,7 +6,7 @@
 
 @interface MessageHeaders : NSObject <NSCopying>
 {
-	NSData * _data;
+	NSData *_data;
 	unsigned int _preferredEncoding;
 }
 
@@ -59,7 +59,7 @@
 
 @interface MessageHeaders : NSObject <NSCopying>
 {
-	NSData * _data;
+	NSData *_data;
 	unsigned int _preferredEncoding;
 }
 

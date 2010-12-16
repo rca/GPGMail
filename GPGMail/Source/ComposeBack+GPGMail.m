@@ -43,7 +43,7 @@
 
 - (NSArray *)gpgRecipients {
 	// Used only in GPGMailComposeAccessoryViewOwner => we could easily ask user for the recipients
-	NSArray * recipients = [[self valueForKey:@"_cleanHeaders"] objectForKey:@"to"];
+	NSArray *recipients = [[self valueForKey:@"_cleanHeaders"] objectForKey:@"to"];
 
 	if (recipients != nil) {
 		recipients = [recipients arrayByAddingObjectsFromArray:[[self valueForKey:@"_cleanHeaders"] objectForKey:@"cc"]];

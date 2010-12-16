@@ -53,7 +53,7 @@
  *  There is no instance of MessageBody, ever(?).
  */
 
-NSString * GPGMailHeaderKey = @"X-PGP-Agent";
+NSString *GPGMailHeaderKey = @"X-PGP-Agent";
 
 @implementation MessageBody (GPGMail)
 
@@ -72,13 +72,13 @@ NSString * GPGMailHeaderKey = @"X-PGP-Agent";
 	// and THEN we apply quoted-printable/base64, for example. Thus encrypted/signed data
 	// can be 8bit data.
 	// This way users can sign/verify displayed text (that's how most plug-ins work, I guess)
-	NSData * modifiedData = nil, * dataToModify = [self gpgRawData];
+	NSData *modifiedData = nil, *dataToModify = [self gpgRawData];
 	BOOL usesQuotedPrintable = NO, usedQuotedPrintable = NO;
 	BOOL usesBase64 = NO, usedBase64 = NO;
 	CFStringEncoding newEncoding, originalEncoding;
-	MutableMessageHeaders * newHeaders;
-	GPGContext * aContext;
-	GPGData * inputData;
+	MutableMessageHeaders *newHeaders;
+	GPGContext *aContext;
+	GPGData *inputData;
 	// IMPORTANT: for encrypted messages, we no longer keep the original
 	// content-transfer-encoding, because PGP7 plug-in uses encoded data when decrypting,
 	// and fails to, when content-transfer-encoding is not 7bit!
@@ -104,14 +104,14 @@ NSString * GPGMailHeaderKey = @"X-PGP-Agent";
 	if (useCRLF) {
 		dataToModify = [dataToModify gpgStandardizedEOLsToCRLF];
 	} else {
-		dataToModify = [dataToModify gpgStandardizedEOLsToLF];                  // Let's standardize end-of-lines; we use LF end-of-line, because other mailers interpret CRLF as end-of-line + empty line (CR)
+		dataToModify = [dataToModify gpgStandardizedEOLsToLF];                          // Let's standardize end-of-lines; we use LF end-of-line, because other mailers interpret CRLF as end-of-line + empty line (CR)
 
 	}
 	newEncoding = originalEncoding = [[(MimeBody *) self topLevelPart] textEncoding];
 
 	dataToModify = [GPGHandler convertedStringData:dataToModify fromEncoding:originalEncoding toEncoding:&newEncoding];
 	if (key != nil && recipients == nil) {
-		NSString * formatParam = [[(MimeBody *) self topLevelPart] bodyParameterForKey:@"format"];
+		NSString *formatParam = [[(MimeBody *) self topLevelPart] bodyParameterForKey:@"format"];
 
 		if ([formatParam isEqualToString:@"flowed"]) {
 			// With format=flowed, a space at the end of a line means "line goes on next line", except when line is "-- ".
@@ -134,7 +134,7 @@ NSString * GPGMailHeaderKey = @"X-PGP-Agent";
 	}
 	inputData = [[GPGData alloc] initWithData:dataToModify];
 	if (GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask) {
-		NSString * filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"txt"]];
+		NSString *filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"txt"]];
 
 		if ([dataToModify writeToFile:filename atomically:NO]) {
 			NSLog(@"[DEBUG] Data to encrypt/sign in %@", filename);
@@ -144,12 +144,12 @@ NSString * GPGMailHeaderKey = @"X-PGP-Agent";
 	}
 
 	@try {
-		GPGData * outputData;
+		GPGData *outputData;
 
 #warning Use newEncoding!
 		if (recipients != nil) {
 			if (key != nil)
-																												 #warning Use also encapsulated signature!
+																																																								 #warning Use also encapsulated signature!
 			{
 				outputData = [aContext encryptedSignedData:inputData withKeys:recipients trustAllKeys:trustsAllKeys /*encoding:newEncoding*/];
 			} else {
@@ -163,9 +163,9 @@ NSString * GPGMailHeaderKey = @"X-PGP-Agent";
 				outputData = [aContext encryptedData:inputData /*encoding:newEncoding*/];
 			}
 		}
-		modifiedData = [[[outputData data] retain] autorelease];                 // Because context will be freed
+		modifiedData = [[[outputData data] retain] autorelease];                         // Because context will be freed
 //            [NSException raise:GPGException format:@"%@", NSLocalizedStringFromTableInBundle(@"UNTRUSTED RECIPIENTS", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")];
-	}@catch (NSException * localException) {
+	}@catch (NSException *localException) {
 		[inputData release];
 		[aContext release];
 		[localException raise];
@@ -182,16 +182,16 @@ NSString * GPGMailHeaderKey = @"X-PGP-Agent";
 		usesBase64 = YES;
 	}
 #warning TESTME: now we always force using quoted-printable
-	else {         /*if([modifiedData gpgContainsNonASCIICharacter] || (keepsOriginalContentTransferEncoding && usedQuotedPrintable))*/
-		           // If body contains non-ASCII character, we need to use quoted-printable
-		           // characters, as non-ASCII characters could be modified by some MTA
-		           // and invalidate the signature.
+	else {             /*if([modifiedData gpgContainsNonASCIICharacter] || (keepsOriginalContentTransferEncoding && usedQuotedPrintable))*/
+		// If body contains non-ASCII character, we need to use quoted-printable
+		// characters, as non-ASCII characters could be modified by some MTA
+		// and invalidate the signature.
 		modifiedData = [modifiedData encodeQuotedPrintableForText:YES];
 		usesQuotedPrintable = YES;
 //        NSLog(@"$$$ FORCING QUOTED-PRINTABLE $$$");
 	}
 
-	[self gpgSetEncodedBody:modifiedData];         // Replace current encrypted data; this modification IS persistent (i.e. saved in mailbox)
+	[self gpgSetEncodedBody:modifiedData];             // Replace current encrypted data; this modification IS persistent (i.e. saved in mailbox)
 	// Let's also modify the headers to create a basic MIME
 	// message with quoted-printable/base64 (if needed) and appropriate character set.
 	newHeaders = [[[self message] headers] mutableCopy];
@@ -206,8 +206,8 @@ NSString * GPGMailHeaderKey = @"X-PGP-Agent";
 	if (newEncoding != originalEncoding) {
 		// Let's replace only the charset
 #warning TODO: for encrypted messages, pass charset in PGP block (instead?)
-		NSMutableString * newContentType = [NSMutableString stringWithString:[newHeaders firstHeaderForKey:@"content-type"]];
-		NSString * charset = [[(MimeBody *) self topLevelPart] bodyParameterForKey:@"charset"];
+		NSMutableString *newContentType = [NSMutableString stringWithString:[newHeaders firstHeaderForKey:@"content-type"]];
+		NSString *charset = [[(MimeBody *) self topLevelPart] bodyParameterForKey:@"charset"];
 		NSRange charsetRange = [newContentType rangeOfString:charset];
 
 		NSAssert2(charsetRange.location != NSNotFound, @"### -[MessageBody(GPGMail)  gpgEncryptForRecipients:signWithKey:passphraseDelegate:]: unable to find charset '%@' in '%@'", charset, newContentType);
@@ -217,7 +217,7 @@ NSString * GPGMailHeaderKey = @"X-PGP-Agent";
 	if ([[GPGMailBundle sharedInstance] addsCustomHeaders]) {
 		[newHeaders setHeader:[@"GPGMail " stringByAppendingString:[(GPGMailBundle *)[GPGMailBundle sharedInstance] version]] forKey:GPGMailHeaderKey];
 	}
-	newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[[newHeaders autorelease] encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];         // Needed, to ensure _data ivar is updated
+	newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[[newHeaders autorelease] encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];             // Needed, to ensure _data ivar is updated
 	if (headersPtr != NULL) {
 		*headersPtr = newHeaders;
 	}
@@ -275,7 +275,7 @@ NSString * GPGMailHeaderKey = @"X-PGP-Agent";
 }
 
 - (NSData *)gpgRawData {
-	return [[[self message] messageStore] bodyDataForMessage:[self message]];             // Always returns new instance
+	return [[[self message] messageStore] bodyDataForMessage:[self message]];                 // Always returns new instance
 }
 
 @end

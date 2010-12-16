@@ -42,23 +42,23 @@
 
 @interface TableViewManager : NSObject <MessageBrowserController, NSTableViewDelegate, NSTableViewDataSource>
 {
-	ASExtendedTableView * _tableView;
-	MessageMall * _messageMall;
+	ASExtendedTableView *_tableView;
+	MessageMall *_messageMall;
 	id _delegate;
-	NSArray * _tableColumns;
-	NSFont * _font;
-	NSFont * _boldFont;
-	NSFont * _noteFont;
-	NSMutableArray * _selection;
-	NSArray * _selectionExcludingThreads;
+	NSArray *_tableColumns;
+	NSFont *_font;
+	NSFont *_boldFont;
+	NSFont *_noteFont;
+	NSMutableArray *_selection;
+	NSArray *_selectionExcludingThreads;
 	BOOL _suspendChangesToScrollingAndSelection;
-	Message * _currentDisplayedMessage;
-	NSMapTable * _storeStateTable;
-	NSMutableArray * _draggedMessages;
-	NSMutableAttributedString * _truncatedString;
-	NSMutableDictionary * _truncatedStringAttributes;
-	NSMutableDictionary * _truncatedParagraphStyle;
-	NSString * _availableStatusImageName;
+	Message *_currentDisplayedMessage;
+	NSMapTable *_storeStateTable;
+	NSMutableArray *_draggedMessages;
+	NSMutableAttributedString *_truncatedString;
+	NSMutableDictionary *_truncatedStringAttributes;
+	NSMutableDictionary *_truncatedParagraphStyle;
+	NSString *_availableStatusImageName;
 	long long leftmostTextColumn;
 	struct {
 		unsigned int includeDeleted : 1;
@@ -83,25 +83,25 @@
 		unsigned int searchSortColumnOrder : 8;
 		unsigned int searchSortColumnOrderAscending : 1;
 	} _flags;
-	NSDictionary * _messageIDsToSelectWhenOpened;
-	NSArray * _threadIDsToOpenWhenOpened;
+	NSDictionary *_messageIDsToSelectWhenOpened;
+	NSArray *_threadIDsToOpenWhenOpened;
 	long long colorHighlightLeftEdge;
 	long long colorHighlightWidth;
 	long long _windowWidthBeforeSearch;
-	VisibleStateObject * _visibleStateBeforeSearch;
-	NSMutableSet * _messagesInSelectedThread;
-	MessageThread * threadBeingClosed;
-	MessageThread * threadBeingOpened;
-	struct __CFDictionary * _rowDrawingCache;
-	NSMutableSet * _mouseTrackers;
+	VisibleStateObject *_visibleStateBeforeSearch;
+	NSMutableSet *_messagesInSelectedThread;
+	MessageThread *threadBeingClosed;
+	MessageThread *threadBeingOpened;
+	struct __CFDictionary *_rowDrawingCache;
+	NSMutableSet *_mouseTrackers;
 	struct CGPoint _lastMouseDownInUnreadColumnPoint;
 	long long _lastMouseDownInUnreadColumnEventNumber;
 	struct CGPoint _currentMouseLocationInWindow;
 	double _amountToScrollDownAfterClosingThread;
 	long long _numberOfSelectedRowsBeforeTogglingThread;
 	long long _selectedRowBeforeTogglingThread;
-	BytesFormatter * _bytesFormatter;
-	NSString * _pasteboardURLString;
+	BytesFormatter *_bytesFormatter;
+	NSString *_pasteboardURLString;
 	BOOL _isDragging;
 }
 
@@ -155,8 +155,8 @@
 - (void)selectAllMessagesAndMakeFirstResponder;
 - (void)makeMessageListFirstResponder;
 - (void)updateTableViewRowHeight;
-@property (retain) NSFont * font; // @synthesize font=_font;
-@property (retain) NSFont * noteFont; // @synthesize noteFont=_noteFont;
+@property (retain) NSFont *font;  // @synthesize font=_font;
+@property (retain) NSFont *noteFont;  // @synthesize noteFont=_noteFont;
 - (BOOL)isInThreadedMode;
 - (void)toggleThreadedMode;
 - (void)threadedModeDidChange:(id)arg1;
@@ -271,9 +271,9 @@
 - (id)messageToSelectIfEntireSelectionRemoved;
 - (BOOL)includeDeleted;
 - (void)setIncludeDeleted:(BOOL)arg1;
-@property (retain) NSFont * boldFont; // @synthesize boldFont=_boldFont;
-@property (retain) NSString * pasteboardURLString; // @synthesize pasteboardURLString=_pasteboardURLString;
-@property (copy) NSArray * draggedMessages; // @synthesize draggedMessages=_draggedMessages;
+@property (retain) NSFont *boldFont;  // @synthesize boldFont=_boldFont;
+@property (retain) NSString *pasteboardURLString;  // @synthesize pasteboardURLString=_pasteboardURLString;
+@property (copy) NSArray *draggedMessages;  // @synthesize draggedMessages=_draggedMessages;
 
 @end
 
@@ -384,23 +384,23 @@
 
 @interface TableViewManager : NSObject <MessageBrowserController, NSTableViewDelegate, NSTableViewDataSource>
 {
-	ASExtendedTableView * _tableView;
-	MessageMall * _messageMall;
+	ASExtendedTableView *_tableView;
+	MessageMall *_messageMall;
 	id _delegate;
-	NSArray * _tableColumns;
-	NSFont * _font;
-	NSFont * _boldFont;
-	NSFont * _noteFont;
-	NSMutableArray * _selection;
-	NSArray * _selectionExcludingThreads;
+	NSArray *_tableColumns;
+	NSFont *_font;
+	NSFont *_boldFont;
+	NSFont *_noteFont;
+	NSMutableArray *_selection;
+	NSArray *_selectionExcludingThreads;
 	BOOL _suspendChangesToScrollingAndSelection;
-	Message * _currentDisplayedMessage;
-	NSMapTable * _storeStateTable;
-	NSMutableArray * _draggedMessages;
-	NSMutableAttributedString * _truncatedString;
-	NSMutableDictionary * _truncatedStringAttributes;
-	NSMutableDictionary * _truncatedParagraphStyle;
-	NSString * _availableStatusImageName;
+	Message *_currentDisplayedMessage;
+	NSMapTable *_storeStateTable;
+	NSMutableArray *_draggedMessages;
+	NSMutableAttributedString *_truncatedString;
+	NSMutableDictionary *_truncatedStringAttributes;
+	NSMutableDictionary *_truncatedParagraphStyle;
+	NSString *_availableStatusImageName;
 	int leftmostTextColumn;
 	struct {
 		unsigned int includeDeleted : 1;
@@ -425,25 +425,25 @@
 		unsigned int searchSortColumnOrder : 8;
 		unsigned int searchSortColumnOrderAscending : 1;
 	} _flags;
-	NSDictionary * _messageIDsToSelectWhenOpened;
-	NSArray * _threadIDsToOpenWhenOpened;
+	NSDictionary *_messageIDsToSelectWhenOpened;
+	NSArray *_threadIDsToOpenWhenOpened;
 	int colorHighlightLeftEdge;
 	int colorHighlightWidth;
 	int _windowWidthBeforeSearch;
-	VisibleStateObject * _visibleStateBeforeSearch;
-	NSMutableSet * _messagesInSelectedThread;
-	MessageThread * threadBeingClosed;
-	MessageThread * threadBeingOpened;
-	struct __CFDictionary * _rowDrawingCache;
-	NSMutableSet * _mouseTrackers;
+	VisibleStateObject *_visibleStateBeforeSearch;
+	NSMutableSet *_messagesInSelectedThread;
+	MessageThread *threadBeingClosed;
+	MessageThread *threadBeingOpened;
+	struct __CFDictionary *_rowDrawingCache;
+	NSMutableSet *_mouseTrackers;
 	struct CGPoint _lastMouseDownInUnreadColumnPoint;
 	int _lastMouseDownInUnreadColumnEventNumber;
 	struct CGPoint _currentMouseLocationInWindow;
 	float _amountToScrollDownAfterClosingThread;
 	int _numberOfSelectedRowsBeforeTogglingThread;
 	int _selectedRowBeforeTogglingThread;
-	BytesFormatter * _bytesFormatter;
-	NSString * _pasteboardURLString;
+	BytesFormatter *_bytesFormatter;
+	NSString *_pasteboardURLString;
 	BOOL _isDragging;
 }
 

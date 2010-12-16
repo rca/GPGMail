@@ -4,7 +4,7 @@
 
 @interface NSDataMessageStore : MessageStore
 {
-	NSData * _data;
+	NSData *_data;
 }
 
 - (id)initWithData:(id)arg1;
@@ -26,7 +26,7 @@
 
 @interface NSDataMessageStore : MessageStore
 {
-	NSData * _data;
+	NSData *_data;
 }
 
 - (id)initWithData:(id)arg1;

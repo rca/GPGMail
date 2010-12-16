@@ -36,7 +36,7 @@
 #import <AppKit/NSPanel.h>
 
 
-NSString * GPGHandlerException = @"GPGHandlerException";
+NSString *GPGHandlerException = @"GPGHandlerException";
 
 
 #define NOTHING_READ 0
@@ -53,21 +53,21 @@ NSString * GPGHandlerException = @"GPGHandlerException";
 
 @implementation GPGHandler
 
-static NSString * _gpgPath = nil;
-static NSArray * _knownHashAlgorithms = nil;
-static NSString * _defaultHashAlgorithm = nil;
+static NSString *_gpgPath = nil;
+static NSArray *_knownHashAlgorithms = nil;
+static NSString *_defaultHashAlgorithm = nil;
 static BOOL _blindlyTrustAllKeysForEncryption = NO;
 
 + (void)initialize {
 	// Do not call super - see +initialize documentation
 	if (_defaultHashAlgorithm == nil) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:NSApplicationWillTerminateNotification object:[NSApplication sharedApplication]];
-		(void)[self defaultHashAlgorithm];                 // We need this to know ASAP which gpg version we're running
+		(void)[self defaultHashAlgorithm];                         // We need this to know ASAP which gpg version we're running
 	}
 }
 
 + (id)handler {
-	GPGHandler * newHandler = [[self alloc] init];
+	GPGHandler *newHandler = [[self alloc] init];
 
 	return [newHandler autorelease];
 }
@@ -92,17 +92,17 @@ static BOOL _blindlyTrustAllKeysForEncryption = NO;
 		case kCFStringEncodingISOLatin1:
 		case kCFStringEncodingISOLatin2:
 		case kCFStringEncodingKOI8_R:
-		case kCFStringEncodingISO_2022_JP:                                                                           // Tomio addition 28.04.05
+		case kCFStringEncodingISO_2022_JP:                                                                                   // Tomio addition 28.04.05
 		case kCFStringEncodingUTF8:
-		case kCFStringEncodingASCII:                                                                                 // We'll us iso8859-1 for gpg; would cause problem if comment contains non-ASCII chars...
+		case kCFStringEncodingASCII:                                                                                         // We'll us iso8859-1 for gpg; would cause problem if comment contains non-ASCII chars...
 			*newEncoding = originalEncoding;
 			return data;
 		default: {
-			CFStringRef aString = CFStringCreateFromExternalRepresentation(NULL, (CFDataRef)data, originalEncoding); /* May return NULL on conversion error */
+			CFStringRef aString = CFStringCreateFromExternalRepresentation(NULL, (CFDataRef)data, originalEncoding);             /* May return NULL on conversion error */
 			CFDataRef outputData;
 
 			NSAssert(aString != NULL, @"Unable to convert back to string!");
-			outputData = CFStringCreateExternalRepresentation(NULL, aString, kCFStringEncodingISOLatin1, 0);         /* May return NULL on conversion error */
+			outputData = CFStringCreateExternalRepresentation(NULL, aString, kCFStringEncodingISOLatin1, 0);                     /* May return NULL on conversion error */
 			if (outputData == NULL) {
 				outputData = CFStringCreateExternalRepresentation(NULL, aString, kCFStringEncodingISOLatin2, 0);
 				if (outputData == NULL) {
@@ -155,15 +155,15 @@ static NSString * stringForEncoding(CFStringEncoding encoding){
 
 + (NSArray *)knownHashAlgorithms {
 	if (_knownHashAlgorithms == nil) {
-		NSException * runException;
-		NSData * outputData;
+		NSException *runException;
+		NSData *outputData;
 
 #warning Called more than once!
 // NSLog(@"Launching --version");
 		runException = [[self handler] runGpgTaskWithArguments:[NSArray arrayWithObject:@"--version"] passphrase:nil inputData:nil outputData:&outputData errorData:NULL encoding:kCFStringEncodingUTF8];
 		if (!runException) {
-			NSString * stdoutString = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
-			NSScanner * aScanner = [NSScanner scannerWithString:stdoutString];
+			NSString *stdoutString = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
+			NSScanner *aScanner = [NSScanner scannerWithString:stdoutString];
 
 			// gpg (GnuPG) 1.0.6
 			// Copyright (C) 1999 Free Software Foundation, Inc.
@@ -182,11 +182,11 @@ static NSString * stringForEncoding(CFStringEncoding encoding){
 				[NSException raise:NSGenericException format:@"GPGMail doesn't support gpg version < 1.0.6."];
 			}
 			if (![stdoutString hasPrefix:@"gpg (GnuPG) 1.0.6"]) {
-				_blindlyTrustAllKeysForEncryption = YES;                                  // We will use --always-trust for encryption
+				_blindlyTrustAllKeysForEncryption = YES;                                                  // We will use --always-trust for encryption
 
 			}
 			if ([aScanner scanUpToString:@"Hash: " intoString:NULL] && ![aScanner isAtEnd]) {
-				NSString * algoString;
+				NSString *algoString;
 
 				NSAssert1([aScanner scanString:@"Hash: " intoString:NULL], @"### GPGMail: %s: Unable to scan the same string twice?!", __PRETTY_FUNCTION__);
 				NSAssert1([aScanner scanUpToString:@"\n" intoString:&algoString], @"### GPGMail: %s: No EOL on Hash line?!", __PRETTY_FUNCTION__);
@@ -209,7 +209,7 @@ static NSString * stringForEncoding(CFStringEncoding encoding){
 
 + (NSString *)defaultHashAlgorithm {
 	if (_defaultHashAlgorithm == nil) {
-		NSString * anAlgo = [[GPGDefaults gpgDefaults] stringForKey:@"GPGHashAlgorithm"];
+		NSString *anAlgo = [[GPGDefaults gpgDefaults] stringForKey:@"GPGHashAlgorithm"];
 
 		if (anAlgo == nil || [anAlgo length] == 0) {
 			anAlgo = [[self knownHashAlgorithms] objectAtIndex:0];
@@ -254,15 +254,15 @@ static NSString * stringForEncoding(CFStringEncoding encoding){
 	return [[self class] gpgPath];
 }
 
-static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSArray * recipients){
+static NSArray * recipientArgumentsFromSenderAndArguments(NSString *sender, NSArray *recipients){
 // We add the sender to the recipients list, so user can always decrypt data he has encrypted
 // This can be disabled with userDefault GPGEncryptsToSelf set to NO.
 	int recipientsCount = [recipients count];
-	NSMutableArray * recipientArgs = [NSMutableArray arrayWithCapacity:2 * recipientsCount + 2];
+	NSMutableArray *recipientArgs = [NSMutableArray arrayWithCapacity:2 * recipientsCount + 2];
 	int i;
 
 	for (i = 0; i < recipientsCount; i++) {
-		NSString * aRecipient = [recipients objectAtIndex:i];
+		NSString *aRecipient = [recipients objectAtIndex:i];
 
 		if ([recipientArgs containsObject:aRecipient]) {
 			// No need to add the same recipient more than once; gpg probably checks this too.
@@ -282,13 +282,13 @@ static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSA
 
 - (NSException *)displayableExceptionFromException:(NSException *)exception {
 	if ([[exception name] isEqualToString:GPGHandlerException]) {
-		NSString * errorString = [[exception userInfo] objectForKey:@"Error"];
-		NSArray * errorLines = [errorString componentsSeparatedByString:@"\n"];
+		NSString *errorString = [[exception userInfo] objectForKey:@"Error"];
+		NSArray *errorLines = [errorString componentsSeparatedByString:@"\n"];
 		int errorLineCount = [errorLines count], i;
-		NSMutableArray * filteredErrorLines = [NSMutableArray arrayWithCapacity:errorLineCount];
+		NSMutableArray *filteredErrorLines = [NSMutableArray arrayWithCapacity:errorLineCount];
 
 		for (i = 0; i < errorLineCount; i++) {
-			NSString * errorLine = [errorLines objectAtIndex:i];
+			NSString *errorLine = [errorLines objectAtIndex:i];
 
 			// Skip first two lines:
 			// gpg: can't mmap pool of 16384 bytes: Invalid argument - using malloc
@@ -328,13 +328,13 @@ static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSA
 }
 
 - (NSException *)runGpgTaskWithArguments:(NSArray *)arguments passphrase:(NSString *)passphrase inputData:(NSData *)inputData outputData:(NSData **)outputData errorData:(NSData **)errorData encoding:(CFStringEncoding)encoding {
-	NSPipe * stdinPipe = [NSPipe pipe];
-	NSPipe * stdoutPipe = [NSPipe pipe];
-	NSPipe * stderrPipe = [NSPipe pipe];
-	NSException * result = nil;
-	NSArray * defaultArguments;
-	NSMutableDictionary * environment = [NSMutableDictionary dictionaryWithDictionary:[[NSProcessInfo processInfo] environment]];         // We MUST add current environment!!
-	NSData * passphraseData;
+	NSPipe *stdinPipe = [NSPipe pipe];
+	NSPipe *stdoutPipe = [NSPipe pipe];
+	NSPipe *stderrPipe = [NSPipe pipe];
+	NSException *result = nil;
+	NSArray *defaultArguments;
+	NSMutableDictionary *environment = [NSMutableDictionary dictionaryWithDictionary:[[NSProcessInfo processInfo] environment]];              // We MUST add current environment!!
+	NSData *passphraseData;
 
 	operationCancelled = NO;
 
@@ -351,7 +351,7 @@ static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSA
 
 	// WARNING: with gpg < 1.0.6, --charset utf-8 is not recognized as a valid option!
 	defaultArguments = [NSArray arrayWithObjects:@"--no-verbose", @"--batch", @"--no-tty", /*@"--utf8-strings",*/ @"--charset", stringForEncoding(encoding), nil];
-	[currentTask setArguments:[defaultArguments arrayByAddingObjectsFromArray:arguments]];         // Should we add --openpgp argument?
+	[currentTask setArguments:[defaultArguments arrayByAddingObjectsFromArray:arguments]];             // Should we add --openpgp argument?
 	[currentTask setStandardInput:stdinPipe];
 	[currentTask setStandardOutput:stdoutPipe];
 	[currentTask setStandardError:stderrPipe];
@@ -370,7 +370,7 @@ static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSA
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readStdout:) name:NSFileHandleReadToEndOfFileCompletionNotification object:[stdoutPipe fileHandleForReading]];
 
 	@try{
-		NSException * writeException = nil;
+		NSException *writeException = nil;
 
 		[currentTask launch];
 		// We need to read the pipes asynchronously, as we cannot poll more than one pipe:
@@ -393,8 +393,8 @@ static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSA
 			// we write passphrase, then wait 1 second, and check if stdout and stderr
 			// pipes have been closed, meaning that there was an error with passphrase.
 			@try{
-				[[stdinPipe fileHandleForWriting] writeData:passphraseData];                                 // SIGPIPE might be thrown here
-			}@catch (NSException * localException) {
+				[[stdinPipe fileHandleForWriting] writeData:passphraseData];                                                 // SIGPIPE might be thrown here
+			}@catch (NSException *localException) {
 				writeException = localException;
 				inputData = nil;
 			}
@@ -417,12 +417,12 @@ static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSA
 					NSLog(@"IN: %@", aString);
 					CFRelease(aString);
 				}
-				[[stdinPipe fileHandleForWriting] writeData:inputData]; // SIGPIPE might be thrown here
-			}@catch (NSException * localException) {
+				[[stdinPipe fileHandleForWriting] writeData:inputData];                 // SIGPIPE might be thrown here
+			}@catch (NSException *localException) {
 				writeException = localException;
 			}
 		}
-		[[stdinPipe fileHandleForWriting] closeFile];                   // We need to inform task that we do not have any more data for it!
+		[[stdinPipe fileHandleForWriting] closeFile];                           // We need to inform task that we do not have any more data for it!
 
 		// It seems we need to run the current runloop for some more time, as notifications
 		// are not yet all posted...
@@ -432,7 +432,7 @@ static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSA
 		// Rendez-vous
 		[readLock unlockWithCondition:NOTHING_READ];
 
-		[currentTask waitUntilExit];                 // Couldn't we put this call before the rendez-vous?!
+		[currentTask waitUntilExit];                         // Couldn't we put this call before the rendez-vous?!
 
 		if ([[GPGDefaults gpgDefaults] boolForKey:@"GPGLogStderrEnabled"]) {
 			CFStringRef aString = CFStringCreateFromExternalRepresentation(NULL, (CFDataRef)stderrData, encoding);
@@ -464,7 +464,7 @@ static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSA
 			// (if at least another key was trusted), but in our case it should be considered
 			// as an error!
 			if ([currentTask terminationStatus]) {
-				NSString * stderrString = (NSString *)CFStringCreateFromExternalRepresentation(NULL, (CFDataRef)stderrData, encoding);
+				NSString *stderrString = (NSString *)CFStringCreateFromExternalRepresentation(NULL, (CFDataRef)stderrData, encoding);
 
 				result = [NSException exceptionWithName:GPGHandlerException reason:NSLocalizedStringFromTableInBundle(@"Error after gpg execution", @"GPG", [NSBundle bundleForClass:[self class]], "") userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:[currentTask terminationStatus]], @"TerminationStatus", stderrString, @"Error", nil]];
 				[stderrString release];
@@ -476,7 +476,7 @@ static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSA
 				// This will be solved with MacGPGME.
 			} else {
 				// Let's check stderr content...
-				NSString * stderrString = (NSString *)CFStringCreateFromExternalRepresentation(NULL, (CFDataRef)stderrData, encoding);
+				NSString *stderrString = (NSString *)CFStringCreateFromExternalRepresentation(NULL, (CFDataRef)stderrData, encoding);
 
 				if ([stderrString rangeOfString:@"no info to calculate a trust probability"].length > 0) {
 					result = [NSException exceptionWithName:GPGHandlerException reason:NSLocalizedStringFromTableInBundle(@"Error after gpg execution", @"GPG", [NSBundle bundleForClass:[self class]], "") userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:[currentTask terminationStatus]], @"TerminationStatus", stderrString, @"Error", nil]];
@@ -499,7 +499,7 @@ static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSA
 		if (errorData != NULL) {
 			*errorData = stderrData;
 		}
-	}@catch (NSException * localException) {
+	}@catch (NSException *localException) {
 		result = localException;
 	}
 
@@ -508,9 +508,9 @@ static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSA
 	}
 	[currentTask release];
 	currentTask = nil;
-	[stderrData autorelease];         // Do NOT release it, as we passed it as a return parameter
+	[stderrData autorelease];             // Do NOT release it, as we passed it as a return parameter
 	stderrData = nil;
-	[stdoutData autorelease];         // Do NOT release it, as we passed it as a return parameter
+	[stdoutData autorelease];             // Do NOT release it, as we passed it as a return parameter
 	stdoutData = nil;
 
 	if (result && !operationCancelled) {
@@ -525,9 +525,9 @@ static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSA
 	// the first time with only encryption,
 	// and the second time with only detached signature.
 	// We cannot retrieve both a detached signature and an encrypted data.
-	NSException * runException;
-	NSData * outputData = nil;
-	NSMutableArray * arguments;
+	NSException *runException;
+	NSData *outputData = nil;
+	NSMutableArray *arguments;
 
 	NSParameterAssert(data != NULL);
 	NSParameterAssert(sender != nil);
@@ -537,7 +537,7 @@ static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSA
 	if (signatureType == GPGInlineSignature) {
 		[arguments addObjectsFromArray:[NSArray arrayWithObjects:@"--local-user", sender, @"--passphrase-fd", @"0", @"--sign", nil]];
 	}
-	[arguments addObjectsFromArray:[NSArray arrayWithObjects:@"--digest-algo", [self defaultHashAlgorithm], @"--textmode", @"--armor", @"--encrypt", nil]];         // According to doc, --encrypt must be added AFTER --recipient
+	[arguments addObjectsFromArray:[NSArray arrayWithObjects:@"--digest-algo", [self defaultHashAlgorithm], @"--textmode", @"--armor", @"--encrypt", nil]];             // According to doc, --encrypt must be added AFTER --recipient
 #warning Using --always-trust when encrypting!
 	// With gpg 1.0.6, if we use a key which has not been signed by ours,
 	// encryption aborts with an error.
@@ -564,9 +564,9 @@ static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSA
 }
 
 - (NSData *)signData:(NSData *)data sender:(NSString *)sender passphrase:(NSString *)passphrase detachedSignature:(BOOL)detachedSignature encoding:(CFStringEncoding)encoding {
-	NSException * runException;
-	NSData * outputData = nil;
-	NSMutableArray * arguments;
+	NSException *runException;
+	NSData *outputData = nil;
+	NSMutableArray *arguments;
 
 	NSParameterAssert(data != NULL);
 	NSParameterAssert(sender != nil);
@@ -596,12 +596,12 @@ static NSArray * recipientArgumentsFromSenderAndArguments(NSString * sender, NSA
 	return outputData;
 }
 
-static NSString * extractSignaturesFromData(NSData * data, CFStringEncoding encoding){
-	NSString * stderrString = (NSString *)CFStringCreateFromExternalRepresentation(NULL, (CFDataRef)data, encoding);
-	NSArray * stderrLines = [stderrString componentsSeparatedByString:@"\n"];
+static NSString * extractSignaturesFromData(NSData *data, CFStringEncoding encoding){
+	NSString *stderrString = (NSString *)CFStringCreateFromExternalRepresentation(NULL, (CFDataRef)data, encoding);
+	NSArray *stderrLines = [stderrString componentsSeparatedByString:@"\n"];
 	int count = [stderrLines count], i;
 	int start, end;
-	NSMutableString * signature = [NSMutableString string];
+	NSMutableString *signature = [NSMutableString string];
 
 	// gpg: can't mmap pool of 16384 bytes: Invalid argument - using malloc
 	// gpg: Please note that you don't have secure memory on this system
@@ -619,7 +619,7 @@ static NSString * extractSignaturesFromData(NSData * data, CFStringEncoding enco
 
 	// warning Might return many signatures
 	for (i = 0; i < count; i++) {
-		NSString * aLine = [stderrLines objectAtIndex:i];
+		NSString *aLine = [stderrLines objectAtIndex:i];
 
 		if ([aLine hasPrefix:@"gpg: Good signature"]) {
 			start = [aLine rangeOfString:@"\""].location + 1;
@@ -650,10 +650,10 @@ static NSString * extractSignaturesFromData(NSData * data, CFStringEncoding enco
 }
 
 - (NSData *)decryptData:(NSData *)data passphrase:(NSString *)passphrase signature:(NSString **)signature encoding:(CFStringEncoding)encoding {
-	NSException * runException;
-	NSData * errorData;
-	NSData * outputData = nil;
-	NSArray * arguments;
+	NSException *runException;
+	NSData *errorData;
+	NSData *outputData = nil;
+	NSArray *arguments;
 
 	NSParameterAssert(data != NULL);
 	NSParameterAssert(passphrase != nil);
@@ -674,10 +674,10 @@ static NSString * extractSignaturesFromData(NSData * data, CFStringEncoding enco
 }
 
 - (NSString *)authenticationSignatureFromData:(NSData *)signedData encoding:(CFStringEncoding)encoding {
-	NSException * runException;
-	NSData * errorData = nil;
-	NSData * outputData;
-	NSArray * arguments;
+	NSException *runException;
+	NSData *errorData = nil;
+	NSData *outputData;
+	NSArray *arguments;
 
 	NSParameterAssert(signedData != nil);
 
@@ -693,15 +693,15 @@ static NSString * extractSignaturesFromData(NSData * data, CFStringEncoding enco
 }
 
 - (NSString *)authenticationSignatureFromData:(NSData *)signedData signatureFile:(NSString *)signatureFile encoding:(CFStringEncoding)encoding {
-	NSException * runException;
-	NSData * errorData = nil;
-	NSData * outputData;
-	NSArray * arguments;
+	NSException *runException;
+	NSData *errorData = nil;
+	NSData *outputData;
+	NSArray *arguments;
 
 	NSParameterAssert(signedData != nil);
 	NSParameterAssert(signatureFile != nil);
 
-	arguments = [NSArray arrayWithObjects:@"--verify", signatureFile, @"-", nil];         // gpg 1.0.4 fix: we MUST add the - argument
+	arguments = [NSArray arrayWithObjects:@"--verify", signatureFile, @"-", nil];             // gpg 1.0.4 fix: we MUST add the - argument
 
 	runException = [self runGpgTaskWithArguments:arguments passphrase:nil inputData:signedData outputData:&outputData errorData:&errorData encoding:encoding];
 
@@ -725,10 +725,10 @@ static NSString * extractSignaturesFromData(NSData * data, CFStringEncoding enco
    // Currently it returns the first start-of-block with the first end-of-block
 {
 	NSRange pgpRange = NSMakeRange(NSNotFound, 0);
-	NSString * string;
+	NSString *string;
 	NSRange beginRange;
 
-	string = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];         // Using ASCII will consider each byte as a char, whatever the char is; we don't care about 8bit chars
+	string = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];             // Using ASCII will consider each byte as a char, whatever the char is; we don't care about 8bit chars
 	startString = [startString stringByAppendingString:@"\r\n"];
 
 	// We'd better look for string in NSData, not in NSString, to avoid byte conversions (? ASCII ?)
@@ -760,10 +760,10 @@ static NSString * extractSignaturesFromData(NSData * data, CFStringEncoding enco
 {
 	// FIXME: Does not support UTF16/UTF24/UTF32
 	NSRange pgpRange = NSMakeRange(NSNotFound, 0);
-	NSString * string;
+	NSString *string;
 	NSRange beginRange;
 
-	string = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];         // Using ASCII will consider each byte as a char, whatever the char is; we don't care about 8bit chars
+	string = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];             // Using ASCII will consider each byte as a char, whatever the char is; we don't care about 8bit chars
 	startString = [startString stringByAppendingString:@"\r\n"];
 
 	// We'd better look for string in NSData, not in NSString, to avoid byte conversions (? ASCII ?)

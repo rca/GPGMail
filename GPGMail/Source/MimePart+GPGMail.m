@@ -58,7 +58,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 	// fullBodyDataForMessage: and dataForMimePart: return nil!!!
 	// -headerDataForMessage: works even offline
 	// -bodyDataForMessage: works even offline, but doesn't include attachment data!
-	NSData * bodyPartData;
+	NSData *bodyPartData;
 
 	// We cannot use [[[[self mimeBody] message] messageStore] dataForMimePart:self]
 	// because returned data doesn't have part's headers, and we need them to authenticate
@@ -72,18 +72,18 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 	} else {
 		// Subpart of multipart
 #if 0
-		NSString * boundary = [NSString stringWithFormat:@"\r\n--%@\r\n", [[self parentPart] bodyParameterForKey:@"boundary"]];
+		NSString *boundary = [NSString stringWithFormat:@"\r\n--%@\r\n", [[self parentPart] bodyParameterForKey:@"boundary"]];
 #else
 #warning Check patch
 		// Patched by Tomio	(January 20,2002)
-		NSString * boundary = [NSString stringWithFormat:@"--%@\r\n", [[self parentPart] bodyParameterForKey:@"boundary"]];
+		NSString *boundary = [NSString stringWithFormat:@"--%@\r\n", [[self parentPart] bodyParameterForKey:@"boundary"]];
 #endif
 		char bytes[2] = { 0, 0 };
 
 #warning BUG if not on second level!
 #warning BUG? We need to check if ends with CRLF
 //        bodyPartData = [[[self mimeBody] rawData] gpgStandardizedEOLsToCRLF];
-		bodyPartData = [[[(Message *)[[self mimeBody] message] messageStore] fullBodyDataForMessage:[[self mimeBody] message]] gpgStandardizedEOLsToCRLF];                 // Forces download of attachments
+		bodyPartData = [[[(Message *)[[self mimeBody] message] messageStore] fullBodyDataForMessage:[[self mimeBody] message]] gpgStandardizedEOLsToCRLF];                         // Forces download of attachments
 		if (bodyPartData == nil) {
 			return nil;
 		}
@@ -92,7 +92,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 		if (bytes[0] != '\r' && bytes[1] != '\n') {
 			// There are cases where raw data begins directly with the boundary
 			// Thanks to Tomio Arisaka
-			NSMutableData * newData;
+			NSMutableData *newData;
 
 			bytes[0] = '\r';
 			bytes[1] = '\n';
@@ -104,20 +104,20 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 #warning Not sure that created boundary can be written with ASCII...
 		// NEW bug? It seems that sometimes(...) we get a range exception here!
 #if 0
-		bodyPartData = [[bodyPartData componentsSeparatedByData:[boundary dataUsingEncoding:NSASCIIStringEncoding]] objectAtIndex:[[[self parentPart] subparts] indexOfObject:self] + 1]; // +1, because first element is empty
+		bodyPartData = [[bodyPartData componentsSeparatedByData:[boundary dataUsingEncoding:NSASCIIStringEncoding]] objectAtIndex:[[[self parentPart] subparts] indexOfObject:self] + 1];         // +1, because first element is empty
 #else
 		{
 			int anIndex = [[[self parentPart] subparts] indexOfObject:self];
-			NSArray * components = [bodyPartData componentsSeparatedByData:[boundary dataUsingEncoding:NSASCIIStringEncoding]];
+			NSArray *components = [bodyPartData componentsSeparatedByData:[boundary dataUsingEncoding:NSASCIIStringEncoding]];
 
-			anIndex = MIN(anIndex, [[[self parentPart] subparts] count] - 1);                                                                                                             // FIXME: Why this code? Useless!?
+			anIndex = MIN(anIndex, [[[self parentPart] subparts] count] - 1);                                                                                                                     // FIXME: Why this code? Useless!?
 //            anIndex = MIN(anIndex, [components count] - 1);
-			bodyPartData = [components objectAtIndex:anIndex + 1];                                                                                                                        // +1, because first element is empty
+			bodyPartData = [components objectAtIndex:anIndex + 1];                                                                                                                                // +1, because first element is empty
 		}
 #endif
 		// Patched by Tomio	(January 20,2002)
 #warning Check patch
-		{                                                                                                                                                                                 // removes CRLF from the end of data
+		{                                                                                                                                                                                         // removes CRLF from the end of data
 			NSRange range = { 0, [bodyPartData length] - 2 };
 			bodyPartData = [bodyPartData subdataWithRange:range];
 		}
@@ -131,7 +131,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
  */
 - (NSData *)gpgBodyPartData {
 #if 0
-	NSData * bodyPartData = [[[[self mimeBody] message] messageStore] dataForMimePart:self];
+	NSData *bodyPartData = [[[[self mimeBody] message] messageStore] dataForMimePart:self];
 
 	if ([[[self contentTransferEncoding] lowercaseString] isEqualToString:@"quoted-printable"]) {
 		bodyPartData = [bodyPartData decodeQuotedPrintableForText:YES];
@@ -140,10 +140,10 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 	return bodyPartData;
 #else
 #warning Compare my solution against Tomio
-	NSData * bodyPartData;
+	NSData *bodyPartData;
 
 	if ([[self mimeBody] topLevelPart] == self) {
-		bodyPartData = [[(Message *)[[self mimeBody] message] messageStore] fullBodyDataForMessage:[[self mimeBody] message]];                 // (no headers, but begins with line separator)
+		bodyPartData = [[(Message *)[[self mimeBody] message] messageStore] fullBodyDataForMessage:[[self mimeBody] message]];                         // (no headers, but begins with line separator)
 //        bodyPartData = [[[[self mimeBody] message] messageStore] bodyDataForMessage:[[self mimeBody] message]]; // (no headers, but begins with line separator)
 		if ([[[self contentTransferEncoding] lowercaseString] isEqualToString:@"quoted-printable"]) {
 			bodyPartData = [bodyPartData decodeQuotedPrintableForText:YES];
@@ -153,14 +153,14 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 	} else {
 		// Subpart of multipart
 #if 0   // patched by Tomio	(November 29, 2001)(January 20,2002)
-		NSString * boundary = [NSString stringWithFormat:@"\r\n--%@\r\n", [[self parentPart] bodyParameterForKey:@"boundary"]];
+		NSString *boundary = [NSString stringWithFormat:@"\r\n--%@\r\n", [[self parentPart] bodyParameterForKey:@"boundary"]];
 
-		bodyPartData = [[[[[self mimeBody] rawData] gpgStandardizedEOLsToCRLF] componentsSeparatedByData:[boundary dataUsingEncoding:NSASCIIStringEncoding]] objectAtIndex:[[[self parentPart] subparts] indexOfObject:self] + 1]; // +1, because first element is empty
+		bodyPartData = [[[[[self mimeBody] rawData] gpgStandardizedEOLsToCRLF] componentsSeparatedByData:[boundary dataUsingEncoding:NSASCIIStringEncoding]] objectAtIndex:[[[self parentPart] subparts] indexOfObject:self] + 1];         // +1, because first element is empty
 #else
-		NSString * boundary = [NSString stringWithFormat:@"--%@\r\n", [[self parentPart] bodyParameterForKey:@"boundary"]];
+		NSString *boundary = [NSString stringWithFormat:@"--%@\r\n", [[self parentPart] bodyParameterForKey:@"boundary"]];
 
 		bodyPartData = [[[[[self mimeBody] rawData] gpgStandardizedEOLsToCRLF] componentsSeparatedByData:[boundary dataUsingEncoding:NSASCIIStringEncoding]] objectAtIndex:[[[self parentPart] subparts] indexOfObject:self] + 1];
-		{                                                                                                                                                                                                                          // removes CRLF from the end of data
+		{                                                                                                                                                                                                                                  // removes CRLF from the end of data
 			NSRange range = { 0, [bodyPartData length] - 2 };
 			bodyPartData = [bodyPartData subdataWithRange:range];
 		}
@@ -180,7 +180,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 
 - (NSData *)gpgBodyPartData2 {
 	if ([[self subparts] count] == 0) {
-		NSData * bodyPartData = [[(Message *)[[self mimeBody] message] messageStore] dataForMimePart:self];
+		NSData *bodyPartData = [[(Message *)[[self mimeBody] message] messageStore] dataForMimePart:self];
 
 		if ([[[self contentTransferEncoding] lowercaseString] isEqualToString:@"quoted-printable"]) {
 			bodyPartData = [bodyPartData decodeQuotedPrintableForText:YES];
@@ -210,7 +210,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 // Does not look recursively in sub-parts
 {
 	if ([[[self type] lowercaseString] isEqualToString:@"multipart"] && [[[self subtype] lowercaseString] isEqualToString:@"encrypted"])
-																																																																																																																																								  #warning Workaround!
+																																																																																																																																																																																																																																																																																  #warning Workaround!
 	{
 		// Sometimes, we can't get the bodyParameterForKey:@"protocol",
 		// despite there is one! Let's ignore it...
@@ -218,20 +218,20 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 			// The multipart/encrypted MUST consist of exactly two parts
 			if ([[self subparts] count] == 2) {
 				BOOL recognizesVersion = NO;
-				MimePart * versionPart = [self subpartAtIndex:0];
-				MimePart * dataPart = [self subpartAtIndex:1];
+				MimePart *versionPart = [self subpartAtIndex:0];
+				MimePart *dataPart = [self subpartAtIndex:1];
 
 				// The first MIME body part must have a content type of "application/pgp-encrypted".  This body contains the control information.
 				if ([[[versionPart type] lowercaseString] isEqualToString:@"application"] && [[[versionPart subtype] lowercaseString] isEqualToString:@"pgp-encrypted"] && [[[dataPart type] lowercaseString] isEqualToString:@"application"] && ([[[dataPart subtype] lowercaseString] isEqualToString:@"octet-stream"] || [[[dataPart subtype] lowercaseString] isEqualToString:@"pgp-signature"])) {
 					// Quirk mode: FireGPG < 0.7.1 declared 'application/pgp-signature' instead of 'application/octet-stream'
-					NSData * bodyData = [versionPart bodyData];                                                      // (it doesn't matter if data has been decoded; normally there was nothing to decode)
+					NSData *bodyData = [versionPart bodyData];                                                                           // (it doesn't matter if data has been decoded; normally there was nothing to decode)
 
 					if (bodyData) {
 						// bodyData might be nil if mimePart has not yet been downloaded
 						// from server. We assume that part is PGP encrypted though.
 						// #warning Do we use the right encoding?
-						NSString * string = [[NSString alloc] initWithData:bodyData encoding:NSASCIIStringEncoding]; // [versionPart textEncoding] ?
-						NSString * lowercaseString = [string lowercaseString];
+						NSString *string = [[NSString alloc] initWithData:bodyData encoding:NSASCIIStringEncoding];                          // [versionPart textEncoding] ?
+						NSString *lowercaseString = [string lowercaseString];
 
 // NSLog(@"-[MimePart gpgIsOpenPGPEncryptedContainerPart]: [versionPart textEncoding] = %d = %@", [versionPart textEncoding], [NSString localizedNameOfStringEncoding:[versionPart textEncoding]]);
 						// A message complying with this standard MUST contain a "Version: 1" field in this body.
@@ -258,32 +258,32 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 
 - (BOOL)_gpgLooksLikeBinaryPGPAttachment {
 	BOOL looksLikePGP = NO;
-	NSString * aType = [[self type] lowercaseString];
-	NSString * aSubtype = [[self subtype] lowercaseString];
+	NSString *aType = [[self type] lowercaseString];
+	NSString *aSubtype = [[self subtype] lowercaseString];
 
 	if ([aType isEqualToString:@"application"] && [aSubtype isEqualToString:@"octet-stream"]) {
-		NSData * bodyData = [self bodyData];                 // We use only the body (no headers), and decoded!
+		NSData *bodyData = [self bodyData];                          // We use only the body (no headers), and decoded!
 
 		if (bodyData != nil) {
 			// This is an octet stream. Is it a PGP-encrypted file?
 			// Let's do a pre-test: like magic(5), we check some bytes of the data. If it looks like PGP data,
 			// then we will try decryption.
 			unsigned length = [bodyData length];
-			unsigned char * bytes = (unsigned char *)[bodyData bytes];
+			unsigned char *bytes = (unsigned char *)[bodyData bytes];
 
 			if (length > 1) {
 				if (bytes[0] == 0x0085 && bytes[1] == 0x02) {
 					looksLikePGP = YES;
 				} else if (bytes[0] == 0x00a6 && bytes[1] == 0x00) {
 					looksLikePGP = YES;
-				} else if (bytes[0] == 0x0085 && bytes[1] == 0x01) {                             // According to http://lists.gnupg.org/pipermail/gnupg-devel/1999-September/016052.html
+				} else if (bytes[0] == 0x0085 && bytes[1] == 0x01) {                                             // According to http://lists.gnupg.org/pipermail/gnupg-devel/1999-September/016052.html
 					looksLikePGP = YES;
 				}
 			}
 
 			if (!looksLikePGP) {
 				// If filename ends with .gpg, .pgp or .asc, we suppose it's a PGP file
-				NSString * pathExtension = [[[self attachmentFilename] pathExtension] lowercaseString];
+				NSString *pathExtension = [[[self attachmentFilename] pathExtension] lowercaseString];
 
 				if (pathExtension != nil && ([pathExtension isEqualToString:@"gpg"] || [pathExtension isEqualToString:@"pgp"] || [pathExtension isEqualToString:@"asc"])) {
 					looksLikePGP = YES;
@@ -298,9 +298,9 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 - (BOOL)_gpgIsNonOpenPGPEncryptedPart {
 	// We accept only text/plain or application/octet-stream
 	// As with plain text messages, contains simple PGP encrypted block
-	NSData * bodyData;
-	NSString * aType = [[self type] lowercaseString];
-	NSString * aSubtype = [[self subtype] lowercaseString];
+	NSData *bodyData;
+	NSString *aType = [[self type] lowercaseString];
+	NSString *aSubtype = [[self subtype] lowercaseString];
 	BOOL isPlainText = ([aType isEqualToString:@"text"] && [aSubtype isEqualToString:@"plain"]);
 
 	// We don't support text/html
@@ -320,7 +320,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 		} else {
 #if DECRYPT_PGP_ATTACHMENTS
 
-			if ([self _gpgLooksLikeBinaryPGPAttachment]) {                       // TODO: there are problems to fix with message body: message should cache decrypted message body, it's not part's task
+			if ([self _gpgLooksLikeBinaryPGPAttachment]) {                                   // TODO: there are problems to fix with message body: message should cache decrypted message body, it's not part's task
 				return YES;
 			} else
 #endif
@@ -334,7 +334,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 		return NO;
 	}
 
-	bodyData = [self bodyData];         // We use only the body (no headers), and decoded!
+	bodyData = [self bodyData];             // We use only the body (no headers), and decoded!
 	if (bodyData != nil) {
 		return [GPGHandler pgpEncryptionBlockRangeInData:[bodyData gpgStandardizedEOLsToCRLF]].location != NSNotFound;
 	} else {
@@ -348,7 +348,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 // we cannot show block boundaries in viewer.
 {
 	int i;
-	NSArray * parts;
+	NSArray *parts;
 
 	// Special case for attached messages: if a message is embedded in the main message, don't look at
 	// that message content. User will see the embedded message as a separate message.
@@ -381,14 +381,14 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 - (NSData *)_gpgDecryptedPGPMIMEDataWithPassphraseDelegate:(id)passphraseDelegate signatures:(NSArray **)signaturesPtr {
 	// Only for OpenPGP/MIME
 	// It doesn't matter if decrypted data contains headers too.
-	NSData * bodyPartData = [self /*gpgBodyPartData2*/ bodyData];
+	NSData *bodyPartData = [self /*gpgBodyPartData2*/ bodyData];
 
 	if (bodyPartData != nil) {
-		GPGContext * aContext = [[GPGContext alloc] init];
-		GPGData * inputData = [[GPGData alloc] initWithData:bodyPartData];
+		GPGContext *aContext = [[GPGContext alloc] init];
+		GPGData *inputData = [[GPGData alloc] initWithData:bodyPartData];
 
 		if (GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask) {
-			NSString * filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"asc"]];
+			NSString *filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"asc"]];
 
 			if ([bodyPartData writeToFile:filename atomically:NO]) {
 				NSLog(@"[DEBUG] Data to decrypt in %@", filename);
@@ -401,17 +401,17 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 		[aContext setUsesArmor:YES];
 		[aContext setUsesTextMode:YES];
 		@try {
-			GPGData * outputData = [aContext decryptedData:inputData signatures:signaturesPtr /*encoding:[self textEncoding]*/]; // Can raise an exception
-			NSData * decryptedData;
+			GPGData *outputData = [aContext decryptedData:inputData signatures:signaturesPtr /*encoding:[self textEncoding]*/];              // Can raise an exception
+			NSData *decryptedData;
 
-			decryptedData = [[[outputData data] retain] autorelease];                                                            // Because context will be released
+			decryptedData = [[[outputData data] retain] autorelease];                                                                        // Because context will be released
 			if (signaturesPtr != NULL) {
-				[[*signaturesPtr retain] autorelease];                                                                           // Because context will be released
+				[[*signaturesPtr retain] autorelease];                                                                                       // Because context will be released
 			}
 			[aContext release];
 			[inputData release];
 			return decryptedData;
-		}@catch (NSException * localException) {
+		}@catch (NSException *localException) {
 			[inputData release];
 			[aContext release];
 			[localException raise];
@@ -422,16 +422,16 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 		[NSException raise:NSGenericException format:NSLocalizedStringFromTableInBundle(@"DATA_NOT_AVAILABLE", @"GPGMail", [NSBundle bundleForClass:[GPGHandler class]], "")];
 		return nil;
 	}
-	return nil;         // Never reached, but mutes gcc warning
+	return nil;                     // Never reached, but mutes gcc warning
 }
 
 - (NSData *)_gpgDecryptedInlineDataWithPassphraseDelegate:(id)passphraseDelegate signatures:(NSArray **)signaturesPtr {
-	NSData * data = [self bodyData];                             // At this stage, bodyData returns decoded data (if raw data was quoted-printable/base64)
+	NSData *data = [self bodyData]; // At this stage, bodyData returns decoded data (if raw data was quoted-printable/base64)
 	NSRange pgpRange;
-	NSData * pgpData;
-	volatile NSData * decryptedData = nil;
-	GPGContext * aContext = [[GPGContext alloc] init];
-	GPGData * inputData;
+	NSData *pgpData;
+	volatile NSData *decryptedData = nil;
+	GPGContext *aContext = [[GPGContext alloc] init];
+	GPGData *inputData;
 	BOOL isText;
 
 	// TODO: add support for multiple ASCII armors in same part
@@ -457,7 +457,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 
 	inputData = [[GPGData alloc] initWithData:pgpData];
 	if (GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask) {
-		NSString * filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:(isText ? @"asc":@"gpg")]];
+		NSString *filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:(isText ? @"asc":@"gpg")]];
 
 		if ([pgpData writeToFile:filename atomically:NO]) {
 			NSLog(@"[DEBUG] Data to decrypt in %@", filename);
@@ -468,14 +468,14 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 
 #warning CHECK: Do we support decrypted-then-verified messages?
 	@try {
-		GPGData * outputData = [aContext decryptedData:inputData signatures:signaturesPtr /*encoding:[self textEncoding]*/]; // Can raise an exception
+		GPGData *outputData = [aContext decryptedData:inputData signatures:signaturesPtr /*encoding:[self textEncoding]*/];          // Can raise an exception
 
-		decryptedData = [[[outputData data] retain] autorelease];                                                            // Because context will be released
+		decryptedData = [[[outputData data] retain] autorelease];                                                                    // Because context will be released
 
 		if (signaturesPtr != NULL) {
-			[[*signaturesPtr retain] autorelease];                                                                           // Because context will be released
+			[[*signaturesPtr retain] autorelease];                                                                                   // Because context will be released
 		}
-	}@catch (NSException * localException) {
+	}@catch (NSException *localException) {
 		[inputData release];
 		[aContext release];
 		[localException raise];
@@ -483,7 +483,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 	[aContext release];
 	[inputData release];
 
-	NSMutableData * newEncodedBody = [NSMutableData dataWithCapacity:[data length]];              // Not the exact size, but approximately correct...
+	NSMutableData *newEncodedBody = [NSMutableData dataWithCapacity:[data length]];                   // Not the exact size, but approximately correct...
 
 	if (isText) {
 		[newEncodedBody appendData:[data subdataWithRange:NSMakeRange(0, pgpRange.location)]];
@@ -514,7 +514,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 }
 
 - (void)_gpgDecryptInlineDataWithPassphraseDelegate:(id)passphraseDelegate signatures:(NSArray **)signaturesPtr intoData:(NSMutableData *)decryptedData fromData:(NSData *)fullBodyData {
-	NSData * partDecryptedData = [self _gpgDecryptedInlineDataWithPassphraseDelegate:passphraseDelegate signatures:signaturesPtr];
+	NSData *partDecryptedData = [self _gpgDecryptedInlineDataWithPassphraseDelegate:passphraseDelegate signatures:signaturesPtr];
 
 	if (partDecryptedData != nil) {
 		NSRange partRange = [self range];
@@ -532,13 +532,13 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 // We would give back the signatures (or nil) of the latest part!
 // Returning nil means that we could not decrypt data
 {
-	NSArray * parts = [self subparts];
+	NSArray *parts = [self subparts];
 	int partCount = [parts count];
 
 	if ([self gpgIsOpenPGPEncryptedContainerPart]) {
 		// The second MIME body part MUST contain the actual encrypted data.  It must be labeled with a content type of "application/octet-stream".
-		MimePart * aPart = [parts objectAtIndex:1];
-		NSData * decryptedData = [aPart _gpgDecryptedPGPMIMEDataWithPassphraseDelegate:passphraseDelegate signatures:signaturesPtr];                     // Can raise an exception
+		MimePart *aPart = [parts objectAtIndex:1];
+		NSData *decryptedData = [aPart _gpgDecryptedPGPMIMEDataWithPassphraseDelegate:passphraseDelegate signatures:signaturesPtr];                              // Can raise an exception
 
 #warning Do we really need to convert CRLF to LF as Tomio does?
 // Signature authentication should do it by itself
@@ -552,11 +552,11 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 		return decryptedData;
 	} else if (partCount > 0) {
 		int anIndex;
-		NSMutableData * decryptedData = nil;
-		NSData * fullBodyData = nil;
+		NSMutableData *decryptedData = nil;
+		NSData *fullBodyData = nil;
 
 		for (anIndex = 0; anIndex < partCount; anIndex++) {
-			MimePart * aPart = [parts objectAtIndex:anIndex];
+			MimePart *aPart = [parts objectAtIndex:anIndex];
 
 			if ([aPart _gpgIsNonOpenPGPEncryptedPart]) {
 				if (!fullBodyData) {
@@ -565,7 +565,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 				}
 				[aPart _gpgDecryptInlineDataWithPassphraseDelegate:passphraseDelegate signatures:signaturesPtr intoData:decryptedData fromData:fullBodyData];
 #if 0
-				NSData * partDecryptedData = [aPart _gpgDecryptedInlineDataWithPassphraseDelegate:passphraseDelegate signatures:signaturesPtr];
+				NSData *partDecryptedData = [aPart _gpgDecryptedInlineDataWithPassphraseDelegate:passphraseDelegate signatures:signaturesPtr];
 
 				if (partDecryptedData != nil) {
 					NSRange partRange = [aPart range];
@@ -604,22 +604,22 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 	} else if ([self _gpgIsNonOpenPGPEncryptedPart]) {
 		return [self _gpgDecryptedInlineDataWithPassphraseDelegate:passphraseDelegate signatures:signaturesPtr];
 	} else {
-		return nil;                  // Let's return original data as we cannot decrypt it
+		return nil;                          // Let's return original data as we cannot decrypt it
 	}
 }
 
 - (BOOL)gpgIsOpenPGPSignedContainerPart
 // Checks MIME headers/parameters, in this part only
 {
-	MimePart * aPart;
-	NSArray * parts;
-	NSString * hashAlgorithmName;
+	MimePart *aPart;
+	NSArray *parts;
+	NSString *hashAlgorithmName;
 
 	// OpenPGP signed messages are denoted by the "multipart/signed" content
 	// type, described in [2], with a "protocol" parameter which MUST have a
 	// value of "application/pgp-signature" (MUST be quoted).
 	if (![[[self type] lowercaseString] isEqualToString:@"multipart"] && ![[[self subtype] lowercaseString] isEqualToString:@"signed"]) {
-		return NO;                  // We don't go further in subparts in this method
+		return NO;                          // We don't go further in subparts in this method
 
 	}
 #warning Workaround!
@@ -669,14 +669,14 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 
 - (BOOL)_gpgIsNonOpenPGPSignedPart {
 	// As with plain text messages, contains simple PGP signed block
-	NSData * bodyData;
+	NSData *bodyData;
 
 	// We don't support text/html
 	// It's rather difficult, even if it's not impossible:
 	// We should search for armor in HTMLDocument
 	// If there is a text/plain alternative, then user can see decrypted message
 	if (([self type] && ![[[self type] lowercaseString] isEqualToString:@"text"]) || ([self subtype] && ![[[self subtype] lowercaseString] isEqualToString:@"plain"]))
-																																																																																																																																																																								#warning Test new recognition
+																																																																																																																																																																																																																																																																																																																																																#warning Test new recognition
 	{
 		if (([self type] && ![[[self type] lowercaseString] isEqualToString:@"application"]) || ([self subtype] && ![[[self subtype] lowercaseString] isEqualToString:@"pgp"])) {
 			return NO;
@@ -691,7 +691,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 
 	// In non-OpenPGP case, we assume that mailer signed displayed data,
 	// i.e. non quoted-printable/base64 data
-	bodyData = [[self bodyData] gpgStandardizedEOLsToCRLF];         // WARNING: in this case can contain 8bit characters
+	bodyData = [[self bodyData] gpgStandardizedEOLsToCRLF];             // WARNING: in this case can contain 8bit characters
 #warning Assertion not respected if body not loaded?
 #warning ADDED TEST
 #if 0
@@ -713,7 +713,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 // we cannot show block boundaries in viewer.
 {
 	int i;
-	NSArray * parts;
+	NSArray *parts;
 
 	// Special case for attached messages: if a message is embedded in the main message, don't look at
 	// that message content. User will see the embedded message as a separate message.
@@ -748,14 +748,14 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 
 - (BOOL)_gpgIsNonOpenPGPKeyPart {
 	// As with plain text messages, contains simple PGP signed block
-	NSData * bodyData;
+	NSData *bodyData;
 
 	// We don't support text/html
 	// It's rather difficult, even if it's not impossible:
 	// We should search for armor in HTMLDocument
 	// If there is a text/plain alternative, then user can see decrypted message
 	if (([self type] && ![[[self type] lowercaseString] isEqualToString:@"text"]) || ([self subtype] && ![[[self subtype] lowercaseString] isEqualToString:@"plain"]))
-																																																																																																																																																																								#warning Test new recognition
+																																																																																																																																																																																																																																																																																																																																																#warning Test new recognition
 	{
 		if (([self type] && ![[[self type] lowercaseString] isEqualToString:@"application"]) || ([self subtype] && ![[[self subtype] lowercaseString] isEqualToString:@"pgp"])) {
 			return NO;
@@ -772,7 +772,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 
 	// In non-OpenPGP case, we assume that mailer signed displayed data,
 	// i.e. non quoted-printable/base64 data
-	bodyData = [[self bodyData] gpgStandardizedEOLsToCRLF];         // WARNING: in this case can contain 8bit characters
+	bodyData = [[self bodyData] gpgStandardizedEOLsToCRLF];             // WARNING: in this case can contain 8bit characters
 #warning Assertion not respected if body not loaded?
 #warning ADDED TEST
 #if 0
@@ -790,7 +790,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 
 - (BOOL)gpgContainsKeyBlock {
 	int i;
-	NSArray * parts;
+	NSArray *parts;
 
 	if ([self gpgIsOpenPGPKeyPart]) {
 		return YES;
@@ -814,7 +814,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 }
 
 - (BOOL)gpgAllAttachmentsAreAvailable {
-	NSArray * subparts = [self subparts];
+	NSArray *subparts = [self subparts];
 	int subpartsCount = [subparts count];
 
 	if (subpartsCount == 0) {
@@ -834,16 +834,16 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 }
 
 - (GPGSignature *)gpgAuthenticationSignature {
-	NSArray * parts = [self subparts];
+	NSArray *parts = [self subparts];
 	int i = [parts count];
 
 	if ([self gpgIsOpenPGPSignedContainerPart]) {
-		MimePart * aPart;
-		NSData * signedData;
-		NSString * signatureFile = nil;
-		GPGContext * aContext = [[GPGContext alloc] init];
-		GPGData * inputData, * signatureInputData;
-		NSString * aTempFile;
+		MimePart *aPart;
+		NSData *signedData;
+		NSString *signatureFile = nil;
+		GPGContext *aContext = [[GPGContext alloc] init];
+		GPGData *inputData, *signatureInputData;
+		NSString *aTempFile;
 
 		// We can not use _attachDir and -fileWrapperForBody, because we flushed data => _attachDir is nil
 		// We can anyway create a temporary file, for example in /tmp,
@@ -864,13 +864,13 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 #warning Test patch from Tomio
 		{
 #warning BUG! Does not take data for attachments!!!
-			NSData * bodyData;
-			NSString * aString, * boundary;
+			NSData *bodyData;
+			NSString *aString, *boundary;
 			NSStringEncoding originalEncoding;
 			NSRange range;
 			unsigned int point;
 
-			aPart = [parts objectAtIndex:0];                            // text part
+			aPart = [parts objectAtIndex:0];                                        // text part
 			aString = [aPart bodyParameterForKey:@"charset"];
 			// considers whether "Content-Transfer-Encoding" is "quoted-printable" or "base64"
 			originalEncoding = NSISOLatin1StringEncoding;
@@ -896,9 +896,9 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 			if (point > [aString length]) {
 				point = 0;
 			}
-			bodyData = [[aString substringFromIndex:point] dataUsingEncoding:originalEncoding]; // removes a line-separator
+			bodyData = [[aString substringFromIndex:point] dataUsingEncoding:originalEncoding];             // removes a line-separator
 			[aString release];
-			aPart = [parts objectAtIndex:1];                                                    // signed part
+			aPart = [parts objectAtIndex:1];                                                                // signed part
 			signedData = [[aPart bodyData] gpgStandardizedEOLsToCRLF];
 // Stephane: no, encoding can be different; why does it need to go to string, back to data??
 //            aString = [[NSString alloc] initWithData:signedData encoding:originalEncoding];
@@ -910,7 +910,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 #endif /* if 1 */
 		inputData = [[GPGData alloc] initWithData:signedData];
 		if (GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask) {
-			NSString * signedDataFile = [aTempFile stringByAppendingPathExtension:@"asc"];
+			NSString *signedDataFile = [aTempFile stringByAppendingPathExtension:@"asc"];
 
 			if ([signedData writeToFile:signedDataFile atomically:NO]) {
 				NSLog(@"[DEBUG] Data to verify in %@", signedDataFile);
@@ -923,15 +923,15 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 		[aContext setUsesArmor:YES];
 		[aContext setUsesTextMode:YES];
 		@try {
-			GPGSignature * aSignature;
+			GPGSignature *aSignature;
 
-			(void)[aContext verifySignatureData:signatureInputData againstData:inputData /*encoding:[self textEncoding]*/]; // Can raise an exception
+			(void)[aContext verifySignatureData:signatureInputData againstData:inputData /*encoding:[self textEncoding]*/];             // Can raise an exception
 
 			if (!(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask)) {
 				[[NSFileManager defaultManager] removeItemAtPath:signatureFile error:nil];
 			}
 
-			aSignature = [[[[aContext signatures] lastObject] retain] autorelease];                                         // Because context will be released
+			aSignature = [[[[aContext signatures] lastObject] retain] autorelease];                                                     // Because context will be released
 #warning Workaround for gpgme 0.4.x bug: does not return an error when CRC or BADARMOR error!
 			if (aSignature == nil) {
 				[[NSException exceptionWithName:GPGException reason:[[GPGMailBundle sharedInstance] gpgErrorDescription:GPGErrorChecksumError] userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithUnsignedInt:GPGErrorChecksumError], GPGErrorKey, nil]] raise];
@@ -940,7 +940,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 			[inputData release];
 			[signatureInputData release];
 			return aSignature;
-		}@catch (NSException * localException) {
+		}@catch (NSException *localException) {
 			if (!(GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask)) {
 				[[NSFileManager defaultManager] removeItemAtPath:signatureFile error:nil];
 			}
@@ -948,7 +948,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 			[inputData release];
 			[signatureInputData release];
 			if ([[localException name] isEqualToString:GPGException]) {
-				NSArray * signatures = [[[aContext signatures] retain] autorelease];                                 // Because context will be released
+				NSArray *signatures = [[[aContext signatures] retain] autorelease];                                                  // Because context will be released
 
 				[aContext release];
 				if ([signatures count]) {
@@ -965,7 +965,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 		// Not handled correctly... We should retrieve a dict with sigs per part.
 		// Currently we stop on the first retrieved sig (from the end!)
 		for (i = i - 1; i >= 0; i--) {
-			GPGSignature * aSignature = [[parts objectAtIndex:i] gpgAuthenticationSignature];                           // Can raise an exception
+			GPGSignature *aSignature = [[parts objectAtIndex:i] gpgAuthenticationSignature];                                        // Can raise an exception
 
 			if (aSignature != nil) {
 				return aSignature;
@@ -978,21 +978,21 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 	else if ([self _gpgIsNonOpenPGPSignedPart]) {
 		// In non-OpenPGP case, we assume that mailer signed displayed data,
 		// i.e. non quoted-printable/base64 data
-		NSData * data = [self bodyData];                         // At this stage, bodyData returns decoded data (if raw data was quoted-printable/base64)
+		NSData *data = [self bodyData];                                  // At this stage, bodyData returns decoded data (if raw data was quoted-printable/base64)
 		NSRange pgpRange;
-		NSData * pgpData;
-		GPGHandler * aHandler;
-		GPGContext * aContext = [[GPGContext alloc] init];
-		GPGData * inputData;
+		NSData *pgpData;
+		GPGHandler *aHandler;
+		GPGContext *aContext = [[GPGContext alloc] init];
+		GPGData *inputData;
 
 #warning WARNING By converting EOL to CRLF, we break signature! I thought EOLs were not used...
-		data = [data gpgStandardizedEOLsToCRLF];                   // WARNING: in this case can contain 8bit characters
+		data = [data gpgStandardizedEOLsToCRLF];                           // WARNING: in this case can contain 8bit characters
 
-		pgpRange = [GPGHandler pgpSignatureBlockRangeInData:data]; // Expects CRLF EOLs
+		pgpRange = [GPGHandler pgpSignatureBlockRangeInData:data];         // Expects CRLF EOLs
 		NSAssert(pgpRange.location != NSNotFound, @"Not signed!");
 
 		pgpData = [data subdataWithRange:pgpRange];
-		pgpData = [pgpData gpgStandardizedEOLsToLF];               // Back to LF??
+		pgpData = [pgpData gpgStandardizedEOLsToLF];                       // Back to LF??
 		aHandler = [GPGHandler handler];
 
 		// There was a bug in previous GPGMailv11; some signed messages would have
@@ -1001,7 +1001,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 		// Problem happens with messages containing non-ASCII characters.
 		inputData = [[GPGData alloc] initWithData:pgpData];
 		if (GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask) {
-			NSString * filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"asc"]];
+			NSString *filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"asc"]];
 
 			if ([pgpData writeToFile:filename atomically:NO]) {
 				NSLog(@"[DEBUG] Data to verify in %@", filename);
@@ -1015,31 +1015,31 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 #if 0
 		@try {
 			// The following call should be enough...
-			(void)[aContext verifySignedData:inputData /*encoding:[self textEncoding]*/];                         // Can raise an exception
+			(void)[aContext verifySignedData:inputData /*encoding:[self textEncoding]*/];                                     // Can raise an exception
 			[inputData release];
 			inputData = nil;
 
 			return [[[aContext autorelease] signatures] lastObject];
-		}@catch (NSException * localException) {
-			NSException * originalException = localException;
-			volatile NSArray * originalSignatures = [[[aContext signatures] retain] autorelease];                 // Because context will be released
+		}@catch (NSException *localException) {
+			NSException *originalException = localException;
+			volatile NSArray *originalSignatures = [[[aContext signatures] retain] autorelease];                              // Because context will be released
 
 			data = [[self bodyData] gpgStandardizedEOLsToCRLF];
 			pgpRange = [GPGHandler pgpSignatureBlockRangeInData:data];
 			NSAssert(pgpRange.location != NSNotFound, @"Not signed!");
 			pgpData = [data subdataWithRange:pgpRange];
 			@try {
-				NSArray * verificationSignatures;
+				NSArray *verificationSignatures;
 
 				[inputData release];
 				inputData = [[GPGData alloc] initWithData:pgpData];
-				verificationSignatures = [aContext verifySignedData:inputData /*encoding:[self textEncoding]*/]; // Can raise an exception
-				[[verificationSignatures retain] autorelease];                                                   // Because context will be released
+				verificationSignatures = [aContext verifySignedData:inputData /*encoding:[self textEncoding]*/];                 // Can raise an exception
+				[[verificationSignatures retain] autorelease];                                                                   // Because context will be released
 				[aContext release];
 				[inputData release];
 
 				return [verificationSignatures lastObject];
-			}@catch (NSException * localException) {
+			}@catch (NSException *localException) {
 				[inputData release];
 				[aContext release];
 				if ([[originalException name] isEqualToString:GPGException]) {
@@ -1049,16 +1049,16 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 					}
 				}
 				[(NSException *) originalException raise];
-				return nil;                                 // Never reached
+				return nil;                                                 // Never reached
 			}
 		}
 #else
 #warning Test old signatures?! (<= v11)
 		@try {
-			NSArray * verificationSignatures;
-			GPGSignature * aSignature;
+			NSArray *verificationSignatures;
+			GPGSignature *aSignature;
 
-			verificationSignatures = [aContext verifySignedData:inputData /*encoding:[self textEncoding]*/];                         // Can raise an exception
+			verificationSignatures = [aContext verifySignedData:inputData /*encoding:[self textEncoding]*/];                                     // Can raise an exception
 
 			aSignature = [verificationSignatures lastObject];
 
@@ -1079,7 +1079,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 				pgpData = [[[self attributedString] string] dataUsingEncoding:[self textEncoding]];
 #else
 				pgpData = [self bodyData];
-				pgpData = [pgpData gpgStandardizedEOLsToCRLF];                                 // WARNING Might break sig
+				pgpData = [pgpData gpgStandardizedEOLsToCRLF];                                                 // WARNING Might break sig
 				pgpData = [pgpData gpgDecodeFlowedWithEncoding:[self textEncoding]];
 #endif
 				pgpRange = NSMakeRange(0, [pgpData length]);
@@ -1088,7 +1088,7 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 					[inputData release];
 					inputData = [[GPGData alloc] initWithData:pgpData];
 					if (GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask) {
-						NSString * filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"asc"]];
+						NSString *filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"asc"]];
 
 						if ([pgpData writeToFile:filename atomically:NO]) {
 							NSLog(@"[DEBUG] Data to verify in %@", filename);
@@ -1097,11 +1097,11 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 						}
 					}
 
-					verificationSignatures = [aContext verifySignedData:inputData /*encoding:[self textEncoding]*/];                 // Can raise an exception
+					verificationSignatures = [aContext verifySignedData:inputData /*encoding:[self textEncoding]*/];                                     // Can raise an exception
 					[inputData release];
 					inputData = nil;
 
-					aSignature = [[[verificationSignatures lastObject] retain] autorelease];                                         // Because context will be released
+					aSignature = [[[verificationSignatures lastObject] retain] autorelease];                                                             // Because context will be released
 					[aContext release];
 					aContext = nil;
 
@@ -1123,17 +1123,17 @@ GPG_DECLARE_EXTRA_IVARS(MimePart)
 			}
 
 			return aSignature;
-		}@catch (NSException * localException) {
+		}@catch (NSException *localException) {
 			[inputData release];
 			[aContext release];
 			[localException raise];
-			return nil;                         // Never reached
+			return nil;     // Never reached
 		}
 #endif /* if 0 */
 	} else {
 		return nil;
 	}
-	return nil;         // Never reached, but mutes gcc warning
+	return nil;             // Never reached, but mutes gcc warning
 }
 
 /*
@@ -1223,32 +1223,32 @@ static IMP MimePart_isEncrypted = NULL;
 - (NSArray *)gpgCopySignerLabels {
 	// FIXME: will perform verification - we don't want that; we want to use cached verification info, not perform verification now; if we prevent verification now, we no longer have opportunity to modify those signers labels!
 	if (![GPGMailBundle gpgMailWorks] /*|| ![[[(MimeBody *)[self mimeBody] message] gpgMessageSignatures] count]*/) {
-		return ((id (*)(id, SEL))MimePart_copySignerLabels)(self, _cmd);                        // Returns an array of NSString, or nil. Invokes -[MimePart  copyMessageSigners].
+		return ((id (*)(id, SEL))MimePart_copySignerLabels)(self, _cmd);                                // Returns an array of NSString, or nil. Invokes -[MimePart  copyMessageSigners].
 	} else {
-		NSArray * pgpSignerLabels = nil;
-		NSArray * smimeSignerLabels = ((id (*)(id, SEL))MimePart_copySignerLabels)(self, _cmd); // Returns an array of NSString, or nil. Invokes -[MimePart copyMessageSigners].
-		NSArray * allSignerLabels;
+		NSArray *pgpSignerLabels = nil;
+		NSArray *smimeSignerLabels = ((id (*)(id, SEL))MimePart_copySignerLabels)(self, _cmd);          // Returns an array of NSString, or nil. Invokes -[MimePart copyMessageSigners].
+		NSArray *allSignerLabels;
 
 		if ([self gpgHasSignature]) {
-			GPGSignature * sig = [self gpgAuthenticationSignature];                             // FIXME: Does not support multiple signatures
+			GPGSignature *sig = [self gpgAuthenticationSignature];                                      // FIXME: Does not support multiple signatures
 
 			if ([sig status] == GPGErrorNoError) {
-				NSString * aString = [sig fingerprint];
-				GPGKey * signatureKey = nil;
+				NSString *aString = [sig fingerprint];
+				GPGKey *signatureKey = nil;
 
 				if (aString) {
-					GPGContext * aContext = [[GPGContext alloc] init];
+					GPGContext *aContext = [[GPGContext alloc] init];
 
 					@try {
 						signatureKey = [aContext keyFromFingerprint:aString secretKey:NO];
-					}@catch (NSException * localException) {
+					}@catch (NSException *localException) {
 						[aContext release];
 						[localException raise];
 					}
 					[aContext release];
 				}
 				if (signatureKey) {
-					aString = [signatureKey name];                                          // Like Apple does for S/MIME
+					aString = [signatureKey name];                                                              // Like Apple does for S/MIME
 				} else if ([aString length] >= 32) {
 					aString = [GPGKey formattedFingerprint:aString];
 				}
@@ -1346,19 +1346,19 @@ static IMP MimePart_isEncrypted = NULL;
  */
 #if 0
 - (id)_gpgDecodePGP_NEW {
-	NSArray * decryptedParts = [self gpgDecryptedParts];         // Try to get from cache
+	NSArray *decryptedParts = [self gpgDecryptedParts];              // Try to get from cache
 	id result = nil;
-	Message * encryptedMessage = (Message *)[[self mimeBody] message];
+	Message *encryptedMessage = (Message *)[[self mimeBody] message];
 
 	if (!decryptedParts && [encryptedMessage gpgIsDecrypting]) {
 		if ([self gpgIsEncrypted]) {
 			if (GPGMailLoggingLevel > 0) {
 				NSLog(@"[DEBUG] Will decrypt PGP part %p", self);
 			}
-			GPGSignature * aSignature = nil;
-			NSArray * signatures = nil;
+			GPGSignature *aSignature = nil;
+			NSArray *signatures = nil;
 			BOOL decryptedDataContainsHeaders = [self gpgIsOpenPGPEncryptedContainerPart];
-			NSData * decryptedData = [self gpgDecryptedDataWithPassphraseDelegate:[GPGMailBundle sharedInstance] signatures:&signatures];                                                     // Can raise an exception!
+			NSData *decryptedData = [self gpgDecryptedDataWithPassphraseDelegate:[GPGMailBundle sharedInstance] signatures:&signatures];                                                                  // Can raise an exception!
 
 			if (signatures != nil && [signatures count] > 0) {
 				aSignature = [signatures objectAtIndex:0];
@@ -1366,12 +1366,12 @@ static IMP MimePart_isEncrypted = NULL;
 			if (decryptedData) {
 				unsigned numberOfAttachments, numberOfTNEFAttachments;
 				BOOL isSigned, isEncrypted;
-				NSDataMessageStore * tempMessageStore;
-				Message * decryptedMessage;
-				MimePart * decryptedPart;
+				NSDataMessageStore *tempMessageStore;
+				Message *decryptedMessage;
+				MimePart *decryptedPart;
 
-				MutableMessageHeaders * newHeaders;
-				NSMutableData * newDecryptedData;
+				MutableMessageHeaders *newHeaders;
+				NSMutableData *newDecryptedData;
 
 				if ([(MimeBody *)[encryptedMessage messageBody] topLevelPart] == self) {
 					newHeaders = [[encryptedMessage headers] mutableCopy];
@@ -1387,8 +1387,8 @@ static IMP MimePart_isEncrypted = NULL;
 					// this way we can can the raw data and headers of the decrypted message, unlike S/MIME.
 					// FIXME: NO - only when top-level part!
 					NSAssert(newHeaders != nil, @"### GPGMail does not support OpenPGP MIME when only part(s) of the message are encrypted");
-					NSEnumerator * headerKeysToRemoveEnum = [[newHeaders _decodeHeaderKeysFromData:decryptedData] objectEnumerator];
-					NSString * aHeaderKey;
+					NSEnumerator *headerKeysToRemoveEnum = [[newHeaders _decodeHeaderKeysFromData:decryptedData] objectEnumerator];
+					NSString *aHeaderKey;
 
 					while ((aHeaderKey = [headerKeysToRemoveEnum nextObject]))
 						[newHeaders removeHeaderForKey:aHeaderKey];
@@ -1396,14 +1396,14 @@ static IMP MimePart_isEncrypted = NULL;
 
 #if DECRYPT_PGP_ATTACHMENTS
 				if ([self _gpgLooksLikeBinaryPGPAttachment]) {
-					NSString * aFileName = [self attachmentFilename];
+					NSString *aFileName = [self attachmentFilename];
 
 					if (aFileName) {
-						NSString * ext = [[aFileName pathExtension] lowercaseString];
+						NSString *ext = [[aFileName pathExtension] lowercaseString];
 
 						if ([ext isEqualToString:@"asc"] || [ext isEqualToString:@"gpg"] || [ext isEqualToString:@"pgp"]) {
-							NSString * newMIME = @"";
-							NSFileWrapper * dummyFileWrapper = [[NSFileWrapper alloc] initRegularFileWithContents:decryptedData];
+							NSString *newMIME = @"";
+							NSFileWrapper *dummyFileWrapper = [[NSFileWrapper alloc] initRegularFileWithContents:decryptedData];
 
 							// How can get get MIME type from extension??
 							aFileName = [aFileName stringByDeletingPathExtension];
@@ -1421,9 +1421,9 @@ static IMP MimePart_isEncrypted = NULL;
 				}
 #endif /* if DECRYPT_PGP_ATTACHMENTS */
 
-				newDecryptedData = [[newHeaders _encodedHeadersIncludingFromSpace:NO] mutableCopy];                                 // Using -headerData still returns removed header!
+				newDecryptedData = [[newHeaders _encodedHeadersIncludingFromSpace:NO] mutableCopy];                                                 // Using -headerData still returns removed header!
 				if (decryptedDataContainsHeaders) {
-					[newDecryptedData setLength:[newDecryptedData length] - 1];                                                     // Remove header separator char
+					[newDecryptedData setLength:[newDecryptedData length] - 1];                                                                     // Remove header separator char
 				}
 				[newDecryptedData appendData:decryptedData];
 				// Enigmail uses \r\n as header line separator, whereas GPGMail only uses \n
@@ -1435,7 +1435,7 @@ static IMP MimePart_isEncrypted = NULL;
 				tempMessageStore = [[NSDataMessageStore alloc] initWithData:decryptedData];
 				decryptedMessage = [tempMessageStore message];
 				[decryptedMessage setMessageInfoFromMessage:encryptedMessage];
-				decryptedMessageBody = [decryptedMessage messageBody];                                                 // OK for Leopard, even for embedded message
+				decryptedMessageBody = [decryptedMessage messageBody];                                                                 // OK for Leopard, even for embedded message
 				if (GPGMailLoggingLevel > 0) {
 					NSLog(@"[DEBUG] Caching decrypted PGP part %p", self);
 				}
@@ -1447,7 +1447,7 @@ static IMP MimePart_isEncrypted = NULL;
 				// via -[Message(PGPMail) pgpDecrypedMessageBody]
 #warning FIXME: LEOPARD We need to cache the decryptedBody
 				//                theDecodeOptions.mDecryptedMessageBody = [decryptedMessageBody retain];
-				decryptedPart = [decryptedMessageBody topLevelPart];                                                 // FIXME: WRONG, in case of multiple encrypted parts
+				decryptedPart = [decryptedMessageBody topLevelPart];                                                                 // FIXME: WRONG, in case of multiple encrypted parts
 				result = [decryptedPart gpgBetterDecode];
 #if 0
 				[decryptedPart getNumberOfAttachments:&numberOfAttachments isSigned:&isSigned isEncrypted:&isEncrypted];
@@ -1470,7 +1470,7 @@ static IMP MimePart_isEncrypted = NULL;
 		if (/*decryptedMessageBody*/ decryptedPart != nil && GPGMailLoggingLevel > 0) {
 			NSLog(@"[DEBUG] PGP part %p has already been decrypted (cache)", self);
 		}
-		result = [/*[decryptedMessageBody topLevelPart]*/ decryptedPart gpgBetterDecode];                        // WRONG, in case of multiple encrypted parts
+		result = [/*[decryptedMessageBody topLevelPart]*/ decryptedPart gpgBetterDecode];                                // WRONG, in case of multiple encrypted parts
 	}
 	if (GPGMailLoggingLevel) {
 		NSLog(@"[DEBUG] Done: result = %p", result);
@@ -1486,7 +1486,7 @@ static IMP MimePart_isEncrypted = NULL;
 }
 
 - (NSRange)gpgRange {
-	NSValue * rangeValue = GPG_GET_EXTRA_IVAR(@"range");
+	NSValue *rangeValue = GPG_GET_EXTRA_IVAR(@"range");
 
 	if (rangeValue == nil) {
 		return [self range];
@@ -1503,8 +1503,8 @@ static IMP MimePart_isEncrypted = NULL;
 		GPG_SET_EXTRA_IVAR([NSValue valueWithRange:currentRange], @"range");
 	}
 
-	NSEnumerator * partEnum = [[self subparts] objectEnumerator];
-	MimePart * eachSubpart;
+	NSEnumerator *partEnum = [[self subparts] objectEnumerator];
+	MimePart *eachSubpart;
 
 	while (eachSubpart = [partEnum nextObject])
 		[eachSubpart shiftGpgRangeBy:shift ifAfterLocation:location];
@@ -1513,26 +1513,26 @@ static IMP MimePart_isEncrypted = NULL;
 - (void)setGpgRange:(NSRange)range {
 	NSRange currentRange = [self gpgRange];
 	NSInteger delta = (range.location - currentRange.location) + (range.length - currentRange.length);
-	MimePart * topLevelPart = [[self mimeBody] topLevelPart];
+	MimePart *topLevelPart = [[self mimeBody] topLevelPart];
 
 	[topLevelPart shiftGpgRangeBy:delta ifAfterLocation:currentRange.location];
 	GPG_SET_EXTRA_IVAR([NSValue valueWithRange:range], @"range");
 }
 
 - (id)_gpgDecodePGP {
-	MimeBody * decryptedMessageBody = [self decryptedMessageBodyIsEncrypted:NULL isSigned:NULL];
+	MimeBody *decryptedMessageBody = [self decryptedMessageBodyIsEncrypted:NULL isSigned:NULL];
 	id result = nil;
-	Message * encryptedMessage = (Message *)[[self mimeBody] message];
+	Message *encryptedMessage = (Message *)[[self mimeBody] message];
 
 	if (!decryptedMessageBody && [encryptedMessage gpgIsDecrypting]) {
 		if ([self gpgIsEncrypted]) {
 			if (GPGMailLoggingLevel > 0) {
 				NSLog(@"[DEBUG] Will decrypt PGP part %p", self);
 			}
-			GPGSignature * aSignature = nil;
-			NSArray * signatures = nil;
+			GPGSignature *aSignature = nil;
+			NSArray *signatures = nil;
 			BOOL getsNewPartData = [self gpgIsOpenPGPEncryptedContainerPart];
-			NSData * decryptedData = [self gpgDecryptedDataWithPassphraseDelegate:[GPGMailBundle sharedInstance] signatures:&signatures];                                                     // Can raise an exception!
+			NSData *decryptedData = [self gpgDecryptedDataWithPassphraseDelegate:[GPGMailBundle sharedInstance] signatures:&signatures];                                                                  // Can raise an exception!
 			BOOL isTopLevelPart = ([(MimeBody *)[encryptedMessage messageBody] topLevelPart] == self);
 
 			if (signatures != nil && [signatures count] > 0) {
@@ -1541,12 +1541,12 @@ static IMP MimePart_isEncrypted = NULL;
 			if (decryptedData) {
 				unsigned numberOfAttachments, numberOfTNEFAttachments;
 				char isSigned, isEncrypted;
-				NSDataMessageStore * tempMessageStore;
-				Message * decryptedMessage;
-				MimePart * decryptedPart;
+				NSDataMessageStore *tempMessageStore;
+				Message *decryptedMessage;
+				MimePart *decryptedPart;
 
-				MutableMessageHeaders * newHeaders;
-				NSMutableData * newDecryptedData;
+				MutableMessageHeaders *newHeaders;
+				NSMutableData *newDecryptedData;
 
 				if (isTopLevelPart) {
 					newHeaders = [[encryptedMessage headers] mutableCopy];
@@ -1595,8 +1595,8 @@ static IMP MimePart_isEncrypted = NULL;
 					// this way we can can the raw data and headers of the decrypted message, unlike S/MIME.
 					// FIXME: NO - only when top-level part!
 					NSAssert(newHeaders != nil, @"### GPGMail does not support OpenPGP MIME when only part(s) of the message are encrypted");
-					NSEnumerator * headerKeysToRemoveEnum = [[newHeaders _decodeHeaderKeysFromData:decryptedData] objectEnumerator];
-					NSString * aHeaderKey;
+					NSEnumerator *headerKeysToRemoveEnum = [[newHeaders _decodeHeaderKeysFromData:decryptedData] objectEnumerator];
+					NSString *aHeaderKey;
 
 					while ((aHeaderKey = [headerKeysToRemoveEnum nextObject]))
 						[newHeaders removeHeaderForKey:aHeaderKey];
@@ -1612,16 +1612,16 @@ static IMP MimePart_isEncrypted = NULL;
 
 #if DECRYPT_PGP_ATTACHMENTS
 				if ([self _gpgLooksLikeBinaryPGPAttachment]) {
-					NSString * aFileName = [self attachmentFilename];
+					NSString *aFileName = [self attachmentFilename];
 
 					if (aFileName) {
-						NSString * ext = [[aFileName pathExtension] lowercaseString];
+						NSString *ext = [[aFileName pathExtension] lowercaseString];
 
 						if ([ext isEqualToString:@"asc"] || [ext isEqualToString:@"gpg"] || [ext isEqualToString:@"pgp"]) {
-							NSString * newMIME;
+							NSString *newMIME;
 
 							// How can get get MIME type from extension??
-							aFileName = [aFileName stringByDeletingPathExtension];                                                         // Removes only last extension (.pgp, .gpg, .asc)
+							aFileName = [aFileName stringByDeletingPathExtension];                                                                                     // Removes only last extension (.pgp, .gpg, .asc)
 							if ([decryptedData respondsToSelector:@selector(_web_guessedMIMETypeForExtension:)]) {
 								newMIME = [decryptedData _web_guessedMIMETypeForExtension:[aFileName pathExtension]];
 							} else {
@@ -1629,9 +1629,9 @@ static IMP MimePart_isEncrypted = NULL;
 							}
 							// Modify newHeaders by adding new filename + new content-encoding + new MIME type
 							[newHeaders removeHeaderForKey:@"content-disposition"];
-							[newHeaders setHeader:[@"attachment; filename=" stringByAppendingString:aFileName] forKey:@"content-disposition"];                                                        // FIXME: no escaping of filename
+							[newHeaders setHeader:[@"attachment; filename=" stringByAppendingString:aFileName] forKey:@"content-disposition"];                                                                                    // FIXME: no escaping of filename
 							[newHeaders removeHeaderForKey:@"content-type"];
-							[newHeaders setHeader:[NSString stringWithFormat:@"%@; filename=%@", newMIME, aFileName] forKey:@"content-type"];                                                         // FIXME: no escaping of filename
+							[newHeaders setHeader:[NSString stringWithFormat:@"%@; filename=%@", newMIME, aFileName] forKey:@"content-type"];                                                                                     // FIXME: no escaping of filename
 							[newHeaders removeHeaderForKey:@"content-transfer-encoding"];
 							[newHeaders setHeader:@"base64" forKey:@"content-transfer-encoding"];
 //                            decryptedData = [decryptedData encodeBase64]; // FIXME: seems to be already in base64!?
@@ -1642,9 +1642,9 @@ static IMP MimePart_isEncrypted = NULL;
 				if (!isTopLevelPart) {
 					// Replace part's data with part's decrypted data,
 					// in whole message data, and set decryptedData to that.
-					NSData * originalHeaderData = nil;
-					NSData * originalBodyData = [encryptedMessage gpgCurrentFullBodyPartDataAndHeaderDataIfReadilyAvailable:&originalHeaderData];
-					NSRange partBodyRange = [self gpgRange];                                         // FIXME: aRange.location = NSNotFound, sometimes!
+					NSData *originalHeaderData = nil;
+					NSData *originalBodyData = [encryptedMessage gpgCurrentFullBodyPartDataAndHeaderDataIfReadilyAvailable:&originalHeaderData];
+					NSRange partBodyRange = [self gpgRange];                                                             // FIXME: aRange.location = NSNotFound, sometimes!
 
 //                    NSAssert(partBodyRange.location != NSNotFound, @"### GPGMail is not yet able to decode that embedded encrypted part");
 					if (partBodyRange.location == NSNotFound) {
@@ -1652,18 +1652,18 @@ static IMP MimePart_isEncrypted = NULL;
 						[NSException raise:NSInternalInconsistencyException format:@"### GPGMail is not yet able to decode that embedded encrypted part"];
 					}
 					if (![originalHeaderData isKindOfClass:[NSData class]]) {
-						originalHeaderData = [originalHeaderData valueForKey:@"data"];                                                  // It was actually a Subdata
+						originalHeaderData = [originalHeaderData valueForKey:@"data"];                                                                          // It was actually a Subdata
 					}
 					if (![originalBodyData isKindOfClass:[NSData class]]) {
-						originalBodyData = [originalBodyData valueForKey:@"data"];                                                      // It was actually a Subdata
+						originalBodyData = [originalBodyData valueForKey:@"data"];                                                                              // It was actually a Subdata
 					}
 					newDecryptedData = [[NSMutableData alloc] initWithData:decryptedData];
 					[newDecryptedData convertNetworkLineEndingsToUnix];
 
 					// Extract header range: search backwards for part boundary,
 					// which is a line starting with '--'
-					const char * partBodyDataPtr = [originalBodyData bytes] + partBodyRange.location;
-					const char * aCharPtr = partBodyDataPtr;
+					const char *partBodyDataPtr = [originalBodyData bytes] + partBodyRange.location;
+					const char *aCharPtr = partBodyDataPtr;
 					while (*aCharPtr != '-' || *(aCharPtr - 1) != '-' || *(aCharPtr - 2) != '\n')
 						aCharPtr--;
 					// Now go until next line, to get header start
@@ -1683,7 +1683,7 @@ static IMP MimePart_isEncrypted = NULL;
 					}
 
 					NSRange decryptedPartBodyRange = NSMakeRange(0, [newDecryptedData length]);
-					NSData * newHeadersData = [newHeaders _encodedHeadersIncludingFromSpace:NO];                                         // Contains headers/body separator
+					NSData *newHeadersData = [newHeaders _encodedHeadersIncludingFromSpace:NO];                                                              // Contains headers/body separator
 					[newDecryptedData replaceBytesInRange:NSMakeRange(0, 0) withBytes:[newHeadersData bytes] length:[newHeadersData length]];
 					decryptedPartBodyRange.location += [newHeadersData length];
 
@@ -1692,12 +1692,12 @@ static IMP MimePart_isEncrypted = NULL;
 					decryptedPartBodyRange.location += partBodyRange.location;
 					[newDecryptedData appendData:[originalBodyData subdataFromIndex:NSMaxRange(partBodyRange)]];
 					decryptedData = [newDecryptedData autorelease];
-					[encryptedMessage gpgUpdateCurrentFullBodyPartData:[decryptedData subdataFromIndex:[originalHeaderData length]]]; // Remove headers - only body
+					[encryptedMessage gpgUpdateCurrentFullBodyPartData:[decryptedData subdataFromIndex:[originalHeaderData length]]];                     // Remove headers - only body
 					[self setGpgRange:decryptedPartBodyRange];
 				} else {
-					newDecryptedData = [[newHeaders _encodedHeadersIncludingFromSpace:NO] mutableCopy];                               // Using -headerData still returns removed header!
+					newDecryptedData = [[newHeaders _encodedHeadersIncludingFromSpace:NO] mutableCopy];                                                   // Using -headerData still returns removed header!
 					if (getsNewPartData) {
-						[newDecryptedData setLength:[newDecryptedData length] - 1];                                                   // Remove header separator char
+						[newDecryptedData setLength:[newDecryptedData length] - 1];                                                                       // Remove header separator char
 					}
 					[newDecryptedData appendData:decryptedData];
 					// Enigmail uses \r\n as header line separator, whereas GPGMail only uses \n
@@ -1710,7 +1710,7 @@ static IMP MimePart_isEncrypted = NULL;
 				tempMessageStore = [[NSDataMessageStore alloc] initWithData:decryptedData];
 				decryptedMessage = [tempMessageStore message];
 				[decryptedMessage setMessageInfoFromMessage:encryptedMessage];
-				decryptedMessageBody = [decryptedMessage messageBody];                                                 // OK for Leopard, even for embedded message
+				decryptedMessageBody = [decryptedMessage messageBody];                                                                 // OK for Leopard, even for embedded message
 				if (decryptedMessageBody == nil && GPGMailLoggingLevel) {
 					NSLog(@"ERROR: decryptedMessageBody should not be nil!");
 				}
@@ -1726,8 +1726,8 @@ static IMP MimePart_isEncrypted = NULL;
 #warning FIXME: LEOPARD We need to cache the decryptedBody
 //                theDecodeOptions.mDecryptedMessageBody = [decryptedMessageBody retain];
 //				decryptedPart = [decryptedMessageBody topLevelPart]; // FIXME: WRONG, in case of multiple encrypted parts
-				decryptedPart = [decryptedMessageBody partWithNumber:[self partNumber]];                                 // FIXME: WRONG, in case of PGP/MIME parts which result in multiple parts
-				result = [decryptedPart gpgBetterDecode];                                                                // Can invoke _gpgDecodePGP
+				decryptedPart = [decryptedMessageBody partWithNumber:[self partNumber]];                                                 // FIXME: WRONG, in case of PGP/MIME parts which result in multiple parts
+				result = [decryptedPart gpgBetterDecode];                                                                                // Can invoke _gpgDecodePGP
 #if 0
 				[decryptedPart getNumberOfAttachments:&numberOfAttachments isSigned:&isSigned isEncrypted:&isEncrypted];
 				[[encryptedMessage messageStore] setNumberOfAttachments:numberOfAttachments isSigned:(theDecodeOptions.mIsSigned) isEncrypted:(theDecodeOptions.mIsEncrypted) forMessage:encryptedMessage];
@@ -1759,7 +1759,7 @@ static IMP MimePart_isEncrypted = NULL;
 		if (decryptedMessageBody != nil && GPGMailLoggingLevel > 0) {
 			NSLog(@"[DEBUG] PGP part %p has already been decrypted (cache)", self);
 		}
-		result = [[decryptedMessageBody topLevelPart] gpgBetterDecode];                         // WRONG, in case of multiple encrypted parts
+		result = [[decryptedMessageBody topLevelPart] gpgBetterDecode];                                 // WRONG, in case of multiple encrypted parts
 	}
 	if (GPGMailLoggingLevel) {
 		NSLog(@"[DEBUG] Done: result = %p", result);
@@ -1772,9 +1772,9 @@ static IMP MimePart_isEncrypted = NULL;
 	if (GPGMailLoggingLevel) {
 		NSLog(@"Top level part: %@", self);
 	}
-	NSString * type = [NSString stringWithString:(NSString *)[self type]];
-	NSString * subtype = [NSString stringWithString:(NSString *)[self subtype]];
-	NSString * selector = [NSString stringWithFormat:@"decode%@%@", [type capitalizedString], [[subtype stringByReplacingOccurrencesOfString:@"-" withString:@"_"] capitalizedString]];
+	NSString *type = [NSString stringWithString:(NSString *)[self type]];
+	NSString *subtype = [NSString stringWithString:(NSString *)[self subtype]];
+	NSString *selector = [NSString stringWithFormat:@"decode%@%@", [type capitalizedString], [[subtype stringByReplacingOccurrencesOfString:@"-" withString:@"_"] capitalizedString]];
 
 	/* Unfortunately calling decode (replacement of contentsForTextSystem) doesn't work anymore.
 	 * calling the appropriate decode method for the top part fixes the problem.
@@ -1786,7 +1786,7 @@ static IMP MimePart_isEncrypted = NULL;
 		if (GPGMailLoggingLevel) {
 			NSLog(@"Using decode anyway!");
 		}
-		return [self decode];                     // Will force re-evaluation of the decode* methods. Will not raise an exception, because -contentsForTextSystem will catch it!
+		return [self decode];                             // Will force re-evaluation of the decode* methods. Will not raise an exception, because -contentsForTextSystem will catch it!
 	}
 }
 
@@ -1794,7 +1794,7 @@ static IMP MimePart_isEncrypted = NULL;
 {
 	if (![GPGMailBundle gpgMailWorks]) {
 		if (MimePart_decodeMultipartEncrypted) {
-			return ((id (*)(id, SEL))MimePart_decodeMultipartEncrypted)(self, _cmd);                          // TESTME Test when PGPmail is present
+			return ((id (*)(id, SEL))MimePart_decodeMultipartEncrypted)(self, _cmd);                                      // TESTME Test when PGPmail is present
 		} else {
 			return [self decodeMultipart];
 		}
@@ -1807,8 +1807,8 @@ static IMP MimePart_isEncrypted = NULL;
 		@try {
 			//        [self setGpgException:nil];
 			[(Message *)[[self mimeBody] message] setGpgException:nil];
-			result = [self _gpgDecodePGP];                         // Can raise an exception!
-		}@catch (NSException * localException) {
+			result = [self _gpgDecodePGP];                                     // Can raise an exception!
+		}@catch (NSException *localException) {
 			//        [localException raise]; // Exception will be caught by Mail and a message will be logged in console: '*** Exception Decryption failed was raised while decoding mime message part. Displaying as text/plain.'
 			//        [self setGpgException:localException];
 			[(Message *)[[self mimeBody] message] setGpgException:localException];
@@ -1817,9 +1817,9 @@ static IMP MimePart_isEncrypted = NULL;
 		if (!result) {
 			//        [encryptedMessage setGpgIsDecrypting:NO]; // Needed, else will try again to decrypt
 			if (MimePart_decodeMultipartEncrypted) {
-				result = ((id (*)(id, SEL))MimePart_decodeMultipartEncrypted)(self, _cmd);                                  // TESTME Test when PGPmail is present
+				result = ((id (*)(id, SEL))MimePart_decodeMultipartEncrypted)(self, _cmd);                                                  // TESTME Test when PGPmail is present
 			} else {
-				result = [self decodeMultipart];                                                                            // Use default behavior (works!)
+				result = [self decodeMultipart];                                                                                            // Use default behavior (works!)
 			}
 		}
 		if (GPGMailLoggingLevel) {
@@ -1870,8 +1870,8 @@ static IMP MimePart_isEncrypted = NULL;
 			NSLog(@"[DEBUG] %p gpgDecodeTextPlain", self);
 		}
 		@try {
-			result = [self _gpgDecodePGP];                         // Can raise an exception!
-		}@catch (NSException * localException) {
+			result = [self _gpgDecodePGP];                                     // Can raise an exception!
+		}@catch (NSException *localException) {
 			[(Message *)[[self mimeBody] message] setGpgException:localException];
 		}
 
@@ -1942,14 +1942,14 @@ static IMP MimePart_isEncrypted = NULL;
 			NSLog(@"[DEBUG] %p gpgDecodeApplicationPgp", self);
 		}
 		@try {
-			result = [self _gpgDecodePGP];                                             // Can raise an exception!
-		}@catch (NSException * localException) {
+			result = [self _gpgDecodePGP];                                                         // Can raise an exception!
+		}@catch (NSException *localException) {
 			[(Message *)[[self mimeBody] message] setGpgException:localException];
 		}
 
 		if (!result) {
 			if (MimePart_decodeApplicationPgp) {
-				result = ((id (*)(id, SEL))MimePart_decodeApplicationPgp)(self, _cmd); // TESTME: Test when PGPmail is present
+				result = ((id (*)(id, SEL))MimePart_decodeApplicationPgp)(self, _cmd);                 // TESTME: Test when PGPmail is present
 			} else {
 				result = [self decodeApplicationOctet_stream];
 			}
@@ -1967,7 +1967,7 @@ static IMP MimePart_isEncrypted = NULL;
 		if (GPGMailLoggingLevel) {
 			NSLog(@"[DEBUG] %p clearCachedDescryptedMessageBody", self);
 		}
-		Message * aMessage = (Message *)[[self mimeBody] message];
+		Message *aMessage = (Message *)[[self mimeBody] message];
 
 		if ([aMessage gpgMayClearCachedDecryptedMessageBody]) {
 			[aMessage setGpgMessageSignatures:nil];

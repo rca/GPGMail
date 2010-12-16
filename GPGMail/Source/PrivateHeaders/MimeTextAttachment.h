@@ -6,7 +6,7 @@
 
 @interface MimeTextAttachment : NSTextAttachment
 {
-	MimePart * _mimePart;
+	MimePart *_mimePart;
 }
 
 + (id)attachmentWithInternalAppleAttachmentData:(id) arg1 mimeBody:(id)arg2;
@@ -33,7 +33,7 @@
 
 @interface MimeTextAttachment : NSTextAttachment
 {
-	MimePart * _mimePart;
+	MimePart *_mimePart;
 }
 
 + (id)attachmentWithInternalAppleAttachmentData:(id) arg1 mimeBody:(id)arg2;

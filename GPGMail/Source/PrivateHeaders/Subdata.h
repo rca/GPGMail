@@ -5,7 +5,7 @@
 @interface Subdata : NSData
 {
 	struct _NSRange subrange;
-	NSData * parentData;
+	NSData *parentData;
 }
 
 - (unsigned int)length;
@@ -21,7 +21,7 @@
 @interface Subdata : NSData
 {
 	struct _NSRange subrange;
-	NSData * parentData;
+	NSData *parentData;
 }
 
 - (unsigned int)length;

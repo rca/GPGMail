@@ -31,16 +31,16 @@
 
 @interface DocumentEditor : NSObject <NSUserInterfaceValidations, NSWindowDelegate, MVTerminationHandler>
 {
-	WebViewEditor * webViewEditor;
-	HeadersEditor * headersEditor;
-	NSWindow * _window;
-	EditingMessageWebView * composeWebView;
-	ComposeBackEnd * _backEnd;
-	NSToolbar * _toolbar;
-	NSMutableDictionary * _toolbarItems;
-	EditingWebMessageController * webMessageController;
-	LoadingOverlay * loadingOverlay;
-	NSDictionary * settings;
+	WebViewEditor *webViewEditor;
+	HeadersEditor *headersEditor;
+	NSWindow *_window;
+	EditingMessageWebView *composeWebView;
+	ComposeBackEnd *_backEnd;
+	NSToolbar *_toolbar;
+	NSMutableDictionary *_toolbarItems;
+	EditingWebMessageController *webMessageController;
+	LoadingOverlay *loadingOverlay;
+	NSDictionary *settings;
 	struct {
 		unsigned int userSavedMessage : 1;
 		unsigned int userWantsToCloseWindow : 1;
@@ -54,9 +54,9 @@
 	} _flags;
 	int _messageType;
 	struct CGPoint _originalCascadePoint;
-	NSMutableDictionary * _bodiesByAttachmentURL;
-	NSOperationQueue * operationQueue;
-	NSOperation * finishLoadingEditorOperation;
+	NSMutableDictionary *_bodiesByAttachmentURL;
+	NSOperationQueue *operationQueue;
+	NSOperation *finishLoadingEditorOperation;
 	id _loadDelegate;
 }
 
@@ -78,7 +78,7 @@
 + (void)showEditorWithSavedState:(id)arg1;
 + (void)setNeedsAutosave;
 + (void)autoSaveTimerFired;
-@property (readonly) MFUUID * documentID;
+@property (readonly) MFUUID *documentID;
 - (BOOL)isEditingDocumentID:(id)arg1;
 - (id)description;
 - (id)initWithType:(int)arg1 settings:(id) arg2 backEnd:(id)arg3;
@@ -105,7 +105,7 @@
 - (int)editorSharedNib;
 - (void)show;
 - (void)setHeaders:(id)arg1;
-@property (retain) ComposeBackEnd * backEnd;
+@property (retain) ComposeBackEnd *backEnd;
 - (id)webViewEditor;
 - (id)headersEditor;
 - (id)webMessageDocument;
@@ -139,7 +139,7 @@
 - (void)setUserSavedMessage:(BOOL)arg1;
 @property (readonly) BOOL hasChanges;
 - (void)reportSaveFailure:(id)arg1;
-@property (readonly) Message * associatedMessage;
+@property (readonly) Message *associatedMessage;
 - (void)backEnd:(id) arg1 didUpdateMessage:(id)arg2;
 - (void)backEndDidSaveMessage:(id) arg1 result:(int)arg2;
 - (void)failedToSaveDraftSheetClosed:(id) arg1 returnCode:(long long)arg2 contextInfo:(void *)arg3;
@@ -188,7 +188,7 @@
 - (void)closeConfirmSheetDidEnd:(id) arg1 returnCode:(long long)arg2 forSave:(void *)arg3;
 - (void)nowWouldBeAGoodTimeToTerminate:(id)arg1;
 @property id loadDelegate; // @synthesize loadDelegate=_loadDelegate;
-@property (retain) NSDictionary * settings; // @synthesize settings;
+@property (retain) NSDictionary *settings;  // @synthesize settings;
 
 @end
 
@@ -221,23 +221,23 @@
 
 @interface HeadersEditor : NSObject </*AccountStatusDataSourceDelegate, */ NSUserInterfaceValidations>
 {
-	MailDocumentEditor * documentEditor;
-	CompletionController * completionController;
-	ComposeHeaderView * composeHeaderView;
-	NSPopUpButton * fromPopup;
-	NSPopUpButton * signaturePopup;
-	NSPopUpButton * priorityPopup;
-	NSButton * signButton;
-	NSButton * encryptButton;
-	AccountStatusDataSource * _deliveryASDS;
-	NSPopUpButton * deliveryPopUp;
-	AddressTextField * toField;
-	AddressTextField * ccField;
-	NSTextField * subjectField;
-	AddressTextField * bccField;
-	AddressTextField * replyToField;
-	DraggingTextView * addressFieldEditor;
-	NSMutableArray * accessoryViewOwners;
+	MailDocumentEditor *documentEditor;
+	CompletionController *completionController;
+	ComposeHeaderView *composeHeaderView;
+	NSPopUpButton *fromPopup;
+	NSPopUpButton *signaturePopup;
+	NSPopUpButton *priorityPopup;
+	NSButton *signButton;
+	NSButton *encryptButton;
+	AccountStatusDataSource *_deliveryASDS;
+	NSPopUpButton *deliveryPopUp;
+	AddressTextField *toField;
+	AddressTextField *ccField;
+	NSTextField *subjectField;
+	AddressTextField *bccField;
+	AddressTextField *replyToField;
+	DraggingTextView *addressFieldEditor;
+	NSMutableArray *accessoryViewOwners;
 	BOOL chatShouldBeEnabled;
 	BOOL _hasChanges;
 }
@@ -333,27 +333,27 @@
 
 @interface MailDocumentEditor : DocumentEditor <NSAnimationDelegate>
 {
-	DeliveryFailure * deliveryFailure;
-	ColorBackgroundView * stationeryPane;
-	StationerySelector * stationerySelector;
-	NSTextField * stationeryNameTextField;
-	NSButton * stationeryNameSaveButton;
-	ColorBackgroundView * borderView;
-	NSScroller * fakeScroller;
-	NSViewAnimation * stationeryPaneAnimator;
-	NSView * imageStatusView;
-	NSTextField * imageFileSizeLabel;
-	NSTextField * imageFileSizeTextField;
-	NSPopUpButton * imageSizePopup;
-	NSProgressIndicator * imageResizingProgressWheel;
-	NSTextField * imageResizingProgressField;
-	NSMutableArray * _imageResizers;
+	DeliveryFailure *deliveryFailure;
+	ColorBackgroundView *stationeryPane;
+	StationerySelector *stationerySelector;
+	NSTextField *stationeryNameTextField;
+	NSButton *stationeryNameSaveButton;
+	ColorBackgroundView *borderView;
+	NSScroller *fakeScroller;
+	NSViewAnimation *stationeryPaneAnimator;
+	NSView *imageStatusView;
+	NSTextField *imageFileSizeLabel;
+	NSTextField *imageFileSizeTextField;
+	NSPopUpButton *imageSizePopup;
+	NSProgressIndicator *imageResizingProgressWheel;
+	NSTextField *imageResizingProgressField;
+	NSMutableArray *_imageResizers;
 	unsigned long long _textLengthForLastEstimatedMessageSize;
 	unsigned long long _encryptionOverhead;
 	BOOL sendWhenFinishLoading;
 	BOOL hasIncludedAttachmentsFromOriginal;
-	NSMutableArray * _unapprovedRecipients;
-	NSMutableArray * userActionQueue;
+	NSMutableArray *_unapprovedRecipients;
+	NSMutableArray *userActionQueue;
 }
 
 + (BOOL)documentType;
@@ -524,16 +524,16 @@
 
 @interface DocumentEditor : NSObject <NSUserInterfaceValidations, NSWindowDelegate, MVTerminationHandler>
 {
-	WebViewEditor * webViewEditor;
-	HeadersEditor * headersEditor;
-	NSWindow * _window;
-	EditingMessageWebView * composeWebView;
-	ComposeBackEnd * _backEnd;
-	NSToolbar * _toolbar;
-	NSMutableDictionary * _toolbarItems;
-	EditingWebMessageController * webMessageController;
-	LoadingOverlay * loadingOverlay;
-	NSDictionary * settings;
+	WebViewEditor *webViewEditor;
+	HeadersEditor *headersEditor;
+	NSWindow *_window;
+	EditingMessageWebView *composeWebView;
+	ComposeBackEnd *_backEnd;
+	NSToolbar *_toolbar;
+	NSMutableDictionary *_toolbarItems;
+	EditingWebMessageController *webMessageController;
+	LoadingOverlay *loadingOverlay;
+	NSDictionary *settings;
 	struct {
 		unsigned int userSavedMessage : 1;
 		unsigned int userWantsToCloseWindow : 1;
@@ -547,9 +547,9 @@
 	} _flags;
 	int _messageType;
 	struct CGPoint _originalCascadePoint;
-	NSMutableDictionary * _bodiesByAttachmentURL;
-	NSOperationQueue * operationQueue;
-	NSOperation * finishLoadingEditorOperation;
+	NSMutableDictionary *_bodiesByAttachmentURL;
+	NSOperationQueue *operationQueue;
+	NSOperation *finishLoadingEditorOperation;
 	id _loadDelegate;
 }
 
@@ -710,27 +710,27 @@
 
 @interface MailDocumentEditor : DocumentEditor <NSAnimationDelegate>
 {
-	DeliveryFailure * deliveryFailure;
-	ColorBackgroundView * stationeryPane;
-	StationerySelector * stationerySelector;
-	NSTextField * stationeryNameTextField;
-	NSButton * stationeryNameSaveButton;
-	ColorBackgroundView * borderView;
-	NSScroller * fakeScroller;
-	NSViewAnimation * stationeryPaneAnimator;
-	NSView * imageStatusView;
-	NSTextField * imageFileSizeLabel;
-	NSTextField * imageFileSizeTextField;
-	NSPopUpButton * imageSizePopup;
-	NSProgressIndicator * imageResizingProgressWheel;
-	NSTextField * imageResizingProgressField;
-	NSMutableArray * _imageResizers;
+	DeliveryFailure *deliveryFailure;
+	ColorBackgroundView *stationeryPane;
+	StationerySelector *stationerySelector;
+	NSTextField *stationeryNameTextField;
+	NSButton *stationeryNameSaveButton;
+	ColorBackgroundView *borderView;
+	NSScroller *fakeScroller;
+	NSViewAnimation *stationeryPaneAnimator;
+	NSView *imageStatusView;
+	NSTextField *imageFileSizeLabel;
+	NSTextField *imageFileSizeTextField;
+	NSPopUpButton *imageSizePopup;
+	NSProgressIndicator *imageResizingProgressWheel;
+	NSTextField *imageResizingProgressField;
+	NSMutableArray *_imageResizers;
 	unsigned int _textLengthForLastEstimatedMessageSize;
 	unsigned int _encryptionOverhead;
 	BOOL sendWhenFinishLoading;
 	BOOL hasIncludedAttachmentsFromOriginal;
-	NSMutableArray * _unapprovedRecipients;
-	NSMutableArray * userActionQueue;
+	NSMutableArray *_unapprovedRecipients;
+	NSMutableArray *userActionQueue;
 }
 
 + (BOOL)documentType;
@@ -865,23 +865,23 @@
 
 @interface HeadersEditor : NSObject /*<AccountStatusDataSourceDelegate, NSUserInterfaceValidations>*/<NSUserInterfaceValidations>
 {
-	MailDocumentEditor * documentEditor;
-	CompletionController * completionController;
-	ComposeHeaderView * composeHeaderView;
-	NSPopUpButton * fromPopup;
-	NSPopUpButton * signaturePopup;
-	NSPopUpButton * priorityPopup;
-	NSButton * signButton;
-	NSButton * encryptButton;
-	AccountStatusDataSource * _deliveryASDS;
-	NSPopUpButton * deliveryPopUp;
-	AddressTextField * toField;
-	AddressTextField * ccField;
-	NSTextField * subjectField;
-	AddressTextField * bccField;
-	AddressTextField * replyToField;
-	DraggingTextView * addressFieldEditor;
-	NSMutableArray * accessoryViewOwners;
+	MailDocumentEditor *documentEditor;
+	CompletionController *completionController;
+	ComposeHeaderView *composeHeaderView;
+	NSPopUpButton *fromPopup;
+	NSPopUpButton *signaturePopup;
+	NSPopUpButton *priorityPopup;
+	NSButton *signButton;
+	NSButton *encryptButton;
+	AccountStatusDataSource *_deliveryASDS;
+	NSPopUpButton *deliveryPopUp;
+	AddressTextField *toField;
+	AddressTextField *ccField;
+	NSTextField *subjectField;
+	AddressTextField *bccField;
+	AddressTextField *replyToField;
+	DraggingTextView *addressFieldEditor;
+	NSMutableArray *accessoryViewOwners;
 	BOOL chatShouldBeEnabled;
 	BOOL _hasChanges;
 }

@@ -7,16 +7,16 @@
 
 @interface MessageHeaderDisplay : NSObject <NSLayoutManagerDelegate>
 {
-	MessageHeaderView * headerView;
-	MessageContentController * contentController;
-	MessageTextContainer * specialContainer;
-	NSImageView * senderImageView;
-	NSString * unloadedSender;
+	MessageHeaderView *headerView;
+	MessageContentController *contentController;
+	MessageTextContainer *specialContainer;
+	NSImageView *senderImageView;
+	NSString *unloadedSender;
 	double oldHeaderViewWidth;
 	BOOL isCalculatingAddressLines;
 	BOOL isForPrinting;
 	BOOL isViewingSource;
-	MessageViewingState * _viewingState;
+	MessageViewingState *_viewingState;
 }
 
 + (id)copyHeadersForMessage:(id) arg1 viewingState:(id)arg2;
@@ -39,7 +39,7 @@
 + (id)attributedStringOfLength:(long long)arg1 usingAttachments:(id) arg2 startingAtIndex:(long long)arg3 strings:(id) arg4 newAttachments:(id *)arg5 forPrinting:(BOOL)arg6;
 + (void)rangeOfAddresses:(struct _NSRange *)arg1 rangeOfLink:(struct _NSRange *)arg2 forKey:(id) arg3 inAttributedString:(id)arg4;
 - (void)dealloc;
-@property (retain) MessageViewingState * viewingState;
+@property (retain) MessageViewingState *viewingState;
 - (void)awakeFromNib;
 - (void)setUp;
 - (id)unloadedSender;
@@ -72,16 +72,16 @@
 
 @interface MessageHeaderDisplay : NSObject <NSLayoutManagerDelegate>
 {
-	MessageHeaderView * headerView;
-	MessageContentController * contentController;
-	MessageTextContainer * specialContainer;
-	NSImageView * senderImageView;
-	NSString * unloadedSender;
+	MessageHeaderView *headerView;
+	MessageContentController *contentController;
+	MessageTextContainer *specialContainer;
+	NSImageView *senderImageView;
+	NSString *unloadedSender;
 	float oldHeaderViewWidth;
 	BOOL isCalculatingAddressLines;
 	BOOL isForPrinting;
 	BOOL isViewingSource;
-	MessageViewingState * _viewingState;
+	MessageViewingState *_viewingState;
 }
 
 + (id)copyHeadersForMessage:(id) arg1 viewingState:(id)arg2;

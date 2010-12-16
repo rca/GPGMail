@@ -15,7 +15,7 @@
 }
 
 - (void)gpgForwardAction:(SEL)actionSelector sender:(id)sender {
-	NSEnumerator * anEnum = [_accessoryViewOwners objectEnumerator];
+	NSEnumerator *anEnum = [_accessoryViewOwners objectEnumerator];
 	id anOwner;
 
 	while (anOwner = [anEnum nextObject])
@@ -48,7 +48,7 @@
 	SEL anAction = [menuItem action];
 
 	if (anAction == @selector(gpgChoosePublicKeys:) || anAction == @selector(gpgChoosePersonalKey:) || anAction == @selector(gpgChoosePublicKey:)) {
-		NSEnumerator * anEnum = [_accessoryViewOwners objectEnumerator];
+		NSEnumerator *anEnum = [_accessoryViewOwners objectEnumerator];
 		id anOwner;
 
 		while (anOwner = [anEnum nextObject])

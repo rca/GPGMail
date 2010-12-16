@@ -70,12 +70,12 @@
 }
 
 - (MessageBody *)gpgDecryptedBodyWithPassphraseDelegate:(id)passphraseDelegate signature:(NSArray **)signaturesPtr headers:(MessageHeaders **)decryptedMessageHeaders {
-	NSData * decryptedData;
+	NSData *decryptedData;
 
-	decryptedData = [[self topLevelPart] gpgDecryptedDataWithPassphraseDelegate:passphraseDelegate signatures:signaturesPtr];         // Can raise an exception
+	decryptedData = [[self topLevelPart] gpgDecryptedDataWithPassphraseDelegate:passphraseDelegate signatures:signaturesPtr];             // Can raise an exception
 	if (decryptedData) {
-		MutableMessageHeaders * headers = [[[self message] headers] mutableCopy];
-		NSData * headerData;
+		MutableMessageHeaders *headers = [[[self message] headers] mutableCopy];
+		NSData *headerData;
 		NSRange headerBodySeparationRange;
 
 		// When decrypting data which is an encapsulated signature,
@@ -94,16 +94,16 @@
 		NSAssert(headerBodySeparationRange.location != NSNotFound, @"Unexpected case...");
 		if (headerBodySeparationRange.location != 0) {
 			// These new headers are only MIME ones
-			NSString * aKey;
-			NSEnumerator * orderEnum;
+			NSString *aKey;
+			NSEnumerator *orderEnum;
 
-			headerData = [decryptedData subdataWithRange:NSMakeRange(0, headerBodySeparationRange.location)];                         // or NSMaxRange(headerBodySeparationRange)?
+			headerData = [decryptedData subdataWithRange:NSMakeRange(0, headerBodySeparationRange.location)];                                     // or NSMaxRange(headerBodySeparationRange)?
 			if (0) {
 #warning This patch does not help...
-				NSMutableData * myData = [NSMutableData dataWithData:headerData];
+				NSMutableData *myData = [NSMutableData dataWithData:headerData];
 				int i = 0, myCount = [myData length];
 				BOOL beginsLine = YES, myModification = NO;
-				char * myBytes = [myData mutableBytes];
+				char *myBytes = [myData mutableBytes];
 
 				for (i = 0; i < myCount; i++) {
 					if (myBytes[i] == ' ' && beginsLine) {
@@ -117,9 +117,9 @@
 					headerData = myData;
 				}
 			}
-			MessageHeaders * tempHeaders;
+			MessageHeaders *tempHeaders;
 
-			tempHeaders = [[MessageHeaders alloc] initWithHeaderData:headerData encoding:kCFStringEncodingUTF8];                         // Core Foundation encoding!
+			tempHeaders = [[MessageHeaders alloc] initWithHeaderData:headerData encoding:kCFStringEncodingUTF8];                                     // Core Foundation encoding!
 			orderEnum = [[headers _decodeHeaderKeysFromData:headerData] objectEnumerator];
 			while (aKey = [orderEnum nextObject])
 															   #warning FIXME: LEOPARD - which method??
@@ -132,13 +132,13 @@
 		// Tomio used to include headerBodySeparation in decrypted data, whereas I don't
 		// Including it means that we also add a supplementary separating line
 		// between displayed headers and body.
-		decryptedData = [decryptedData subdataWithRange:NSMakeRange(NSMaxRange(headerBodySeparationRange), [decryptedData length] - NSMaxRange(headerBodySeparationRange))];                 // We NEED to remove headers from body data...
+		decryptedData = [decryptedData subdataWithRange:NSMakeRange(NSMaxRange(headerBodySeparationRange), [decryptedData length] - NSMaxRange(headerBodySeparationRange))];                         // We NEED to remove headers from body data...
 
 		*decryptedMessageHeaders = [headers autorelease];
 		// Headers are now OK
 
 		{
-			MimeBody * decryptedBody = [[MimeBody alloc] init];
+			MimeBody *decryptedBody = [[MimeBody alloc] init];
 
 #warning FIXME: No longer needed - done differently?
 			//            [((MessageStore *)[[self message] messageStore])->_caches.objectCaches._bodyDataCache setObject:decryptedData forKey:[NSValue valueWithNonretainedObject:decryptedBody]];
@@ -173,15 +173,15 @@
 	// Other headers: content-id, content-description, content-disposition
 
 	// First, we need to retrieve the MIME-specific headers; they need to be embedded in the encrypted data.
-	NSMutableData * dataToEncrypt = [NSMutableData data];
-	NSData * encryptedData = nil;
-	MutableMessageHeaders * newHeaders = [[[self message] headers] mutableCopy];
-	MutableMessageHeaders * headersToEncrypt = [[MutableMessageHeaders alloc] init];
-	NSString * newBoundary = [MimeBody createMimeBoundary];
+	NSMutableData *dataToEncrypt = [NSMutableData data];
+	NSData *encryptedData = nil;
+	MutableMessageHeaders *newHeaders = [[[self message] headers] mutableCopy];
+	MutableMessageHeaders *headersToEncrypt = [[MutableMessageHeaders alloc] init];
+	NSString *newBoundary = [MimeBody createMimeBoundary];
 	BOOL usesQuotedPrintable = NO;
-	GPGContext * aContext;
-	GPGData * inputData;
-	NSData * rawData = [self gpgRawData];
+	GPGContext *aContext;
+	GPGData *inputData;
+	NSData *rawData = [self gpgRawData];
 
 	[headersToEncrypt setHeader:[newHeaders firstHeaderForKey:@"content-type"] forKey:@"content-type"];
 	[headersToEncrypt setHeader:[newHeaders firstHeaderForKey:@"content-transfer-encoding"] forKey:@"content-transfer-encoding"];
@@ -198,7 +198,7 @@
 
 	if (key != nil) {
 		if (![[GPGMailBundle sharedInstance] usesEncapsulatedSignature]) {
-			[dataToEncrypt appendData:[headersToEncrypt gpgEncodedHeadersExcludingFromSpace]];                         // Already contains ending spacer
+			[dataToEncrypt appendData:[headersToEncrypt gpgEncodedHeadersExcludingFromSpace]];                                     // Already contains ending spacer
 			[dataToEncrypt appendData:rawData];
 			// Fix for attachments which contain non-ASCII chars: despite this has been reported to Apple,
 			// they don't consider it a bug; let's replace non-ASCII chars (normally only in headers) by '_'
@@ -206,13 +206,13 @@
 //            [dataToEncrypt gpgNormalizeDataForSigning];
 		} else {
 			// RFC 1847 Encapsulation
-			NSData * tempData = [self gpgOpenPGPSignWithKey:key passphraseDelegate:passphraseDelegate encapsulated:YES headers:headersPtr];
+			NSData *tempData = [self gpgOpenPGPSignWithKey:key passphraseDelegate:passphraseDelegate encapsulated:YES headers:headersPtr];
 
 			key = nil;
 			[dataToEncrypt appendData:tempData];
 		}
 	} else {
-		[dataToEncrypt appendData:[headersToEncrypt gpgEncodedHeadersExcludingFromSpace]];                 // Already contains ending spacer
+		[dataToEncrypt appendData:[headersToEncrypt gpgEncodedHeadersExcludingFromSpace]];                         // Already contains ending spacer
 		[dataToEncrypt appendData:rawData];
 	}
 
@@ -225,7 +225,7 @@
 	}
 	inputData = [[GPGData alloc] initWithData:dataToEncrypt];
 	if (GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask) {
-		NSString * filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"txt"]];
+		NSString *filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"txt"]];
 
 		if ([dataToEncrypt writeToFile:filename atomically:NO]) {
 			NSLog(@"[DEBUG] Data to encrypt/sign in %@", filename);
@@ -234,24 +234,24 @@
 		}
 	}
 	@try {
-		GPGData * outputData;
+		GPGData *outputData;
 
 #warning Set encoding!
 		if (key != nil) {
-			outputData = [aContext encryptedSignedData:inputData withKeys:recipients trustAllKeys:trustsAllKeys /* encoding:kCFStringEncodingISOLatin1*/]; // Can raise an exception
+			outputData = [aContext encryptedSignedData:inputData withKeys:recipients trustAllKeys:trustsAllKeys /* encoding:kCFStringEncodingISOLatin1*/];             // Can raise an exception
 		} else {
 			if (recipients == nil) {
 				// Symetric encryption
-				outputData = [aContext encryptedData:inputData /* encoding:kCFStringEncodingISOLatin1*/];                                                  // Can raise an exception
+				outputData = [aContext encryptedData:inputData /* encoding:kCFStringEncodingISOLatin1*/];                                                                  // Can raise an exception
 			} else {
-				outputData = [aContext encryptedData:inputData withKeys:recipients trustAllKeys:trustsAllKeys /* encoding:kCFStringEncodingISOLatin1*/];   // Can raise an exception
+				outputData = [aContext encryptedData:inputData withKeys:recipients trustAllKeys:trustsAllKeys /* encoding:kCFStringEncodingISOLatin1*/];                   // Can raise an exception
 			}
 		}
 
 		// Can also happen when a key has been revoked, is invalid, has expired
 //            [NSException raise:NSGenericException format:@"Unable to find public keys for some addresses, or keys need to be (locally) signed"];
-		encryptedData = [[[outputData data] retain] autorelease];                                                                                          // Because context will be freed
-	}@catch (NSException * localException) {
+		encryptedData = [[[outputData data] retain] autorelease];                                                                                                  // Because context will be freed
+	}@catch (NSException *localException) {
 		[inputData release];
 		[aContext release];
 		[newHeaders release];
@@ -277,7 +277,7 @@
 	if ([[GPGMailBundle sharedInstance] addsCustomHeaders]) {
 		[newHeaders setHeader:[@"GPGMail " stringByAppendingString:[(GPGMailBundle *)[GPGMailBundle sharedInstance] version]] forKey:GPGMailHeaderKey];
 	}
-	newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[[newHeaders autorelease] encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];             // Needed, to ensure _data ivar is updated
+	newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[[newHeaders autorelease] encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];                 // Needed, to ensure _data ivar is updated
 	if (headersPtr != NULL) {
 		*headersPtr = newHeaders;
 	}
@@ -347,7 +347,7 @@
 			return [self gpgOpenPGPEncryptForRecipients:recipients trustAllKeys:trustsAllKeys signWithKey:key passphraseDelegate:passphraseDelegate headers:headersPtr];
 		default:
 			NSAssert1(*mailFormatPtr == GPGLegacyPGPMailFormat || *mailFormatPtr == GPGAutomaticMailFormat || *mailFormatPtr == GPGOpenPGPMailFormat, @"Invalid mail format (%d)!", *mailFormatPtr);
-			return nil;                         // Never reached
+			return nil;                                     // Never reached
 	}
 }
 
@@ -361,7 +361,7 @@
 //    if([self rawData] == nil)
 //        return NO;
 //    NSParameterAssert([self rawData] != nil);
-	(void)[self mimeType];             // Still needed?
+	(void)[self mimeType];                 // Still needed?
 
 	return [[self topLevelPart] gpgHasSignature];
 }
@@ -371,11 +371,11 @@
 }
 
 - (GPGSignature *)gpgEmbeddedAuthenticationSignature {
-	return [[self topLevelPart] gpgAuthenticationSignature];         // Can raise an exception
+	return [[self topLevelPart] gpgAuthenticationSignature];             // Can raise an exception
 }
 
 - (GPGSignature *)gpgAuthenticationSignature {
-	return [[self topLevelPart] gpgAuthenticationSignature];         // Can raise an exception
+	return [[self topLevelPart] gpgAuthenticationSignature];             // Can raise an exception
 }
 
 - (NSData *)gpgRawDataWithEnforcedQuotedPrintable {
@@ -415,18 +415,18 @@
 	//
 	// --foo--
 
-	NSMutableData * dataToSign = [NSMutableData data], * signedData;
-	NSData * signatureData = nil;
-	MutableMessageHeaders * newHeaders = [[[self message] headers] mutableCopy];
-	MutableMessageHeaders * headersToSign = [[MutableMessageHeaders alloc] init];
-	NSString * newBoundary = [MimeBody createMimeBoundary];
-	GPGHandler * aHandler;
+	NSMutableData *dataToSign = [NSMutableData data], *signedData;
+	NSData *signatureData = nil;
+	MutableMessageHeaders *newHeaders = [[[self message] headers] mutableCopy];
+	MutableMessageHeaders *headersToSign = [[MutableMessageHeaders alloc] init];
+	NSString *newBoundary = [MimeBody createMimeBoundary];
+	GPGHandler *aHandler;
 	BOOL signatureDataIsOnlyASCII;
-	GPGContext * aContext;
-	GPGData * inputData;
+	GPGContext *aContext;
+	GPGData *inputData;
 //    NSData                  *data;
-	GPGSignature * newSignature;
-	NSData * rawData = /*[self gpgRawData]*/ [self gpgRawDataWithEnforcedQuotedPrintable];
+	GPGSignature *newSignature;
+	NSData *rawData = /*[self gpgRawData]*/ [self gpgRawDataWithEnforcedQuotedPrintable];
 
 	[headersToSign setHeader:[newHeaders firstHeaderForKey:@"content-type"] forKey:@"content-type"];
 	[headersToSign setHeader:[newHeaders firstHeaderForKey:@"content-transfer-encoding"] forKey:@"content-transfer-encoding"];
@@ -435,7 +435,7 @@
 
 	// 'From ' escaping is done by Mail, no need to check.
 	// We also don't need to check for trailing spaces, Mail cares for it. FIXME: NOT TRUE!!!
-	[dataToSign appendData:[headersToSign gpgEncodedHeadersExcludingFromSpace]];         // Already contains ending spacer
+	[dataToSign appendData:[headersToSign gpgEncodedHeadersExcludingFromSpace]];             // Already contains ending spacer
 	[dataToSign appendData:rawData];
 	[dataToSign gpgNormalizeDataForSigning];
 	// "all data signed according to this protocol MUST be constrained to 7 bits"
@@ -459,7 +459,7 @@
 	// out of [self rawData] using their -range
 	inputData = [[GPGData alloc] initWithData:dataToSign];
 	if (GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask) {
-		NSString * filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"txt"]];
+		NSString *filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"txt"]];
 
 		if ([dataToSign writeToFile:filename atomically:NO]) {
 			NSLog(@"[DEBUG] Data to sign in %@", filename);
@@ -469,11 +469,11 @@
 	}
 	@try {
 #warning Use kCFStringEncodingISOLatin1 encoding!
-		GPGData * outputData = [aContext signedData:inputData signatureMode:GPGSignatureModeDetach /*encoding:kCFStringEncodingISOLatin1*/];                 // Can raise an exception
+		GPGData *outputData = [aContext signedData:inputData signatureMode:GPGSignatureModeDetach /*encoding:kCFStringEncodingISOLatin1*/];                          // Can raise an exception
 		// We can safely use kCFStringEncodingISOLatin1, because dataToSign is only on 7 bits
 
 		signatureData = [outputData data];
-	}@catch (NSException * localException) {
+	}@catch (NSException *localException) {
 		[inputData release];
 		[aContext release];
 		[newHeaders release];
@@ -494,7 +494,7 @@
 
 	aHandler = [GPGHandler handler];
 	if (!encapsulated) {
-		NSString * hashAlgorithm = [[GPGMailBundle sharedInstance] hashAlgorithmDescription:[newSignature hashAlgorithm]];                   // FIXME: Should we check strict conformance to OpenPGP in hash choice?
+		NSString *hashAlgorithm = [[GPGMailBundle sharedInstance] hashAlgorithmDescription:[newSignature hashAlgorithm]];                            // FIXME: Should we check strict conformance to OpenPGP in hash choice?
 
 		[newHeaders removeHeaderForKey:@"content-type"];
 		[newHeaders removeHeaderForKey:@"content-transfer-encoding"];
@@ -503,7 +503,7 @@
 		if ([[GPGMailBundle sharedInstance] addsCustomHeaders]) {
 			[newHeaders setHeader:[@"GPGMail " stringByAppendingString:[(GPGMailBundle *)[GPGMailBundle sharedInstance] version]] forKey:GPGMailHeaderKey];
 		}
-		newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[[newHeaders autorelease] encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];                         // Needed, to ensure _data ivar is updated
+		newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[[newHeaders autorelease] encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];                                 // Needed, to ensure _data ivar is updated
 		if (headersPtr != NULL) {
 			*headersPtr = newHeaders;
 		}
@@ -513,18 +513,18 @@
 	signedData = [NSMutableData data];
 	if (!encapsulated)
 #if 1
-				   #warning RESTORED THIS, BECAUSE WAS MISSING SPACER
+								   #warning RESTORED THIS, BECAUSE WAS MISSING SPACER
 	{
 		[signedData appendData:[@"\n--" dataUsingEncoding:NSASCIIStringEncoding]];
 	}
 #else
-				   #warning According to Tomio, we should not have LF as first char
+								   #warning According to Tomio, we should not have LF as first char
 	{
 		[signedData appendData:[@"--" dataUsingEncoding:NSASCIIStringEncoding]];
 	}
 #endif
 	else {
-		NSString * hashAlgorithm = [[GPGMailBundle sharedInstance] hashAlgorithmDescription:[newSignature hashAlgorithm]];                   // FIXME: Should we check strict conformance to OpenPGP in hash choice?
+		NSString *hashAlgorithm = [[GPGMailBundle sharedInstance] hashAlgorithmDescription:[newSignature hashAlgorithm]];                            // FIXME: Should we check strict conformance to OpenPGP in hash choice?
 
 		[signedData appendData:[[NSString stringWithFormat:@"Content-type: multipart/signed; protocol=\"application/pgp-signature\";\n\tmicalg=%@; boundary=\"%@\"\n", [@"pgp-" stringByAppendingString:hashAlgorithm], newBoundary] dataUsingEncoding:NSASCIIStringEncoding]];
 		[signedData appendData:[@"Content-transfer-encoding: 7bit\n" dataUsingEncoding:NSASCIIStringEncoding]];
@@ -537,12 +537,12 @@
 	[signedData appendData:[newBoundary dataUsingEncoding:NSASCIIStringEncoding]];
 	[signedData appendData:[@"\n" dataUsingEncoding:NSASCIIStringEncoding]];
 #if 0
-	[signedData appendData:[headersToSign gpgEncodedHeadersExcludingFromSpace]];         // Already contains ending spacer
+	[signedData appendData:[headersToSign gpgEncodedHeadersExcludingFromSpace]];             // Already contains ending spacer
 	[signedData appendData:[self rawData]];
 #else
 #warning CHECK THIS
 	{
-		NSMutableData * convertedData = [NSMutableData dataWithData:dataToSign];
+		NSMutableData *convertedData = [NSMutableData dataWithData:dataToSign];
 
 		[convertedData convertNetworkLineEndingsToUnix];
 		[signedData appendData:convertedData];
@@ -603,7 +603,7 @@
 			return [self gpgOpenPGPSignWithKey:key passphraseDelegate:passphraseDelegate encapsulated:NO headers:headersPtr];
 		default:
 			NSAssert1(*mailFormatPtr == GPGLegacyPGPMailFormat || *mailFormatPtr == GPGAutomaticMailFormat || *mailFormatPtr == GPGOpenPGPMailFormat, @"Invalid mail format (%d)!", *mailFormatPtr);
-			return nil;                         // Never reached
+			return nil;                                     // Never reached
 	}
 }
 
@@ -617,7 +617,7 @@
 
 @interface NSDataMessageStore : MessageStore
 {
-	NSData * _data;              // 88 = 0x58
+	NSData *_data;                   // 88 = 0x58
 }
 
 - (id)initWithData:(id)fp8;
@@ -649,22 +649,22 @@ static IMP MimePart_decryptedMessageBody = NULL;
 			if (GPGMailLoggingLevel) {
 				NSLog(@"[DEBUG] %p decryption...", self);
 			}
-			GPGSignature * aSignature = nil;
-			NSArray * signatures = nil;
-			MimeBody * decryptedBody;
-			MessageHeaders * decryptedMessageHeaders;
-			MessageStore * messageStore = [(Message *)[[self mimeBody] message] messageStore];
+			GPGSignature *aSignature = nil;
+			NSArray *signatures = nil;
+			MimeBody *decryptedBody;
+			MessageHeaders *decryptedMessageHeaders;
+			MessageStore *messageStore = [(Message *)[[self mimeBody] message] messageStore];
 
 			decryptedBody = [[self mimeBody] gpgDecryptedBodyWithPassphraseDelegate:[GPGMailBundle sharedInstance] signatures:&signatures headers:&decryptedMessageHeaders];
 			if (signatures != nil && [signatures count] > 0) {
 				aSignature = [signatures objectAtIndex:0];
 			}
-			NSMutableData * headerData = [decryptedMessageHeaders encodedHeadersIncludingFromSpace:NO];
-			NSMutableData * theData = [NSMutableData dataWithData:headerData];
-			id dataMessageStore = messageStore;                          // should be NSMessageDataStore
+			NSMutableData *headerData = [decryptedMessageHeaders encodedHeadersIncludingFromSpace:NO];
+			NSMutableData *theData = [NSMutableData dataWithData:headerData];
+			id dataMessageStore = messageStore;                                      // should be NSMessageDataStore
 
 			[theData appendData:[messageStore->_bodyDataCache objectForKey:decryptedBody]];
-			Message * decryptedMessage = [Message messageWithRFC822Data:theData];
+			Message *decryptedMessage = [Message messageWithRFC822Data:theData];
 			[decryptedBody setMessage:decryptedMessage];
 			[messageStore _setHeaderDataInCache:headerData forMessage:decryptedMessage];
 			[messageStore->_headerCache removeObjectForKey:decryptedBody];
@@ -674,7 +674,7 @@ static IMP MimePart_decryptedMessageBody = NULL;
 			[messageStore->_bodyDataCache removeObjectForKey:decryptedBody];
 			[decryptedMessage setMessageStore:dataMessageStore];
 			[[decryptedMessage messageStore] setNumberOfAttachments:[[decryptedBody attachments] count] isSigned:(aSignature != nil && [aSignature validityError] == GPGErrorNoError) isEncrypted:YES forMessage:decryptedMessage];
-			MimePart * newPart = [[MimePart alloc] init];
+			MimePart *newPart = [[MimePart alloc] init];
 			[(MimeBody *) decryptedBody setTopLevelPart:newPart];
 			[newPart setMimeBody:decryptedBody];
 			[newPart release];

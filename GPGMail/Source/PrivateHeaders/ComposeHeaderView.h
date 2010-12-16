@@ -5,25 +5,25 @@
 @interface ComposeHeaderView : NSView <NSAnimationDelegate>
 {
 	id _delegate;
-	NSPopUpButton * _disclosureButton;
-	NSMenu * _actionMenu;
-	OptionalView * _toOptionalView;
-	OptionalView * _ccOptionalView;
-	OptionalView * _subjectOptionalView;
-	OptionalView * _bccOptionalView;
-	OptionalView * _replyToOptionalView;
-	OptionalView * _accountOptionalView;
-	OptionalView * _signatureOptionalView;
-	OptionalView * _priorityOptionalView;
-	OptionalView * _securityOptionalView;
-	OptionalView * _deliveryOptionalView;
-	NSView * _messageContentView;
-	NSPopUpButton * _signaturePopUp;
-	NSPopUpButton * _accountPopUp;
-	NSPopUpButton * _deliveryPopUp;
-	NSButton * _cancelButton;
-	NSButton * _okButton;
-	NSImage * borderImage;
+	NSPopUpButton *_disclosureButton;
+	NSMenu *_actionMenu;
+	OptionalView *_toOptionalView;
+	OptionalView *_ccOptionalView;
+	OptionalView *_subjectOptionalView;
+	OptionalView *_bccOptionalView;
+	OptionalView *_replyToOptionalView;
+	OptionalView *_accountOptionalView;
+	OptionalView *_signatureOptionalView;
+	OptionalView *_priorityOptionalView;
+	OptionalView *_securityOptionalView;
+	OptionalView *_deliveryOptionalView;
+	NSView *_messageContentView;
+	NSPopUpButton *_signaturePopUp;
+	NSPopUpButton *_accountPopUp;
+	NSPopUpButton *_deliveryPopUp;
+	NSButton *_cancelButton;
+	NSButton *_okButton;
+	NSImage *borderImage;
 	unsigned int _showCcView : 1;
 	unsigned int _showBccView : 1;
 	unsigned int _showReplyToView : 1;
@@ -40,14 +40,14 @@
 	unsigned int _resizingViews : 1;
 	unsigned int _customizing : 1;
 	unsigned int _changesCancelled : 1;
-	NSViewAnimation * _animation;
+	NSViewAnimation *_animation;
 	double _nextShownFrameOrigin;
 	double _nextHiddenFrameOrigin;
 	double _heightDelta;
 	id _lastFirstResponder;
 	double _signaturePopUpMaxWidth;
 	double _accountPopUpMaxWidth;
-	OptionalView * _togglingOptionalView;
+	OptionalView *_togglingOptionalView;
 	BOOL _customizationShouldStick;
 }
 
@@ -146,25 +146,25 @@
 @interface ComposeHeaderView : NSView <NSAnimationDelegate>
 {
 	id _delegate;
-	NSPopUpButton * _disclosureButton;
-	NSMenu * _actionMenu;
-	OptionalView * _toOptionalView;
-	OptionalView * _ccOptionalView;
-	OptionalView * _subjectOptionalView;
-	OptionalView * _bccOptionalView;
-	OptionalView * _replyToOptionalView;
-	OptionalView * _accountOptionalView;
-	OptionalView * _signatureOptionalView;
-	OptionalView * _priorityOptionalView;
-	OptionalView * _securityOptionalView;
-	OptionalView * _deliveryOptionalView;
-	NSView * _messageContentView;
-	NSPopUpButton * _signaturePopUp;
-	NSPopUpButton * _accountPopUp;
-	NSPopUpButton * _deliveryPopUp;
-	NSButton * _cancelButton;
-	NSButton * _okButton;
-	NSImage * borderImage;
+	NSPopUpButton *_disclosureButton;
+	NSMenu *_actionMenu;
+	OptionalView *_toOptionalView;
+	OptionalView *_ccOptionalView;
+	OptionalView *_subjectOptionalView;
+	OptionalView *_bccOptionalView;
+	OptionalView *_replyToOptionalView;
+	OptionalView *_accountOptionalView;
+	OptionalView *_signatureOptionalView;
+	OptionalView *_priorityOptionalView;
+	OptionalView *_securityOptionalView;
+	OptionalView *_deliveryOptionalView;
+	NSView *_messageContentView;
+	NSPopUpButton *_signaturePopUp;
+	NSPopUpButton *_accountPopUp;
+	NSPopUpButton *_deliveryPopUp;
+	NSButton *_cancelButton;
+	NSButton *_okButton;
+	NSImage *borderImage;
 	unsigned int _showCcView : 1;
 	unsigned int _showBccView : 1;
 	unsigned int _showReplyToView : 1;
@@ -181,14 +181,14 @@
 	unsigned int _resizingViews : 1;
 	unsigned int _customizing : 1;
 	unsigned int _changesCancelled : 1;
-	NSViewAnimation * _animation;
+	NSViewAnimation *_animation;
 	float _nextShownFrameOrigin;
 	float _nextHiddenFrameOrigin;
 	float _heightDelta;
 	id _lastFirstResponder;
 	float _signaturePopUpMaxWidth;
 	float _accountPopUpMaxWidth;
-	OptionalView * _togglingOptionalView;
+	OptionalView *_togglingOptionalView;
 	BOOL _customizationShouldStick;
 }
 

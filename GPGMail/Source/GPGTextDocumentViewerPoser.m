@@ -37,12 +37,12 @@
 
 @implementation GPGTextDocumentViewerPoser
 
-static NSMapTable * _extraIVars = NULL;
-static NSLock * _extraIVarsLock = nil;
+static NSMapTable *_extraIVars = NULL;
+static NSLock *_extraIVarsLock = nil;
 
 + (void)load {
-	NSEnumerator * anEnum = [[MessageViewer allMessageViewers] objectEnumerator];
-	MessageViewer * aViewer;
+	NSEnumerator *anEnum = [[MessageViewer allMessageViewers] objectEnumerator];
+	MessageViewer *aViewer;
 
 	_extraIVars = NSCreateMapTableWithZone(NSObjectMapKeyCallBacks, NSObjectMapValueCallBacks, 3, [self zone]);
 	_extraIVarsLock = [[NSLock alloc] init];
@@ -52,8 +52,8 @@ static NSLock * _extraIVarsLock = nil;
 }
 
 - (NSMutableDictionary *)gpgExtraIVars {
-	NSMutableDictionary * aDict;
-	NSValue * aValue = [NSValue valueWithNonretainedObject:self];
+	NSMutableDictionary *aDict;
+	NSValue *aValue = [NSValue valueWithNonretainedObject:self];
 
 	// We cannot use self as key, because in -dealloc this method is called when invoking super's
 	// and thus puts self back in mapTable; by using the NSValue and changing the dealloc,
@@ -112,9 +112,9 @@ static NSLock * _extraIVarsLock = nil;
 
 - (void)gpgMessageStoreMessageFlagsChanged:(NSNotification *)notification {
 	if ([[[[notification userInfo] objectForKey:@"flags"] objectForKey:@"MessageIsRead"] isEqualToString:@"YES"]) {
-		NSEnumerator * anEnum = [[[notification userInfo] objectForKey:@"messages"] objectEnumerator];
-		Message * aMessage;
-		Message * myMessage = [self message];
+		NSEnumerator *anEnum = [[[notification userInfo] objectForKey:@"messages"] objectEnumerator];
+		Message *aMessage;
+		Message *myMessage = [self message];
 
 		while (aMessage = [anEnum nextObject]) {
 			if (aMessage == myMessage) {
@@ -126,8 +126,8 @@ static NSLock * _extraIVarsLock = nil;
 }
 
 - (void)_updateDisplay {
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
-	Message * aMessage = [self message];
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+	Message *aMessage = [self message];
 	BOOL shouldAuthenticate = NO;
 	BOOL shouldDecrypt = NO;
 	BOOL compareFlags = ([aMessage messageStore] != nil && ([mailBundle decryptsOnlyUnreadMessagesAutomatically] || [mailBundle authenticatesOnlyUnreadMessagesAutomatically]));
@@ -193,7 +193,7 @@ static NSLock * _extraIVarsLock = nil;
 }
 
 - (void)dealloc {
-	[super dealloc];         // Will call -gpgExtraIVars!
+	[super dealloc];             // Will call -gpgExtraIVars!
 	[_extraIVarsLock lock];
 	NSMapRemove(_extraIVars, [NSValue valueWithNonretainedObject:self]);
 	[_extraIVarsLock unlock];
@@ -290,8 +290,8 @@ static NSLock * _extraIVarsLock = nil;
 	// Works only for MIME signed, because Mail thinks it's (S/MIME) signed
 	certificateView = accessoryView;
 #else
-	NSView * resizedView = [[contentContainerView subviews] objectAtIndex:0];
-	NSView * currentBannerView = nil;
+	NSView *resizedView = [[contentContainerView subviews] objectAtIndex:0];
+	NSView *currentBannerView = nil;
 
 	if ([[contentContainerView subviews] count] > 1) {
 		currentBannerView = [[contentContainerView subviews] objectAtIndex:1];
@@ -311,8 +311,8 @@ static NSLock * _extraIVarsLock = nil;
 	[resizedView setFrame:originalRect];
 #endif /* if 0 */
 #else
-	NSView * resizedView = _currentView;            // [[self textView] enclosingScrollView];//(NSView *)messageScroll;
-	NSView * currentBannerView = junkMailView;
+	NSView *resizedView = _currentView;                 // [[self textView] enclosingScrollView];//(NSView *)messageScroll;
+	NSView *currentBannerView = junkMailView;
 
 	originalRect = aRect = [resizedView frame];
 	aHeight = NSHeight([accessoryView frame]);
@@ -337,8 +337,8 @@ static NSLock * _extraIVarsLock = nil;
 #if 0
 	// Works only for MIME signed, because Mail thinks it's (S/MIME) signed
 #else
-	NSView * resizedView = [[contentContainerView subviews] objectAtIndex:0];
-	NSView * currentBannerView = nil;
+	NSView *resizedView = [[contentContainerView subviews] objectAtIndex:0];
+	NSView *currentBannerView = nil;
 
 	NSAssert([accessoryView ancestorSharedWithView:resizedView] != nil, @"Trying to remove unattached view!");
 	if ([[contentContainerView subviews] count] > 2) {
@@ -361,8 +361,8 @@ static NSLock * _extraIVarsLock = nil;
 	[resizedView setFrame:originalRect];
 #endif /* if 0 */
 #else
-	NSView * resizedView = _currentView;            // [[self textView] enclosingScrollView];//(NSView *)messageScroll;
-	NSView * currentBannerView = junkMailView;
+	NSView *resizedView = _currentView;                 // [[self textView] enclosingScrollView];//(NSView *)messageScroll;
+	NSView *currentBannerView = junkMailView;
 
 	NSAssert([accessoryView ancestorSharedWithView:resizedView] != nil, @"Trying to remove unattached view!");
 	originalRect = [resizedView frame];
@@ -390,7 +390,7 @@ static NSLock * _extraIVarsLock = nil;
  */
 - (GPGMessageViewerAccessoryViewOwner *)_gpgMessageViewerAccessoryViewOwner {
 	// WARNING: this limits us to 1 accessoryView per viewer
-	GPGMessageViewerAccessoryViewOwner * accessoryViewOwner = [[self gpgExtraIVars] objectForKey:@"messageViewerAccessoryViewOwner"];
+	GPGMessageViewerAccessoryViewOwner *accessoryViewOwner = [[self gpgExtraIVars] objectForKey:@"messageViewerAccessoryViewOwner"];
 
 	if (accessoryViewOwner == nil) {
 		accessoryViewOwner = [[GPGMessageViewerAccessoryViewOwner alloc] initWithDelegate:self];
@@ -406,7 +406,7 @@ static NSLock * _extraIVarsLock = nil;
 }
 
 - (void)_gpgShowBannerWithType:(int)bannerType {
-	GPGMessageViewerAccessoryViewOwner * anOwner = nil;
+	GPGMessageViewerAccessoryViewOwner *anOwner = nil;
 
 	if (![self _gpgBannerIsShown]) {
 		anOwner = [self _gpgMessageViewerAccessoryViewOwner];
@@ -435,7 +435,7 @@ static NSLock * _extraIVarsLock = nil;
 
 - (void)gpgHideBanner {
 	if ([self _gpgBannerIsShown]) {
-		GPGMessageViewerAccessoryViewOwner * anOwner = [self _gpgMessageViewerAccessoryViewOwner];
+		GPGMessageViewerAccessoryViewOwner *anOwner = [self _gpgMessageViewerAccessoryViewOwner];
 
 		[self _gpgRemoveAccessoryView:[anOwner view] redisplay:YES];
 //        [anOwner setMessage:nil];
@@ -466,10 +466,10 @@ static NSLock * _extraIVarsLock = nil;
 //  [inViewer viewerPreferencesChanged:nil];
 //  [inViewer _updateDisplay];
 
-	MessageViewingState * viewingState = [NSClassFromString (@"MessageHeaderDisplay") copyViewingState:[self viewingState /*ForMessage:[self message]*/]];
+	MessageViewingState *viewingState = [NSClassFromString (@"MessageHeaderDisplay") copyViewingState:[self viewingState /*ForMessage:[self message]*/]];
 	[viewingState setHeaderAttributedString:[[message headers] attributedStringShowingHeaderDetailLevel:[self headerDetailLevel]]];
 	NSLog(@"HeaderAttributedString = %@", [viewingState headerAttributedString]);
-	if (/*[message numberOfAttachments]*/ [[[message messageBody] attachments] count] == 0) {       // numberOfAttachments not up-to-date! Wrapper's
+	if (/*[message numberOfAttachments]*/ [[[message messageBody] attachments] count] == 0) {           // numberOfAttachments not up-to-date! Wrapper's
 		[viewingState setAttachmentsDescription:nil];
 	} else {
 		[viewingState setAttachmentsDescription:[NSClassFromString (@"MessageHeaderDisplay") formattedAttachmentsSizeForMessage:message]];

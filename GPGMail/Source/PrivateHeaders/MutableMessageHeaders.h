@@ -5,8 +5,8 @@
 
 @interface MutableMessageHeaders : MessageHeaders
 {
-	NSMutableDictionary * _headersAdded;
-	NSMutableArray * _headersRemoved;
+	NSMutableDictionary *_headersAdded;
+	NSMutableArray *_headersRemoved;
 }
 
 - (id)mutableCopy;
@@ -31,8 +31,8 @@
 
 @interface MutableMessageHeaders : MessageHeaders
 {
-	NSMutableDictionary * _headersAdded;
-	NSMutableArray * _headersRemoved;
+	NSMutableDictionary *_headersAdded;
+	NSMutableArray *_headersRemoved;
 }
 
 - (id)mutableCopy;

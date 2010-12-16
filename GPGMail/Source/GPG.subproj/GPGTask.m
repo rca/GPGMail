@@ -14,7 +14,7 @@
 @implementation GPGTask
 
 + (NSTask *)launchedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)arguments {
-	GPGTask * aTask = [[self alloc] init];
+	GPGTask *aTask = [[self alloc] init];
 
 	[aTask setLaunchPath:path];
 	[aTask setArguments:arguments];
@@ -46,13 +46,13 @@
 	if (_pid == 0) {
 		// Child process
 		int retVal;
-		NSString * launchPath = [self launchPath];
-		NSString * aString;
-		char ** taskArgv;
-		NSPipe * aPipe;
+		NSString *launchPath = [self launchPath];
+		NSString *aString;
+		char **taskArgv;
+		NSPipe *aPipe;
 		int i, count;
-		NSArray * arguments = [self arguments];
-		NSDictionary * environment = [self environment];
+		NSArray *arguments = [self arguments];
+		NSDictionary *environment = [self environment];
 
 		for (i = 0; i < 32; i++) {
 			signal(i, SIG_DFL);
@@ -111,13 +111,13 @@
 		taskArgv[i + 1] = NULL;
 
 		if (environment) {
-			char ** envArray;
+			char **envArray;
 
 			arguments = [environment allKeys];
 			count = [arguments count];
 			envArray = NSZoneMalloc(NSDefaultMallocZone(), (sizeof * envArray) * (count + 1));
 			for (i = 0; i < count; i++) {
-				NSString * formattedEnv = [NSString stringWithFormat:@"%@=%@", [arguments objectAtIndex:i], [environment objectForKey:[arguments objectAtIndex:i]]];
+				NSString *formattedEnv = [NSString stringWithFormat:@"%@=%@", [arguments objectAtIndex:i], [environment objectForKey:[arguments objectAtIndex:i]]];
 
 				envArray[i] = (char *)[formattedEnv cString];
 			}
@@ -135,7 +135,7 @@
 		[NSException raise:NSInvalidArgumentException format:@"Unable to fork process (%d: %s)", errno, strerror(errno)];
 	} else {
 		// Parent process
-		NSPipe * aPipe;
+		NSPipe *aPipe;
 
 		aPipe = [_dictionary objectForKey:@"standardInput"];
 		if (aPipe != nil && [aPipe isKindOfClass:[NSPipe class]]) {

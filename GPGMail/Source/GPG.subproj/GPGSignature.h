@@ -13,12 +13,12 @@
 
 @interface GPGSignature : NSObject
 {
-	NSCalendarDate * date;
-	NSString * signatureType;
-	NSString * keyID;
-	NSString * signatoryName;
-	NSString * comment;
-	NSString * signatoryEmail;
+	NSCalendarDate *date;
+	NSString *signatureType;
+	NSString *keyID;
+	NSString *signatoryName;
+	NSString *comment;
+	NSString *signatoryEmail;
 }
 
 + (id)signatureWithContents:(NSString *)contents;

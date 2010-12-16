@@ -4,13 +4,13 @@
 
 @interface OutgoingMessage : Message
 {
-	NSData * rawData;
-	NSString * remoteID;
-	NSString * existingRemoteID;
+	NSData *rawData;
+	NSString *remoteID;
+	NSString *existingRemoteID;
 	unsigned long long bodyOffset;
 	unsigned long long localAttachmentsSize;
-	MessageBody * messageBody;
-	MutableMessageHeaders * messageHeaders;
+	MessageBody *messageBody;
+	MutableMessageHeaders *messageHeaders;
 }
 
 - (void)dealloc;
@@ -28,8 +28,8 @@
 - (void)setLocalAttachmentsSize:(unsigned long long)arg1;
 - (void)setRemoteID:(id)arg1;
 - (id)remoteID;
-@property (retain, nonatomic) NSString * existingRemoteID; // @synthesize existingRemoteID;
-@property (retain, nonatomic) MessageBody * messageBody; // @synthesize messageBody;
+@property (retain, nonatomic) NSString *existingRemoteID;  // @synthesize existingRemoteID;
+@property (retain, nonatomic) MessageBody *messageBody;  // @synthesize messageBody;
 
 @end
 
@@ -39,13 +39,13 @@
 
 @interface OutgoingMessage : Message
 {
-	NSData * rawData;
-	NSString * remoteID;
-	NSString * existingRemoteID;
+	NSData *rawData;
+	NSString *remoteID;
+	NSString *existingRemoteID;
 	unsigned int bodyOffset;
 	unsigned int localAttachmentsSize;
-	MessageBody * messageBody;
-	MutableMessageHeaders * messageHeaders;
+	MessageBody *messageBody;
+	MutableMessageHeaders *messageHeaders;
 }
 
 - (void)dealloc;

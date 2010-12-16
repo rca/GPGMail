@@ -44,39 +44,39 @@
  *
  * @param clazz A class name.
  */
-#define GPG_DECLARE_EXTRA_IVARS(clazz)									   \
+#define GPG_DECLARE_EXTRA_IVARS(clazz)																	   \
 	static NSMapTable       * clazz ## _extraIVars = NULL;	  \
-	static NSLock * clazz ## _extraIVarsLock = nil;	\
-	static IMP clazz ## _dealloc = NULL;					\
+	static NSLock *clazz ## _extraIVarsLock = nil; \
+	static IMP clazz ## _dealloc = NULL;									\
 \
 	+(void)gpgInitExtraIvars \
 	{ \
 		clazz ## _extraIVars = NSCreateMapTableWithZone(NSObjectMapKeyCallBacks, NSObjectMapValueCallBacks, 100, [self zone]); \
 		clazz ## _extraIVarsLock = [[NSLock alloc] init]; \
-		clazz ## _dealloc = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(dealloc), [clazz class ], @selector(gpgDealloc), [clazz class ]);				\
+		clazz ## _dealloc = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(dealloc), [clazz class ], @selector(gpgDealloc), [clazz class ]);								\
 	} \
 \
 	-(NSMutableDictionary *)gpgExtraIVars \
 	{ \
-		NSMutableDictionary * aDict; \
-		NSValue * aValue = [NSValue valueWithNonretainedObject:self]; \
-				\
+		NSMutableDictionary *aDict;	\
+		NSValue *aValue = [NSValue valueWithNonretainedObject:self]; \
+								\
 		[clazz ## _extraIVarsLock lock]; \
 		aDict = NSMapGet(clazz ## _extraIVars, aValue);	\
-		if (aDict == nil) {				\
+		if (aDict == nil) {								\
 			aDict = [NSMutableDictionary dictionaryWithCapacity:3];	\
 			NSMapInsert(clazz ## _extraIVars, aValue, aDict); \
 		} \
 		[clazz ## _extraIVarsLock unlock]; \
-				\
+								\
 		return aDict; \
 	} \
 \
 	-(void)gpgDealloc \
 	{ \
 		id originalSelf = self;	\
-				\
-		((void (*)(id, SEL))clazz ## _dealloc)(self, _cmd);				\
+								\
+		((void (*)(id, SEL))clazz ## _dealloc)(self, _cmd);								\
 		[clazz ## _extraIVarsLock lock]; \
 		NSMapRemove(clazz ## _extraIVars, [NSValue valueWithNonretainedObject: originalSelf]); \
 		[clazz ## _extraIVarsLock unlock]; \

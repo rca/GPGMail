@@ -21,12 +21,12 @@
 @interface MessageBody : NSObject
 {
 	BOOL _hideCalendarMimePart;
-	Message * _message;
+	Message *_message;
 	long long _messageID;
 }
 
 - (id)init;
-@property Message * message;
+@property Message *message;
 - (id)attributedString;
 - (BOOL)isHTML;
 - (BOOL)isRich;
@@ -41,7 +41,7 @@
 - (id)webArchive;
 - (void)dealloc;
 @property BOOL hideCalendarMimePart; // @synthesize hideCalendarMimePart=_hideCalendarMimePart;
-@property Message * actualMessage; // @synthesize actualMessage=_message;
+@property Message *actualMessage;  // @synthesize actualMessage=_message;
 @property long long messageID; // @synthesize messageID=_messageID;
 
 @end
@@ -52,7 +52,7 @@
 
 @interface _OutgoingMessageBody : MessageBody
 {
-	NSMutableData * rawData;
+	NSMutableData *rawData;
 }
 
 - (void)setMessage:(id)arg1;
@@ -71,7 +71,7 @@
 @interface MessageBody : NSObject
 {
 	BOOL _hideCalendarMimePart;
-	Message * _message;
+	Message *_message;
 	long long _messageID;
 }
 
@@ -106,7 +106,7 @@
 
 @interface _OutgoingMessageBody : MessageBody
 {
-	NSMutableData * rawData;
+	NSMutableData *rawData;
 }
 
 - (void)setMessage:(id)arg1;

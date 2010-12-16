@@ -40,13 +40,13 @@
 
 @interface GPGProgressIndicatorController : NSObject
 {
-	IBOutlet NSProgressIndicator * progressIndicator;
-	IBOutlet NSProgressIndicator * progressIndicator2;
-	IBOutlet NSTextField * titleTextField;
-	IBOutlet NSTextField * titleTextField2;
-	IBOutlet NSTextField * backgroundTextField;
-	IBOutlet NSButton * cancelButton;
-	IBOutlet NSBox * enclosingBox;
+	IBOutlet NSProgressIndicator *progressIndicator;
+	IBOutlet NSProgressIndicator *progressIndicator2;
+	IBOutlet NSTextField *titleTextField;
+	IBOutlet NSTextField *titleTextField2;
+	IBOutlet NSTextField *backgroundTextField;
+	IBOutlet NSButton *cancelButton;
+	IBOutlet NSBox *enclosingBox;
 	id delegate;
 }
 

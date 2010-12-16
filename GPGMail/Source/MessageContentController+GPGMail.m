@@ -40,7 +40,7 @@
 #import <MessageHeaders.h>
 
 
-NSString * MessageContentControllerName = @"MessageContentController";
+NSString *MessageContentControllerName = @"MessageContentController";
 
 #ifdef SNOW_LEOPARD_64
 @implementation GPGMail_MessageContentController : NSObject
@@ -73,7 +73,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 }
 
 - (BOOL)gpgMessageWasInFactSigned {
-	NSNumber * aBoolValue = GPG_GET_EXTRA_IVAR(@"messageWasInFactSigned");
+	NSNumber *aBoolValue = GPG_GET_EXTRA_IVAR(@"messageWasInFactSigned");
 
 	return (aBoolValue != nil ? [aBoolValue boolValue] : NO);
 }
@@ -83,7 +83,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 }
 
 - (BOOL)gpgMessageHasBeenDecrypted {
-	NSNumber * aBoolValue = GPG_GET_EXTRA_IVAR(@"messageHasBeenDecrypted");
+	NSNumber *aBoolValue = GPG_GET_EXTRA_IVAR(@"messageHasBeenDecrypted");
 
 	return (aBoolValue != nil ? [aBoolValue boolValue] : NO);
 }
@@ -96,7 +96,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 }
 
 - (BOOL)gpgMessageReadStatusHasChanged {
-	NSNumber * aBoolValue = GPG_GET_EXTRA_IVAR(@"messageReadStatusHasChanged");
+	NSNumber *aBoolValue = GPG_GET_EXTRA_IVAR(@"messageReadStatusHasChanged");
 
 	return (aBoolValue != nil ? [aBoolValue boolValue] : NO);
 }
@@ -109,7 +109,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 }
 
 - (BOOL)gpgDoNotResetFlags {
-	NSNumber * aBoolValue = GPG_GET_EXTRA_IVAR(@"doNotResetFlags");
+	NSNumber *aBoolValue = GPG_GET_EXTRA_IVAR(@"doNotResetFlags");
 
 	return (aBoolValue != nil ? [aBoolValue boolValue] : NO);
 }
@@ -124,9 +124,9 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 #warning FIXME: That method is invoked in another thread! -> Observe notif all along object life
 - (void)gpgMessageStoreMessageFlagsChanged:(NSNotification *)notification {
 	if ([[[[notification userInfo] objectForKey:@"flags"] objectForKey:@"MessageIsRead"] isEqualToString:@"YES"]) {
-		NSEnumerator * anEnum = [[[notification userInfo] objectForKey:@"messages"] objectEnumerator];
-		Message * aMessage;
-		Message * myMessage = [self message];
+		NSEnumerator *anEnum = [[[notification userInfo] objectForKey:@"messages"] objectEnumerator];
+		Message *aMessage;
+		Message *myMessage = [self message];
 
 		while (aMessage = [anEnum nextObject]) {
 			if (aMessage == myMessage) {
@@ -155,15 +155,15 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 - (void)gpg_updateDisplay  // FIXME: LEOPARD Delayed invocation (from other thread) after decryption -> hides again!
 {
 	if (![GPGMailBundle gpgMailWorks]) {
-		((void (*)(id, SEL))MessageContentController__updateDisplay)(self, _cmd);                 // will change message flags, if necessary
+		((void (*)(id, SEL))MessageContentController__updateDisplay)(self, _cmd);                         // will change message flags, if necessary
 		return;
 	}
 
 	if (GPGMailLoggingLevel) {
 		NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
 	}
-	GPGMailBundle * mailBundle = [GPGMailBundle sharedInstance];
-	Message * aMessage = [self message];
+	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+	Message *aMessage = [self message];
 	BOOL shouldAuthenticate = NO;
 	BOOL shouldDecrypt = NO;
 	BOOL compareFlags = ([aMessage messageStore] != nil && (([mailBundle decryptsMessagesAutomatically] && [mailBundle decryptsOnlyUnreadMessagesAutomatically]) || ([mailBundle authenticatesMessagesAutomatically] && [mailBundle authenticatesOnlyUnreadMessagesAutomatically])));
@@ -172,7 +172,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 
 	[[self gpgMessageViewerAccessoryViewOwner] messageChanged:aMessage];
 	if (compareFlags) {
-		[self gpgSetMessageReadStatusHasChanged:([aMessage messageFlags] & 0x00000001) == 0];                 // We check once if message is marked as unread; we will set it as read ourselves, as sometimes Mail does it only asynchronously
+		[self gpgSetMessageReadStatusHasChanged:([aMessage messageFlags] & 0x00000001) == 0];                         // We check once if message is marked as unread; we will set it as read ourselves, as sometimes Mail does it only asynchronously
 		// Since Tiger, MessageStoreMessageFlagsChanged poster is no longer message's messageStore; and flag change is sometimes done async
 	}
 
@@ -180,7 +180,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 #if 0
 	if (aMessage == nil) {
 		[self gpgHideBanner];
-	} else if ([aMessage gpgIsEncrypted]) {         // Do not get cached status from accessoryViewOwner, because it is not yet up-to-date!
+	} else if ([aMessage gpgIsEncrypted]) {             // Do not get cached status from accessoryViewOwner, because it is not yet up-to-date!
 		[self gpgShowPGPEncryptedBanner];
 		if ([mailBundle decryptsMessagesAutomatically]) {
 			shouldDecrypt = YES;
@@ -222,12 +222,12 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 /*        [self gpgSetMessageHasBeenDecrypted:NO];
  *      if([mailBundle authenticatesMessagesAutomatically])
  *          shouldAuthenticate = YES;*/
-	} else if ([aMessage gpgIsEncrypted]) {         // Do not get cached status from accessoryViewOwner, because it is not yet up-to-date!
+	} else if ([aMessage gpgIsEncrypted]) {             // Do not get cached status from accessoryViewOwner, because it is not yet up-to-date!
 		[self gpgShowPGPEncryptedBanner];
 		if ([mailBundle decryptsMessagesAutomatically]) {
 			shouldDecrypt = YES;
 		}
-	} else if ([aMessage gpgHasSignature]) {         // Do not get cached status from accessoryViewOwner, because it is not yet up-to-date!
+	} else if ([aMessage gpgHasSignature]) {            // Do not get cached status from accessoryViewOwner, because it is not yet up-to-date!
 		[self gpgShowPGPSignatureBanner];
 		if ([mailBundle authenticatesMessagesAutomatically]) {
 			shouldAuthenticate = YES;
@@ -237,7 +237,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 	}
 #endif /* if 0 */
 
-	((void (*)(id, SEL))MessageContentController__updateDisplay)(self, _cmd);         // will change message flags, if necessary
+	((void (*)(id, SEL))MessageContentController__updateDisplay)(self, _cmd);             // will change message flags, if necessary
 
 	if (compareFlags) {
 		readStatusChanged = [self gpgMessageReadStatusHasChanged];
@@ -355,7 +355,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 				NSLog(@"[DEBUG] Message changed(2)");
 			}
 			if ([self message] != nil) {
-				[[(MimeBody *)[[self message] messageBody] topLevelPart] clearCachedDecryptedMessageBody];                                  // FIXME: problem is that it's not the right part!
+				[[(MimeBody *)[[self message] messageBody] topLevelPart] clearCachedDecryptedMessageBody];                                                  // FIXME: problem is that it's not the right part!
 			}
 			[self gpgSetMessageWasInFactSigned:NO];
 			[self gpgSetMessageHasBeenDecrypted:NO];
@@ -380,8 +380,8 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 	// Works only for MIME signed, because Mail thinks it's (S/MIME) signed
 	certificateView = accessoryView;
 #else
-	NSView * resizedView = [[[self valueForKey:@"contentContainerView"] subviews] objectAtIndex:0];
-	NSArray * additionalViews = nil;
+	NSView *resizedView = [[[self valueForKey:@"contentContainerView"] subviews] objectAtIndex:0];
+	NSArray *additionalViews = nil;
 	int additionalViewsCount = [[[self valueForKey:@"contentContainerView"] subviews] count] - 1;
 
 	if ((GPGMailLoggingLevel > 0)) {
@@ -397,8 +397,8 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 	// Let's place our view on top (needed, because Junk banner always wants to be just above scrollView!)
 	aRect.origin.y = NSHeight([[self valueForKey:@"contentContainerView"] bounds]) + [[self valueForKey:@"contentContainerView"] bounds].origin.y - aHeight;
 	if (additionalViewsCount > 0) {
-		NSEnumerator * anEnum = [additionalViews objectEnumerator];
-		NSView * currentBannerView = nil;
+		NSEnumerator *anEnum = [additionalViews objectEnumerator];
+		NSView *currentBannerView = nil;
 		float resizedViewTop = NSMaxY([resizedView frame]);
 
 		while (currentBannerView = [anEnum nextObject]) {
@@ -425,7 +425,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 // Do not use _gpgRemoveAccessoryView:redisplay:, for backwards-compatibility with MailTags
 - (void)_gpg2RemoveAccessoryView:(NSView *)accessoryView redisplay:(BOOL)flag {
 	NSRect originalRect;
-	NSView * resizedView = [[[self valueForKey:@"contentContainerView"] subviews] objectAtIndex:0];
+	NSView *resizedView = [[[self valueForKey:@"contentContainerView"] subviews] objectAtIndex:0];
 	int additionalViewsCount = [[[self valueForKey:@"contentContainerView"] subviews] count] - 1;
 
 	if ((GPGMailLoggingLevel > 0)) {
@@ -444,9 +444,9 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 	additionalViewsCount--;
 	if (additionalViewsCount > 0) {
 		// First subview is the NSScrollView
-		NSArray * additionalViews = [[[self valueForKey:@"contentContainerView"] subviews] subarrayWithRange:NSMakeRange(1, additionalViewsCount)];
-		NSEnumerator * anEnum = [additionalViews objectEnumerator];
-		NSView * currentBannerView = nil;
+		NSArray *additionalViews = [[[self valueForKey:@"contentContainerView"] subviews] subarrayWithRange:NSMakeRange(1, additionalViewsCount)];
+		NSEnumerator *anEnum = [additionalViews objectEnumerator];
+		NSView *currentBannerView = nil;
 		float resizedViewTop = NSMaxY([resizedView frame]);
 		float resizedViewBottom = NSMinY([resizedView frame]);
 
@@ -476,7 +476,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
  */
 - (GPGMessageViewerAccessoryViewOwner *)gpgMessageViewerAccessoryViewOwner {
 	// WARNING: this limits us to 1 accessoryView per viewer
-	GPGMessageViewerAccessoryViewOwner * accessoryViewOwner = GPG_GET_EXTRA_IVAR(@"messageViewerAccessoryViewOwner");
+	GPGMessageViewerAccessoryViewOwner *accessoryViewOwner = GPG_GET_EXTRA_IVAR(@"messageViewerAccessoryViewOwner");
 
 	if (accessoryViewOwner == nil) {
 		accessoryViewOwner = [[GPGMessageViewerAccessoryViewOwner alloc] initWithDelegate:self];
@@ -492,7 +492,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 }
 
 - (void)_gpgShowBannerWithType:(int)bannerType {
-	GPGMessageViewerAccessoryViewOwner * anOwner = nil;
+	GPGMessageViewerAccessoryViewOwner *anOwner = nil;
 
 	if (![self _gpgBannerIsShown]) {
 		anOwner = [self gpgMessageViewerAccessoryViewOwner];
@@ -524,7 +524,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 
 - (void)gpgHideBanner {
 	if ([self _gpgBannerIsShown]) {
-		GPGMessageViewerAccessoryViewOwner * anOwner = [self gpgMessageViewerAccessoryViewOwner];
+		GPGMessageViewerAccessoryViewOwner *anOwner = [self gpgMessageViewerAccessoryViewOwner];
 
 		[self _gpg2RemoveAccessoryView:[anOwner view] redisplay:YES];
 		//        [anOwner setMessage:nil];
@@ -549,14 +549,14 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 		// Delegate can be a MessageViewer, or a MessageEditor (for standalone viewers!)
 		[[[[self textView] window] delegate] showStatusMessage:message];
 		if ([message length] > 0) {
-			[[[[self textView] window] delegate] performSelector:@selector(showStatusMessage:) withObject:@"" afterDelay:0.3];                          // There is a risk we wipe out something else, but if we don't do that call, the "Done." stays on screen.
+			[[[[self textView] window] delegate] performSelector:@selector(showStatusMessage:) withObject:@"" afterDelay:0.3];                                      // There is a risk we wipe out something else, but if we don't do that call, the "Done." stays on screen.
 		}
 	}
 }
 #endif
 
 - (void)gpgAccessoryViewOwner:(GPGMessageViewerAccessoryViewOwner *)owner displayMessage:(Message *)message isSigned:(BOOL)isSigned {
-	MessageViewingState * viewingState = [self viewingState];
+	MessageViewingState *viewingState = [self viewingState];
 
 	if (viewingState == nil) {
 		return;
@@ -566,8 +566,8 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 		NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
 	}
 	// WARNING: we must ask to the very part that we set the decrypted message body! - see -[MimePart _gpgDecodePGP]
-	MessageBody * messageBody = [[(MimeBody *)[message messageBody] topLevelPart] decryptedMessageBodyIsEncrypted:NULL isSigned:NULL];
-	Message * decryptedMessage = message;
+	MessageBody *messageBody = [[(MimeBody *)[message messageBody] topLevelPart] decryptedMessageBodyIsEncrypted:NULL isSigned:NULL];
+	Message *decryptedMessage = message;
 
 	viewingState = [NSClassFromString (@"MessageHeaderDisplay") copyViewingState:viewingState];
 	[message gpgSetMayClearCachedDecryptedMessageBody:NO];
@@ -582,16 +582,16 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 	//    [viewingState setHeaderAttributedString:[[message headers] attributedStringShowingHeaderDetailLevel:[self headerDetailLevel]]]; // FIXME: Empty, because no headers... -> copy and update headers when decrypting
 	//	[customHeaders release];
 	//    [viewingState setHeaderAttributedString:[(MessageHeaders *)[decryptedMessage headers] attributedStringShowingHeaderDetailLevel:[self headerDetailLevel]]]; // FIXME: Empty, because no headers... -> copy and update headers when decrypting
-	if ([[(MessageBody *) messageBody attachments] count] == 0) {       // numberOfAttachments not up-to-date! Wrapper's
+	if ([[(MessageBody *) messageBody attachments] count] == 0) {           // numberOfAttachments not up-to-date! Wrapper's
 		[viewingState setAttachmentsDescription:nil];
 	} else {
 		[viewingState setAttachmentsDescription:[NSClassFromString (@"MessageHeaderDisplay") formattedAttachmentsSizeForMessage:/*decryptedMessage*/ message]];
 	}
 	//    NSLog(@"$$$ AttachmentsDescription = %@", [viewingState attachmentsDescription]);
 	[viewingState setValue:messageBody forKey:@"mimeBody"];
-	[self cacheViewingState:viewingState forMessage:message /*decryptedMessage*/];         // decryptedMessage?
-	[self setMessage:/*message*/ decryptedMessage headerOrder:[viewingState headerOrder]];         // WARNING: will clear decrypted body cache!
-	[viewingState setHeaderAttributedString:[[message headers] attributedStringShowingHeaderDetailLevel:[self headerDetailLevel]]];         // FIXME: Empty, because no headers... -> copy and update headers when decrypting; this very call is useless!!!
+	[self cacheViewingState:viewingState forMessage:message /*decryptedMessage*/];                                                  // decryptedMessage?
+	[self setMessage:/*message*/ decryptedMessage headerOrder:[viewingState headerOrder]];                                          // WARNING: will clear decrypted body cache!
+	[viewingState setHeaderAttributedString:[[message headers] attributedStringShowingHeaderDetailLevel:[self headerDetailLevel]]]; // FIXME: Empty, because no headers... -> copy and update headers when decrypting; this very call is useless!!!
 	[message gpgSetMayClearCachedDecryptedMessageBody:YES];
 
 	// Now update messageView content
@@ -611,7 +611,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 	// reloadDocument does quite nothing
 	//	[self _updateDisplay];
 	//	[self clearCache];
-	[self reloadCurrentMessage];                     // Needed, to get flag change notif via _updateDisplay
+	[self reloadCurrentMessage];                         // Needed, to get flag change notif via _updateDisplay
 	//	((void (*)(id, SEL))MessageContentController__updateDisplay)(self, _cmd);
 	//  [self setMessage:decryptedMessage headerOrder:[[self viewingState] headerOrder]]; // will display decrypted one, but without headers!
 
@@ -644,7 +644,7 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 		NSLog(@"[DEBUG] First alternative -> do not reset flags");
 	}
 	[self gpgSetDoNotResetFlags:YES];
-	[self showFirstAlternative:sender];         // Performs -_updateDisplay invocation, delayed!
+	[self showFirstAlternative:sender];             // Performs -_updateDisplay invocation, delayed!
 	//    [self performSelector:@selector(gpg_resetFlags:) withObject:nil afterDelay:0.1];
 }
 

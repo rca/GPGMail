@@ -148,7 +148,7 @@ IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(
 		methodsAllocatedCount += methodsAllocatedCount + NUM_OF_METHODS;
 		originalMethods = (IMP *)realloc(originalMethods, methodsAllocatedCount * sizeof(IMP));
 	}
-	NSString * aKey = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(aClass), NSStringFromSelector(aSelector)];
+	NSString *aKey = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(aClass), NSStringFromSelector(aSelector)];
 	[[self originalMethodsMap] setObject:[NSNumber numberWithInt:originalMethodsIndex] forKey:aKey];
 	originalMethods[originalMethodsIndex++] = origIMP;
 
@@ -190,7 +190,7 @@ IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(
 		methodsAllocatedCount += methodsAllocatedCount + NUM_OF_METHODS;
 		originalMethods = (IMP *)realloc(originalMethods, methodsAllocatedCount * sizeof(IMP));
 	}
-	NSString * aKey = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(aClass), NSStringFromSelector(aSelector)];
+	NSString *aKey = [NSString stringWithFormat:@"%@.%@", NSStringFromClass(aClass), NSStringFromSelector(aSelector)];
 	[[self originalMethodsMap] setObject:[NSNumber numberWithInt:originalMethodsIndex] forKey:aKey];
 	originalMethods[originalMethodsIndex++] = origIMP;
 
@@ -211,7 +211,7 @@ IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(
 		}
 		return;
 	}
-	Method * classMethods = class_copyMethodList(aClass, &methodCount);
+	Method *classMethods = class_copyMethodList(aClass, &methodCount);
 
 	if (GPGMailLoggingLevel) {
 		NSLog(@"Found %d methods", methodCount);
@@ -234,7 +234,7 @@ IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(
 		NSLog(@"Class can't be null!");
 		return;
 	}
-	Ivar * classIVars = class_copyIvarList(aClass, &iVarCount);
+	Ivar *classIVars = class_copyIvarList(aClass, &iVarCount);
 
 	NSLog(@"Found %d ivars", iVarCount);
 	for (i = 0; i < iVarCount; i++) {

@@ -80,7 +80,7 @@ static IMP MessageViewer_validateMenuItem = NULL;
 	BOOL changedSelection = ([self currentDisplayedMessage] != nil && [[self currentDisplayedMessage] gpgIsEncrypted] && [[self gpgTextViewer:nil] selectedText] == nil);
 
 	if (changedSelection) {
-		[[[self gpgTextViewer:nil] textView] originalSelectAll:nil];                 // If we use -selectAll:, headers are also selected, and we don't want it, else, on deselection, headers are still selected!
+		[[[self gpgTextViewer:nil] textView] originalSelectAll:nil];                         // If we use -selectAll:, headers are also selected, and we don't want it, else, on deselection, headers are still selected!
 	}
 	((void (*)(id, SEL, int))MessageViewer__replyMessageWithType)(self, _cmd, fp8);
 	if (changedSelection) {
@@ -107,20 +107,20 @@ static IMP MessageViewer_validateMenuItem = NULL;
 }
 
 - (IBAction)gpgCopyMessageURL:(id)sender {
-	Message * message = [self currentDisplayedMessage];
+	Message *message = [self currentDisplayedMessage];
 
 	if (message != nil) {
-		NSPasteboard * pb = [NSPasteboard generalPasteboard];
-		NSArray * types = [NSArray arrayWithObjects:@"public.url", NSStringPboardType, @"public.url-name", nil];
-		NSString * urlString = [message URL];
-		NSString * subject = [message subject];
-		const char * urlBytes = [urlString UTF8String];
-		const char * titleBytes = [subject UTF8String];
+		NSPasteboard *pb = [NSPasteboard generalPasteboard];
+		NSArray *types = [NSArray arrayWithObjects:@"public.url", NSStringPboardType, @"public.url-name", nil];
+		NSString *urlString = [message URL];
+		NSString *subject = [message subject];
+		const char *urlBytes = [urlString UTF8String];
+		const char *titleBytes = [subject UTF8String];
 
 		[pb declareTypes:types owner:nil];
 		[pb addTypes:types owner:nil];
-		[pb setString:urlString forType:NSStringPboardType];                                        // Needed, because we want simple text editors to get the URL, not the subject
-		[pb setData:[NSData dataWithBytes:urlBytes length:strlen(urlBytes)] forType:@"public.url"]; // Includes NSURLPBoardType
+		[pb setString:urlString forType:NSStringPboardType];                                                // Needed, because we want simple text editors to get the URL, not the subject
+		[pb setData:[NSData dataWithBytes:urlBytes length:strlen(urlBytes)] forType:@"public.url"];         // Includes NSURLPBoardType
 		[pb setData:[NSData dataWithBytes:titleBytes length:strlen(titleBytes)] forType:@"public.url-name"];
 	} else {
 		NSBeep();

@@ -5,9 +5,9 @@
 @interface ColorBackgroundView : NSView
 {
 	long long _tag;
-	NSColor * _color;
-	NSImage * _image;
-	NSArray * _colors;
+	NSColor *_color;
+	NSImage *_image;
+	NSArray *_colors;
 	BOOL _isFlipped;
 	double _rowHeight;
 	double _rowOffset;
@@ -15,11 +15,11 @@
 
 - (void)dealloc;
 - (BOOL)isOpaque;
-@property (retain) NSColor * backgroundColor;
-@property (retain) NSArray * backgroundColors;
+@property (retain) NSColor *backgroundColor;
+@property (retain) NSArray *backgroundColors;
 - (void)drawRect:(struct CGRect)arg1;
 - (id)colorForRow:(unsigned long long)arg1;
-@property (retain) NSImage * backgroundImage; // @synthesize backgroundImage=_image;
+@property (retain) NSImage *backgroundImage;  // @synthesize backgroundImage=_image;
 @property (setter = setFlipped:) BOOL isFlipped; // @synthesize isFlipped=_isFlipped;
 @property double rowOffset; // @synthesize rowOffset=_rowOffset;
 @property double rowHeight; // @synthesize rowHeight=_rowHeight;
@@ -32,9 +32,9 @@
 @interface ColorBackgroundView : NSView
 {
 	int _tag;
-	NSColor * _color;
-	NSImage * _image;
-	NSArray * _colors;
+	NSColor *_color;
+	NSImage *_image;
+	NSArray *_colors;
 	BOOL _isFlipped;
 	float _rowHeight;
 	float _rowOffset;
