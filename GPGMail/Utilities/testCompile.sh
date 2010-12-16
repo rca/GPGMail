@@ -8,11 +8,12 @@
 #
 ###############################################
 
-echo "Testing GPGMail (have a look at $0.log for details)";
+echo "Testing GPGMail.";
+echo "(have a look at $0.log for details)";
 echo "";
 
 echo -n " * Removing old version: ";
-rm -rf GPGMail > $0.log 2>&1
+rm -rf GPGMail && rm -rf ~/Library/Mail/Bundles/GPGMail.mailbundle
 if [ "$?" == "0" ]; then echo "PASS"; else echo "FAIL"; exit 1; fi
 
 echo -n " * Cloning sources: ";
