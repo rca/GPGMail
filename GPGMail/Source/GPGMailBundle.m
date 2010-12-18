@@ -152,7 +152,8 @@ static BOOL gpgMailWorks = YES;
 
 		Class mvMailBundleClass = NSClassFromString(@"MVMailBundle");
 		if (mvMailBundleClass) {
-			class_setSuperclass([self class], mvMailBundleClass);
+			// use class_addMethod and method_setImplementation instead
+			class_setSuperclass([self class], mvMailBundleClass); 
 		}
 
 		[GPGMailBundle addSnowLeopardCompatibility];

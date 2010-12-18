@@ -94,6 +94,7 @@
 	if (class_getSuperclass([self class]) != NSClassFromString(@"MVComposeAccessoryViewOwner")) {
 		Class parentClass = NSClassFromString(@"MVComposeAccessoryViewOwner");
 		if (parentClass) {
+			// use class_addMethod and method_setImplementation instead
 			class_setSuperclass([self class], parentClass);
 		}
 	}
