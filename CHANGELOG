@@ -1,13 +1,17 @@
 1.3.2   Dec XX 2010
         New home at http://gpgtools.org
         New icons and shared preferences for different GPG tools
+        Massive code cleanup
         Issue 23: Fixed the 'Use Keychain to store passphrases" bug
         Issue 79: Fixed the 'Encrypted reply to an encrypted message' bug
         Issue 81: Fixed the 'update now button' bug
         Issue 97: Fixed the 'check for update pulldown menu' bug
         Issue 110: Fixed the 'password chaching/timeout' bug
         Issue 192: Added the 'Don't check for updates at the first start' feature
+        Issue 197: Fixed the 'show passphrase setting' bug
+        Issue 210: Fixed the 'no longer prompted to enter passphrase' bug
         Issue 233: Fixed the 'bundle is a folder' bug
+        Issue 236: Fixed the 'wrong bundle version and icon shown' bug
 1.3.1   Nov 11 2010
         Issue 221: Fixed compatibility with 10.6.5
         Issue 223: Updated the GPG Keychain Access application
