@@ -491,8 +491,6 @@ static BOOL gpgMailWorks = YES;
 	NSString *itemIdentifier = [[[notification userInfo] objectForKey:@"item"] itemIdentifier];
 	NSArray *additionalIdentifiers = [additionalToolbarItemIdentifiersPerToolbarIdentifier objectForKey:[toolbar identifier]];
 
-	NSRunAlertPanel(@"[toolbar identifier]", @"%@", nil, nil, nil, [toolbar identifier]);
-
 	// WARNING: check whether it was a duplicate item!
 	if ([additionalIdentifiers containsObject:itemIdentifier]) {
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:[itemIdentifier stringByAppendingFormat:@".%@", [toolbar identifier]]];
@@ -1669,7 +1667,6 @@ static BOOL gpgMailWorks = YES;
 	// Do not invoke -[GPGKey publicKey], because it will perform a gpg op
 	// Get key from cached public keys
 	NSString *aFingerprint = [secretKey fingerprint];
-	GPGKey *aPublicKey;
 
     for (GPGKey *aPublicKey in [self publicKeys]) {
 		if ([[aPublicKey fingerprint] isEqualToString:aFingerprint]) {
