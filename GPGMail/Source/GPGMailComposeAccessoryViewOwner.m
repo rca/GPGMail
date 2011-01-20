@@ -1619,6 +1619,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 	[[GPGDefaults standardDefaults] setObject:widths forKey:@"GPGTableColumnWidths"];
 }
 
+
 - (id)outlineView:(NSOutlineView *)outlineView child:(int)index ofItem:(id)item {
 	if (item == nil) {
 		return [[self sortedPublicKeys] objectAtIndex:index];
@@ -1923,7 +1924,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 }
 
 - (NSString *)senderEmail {
-	return [[[[[self messageEditor] gpgFromPopup] selectedItem] title] gpgNormalizedEmail];
+	//return [[[gpgFromButton selectedItem] title] gpgNormalizedEmail];
+	return [[[[[self messageEditor] backEnd] account] firstEmailAddress] gpgNormalizedEmail];
 }
 
 - (GPGKey *)evaluatedPersonalKey {

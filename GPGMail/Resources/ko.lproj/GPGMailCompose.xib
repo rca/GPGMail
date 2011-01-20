@@ -708,7 +708,7 @@
 												</object>
 											</object>
 											<double key="NSRowHeight">17</double>
-											<int key="NSTvFlags">-700416000</int>
+											<int key="NSTvFlags">-683638784</int>
 											<reference key="NSDelegate"/>
 											<reference key="NSDataSource"/>
 											<int key="NSColumnAutoresizingStyle">1</int>
@@ -2559,9 +2559,9 @@
 				<boolean value="YES" key="40.ImportedFromIB2"/>
 				<string key="41.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="41.ImportedFromIB2"/>
-				<string key="45.IBEditorWindowLastContentRect">{{84, 813}, {466, 240}}</string>
+				<string key="45.IBEditorWindowLastContentRect">{{508, 792}, {466, 240}}</string>
 				<string key="45.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="45.IBWindowTemplateEditedContentRect">{{84, 813}, {466, 240}}</string>
+				<string key="45.IBWindowTemplateEditedContentRect">{{508, 792}, {466, 240}}</string>
 				<boolean value="YES" key="45.ImportedFromIB2"/>
 				<boolean value="YES" key="45.windowTemplate.hasMinSize"/>
 				<string key="45.windowTemplate.maxSize">{1.79769e+308, 1.79769e+308}</string>

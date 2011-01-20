@@ -10,7 +10,11 @@
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			<string key="NS.object.0">823</string>
 		</object>
-		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs"/>
+		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
+			<integer value="18"/>
+			<integer value="67"/>
+			<integer value="11"/>
+		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 		</array>
@@ -29,7 +33,7 @@
 				<string key="NSClassName">NSApplication</string>
 			</object>
 			<object class="NSCustomView" id="76927603">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSImageView" id="892436932">
@@ -63,7 +67,7 @@
 					<object class="NSButton" id="733823368">
 						<reference key="NSNextResponder" ref="76927603"/>
 						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{404, 2}, {77, 32}}</string>
+						<string key="NSFrame">{{388, 2}, {93, 32}}</string>
 						<reference key="NSSuperview" ref="76927603"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="916634982">
@@ -125,11 +129,12 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{495, 40}</string>
+				<reference key="NSSuperview"/>
 				<string key="NSClassName">ColorBackgroundView</string>
 				<string key="NSExtension">NSView</string>
 			</object>
 			<object class="NSCustomView" id="221697039">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSImageView" id="156043462">
@@ -160,7 +165,7 @@
 					<object class="NSButton" id="741536748">
 						<reference key="NSNextResponder" ref="221697039"/>
 						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{392, 2}, {89, 32}}</string>
+						<string key="NSFrame">{{371, 2}, {110, 32}}</string>
 						<reference key="NSSuperview" ref="221697039"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="134390818">
@@ -198,11 +203,12 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{495, 40}</string>
+				<reference key="NSSuperview"/>
 				<string key="NSClassName">ColorBackgroundView</string>
 				<string key="NSExtension">NSView</string>
 			</object>
 			<object class="NSCustomView" id="631696273">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSCustomView" id="97932708">
@@ -505,7 +511,7 @@
 							<object class="NSPopUpButton" id="361922721">
 								<reference key="NSNextResponder" ref="188015399"/>
 								<int key="NSvFlags">265</int>
-								<string key="NSFrame">{{369, 6}, {82, 19}}</string>
+								<string key="NSFrame">{{348, 8}, {106, 19}}</string>
 								<reference key="NSSuperview" ref="188015399"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSPopUpButtonCell" key="NSCell" id="361655153">
@@ -605,6 +611,7 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{474, 115}</string>
+				<reference key="NSSuperview"/>
 				<string key="NSClassName">ColorBackgroundView</string>
 				<string key="NSExtension">NSView</string>
 			</object>
@@ -946,9 +953,9 @@
 						<int key="objectID">18</int>
 						<reference key="object" ref="221697039"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="741536748"/>
 							<reference ref="156043462"/>
 							<reference ref="308288205"/>
+							<reference ref="741536748"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">decryption</string>
@@ -1317,8 +1324,14 @@
 				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="13.ImportedFromIB2"/>
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<object class="NSAffineTransform" key="14.IBViewBoundsToFrameTransform">
+					<bytes key="NSTransformStruct">P4AAAL+AAABDxgAAwgAAAA</bytes>
+				</object>
 				<boolean value="YES" key="14.ImportedFromIB2"/>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<object class="NSAffineTransform" key="15.IBViewBoundsToFrameTransform">
+					<bytes key="NSTransformStruct">P4AAAL+AAABDvwAAwgAAAA</bytes>
+				</object>
 				<boolean value="YES" key="15.ImportedFromIB2"/>
 				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="16.ImportedFromIB2"/>
@@ -1376,6 +1389,9 @@
 				<string key="86.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="86.ImportedFromIB2"/>
 				<string key="92.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<object class="NSAffineTransform" key="92.IBViewBoundsToFrameTransform">
+					<bytes key="NSTransformStruct">P4AAAL+AAABDuIAAwbgAAA</bytes>
+				</object>
 				<boolean value="YES" key="92.ImportedFromIB2"/>
 				<string key="93.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="93.ImportedFromIB2"/>
