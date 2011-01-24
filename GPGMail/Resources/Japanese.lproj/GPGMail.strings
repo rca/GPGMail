@@ -97,10 +97,10 @@
 /* Title */
 /* Error messages */
 "GPGMAIL_CANNOT_WORK" = "GPGMailは、対をなすアプリケーションが起動できないために動作できません。Mailの再起動を試みて下さい。それでもエラーが続くようなら、gpgmail-devel@lists.gpgmail.org 宛に連絡して下さい";
-"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMailは動作できません。GnuPG (%@) のバージョン %@ が見つかりましたが、少なくともバージョン %@ が必要です。Mailを終了してから、適合するGnuPGのバージョンをインストールして下さい(例えば MacGPG Project, http://macgpg.sourceforge.net/ から入手します)。それからMailを再起動して下さい。"; // First arg is path to gpg, second and third are version strings
-"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMailは動作できません。GnuPG (%@) の少なくともバージョン %@ を見つけられませんでした。Mailを終了してから、適合するGnuPGのバージョンをインストールして下さい(例えば MacGPG Project, http://macgpg.sourceforge.net/ から入手します)。それからMailを再起動して下さい"; // First arg is path to gpg, second is version string
+"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMailは動作できません。GnuPG (%@) のバージョン %@ が見つかりましたが、少なくともバージョン %@ が必要です。Mailを終了してから、適合するGnuPGのバージョンをインストールして下さい(例えば GPGTools Project, http://gpgtools.org/ から入手します)。それからMailを再起動して下さい。"; // First arg is path to gpg, second and third are version strings
+"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMailは動作できません。GnuPG (%@) の少なくともバージョン %@ を見つけられませんでした。Mailを終了してから、適合するGnuPGのバージョンをインストールして下さい(例えば GPGTools Project, http://gpgtools.org/ から入手します)。それからMailを再起動して下さい"; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "あなたのGPGMailのバージョンは、あなたのMailのバージョンとは互換性がありません。"; /* Title of alert sheet */
-"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "あなたのOSバージョンに適合したGPGMailのバージョンをダウンロードしてインストールする必要があります。入手先は http://www.gpgmail.org/ です。";
+"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "あなたのOSバージョンに適合したGPGMailのバージョンをダウンロードしてインストールする必要があります。入手先は http://www.gpgtools.org/ です。";
 
 /* Validity */
 "VALIDITY: " = "有効性: ";
@@ -213,7 +213,7 @@
 
 /* Alert when user has no PGP key */
 "NO PGP PRIVATE KEY - TITLE" = "あなたはPGP鍵を持っていません。よって、メッセージの暗号化や署名のためにGPGMailを使うことができません。";
-"NO PGP PRIVATE KEY - MESSAGE" = "もしPGPを使ったメッセージの暗号化や署名ができるようにしたいのであれば、秘密鍵が必要です。PGP鍵を作成するためには、http://macgpg.sourceforge.net/からMacGPGの GPG Keychain Access をダウンロードしてからインストールして下さい。";
+"NO PGP PRIVATE KEY - MESSAGE" = "もしPGPを使ったメッセージの暗号化や署名ができるようにしたいのであれば、秘密鍵が必要です。PGP鍵を作成するためには、http://gpgtools.org/からMacGPGの GPG Keychain Access をダウンロードしてからインストールして下さい。";
 
 /* Conflict resolution panel*/
 "<ME>" = "私";

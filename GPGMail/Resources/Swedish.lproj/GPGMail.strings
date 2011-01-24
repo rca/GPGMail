@@ -97,10 +97,10 @@
 /* Title */
 /* Error messages */
 "GPGMAIL_CANNOT_WORK" = "GPGMail kan inte fungera eftersom en hjälpapplikation inte kunde startas. Försök starta om Mail. Kvarstår felet, skicka ett meddelande till gpgmail-devel@lists.gpgmail.org";
-"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail kan inte fungera. GnuPG (%@) version %@ hittades, men GPGMail kräver åtminstone version %@. Avsluta Mail, installera en matchande GnuPG-version (till exempel från MacGPG Project, http://macgpg.sourceforge.net/), återstarta därefter Mail."; // First arg is path to gpg, second and third are version strings
-"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail kan inte fungera. GnuPG (%@) med åtminstone version %@ kunde inte hittas. Avsluta Mail, installera en matchande GnuPG-version (till exempel från MacGPG Project, http://macgpg.sourceforge.net/), återstarta därefter Mail."; // First arg is path to gpg, second is version string
+"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail kan inte fungera. GnuPG (%@) version %@ hittades, men GPGMail kräver åtminstone version %@. Avsluta Mail, installera en matchande GnuPG-version (till exempel från GPGTools Project, http://gpgtools.org/), återstarta därefter Mail."; // First arg is path to gpg, second and third are version strings
+"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail kan inte fungera. GnuPG (%@) med åtminstone version %@ kunde inte hittas. Avsluta Mail, installera en matchande GnuPG-version (till exempel från GPGTools Project, http://gpgtools.org/), återstarta därefter Mail."; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "Din version av GPGMail är inte kompatibel med din version av Mail."; /* Title of alert sheet */
-"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "Du måste ladda ned och installera en GPGMail-version som motsvarar din version av Mac OS. Gå till http://www.gpgmail.org/ för att hämta den.";
+"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "Du måste ladda ned och installera en GPGMail-version som motsvarar din version av Mac OS. Gå till http://www.gpgtools.org/ för att hämta den.";
 
 /* Validity */
 "VALIDITY: " = "validitet: ";
@@ -213,7 +213,7 @@
 
 /* Alert when user has no PGP key */
 "NO PGP PRIVATE KEY - TITLE" = "Du har ingen PGP-nyckel. Du kan inte använda GPGMail för att kryptera eller signera meddelanden.";
-"NO PGP PRIVATE KEY - MESSAGE" = "Om du vill kunna kryptera eller signera meddelanden med PGP, behöver du en personlig PGP-nyckel. För att skapa en PGP-nyckel, ladda ner och installera MacGPGs GPG Keychain Access (GPG Nyckelhanterare) från http://macgpg.sourceforge.net/";
+"NO PGP PRIVATE KEY - MESSAGE" = "Om du vill kunna kryptera eller signera meddelanden med PGP, behöver du en personlig PGP-nyckel. För att skapa en PGP-nyckel, ladda ner och installera GPGTools' GPG Keychain Access (GPG Nyckelhanterare) från http://gpgtools.org/";
 
 /* Conflict resolution panel*/
 "<ME>" = "Jag";

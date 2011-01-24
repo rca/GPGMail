@@ -97,10 +97,10 @@
 /* Title */
 /* Error messages */
 "GPGMAIL_CANNOT_WORK" = "GPGmail kan ikke arbejde, fordi dens hjælpeprogram ikke kan startes. Prøv at genstarte Mail, og hvis problemet fortsat findes, så send en besked til gpgmail-devel@lists.gpgmail.org";
-"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail kan ikke arbejde. Den fandt GnuPG (%@) version %@; men den har brug for minimum version %@. Afslut Mail, installér en passende version af GnuPG (for eksempel fra MacGPG Project, http://macgpg.sourceforge.net/), genstart derpå Mail."; // First arg is path to gpg, second and third are version strings
-"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail kan ikke arbejde. Den fandt ingen GnuPG (%@) med versionsnummer højere end %@. Afslut Mail, installér en passende version af GnuPG (for eksempel fra MacGPG Project, http://macgpg.sourceforge.net/), genstart derpå Mail."; // First arg is path to gpg, second is version string
+"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail kan ikke arbejde. Den fandt GnuPG (%@) version %@; men den har brug for minimum version %@. Afslut Mail, installér en passende version af GnuPG (for eksempel fra GPGTools Project, http://gpgtools.org/), genstart derpå Mail."; // First arg is path to gpg, second and third are version strings
+"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail kan ikke arbejde. Den fandt ingen GnuPG (%@) med versionsnummer højere end %@. Afslut Mail, installér en passende version af GnuPG (for eksempel fra GPGTools Project, http://gpgtools.org/), genstart derpå Mail."; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "Din version af GnuPG kan ikke arbejde sammen med din version af Mail."; /* Title of alert sheet */
-"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "Du er nødt til at nedlaste og installere en version af GPGMail, der passer til din version af styresystem. Gå til http://www.gpgmail.org/ for at nedlaste den.";
+"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "Du er nødt til at nedlaste og installere en version af GPGMail, der passer til din version af styresystem. Gå til http://www.gpgtools.org/ for at nedlaste den.";
 
 /* Validity */
 "VALIDITY: " = "gyldighed: ";
@@ -213,7 +213,7 @@
 
 /* Alert when user has no PGP key */
 "NO PGP PRIVATE KEY - TITLE" = "Du har ingen PGP-nøgler. Du kan ikke bruge GPGMail til at kryptere eller signere beskeder.";
-"NO PGP PRIVATE KEY - MESSAGE" = "Hvis du vil være i stand til at kryptere eller signere beskeder med GPGMail, skal du have en personlig PGP-nøgle. For at danne en PGP-nøgle, skal du nedlaste og installere MacGPGs GPG Keychain Access fra http://macgpg.sourceforge.net/";
+"NO PGP PRIVATE KEY - MESSAGE" = "Hvis du vil være i stand til at kryptere eller signere beskeder med GPGMail, skal du have en personlig PGP-nøgle. For at danne en PGP-nøgle, skal du nedlaste og installere GPGTools' GPG Keychain Access fra http://gpgtools.org/";
 
 /* Conflict resolution panel*/
 "<ME>" = "Mig";

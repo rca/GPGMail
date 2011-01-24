@@ -97,10 +97,10 @@
 /* Title */
 /* Error messages */
 "GPGMAIL_CANNOT_WORK" = "GPGMail cannot work because its companion application could not be started. Try to restart Mail and if error persists, send a message to gpgmail-devel@lists.gpgmail.org";
-"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail cannot work. It found GnuPG (%@) version %@, but it needs at least version %@. Please quit Mail, install a matching GnuPG version (for example from MacGPG Project, http://macgpg.sourceforge.net/), then restart Mail."; // First arg is path to gpg, second and third are version strings
-"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail cannot work. It didn't find GnuPG (%@) with at least version %@. Please quit Mail, install a matching GnuPG version (for example from MacGPG Project, http://macgpg.sourceforge.net/), then restart Mail."; // First arg is path to gpg, second is version string
+"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail cannot work. It found GnuPG (%@) version %@, but it needs at least version %@. Please quit Mail, install a matching GnuPG version (for example from GPGTools Project, http://gpgtools.org/), then restart Mail."; // First arg is path to gpg, second and third are version strings
+"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail cannot work. It didn't find GnuPG (%@) with at least version %@. Please quit Mail, install a matching GnuPG version (for example from GPGTools Project, http://gpgtools.org/), then restart Mail."; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "Your version of GPGMail is not compatible with your version of Mail."; /* Title of alert sheet */
-"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "You need to download and install the GPGMail version matching your OS version. Go to http://www.gpgmail.org/ to get it.";
+"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "You need to download and install the GPGMail version matching your OS version. Go to http://www.gpgtools.org/ to get it.";
 
 /* Validity */
 "VALIDITY: " = "validity: ";
@@ -213,7 +213,7 @@
 
 /* Alert when user has no PGP key */
 "NO PGP PRIVATE KEY - TITLE" = "You don't have any OpenPGP key. You can't use GPGMail to encrypt or sign messages.";
-"NO PGP PRIVATE KEY - MESSAGE" = "If you want to be able to encrypt or sign messages with OpenPGP, you need a personal OpenPGP key. To create a OpenPGP key, download and install MacGPG's GPG Keychain Access from http://macgpg.sourceforge.net/";
+"NO PGP PRIVATE KEY - MESSAGE" = "If you want to be able to encrypt or sign messages with OpenPGP, you need a personal OpenPGP key. To create a OpenPGP key, download and install GPGTools' GPG Keychain Access from http://gpgtools.org/";
 
 /* Conflict resolution panel*/
 "<ME>" = "Me";

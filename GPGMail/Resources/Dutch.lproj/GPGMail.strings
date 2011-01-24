@@ -97,10 +97,10 @@
 /* Title */
 /* Error messages */
 "GPGMAIL_CANNOT_WORK" = "GPGMail kan niet werken. Het programma waar het mee samenwerkt kon niet worden opgestart. Stop en herstart Mail. Treedt deze fout dan weer op, zend dan alstublieft een mail naar gpgmail-devel@lists.gpgmail.org waarin u omschrijft wat er gebeurd. De ontvanger leest geen nederlands, maar wel engels. Kunt u uw mail alleen in het nederlands schrijven, zet u er dan 'this mail is in dutch' boven.";
-"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail kan niet werken. Het programma GnuPG (%@) versie %@ is aanwezig, maar versie %@ of nieuwer is nodig voor GPGMail. Stop Mail en installeer een nieuwere versie van GnuPG (bijvoorbeeld van de MacGPG groep, http://macgpg.sourceforge.net/). Daarna kunt u Mail opnieuw starten."; // First arg is path to gpg, second and third are version strings
-"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail kan niet werken. Voor GPGMail is het programma GnuPG (%@), versie %@ of nieuwer nodig. Stop Mail en installeer GnuPG (bijvoorbeeld van de MacGPG groep, http://macgpg.sourceforge.net/). Daarna kunt u Mail opnieuw starten."; // First arg is path to gpg, second is version string
+"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail kan niet werken. Het programma GnuPG (%@) versie %@ is aanwezig, maar versie %@ of nieuwer is nodig voor GPGMail. Stop Mail en installeer een nieuwere versie van GnuPG (bijvoorbeeld van de GPGTools groep, http://gpgtools.org/). Daarna kunt u Mail opnieuw starten."; // First arg is path to gpg, second and third are version strings
+"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail kan niet werken. Voor GPGMail is het programma GnuPG (%@), versie %@ of nieuwer nodig. Stop Mail en installeer GnuPG (bijvoorbeeld van de GPGTools groep, http://gpgtools.org/). Daarna kunt u Mail opnieuw starten."; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "Deze versie van GPGMail werkt niet bij deze versie van Mail."; /* Title of alert sheet */
-"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "U heeft niet de juiste versie van GPGMail voor uw versie van Mail. U kunt de juiste versie van GPGMail downloaden van http://www.gpgmail.org/. ";
+"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "U heeft niet de juiste versie van GPGMail voor uw versie van Mail. U kunt de juiste versie van GPGMail downloaden van http://www.gpgtools.org/. ";
 
 /* Validity */
 "VALIDITY: " = "betrouwbaarheid: ";
@@ -213,7 +213,7 @@
 
 /* Alert when user has no PGP key */
 "NO PGP PRIVATE KEY - TITLE" = "U heeft geen eigen PGP sleutel. U kan GPGMail niet gebruiken om berichten te versleutelen of te ondertekenen.";
-"NO PGP PRIVATE KEY - MESSAGE" = "Als u berichten wilt kunnen versleutelen of ondertekenen met PGP, heeft u een eigen PGP sleutel nodig. Om een PGP sleutel te maken, kunt u het programma KeyChain Access gebruiken. U kunt dat programma van MacGPG downloaden van http://macgpg.sourceforge.net/";
+"NO PGP PRIVATE KEY - MESSAGE" = "Als u berichten wilt kunnen versleutelen of ondertekenen met PGP, heeft u een eigen PGP sleutel nodig. Om een PGP sleutel te maken, kunt u het programma KeyChain Access gebruiken. U kunt dat programma van GPGTools downloaden van http://gpgtools.org/";
 
 /* Conflict resolution panel*/
 "<ME>" = "Mij";

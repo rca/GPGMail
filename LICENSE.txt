@@ -1,4 +1,4 @@
-Copyright (c) 2000-2010, GPGMail project <gpgmail-devel@lists.gpgmail.org>
+Copyright (c) 2000-2011, GPGMail project <gpgmail-devel@lists.gpgmail.org>
 All rights reserved.
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -12,7 +12,7 @@ modification, are permitted provided that the following conditions are met:
       products derived from this software without specific prior written
       permission.
 
-THIS SOFTWARE IS PROVIDED BY THE GPGMAIL PROJECT TEAM AND ITS CONTRIBUTORS
+THIS SOFTWARE IS PROVIDED BY THE GPGTools Project Team AND ITS CONTRIBUTORS
 ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
 PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL ANY CONTRIBUTOR BE LIABLE FOR ANY
@@ -33,4 +33,4 @@ gpgme, copyright 2001-2008 g10 Code GmbH
 
 Many thanks to the original author Stéphane Corthsy <stephane at sente ch>.
 
-For further information have a look at http://www.gpgmail.org.
+For further information have a look at http://www.gpgtools.org.

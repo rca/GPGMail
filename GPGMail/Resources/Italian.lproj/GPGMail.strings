@@ -97,10 +97,10 @@
 /* Title */
 /* Error messages */
 "GPGMAIL_CANNOT_WORK" = "GPGMail non può funzionare perchè l'applicazione su cui si appoggia non può essere fatta partire. Prova a riavviare Mail, se l'errore persiste manda un messaggio a gpgmail-devel@lists.gpgmail.org";
-"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail non può funzionare. Ha trovato installato GnuPG (%@) versione %@; per funzionare correttamente ha bisogno almeno della versione %@. Perfavore esci da Mail, installa una versione corretta di GnuPG (per esempio scaricandola dal MacGPG Project, http://macgpg.sourceforge.net/), e poi fai ripartire Mail."; // First arg is path to gpg, second and third are version strings
-"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail non può funzionare. Non ha trovato installato GnuPG (%@) con almeno la versione %@. Perfavore esci da Mail, installa una versione corretta di GnuPG (per esempio scaricandola dal MacGPG Project, http://macgpg.sourceforge.net/), e poi fai ripartire Mail."; // First arg is path to gpg, second is version string
+"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail non può funzionare. Ha trovato installato GnuPG (%@) versione %@; per funzionare correttamente ha bisogno almeno della versione %@. Perfavore esci da Mail, installa una versione corretta di GnuPG (per esempio scaricandola dal GPGTools Project, http://gpgtools.org/), e poi fai ripartire Mail."; // First arg is path to gpg, second and third are version strings
+"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail non può funzionare. Non ha trovato installato GnuPG (%@) con almeno la versione %@. Perfavore esci da Mail, installa una versione corretta di GnuPG (per esempio scaricandola dal GPGTools Project, http://gpgtools.org/), e poi fai ripartire Mail."; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "Questa versione di GPGMail non è compatibile con la tua versione di Mail."; /* Title of alert sheet */
-"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "Devi scaricare e installare la versione di GPGMail compatibile con la tua versione del sistema operativo. Vai a http://www.gpgmail.org/ per scaricarla.";
+"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "Devi scaricare e installare la versione di GPGMail compatibile con la tua versione del sistema operativo. Vai a http://www.gpgtools.org/ per scaricarla.";
 
 /* Validity */
 "VALIDITY: " = "validità: ";
@@ -213,7 +213,7 @@
 
 /* Alert when user has no PGP key */
 "NO PGP PRIVATE KEY - TITLE" = "Non hai nessuna chiave PGP. Non puoi usare GPGMail per cifrare o per firmare i messaggi.";
-"NO PGP PRIVATE KEY - MESSAGE" = "Se vuoi cifrare o firmare i messaggi con PGP hai bisogno di una chiave PGP personale. Per creare una chiave PGP personale scarica e utilizza il programma GPG Keychain Access di MacGPG che puoi trovare a  http://macgpg.sourceforge.net/";
+"NO PGP PRIVATE KEY - MESSAGE" = "Se vuoi cifrare o firmare i messaggi con PGP hai bisogno di una chiave PGP personale. Per creare una chiave PGP personale scarica e utilizza il programma GPG Keychain Access di MacGPG2 che puoi trovare a  http://gpgtools.org/";
 
 /* Conflict resolution panel*/
 "<ME>" = "Me";
