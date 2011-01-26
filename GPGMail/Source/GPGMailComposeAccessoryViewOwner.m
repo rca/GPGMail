@@ -69,6 +69,7 @@
 - (void)senderAccountDidChange;
 - (void)findMatchingPublicKeys;
 // - (void) findMatchingPublicKeysIfNecessary;
+
 - (BOOL)hasValidSigningKeys;
 - (void)reloadPersonalKeys;
 - (void)refreshPublicKeysMenu;
@@ -688,6 +689,11 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 
 	// Let's reorder visible columns
 	visibleTableColumnTags = [[GPGDefaults standardDefaults] arrayForKey:@"GPGVisibleTableColumnTags"];
+	if ([visibleTableColumnTags count] == 0) {
+		[visibleTableColumnTags addObject:[NSString stringWithFormat:@"%u", 0]];
+		[visibleTableColumnTags addObject:[NSString stringWithFormat:@"%u", 1]];
+		[visibleTableColumnTags addObject:[NSString stringWithFormat:@"%u", 2]];
+	}
 	anEnum = [visibleTableColumnTags objectEnumerator];
 	i = 0;
 	while (aNumber = [anEnum nextObject]) {
@@ -731,7 +737,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 
 		NSAssert([NSBundle loadNibNamed:@"GPGMailComposeTiger" owner:self], @"### Unable to load GPGMailComposeTiger nib");
 	}
-
+	
 	return self;
 }
 
@@ -1586,8 +1592,11 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 
 	[[GPGDefaults standardDefaults] setInteger:[allTableColumns indexOfObject:sortingTableColumn] forKey:@"GPGSortingTableColumnTag"];
 	[[GPGDefaults standardDefaults] setBool:ascendingOrder forKey:@"GPGAscendingSorting"];
+	
+	
 	while (aColumn = [anEnum nextObject])
 		[visibleColumnTags addObject:[NSString stringWithFormat:@"%u", [allTableColumns indexOfObject:aColumn]]];
+
 	[[GPGDefaults standardDefaults] setObject:visibleColumnTags forKey:@"GPGVisibleTableColumnTags"];
 
 	[publicKeysPanel orderOut:sender];
