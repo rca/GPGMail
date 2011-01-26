@@ -1,7 +1,13 @@
-all: install
+all: compile
 
-install:
+compile:
+	INSTALL_GPGMAIL=0 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release build
+
+install: install
 	INSTALL_GPGMAIL=1 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release build
+
+dmg: compile
+	@./Installer/create_dmg.sh
 
 clean-gpgme:
 	rm -rf Dependencies/MacGPGME/build/dist
