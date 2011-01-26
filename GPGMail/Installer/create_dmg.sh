@@ -95,5 +95,4 @@ rm -f "$dmgTempPath"
 echo "Signing..."
 gpg2 -bu 76D78F0500D026C4 "$dmgPath"
 
-
 popd > /dev/null
