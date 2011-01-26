@@ -745,7 +745,7 @@
 							<key>LANGUAGE</key>
 							<string>English</string>
 							<key>SECONDARY_VALUE</key>
-							<string>Neither GnuPG nor better GnuPG 2 is found on your system! Make sure you have at least one of them installed. Visit http://gpgtools.org</string>
+							<string>Neither GnuPG nor GnuPG 2 is found on your system! Make sure you have at least one of them installed. Visit http://gpgtools.org</string>
 							<key>VALUE</key>
 							<string>GnuPG missing</string>
 						</dict>
