@@ -690,7 +690,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 	// Let's reorder visible columns
 	visibleTableColumnTags = [[GPGDefaults standardDefaults] arrayForKey:@"GPGVisibleTableColumnTags"];
 	if (GPGMailLoggingLevel)
-		NSLog(@"[DEBUG] : visible columns %i", [visibleTableColumnTags count]);
+		NSLog(@"[DEBUG] : visible columns %i", (int)[visibleTableColumnTags count]);
 	if ([visibleTableColumnTags count] <= 1) {
 		NSMutableArray *visibleTableColumnTags2 = [NSMutableArray arrayWithArray:visibleTableColumnTags];
 		[visibleTableColumnTags2 addObject:[NSString stringWithFormat:@"%u", 0]];
