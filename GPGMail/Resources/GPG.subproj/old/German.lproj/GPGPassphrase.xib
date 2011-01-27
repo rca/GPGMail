@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">10H574</string>
+		<string key="IBDocument.SystemVersion">10J567</string>
 		<string key="IBDocument.InterfaceBuilderVersion">823</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
-		<string key="IBDocument.HIToolboxVersion">461.00</string>
+		<string key="IBDocument.HIToolboxVersion">462.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			<string key="NS.object.0">823</string>
@@ -86,7 +86,7 @@
 						<object class="NSButton" id="977565818">
 							<reference key="NSNextResponder" ref="239951537"/>
 							<int key="NSvFlags">289</int>
-							<string key="NSFrame">{{307, 11}, {90, 33}}</string>
+							<string key="NSFrame">{{292, 12}, {108, 32}}</string>
 							<reference key="NSSuperview" ref="239951537"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="415547877">
@@ -293,7 +293,7 @@
 						<object class="NSButton" id="381821357">
 							<reference key="NSNextResponder" ref="239951537"/>
 							<int key="NSvFlags">256</int>
-							<string key="NSFrame">{{106, 20}, {201, 18}}</string>
+							<string key="NSFrame">{{106, 20}, {125, 18}}</string>
 							<reference key="NSSuperview" ref="239951537"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="208333858">
@@ -327,9 +327,6 @@
 				<string key="NSScreenRect">{{0, 0}, {1024, 746}}</string>
 				<string key="NSMinSize">{94, 29}</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
-			</object>
-			<object class="NSCustomObject" id="91265425">
-				<string key="NSClassName">DocumentEditor</string>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -684,11 +681,6 @@
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Application</string>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">65</int>
-						<reference key="object" ref="91265425"/>
-						<reference key="parent" ref="0"/>
-					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -730,7 +722,6 @@
 					<string>42.ImportedFromIB2</string>
 					<string>43.IBPluginDependency</string>
 					<string>43.ImportedFromIB2</string>
-					<string>65.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -769,7 +760,6 @@
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="YES"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -793,14 +783,6 @@
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<object class="IBPartialClassDescription">
-					<string key="className">DocumentEditor</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Source/PrivateHeaders/MessageEditor.h</string>
-					</object>
-				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">FirstResponder</string>
 					<string key="superclassName">NSObject</string>
@@ -1014,7 +996,7 @@
 			<integer value="3000" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<nil key="IBDocument.LastKnownRelativeProjectPath"/>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../../../GPGMail.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<bool key="EncodedWithXMLCoder">YES</bool>

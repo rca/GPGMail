@@ -2,17 +2,16 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">10H574</string>
+		<string key="IBDocument.SystemVersion">10J567</string>
 		<string key="IBDocument.InterfaceBuilderVersion">823</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
-		<string key="IBDocument.HIToolboxVersion">461.00</string>
+		<string key="IBDocument.HIToolboxVersion">462.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			<string key="NS.object.0">823</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="41"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -46,7 +45,7 @@
 				<string key="NSWindowContentMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<string key="NSWindowContentMinSize">{466, 252}</string>
 				<object class="NSView" key="NSWindowView" id="564263743">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -317,7 +316,6 @@
 												<reference key="NSHScroller" ref="831079309"/>
 												<reference key="NSContentView" ref="1033223177"/>
 												<reference key="NSHeaderClipView" ref="336190387"/>
-												<reference key="NSCornerView" ref="764750914"/>
 												<bytes key="NSScrollAmts">QSAAAEEgAABBgAAAQYAAAA</bytes>
 											</object>
 											<object class="NSTextField" id="54564035">
@@ -677,7 +675,6 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{466, 252}</string>
-					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{466, 268}</string>
@@ -996,10 +993,10 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="54564035"/>
 							<reference ref="568753626"/>
-							<reference ref="545004444"/>
-							<reference ref="820581998"/>
 							<reference ref="666443011"/>
 							<reference ref="81088947"/>
+							<reference ref="545004444"/>
+							<reference ref="820581998"/>
 						</object>
 						<reference key="parent" ref="53922588"/>
 					</object>
@@ -1315,18 +1312,14 @@
 					<string>15.ImportedFromIB2</string>
 					<string>19.IBPluginDependency</string>
 					<string>19.ImportedFromIB2</string>
-					<string>25.IBEditorWindowLastContentRect</string>
 					<string>25.IBPluginDependency</string>
-					<string>25.IBWindowTemplateEditedContentRect</string>
 					<string>25.ImportedFromIB2</string>
 					<string>25.windowTemplate.hasMinSize</string>
 					<string>25.windowTemplate.maxSize</string>
 					<string>25.windowTemplate.minSize</string>
 					<string>27.IBPluginDependency</string>
-					<string>27.IBViewBoundsToFrameTransform</string>
 					<string>27.ImportedFromIB2</string>
 					<string>28.IBPluginDependency</string>
-					<string>28.IBViewBoundsToFrameTransform</string>
 					<string>28.ImportedFromIB2</string>
 					<string>30.IBPluginDependency</string>
 					<string>30.ImportedFromIB2</string>
@@ -1387,22 +1380,14 @@
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="YES"/>
-					<string>{{126, 761}, {466, 252}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{126, 761}, {466, 252}}</string>
 					<boolean value="YES"/>
 					<boolean value="YES"/>
 					<string>{1.79769e+308, 1.79769e+308}</string>
 					<string>{466, 252}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">P4AAAL+AAABDt4AAwhwAAA</bytes>
-					</object>
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">P4AAAL+AAABDkIAAwhwAAA</bytes>
-					</object>
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="YES"/>
@@ -1766,7 +1751,7 @@
 			<integer value="3000" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">../../GPGMail.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../../../GPGMail.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<bool key="EncodedWithXMLCoder">YES</bool>

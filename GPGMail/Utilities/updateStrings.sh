@@ -15,7 +15,7 @@
 if [ "" == "`which gsed`" ]; then
     echo "Install gsed first (e.g. port install gsed).;"
     exit 1;
-fi 
+fi
 ###############################################
 
 
@@ -25,7 +25,7 @@ fi
 updateFile() {
     _filename=$1;
     #echo "  Updating $_filename...";
-	gsed -r -i "s/1\.3\.1-beta1/1.3.1/" "$_filename";
+	gsed -r -i "s/1\.3\.2beta2/1.3.2rc2/g" "$_filename";
  	#gsed -r -i "s/2000-200[0-9]/2000-2010/" "$_filename";
 
     # not needed anymore
