@@ -692,9 +692,11 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 	if (GPGMailLoggingLevel)
 		NSLog(@"[DEBUG] : visible columns %i", [visibleTableColumnTags count]);
 	if ([visibleTableColumnTags count] <= 1) {
-		[visibleTableColumnTags addObject:[NSString stringWithFormat:@"%u", 0]];
-		[visibleTableColumnTags addObject:[NSString stringWithFormat:@"%u", 1]];
-		[visibleTableColumnTags addObject:[NSString stringWithFormat:@"%u", 2]];
+		NSMutableArray *visibleTableColumnTags2 = [NSMutableArray arrayWithArray:visibleTableColumnTags];
+		[visibleTableColumnTags2 addObject:[NSString stringWithFormat:@"%u", 0]];
+		[visibleTableColumnTags2 addObject:[NSString stringWithFormat:@"%u", 1]];
+		[visibleTableColumnTags2 addObject:[NSString stringWithFormat:@"%u", 2]];
+		visibleTableColumnTags = visibleTableColumnTags2;
 	}
 	anEnum = [visibleTableColumnTags objectEnumerator];
 	i = 0;
