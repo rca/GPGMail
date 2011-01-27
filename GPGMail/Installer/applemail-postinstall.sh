@@ -43,3 +43,49 @@ fi
 defaults write "$domain" EnableBundles -bool YES
 defaults write "$domain" BundleCompatibilityVersion -int 3
 
+###############################################################
+# copied from GPGPreferences. This should be avoided:
+# http://gpgtools.lighthouseapp.com/projects/65162/tickets/30
+###############################################################
+
+_bundleId="gpgmail";
+_bundleName="GPGMail.mailbundle";
+_bundleRootPath="$HOME/Library/Mail/Bundles";
+_bundlePath="$_bundleRootPath/$_bundleName";
+_plistBundle="$_bundlePath/Contents/Info";
+_plistMail="/Applications/Mail.app/Contents/Info";
+_plistFramework="/System/Library/Frameworks/Message.framework/Resources/Info";
+
+isInstalled=`if [ -d "$_bundlePath" ]; then echo "1"; else echo "0"; fi`
+
+if [ "1" == "$isInstalled" ]; then
+  echo "[$_bundleId] is installed";
+else
+  foundDisabled=`find "$_bundleRootPath ("* -type d -name "$_bundleName"|head -n1`
+  if [ "" != "$foundDisabled" ]; then
+    mkdir -p "$_bundleRootPath";
+    mv "$foundDisabled" "$_bundleRootPath";
+  else
+    echo "[$_bundleId] not found";
+  fi
+    echo "[$_bundleId] was reinstalled";
+fi
+
+uuid1=`defaults read "$_plistMail" "PluginCompatibilityUUID"`
+uuid2=`defaults read "$_plistFramework" "PluginCompatibilityUUID"`
+isPatched1=`grep $uuid1 "$_bundlePath/Contents/Info.plist" 2>/dev/null`
+isPatched2=`grep $uuid2 "$_bundlePath/Contents/Info.plist" 2>/dev/null`
+
+if [ "" != "$isPatched1" ] && [ "" != "$isPatched2" ] ; then
+  echo "[$_bundleId] already patched";
+else
+  defaults write "$_plistBundle" "SupportedPluginCompatibilityUUIDs" -array-add "$uuid1"
+  defaults write "$_plistBundle" "SupportedPluginCompatibilityUUIDs" -array-add "$uuid2"
+  plutil -convert xml1 "$_plistBundle.plist"
+  echo "[$_bundleId] successfully patched";
+fi
+
+# change the user and group to avoid problems when updating (so this skript needs to be run as root!)
+chown -R $USER:Staff "$HOME/Library/Mail/Bundles/GPGMail.mailbundle"
+
+exit 0
