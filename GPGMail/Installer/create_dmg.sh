@@ -13,86 +13,133 @@ source "Makefile.config"
 #-------------------------------------------------------------------------
 
 
-#-------------------------------------------------------------------------
-if ( ! test -e Makefile ) then
-	echo "Wrong directory..."
-	exit 1
-fi
-if ( test -e /usr/local/bin/packagesbuild ) then
-    echo "Building the installer..."
-    /usr/local/bin/packagesbuild "$appPkg"
-else
-    echo "ERROR: You need the Application \"Packages\"!"
-    echo "get it at http://s.sudre.free.fr/Software/Packages.html"
-    exit 1
-fi
-#-------------------------------------------------------------------------
+
+read -p "Create DMG? " input
+
+if [ "x$input" == "xy" -o "x$input" == "xY" ] ;then
+
+	if ( ! test -e Makefile ) then
+		echo "Wrong directory..."
+		exit 1
+	fi
+	if ( test -e /usr/local/bin/packagesbuild ) then
+		echo "Building the installer..."
+		/usr/local/bin/packagesbuild "$appPkg"
+	else
+		echo "ERROR: You need the Application \"Packages\"!"
+		echo "get it at http://s.sudre.free.fr/Software/Packages.html"
+		exit 1
+	fi
+	#--------------------------------------------------------------------
 
 
-#-------------------------------------------------------------------------
-echo "Removing old files..."
-rm -f "$dmgTempPath"
-rm -f "$dmgPath"
-rm -f "$dmgPath.sig"
-rm -f "$dmgPath.asc"
-rm -rf "build/dmgTemp"
+	echo "Removing old files..."
+	rm -f "$dmgTempPath"
+	rm -f "$dmgPath"
+	rm -rf "build/dmgTemp"
 
-echo "Creating temp folder..."
-mkdir build/dmgTemp
+	echo "Creating temp folder..."
+	mkdir build/dmgTemp
 
-echo "Copying files..."
-"$pathSetIcon"/setfileicon "$imgTrash" "$rmPath"
-"$pathSetIcon"/setfileicon "$imgInstaller" "$appPath"
-mkdir build/dmgTemp/.background
-cp "$imgBackground" build/dmgTemp/.background/Background.png
-cp "$imgDmg" build/dmgTemp/.VolumeIcon.icns
-cp -PR "$appPath" build/dmgTemp/
-cp -PR "$rmPath" build/dmgTemp/
+	echo "Copying files..."
+	"$pathSetIcon"/setfileicon "$imgTrash" "$rmPath"
+	"$pathSetIcon"/setfileicon "$imgInstaller" "$appPath"
+	mkdir build/dmgTemp/.background
+	cp "$imgBackground" build/dmgTemp/.background/Background.png
+	cp "$imgDmg" build/dmgTemp/.VolumeIcon.icns
+	cp -PR "$appPath" build/dmgTemp/
+	cp -PR "$rmPath" build/dmgTemp/
 
-echo "Creating DMG..."
-hdiutil create -scrub -quiet -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -srcfolder build/dmgTemp -volname "$volumeName" "$dmgTempPath"
-mountInfo=$(hdiutil attach -readwrite -noverify "$dmgTempPath")
-device=$(echo "$mountInfo" | head -1 | cut -d " " -f 1)
-mountPoint=$(echo "$mountInfo" | tail -1 | sed -En 's/([^	]+[	]+){2}//p')
+	echo "Creating DMG..."
+	hdiutil create -scrub -quiet -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -srcfolder build/dmgTemp -volname "$volumeName" "$dmgTempPath"
+	mountInfo=$(hdiutil attach -readwrite -noverify "$dmgTempPath")
+	device=$(echo "$mountInfo" | head -1 | cut -d " " -f 1)
+	mountPoint=$(echo "$mountInfo" | tail -1 | sed -En 's/([^	]+[	]+){2}//p')
 
-echo "Setting attributes..."
-	SetFile -a C "$mountPoint"
+	echo "Setting attributes..."
+		SetFile -a C "$mountPoint"
 
-	osascript >/dev/null << EOT1
-	tell application "Finder"
-		tell disk "$volumeName"
-			open
-			set viewOptions to icon view options of container window
-			set current view of container window to icon view
-			set toolbar visible of container window to false
-			set statusbar visible of container window to false
-			set bounds of container window to {400, 200, 580 + 400, 320 + 200}
-			set arrangement of viewOptions to not arranged
-			set icon size of viewOptions to 64
-			set text size of viewOptions to 13
-			set background picture of viewOptions to file ".background:Background.png"
+		osascript >/dev/null << EOT1
+		tell application "Finder"
+			tell disk "$volumeName"
+				open
+				set viewOptions to icon view options of container window
+				set current view of container window to icon view
+				set toolbar visible of container window to false
+				set statusbar visible of container window to false
+				set bounds of container window to {400, 200, 580 + 400, 320 + 200}
+				set arrangement of viewOptions to not arranged
+				set icon size of viewOptions to 64
+				set text size of viewOptions to 13
+				set background picture of viewOptions to file ".background:Background.png"
 
-			set position of item "$appName" of container window to {160, 220}
-			set position of item "$rmName" of container window to {390, 220}
-			update without registering applications
-			close
+				set position of item "$appName" of container window to {160, 220}
+				set position of item "$rmName" of container window to {390, 220}
+				update without registering applications
+				close
+			end tell
 		end tell
-	end tell
 EOT1
 
-chmod -Rf +r,go-w "$mountPoint"
-rm -r "$mountPoint/.Trashes" "$mountPoint/.fseventsd"
-hdiutil detach -quiet "$mountPoint"
-hdiutil convert "$dmgTempPath" -quiet -format UDZO -imagekey zlib-level=9 -o "$dmgPath"
+	chmod -Rf +r,go-w "$mountPoint"
+	rm -r "$mountPoint/.Trashes" "$mountPoint/.fseventsd"
+	hdiutil detach -quiet "$mountPoint"
+	hdiutil convert "$dmgTempPath" -quiet -format UDZO -imagekey zlib-level=9 -o "$dmgPath"
 
-echo -e "DMG created\n\n"
-open "$dmgPath"
+	echo -e "DMG created\n\n"
+	open "$dmgPath"
 
-echo "Cleanup..."
-rm -rf build/dmgTemp
-rm -f "$dmgTempPath"
+	echo "Cleanup..."
+	rm -rf build/dmgTemp
+	rm -f "$dmgTempPath"
+fi
 
-echo "Signing..."
-gpg2 -bu 76D78F0500D026C4 "$dmgPath"
+
+read -p "Create a detached signature? " input
+
+if [ "x$input" == "xy" -o "x$input" == "xY" ] ;then
+	echo "Removing old signature..."
+	rm -f "$dmgPath.sig"
+
+	echo "Signing..."
+	gpg2 -bau 76D78F0500D026C4 -o "${dmgPath}.sig"  "$dmgPath"
+fi
+
+
+read -p "Create Sparkle appcast entry? " input
+
+if [ "x$input" == "xy" -o "x$input" == "xY" ] ;then
+	PRIVATE_KEY_NAME="Sparkle GPGMail - Private key"
+
+
+	signature=$(openssl dgst -sha1 -binary < "$dmgPath" |
+	  openssl dgst -dss1 -sign <(security find-generic-password -g -s "$PRIVATE_KEY_NAME" 2>&1 >/dev/null | perl -pe '($_) = /<key>NOTE<\/key>.*<string>(.*)<\/string>/; s/\\012/\n/g') |
+	  openssl enc -base64)
+
+	date=$(LC_TIME=en_US date +"%a, %d %b %G %T %z")
+	size=$(stat -f "%z" "$dmgPath")
+
+
+	echo -e "\n"
+
+	cat <<EOT2
+<item>
+	<title>Version ${version}</title>
+	<description>Visit http://www.gpgtools.org/gpgmail.html for further information.</description>
+	<sparkle:releaseNotesLink>http://www.gpgtools.org/gpgmail_sparkle.html</sparkle:releaseNotesLink>
+	<pubDate>${date}</pubDate>
+	<enclosure url="https://github.com/downloads/GPGMail/GPGMail/${dmgName}"
+			   sparkle:version="${version}"
+			   sparkle:dsaSignature="${signature}"
+			   length="${size}"
+			   type="application/octet-stream" />
+</item>
+EOT2
+
+	echo
+fi
+
+
 
 popd > /dev/null
+

@@ -185,7 +185,7 @@
 		1B194BEA11CC58BC0092B810 /* OutgoingMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OutgoingMessage.h; path = Source/PrivateHeaders/OutgoingMessage.h; sourceTree = "<group>"; };
 		1B45A53B11CC98AB00ED4663 /* MessageViewer+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MessageViewer+GPGMail.m"; path = "Source/MessageViewer+GPGMail.m"; sourceTree = "<group>"; };
 		1B6B7DF311CD1C600055F528 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
-		1B6B7E5111CD24440055F528 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dsa_pub.pem; path = Release/dsa_pub.pem; sourceTree = "<group>"; };
+		1B6B7E5111CD24440055F528 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dsa_pub.pem; path = Resources/dsa_pub.pem; sourceTree = "<group>"; };
 		1B859A6E109331A6009E469A /* MVTerminationHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MVTerminationHandler.h; path = Source/PrivateHeaders/MVTerminationHandler.h; sourceTree = "<group>"; };
 		1BCEE1E211CC051500488D19 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE.txt; path = ../LICENSE.txt; sourceTree = "<group>"; };
 		1BF51A6F108FCD1900AC8268 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
@@ -396,7 +396,6 @@
 		559A812E0838EEFD0052F47C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
 		559A812F0838EEFD0052F47C /* System.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = System.framework; path = /System/Library/Frameworks/System.framework; sourceTree = "<absolute>"; };
 		559A81860838F3C30052F47C /* Info-GPGMail.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-GPGMail.plist"; path = "Plists/Info-GPGMail.plist"; sourceTree = "<group>"; };
-		559A819C0838F87E0052F47C /* Installer.applescript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.applescript; name = Installer.applescript; path = Release/Installer.applescript; sourceTree = "<group>"; };
 		8D5B49B6048680CD000E48DA /* GPGMail.mailbundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPGMail.mailbundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC48AFAB11CDEE0300393D2C /* MacGPGME.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacGPGME.framework; path = Dependencies/MacGPGME/build/Release/MacGPGME.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -425,7 +424,6 @@
 			isa = PBXGroup;
 			children = (
 				1B1949D011CC52090092B810 /* Dependencies */,
-				1B19488311CC50AA0092B810 /* Release */,
 				1BCEE1E211CC051500488D19 /* LICENSE.txt */,
 				08FB77AFFE84173DC02AAC07 /* GPG */,
 				559A7FB30838E4200052F47C /* Documentation */,
@@ -500,14 +498,6 @@
 				1B194B6611CC56520092B810 /* GPG.strings */,
 			);
 			name = GPG;
-			sourceTree = "<group>";
-		};
-		1B19488311CC50AA0092B810 /* Release */ = {
-			isa = PBXGroup;
-			children = (
-				559A819C0838F87E0052F47C /* Installer.applescript */,
-			);
-			name = Release;
 			sourceTree = "<group>";
 		};
 		1B1949D011CC52090092B810 /* Dependencies */ = {
