@@ -2,7 +2,7 @@
 #
 # This script creates a DMG  for GPGTools
 #
-# (c) by Felix Co & Alexander Willner
+# (c) by Felix Co & Alexander Willner & Roman Zechmeister
 #
 
 pushd "$(dirname "$0")/.." > /dev/null
@@ -14,24 +14,25 @@ source "Makefile.config"
 
 
 
-read -p "Create DMG? " input
+#-------------------------------------------------------------------------
+read -p "Create DMG [y/n]? " input
 
 if [ "x$input" == "xy" -o "x$input" == "xY" ] ;then
 
-	if ( ! test -e Makefile ) then
+	if ( ! test -e Makefile.config ) then
 		echo "Wrong directory..."
-		exit 1
+		exit 1;
 	fi
-	if ( test -e /usr/local/bin/packagesbuild ) then
-		echo "Building the installer..."
-		/usr/local/bin/packagesbuild "$appPkg"
-	else
-		echo "ERROR: You need the Application \"Packages\"!"
-		echo "get it at http://s.sudre.free.fr/Software/Packages.html"
-		exit 1
+	if [ "" != "$appPkg" ]; then
+    	if ( test -e /usr/local/bin/packagesbuild ) then
+	    	echo "Building the installer..."
+		    /usr/local/bin/packagesbuild "$appPkg"
+    	else
+	    	echo "ERROR: You need the Application \"Packages\"!"
+		    echo "get it at http://s.sudre.free.fr/Software/Packages.html"
+    		exit 1
+	    fi
 	fi
-	#--------------------------------------------------------------------
-
 
 	echo "Removing old files..."
 	rm -f "$dmgTempPath"
@@ -42,13 +43,16 @@ if [ "x$input" == "xy" -o "x$input" == "xY" ] ;then
 	mkdir build/dmgTemp
 
 	echo "Copying files..."
-	"$pathSetIcon"/setfileicon "$imgTrash" "$rmPath"
-	"$pathSetIcon"/setfileicon "$imgInstaller" "$appPath"
+	if [ "" != "$rmPath" ]; then
+        "$pathSetIcon"/setfileicon "$imgTrash" "$rmPath"
+        cp -PR "$rmPath" build/dmgTemp/
+    fi
+    "$pathSetIcon"/setfileicon "$imgInstaller" "$appPath"
+    cp -PR "$appPath" build/dmgTemp/
 	mkdir build/dmgTemp/.background
 	cp "$imgBackground" build/dmgTemp/.background/Background.png
 	cp "$imgDmg" build/dmgTemp/.VolumeIcon.icns
-	cp -PR "$appPath" build/dmgTemp/
-	cp -PR "$rmPath" build/dmgTemp/
+
 
 	echo "Creating DMG..."
 	hdiutil create -scrub -quiet -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -srcfolder build/dmgTemp -volname "$volumeName" "$dmgTempPath"
@@ -72,14 +76,31 @@ if [ "x$input" == "xy" -o "x$input" == "xY" ] ;then
 				set icon size of viewOptions to 64
 				set text size of viewOptions to 13
 				set background picture of viewOptions to file ".background:Background.png"
-
-				set position of item "$appName" of container window to {160, 220}
-				set position of item "$rmName" of container window to {390, 220}
-				update without registering applications
-				close
+    			set position of item "$appName" of container window to {$appPos}
 			end tell
 		end tell
 EOT1
+
+if [ "" != "$rmName" ]; then
+    osascript >/dev/null << EOT1
+	tell application "Finder"
+		tell disk "$volumeName"
+			set position of item "$rmName" of container window to {$rmPos}
+		end tell
+	end tell
+EOT1
+fi
+
+osascript >/dev/null << EOT1
+	tell application "Finder"
+		tell disk "$volumeName"
+			update without registering applications
+			close
+		end tell
+	end tell
+EOT1
+
+
 
 	chmod -Rf +r,go-w "$mountPoint"
 	rm -r "$mountPoint/.Trashes" "$mountPoint/.fseventsd"
@@ -93,9 +114,11 @@ EOT1
 	rm -rf build/dmgTemp
 	rm -f "$dmgTempPath"
 fi
+#-------------------------------------------------------------------------
 
 
-read -p "Create a detached signature? " input
+#-------------------------------------------------------------------------
+read -p "Create a detached signature [y/n]? " input
 
 if [ "x$input" == "xy" -o "x$input" == "xY" ] ;then
 	echo "Removing old signature..."
@@ -104,9 +127,13 @@ if [ "x$input" == "xy" -o "x$input" == "xY" ] ;then
 	echo "Signing..."
 	gpg2 -bau 76D78F0500D026C4 -o "${dmgPath}.sig"  "$dmgPath"
 fi
+#-------------------------------------------------------------------------
 
 
-read -p "Create Sparkle appcast entry? " input
+#-------------------------------------------------------------------------
+## todo: update Makefile.conf
+####################################################
+read -p "Create Sparkle appcast entry [y/n]? " input
 
 if [ "x$input" == "xy" -o "x$input" == "xY" ] ;then
 	PRIVATE_KEY_NAME="Sparkle GPGMail - Private key"
@@ -138,6 +165,7 @@ EOT2
 
 	echo
 fi
+#-------------------------------------------------------------------------
 
 
 

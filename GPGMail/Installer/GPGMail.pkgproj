@@ -493,14 +493,14 @@
 				<key>POSTINSTALL_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>applemail-postinstall.sh</string>
+					<string>postinstall.sh</string>
 					<key>PATH_TYPE</key>
 					<integer>1</integer>
 				</dict>
 				<key>PREINSTALL_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>applemail-preinstall.sh</string>
+					<string>preinstall.sh</string>
 					<key>PATH_TYPE</key>
 					<integer>1</integer>
 				</dict>
@@ -554,7 +554,7 @@
 				<key>BACKGROUND_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>gpgmail.png</string>
+					<string>background_installer.png</string>
 					<key>PATH_TYPE</key>
 					<integer>1</integer>
 				</dict>
@@ -728,7 +728,7 @@
 						<key>IC_REQUIREMENT_SCRIPT_PATH</key>
 						<dict>
 							<key>PATH</key>
-							<string>check_for_gpg.sh</string>
+							<string>../Dependencies/GPGTools_Core/scripts/check_for_gpg.sh</string>
 							<key>PATH_TYPE</key>
 							<integer>1</integer>
 						</dict>
