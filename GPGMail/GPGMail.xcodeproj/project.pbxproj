@@ -53,6 +53,7 @@
 		308B8FD812A6AE5F00C99BD2 /* GPGPassphrase.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8FBF12A6AE5F00C99BD2 /* GPGPassphrase.xib */; };
 		308B8FD912A6AE5F00C99BD2 /* GPGProgressIndicatorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8FCB12A6AE5F00C99BD2 /* GPGProgressIndicatorController.xib */; };
 		30913B4612B19B3B00327FDF /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 30913B4512B19B3B00327FDF /* Credits.rtf */; };
+		3094CD6D12F5EBA200ABCE8A /* GPGMail.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3094CD6C12F5EBA200ABCE8A /* GPGMail.icns */; };
 		30B90DE21284656500B3FA6A /* GPGDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B90DE11284656500B3FA6A /* GPGDefaults.m */; };
 		30E4F6BF12B3B1350093608D /* CheckMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6A712B3B1350093608D /* CheckMark.png */; };
 		30E4F6C012B3B1350093608D /* clear-old.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6A812B3B1350093608D /* clear-old.png */; };
@@ -272,6 +273,7 @@
 		308B8FD512A6AE5F00C99BD2 /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ko; path = Resources/GPG.subproj/ko.lproj/GPGProgressIndicatorController.xib; sourceTree = "<group>"; };
 		308B8FD612A6AE5F00C99BD2 /* Swedish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Swedish; path = Resources/GPG.subproj/Swedish.lproj/GPGProgressIndicatorController.xib; sourceTree = "<group>"; };
 		30913B4312B19B3500327FDF /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = Resources/English.lproj/Credits.rtf; sourceTree = "<group>"; };
+		3094CD6C12F5EBA200ABCE8A /* GPGMail.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = GPGMail.icns; path = Resources/GPGMail.icns; sourceTree = "<group>"; };
 		30B18F1C12B3C7FB008353F5 /* German */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = German; path = Resources/German.lproj/Credits.rtf; sourceTree = "<group>"; };
 		30B90DE01284656500B3FA6A /* GPGDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPGDefaults.h; path = Source/GPGDefaults.h; sourceTree = "<group>"; };
 		30B90DE11284656500B3FA6A /* GPGDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GPGDefaults.m; path = Source/GPGDefaults.m; sourceTree = "<group>"; };
@@ -689,6 +691,7 @@
 		559A80DC0838EC770052F47C /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				3094CD6C12F5EBA200ABCE8A /* GPGMail.icns */,
 				30E4F6A712B3B1350093608D /* CheckMark.png */,
 				30E4F6A912B3B1350093608D /* clear.png */,
 				30E4F6AA12B3B1350093608D /* EmptyImage.png */,
@@ -846,6 +849,7 @@
 				30E4F6D412B3B1350093608D /* unsigned-old.png in Resources */,
 				30E4F6D512B3B1350093608D /* unsigned.png in Resources */,
 				30E4F6D612B3B1350093608D /* ValidBadge.png in Resources */,
+				3094CD6D12F5EBA200ABCE8A /* GPGMail.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
