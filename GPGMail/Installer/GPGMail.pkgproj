@@ -510,7 +510,7 @@
 			<key>PACKAGE_SETTINGS</key>
 			<dict>
 				<key>AUTHENTICATION</key>
-				<false/>
+				<true/>
 				<key>CONCLUSION_ACTION</key>
 				<integer>0</integer>
 				<key>IDENTIFIER</key>

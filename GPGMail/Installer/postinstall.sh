@@ -1,24 +1,29 @@
 #!/bin/sh
 tempdir=/private/tmp/GPGMail_Installation
+homedir="$HOME"
 
 # determine where to install the bundle to
 if ( test -e "/Library/Mail/Bundles/GPGMail.mailbundle" ) then
+    homedir=""
+    rm -fr "/Library/Mail/Bundles/GPGMail.mailbundle"
 	mv "$tempdir/GPGMail.mailbundle" "/Library/Mail/Bundles/"
-else
-	sudo -u $USER mkdir -p "$HOME/Library/Mail/Bundles"
-	# The installer has to make sure, that the "GPGMail.mailbundle" is installed in $tempdir
-    rm -fr "$HOME/Library/Mail/Bundles/GPGMail.mailbundle"
-    chown -R $USER:Staff "$tempdir/GPGMail.mailbundle"
-    sudo -u $USER cp -r "$tempdir/GPGMail.mailbundle" "$HOME/Library/Mail/Bundles/"
-	# change the user and group to avoid problems when updating (so this skript needs to be run as root!)
-	chown -R $USER:Staff "$HOME/Library/Mail/Bundles/GPGMail.mailbundle"
 fi
 
-if [ ! "`diff -r $tempdir/GPGMail.mailbundle $HOME/Library/Mail/Bundles/GPGMail.mailbundle`" == "" ]; then
-    echo "Installation failed. GPGMail bundle was not installed or updated at $HOME/Library/Mail/Bundles/";
+
+sudo -u $USER mkdir -p "$homedir/Library/Mail/Bundles"
+# The installer has to make sure, that the "GPGMail.mailbundle" is installed in $tempdir
+rm -fr "$homedir/Library/Mail/Bundles/GPGMail.mailbundle"
+chown -R $USER:Staff "$tempdir/GPGMail.mailbundle"
+sudo -u $USER cp -r "$tempdir/GPGMail.mailbundle" "$homedir/Library/Mail/Bundles/"
+# change the user and group to avoid problems when updating (so this skript needs to be run as root!)
+chown -R $USER:Staff "$homedir/Library/Mail/Bundles/GPGMail.mailbundle"
+
+if [ ! "`diff -r $tempdir/GPGMail.mailbundle $homedir/Library/Mail/Bundles/GPGMail.mailbundle`" == "" ]; then
+    echo "Installation failed. GPGMail bundle was not installed or updated at $homedir/Library/Mail/Bundles/";
     rm -fr "$tempdir/GPGMail.mailbundle"
     exit 1;
 fi
+
 rm -fr "$tempdir/GPGMail.mailbundle"
 
 # cleanup tempdir "rm -d" deletes the temporary installation dir only if empty.
@@ -50,7 +55,7 @@ defaults write "$domain" BundleCompatibilityVersion -int 3
 
 _bundleId="gpgmail";
 _bundleName="GPGMail.mailbundle";
-_bundleRootPath="$HOME/Library/Mail/Bundles";
+_bundleRootPath="$homedir/Library/Mail/Bundles";
 _bundlePath="$_bundleRootPath/$_bundleName";
 _plistBundle="$_bundlePath/Contents/Info";
 _plistMail="/Applications/Mail.app/Contents/Info";
@@ -86,6 +91,6 @@ else
 fi
 
 # change the user and group to avoid problems when updating (so this skript needs to be run as root!)
-chown -R $USER:Staff "$HOME/Library/Mail/Bundles/GPGMail.mailbundle"
+chown -R $USER:Staff "$homedir/Library/Mail/Bundles/GPGMail.mailbundle"
 
 exit 0
