@@ -27,24 +27,24 @@
 /* Alert title and message */
 "MSG_DECRYPTION_ALERT_TITLE_NOT_SIGNED" = "Dekryptering av meddelande";
 "DECRYPTED_MSG_NOT_SIGNED" = "Meddelandet har krypterats men har inte signerats. Dess autenticitet kan inte bevisas.";
-"MSG_ENCRYPTION_ALERT_TITLE" = "PGP-kryptering misslyckades";
-"MSG_DECRYPTION_ALERT_TITLE" = "PGP-dekryptering misslyckades";
-"MSG_SIGNING_ALERT_TITLE" = "PGP-signering misslyckades";
+"MSG_ENCRYPTION_ALERT_TITLE" = "OpenPGP-kryptering misslyckades";
+"MSG_DECRYPTION_ALERT_TITLE" = "OpenPGP-dekryptering misslyckades";
+"MSG_SIGNING_ALERT_TITLE" = "OpenPGP-signering misslyckades";
 "UNSUPPORTED_ENCRYPTION_FORMAT" = "GPGMail kan inte dekryptera denna typ av krypterade meddelanden.";
 "DATA_NOT_AVAILABLE" = "Innehållet i meddelandet är ej tillgängligt för tillfället.";
 
 /* Informational alert title and message */
-"AUTHENTICATION_TITLE_OK" = "PGP-autentisering";
+"AUTHENTICATION_TITLE_OK" = "OpenPGP-autentisering";
 
 /**/
-"AUTHENTICATION_TITLE_FAILED" = "PGP-autentisering misslyckades";
+"AUTHENTICATION_TITLE_FAILED" = "OpenPGP-autentisering misslyckades";
 "TRY_AGAIN" = "Försök igen";
 "CANCEL_DELIVERY" = "Avbryt";
 "CANCEL_DECRYPTION" = "Avbryt";
 
 /**/
-"AUTHENTICATION_TITLE_UNSIGNED" = "PGP-autentisering";
-"UNSIGNED_PGP_MESSAGE" = "Detta meddelande är inte signerat med PGP.";
+"AUTHENTICATION_TITLE_UNSIGNED" = "OpenPGP-autentisering";
+"UNSIGNED_PGP_MESSAGE" = "Detta meddelande är inte signerat med OpenPGP.";
 
 /* Toolbar item titles */
 "DECRYPT_ITEM" = "Dekryptera";
@@ -59,16 +59,16 @@
 "UNSIGNED_ITEM" = "Osignerat";
 
 /* Toolbar item tooltips  */
-"DECRYPT_ITEM_TOOLTIP" = "Dekryptera PGP-krypterat meddelande";
-"AUTHENTICATE_ITEM_TOOLTIP" = "Autentisera PGP-signerat meddelande";
+"DECRYPT_ITEM_TOOLTIP" = "Dekryptera OpenPGP-krypterat meddelande";
+"AUTHENTICATE_ITEM_TOOLTIP" = "Autentisera OpenPGP-signerat meddelande";
 "MAKE_CLEAR_ITEM_TOOLTIP" = "Klicka för att skicka ett meddelande i klartext";
-"MAKE_ENCRYPTED_ITEM_TOOLTIP" = "Klicka för att använda PGP-kryptering";
-"MAKE_UNSIGNED_ITEM_TOOLTIP" = "Klicka för att skicka ett meddelande utan PGP-autentisering";
-"MAKE_SIGNED_ITEM_TOOLTIP" = "Klicka för att använda PGP-autentisering";
+"MAKE_ENCRYPTED_ITEM_TOOLTIP" = "Klicka för att använda OpenPGP-kryptering";
+"MAKE_UNSIGNED_ITEM_TOOLTIP" = "Klicka för att skicka ett meddelande utan OpenPGP-autentisering";
+"MAKE_SIGNED_ITEM_TOOLTIP" = "Klicka för att använda OpenPGP-autentisering";
 "ENCRYPTED_ITEM_TOOLTIP" = "Meddelandet kommer att krypteras; klicka för att skicka meddelandet i klartext";
-"CLEAR_ITEM_TOOLTIP" = "Meddelande kommer att skickas i klartext; klicka för att använda PGP-kryptering";
-"SIGNED_ITEM_TOOLTIP" = "Meddelandet kommer att signeras med PGP; klicka för att skicka meddelandet utan PGP-autentisering";
-"UNSIGNED_ITEM_TOOLTIP" = "Meddelandet kommer inte att signeras med PGP; klicka för att använda PGP-autentisering";
+"CLEAR_ITEM_TOOLTIP" = "Meddelande kommer att skickas i klartext; klicka för att använda OpenPGP-kryptering";
+"SIGNED_ITEM_TOOLTIP" = "Meddelandet kommer att signeras med OpenPGP; klicka för att skicka meddelandet utan PGP-autentisering";
+"UNSIGNED_ITEM_TOOLTIP" = "Meddelandet kommer inte att signeras med OpenPGP; klicka för att använda OpenPGP-autentisering";
 
 /* Signature information */
 "Bad policy!"  = "Dålig policy! "; // Followed by a list of policy URLs
@@ -91,7 +91,7 @@
 "MISSING KEY %@." = "Saknad nyckel %@."; // Param is a key ID in hexadecimal
 "Signature summary 0x%04x - Signature status %u." = "Okänt fel: signatursammanfattning 0x%04x - signaturstatus %u."; // Generic error message; first param is a hex status flag value, second is a decimal status value
 "EXCEPTION: %@" = "Internt fel: %@"; // Generic error message; param is a string (exception reason, maybe not localized)
-"AUTHENTICATING" = "Verifierar PGP-signatur...";
+"AUTHENTICATING" = "Verifierar OpenPGP-signatur...";
 "UNTRUSTED RECIPIENTS" = "Åtminstone en av nycklarna är inte betrodd";
 
 /* Title */
@@ -183,8 +183,8 @@
 "REVOKED_KEY - " = "Återkallad - "; // Prefixes found key description, when necessary; followed by keyID, userID, etc.
 
 /* Unmatched PGP keys for receipts - sheet */
-"MISSING_KEYS: DOWNLOAD" = "Somliga adresser matchar ingen PGP-nyckel. Sök efter nycklar?"; // Title
-"UNMATCHED_ADDRESSES: %@" = "Följande adresser har ingen matchande PGP-nyckel:\n%@"; // Message
+"MISSING_KEYS: DOWNLOAD" = "Somliga adresser matchar ingen OpenPGP-nyckel. Sök efter nycklar?"; // Title
+"UNMATCHED_ADDRESSES: %@" = "Följande adresser har ingen matchande OpenPGP-nyckel:\n%@"; // Message
 "SEARCH_MATCHING_KEYS" = "Sök"; // Default button
 "SEND_IN_CLEAR" = "Skicka i klartext"; // Other button
 
@@ -212,8 +212,8 @@
 "NO_VALID_PRIVATE_KEY" = "Ingen giltig privat nyckel kan hittas. Antingen har ingen nyckel valts eller också har vald nyckel gått ut, stängts av eller återkallats."; // Could be displayed after encryption
 
 /* Alert when user has no PGP key */
-"NO PGP PRIVATE KEY - TITLE" = "Du har ingen PGP-nyckel. Du kan inte använda GPGMail för att kryptera eller signera meddelanden.";
-"NO PGP PRIVATE KEY - MESSAGE" = "Om du vill kunna kryptera eller signera meddelanden med PGP, behöver du en personlig PGP-nyckel. För att skapa en PGP-nyckel, ladda ner och installera GPGTools' GPG Keychain Access (GPG Nyckelhanterare) från http://gpgtools.org/";
+"NO PGP PRIVATE KEY - TITLE" = "Du har ingen OpenPGP-nyckel. Du kan inte använda GPGMail för att kryptera eller signera meddelanden.";
+"NO PGP PRIVATE KEY - MESSAGE" = "Om du vill kunna kryptera eller signera meddelanden med OpenPGP, behöver du en personlig OpenPGP-nyckel. För att skapa en OpenPGP-nyckel, ladda ner och installera GPGTools' GPG Keychain Access (GPG Nyckelhanterare) från http://gpgtools.org/";
 
 /* Conflict resolution panel*/
 "<ME>" = "Jag";
