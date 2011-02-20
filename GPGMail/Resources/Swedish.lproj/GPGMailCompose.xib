@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
 		<string key="IBDocument.SystemVersion">10J567</string>
-		<string key="IBDocument.InterfaceBuilderVersion">823</string>
+		<string key="IBDocument.InterfaceBuilderVersion">789</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">462.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">823</string>
+			<string key="NS.object.0">789</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs"/>
 		<array key="IBDocument.PluginDependencies">
@@ -129,7 +129,7 @@
 						<object class="NSButtonCell" key="NSCell" id="743338083">
 							<int key="NSCellFlags">67239424</int>
 							<int key="NSCellFlags2">131072</int>
-							<string key="NSContents">Krypterat</string>
+							<string key="NSContents">Encrypted</string>
 							<reference key="NSSupport" ref="26"/>
 							<reference key="NSControlView" ref="145734688"/>
 							<int key="NSButtonFlags">1211912703</int>
@@ -156,7 +156,7 @@
 						<object class="NSButtonCell" key="NSCell" id="48778903">
 							<int key="NSCellFlags">67239424</int>
 							<int key="NSCellFlags2">131072</int>
-							<string key="NSContents">Signerat</string>
+							<string key="NSContents">Signed</string>
 							<reference key="NSSupport" ref="26"/>
 							<reference key="NSControlView" ref="739033656"/>
 							<int key="NSButtonFlags">1211912703</int>
@@ -192,7 +192,7 @@
 							<object class="NSMenuItem" key="NSMenuItem" id="784270247">
 								<reference key="NSMenu" ref="174686584"/>
 								<bool key="NSIsHidden">YES</bool>
-								<string key="NSTitle">Nycklar</string>
+								<string key="NSTitle">Keys</string>
 								<string key="NSKeyEquiv"/>
 								<int key="NSKeyEquivModMask">1048576</int>
 								<int key="NSMnemonicLoc">2147483647</int>
@@ -210,7 +210,7 @@
 									<reference ref="784270247"/>
 									<object class="NSMenuItem" id="731085811">
 										<reference key="NSMenu" ref="174686584"/>
-										<string key="NSTitle">Använd lösenordskryptering</string>
+										<string key="NSTitle">Use Passphrase Encryption</string>
 										<string key="NSKeyEquiv"/>
 										<int key="NSKeyEquivModMask">1048576</int>
 										<int key="NSMnemonicLoc">2147483647</int>
@@ -234,7 +234,7 @@
 									</object>
 									<object class="NSMenuItem" id="433822426">
 										<reference key="NSMenu" ref="174686584"/>
-										<string key="NSTitle">Automatiskt val</string>
+										<string key="NSTitle">Automatic Choice</string>
 										<string key="NSKeyEquiv"/>
 										<int key="NSKeyEquivModMask">1048576</int>
 										<int key="NSMnemonicLoc">2147483647</int>
@@ -245,7 +245,7 @@
 									</object>
 									<object class="NSMenuItem" id="95202075">
 										<reference key="NSMenu" ref="174686584"/>
-										<string key="NSTitle">Välj...</string>
+										<string key="NSTitle">Choose...</string>
 										<string key="NSKeyEquiv"/>
 										<int key="NSKeyEquivModMask">1048576</int>
 										<int key="NSMnemonicLoc">2147483647</int>
@@ -256,7 +256,7 @@
 									</object>
 									<object class="NSMenuItem" id="170794306">
 										<reference key="NSMenu" ref="174686584"/>
-										<string key="NSTitle">Ladda ner...</string>
+										<string key="NSTitle">Download...</string>
 										<string key="NSKeyEquiv"/>
 										<int key="NSKeyEquivModMask">1048576</int>
 										<int key="NSMnemonicLoc">2147483647</int>
@@ -297,7 +297,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{26, 414}, {466, 240}}</string>
 				<int key="NSWTFlags">1886912512</int>
-				<string key="NSWindowTitle">Välj publika nycklar</string>
+				<string key="NSWindowTitle">Choose Public Keys</string>
 				<string key="NSWindowClass">NSPanel</string>
 				<object class="NSMutableString" key="NSViewClass">
 					<characters key="NS.bytes">View</characters>
@@ -320,7 +320,7 @@
 								<object class="NSButtonCell" id="1061473547">
 									<int key="NSCellFlags">-2080244224</int>
 									<int key="NSCellFlags2">137887744</int>
-									<string key="NSContents">Använd standardnycklar</string>
+									<string key="NSContents">Use Default Keys</string>
 									<object class="NSFont" key="NSSupport" id="1026290275">
 										<string key="NSName">LucidaGrande</string>
 										<double key="NSSize">13</double>
@@ -343,7 +343,7 @@
 								<object class="NSButtonCell" id="535543483">
 									<int key="NSCellFlags">67239424</int>
 									<int key="NSCellFlags2">137887744</int>
-									<string key="NSContents">Avbryt</string>
+									<string key="NSContents">Cancel</string>
 									<reference key="NSSupport" ref="1026290275"/>
 									<reference key="NSControlView" ref="889224507"/>
 									<int key="NSButtonFlags">-2038284033</int>
@@ -357,7 +357,7 @@
 								<object class="NSButtonCell" id="579336879">
 									<int key="NSCellFlags">67239424</int>
 									<int key="NSCellFlags2">137887744</int>
-									<string key="NSContents">Välj</string>
+									<string key="NSContents">Choose</string>
 									<reference key="NSSupport" ref="1026290275"/>
 									<reference key="NSControlView" ref="889224507"/>
 									<int key="NSTag">1</int>
@@ -410,7 +410,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="265901204">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">4194304</int>
-								<string key="NSContents">Välj publika nycklar att använda för kryptering</string>
+								<string key="NSContents">Choose the public keys used for encryption</string>
 								<reference key="NSSupport" ref="1026290275"/>
 								<reference key="NSControlView" ref="52340350"/>
 								<reference key="NSBackgroundColor" ref="773080469"/>
@@ -500,7 +500,7 @@
 													<object class="NSTableHeaderCell" key="NSHeaderCell">
 														<int key="NSCellFlags">75628096</int>
 														<int key="NSCellFlags2">2048</int>
-														<string key="NSContents">E-post</string>
+														<string key="NSContents">E-mail</string>
 														<reference key="NSSupport" ref="26"/>
 														<object class="NSColor" key="NSBackgroundColor">
 															<int key="NSColorSpace">3</int>
@@ -532,7 +532,7 @@
 													<object class="NSTableHeaderCell" key="NSHeaderCell">
 														<int key="NSCellFlags">75628096</int>
 														<int key="NSCellFlags2">2048</int>
-														<string key="NSContents">Fullständigt namn</string>
+														<string key="NSContents">Full Name</string>
 														<reference key="NSSupport" ref="26"/>
 														<object class="NSColor" key="NSBackgroundColor">
 															<int key="NSColorSpace">3</int>
@@ -561,7 +561,7 @@
 													<object class="NSTableHeaderCell" key="NSHeaderCell">
 														<int key="NSCellFlags">75628096</int>
 														<int key="NSCellFlags2">2048</int>
-														<string key="NSContents">Kommentar</string>
+														<string key="NSContents">Comment</string>
 														<reference key="NSSupport" ref="26"/>
 														<object class="NSColor" key="NSBackgroundColor">
 															<int key="NSColorSpace">3</int>
@@ -590,7 +590,7 @@
 													<object class="NSTableHeaderCell" key="NSHeaderCell">
 														<int key="NSCellFlags">75628096</int>
 														<int key="NSCellFlags2">2048</int>
-														<string key="NSContents">Fingeravtryck</string>
+														<string key="NSContents">Fingerprint</string>
 														<reference key="NSSupport" ref="26"/>
 														<object class="NSColor" key="NSBackgroundColor">
 															<int key="NSColorSpace">3</int>
@@ -619,7 +619,7 @@
 													<object class="NSTableHeaderCell" key="NSHeaderCell">
 														<int key="NSCellFlags">75628096</int>
 														<int key="NSCellFlags2">2048</int>
-														<string key="NSContents">Nyckel-ID</string>
+														<string key="NSContents">Key ID</string>
 														<reference key="NSSupport" ref="26"/>
 														<object class="NSColor" key="NSBackgroundColor">
 															<int key="NSColorSpace">3</int>
@@ -648,7 +648,7 @@
 													<object class="NSTableHeaderCell" key="NSHeaderCell">
 														<int key="NSCellFlags">75628096</int>
 														<int key="NSCellFlags2">2048</int>
-														<string key="NSContents">Validitet</string>
+														<string key="NSContents">Validity</string>
 														<reference key="NSSupport" ref="26"/>
 														<object class="NSColor" key="NSBackgroundColor">
 															<int key="NSColorSpace">3</int>
@@ -677,7 +677,7 @@
 													<object class="NSTableHeaderCell" key="NSHeaderCell">
 														<int key="NSCellFlags">75628096</int>
 														<int key="NSCellFlags2">2048</int>
-														<string key="NSContents">Algoritm</string>
+														<string key="NSContents">Algorithm</string>
 														<reference key="NSSupport" ref="26"/>
 														<object class="NSColor" key="NSBackgroundColor">
 															<int key="NSColorSpace">3</int>
@@ -824,7 +824,7 @@
 										<reference ref="1065838129"/>
 										<object class="NSMenuItem" id="123841596">
 											<reference key="NSMenu" ref="779136104"/>
-											<string key="NSTitle">E-post</string>
+											<string key="NSTitle">E-mail</string>
 											<string key="NSKeyEquiv"/>
 											<int key="NSKeyEquivModMask">1048576</int>
 											<int key="NSMnemonicLoc">2147483647</int>
@@ -836,7 +836,7 @@
 										</object>
 										<object class="NSMenuItem" id="572209617">
 											<reference key="NSMenu" ref="779136104"/>
-											<string key="NSTitle">Fullständigt namn</string>
+											<string key="NSTitle">Full Name</string>
 											<string key="NSKeyEquiv"/>
 											<int key="NSKeyEquivModMask">1048576</int>
 											<int key="NSMnemonicLoc">2147483647</int>
@@ -848,7 +848,7 @@
 										</object>
 										<object class="NSMenuItem" id="874337179">
 											<reference key="NSMenu" ref="779136104"/>
-											<string key="NSTitle">Kommentar</string>
+											<string key="NSTitle">Comment</string>
 											<string key="NSKeyEquiv"/>
 											<int key="NSKeyEquivModMask">1048576</int>
 											<int key="NSMnemonicLoc">2147483647</int>
@@ -860,7 +860,7 @@
 										</object>
 										<object class="NSMenuItem" id="407378969">
 											<reference key="NSMenu" ref="779136104"/>
-											<string key="NSTitle">Fingeravtryck</string>
+											<string key="NSTitle">Fingerprint</string>
 											<string key="NSKeyEquiv"/>
 											<int key="NSKeyEquivModMask">1048576</int>
 											<int key="NSMnemonicLoc">2147483647</int>
@@ -872,7 +872,7 @@
 										</object>
 										<object class="NSMenuItem" id="564303923">
 											<reference key="NSMenu" ref="779136104"/>
-											<string key="NSTitle">Nyckel-ID</string>
+											<string key="NSTitle">Key ID</string>
 											<string key="NSKeyEquiv"/>
 											<int key="NSKeyEquivModMask">1048576</int>
 											<int key="NSMnemonicLoc">2147483647</int>
@@ -884,7 +884,7 @@
 										</object>
 										<object class="NSMenuItem" id="213699432">
 											<reference key="NSMenu" ref="779136104"/>
-											<string key="NSTitle">Validitet</string>
+											<string key="NSTitle">Validity</string>
 											<string key="NSKeyEquiv"/>
 											<int key="NSKeyEquivModMask">1048576</int>
 											<int key="NSMnemonicLoc">2147483647</int>
@@ -896,7 +896,7 @@
 										</object>
 										<object class="NSMenuItem" id="776562662">
 											<reference key="NSMenu" ref="779136104"/>
-											<string key="NSTitle">Algoritm</string>
+											<string key="NSTitle">Algorithm</string>
 											<string key="NSKeyEquiv"/>
 											<int key="NSKeyEquivModMask">1048576</int>
 											<int key="NSMnemonicLoc">2147483647</int>
@@ -928,7 +928,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{616, 240}, {481, 342}}</string>
 				<int key="NSWTFlags">1886912512</int>
-				<string key="NSWindowTitle">Konflikter</string>
+				<string key="NSWindowTitle">Panel</string>
 				<string key="NSWindowClass">NSPanel</string>
 				<object class="NSMutableString" key="NSViewClass">
 					<characters key="NS.bytes">View</characters>
@@ -948,7 +948,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="778562569">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">4194304</int>
-								<string key="NSContents">Det finns konflikter mellan valda PGP-inställningar och inställningarna valda i här använda PGP-nycklar. Du måste manuellt lösa konflikten.</string>
+								<string key="NSContents">There are conflicts between the current OpenPGP options and the options set in the OpenPGP keys used here. You need to manually solve the conflict.</string>
 								<reference key="NSSupport" ref="1026290275"/>
 								<reference key="NSControlView" ref="166782888"/>
 								<reference key="NSBackgroundColor" ref="773080469"/>
@@ -1019,7 +1019,7 @@
 													<object class="NSTableHeaderCell" key="NSHeaderCell">
 														<int key="NSCellFlags">75628096</int>
 														<int key="NSCellFlags2">2048</int>
-														<string key="NSContents">Vem?</string>
+														<string key="NSContents">Who?</string>
 														<reference key="NSSupport" ref="26"/>
 														<object class="NSColor" key="NSBackgroundColor" id="626196387">
 															<int key="NSColorSpace">3</int>
@@ -1048,7 +1048,7 @@
 													<object class="NSTableHeaderCell" key="NSHeaderCell">
 														<int key="NSCellFlags">75628096</int>
 														<int key="NSCellFlags2">134219776</int>
-														<string key="NSContents">Kryptering?</string>
+														<string key="NSContents">Encryption?</string>
 														<reference key="NSSupport" ref="26"/>
 														<reference key="NSBackgroundColor" ref="626196387"/>
 														<reference key="NSTextColor" ref="10468625"/>
@@ -1074,7 +1074,7 @@
 													<object class="NSTableHeaderCell" key="NSHeaderCell">
 														<int key="NSCellFlags">75628096</int>
 														<int key="NSCellFlags2">134219776</int>
-														<string key="NSContents">Signatur?</string>
+														<string key="NSContents">Signature?</string>
 														<reference key="NSSupport" ref="26"/>
 														<object class="NSColor" key="NSBackgroundColor">
 															<int key="NSColorSpace">3</int>
@@ -1203,7 +1203,7 @@
 								<object class="NSButtonCell" id="832748807">
 									<int key="NSCellFlags">-2080244224</int>
 									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">Avbryt</string>
+									<string key="NSContents">Cancel</string>
 									<reference key="NSSupport" ref="1026290275"/>
 									<reference key="NSControlView" ref="21826637"/>
 									<int key="NSButtonFlags">-2038284033</int>
@@ -1217,7 +1217,7 @@
 								<object class="NSButtonCell" id="603411972">
 									<int key="NSCellFlags">67239424</int>
 									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">Skicka</string>
+									<string key="NSContents">Send</string>
 									<reference key="NSSupport" ref="1026290275"/>
 									<reference key="NSControlView" ref="21826637"/>
 									<int key="NSTag">1</int>
@@ -1270,7 +1270,7 @@
 											<object class="NSButtonCell" key="NSCell" id="729747722">
 												<int key="NSCellFlags">67239424</int>
 												<int key="NSCellFlags2">0</int>
-												<string key="NSContents">Kryptera</string>
+												<string key="NSContents">Encrypt</string>
 												<reference key="NSSupport" ref="1026290275"/>
 												<reference key="NSControlView" ref="1058874489"/>
 												<int key="NSButtonFlags">1211912703</int>
@@ -1292,7 +1292,7 @@
 											<object class="NSButtonCell" key="NSCell" id="295423864">
 												<int key="NSCellFlags">67239424</int>
 												<int key="NSCellFlags2">0</int>
-												<string key="NSContents">Signera</string>
+												<string key="NSContents">Sign</string>
 												<reference key="NSSupport" ref="1026290275"/>
 												<reference key="NSControlView" ref="229808345"/>
 												<int key="NSButtonFlags">1211912703</int>
@@ -1338,7 +1338,7 @@
 							<object class="NSTextFieldCell" key="NSTitleCell">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Ditt val</string>
+								<string key="NSContents">Your choice</string>
 								<reference key="NSSupport" ref="26"/>
 								<object class="NSColor" key="NSBackgroundColor">
 									<int key="NSColorSpace">6</int>
@@ -2382,7 +2382,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="584477895"/>
-						<string key="toolTip">Välj vilka kolumner som skall visas</string>
+						<string key="toolTip">Choose which columns to display</string>
 					</object>
 				</object>
 				<string key="122.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2518,7 +2518,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="335455840"/>
-						<string key="toolTip">Vald nyckel kommer att användas för signering</string>
+						<string key="toolTip">Selected key will be used for signature</string>
 					</object>
 				</object>
 				<string key="30.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2534,7 +2534,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="145734688"/>
-						<string key="toolTip">Välj huruvida du vill att meddelandet skall krypteras med PGP eller inte</string>
+						<string key="toolTip">Choose whether you want to encrypt the message with OpenPGP or not</string>
 					</object>
 				</object>
 				<string key="35.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2544,7 +2544,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="739033656"/>
-						<string key="toolTip">Välj huruvida du vill ha en digital PGP-signatur lagd till meddelandet eller inte</string>
+						<string key="toolTip">Choose whether you want an electronic OpenPGP signature or not</string>
 					</object>
 				</object>
 				<string key="36.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2556,7 +2556,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="816651905"/>
-						<string key="toolTip">Valda nycklar kommer att användas för kryptering</string>
+						<string key="toolTip">Listed keys will be used for encryption</string>
 					</object>
 				</object>
 				<string key="39.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2579,7 +2579,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="1061473547"/>
-						<string key="toolTip">Välj nycklar beroende på mottagare</string>
+						<string key="toolTip">Choose keys according to message recipients</string>
 					</object>
 				</object>
 				<string key="51.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
