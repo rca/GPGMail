@@ -14,11 +14,11 @@
 /* Class = "NSMenuItem"; title = "<<Item3>>"; ObjectID = "33"; */
 "33.title" = "<<Item3>>";
 
-/* Class = "NSButton"; gToolTip = "V�lj huruvida du vill att meddelandet skall krypteras med OpenPGP eller inte"; ObjectID = "35"; */
-"35.gToolTip" = "V�lj huruvida du vill att meddelandet skall krypteras med OpenPGP eller inte";
+/* Class = "NSButton"; gToolTip = "V�lj om du vill att meddelandet skall krypteras med OpenPGP eller inte"; ObjectID = "35"; */
+"35.gToolTip" = "V�lj om du vill att meddelandet skall krypteras med OpenPGP eller inte";
 
-/* Class = "NSButton"; gToolTip = "V�lj huruvida du vill ha en digital OpenPGP-signatur lagd till meddelandet eller inte"; ObjectID = "36"; */
-"36.gToolTip" = "V�lj huruvida du vill ha en digital OpenPGP-signatur lagd till meddelandet eller inte";
+/* Class = "NSButton"; gToolTip = "V�lj om du vill ha en digital OpenPGP-signatur lagd till meddelandet eller inte"; ObjectID = "36"; */
+"36.gToolTip" = "V�lj om du vill ha en digital OpenPGP-signatur lagd till meddelandet eller inte";
 
 /* Class = "NSMenu"; title = "OtherViews"; ObjectID = "37"; */
 "37.title" = "OtherViews";
