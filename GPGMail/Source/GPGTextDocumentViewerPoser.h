@@ -6,7 +6,7 @@
 //
 
 /*
- *	Copyright GPGMail Project Team (gpgmail-devel@lists.gpgmail.org), 2000-2010
+ *	Copyright GPGMail Project Team (gpgmail-devel@lists.gpgmail.org), 2000-2011
  *	(see LICENSE.txt file for license information)
  */
 

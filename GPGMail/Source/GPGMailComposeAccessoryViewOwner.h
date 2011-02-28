@@ -113,11 +113,8 @@
 - (IBAction)gpgToggleUsesOnlyOpenPGPStyle:(id)sender;
 - (IBAction)endModal:(id)sender;
 - (IBAction)toggleColumnDisplay:(id)sender;
-
 - (BOOL)validateToolbarItem:(NSToolbarItem *)theItem;
-
 - (void)gpgSetOptions:(NSDictionary *)options;
-
 - (IBAction)endConflictResolution:(id)sender;
 
 - (BOOL)displaysButtonsInComposeWindow;

@@ -25,8 +25,8 @@ fi
 updateFile() {
     _filename=$1;
     #echo "  Updating $_filename...";
-	gsed -r -i "s/1\.3\.2beta2/1.3.2rc2/g" "$_filename";
- 	#gsed -r -i "s/2000-200[0-9]/2000-2010/" "$_filename";
+	gsed -r -i "s/1\.3\.3/1.3.2/g" "$_filename";
+ 	gsed -r -i "s/2000-20[0-1][0-9]/2000-2011/" "$_filename";
 
     # not needed anymore
 #	gsed -r -i 's/"PGP_SEARCH_KEYS_MENUITEM" = "PGP/"PGP_SEARCH_KEYS_MENUITEM" = "OpenPGP/' "$_filename";
@@ -59,6 +59,7 @@ ext=( `echo strings plist xml applescript h m` );
 ###############################################
 # Change strings
 ###############################################
+find . -iname "Makefile.config" -type f -exec sh -c '"updateFile" {}' \;
 find . -iname "designable.nib" -type f -exec sh -c '"updateFile" {}' \;
 find . -iname "create_zipfile.sh" -type f -exec sh -c '"updateFile" {}' \;
 for ((i=0; i<${#ext[*]}; i++)) do
