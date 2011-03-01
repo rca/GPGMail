@@ -62,6 +62,7 @@ ext=( `echo strings plist xml applescript h m` );
 find . -iname "Makefile.config" -type f -exec sh -c '"updateFile" {}' \;
 find . -iname "designable.nib" -type f -exec sh -c '"updateFile" {}' \;
 find . -iname "create_zipfile.sh" -type f -exec sh -c '"updateFile" {}' \;
+find . -iname "package-introduction.txt" -type f -exec sh -c '"updateFile" {}' \;
 for ((i=0; i<${#ext[*]}; i++)) do
     echo "Searching in '${ext[$i]}' files...";
 	find . -iname "*.${ext[$i]}" -type f -exec sh -c '"updateFile" {}' \;
