@@ -1,5 +1,5 @@
-1.3.2   Dec XX 2010
-        New home at http://gpgtools.org
+1.3.2   March 01 2011
+        New home and changelogs at http://gpgtools.org
         New icons and shared preferences for different GPG tools
         Massive code cleanup
         Issue 23: Fixed the 'Use Keychain to store passphrases" bug
@@ -12,6 +12,7 @@
         Issue 210: Fixed the 'no longer prompted to enter passphrase' bug
         Issue 233: Fixed the 'bundle is a folder' bug
         Issue 236: Fixed the 'wrong bundle version and icon shown' bug
+        And much more (see gpgtools.org)
 1.3.1   Nov 11 2010
         Issue 221: Fixed compatibility with 10.6.5
         Issue 223: Updated the GPG Keychain Access application
@@ -283,7 +284,7 @@
         Added Japanese localization by Kory Talmage
         Applied typographical rules to French localization
         Corrected some resizing errors
-1.0.2   v30 (Oct 25th, 2003) 
+1.0.2   v30 (Oct 25th, 2003)
         Panther: corrected size of banner for single message viewers
         Removed debug logs
         Added GPGMEProxyServer crash recovery strategy
@@ -384,7 +385,7 @@
         Now checks presence of PGPmail
         Hash algorithm is set according to your gpg preferences
         Dropped support for 10.1
-        Added support for 10.3  
+        Added support for 10.3
 0.5.4   v22 (Sep 10 2002)
         Added Swedish translation from Daniel Aarno
         Corrected bugs in passphrase panel behavior
