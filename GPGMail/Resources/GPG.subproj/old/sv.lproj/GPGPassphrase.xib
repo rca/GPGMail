@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
 		<string key="IBDocument.SystemVersion">10J567</string>
-		<string key="IBDocument.InterfaceBuilderVersion">789</string>
+		<string key="IBDocument.InterfaceBuilderVersion">823</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">462.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">789</string>
+			<string key="NS.object.0">823</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -122,7 +122,7 @@
 							<object class="NSButtonCell" key="NSCell" id="437354147">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">134217728</int>
-								<string key="NSContents">OK</string>
+								<string key="NSContents">&lt;&lt;GnuPG Passphrase&gt;&gt;</string>
 								<reference key="NSSupport" ref="744980160"/>
 								<reference key="NSControlView" ref="364977263"/>
 								<int key="NSTag">1</int>
@@ -177,7 +177,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="304509865">
 								<int key="NSCellFlags">69336577</int>
 								<int key="NSCellFlags2">4194304</int>
-								<string type="base64-UTF8" key="NSContents">PDxFbnRlciB0aGUgcGFzc3BocmFzZQolQDo+Pg</string>
+								<string key="NSContents">Avbryt</string>
 								<reference key="NSSupport" ref="744980160"/>
 								<reference key="NSControlView" ref="38812174"/>
 								<object class="NSColor" key="NSBackgroundColor" id="469412014">
