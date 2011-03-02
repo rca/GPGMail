@@ -1,7 +1,7 @@
 /* GPGSignature.m created by dave on Tue 21-Nov-2000 */
 
 /*
- *	Copyright GPGMail Project Team (gpgmail-devel@lists.gpgmail.org), 2000
+ *	Copyright GPGMail Project Team (gpgtools-devel@lists.gpgtools.org), 2000
  *	(see LICENSE.txt file for license information)
  */
 
@@ -20,7 +20,7 @@
 	// gpg: Please note that you don't have secure memory on this system
 	// ...
 	// gpg: Signature made 07/04/00 19:25:39 CEST using DSA key ID 12345678
-	// gpg: Good signature from "GPGMail Project Team <gpgmail-devel@lists.gpgmail.org>"
+	// gpg: Good signature from "GPGMail Project Team <gpgtools-devel@lists.gpgtools.org>"
 	//
 
 	if ([aScanner scanUpToString:@"Signature made " intoString:NULL] && ![aScanner isAtEnd]) {

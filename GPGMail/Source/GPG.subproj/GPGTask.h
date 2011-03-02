@@ -1,7 +1,7 @@
 /* GPGTask.h created by dave on Sat 30-Dec-2000 */
 
 /*
- *	Copyright GPGMail Project Team (gpgmail-devel@lists.gpgmail.org), 2000-2011
+ *	Copyright GPGMail Project Team (gpgtools-devel@lists.gpgtools.org), 2000-2011
  *	(see LICENSE.txt file for license information)
  */
 
