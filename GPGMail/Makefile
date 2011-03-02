@@ -9,6 +9,9 @@ install: install
 dmg: compile
 	@./Dependencies/GPGTools_Core/scripts/create_dmg.sh
 
+sparkle: compile
+	@./Utilities/create_sparkle.sh
+
 clean-gpgme:
 	rm -rf Dependencies/MacGPGME/build/dist
 
