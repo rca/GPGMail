@@ -96,7 +96,7 @@
 
 /* Title */
 /* Error messages */
-"GPGMAIL_CANNOT_WORK" = "보조 어플리케이션이 실행되지 않았기 때문에 GPGMail이 작동할 수 없습니다. Mail을 다시 시작해 보시고, 그래도 에러가 나면, gpgmail-devel@lists.gpgmail.org로 연락 주세요";
+"GPGMAIL_CANNOT_WORK" = "보조 어플리케이션이 실행되지 않았기 때문에 GPGMail이 작동할 수 없습니다. Mail을 다시 시작해 보시고, 그래도 에러가 나면, gpgtools-devel@lists.gpgtools.org로 연락 주세요";
 "GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail이 작동할 수 없습니다. GnuPG (%@) 버전 %@을 발견했지만, 최소한 버전 %@ 이상이어야 합니다. 메일을 종료하고, 적절한 버전의 GnuPG(가령, MacGPG2의 배포판, http://gpgtools.org/)를 설치한 후 메일을 다시 시작하세요."; // First arg is path to gpg, second and third are version strings
 "GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail이 작동할 수 없습니다. 최소 요구 버전 %@의 GnuPG (%@)를 찾지 못했습니다. 메일을 종료하고, 적절한 GnuPG 버전(예를 들면  MacGPG2 그룹의 배포판, http://gpgtools.org/)을 설치하고, 메일을 다시 시작 하세요."; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "사용하고 있는 GPGMail 버전은 지금 사용하고 있는 메일의 버전과 호환되지 않습니다."; /* Title of alert sheet */

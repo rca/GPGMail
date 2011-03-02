@@ -96,7 +96,7 @@
 
 /* Title */
 /* Error messages */
-"GPGMAIL_CANNOT_WORK" = "GPGMail ei voi toimia, koska sen tarvitsemaa ohjelmaa ei saatu käynnistettyä. Yritä käynnistää Mail uudelleen ja jos virhe toistuu, lähetä viesti osoitteeseen gpgmail-devel@lists.gpgmail.org";
+"GPGMAIL_CANNOT_WORK" = "GPGMail ei voi toimia, koska sen tarvitsemaa ohjelmaa ei saatu käynnistettyä. Yritä käynnistää Mail uudelleen ja jos virhe toistuu, lähetä viesti osoitteeseen gpgtools-devel@lists.gpgtools.org";
 "GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail ei voi toimia. Se löysi GnuPG (%@) version %@, mutta tarvitaan ainakin versio %@. Lopeta Mail-ohjelma, asenna vaadittava GnuPG versio (esim GPGTools Group:lta, http://gpgtools.org/), ja käynnistä tämän jälkeen Mail-ohjelma uudelleen."; // First arg is path to gpg, second and third are version strings
 "GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail ei voi toimia. Se ei löytänyt GnuPG (%@). Tarvitaan ainakin versio %@. Lopeta Mail-ohjelma, asenna vaadittava GnuPG versio (esim GPGTools Group:lta, http://gpgtools.org/), ja käynnistä tämän jälkeen Mail-ohjelma uudelleen."; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "GPGMail-versiosi ei ole yhteensopiva Mail-ohjelman versiosi kanssa.."; /* Title of alert sheet */

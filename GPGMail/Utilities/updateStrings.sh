@@ -25,8 +25,14 @@ fi
 updateFile() {
     _filename=$1;
     #echo "  Updating $_filename...";
-	gsed -r -i "s/1\.3\.3/1.3.2/g" "$_filename";
- 	gsed -r -i "s/2000-20[0-1][0-9]/2000-2011/" "$_filename";
+#	gsed -r -i "s/1\.3\.3/1.3.2/g" "$_filename";
+#	gsed -r -i "s/1\.3\.1/1.3.2/g" "$_filename";
+#	gsed -r -i "s/1\.3\.2rc1/1.3.2/g" "$_filename";
+#	gsed -r -i "s/1\.3\.2rc2/1.3.2/g" "$_filename";
+	gsed -r -i "s/gpgmail-devel@lists\.gpgmail\.org/gpgtools-devel@lists.gpgtools.org/" "$_filename";
+	gsed -r -i "s/www\.gpgmail\.org/gpgtools.org/" "$_filename";
+	gsed -r -i "s/\/\/gpgmail\.org/\/\/gpgtools.org/" "$_filename";
+# 	gsed -r -i "s/2000-20[0-1][0-9]/2000-2011/" "$_filename";
 
     # not needed anymore
 #	gsed -r -i 's/"PGP_SEARCH_KEYS_MENUITEM" = "PGP/"PGP_SEARCH_KEYS_MENUITEM" = "OpenPGP/' "$_filename";
@@ -63,6 +69,7 @@ find . -iname "Makefile.config" -type f -exec sh -c '"updateFile" {}' \;
 find . -iname "designable.nib" -type f -exec sh -c '"updateFile" {}' \;
 find . -iname "create_zipfile.sh" -type f -exec sh -c '"updateFile" {}' \;
 find . -iname "package-introduction.txt" -type f -exec sh -c '"updateFile" {}' \;
+find . -iname "Credits.rtf" -type f -exec sh -c '"updateFile" {}' \;
 for ((i=0; i<${#ext[*]}; i++)) do
     echo "Searching in '${ext[$i]}' files...";
 	find . -iname "*.${ext[$i]}" -type f -exec sh -c '"updateFile" {}' \;

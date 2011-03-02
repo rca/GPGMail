@@ -1,7 +1,7 @@
 /* GPGProgressIndicatorController.h created by dave on Mon 01-Jan-2001 */
 
 /*
- * Copyright (c) 2000-2011, GPGTools Project Team <gpgmail-devel@lists.gpgmail.org>
+ * Copyright (c) 2000-2011, GPGTools Project Team <gpgtools-devel@lists.gpgtools.org>
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:

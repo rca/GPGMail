@@ -520,7 +520,7 @@
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
 				<key>VERSION</key>
-				<string>1.3.2rc2</string>
+				<string>1.3.2</string>
 			</dict>
 			<key>UUID</key>
 			<string>EF9E7F82-A914-496C-A6BF-C916B11E05E0</string>
@@ -811,7 +811,7 @@
 			<key>ADVANCED_OPTIONS</key>
 			<dict/>
 			<key>BUILD_FORMAT</key>
-			<integer>1</integer>
+			<integer>0</integer>
 			<key>BUILD_PATH</key>
 			<dict>
 				<key>PATH</key>

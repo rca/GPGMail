@@ -1,7 +1,7 @@
 /* GPGHandler.m created by stephane on Fri 30-Jun-2000 */
 
 /*
- * Copyright (c) 2000-2011, GPGTools Project Team <gpgmail-devel@lists.gpgmail.org>
+ * Copyright (c) 2000-2011, GPGTools Project Team <gpgtools-devel@lists.gpgtools.org>
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -606,12 +606,12 @@ static NSString * extractSignaturesFromData(NSData *data, CFStringEncoding encod
 	// gpg: can't mmap pool of 16384 bytes: Invalid argument - using malloc
 	// gpg: Please note that you don't have secure memory on this system
 	// gpg: Signature made 07/04/00 19:25:39 CEST using DSA key ID 12345678
-	// gpg: Good signature from "GPGTools Project Team <gpgmail-devel@lists.gpgmail.org>"
+	// gpg: Good signature from "GPGTools Project Team <gpgtools-devel@lists.gpgtools.org>"
 	//
 
 	// gpg: Please note that you don't have secure memory on this system
 	// gpg: Signature made 01/04/01 17:04:11 CET using DSA key ID 12345678
-	// gpg: Good signature from "GPGTools Project Team <gpgmail-devel@lists.gpgmail.org>"
+	// gpg: Good signature from "GPGTools Project Team <gpgtools-devel@lists.gpgtools.org>"
 	// gpg: WARNING: This key is not certified with a trusted signature!
 	// gpg:          There is no indication that the signature belongs to the owner.
 	// gpg: Fingerprint: xxxx xxxx
