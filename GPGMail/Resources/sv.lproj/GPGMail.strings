@@ -73,7 +73,7 @@
 /* Signature information */
 "Bad policy!"  = "Dålig policy! "; // Followed by a list of policy URLs
 "Policy: " = "Policy: "; // Followed by a list of policy URLs
-"Signed on %@" = "Signerat den %@"; // Param is a date, whose format is set by SIGNATURE_CREATION_DATE_FORMAT
+"Signed on %@" = "Signerat %@"; // Param is a date, whose format is set by SIGNATURE_CREATION_DATE_FORMAT
 "SIGNATURE_CREATION_DATE_FORMAT" = "%c"; // See NSCalendarDate documentation for format
 "No signature creation date available" = "Det finns inget datum för signaturens skapande";
 "Key fingerprint: %@" = "Nyckelns fingeravtryck: %@";
