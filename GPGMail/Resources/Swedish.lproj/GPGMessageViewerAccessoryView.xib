@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
 		<string key="IBDocument.SystemVersion">10J567</string>
-		<string key="IBDocument.InterfaceBuilderVersion">823</string>
+		<string key="IBDocument.InterfaceBuilderVersion">789</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">462.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">823</string>
+			<string key="NS.object.0">789</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs"/>
 		<array key="IBDocument.PluginDependencies">
@@ -100,7 +100,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="1020119242">
 							<int key="NSCellFlags">68288064</int>
 							<int key="NSCellFlags2">4195328</int>
-							<string key="NSContents">Detta meddelande har signerats med PGP.</string>
+							<string key="NSContents">Detta brev har signerats med PGP.</string>
 							<reference key="NSSupport" ref="124134063"/>
 							<reference key="NSControlView" ref="749041246"/>
 							<object class="NSColor" key="NSBackgroundColor" id="848460034">
@@ -166,7 +166,7 @@
 						<object class="NSButtonCell" key="NSCell" id="134390818">
 							<int key="NSCellFlags">67239424</int>
 							<int key="NSCellFlags2">137887744</int>
-							<string key="NSContents">Dekryptera</string>
+							<string key="NSContents">Avkryptera</string>
 							<reference key="NSSupport" ref="124134063"/>
 							<reference key="NSControlView" ref="741536748"/>
 							<int key="NSButtonFlags">-2038284033</int>
@@ -189,7 +189,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="535247318">
 							<int key="NSCellFlags">68288064</int>
 							<int key="NSCellFlags2">4195328</int>
-							<string key="NSContents">Detta meddelande har krypterats med PGP.</string>
+							<string key="NSContents">Detta brev har krypterats med PGP.</string>
 							<reference key="NSSupport" ref="124134063"/>
 							<reference key="NSControlView" ref="308288205"/>
 							<reference key="NSBackgroundColor" ref="848460034"/>
@@ -246,7 +246,7 @@
 								<object class="NSTextFieldCell" key="NSCell" id="695788276">
 									<int key="NSCellFlags">70385217</int>
 									<int key="NSCellFlags2">4195328</int>
-									<string key="NSContents">&lt;&lt;Signed by NAME (COMMENT) &lt;EMAIL&gt; | Key not found | bad signature | key revoked&gt;&gt;</string>
+									<string key="NSContents">&lt;&lt;Signerat av NAME (COMMENT) &lt;EMAIL&gt; | Nyckel hittades ej | dålig signatur | nyckel återkallad&gt;&gt;</string>
 									<object class="NSFont" key="NSSupport" id="26">
 										<string key="NSName">LucidaGrande</string>
 										<double key="NSSize">11</double>
@@ -331,7 +331,7 @@
 								<object class="NSTextFieldCell" key="NSCell" id="108625504">
 									<int key="NSCellFlags">70385217</int>
 									<int key="NSCellFlags2">4195328</int>
-									<string key="NSContents">&lt;&lt;Signed on 22/12/2222, 22:22:22&gt;&gt;</string>
+									<string key="NSContents">&lt;&lt;Signerat den 22/12/2222, 22:22:22&gt;&gt;</string>
 									<object class="NSFont" key="NSSupport" id="379204856">
 										<string key="NSName">LucidaGrande</string>
 										<double key="NSSize">10</double>
@@ -351,7 +351,7 @@
 								<object class="NSTextFieldCell" key="NSTitleCell">
 									<int key="NSCellFlags">67239424</int>
 									<int key="NSCellFlags2">0</int>
-									<string key="NSContents">Box</string>
+									<string key="NSContents">Ruta</string>
 									<reference key="NSSupport" ref="124134063"/>
 									<object class="NSColor" key="NSBackgroundColor">
 										<int key="NSColorSpace">6</int>
@@ -381,7 +381,7 @@
 								<object class="NSTextFieldCell" key="NSCell" id="630545140">
 									<int key="NSCellFlags">70385217</int>
 									<int key="NSCellFlags2">4195328</int>
-									<string key="NSContents">&lt;&lt;Signature expiration date: 22/12/2222&gt;&gt;</string>
+									<string key="NSContents">&lt;&lt;Signaturen går ut: 22/12/2222&gt;&gt;</string>
 									<reference key="NSSupport" ref="379204856"/>
 									<reference key="NSControlView" ref="561398457"/>
 									<reference key="NSBackgroundColor" ref="848460034"/>
@@ -397,7 +397,7 @@
 								<object class="NSTextFieldCell" key="NSCell" id="1007575146">
 									<int key="NSCellFlags">70385217</int>
 									<int key="NSCellFlags2">71304192</int>
-									<string key="NSContents">&lt;&lt;Bad policy!&gt;&gt;</string>
+									<string key="NSContents">&lt;&lt;Dålig policy!&gt;&gt;</string>
 									<object class="NSFont" key="NSSupport">
 										<string key="NSName">LucidaGrande-Bold</string>
 										<double key="NSSize">10</double>
@@ -417,7 +417,7 @@
 								<object class="NSTextFieldCell" key="NSCell" id="273738048">
 									<int key="NSCellFlags">70385217</int>
 									<int key="NSCellFlags2">71304192</int>
-									<string key="NSContents">&lt;&lt;Trust Level: Unknown&gt;&gt;</string>
+									<string key="NSContents">&lt;&lt;Lita på-nivå: Okänd&gt;&gt;</string>
 									<reference key="NSSupport" ref="379204856"/>
 									<reference key="NSControlView" ref="93520562"/>
 									<reference key="NSBackgroundColor" ref="848460034"/>
@@ -546,9 +546,7 @@
 									</object>
 									<bool key="NSMenuItemRespectAlignment">YES</bool>
 									<object class="NSMenu" key="NSMenu" id="1779260">
-										<object class="NSMutableString" key="NSTitle">
-											<characters key="NS.bytes">OtherViews</characters>
-										</object>
+										<string key="NSTitle">Andra vyer</string>
 										<array class="NSMutableArray" key="NSMenuItems">
 											<reference ref="528695358"/>
 											<object class="NSMenuItem" id="754470928">
@@ -591,7 +589,7 @@
 								<object class="NSTextFieldCell" key="NSCell" id="980158195">
 									<int key="NSCellFlags">70385217</int>
 									<int key="NSCellFlags2">4195328</int>
-									<string key="NSContents">&lt;&lt;Key Fingerprint: FFFF FFFF FFFF FFFF FFFF  FFFF FFFF FFFF FFFF FFFF&gt;&gt;</string>
+									<string key="NSContents">&lt;&lt;Nyckelns fingeravtryck: FFFF FFFF FFFF FFFF FFFF  FFFF FFFF FFFF FFFF FFFF&gt;&gt;</string>
 									<reference key="NSSupport" ref="379204856"/>
 									<reference key="NSControlView" ref="672376893"/>
 									<reference key="NSBackgroundColor" ref="848460034"/>
@@ -649,7 +647,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="887743728">
 							<int key="NSCellFlags">70385217</int>
 							<int key="NSCellFlags2">4195328</int>
-							<string key="NSContents">&lt;&lt;message&gt;&gt;</string>
+							<string key="NSContents">&lt;&lt;brev&gt;&gt;</string>
 							<reference key="NSSupport" ref="124134063"/>
 							<reference key="NSControlView" ref="49508654"/>
 							<reference key="NSBackgroundColor" ref="848460034"/>

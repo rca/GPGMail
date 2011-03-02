@@ -1,7 +1,7 @@
-﻿{
+{
 /* Passphrase panel titles */
-"MESSAGE_AUTHENTICATION_TITLE" = "Autentisering av meddelande";
-"MESSAGE_DECRYPTION_PASSPHRASE_TITLE" = "Dekryptering av meddelande";
+"MESSAGE_AUTHENTICATION_TITLE" = "Autentisering av brev";
+"MESSAGE_DECRYPTION_PASSPHRASE_TITLE" = "Dekryptering av brev";
 
 /**/
 "DECRYPTING" = "Dekrypterar...";
@@ -15,8 +15,8 @@
 /* <PGP> submenu items */
 "DECRYPT_MENU" = "Dekryptera";
 "AUTHENTICATE_MENU" = "Autentisera";
-"ENCRYPT_MENU" = "Kryptera nytt meddelande";
-"SIGN_MENU" = "Signera nytt meddelande";
+"ENCRYPT_MENU" = "Kryptera nytt brev";
+"SIGN_MENU" = "Signera nytt brev";
 
 /* Description of version prefixed with <Version:> */
 "VERSION: %@" = "Version: %@";
@@ -25,13 +25,13 @@
 "PGP_PREFERENCES" = "GPGMail";
 
 /* Alert title and message */
-"MSG_DECRYPTION_ALERT_TITLE_NOT_SIGNED" = "Dekryptering av meddelande";
-"DECRYPTED_MSG_NOT_SIGNED" = "Meddelandet har krypterats men har inte signerats. Dess autenticitet kan inte bevisas.";
+"MSG_DECRYPTION_ALERT_TITLE_NOT_SIGNED" = "Dekryptering av brev";
+"DECRYPTED_MSG_NOT_SIGNED" = "Brevet har krypterats men har inte signerats. Dess autenticitet kan inte bevisas.";
 "MSG_ENCRYPTION_ALERT_TITLE" = "OpenPGP-kryptering misslyckades";
 "MSG_DECRYPTION_ALERT_TITLE" = "OpenPGP-dekryptering misslyckades";
 "MSG_SIGNING_ALERT_TITLE" = "OpenPGP-signering misslyckades";
-"UNSUPPORTED_ENCRYPTION_FORMAT" = "GPGMail kan inte dekryptera denna typ av krypterade meddelanden.";
-"DATA_NOT_AVAILABLE" = "Innehållet i meddelandet är ej tillgängligt för tillfället.";
+"UNSUPPORTED_ENCRYPTION_FORMAT" = "GPGMail kan inte dekryptera denna typ av krypterade brev.";
+"DATA_NOT_AVAILABLE" = "Innehållet i brevet är ej tillgängligt för tillfället.";
 
 /* Informational alert title and message */
 "AUTHENTICATION_TITLE_OK" = "OpenPGP-autentisering";
@@ -44,7 +44,7 @@
 
 /**/
 "AUTHENTICATION_TITLE_UNSIGNED" = "OpenPGP-autentisering";
-"UNSIGNED_PGP_MESSAGE" = "Detta meddelande är inte signerat med OpenPGP.";
+"UNSIGNED_PGP_MESSAGE" = "Detta brev är inte signerat med OpenPGP.";
 
 /* Toolbar item titles */
 "DECRYPT_ITEM" = "Dekryptera";
@@ -59,16 +59,16 @@
 "UNSIGNED_ITEM" = "Osignerat";
 
 /* Toolbar item tooltips  */
-"DECRYPT_ITEM_TOOLTIP" = "Dekryptera OpenPGP-krypterat meddelande";
-"AUTHENTICATE_ITEM_TOOLTIP" = "Autentisera OpenPGP-signerat meddelande";
-"MAKE_CLEAR_ITEM_TOOLTIP" = "Klicka för att skicka ett meddelande i klartext";
+"DECRYPT_ITEM_TOOLTIP" = "Dekryptera OpenPGP-krypterat brev";
+"AUTHENTICATE_ITEM_TOOLTIP" = "Autentisera OpenPGP-signerat brev";
+"MAKE_CLEAR_ITEM_TOOLTIP" = "Klicka för att skicka ett brev i klartext";
 "MAKE_ENCRYPTED_ITEM_TOOLTIP" = "Klicka för att använda OpenPGP-kryptering";
-"MAKE_UNSIGNED_ITEM_TOOLTIP" = "Klicka för att skicka ett meddelande utan OpenPGP-autentisering";
+"MAKE_UNSIGNED_ITEM_TOOLTIP" = "Klicka för att skicka ett brev utan OpenPGP-autentisering";
 "MAKE_SIGNED_ITEM_TOOLTIP" = "Klicka för att använda OpenPGP-autentisering";
-"ENCRYPTED_ITEM_TOOLTIP" = "Meddelandet kommer att krypteras; klicka för att skicka meddelandet i klartext";
-"CLEAR_ITEM_TOOLTIP" = "Meddelande kommer att skickas i klartext; klicka för att använda OpenPGP-kryptering";
-"SIGNED_ITEM_TOOLTIP" = "Meddelandet kommer att signeras med OpenPGP; klicka för att skicka meddelandet utan PGP-autentisering";
-"UNSIGNED_ITEM_TOOLTIP" = "Meddelandet kommer inte att signeras med OpenPGP; klicka för att använda OpenPGP-autentisering";
+"ENCRYPTED_ITEM_TOOLTIP" = "Brevet kommer att krypteras; klicka för att skicka bervet i klartext";
+"CLEAR_ITEM_TOOLTIP" = "Brevet kommer att skickas i klartext; klicka för att använda OpenPGP-kryptering";
+"SIGNED_ITEM_TOOLTIP" = "Brevet kommer att signeras med OpenPGP; klicka för att skicka brevet utan PGP-autentisering";
+"UNSIGNED_ITEM_TOOLTIP" = "Brevet kommer inte att signeras med OpenPGP; klicka för att använda OpenPGP-autentisering";
 
 /* Signature information */
 "Bad policy!"  = "Dålig policy! "; // Followed by a list of policy URLs
@@ -96,7 +96,7 @@
 
 /* Title */
 /* Error messages */
-"GPGMAIL_CANNOT_WORK" = "GPGMail kan inte fungera eftersom en hjälpapplikation inte kunde startas. Försök starta om Mail. Kvarstår felet, skicka ett meddelande till gpgmail-devel@lists.gpgmail.org";
+"GPGMAIL_CANNOT_WORK" = "GPGMail kan inte fungera eftersom en hjälpapplikation inte kunde startas. Försök starta om Mail. Kvarstår felet, skicka ett brev till gpgmail-devel@lists.gpgmail.org";
 "GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail kan inte fungera. GnuPG (%@) version %@ hittades, men GPGMail kräver åtminstone version %@. Avsluta Mail, installera en matchande GnuPG-version (till exempel från GPGTools Project, http://gpgtools.org/), återstarta därefter Mail."; // First arg is path to gpg, second and third are version strings
 "GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail kan inte fungera. GnuPG (%@) med åtminstone version %@ kunde inte hittas. Avsluta Mail, installera en matchande GnuPG-version (till exempel från GPGTools Project, http://gpgtools.org/), återstarta därefter Mail."; // First arg is path to gpg, second is version string
 "INVALID_GPGMAIL_VERSION" = "Din version av GPGMail är inte kompatibel med din version av Mail."; /* Title of alert sheet */
@@ -143,7 +143,7 @@
 "PGP_SIGNATURE_FILENAME" = "PGP";
 
 /* Signature attachment content-description */
-"This is a digitally signed message part" = "Detta är en digitalt signerad del av meddelandet";
+"This is a digitally signed message part" = "Detta är en digitalt signerad del av brevet";
 
 /* Version MIME part content description header */
 "CONTENT_DESCRIPTION_HEADER" = "PGP/MIME version identification";
@@ -152,15 +152,15 @@
 "PGP_ENCRYPTED_FILENAME" = "PGP";
 
 /* Encrypted attachment content-description */
-"This is an encrypted message part" = "OpenPGP-krypterat meddelande";
+"This is an encrypted message part" = "OpenPGP-krypterat brev";
 
 /* Multiple-part description */
-"MULTIPART_ENCRYPTED_DESCRIPTION" = "Detta är ett OpenPGP/MIME-krypterat meddelande (RFC 2440 och 3156)";
-"MULTIPART_SIGNED_DESCRIPTION" = "Detta är ett OpenPGP/MIME-signerat meddelande (RFC 2440 och 3156)";
+"MULTIPART_ENCRYPTED_DESCRIPTION" = "Detta är ett OpenPGP/MIME-krypterat brev (RFC 2440 och 3156)";
+"MULTIPART_SIGNED_DESCRIPTION" = "Detta är ett OpenPGP/MIME-signerat brev (RFC 2440 och 3156)";
 
 /* Tooltip for banner icons */
-"SIGNATURE_IS_GOOD" = "Signaturen är OK; meddelandet har inte förändrats";
-"SIGNATURE_IS_NOT_GOOD" = "Signaturen är dålig; meddelandet har förändrats";
+"SIGNATURE_IS_GOOD" = "Signaturen är OK; brevet har inte förändrats";
+"SIGNATURE_IS_NOT_GOOD" = "Signaturen är dålig; brevet har förändrats";
 
 /* PGP Key Download panel */
 "PGP_SEARCH_KEYS_MENUITEM" = "OpenPGP-Nyckelsökning";
@@ -195,7 +195,7 @@
 "CONTINUE_ANYWAY" = "Försök fortsätta";
 
 /* Composer accessory view header, under To:, CC:, Subject: */
-"PGP:" = "PGP:";
+"PGP:" = "OpenPGP:";
 
 /* Key description in popups; prefixes key (actually, primary userID), when necessary; followed by keyID, userID, etc.*/
 "REVOKED_KEY:" = "Återkallad:";
@@ -212,8 +212,8 @@
 "NO_VALID_PRIVATE_KEY" = "Ingen giltig privat nyckel kan hittas. Antingen har ingen nyckel valts eller också har vald nyckel gått ut, stängts av eller återkallats."; // Could be displayed after encryption
 
 /* Alert when user has no PGP key */
-"NO PGP PRIVATE KEY - TITLE" = "Du har ingen OpenPGP-nyckel. Du kan inte använda GPGMail för att kryptera eller signera meddelanden.";
-"NO PGP PRIVATE KEY - MESSAGE" = "Om du vill kunna kryptera eller signera meddelanden med OpenPGP, behöver du en personlig OpenPGP-nyckel. För att skapa en OpenPGP-nyckel, ladda ner och installera GPGTools' GPG Keychain Access (GPG Nyckelhanterare) från http://gpgtools.org/";
+"NO PGP PRIVATE KEY - TITLE" = "Du har ingen OpenPGP-nyckel. Du kan inte använda GPGMail för att kryptera eller signera brev.";
+"NO PGP PRIVATE KEY - MESSAGE" = "Om du vill kunna kryptera eller signera brev med OpenPGP, behöver du en personlig OpenPGP-nyckel. För att skapa en OpenPGP-nyckel, ladda ner och installera GPGTools' GPG Keychain Access (GPG Nyckelhanterare) från http://gpgtools.org/";
 
 /* Conflict resolution panel*/
 "<ME>" = "Jag";

@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
 		<string key="IBDocument.SystemVersion">10J567</string>
-		<string key="IBDocument.InterfaceBuilderVersion">823</string>
+		<string key="IBDocument.InterfaceBuilderVersion">789</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">462.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">823</string>
+			<string key="NS.object.0">789</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -75,7 +75,7 @@
 					</object>
 					<object class="NSMenuItem" id="79393872">
 						<reference key="NSMenu" ref="606014683"/>
-						<string key="NSTitle">Kryptera nytt meddelande</string>
+						<string key="NSTitle">Kryptera nytt brev</string>
 						<string key="NSKeyEquiv">E</string>
 						<int key="NSKeyEquivModMask">1572864</int>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -161,7 +161,7 @@
 					</object>
 					<object class="NSMenuItem" id="718157818">
 						<reference key="NSMenu" ref="606014683"/>
-						<string key="NSTitle">Signera nytt meddelande</string>
+						<string key="NSTitle">Signera nytt brev</string>
 						<string key="NSKeyEquiv">S</string>
 						<int key="NSKeyEquivModMask">1572864</int>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -227,7 +227,7 @@
 					</object>
 					<object class="NSMenuItem" id="405981785">
 						<reference key="NSMenu" ref="606014683"/>
-						<string key="NSTitle">Läs in nycklar på nytt</string>
+						<string key="NSTitle">Uppdatera nycklar</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSKeyEquivModMask">1048576</int>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -238,7 +238,7 @@
 				<string key="NSName"/>
 			</object>
 			<object class="NSMenu" id="927405171">
-				<string key="NSTitle">Menu</string>
+				<string key="NSTitle">Meny</string>
 				<object class="NSMutableArray" key="NSMenuItems">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="NSMenuItem" id="541521961">
@@ -253,7 +253,7 @@
 					</object>
 					<object class="NSMenuItem" id="27986648">
 						<reference key="NSMenu" ref="927405171"/>
-						<string key="NSTitle">E-post</string>
+						<string key="NSTitle">Epost</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSKeyEquivModMask">1048576</int>
 						<int key="NSMnemonicLoc">2147483647</int>

@@ -195,7 +195,7 @@
 "CONTINUE_ANYWAY" = "Try to continue";
 
 /* Composer accessory view header, under To:, CC:, Subject: */
-"PGP:" = "PGP:";
+"PGP:" = "OpenPGP:";
 
 /* Key description in popups; prefixes key (actually, primary userID), when necessary; followed by keyID, userID, etc.*/
 "REVOKED_KEY:" = "Revoked:";
