@@ -7,10 +7,8 @@ install: install
 	INSTALL_GPGMAIL=1 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release build
 
 dmg: compile
-	@./Dependencies/GPGTools_Core/scripts/create_dmg.sh
-
-sparkle: compile
 	@./Utilities/create_sparkle.sh
+	@./Dependencies/GPGTools_Core/scripts/create_dmg.sh
 
 clean-gpgme:
 	rm -rf Dependencies/MacGPGME/build/dist

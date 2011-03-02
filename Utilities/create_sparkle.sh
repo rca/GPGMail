@@ -5,21 +5,32 @@ if [ ! -e Makefile.config ]; then
 	exit 1
 fi
 
-source "Makefile.config"
+read -p "Create Sparkle zip file [y/n]? " input
 
-PRIVATE_KEY_NAME="$sshKeyname"
-dmgName=${dmgName:-"$name-$version.dmg"}
-dmgPath=${dmgPath:-"build/$dmgName"}
+if [ "x$input" == "xy" -o "x$input" == "xY" ]; then
+    source "Makefile.config"
+    cd build/Release
 
-cd build/Release
-zip -r "../$name-$version.zip" GPGMail.mailbundle;
+    filename="../$name-$version.zip";
+    rm -f "$filename"
+    zip -qyr "$filename" GPGMail.mailbundle/;
 
-echo " * Filename: build/$name-$version.zip";
-echo -n " * Sparkle signature: ";
-openssl dgst -sha1 -binary < "../$name-$version.zip" | \
-openssl dgst -dss1 -sign <(security find-generic-password -g -s "$PRIVATE_KEY_NAME" 2>&1 >/dev/null | \
-perl -pe '($_) = /<key>NOTE<\/key>.*<string>(.*)<\/string>/; s/\\012/\n/g') | \
-openssl enc -base64
+    echo " * Filename: build/$name-$version.zip";
 
-echo ""
-cd -
+    echo -n " * File size: ";
+    stat -f "%z" "$filename"
+
+    echo -n " * Sparkle signature: ";
+    openssl dgst -sha1 -binary < "$filename" | \
+    openssl dgst -dss1 -sign <(security find-generic-password -g -s "$sshKeyname" 2>&1 >/dev/null | \
+    perl -pe '($_) = /<key>NOTE<\/key>.*<string>(.*)<\/string>/; s/\\012/\n/g') | \
+    openssl enc -base64
+
+    echo -n " * SHA-1: ";
+    shasum "$filename"
+
+    gpg2 -bau 76D78F0500D026C4 -o "$filename.sig" "$filename"
+
+    echo ""
+    cd - > /dev/null
+fi
