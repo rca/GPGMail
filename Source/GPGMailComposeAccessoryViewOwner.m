@@ -1924,6 +1924,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 #endif
 }
 
+
 - (NSString *)context:(GPGContext *)context passphraseForKey:(GPGKey *)key again:(BOOL)again {
 	NSString *passphrase;
 
@@ -1937,8 +1938,11 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 }
 
 - (NSString *)senderEmail {
-	//return [[[gpgFromButton selectedItem] title] gpgNormalizedEmail];
-	return [[[[[self messageEditor] backEnd] account] firstEmailAddress] gpgNormalizedEmail];
+	NSString *mailAddress = [[[[self messageEditor] gpgFromPopup] selectedItem] title];
+	if (!mailAddress) {
+		mailAddress = [[[[self messageEditor] backEnd] account] firstEmailAddress];
+	}
+	return [mailAddress gpgNormalizedEmail];
 }
 
 - (GPGKey *)evaluatedPersonalKey {
