@@ -531,6 +531,7 @@ static BOOL gpgMailWorks = YES;
 }
 
 - (void)refreshPublicKeysMenu {
+	DebugLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
     NSMenu *aSubmenu = [choosePublicKeysMenuItem menu];
     GPGKey *theDefaultKey = [[self defaultKey] publicKey];
     NSMenuItem *anItem;

@@ -68,6 +68,7 @@ NSString *GPGMailHeaderKey = @"X-PGP-Agent";
 }
 
 - (NSData *)gpgEncryptForRecipients:(NSArray *)recipients trustAllKeys:(BOOL)trustsAllKeys signWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate format:(GPGMailFormat *)mailFormatPtr headers:(MutableMessageHeaders **)headersPtr {
+	DebugLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
 	// For text/plain messages, we encrypt/sign displayed text, not encoded (raw) text,
 	// and THEN we apply quoted-printable/base64, for example. Thus encrypted/signed data
 	// can be 8bit data.
@@ -148,30 +149,30 @@ NSString *GPGMailHeaderKey = @"X-PGP-Agent";
 
 #warning Use newEncoding!
 		if (recipients != nil) {
-			if (key != nil)
-																																																								 #warning Use also encapsulated signature!
-			{
+			if (key != nil) {
+				DebugLog(@"[DEBUG] aContext encryptedSignedData:withKeys:trustAllKeys:");
 				outputData = [aContext encryptedSignedData:inputData withKeys:recipients trustAllKeys:trustsAllKeys /*encoding:newEncoding*/];
 			} else {
+				DebugLog(@"[DEBUG] aContext encryptedData:withKeys:trustAllKeys:");
 				outputData = [aContext encryptedData:inputData withKeys:recipients trustAllKeys:trustsAllKeys /*encoding:newEncoding*/];
 			}
 		} else {
 			if (key != nil) {
+				DebugLog(@"[DEBUG] aContext signedData:signatureMode:");
 				outputData = [aContext signedData:inputData signatureMode:GPGSignatureModeClear /*encoding:newEncoding*/];
 			} else {
 				// Symetric encryption
+				DebugLog(@"[DEBUG] aContext encryptedData:");
 				outputData = [aContext encryptedData:inputData /*encoding:newEncoding*/];
 			}
 		}
+		DebugLog(@"[DEBUG] encrypted OK");
 		modifiedData = [[[outputData data] retain] autorelease];                         // Because context will be freed
 //            [NSException raise:GPGException format:@"%@", NSLocalizedStringFromTableInBundle(@"UNTRUSTED RECIPIENTS", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")];
-	}@catch (NSException *localException) {
+	} @finally {
 		[inputData release];
 		[aContext release];
-		[localException raise];
 	}
-	[inputData release];
-	[aContext release];
 
 	// We must convert to quoted-printable/base64 AFTER having
 	// encrypted the message (that's what do other MUAs).

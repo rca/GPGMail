@@ -64,6 +64,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 }
 
 - (void)gpgEncryptForRecipients:(NSArray *)recipients trustAllKeys:(BOOL)trustsAllKeys signWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate format:(GPGMailFormat)mailFormat {
+	DebugLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
 	// Let's not try to encrypt empty messages.
 	// Note that signature (if any) has already been appended at this stage.
 	if ([(NSData *)[[self messageBody] rawData] length] > 0) {
@@ -152,6 +153,7 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 }
 
 - (void)gpgSignWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate format:(GPGMailFormat)mailFormat {
+	DebugLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
 	// Let's not try to sign empty messages. Note that signature (if any) has already been appended at this stage.
 	if ([(NSData *)[[self messageBody] rawData] length] > 0) {
 		NSAutoreleasePool *localAP;

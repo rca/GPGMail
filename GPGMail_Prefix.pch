@@ -29,3 +29,5 @@ extern int  GPGMailLoggingLevel;
         #define TIGER
     #endif
 #endif
+
+#define DebugLog(...) if (GPGMailLoggingLevel) {NSLog(__VA_ARGS__);}

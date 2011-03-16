@@ -301,6 +301,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 }
 
 - (void)updateWarningImage {
+	DebugLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
 #if 0
 #warning FIXME: Should not modify any encrypt/sign/MIME setting, but only update UI
 	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
@@ -596,6 +597,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 }
 
 - (void)refreshAutomaticChoiceInfo {
+	DebugLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
 	[[[[publicKeysPopDownButton menu] itemArray] objectAtIndex:3] setState:!useCustomPublicKeys];
 	[[[GPGMailBundle sharedInstance] automaticPublicKeysMenuItem] setState:!useCustomPublicKeys];
 }
@@ -610,6 +612,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 
 - (void)refreshPublicKeysMenu:(NSMenu *)aSubmenu fromIndex:(int)index andFillIn:(BOOL)flag {
 #warning Duplicated code!
+	DebugLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
 	NSEnumerator *anEnum = [[NSArray arrayWithArray:[aSubmenu itemArray]] objectEnumerator];
 	NSMenuItem *anItem;
 	int i;
@@ -949,6 +952,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 }
 
 - (void)doSetEncryptsMessage:(BOOL)flag {
+	DebugLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
 	NSEnumerator *anEnum = [[[[[self composeAccessoryView] window] toolbar] items] objectEnumerator];
 	SegmentedToolbarItem *anItem;
 	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
@@ -996,6 +1000,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 #endif
 
 - (void)doSetSignsMessage:(BOOL)flag {
+	DebugLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
 	NSEnumerator *anEnum = [[[[[self composeAccessoryView] window] toolbar] items] objectEnumerator];
 	SegmentedToolbarItem *anItem;
 	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
@@ -1282,9 +1287,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 }
 
 - (BOOL)messageWillBeDelivered:(OutgoingMessage *)message {
-	if (GPGMailLoggingLevel) {
-		NSLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
-	}
+	DebugLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
 	// Runtime super call - CORRECT !
 	struct objc_super s = { self, [self superclass] };
 	BOOL result = (BOOL)objc_msgSendSuper(&s, @selector(messageWillBeDelivered:), message);
@@ -1405,8 +1408,8 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 			[aController startWithTitle:NSLocalizedStringFromTableInBundle(@"ENCRYPTING", @"GPGMail", aBundle, "") delegate:self];
 
 			@try {
-				[message gpgEncryptForRecipients:recipients trustAllKeys:trustsAllKeys signWithKey:(signsMessage ? selectedPersonalKey:nil) passphraseDelegate:self format:mailFormat];
-			}@catch (NSException *localException) {
+				[message gpgEncryptForRecipients:recipients trustAllKeys:trustsAllKeys signWithKey:(signsMessage ? selectedPersonalKey : nil) passphraseDelegate:self format:mailFormat];
+			} @catch (NSException *localException) {
 				result = NO;
 				if (![[localException name] isEqualToString:GPGException] || [mailBundle gpgErrorCodeFromError:[[[localException userInfo] objectForKey:GPGErrorKey] intValue]] != /*GPGErrorNoData*/ GPGErrorCancelled) {
 					[self performSelector:@selector(displayException:) withObject:localException afterDelay:0.0];
@@ -1417,7 +1420,7 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 		} else {
 			@try {
 				[message gpgSignWithKey:selectedPersonalKey passphraseDelegate:self format:mailFormat];
-			}@catch (NSException *localException) {
+			} @catch (NSException *localException) {
 				result = NO;
 				if (![[localException name] isEqualToString:GPGException] || [mailBundle gpgErrorCodeFromError:[[[localException userInfo] objectForKey:GPGErrorKey] unsignedIntValue]] != /*GPGErrorNoData*/ GPGErrorCancelled) {
 					[self performSelector:@selector(displayException:) withObject:localException afterDelay:0.0];
