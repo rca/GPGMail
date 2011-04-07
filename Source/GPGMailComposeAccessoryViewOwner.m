@@ -741,8 +741,6 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 		verifyRulesConflicts = YES;
 		pgpOptionsPerEmail = [[NSMutableDictionary alloc] init];
 		displaysButtonsInComposeWindow = [[GPGMailBundle sharedInstance] displaysButtonsInComposeWindow];
-
-		NSAssert([NSBundle loadNibNamed:@"GPGMailComposeTiger" owner:self], @"### Unable to load GPGMailComposeTiger nib");
 	}
 	
 	return self;

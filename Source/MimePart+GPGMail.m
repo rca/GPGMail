@@ -1891,17 +1891,13 @@ static IMP MimePart_isEncrypted = NULL;
 	if (![GPGMailBundle gpgMailWorks]) {
 		return ((id (*)(id, SEL))MimePart_decodeTextHtml)(self, _cmd);
 	} else {
-		if (GPGMailLoggingLevel) {
-			NSLog(@"[DEBUG] %p gpgDecodeTextHtml", self);
-		}
+		DebugLog(@"[DEBUG] %p gpgDecodeTextHtml", self);
 		id result = [self _gpgDecodePGP];
 
 		if (!result) {
 			result = ((id (*)(id, SEL))MimePart_decodeTextHtml)(self, _cmd);
 		}
-		if (GPGMailLoggingLevel) {
-			NSLog(@"[DEBUG] Done: result = %p", result);
-		}
+		DebugLog(@"[DEBUG] Done: result = %p", result);
 		return result;
 	}
 }
