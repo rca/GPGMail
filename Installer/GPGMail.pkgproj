@@ -520,7 +520,7 @@
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
 				<key>VERSION</key>
-				<string>1.3.2</string>
+				<string>1.3.3</string>
 			</dict>
 			<key>UUID</key>
 			<string>EF9E7F82-A914-496C-A6BF-C916B11E05E0</string>
@@ -705,7 +705,7 @@
 						<key>LANGUAGE</key>
 						<string>English</string>
 						<key>VALUE</key>
-						<string>GPGMail_Installer</string>
+						<string>GPGMail</string>
 					</dict>
 				</array>
 			</dict>
