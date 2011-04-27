@@ -1,4 +1,5 @@
-GPGMail 1.3.2
+GPGMail
+Version: 1.3.3
 
 It includes a plugin for Apple Mail to sign, encrypt and decrypt pgp-messages.
 
