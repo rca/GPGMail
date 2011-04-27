@@ -1,5 +1,9 @@
 all: compile
 
+update:
+	@git submodule foreach git pull origin master
+	@git pull
+
 compile:
 	INSTALL_GPGMAIL=0 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release build
 
