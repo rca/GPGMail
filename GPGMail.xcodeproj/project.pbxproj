@@ -186,6 +186,7 @@
 		1BCEE1E211CC051500488D19 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		1BF51A6F108FCD1900AC8268 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
 		24ABFEBD1376FECB003FA660 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = Resources/French.lproj/GPGMailPreferences.xib; sourceTree = "<group>"; };
+		24D1A4401378127A0044FC01 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = French; path = Resources/French.lproj/Credits.rtf; sourceTree = "<group>"; };
 		301A10B8131E6C0700F27446 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = sv; path = Resources/sv.lproj/Credits.rtf; sourceTree = "<group>"; };
 		301A10BC131E6C1500F27446 /* sv */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sv; path = Resources/sv.lproj/GPGKeyDownload.xib; sourceTree = "<group>"; };
 		301A10BD131E6C1500F27446 /* sv */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sv; path = Resources/sv.lproj/GPGMailCompose.xib; sourceTree = "<group>"; };
@@ -1286,6 +1287,7 @@
 				30913B4312B19B3500327FDF /* English */,
 				30B18F1C12B3C7FB008353F5 /* German */,
 				301A10B8131E6C0700F27446 /* sv */,
+				24D1A4401378127A0044FC01 /* French */,
 			);
 			name = Credits.rtf;
 			sourceTree = "<group>";
