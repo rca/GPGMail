@@ -265,6 +265,7 @@
 		301A1199131E6D5800F27446 /* Danish */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Danish; path = Resources/GPG.subproj/Danish.lproj/GPGProgressIndicatorController.xib.strings; sourceTree = "<group>"; };
 		302ED23912B2FD2C0094DECD /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = German; path = Resources/German.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
 		302ED23B12B2FD350094DECD /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = Resources/English.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
+		30432AED13786A7B005D7AD5 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = French; path = Resources/French.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
 		307E1C6612B17CFF0012F3DF /* GPGMailBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPGMailBundle.h; path = Source/GPGMailBundle.h; sourceTree = "<group>"; };
 		308B8F7C12A6AE2D00C99BD2 /* Danish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Danish; path = Resources/Danish.lproj/GPGKeyDownload.xib; sourceTree = "<group>"; };
 		308B8F7E12A6AE2D00C99BD2 /* Danish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Danish; path = Resources/Danish.lproj/GPGMailCompose.xib; sourceTree = "<group>"; };
@@ -928,7 +929,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "pushd $SRCROOT > /dev/null\n\necho \"Localize GPGMailPreferences.xib\"\nUtilities/localizeXIB Resources/English.lproj/GPGMailPreferences.xib German sv\n\necho \"Localize GPGMenu.xib\"\nUtilities/localizeXIB Resources/English.lproj/GPGMenu.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGKeyDownload.xib\"\nUtilities/localizeXIB Resources/English.lproj/GPGKeyDownload.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGMailCompose.xib\"\nUtilities/localizeXIB Resources/English.lproj/GPGMailCompose.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGMessageViewerAccessoryView.xib\"\nUtilities/localizeXIB Resources/English.lproj/GPGMessageViewerAccessoryView.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\n\nUtilities/localizeXIB Resources/GPG.subproj/English.lproj/GPGPassphrase.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\nUtilities/localizeXIB Resources/GPG.subproj/English.lproj/GPGProgressIndicatorController.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\n\n\npopd > /dev/null\n";
+			shellScript = "pushd $SRCROOT > /dev/null\n\necho \"Localize GPGMailPreferences.xib\"\nUtilities/localizeXIB Resources/English.lproj/GPGMailPreferences.xib German sv French\n\necho \"Localize GPGMenu.xib\"\nUtilities/localizeXIB Resources/English.lproj/GPGMenu.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGKeyDownload.xib\"\nUtilities/localizeXIB Resources/English.lproj/GPGKeyDownload.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGMailCompose.xib\"\nUtilities/localizeXIB Resources/English.lproj/GPGMailCompose.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGMessageViewerAccessoryView.xib\"\nUtilities/localizeXIB Resources/English.lproj/GPGMessageViewerAccessoryView.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\n\nUtilities/localizeXIB Resources/GPG.subproj/English.lproj/GPGPassphrase.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\nUtilities/localizeXIB Resources/GPG.subproj/English.lproj/GPGProgressIndicatorController.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\n\n\npopd > /dev/null\n";
 		};
 		30F40BC012B76FAE002E2374 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1158,6 +1159,7 @@
 				302ED23B12B2FD350094DECD /* English */,
 				302ED23912B2FD2C0094DECD /* German */,
 				301A10C9131E6C3F00F27446 /* sv */,
+				30432AED13786A7B005D7AD5 /* French */,
 			);
 			name = GPGMailPreferences.xib.strings;
 			sourceTree = "<group>";
