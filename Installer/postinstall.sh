@@ -1,39 +1,69 @@
-#!/bin/sh
-tempdir=/private/tmp/GPGMail_Installation
-homedir="$HOME"
+#!/bin/bash
 
-# determine where to install the bundle to
-if ( test -e "/Library/Mail/Bundles/GPGMail.mailbundle" ) then
-    homedir=""
-    rm -fr "/Library/Mail/Bundles/GPGMail.mailbundle"
-	mv "$tempdir/GPGMail.mailbundle" "/Library/Mail/Bundles/"
+
+# config #######################################################################
+tempdir="/private/tmp/GPGMail_Installation"
+rootdir="/Library/Mail/Bundles/"
+netdir="/Network/Library/Mail/Bundles/"
+homedir="$HOME/Library/Mail/Bundles/"
+bundle="GPGMail.mailbundle";
+################################################################################
+
+
+# determine where to install the bundle to #####################################
+if ( test -e "$netdir/$bundle" ) then
+    _target="$netdir";
+elif ( test -e "$rootdir/$bundle" ) then
+    _target="$rootdir";
+else
+    _target="$homedir";
 fi
+################################################################################
 
 
-sudo -u $USER mkdir -p "$homedir/Library/Mail/Bundles"
-# Fix for issue #169
-chown $USER:Staff "$homedir/Library/Mail"
-# The installer has to make sure, that the "GPGMail.mailbundle" is installed in $tempdir
-rm -fr "$homedir/Library/Mail/Bundles/GPGMail.mailbundle"
-chown -R $USER:Staff "$tempdir/GPGMail.mailbundle"
-sudo -u $USER cp -r "$tempdir/GPGMail.mailbundle" "$homedir/Library/Mail/Bundles/"
-# change the user and group to avoid problems when updating (so this skript needs to be run as root!)
-chown -R $USER:Staff "$homedir/Library/Mail/Bundles"
-
-if [ ! "`diff -r $tempdir/GPGMail.mailbundle $homedir/Library/Mail/Bundles/GPGMail.mailbundle`" == "" ]; then
-    echo "Installation failed. GPGMail bundle was not installed or updated at $homedir/Library/Mail/Bundles/";
-    rm -fr "$tempdir/GPGMail.mailbundle"
+# Cleanup ######################################################################
+if [ ! -e "$tempdir/$bundle" ]; then
+    echo "Installation failed. GPGMail was not found at $tempdir/$bundle";
     exit 1;
 fi
+# remove old versions of the bundle
+rm -rf "$netdir/$bundle"
+rm -rf "$rootdir/$bundle"
+rm -rf "$homedir/$bundle"
+################################################################################
 
+
+# Install ######################################################################
+mkdir -p "$_target"
+mv "$tempdir/$bundle" "$_target"
+
+if [ ! "`diff -r $tempdir/$bundle $_target/$bundle`" == "" ]; then
+    echo "Installation failed. GPGMail bundle was not installed or updated at $_target";
+    rm -fr "$tempdir/$bundle"
+    exit 1;
+fi
+################################################################################
+
+
+# Permissions ##################################################################
+# see http://gpgtools.lighthouseapp.com/projects/65764-gpgmail/tickets/134
+# see http://gpgtools.lighthouseapp.com/projects/65764-gpgmail/tickets/169
+sudo chown $USER:Staff "$HOME/Library/Mail"
+sudo chown -R $USER:Staff "$homedir"
+sudo chmod 755 "$homedir"
+################################################################################
+
+
+# Cleanup ######################################################################
 rm -fr "$tempdir/GPGMail.mailbundle"
-
 # cleanup tempdir "rm -d" deletes the temporary installation dir only if empty.
 # that is correct because if eg. /tmp is you install dir, there can be other stuff
 # in there that should not be deleted
 rm -d "$tempdir"
+################################################################################
 
-# enable bundles in Mail
+
+# enable bundles in Mail #######################################################
 ######
 # Note that we are running sudo'd, so these defaults will be written to
 # /Library/Preferences/com.apple.mail.plist
@@ -49,15 +79,17 @@ fi
 
 defaults write "$domain" EnableBundles -bool YES
 defaults write "$domain" BundleCompatibilityVersion -int 3
+################################################################################
 
-###############################################################
+
+################################################################################
 # copied from GPGPreferences. This should be avoided:
 # http://gpgtools.lighthouseapp.com/projects/65162/tickets/30
-###############################################################
+################################################################################
 
 _bundleId="gpgmail";
-_bundleName="GPGMail.mailbundle";
-_bundleRootPath="$homedir/Library/Mail/Bundles";
+_bundleName="$bundle";
+_bundleRootPath="$_target";
 _bundlePath="$_bundleRootPath/$_bundleName";
 _plistBundle="$_bundlePath/Contents/Info";
 _plistMail="/Applications/Mail.app/Contents/Info";
@@ -91,8 +123,5 @@ else
   plutil -convert xml1 "$_plistBundle.plist"
   echo "[$_bundleId] successfully patched";
 fi
-
-# change the user and group to avoid problems when updating (so this skript needs to be run as root!)
-chown -R $USER:Staff "$homedir/Library/Mail/Bundles/GPGMail.mailbundle"
 
 exit 0
