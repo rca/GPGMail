@@ -3,7 +3,7 @@
 
 # config #######################################################################
 tempdir="/private/tmp/GPGMail_Installation"
-rootdir="/Library/Mail/Bundles/"
+sysdir="/Library/Mail/Bundles/"
 netdir="/Network/Library/Mail/Bundles/"
 homedir="$HOME/Library/Mail/Bundles/"
 bundle="GPGMail.mailbundle";
@@ -13,8 +13,8 @@ bundle="GPGMail.mailbundle";
 # determine where to install the bundle to #####################################
 if ( test -e "$netdir/$bundle" ) then
     _target="$netdir";
-elif ( test -e "$rootdir/$bundle" ) then
-    _target="$rootdir";
+elif ( test -e "$sysdir/$bundle" ) then
+    _target="$sysdir";
 else
     _target="$homedir";
 fi
@@ -28,7 +28,7 @@ if [ ! -e "$tempdir/$bundle" ]; then
 fi
 # remove old versions of the bundle
 rm -rf "$netdir/$bundle"
-rm -rf "$rootdir/$bundle"
+rm -rf "$sysdir/$bundle"
 rm -rf "$homedir/$bundle"
 ################################################################################
 
@@ -48,9 +48,11 @@ fi
 # Permissions ##################################################################
 # see http://gpgtools.lighthouseapp.com/projects/65764-gpgmail/tickets/134
 # see http://gpgtools.lighthouseapp.com/projects/65764-gpgmail/tickets/169
-sudo chown $USER:Staff "$HOME/Library/Mail"
-sudo chown -R $USER:Staff "$homedir"
-sudo chmod 755 "$homedir"
+if [ "$_target" == "$homedir" ]; then
+    sudo chown $USER:Staff "$HOME/Library/Mail"
+    sudo chown -R $USER:Staff "$homedir"
+fi
+sudo chmod 755 "$_target"
 ################################################################################
 
 
@@ -83,7 +85,8 @@ defaults write "$domain" BundleCompatibilityVersion -int 3
 
 
 ################################################################################
-# copied from GPGPreferences. This should be avoided:
+# To auto-fix GPGMail after an OS update.
+# Copied from GPGPreferences. This should be avoided:
 # http://gpgtools.lighthouseapp.com/projects/65162/tickets/30
 ################################################################################
 
