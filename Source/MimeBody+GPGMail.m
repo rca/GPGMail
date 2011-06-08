@@ -41,9 +41,6 @@
 #import <MessageStore.h>
 #import <MessageWriter.h>
 // #import <MimeTextAttachment.h>
-#import <ObjectCache.h>
-#import <NSData+Message.h>
-#import <NSString+Message.h>
 
 #import <Foundation/Foundation.h>
 

@@ -28,9 +28,9 @@
  */
 
 
-#import <MessageKeychainManager.h>
+#import "MFKeychainManager.h"
 
 
-@interface MessageKeychainManager (GPGMail)
+@interface MFKeychainManager (GPGMail)
 
 @end

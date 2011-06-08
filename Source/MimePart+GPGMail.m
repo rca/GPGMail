@@ -38,8 +38,6 @@
 #import "GPG.subproj/GPGHandler.h"
 
 #import <MimeBody.h>
-#import <NSData+Message.h>
-#import <NSString+Message.h>
 #import <MessageStore.h>
 #import <MutableMessageHeaders.h>
 #import <NSDataMessageStore.h>

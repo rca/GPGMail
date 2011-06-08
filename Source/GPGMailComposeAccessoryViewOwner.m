@@ -37,15 +37,14 @@
 #import "GPGMEAdditions.h"
 #import "NSString+GPGMail.h"
 #import "GPGMailPatching.h"
-
+#import "MailDocumentEditor.h"
 #import "GPG.subproj/GPGPassphraseController.h"
 #import "GPG.subproj/GPGProgressIndicatorController.h"
+#import "SegmentedToolbarItem.h"
 
 #import <OutgoingMessage.h>
-#import <NSString+Message.h>
 #import <MutableMessageHeaders.h>
 #import <OptionalView.h>
-#import <MailToolbarItem.h>
 #import <ColorBackgroundView.h>
 #import <AddressBook/AddressBook.h>
 

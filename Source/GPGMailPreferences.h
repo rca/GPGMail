@@ -29,6 +29,7 @@
 
 #import <NSPreferences.h>
 #import <AppKit/AppKit.h>
+#import "NSPreferencesModule.h"
 
 @class GPGMailBundle;
 

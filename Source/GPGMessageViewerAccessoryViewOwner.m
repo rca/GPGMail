@@ -36,7 +36,6 @@
 #import "GPGMailBundle.h"
 #import "GPGMessageSignature.h"
 #import <Message+GPGMail.h>
-#import <NSString+Message.h>
 #import <NSString+GPGMail.h>
 #import <ExceptionHandling/NSExceptionHandler.h>
 

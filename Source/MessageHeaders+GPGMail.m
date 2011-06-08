@@ -34,8 +34,6 @@
 
 #import "MessageHeaders+GPGMail.h"
 
-#import <NSString+Message.h>
-
 #import <Foundation/Foundation.h>
 
 

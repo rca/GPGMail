@@ -31,7 +31,6 @@
 #import <Foundation/Foundation.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
-#import <NSData+Message.h>
 
 
 @implementation NSData (GPGMail)

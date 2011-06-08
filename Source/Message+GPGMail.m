@@ -36,13 +36,11 @@
 #import "GPGMessageSignature.h"
 #import "MimePart+GPGMail.h"
 
-#import <NSString+Message.h>
 #import <MessageHeaders.h>
 #import <MimeBody.h>
 #import <MutableMessageHeaders.h>
 #import <MessageStore.h>
 #import <MimeBody.h>
-#import <ObjectCache.h>
 
 #import <Foundation/Foundation.h>
 

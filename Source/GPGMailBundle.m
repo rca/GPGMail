@@ -37,7 +37,6 @@
 #import <Message.h>
 #import <MessageHeaders.h>
 #import <MessageBody.h>
-#import <MailToolbarItem.h>
 
 #import "MessageEditor+GPGMail.h"
 #import "GPG.subproj/GPGPassphraseController.h"
@@ -45,6 +44,8 @@
 #import "GPGMailPreferences.h"
 #import "TableViewManager+GPGMail.h"
 #import "GPGKeyDownload.h"
+#import "SegmentedToolbarItem.h"
+#import "SegmentedToolbarItemSegmentItem.h"
 
 #import <ExceptionHandling/NSExceptionHandler.h>
 #import <AppKit/AppKit.h>
@@ -666,7 +667,9 @@ static BOOL gpgMailWorks = YES;
 
 - (void)finishInitialization {
 	NSMenuItem *aMenuItem;
-
+    
+    NSLog(@"We're in, what now");
+    
 	// There's a bug in MOX: added menu items are not enabled/disabled correctly
 	// if they are instantiated programmatically
 	NSAssert([NSBundle loadNibNamed:@"GPGMenu" owner:self], @"### GPGMail: -[GPGMailBundle init]: Unable to load nib named GPGMenu");

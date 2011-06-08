@@ -29,7 +29,6 @@
 
 #import "NSString+GPGMail.h"
 #import "GPGMailBundle.h"
-#import <NSString+Message.h>
 
 #import <Foundation/Foundation.h>
 

@@ -33,14 +33,11 @@
 #import "GPGMailBundle.h"
 #import "GPGDefaults.h"
 
-#import <NSData+Message.h>
-#import <NSString+Message.h>
 #import <Message.h>
 #import <MessageHeaders.h>
 #import <MimeBody.h>
 #import <MimePart.h>
 #import <MutableMessageHeaders.h>
-#import <ObjectCache.h>
 #import <MessageStore.h>
 #import <MacGPGME/MacGPGME.h>
 

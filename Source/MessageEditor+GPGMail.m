@@ -30,13 +30,13 @@
 #import "GPGMailBundle.h"
 #import "GPGMailPatching.h"
 #import "GPGMailComposeAccessoryViewOwner.h"
-#import <MailToolbarItem.h>
 #import <MVComposeAccessoryViewOwner.h>
 #import <MessageEditor.h>
 #import <ComposeHeaderView.h>
 #import <Cocoa/Cocoa.h>
 #import "Message+GPGMail.h"
-
+#import "HeadersEditor.h"
+#import "SegmentedToolbarItem.h"
 
 
 

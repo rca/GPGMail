@@ -35,7 +35,7 @@
 static IMP MessageKeychainManager_canSignMessagesFromAddress = NULL;
 static IMP MessageKeychainManager_canEncryptMessagesToAddress = NULL;
 
-@implementation MessageKeychainManager (GPGMail)
+@implementation MFKeychainManager (GPGMail)
 
 + (void)load {
 	MessageKeychainManager_canSignMessagesFromAddress = GPGMail_ReplaceImpOfClassSelectorOfClassWithImpOfClassSelectorOfClass(@selector(canSignMessagesFromAddress:), self, @selector(gpgCanSignMessagesFromAddress:), self);
