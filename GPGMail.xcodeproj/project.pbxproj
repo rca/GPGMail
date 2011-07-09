@@ -30,16 +30,13 @@
 		1BAA17EA108E8E7500FBC3E4 /* TableViewManager+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80910838EA1C0052F47C /* TableViewManager+GPGMail.m */; };
 		1BACCC2313AB6680006BF8DD /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BACCC2213AB6680006BF8DD /* JRSwizzle.m */; };
 		1BACCC2613AB709C006BF8DD /* LPDynamicIvars.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BACCC2513AB709C006BF8DD /* LPDynamicIvars.m */; };
-		1BB628E913A7C0CA006D5BB5 /* Libmacgpg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BB628E813A7C0CA006D5BB5 /* Libmacgpg.framework */; };
 		1BBEF49C13A9115E0037E53D /* NSSet+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBEF49B13A9115E0037E53D /* NSSet+Functional.m */; };
 		1BBEF49E13A915480037E53D /* NSSet+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBEF49B13A9115E0037E53D /* NSSet+Functional.m */; };
 		1BCD9A7113A8C9A5003024C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BCD9A5D13A8C762003024C7 /* Foundation.framework */; };
 		1BCD9A7413A8C9A5003024C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BCD9A7313A8C9A5003024C7 /* main.m */; };
 		1BCD9A7813A8C9A5003024C7 /* GPG_Snip.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1BCD9A7713A8C9A5003024C7 /* GPG_Snip.1 */; };
-		1BCD9A7C13A8C9B3003024C7 /* Libmacgpg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BB628E813A7C0CA006D5BB5 /* Libmacgpg.framework */; };
 		1BCD9A7D13A8C9B3003024C7 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B19E83F13A2AEA4002E59ED /* AppKit.framework */; };
 		1BCEE1E311CC051500488D19 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BCEE1E211CC051500488D19 /* LICENSE.txt */; };
-		1BD20A5E13A7C3B5003C4778 /* Libmacgpg.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1BB628E813A7C0CA006D5BB5 /* Libmacgpg.framework */; };
 		1BED92F81079529C00D22B4C /* GPGMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A806E0838E9B10052F47C /* GPGMailBundle.m */; };
 		1BED934A1079563500D22B4C /* GPGMEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80720838E9B10052F47C /* GPGMEAdditions.m */; };
 		1BED9357107957E700D22B4C /* GPGMailPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80710838E9B10052F47C /* GPGMailPreferences.m */; };
@@ -52,6 +49,7 @@
 		1BED94C61079EADE00D22B4C /* MessageEditor+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A808D0838EA1C0052F47C /* MessageEditor+GPGMail.m */; };
 		1BED95871079FE6200D22B4C /* GPGMailComposeAccessoryViewOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A806F0838E9B10052F47C /* GPGMailComposeAccessoryViewOwner.m */; };
 		1BF51A70108FCD1900AC8268 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BF51A6F108FCD1900AC8268 /* ExceptionHandling.framework */; };
+		222C444713C91A630035BEDE /* Libmacgpg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 222C444613C91A630035BEDE /* Libmacgpg.framework */; };
 		30744AB512B9733800CC3EC5 /* MessageContentController+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A808C0838EA1C0052F47C /* MessageContentController+GPGMail.m */; };
 		308B8F8512A6AE2D00C99BD2 /* GPGKeyDownload.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8F7B12A6AE2D00C99BD2 /* GPGKeyDownload.xib */; };
 		308B8F8612A6AE2D00C99BD2 /* GPGMailCompose.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8F7D12A6AE2D00C99BD2 /* GPGMailCompose.xib */; };
@@ -110,6 +108,30 @@
 		};
 /* End PBXBuildRule section */
 
+/* Begin PBXContainerItemProxy section */
+		222C442713C91A330035BEDE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216 /* Libmacgpg.framework */;
+			remoteInfo = Libmacgpg;
+		};
+		222C442913C91A330035BEDE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30C8B38E139503A800F49AA1 /* UnitTest.octest */;
+			remoteInfo = UnitTest;
+		};
+		222C444C13C91A740035BEDE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* Libmacgpg */;
+			remoteInfo = Libmacgpg;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		1B45A52111CC977700ED4663 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -118,7 +140,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				1B6B7E2C11CD1C810055F528 /* Sparkle.framework in CopyFiles */,
-				1BD20A5E13A7C3B5003C4778 /* Libmacgpg.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1247,7 +1268,6 @@
 		1BACCC2213AB6680006BF8DD /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
 		1BACCC2413AB709C006BF8DD /* LPDynamicIvars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LPDynamicIvars.h; sourceTree = "<group>"; };
 		1BACCC2513AB709C006BF8DD /* LPDynamicIvars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LPDynamicIvars.m; sourceTree = "<group>"; };
-		1BB628E813A7C0CA006D5BB5 /* Libmacgpg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Libmacgpg.framework; path = ../Libmacgpg/build/Debug/Libmacgpg.framework; sourceTree = "<group>"; };
 		1BBEF49A13A9115E0037E53D /* NSSet+Functional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSSet+Functional.h"; path = "Source/NSSet+Functional.h"; sourceTree = "<group>"; };
 		1BBEF49B13A9115E0037E53D /* NSSet+Functional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSSet+Functional.m"; path = "Source/NSSet+Functional.m"; sourceTree = "<group>"; };
 		1BCD9A4B13A8C6B5003024C7 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -1258,6 +1278,8 @@
 		1BCD9A7713A8C9A5003024C7 /* GPG_Snip.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = GPG_Snip.1; sourceTree = "<group>"; };
 		1BCEE1E211CC051500488D19 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		1BF51A6F108FCD1900AC8268 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
+		222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Libmacgpg.xcodeproj; path = Dependencies/Libmacgpg/Libmacgpg.xcodeproj; sourceTree = "<group>"; };
+		222C444613C91A630035BEDE /* Libmacgpg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Libmacgpg.framework; path = Dependencies/Libmacgpg/build/Debug/Libmacgpg.framework; sourceTree = "<group>"; };
 		24ABFEBD1376FECB003FA660 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = Resources/French.lproj/GPGMailPreferences.xib; sourceTree = "<group>"; };
 		24D1A4401378127A0044FC01 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = French; path = Resources/French.lproj/Credits.rtf; sourceTree = "<group>"; };
 		301A10B8131E6C0700F27446 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = sv; path = Resources/sv.lproj/Credits.rtf; sourceTree = "<group>"; };
@@ -1507,7 +1529,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1BCD9A7C13A8C9B3003024C7 /* Libmacgpg.framework in Frameworks */,
 				1BCD9A7D13A8C9B3003024C7 /* AppKit.framework in Frameworks */,
 				1BCD9A7113A8C9A5003024C7 /* Foundation.framework in Frameworks */,
 			);
@@ -1517,7 +1538,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1BB628E913A7C0CA006D5BB5 /* Libmacgpg.framework in Frameworks */,
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
 				559A81300838EEFD0052F47C /* AddressBook.framework in Frameworks */,
 				559A81310838EEFD0052F47C /* Carbon.framework in Frameworks */,
@@ -1526,6 +1546,7 @@
 				559A81340838EEFD0052F47C /* System.framework in Frameworks */,
 				1BF51A70108FCD1900AC8268 /* ExceptionHandling.framework in Frameworks */,
 				1B6B7DF411CD1C600055F528 /* Sparkle.framework in Frameworks */,
+				222C444713C91A630035BEDE /* Libmacgpg.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1535,7 +1556,6 @@
 		089C166AFE841209C02AAC07 /* GPGMail */ = {
 			isa = PBXGroup;
 			children = (
-				1BB628E813A7C0CA006D5BB5 /* Libmacgpg.framework */,
 				1B1949D011CC52090092B810 /* Dependencies */,
 				1BCEE1E211CC051500488D19 /* LICENSE.txt */,
 				08FB77AFFE84173DC02AAC07 /* GPG */,
@@ -1566,6 +1586,7 @@
 				1BCD9A4B13A8C6B5003024C7 /* CoreFoundation.framework */,
 				1BCD9A5D13A8C762003024C7 /* Foundation.framework */,
 				1B19E83E13A2AEA4002E59ED /* Other Frameworks */,
+				222C444613C91A630035BEDE /* Libmacgpg.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1623,6 +1644,7 @@
 		1B1949D011CC52090092B810 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */,
 			);
 			name = Dependencies;
 			sourceTree = "<group>";
@@ -2764,6 +2786,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		222C442313C91A330035BEDE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				222C442813C91A330035BEDE /* Libmacgpg.framework */,
+				222C442A13C91A330035BEDE /* UnitTest.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		30CDB07312B2D44700F5F8B7 /* XIBs */ = {
 			isa = PBXGroup;
 			children = (
@@ -2961,6 +2992,7 @@
 			);
 			comments = "Old working:\nheader_search_path ..\nlibrary_style static\nother_linker_flags -force_flat_namespace -undefined suppress \nmacosx deployment target: default\n\n-bundle_loader /Applications/Mail.app/Contents/MacOS/Mail  -undefined dynamic_lookup\n";
 			dependencies = (
+				222C444D13C91A740035BEDE /* PBXTargetDependency */,
 			);
 			name = GPGMail;
 			productInstallPath = "$(HOME)/Library/Bundles";
@@ -2997,6 +3029,12 @@
 			);
 			mainGroup = 089C166AFE841209C02AAC07 /* GPGMail */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 222C442313C91A330035BEDE /* Products */;
+					ProjectRef = 222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				8D5B49AC048680CD000E48DA /* GPGMail */,
@@ -3004,6 +3042,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		222C442813C91A330035BEDE /* Libmacgpg.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Libmacgpg.framework;
+			remoteRef = 222C442713C91A330035BEDE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		222C442A13C91A330035BEDE /* UnitTest.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UnitTest.octest;
+			remoteRef = 222C442913C91A330035BEDE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8D5B49AF048680CD000E48DA /* Resources */ = {
@@ -3134,6 +3189,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		222C444D13C91A740035BEDE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Libmacgpg;
+			targetProxy = 222C444C13C91A740035BEDE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		1B194B5911CC55A80092B810 /* GPGMail.strings */ = {
@@ -3526,6 +3589,7 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"\"$(SRCROOT)/../Libmacgpg/build/Debug\"",
+					"\"$(SRCROOT)/Dependencies/Libmacgpg/build/Debug\"",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/Frameworks\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "";
@@ -3577,6 +3641,7 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 					"\"$(SRCROOT)/../Libmacgpg/build/Debug\"",
+					"\"$(SRCROOT)/Dependencies/Libmacgpg/build/Debug\"",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "";
