@@ -28,6 +28,7 @@
  */
 
 #import <Message.h>
+#import <Libmacgpg/Libmacgpg.h>
 
 #import "GPG.subproj/GPGHandler.h"
 #import "GPGMailBundle.h"
@@ -60,7 +61,7 @@
 - (GPGSignature *)gpgEmbeddedAuthenticationSignature;
 // Can raise an exception
 // Must be used for OpenPGP embedded signatures, to avoid some checks
-
+- (void)gpgSetMessageFlags:(unsigned int)arg1 mask:(unsigned int)arg2;
 - (BOOL)gpgIsPGPMIMEMessage;
 
 - (GPGSignature *)gpgSignature;

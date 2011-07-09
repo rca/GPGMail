@@ -16,8 +16,7 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#import <MacGPGME/MacGPGME.h>
-
+#import <Libmacgpg/Libmacgpg.h>
 
 @interface GPGDefaults : NSObject {
 	NSString *_domain;

@@ -29,7 +29,7 @@
 
 #import <MimePart.h>
 
-#import <MacGPGME/MacGPGME.h>
+#import <Libmacgpg/Libmacgpg.h>
 
 
 @interface MimePart (GPGMail)

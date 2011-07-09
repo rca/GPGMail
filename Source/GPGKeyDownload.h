@@ -28,6 +28,7 @@
  */
 
 #import <AppKit/AppKit.h>
+#import <Libmacgpg/Libmacgpg.h>
 #import "GPGMailBundle.h"
 
 extern NSString *GPGDidFindKeysNotification;
@@ -47,7 +48,7 @@ extern NSString *GPGDidFindKeysNotification;
 	IBOutlet NSButton *searchButton;
 	NSArray *foundKeys;
 	NSMutableSet *selectedKeys;
-	GPGContext *context;
+//	GPGContext *context;
 	BOOL isSearching;
 	BOOL isImporting;
 	BOOL cancelled;

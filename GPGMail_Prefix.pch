@@ -7,7 +7,28 @@
 extern void instrumentObjcMessageSends(BOOL enabled);
 extern int  GPGMailLoggingLevel;
 
-#if defined(MAC_OS_X_VERSION_10_6)
+#define SNOW_LEOPARD_64
+#define LION_64
+
+#if defined(MAC_OS_X_VERSION_10_7)
+    #if MAC_OS_X_VERSION_MIN_REQUIRED == MAC_OS_X_VERSION_10_7
+        #ifdef __x86_64__
+            #define LION_64
+            /* Only for testing */
+            #define SNOW_LEOPARD_64
+        #endif
+        #define LION
+    #elif MAC_OS_X_VERSION_MIN_REQUIRED == MAC_OS_X_VERSION_10_6
+        #ifdef __x86_64__
+            #define SNOW_LEOPARD_64 
+        #endif
+        #define SNOW_LEOPARD
+    #elif MAC_OS_X_VERSION_MIN_REQUIRED == MAC_OS_X_VERSION_10_5
+        #define LEOPARD
+    #elif MAC_OS_X_VERSION_MIN_REQUIRED == MAC_OS_X_VERSION_10_4
+        #define TIGER
+    #endif
+#elif defined(MAC_OS_X_VERSION_10_6)
     #if MAC_OS_X_VERSION_MIN_REQUIRED == MAC_OS_X_VERSION_10_6
 	#ifdef __x86_64__
 		#define SNOW_LEOPARD_64 

@@ -6,10 +6,10 @@
 //  Copyright 2005 __MyCompanyName__. All rights reserved.
 //
 
+#import <Libmacgpg/Libmacgpg.h>
 #import "GPGMEAdditions.h"
 #import "NSString+GPGMail.h"
 #import "GPGMailBundle.h"
-
 
 @implementation GPGKey (GPGMail)
 

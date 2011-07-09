@@ -92,14 +92,16 @@
 
 - (void)refreshPersonalKeys {
 	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
-	NSEnumerator *keyEnum = [[mailBundle personalKeys] objectEnumerator];
-	GPGKey *aKey;
+	NSSet *personalKeys = [mailBundle personalKeys];
+    GPGKey *aKey;
 	NSString *defaultKeyFingerprint = [[mailBundle defaultKey] fingerprint];
 	BOOL displaysAllUserIDs = [mailBundle displaysAllUserIDs];
 
 	[personalKeysPopUpButton removeAllItems];
-	while (aKey = [keyEnum nextObject]) {
+    NSLog(@"personalKeys: %@", personalKeys);
+    for(GPGKey *aKey in personalKeys) {
 		NSMenuItem *anItem;
+        NSLog(@"Key: %@", aKey);
 
 		[personalKeysPopUpButton addItemWithTitle:[mailBundle menuItemTitleForKey:aKey]];
 		anItem = [personalKeysPopUpButton lastItem];

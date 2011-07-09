@@ -48,11 +48,11 @@ extern NSString *GPGMailHeaderKey;
 
 @interface MessageBody (GPGMail)
 
-- (NSData *)gpgEncryptForRecipients:(NSArray *)recipients trustAllKeys:(BOOL) trustsAllKeys signWithKey:(GPGKey *)key passphraseDelegate:(id) passphraseDelegate format:(GPGMailFormat *)mailFormatPtr headers:(MutableMessageHeaders **)headersPtr;
+//- (NSData *)gpgEncryptForRecipients:(NSArray *)recipients trustAllKeys:(BOOL) trustsAllKeys signWithKey:(GPGKey *)key passphraseDelegate:(id) passphraseDelegate format:(GPGMailFormat *)mailFormatPtr headers:(MutableMessageHeaders **)headersPtr;
 // Signs only if key is not nil; passphraseDelegate is necessary only if key is not nil.
 // Can raise an exception
 
-- (NSData *)gpgSignWithKey:(GPGKey *)key passphraseDelegate:(id) passphraseDelegate format:(GPGMailFormat *)mailFormatPtr headers:(MutableMessageHeaders **)headersPtr;
+//- (NSData *)gpgSignWithKey:(GPGKey *)key passphraseDelegate:(id) passphraseDelegate format:(GPGMailFormat *)mailFormatPtr headers:(MutableMessageHeaders **)headersPtr;
 // Can raise an exception
 
 - (BOOL)gpgIsEncrypted;
@@ -62,14 +62,14 @@ extern NSString *GPGMailHeaderKey;
 
 - (BOOL)gpgHasSignature;
 
-- (GPGSignature *)gpgAuthenticationSignature;
+//- (GPGSignature *)gpgAuthenticationSignature;
 // Raises an exception if message does not contain a signature; test first with -gpgHasSignature
 // Returns nil if no authenticated signature has been found
-- (GPGSignature *)gpgEmbeddedAuthenticationSignature;
+//- (GPGSignature *)gpgEmbeddedAuthenticationSignature;
 // Can raise an exception
 // Must be used for OpenPGP embedded signatures, to avoid some checks
 // In MessageBody, same implementation as -gpgAuthenticationSignature
-- (GPGSignature *)gpgAuthenticationSignatureFromData:(NSData *)data;
+//- (GPGSignature *)gpgAuthenticationSignatureFromData:(NSData *)data;
 // Used by -[MimeBody(GPGMail) gpgAuthenticationSignature]
 
 - (BOOL)gpgIsPGPMIMEMessage;

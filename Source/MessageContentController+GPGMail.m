@@ -39,6 +39,8 @@
 #import <MimeBody.h>
 #import <MessageHeaders.h>
 
+#import "CCLog.h"
+
 
 NSString *MessageContentControllerName = @"MessageContentController";
 
@@ -70,6 +72,73 @@ static IMP MessageContentController_fadeToEmpty = NULL;
 	MessageContentController_setMessage_headerOrder = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(setMessage:headerOrder:), NSClassFromString(@"MessageContentController"), @selector(gpgSetMessage:headerOrder:), [self class]);
 	MessageContentController__setMessage_headerOrder = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(_setMessage:headerOrder:), NSClassFromString(@"MessageContentController"), @selector(gpg_setMessage:headerOrder:), [self class]);
 	MessageContentController_fadeToEmpty = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(fadeToEmpty), NSClassFromString(@"MessageContentController"), @selector(gpgFadeToEmpty), [self class]);
+}
+
+- (void)GPG_fetchDataForMessageAndUpdateDisplay:(id)arg1 {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    CCLog(@"[DEBUG] %s message and update display: %@", __PRETTY_FUNCTION__, arg1);
+    [self GPG_fetchDataForMessageAndUpdateDisplay:arg1];
+}
+
+- (void)GPGReloadCurrentMessageShouldReparseBody:(BOOL)arg1 {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    CCLog(@"[DEBUG] %s should reparse body: %d", __PRETTY_FUNCTION__, arg1);
+    [self GPGReloadCurrentMessageShouldReparseBody:arg1];
+}
+
+- (void)GPG_displayMessageLoadBody:(BOOL)arg1 {
+//    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+//    CCLog(@"[DEBUG] %s should reparse body: %d", __PRETTY_FUNCTION__, arg1);
+    [self GPG_displayMessageLoadBody:arg1];
+}
+
+-(void)gpgSetHasSetupMessageBody:(BOOL)val {
+//    CCLog(@"[DEBUG] %s entering: %d", __PRETTY_FUNCTION__, val);
+//    [GPGMailSwizzler originalMethodForName:@"MessageContentController.setHasSetupMessageBody:"](
+//        self, @selector(setHasSetupMessageBody:), val);
+//    CCLog(@"[DEBUG] %s exiting", __PRETTY_FUNCTION__);
+    
+    if(![self displayAsSingleMessage]) {
+        NSLog(@"[DEBUG] %s %@", __PRETTY_FUNCTION__, @"In List view, I'm out of here!");
+        [GPGMailSwizzler originalMethodForName:@"MessageContentController.setHasSetupMessageBody:"](
+                                                                                                    self, @selector(setHasSetupMessageBody:), val);
+        return;
+    }
+    NSLog(@"[DEBUG] %s %@", __PRETTY_FUNCTION__, val ? @"YES" : @"NO");
+    if(!val) {
+        [self setIvar:@"GPGIsRocking" value:YES];
+    }
+    
+    [GPGMailSwizzler originalMethodForName:@"MessageContentController.setHasSetupMessageBody:"](
+        self, @selector(setHasSetupMessageBody:), val);
+    if(val) {
+        NSLog(@"[DEBUG] %s - Data Mime Part: %@", __PRETTY_FUNCTION__, [[[self message] messageBody] topLevelPart]);
+        NSLog(@"[DEBUG] %s - Is GPG Mime: %d", __PRETTY_FUNCTION__, [[[[self message] messageBody] topLevelPart] gpgIsMIMEEncrypted] );
+        // The MessageViewingState attributedString method formats the way the header
+        // looks.
+        // We'll use this to show the same lock and signed icons which are displayed for S/MIME
+        // encrypted &|| signed messages.
+        // Since the attributedString method is called very very often, a flag is stored in the message
+        // so the mime parts don't have to be re-evaluated every time.
+        NSLog(@"[DEBUG] %s Message: %@", __PRETTY_FUNCTION__, [self message]);
+        if([[[[self message] messageBody] topLevelPart] gpgIsMIMEEncrypted])
+            [[self message] setIvar:@"isGPGMIMEEncrypted" value:[[NSNumber alloc] initWithBool:YES]];
+        
+//        NSLog(@"GPG rocking?: %d", [self getIvar:@"GPGIsRocking"]); 
+//        [self setIvar:@"GPGIsRocking" value:NO];
+        //This Works!
+        //[[self messageContentDisplay] setShowAllHeaders:YES];
+    }
+    
+}
+
+- (void)gpgDecryptMessage {
+    [[[self message] messageBody] setIvar:@"shouldBeDecrypting" value:[[NSNumber alloc] initWithBool:YES]];
+    [self GPGReloadCurrentMessageShouldReparseBody:YES];
+    //[self _displayMessageLoadBody:YES];
+    //[[[[self message] messageBody] topLevelPart] GPGDecodeWithContext:nil];
+//    [[self viewingState] setMessage:[self message]];
+//    [self showBestAlternative:[self message]];
 }
 
 - (BOOL)gpgMessageWasInFactSigned {

@@ -30,7 +30,7 @@
 #include <Carbon/Carbon.h>
 #include <Security/Security.h>
 #import "GPGPassphraseController.h"
-#import <MacGPGME/MacGPGME.h>
+#import <Libmacgpg/Libmacgpg.h>
 #import <GPGMailBundle.h>
 
 

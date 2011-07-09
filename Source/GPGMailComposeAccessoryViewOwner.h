@@ -29,7 +29,7 @@
 
 #import <MVComposeAccessoryViewOwner.h>
 #import "GPG.subproj/GPGHandler.h"
-#import <MacGPGME/MacGPGME.h>
+#import <Libmacgpg/Libmacgpg.h>
 #import <AppKit/AppKit.h>
 
 

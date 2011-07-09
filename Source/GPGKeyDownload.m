@@ -63,8 +63,9 @@ static GPGKeyDownload *_sharedInstance = nil;
 }
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:GPGAsynchronousOperationDidTerminateNotification object:context];
-	[context release];
+	// TODO: Fix me for libmacgpg
+    //[[NSNotificationCenter defaultCenter] removeObserver:self name:GPGAsynchronousOperationDidTerminateNotification object:context];
+	//[context release];
 	[selectedKeys release];
 	[foundKeys release];
 	[validEmailAddressCharset release];
@@ -109,8 +110,9 @@ static GPGKeyDownload *_sharedInstance = nil;
 - (void)windowDidLoad {
 	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
 
-	context = [[GPGContext alloc] init];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(operationDidTerminate:) name:GPGAsynchronousOperationDidTerminateNotification object:context];
+    // TODO: Fix me for libmacgpg
+//	context = [[GPGContext alloc] init];
+//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(operationDidTerminate:) name:GPGAsynchronousOperationDidTerminateNotification object:context];
 
 	[searchButton setTitle:NSLocalizedStringFromTableInBundle(@"SEARCH", @"GPGMail", aBundle, "")];
 	[searchProgressField setStringValue:@""];
@@ -140,7 +142,8 @@ static GPGKeyDownload *_sharedInstance = nil;
 		[emailCell setEnabled:NO];
 		[serverComboBox setEnabled:NO];
 		[searchButton setEnabled:NO];
-		[context interruptAsyncOperation];
+        // TODO: Fix me for libmacgpg
+		//[context interruptAsyncOperation];
 	} else {
 		cancelled = NO;
 	}
@@ -171,7 +174,8 @@ static GPGKeyDownload *_sharedInstance = nil;
 		[importProgressIndicator startAnimation:nil];
 		isImporting = YES;
 
-		[context asyncDownloadKeys:[selectedKeys allObjects] serverOptions:options];
+        // TODO: Fix me for libmacgpg
+		//[context asyncDownloadKeys:[selectedKeys allObjects] serverOptions:options];
 	}
 }
 
@@ -192,8 +196,9 @@ static GPGKeyDownload *_sharedInstance = nil;
 //        [searchButton setEnabled:NO];
 		[searchProgressIndicator startAnimation:nil];
 		isSearching = YES;
-
-		[context asyncSearchForKeysMatchingPatterns:patterns serverOptions:options];
+        
+        // TODO: Fix me for libmacgpg
+		//[context asyncSearchForKeysMatchingPatterns:patterns serverOptions:options];
 	}
 }
 
@@ -209,8 +214,9 @@ static GPGKeyDownload *_sharedInstance = nil;
 	[searchProgressIndicator stopAnimation:nil];
 	isSearching = NO;
 	cancelled = YES;
-
-	[context interruptAsyncOperation];
+    
+    // TODO: Fix me for libmacgpg
+	//[context interruptAsyncOperation];
 }
 
 - (IBAction)search:(id)sender {
@@ -251,113 +257,115 @@ static GPGKeyDownload *_sharedInstance = nil;
 	}
 }
 
-- (void)foundKeys:(NSNotification *)notification {
-	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
-	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+// TODO: Fix me for libmacgpg
+//- (void)foundKeys:(NSNotification *)notification {
+//	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
+//	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+//
+//	[searchProgressIndicator stopAnimation:nil];
+//	[emailCell setEnabled:YES];
+//	[serverComboBox setEnabled:YES];
+//	[searchButton setTitle:NSLocalizedStringFromTableInBundle(@"SEARCH", @"GPGMail", aBundle, "")];
+//	[searchButton setAction:@selector(search:)];
+//	[searchProgressField setStringValue:@""];
+//
+//	if (!cancelled) {
+//		GPGError anError = [[[notification userInfo] objectForKey:GPGErrorKey] intValue];
+//
+//		[self showWindow:nil];
+//		if (anError != GPGErrorNoError) {
+//			NSString *errorMessage;
+//
+//			if ([mailBundle gpgErrorCodeFromError:anError] == GPGErrorKeyServerError) {
+//				NSString *additionalMessage = [[notification userInfo] objectForKey:GPGAdditionalReasonKey];
+//
+//				if (additionalMessage != nil) {
+//					errorMessage = additionalMessage;                                                             // FIXME: Not localized
+//				} else {
+//					errorMessage = [mailBundle descriptionForError:anError];
+//				}
+//			} else {
+//				errorMessage = [mailBundle descriptionForError:anError];
+//			}
+//
+//			NSBeginAlertSheet(NSLocalizedStringFromTableInBundle(@"SEARCH_ERROR", @"GPGMail", aBundle, ""), nil, nil, nil, [self window], nil, NULL, NULL, NULL, @"%@", errorMessage);
+//		} else {
+//			NSDictionary *aDict = [[notification object] operationResults];
+//
+//			[foundKeys release];
+//			foundKeys = nil;
+//			[selectedKeys removeAllObjects];
+//			if ([[aDict objectForKey:@"keys"] lastObject] == nil) {
+//				[searchProgressField setStringValue:NSLocalizedStringFromTableInBundle(@"NO_MATCHING_KEYS", @"GPGMail", aBundle, "")];
+//				[outlineView reloadData];
+//			} else {
+//				NSEnumerator *anEnum;
+//				GPGRemoteKey *anItem;
+//
+//				foundKeys = [[aDict objectForKey:@"keys"] retain];
+//				anEnum = [foundKeys objectEnumerator];
+//				while (anItem = [anEnum nextObject]) {
+//					// Don't add revoked/disabled/expired/invalid keys
+//					if (![anItem hasKeyExpired] && ![anItem isKeyRevoked] /* && ![anItem isKeyInvalid] && ![anItem isKeyDisabled]*/) {
+//						[selectedKeys addObject:anItem];
+//					}
+//				}
+//				[outlineView reloadData];
+//				anEnum = [foundKeys objectEnumerator];
+//				while (anItem = [anEnum nextObject])
+//					[outlineView expandItem:anItem];
+//				[importButton setEnabled:([selectedKeys count] > 0)];
+//				[importProgressField setStringValue:[NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"FOUND_%d_KEYS", @"GPGMail", aBundle, ""), [foundKeys count]]];
+//				[titleField setStringValue:NSLocalizedStringFromTableInBundle(@"DOWNLOAD_KEYS_FROM_SERVER", @"GPGMail", aBundle, "")];
+//				[tabView selectFirstTabViewItem:nil];
+//			}
+//		}
+//	} else {
+////        NSLog(@"$$$ Interrupted: %@", [notification userInfo]);
+//	}
+//
+//	isSearching = NO;
+//	cancelled = NO;
+//}
 
-	[searchProgressIndicator stopAnimation:nil];
-	[emailCell setEnabled:YES];
-	[serverComboBox setEnabled:YES];
-	[searchButton setTitle:NSLocalizedStringFromTableInBundle(@"SEARCH", @"GPGMail", aBundle, "")];
-	[searchButton setAction:@selector(search:)];
-	[searchProgressField setStringValue:@""];
-
-	if (!cancelled) {
-		GPGError anError = [[[notification userInfo] objectForKey:GPGErrorKey] intValue];
-
-		[self showWindow:nil];
-		if (anError != GPGErrorNoError) {
-			NSString *errorMessage;
-
-			if ([mailBundle gpgErrorCodeFromError:anError] == GPGErrorKeyServerError) {
-				NSString *additionalMessage = [[notification userInfo] objectForKey:GPGAdditionalReasonKey];
-
-				if (additionalMessage != nil) {
-					errorMessage = additionalMessage;                                                             // FIXME: Not localized
-				} else {
-					errorMessage = [mailBundle descriptionForError:anError];
-				}
-			} else {
-				errorMessage = [mailBundle descriptionForError:anError];
-			}
-
-			NSBeginAlertSheet(NSLocalizedStringFromTableInBundle(@"SEARCH_ERROR", @"GPGMail", aBundle, ""), nil, nil, nil, [self window], nil, NULL, NULL, NULL, @"%@", errorMessage);
-		} else {
-			NSDictionary *aDict = [[notification object] operationResults];
-
-			[foundKeys release];
-			foundKeys = nil;
-			[selectedKeys removeAllObjects];
-			if ([[aDict objectForKey:@"keys"] lastObject] == nil) {
-				[searchProgressField setStringValue:NSLocalizedStringFromTableInBundle(@"NO_MATCHING_KEYS", @"GPGMail", aBundle, "")];
-				[outlineView reloadData];
-			} else {
-				NSEnumerator *anEnum;
-				GPGRemoteKey *anItem;
-
-				foundKeys = [[aDict objectForKey:@"keys"] retain];
-				anEnum = [foundKeys objectEnumerator];
-				while (anItem = [anEnum nextObject]) {
-					// Don't add revoked/disabled/expired/invalid keys
-					if (![anItem hasKeyExpired] && ![anItem isKeyRevoked] /* && ![anItem isKeyInvalid] && ![anItem isKeyDisabled]*/) {
-						[selectedKeys addObject:anItem];
-					}
-				}
-				[outlineView reloadData];
-				anEnum = [foundKeys objectEnumerator];
-				while (anItem = [anEnum nextObject])
-					[outlineView expandItem:anItem];
-				[importButton setEnabled:([selectedKeys count] > 0)];
-				[importProgressField setStringValue:[NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"FOUND_%d_KEYS", @"GPGMail", aBundle, ""), [foundKeys count]]];
-				[titleField setStringValue:NSLocalizedStringFromTableInBundle(@"DOWNLOAD_KEYS_FROM_SERVER", @"GPGMail", aBundle, "")];
-				[tabView selectFirstTabViewItem:nil];
-			}
-		}
-	} else {
-//        NSLog(@"$$$ Interrupted: %@", [notification userInfo]);
-	}
-
-	isSearching = NO;
-	cancelled = NO;
-}
-
-- (void)downloadedKeys:(NSNotification *)notification {
-	// TODO: Show more information (optional) to user (signatures, etc.) in a summary drawer?
-	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
-
-	[importProgressIndicator stopAnimation:nil];
-	[importButton setEnabled:YES];
-	[importProgressField setStringValue:@""];
-//    [importButton setTitle:NSLocalizedStringFromTableInBundle(@"DOWNLOADING", @"GPGMail", aBundle, "")];
-	[titleField setStringValue:NSLocalizedStringFromTableInBundle(@"SEARCH_KEYS_ON_SERVER", @"GPGMail", aBundle, "")];
-	isImporting = NO;
-
-	[foundKeys release];
-	foundKeys = nil;
-	[outlineView reloadData];
-
-	[titleField setStringValue:NSLocalizedStringFromTableInBundle(@"SEARCH_KEYS_ON_SERVER", @"GPGMail", aBundle, "")];
-	[tabView selectLastTabViewItem:nil];
-
-	if (!cancelled) {
-		GPGError anError = [[[notification userInfo] objectForKey:GPGErrorKey] intValue];
-
-		if (anError != GPGErrorNoError) {
-			[self showWindow:nil];
-			// FIXME: In MacGPGME, get real error message from stderr
-			NSBeginAlertSheet(NSLocalizedStringFromTableInBundle(@"DOWNLOAD_ERROR", @"GPGMail", aBundle, ""), nil, nil, nil, [self window], nil, NULL, NULL, NULL, @"%@", [[GPGMailBundle sharedInstance] descriptionForError:anError]);
-		} else {
-			[searchProgressField setStringValue:NSLocalizedStringFromTableInBundle(@"DOWNLOADED", @"GPGMail", aBundle, "")];
-			[[GPGMailBundle sharedInstance] gpgReloadPGPKeys:nil];
-		}
-	} else {
-//        NSLog(@"$$$ Interrupted: %@", [notification userInfo]);
-		[emailCell setEnabled:YES];
-		[serverComboBox setEnabled:YES];
-		[searchButton setEnabled:YES];
-	}
-	cancelled = NO;
-}
+// TODO: Fix me for libmacgpg
+//- (void)downloadedKeys:(NSNotification *)notification {
+//	// TODO: Show more information (optional) to user (signatures, etc.) in a summary drawer?
+//	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
+//
+//	[importProgressIndicator stopAnimation:nil];
+//	[importButton setEnabled:YES];
+//	[importProgressField setStringValue:@""];
+////    [importButton setTitle:NSLocalizedStringFromTableInBundle(@"DOWNLOADING", @"GPGMail", aBundle, "")];
+//	[titleField setStringValue:NSLocalizedStringFromTableInBundle(@"SEARCH_KEYS_ON_SERVER", @"GPGMail", aBundle, "")];
+//	isImporting = NO;
+//
+//	[foundKeys release];
+//	foundKeys = nil;
+//	[outlineView reloadData];
+//
+//	[titleField setStringValue:NSLocalizedStringFromTableInBundle(@"SEARCH_KEYS_ON_SERVER", @"GPGMail", aBundle, "")];
+//	[tabView selectLastTabViewItem:nil];
+//
+//	if (!cancelled) {
+//		GPGError anError = [[[notification userInfo] objectForKey:GPGErrorKey] intValue];
+//
+//		if (anError != GPGErrorNoError) {
+//			[self showWindow:nil];
+//			// FIXME: In MacGPGME, get real error message from stderr
+//			NSBeginAlertSheet(NSLocalizedStringFromTableInBundle(@"DOWNLOAD_ERROR", @"GPGMail", aBundle, ""), nil, nil, nil, [self window], nil, NULL, NULL, NULL, @"%@", [[GPGMailBundle sharedInstance] descriptionForError:anError]);
+//		} else {
+//			[searchProgressField setStringValue:NSLocalizedStringFromTableInBundle(@"DOWNLOADED", @"GPGMail", aBundle, "")];
+//			[[GPGMailBundle sharedInstance] gpgReloadPGPKeys:nil];
+//		}
+//	} else {
+////        NSLog(@"$$$ Interrupted: %@", [notification userInfo]);
+//		[emailCell setEnabled:YES];
+//		[serverComboBox setEnabled:YES];
+//		[searchButton setEnabled:YES];
+//	}
+//	cancelled = NO;
+//}
 
 - (void)operationDidTerminate:(NSNotification *)notification {
 	if (isSearching) {

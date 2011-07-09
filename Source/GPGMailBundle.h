@@ -29,11 +29,10 @@
 
 #import <MVMailBundle.h>
 
-#import <MacGPGME/MacGPGME.h>
 #import <Foundation/NSDate.h>
 #import <Foundation/NSMapTable.h>
 #import <AppKit/NSNibDeclarations.h>
-
+#import <Libmacgpg/Libmacgpg.h>
 
 @class MessageHeaders;
 @class NSMenu;
@@ -105,7 +104,10 @@ enum {
 	NSMenuItem *pgpViewMenuItem;
 	IBOutlet NSMenuItem *allUserIDsMenuItem;
 	NSDictionary *locale;
-	GPGEngine *engine;
+//    GPGEngine *engine;
+    NSSet *cachedPersonalGPGKeys;
+    NSSet *cachedPublicGPGKeys;
+    NSSet *cachedGPGKeys;
 }
 
 + (id)sharedInstance;
@@ -128,8 +130,8 @@ enum {
 - (BOOL)displaysButtonsInComposeWindow;
 - (void)setEncryptsToSelf:(BOOL)flag;
 - (BOOL)encryptsToSelf;
-// - (void) setUsesKeychain:(BOOL)flag;
-// - (BOOL) usesKeychain;
+ - (void) setUsesKeychain:(BOOL)flag;
+ - (BOOL) usesKeychain;
 @property BOOL usesKeychain;
 - (void)setDecryptsOnlyUnreadMessagesAutomatically:(BOOL)flag;
 - (BOOL)decryptsOnlyUnreadMessagesAutomatically;
@@ -198,6 +200,9 @@ enum {
 @property (assign) NSMenuItem *pgpViewMenuItem;
 @property (assign) NSMenuItem *allUserIDsMenuItem;
 
+@property (nonatomic, retain) NSSet *cachedPersonalGPGKeys;
+@property (nonatomic, retain) NSSet *cachedPublicGPGKeys;
+@property (nonatomic, retain) NSSet *cachedGPGKeys;
 
 - (NSString *)version;
 - (NSString *)versionDescription;
@@ -207,8 +212,8 @@ enum {
 - (void)mailTo:(id)sender;
 
 - (NSArray *)keysForSearchPatterns:(NSArray *)searchPatterns attributeName:(NSString *)attributeKeyPath secretKeys:(BOOL)secretKeys;
-- (NSArray *)personalKeys;
-- (NSArray *)publicKeys;
+- (NSSet *)personalKeys;
+- (NSSet *)publicKeys;
 - (NSArray *)secondaryUserIDsForKey:(GPGKey *)key;
 - (NSArray *)keyGroups;
 - (IBAction)gpgReloadPGPKeys:(id)sender;
@@ -233,16 +238,18 @@ enum {
 - (BOOL)canKeyBeUsedForSigning:(GPGKey *)key;
 - (BOOL)canUserIDBeUsed:(GPGUserID *)userID;
 
-- (NSString *)descriptionForError:(GPGError)error;
+//- (NSString *)descriptionForError:(GPGError)error;
 - (NSString *)descriptionForException:(NSException *)exception;
 
-- (NSString *)hashAlgorithmDescription:(GPGHashAlgorithm)algorithm;
-- (NSString *)gpgErrorDescription:(GPGError)error;
-- (GPGErrorCode)gpgErrorCodeFromError:(GPGError)error;
-- (GPGErrorSource)gpgErrorSourceFromError:(GPGError)error;
-- (GPGError)gpgMakeErrorWithSource:(GPGErrorSource) source code:(GPGErrorCode)code;
+//- (NSString *)hashAlgorithmDescription:(GPGHashAlgorithm)algorithm;
+//- (NSString *)gpgErrorDescription:(GPGError)error;
+//- (GPGErrorCode)gpgErrorCodeFromError:(GPGError)error;
+//- (GPGErrorSource)gpgErrorSourceFromError:(GPGError)error;
+//- (GPGError)gpgMakeErrorWithSource:(GPGErrorSource) source code:(GPGErrorCode)code;
 
 - (id)locale;
+
+- (NSSet *)loadGPGKeys;
 
 @end
 

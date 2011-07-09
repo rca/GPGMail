@@ -37,6 +37,7 @@
 #import "Message+GPGMail.h"
 #import "HeadersEditor.h"
 #import "SegmentedToolbarItem.h"
+#import "CCLog.h"
 
 
 
@@ -94,6 +95,20 @@ static IMP HeadersEditor_changeFromHeader = NULL;
 	}
 }
 
+- (void)GPGComposeHeaderViewDidEndCustomization:(id)arg1 {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    CCLog(@"[DEBUG] %s view did end customization: %@", __PRETTY_FUNCTION__, arg1);
+    CCLog(@"[DEBUG] %s security view setup?: %@", __PRETTY_FUNCTION__, [arg1 valueForKey:@"_securityOptionalView"]);
+    [self GPGComposeHeaderViewDidEndCustomization:arg1];
+}
+
+- (void)GPGComposeHeaderViewWillBeginCustomization:(id)arg1 {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    CCLog(@"[DEBUG] %s view did end customization: %@", __PRETTY_FUNCTION__, arg1);
+    CCLog(@"[DEBUG] %s security view setup?: %@", __PRETTY_FUNCTION__, [arg1 valueForKey:@"_securityOptionalView"]);
+    [self GPGComposeHeaderViewWillBeginCustomization:arg1];
+}
+
 @end
 
 #ifdef SNOW_LEOPARD_64
@@ -110,15 +125,19 @@ static IMP MailDocumentEditor_animationDidEnd = NULL;
 // static IMP  MailDocumentEditor_backEnd_willCreateMessageWithHeaders = NULL; // Invoked only when saving message as draft
 static IMP MailDocumentEditor_changeReplyMode = NULL;
 
-+ (void)load {
-	MailDocumentEditor_backEndDidLoadInitialContent = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(backEndDidLoadInitialContent:), NSClassFromString(@"MailDocumentEditor"), @selector(gpgBackEndDidLoadInitialContent:), [self class]);
-	MailDocumentEditor_backEnd_shouldDeliverMessage = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(backEnd:shouldDeliverMessage:), NSClassFromString(@"MailDocumentEditor"), @selector(gpgBackEnd:shouldDeliverMessage:), [self class]);
-	MailDocumentEditor_showOrHideStationery = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(showOrHideStationery:), NSClassFromString(@"MailDocumentEditor"), @selector(gpgShowOrHideStationery:), [self class]);
-	MailDocumentEditor_animationDidEnd = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(animationDidEnd:), NSClassFromString(@"MailDocumentEditor"), @selector(gpgAnimationDidEnd:), [self class]);
-	MailDocumentEditor_changeReplyMode = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(changeReplyMode:), NSClassFromString(@"MailDocumentEditor"), @selector(gpgChangeReplyMode:), [self class]);
+//+ (void)load {
+//	MailDocumentEditor_backEndDidLoadInitialContent = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(backEndDidLoadInitialContent:), NSClassFromString(@"MailDocumentEditor"), @selector(gpgBackEndDidLoadInitialContent:), [self class]);
+//	MailDocumentEditor_backEnd_shouldDeliverMessage = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(backEnd:shouldDeliverMessage:), NSClassFromString(@"MailDocumentEditor"), @selector(gpgBackEnd:shouldDeliverMessage:), [self class]);
+//	MailDocumentEditor_showOrHideStationery = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(showOrHideStationery:), NSClassFromString(@"MailDocumentEditor"), @selector(gpgShowOrHideStationery:), [self class]);
+//	MailDocumentEditor_animationDidEnd = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(animationDidEnd:), NSClassFromString(@"MailDocumentEditor"), @selector(gpgAnimationDidEnd:), [self class]);
+//	MailDocumentEditor_changeReplyMode = GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(@selector(changeReplyMode:), NSClassFromString(@"MailDocumentEditor"), @selector(gpgChangeReplyMode:), [self class]);
+//}
+
+- (void)GPGBackEnd:(id)arg1 didCancelMessageDeliveryForEncryptionError:(id)arg2 {
+    CCLog(@"[DEBUG] %s back end: %@", __PRETTY_FUNCTION__, arg1);
+    CCLog(@"[DEBUG] %s encryption error: %@", __PRETTY_FUNCTION__, arg2);
+    [self GPGBackEnd:arg1 didCancelMessageDeliveryForEncryptionError:arg2];
 }
-
-
 
 
 - (GPGMailComposeAccessoryViewOwner *)gpgMyComposeAccessoryViewOwner {

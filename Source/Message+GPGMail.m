@@ -44,10 +44,17 @@
 
 #import <Foundation/Foundation.h>
 
+#import "CCLog.h"
 
 @implementation Message (GPGMail)
 
 GPG_DECLARE_EXTRA_IVARS(Message)
+
+- (void)gpgSetMessageFlags:(unsigned int)arg1 mask:(unsigned int)arg2 {
+    NSLog(@"Message Flags: %d", arg1);
+    NSLog(@"Mask: %d", arg2);
+    NSLog(@"Info: %@", [self gpgDescription]);
+}
 
 - (BOOL)gpgIsEncrypted {
 #if 0
@@ -59,6 +66,43 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 	// What about decrypting non-cached messages??
 	return [[self messageBodyIfAvailable] gpgIsEncrypted];
 #endif
+}
+
+/* For testing only.! */
++ (id)GPGMessageWithRFC822Data:(id)arg1 {
+    NSLog(@"[DEBUG] %s %@", __PRETTY_FUNCTION__, arg1);
+    NSLog(@"[DEBUG] %s %@", __PRETTY_FUNCTION__, [[NSString alloc] initWithData:arg1 encoding:NSUTF8StringEncoding]);
+    NSLog(@"Pointer: %p", self);
+    return [self GPGMessageWithRFC822Data:arg1];
+}
+
+- (void)GPGSetMessageInfoFromMessage:(id)arg1 {
+    NSLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    NSLog(@"[DEBUG] %s message %@", __PRETTY_FUNCTION__, arg1);
+    [self GPGSetMessageInfoFromMessage:arg1];
+}
+
+- (void)gpgSetMessageIDHeaderDigest:(id)arg1 {
+    NSLog(@"[DEBUG] %s %@", __PRETTY_FUNCTION__, arg1);
+    [GPGMailSwizzler originalMethodForName:@"Message.setMessageIDHeaderDigest:"](self, @selector(setMessageIDHeaderDigest:), arg1);
+}
+
+- (void)gpgSetSubject:(id)arg1 {
+    NSLog(@"[DEBUG] %s %@", __PRETTY_FUNCTION__, arg1);
+    [GPGMailSwizzler originalMethodForName:@"Message.setSubject:"](self, @selector(setSubject:), arg1);
+}
+
++ (id)messageWithRFC822Data:(id)arg1 sanitizeData:(BOOL)arg2 {
+    NSLog(@"[DEBUG] %s %@", __PRETTY_FUNCTION__, arg1);
+    NSLog(@"[DEBUG] %s %d", __PRETTY_FUNCTION__, arg2);
+}
+
++ (id)messageWithURL:(id)arg1 {
+    NSLog(@"[DEBUG] %s %@", __PRETTY_FUNCTION__, arg1);
+}
+
++ (id)messageWithPersistentID:(id)arg1 {
+    NSLog(@"[DEBUG] %s %@", __PRETTY_FUNCTION__, arg1);
 }
 
 - (void)gpgEncryptForRecipients:(NSArray *)recipients trustAllKeys:(BOOL)trustsAllKeys signWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate format:(GPGMailFormat)mailFormat {
@@ -358,6 +402,90 @@ GPG_DECLARE_EXTRA_IVARS(Message)
 
 - (void)gpgUpdateCurrentFullBodyPartData:(NSData *)newData {
 	GPG_SET_EXTRA_IVAR(newData, @"fullBodyData");
+}
+
+- (id)GPGMessageBodyUpdatingFlags:(BOOL)arg1 {
+    CCLog(@"[DEBUG] %s %d", __PRETTY_FUNCTION__, arg1);
+//    CCLog(@"[DEBUG] %s current data: %@", __PRETTY_FUNCTION__, [[NSString alloc] initWithData:[self bodyData] encoding:NSUTF8StringEncoding]);
+    id ret = [self GPGMessageBodyUpdatingFlags:arg1];
+    CCLog(@"[DEBUG] %s return %@", __PRETTY_FUNCTION__, ret);
+    CCLog(@"[DEBUG] %s pointer %p", __PRETTY_FUNCTION__, ret);
+    
+    return ret;
+}
+
+- (void)GPGSetMessageFlags:(unsigned int)arg1 mask:(unsigned int)arg2 {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    CCLog(@"[DEBUG] %s message flags: %d", __PRETTY_FUNCTION__, arg1);
+    CCLog(@"[DEBUG] %s mask: %d", __PRETTY_FUNCTION__, arg2);
+    [self GPGSetMessageFlags:arg1 mask:arg2];
+}
+
+- (id)GPGMessageBody {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    return [self GPGMessageBody];
+}
+
+- (id)GPGMessageBodyIfAvailable {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    return [self GPGMessageBodyIfAvailable];
+}
+
+
+- (id)GPGAttributedString {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    return [self GPGAttributedString];
+}
+
+- (void)GPGSetIsRead:(BOOL)arg1 {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    CCLog(@"[DEBUG] %s is Read: %d", __PRETTY_FUNCTION__, arg1);
+    [self GPGSetIsRead:arg1];
+}
+
+- (id)GPG_performBackgroundGetContent {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    id ret = [self GPG_performBackgroundGetContent];
+    CCLog(@"[DEBUG] %s return %@", __PRETTY_FUNCTION__, ret);
+    return ret;
+}
+
+- (id)GPGMessageBodyFetchIfNotAvailable:(BOOL)arg1 allowPartial:(BOOL)arg2 {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    CCLog(@"[DEBUG] %s not available: %d", __PRETTY_FUNCTION__, arg1);
+    CCLog(@"[DEBUG] %s allow partial: %d", __PRETTY_FUNCTION__, arg2);
+    id ret = [self GPGMessageBodyFetchIfNotAvailable:arg1 allowPartial:arg2];
+    CCLog(@"[DEBUG] %s return %@", __PRETTY_FUNCTION__, ret);
+    return ret;
+}
+
+- (id)GPGMessageBodyForIndexingAttachments {
+    return [self GPGMessageBodyForIndexingAttachments];
+}
+- (id)GPGMessageBodyIfAvailableUpdatingFlags:(BOOL)arg1 {
+    return [self GPGMessageBodyIfAvailableUpdatingFlags:arg1]; 
+}
+
+- (id)GPGMessageStore {
+    return [self GPGMessageStore];
+}
+
+- (id)GPGDataForMimePart:(id)arg1 {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    CCLog(@"[DEBUG] %s mime part: %@", __PRETTY_FUNCTION__, arg1);
+    id ret = [self GPGDataForMimePart:arg1];
+    CCLog(@"[DEBUG] %s return value: %@", __PRETTY_FUNCTION__, [[NSString alloc] initWithData:ret encoding:NSUTF8StringEncoding]);
+    return ret;
+}
+
+- (id)GPG_cachedMessageBody {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    return [self GPG_cachedMessageBody];
+}
+
+- (id)GPG_cachedMessageBodyData {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    return [self GPG_cachedMessageBodyData];
 }
 
 @end

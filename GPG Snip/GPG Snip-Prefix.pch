@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'GPG Snip' target in the 'GPG Snip' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif

@@ -30,7 +30,6 @@
 #import "GPGHandler.h"
 #import "GPGDefaults.h"
 
-#import <MacGPGME/MacGPGME.h>
 #import <Foundation/Foundation.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSPanel.h>
@@ -224,12 +223,12 @@ static NSString * stringForEncoding(CFStringEncoding encoding){
 	return _defaultHashAlgorithm;
 }
 
-+ (NSString *)gpgPath {
+/*+ (NSString *)gpgPath {
 	if (_gpgPath == nil) {
 		_gpgPath = [[[GPGEngine engineForProtocol:GPGOpenPGPProtocol] executablePath] retain];
 	}
 	return _gpgPath;
-}
+}*/
 
 - (id)init {
 	if ((self = [super init]) != nil) {

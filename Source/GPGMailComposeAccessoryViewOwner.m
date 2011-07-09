@@ -47,6 +47,7 @@
 #import <OptionalView.h>
 #import <ColorBackgroundView.h>
 #import <AddressBook/AddressBook.h>
+#import <Libmacgpg/Libmacgpg.h>
 
 #import "GPGDefaults.h"
 
@@ -367,123 +368,124 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 	return [[[self messageEditor] backEnd] gpgRecipients];
 }
 
-- (void)findMatchingPublicKeys {
-#warning FIXME: It seems that group name addresses are enclosed in "", i.e. if group name is dummy@x.y, then recipient will be "dummy@x.y", litterally
-	// Find keys according to recipients
-	// If it misses a key, it will prepend the email with a question mark
-	// in the menus, and item will be disabled. Not done in that method.
-	// Updates internal lists AND imageView
-	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
-	NSArray *recipients = [self recipients];                     // Normalized
-
-	[selectedPublicKeys removeAllObjects];
-	[missingPublicKeyEmails removeAllObjects];
-
-	if ([recipients count] > 0) {
-		NSString *aRecipient;
-		NSEnumerator *anEnum;
-		GPGKey *aKey;
-		BOOL filterKeys = [mailBundle filtersOutUnusableKeys];
-		NSMutableArray *fetchedKeys = [[NSMutableArray alloc] init];
-		NSArray *keyGroups = [mailBundle keyGroups];
-
-		anEnum = [[mailBundle keysForSearchPatterns:recipients attributeName:@"normalizedEmail" secretKeys:NO] objectEnumerator];
-		while (aKey = [anEnum nextObject])
-			if (!filterKeys || [mailBundle canKeyBeUsedForEncryption:aKey]) {
-				[fetchedKeys addObject:aKey];
-			}
-
-		// Now find whether we miss key; matching needs to be done manually
-		anEnum = [recipients objectEnumerator];
-		while (aRecipient = [anEnum nextObject]) {
-			NSEnumerator *keyEnum = [fetchedKeys objectEnumerator];
-			BOOL found = NO;
-			NSString *normalizedRecipient = aRecipient;
-
-			// If there a multiple keys with the same
-			// emails, we want to list them all!
-			while (/*!found &&*/ (aKey = [keyEnum nextObject])) {
-				NSEnumerator *userIDEnum = [[aKey userIDs] objectEnumerator];
-				GPGUserID *aUserID;
-
-				while (aUserID = [userIDEnum nextObject]) {
-					// FIXME: If multiple keys with matching email address, take the first one which is valid
-					if ([[aUserID normalizedEmail] isEqualToString:normalizedRecipient] && (!filterKeys || [mailBundle canUserIDBeUsed:aUserID])) {
-						if (![selectedPublicKeys containsObject:aKey]) {
-							[selectedPublicKeys addObject:aKey];
-						}
-						found = YES;
-						break;
-					}
-				}
-			}
-
-			// WARNING Support for groups: we use gpg groups, but as we're in Mail, we suppose
-			// the group name is a valid email address, expanded to the same persons as with the keys!
-
-			// If there is a group with the same email address as a key, we don't search for that group.
-			// That should be very unlikely.
-			if (!found) {
-				GPGKeyGroup *aKeyGroup;
-				NSEnumerator *groupEnum = [keyGroups objectEnumerator];
-
-				while (!found && (aKeyGroup = [groupEnum nextObject])) {
-					// We compare case-insensitively now
-					if ([[[aKeyGroup name] lowercaseString] isEqualToString:aRecipient]) {
-						keyEnum = [[aKeyGroup keys] objectEnumerator];
-
-						while ((aKey = [keyEnum nextObject])) {
-							if (!filterKeys || [mailBundle canKeyBeUsedForEncryption:aKey]) {
-								if (![selectedPublicKeys containsObject:aKey]) {
-									[selectedPublicKeys addObject:aKey];
-								}
-							}
-						}
-						found = YES;                                                                         // Even when no key patched criteria
-						// TODO: It would be nice to display groups in some way in the UI (menus)
-					}
-				}
-
-				if (!found) {
-					[missingPublicKeyEmails addObject:aRecipient];
-				}
-			}
-		}
-		[fetchedKeys release];
-
-		if ([mailBundle encryptsToSelf] && selectedPersonalKey) {
-			GPGKey *aKey = [self selectedPersonalPublicKey];
-
-			if (aKey && (!filterKeys || [mailBundle canKeyBeUsedForEncryption:aKey])) {
-				// We have to test that, because it might happen that there's no
-				// public counterpart to the secret key.
-				if (![selectedPublicKeys containsObject:aKey]) {
-					[selectedPublicKeys addObject:aKey];
-				}
-			} else {
-				NSString *aRecipient;
-
-				// WARNING A disabled key can sign but not encrypt
-				// We always need to verify that even user's key can be used
-				if ([mailBundle choosesPersonalKeyAccordingToAccount]) {
-					MailDocumentEditor *editor = [self messageEditor];
-
-					aRecipient = [[[editor gpgFromPopup] selectedItem] title];
-				} else {
-					aRecipient = [selectedPersonalKey email];
-				}
-
-				[missingPublicKeyEmails addObject:[aRecipient gpgNormalizedEmail]];
-			}
-		}
-	}
-	if ([missingPublicKeyEmails count] > 0) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:GPGMissingKeysNotification object:nil userInfo:[NSDictionary dictionaryWithObject:[missingPublicKeyEmails allObjects] forKey:@"emails"]];
-	}
-#if 0
-	[self updateWarningImage];             // Warning only when encrypting and missing keys
-#endif
-}
+// TODO: Fix me for libmacgpg
+//- (void)findMatchingPublicKeys {
+//#warning FIXME: It seems that group name addresses are enclosed in "", i.e. if group name is dummy@x.y, then recipient will be "dummy@x.y", litterally
+//	// Find keys according to recipients
+//	// If it misses a key, it will prepend the email with a question mark
+//	// in the menus, and item will be disabled. Not done in that method.
+//	// Updates internal lists AND imageView
+//	GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+//	NSArray *recipients = [self recipients];                     // Normalized
+//
+//	[selectedPublicKeys removeAllObjects];
+//	[missingPublicKeyEmails removeAllObjects];
+//
+//	if ([recipients count] > 0) {
+//		NSString *aRecipient;
+//		NSEnumerator *anEnum;
+//		GPGKey *aKey;
+//		BOOL filterKeys = [mailBundle filtersOutUnusableKeys];
+//		NSMutableArray *fetchedKeys = [[NSMutableArray alloc] init];
+//		NSArray *keyGroups = [mailBundle keyGroups];
+//
+//		anEnum = [[mailBundle keysForSearchPatterns:recipients attributeName:@"normalizedEmail" secretKeys:NO] objectEnumerator];
+//		while (aKey = [anEnum nextObject])
+//			if (!filterKeys || [mailBundle canKeyBeUsedForEncryption:aKey]) {
+//				[fetchedKeys addObject:aKey];
+//			}
+//
+//		// Now find whether we miss key; matching needs to be done manually
+//		anEnum = [recipients objectEnumerator];
+//		while (aRecipient = [anEnum nextObject]) {
+//			NSEnumerator *keyEnum = [fetchedKeys objectEnumerator];
+//			BOOL found = NO;
+//			NSString *normalizedRecipient = aRecipient;
+//
+//			// If there a multiple keys with the same
+//			// emails, we want to list them all!
+//			while (/*!found &&*/ (aKey = [keyEnum nextObject])) {
+//				NSEnumerator *userIDEnum = [[aKey userIDs] objectEnumerator];
+//				GPGUserID *aUserID;
+//
+//				while (aUserID = [userIDEnum nextObject]) {
+//					// FIXME: If multiple keys with matching email address, take the first one which is valid
+//					if ([[aUserID normalizedEmail] isEqualToString:normalizedRecipient] && (!filterKeys || [mailBundle canUserIDBeUsed:aUserID])) {
+//						if (![selectedPublicKeys containsObject:aKey]) {
+//							[selectedPublicKeys addObject:aKey];
+//						}
+//						found = YES;
+//						break;
+//					}
+//				}
+//			}
+//
+//			// WARNING Support for groups: we use gpg groups, but as we're in Mail, we suppose
+//			// the group name is a valid email address, expanded to the same persons as with the keys!
+//
+//			// If there is a group with the same email address as a key, we don't search for that group.
+//			// That should be very unlikely.
+//			if (!found) {
+//				GPGKeyGroup *aKeyGroup;
+//				NSEnumerator *groupEnum = [keyGroups objectEnumerator];
+//
+//				while (!found && (aKeyGroup = [groupEnum nextObject])) {
+//					// We compare case-insensitively now
+//					if ([[[aKeyGroup name] lowercaseString] isEqualToString:aRecipient]) {
+//						keyEnum = [[aKeyGroup keys] objectEnumerator];
+//
+//						while ((aKey = [keyEnum nextObject])) {
+//							if (!filterKeys || [mailBundle canKeyBeUsedForEncryption:aKey]) {
+//								if (![selectedPublicKeys containsObject:aKey]) {
+//									[selectedPublicKeys addObject:aKey];
+//								}
+//							}
+//						}
+//						found = YES;                                                                         // Even when no key patched criteria
+//						// TODO: It would be nice to display groups in some way in the UI (menus)
+//					}
+//				}
+//
+//				if (!found) {
+//					[missingPublicKeyEmails addObject:aRecipient];
+//				}
+//			}
+//		}
+//		[fetchedKeys release];
+//
+//		if ([mailBundle encryptsToSelf] && selectedPersonalKey) {
+//			GPGKey *aKey = [self selectedPersonalPublicKey];
+//
+//			if (aKey && (!filterKeys || [mailBundle canKeyBeUsedForEncryption:aKey])) {
+//				// We have to test that, because it might happen that there's no
+//				// public counterpart to the secret key.
+//				if (![selectedPublicKeys containsObject:aKey]) {
+//					[selectedPublicKeys addObject:aKey];
+//				}
+//			} else {
+//				NSString *aRecipient;
+//
+//				// WARNING A disabled key can sign but not encrypt
+//				// We always need to verify that even user's key can be used
+//				if ([mailBundle choosesPersonalKeyAccordingToAccount]) {
+//					MailDocumentEditor *editor = [self messageEditor];
+//
+//					aRecipient = [[[editor gpgFromPopup] selectedItem] title];
+//				} else {
+//					aRecipient = [selectedPersonalKey email];
+//				}
+//
+//				[missingPublicKeyEmails addObject:[aRecipient gpgNormalizedEmail]];
+//			}
+//		}
+//	}
+//	if ([missingPublicKeyEmails count] > 0) {
+//		[[NSNotificationCenter defaultCenter] postNotificationName:GPGMissingKeysNotification object:nil userInfo:[NSDictionary dictionaryWithObject:[missingPublicKeyEmails allObjects] forKey:@"emails"]];
+//	}
+//#if 0
+//	[self updateWarningImage];             // Warning only when encrypting and missing keys
+//#endif
+//}
 /*
  * - (void) findMatchingPublicKeysIfNecessary
  * {
@@ -1283,162 +1285,163 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 	return NO;
 }
 
-- (BOOL)messageWillBeDelivered:(OutgoingMessage *)message {
-	DebugLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
-	// Runtime super call - CORRECT !
-	struct objc_super s = { self, [self superclass] };
-	BOOL result = (BOOL)objc_msgSendSuper(&s, @selector(messageWillBeDelivered:), message);
-
-	// Remove draft headers
-#warning CHECKME LEOPARD
-	[(MutableMessageHeaders *)[message headers] removeHeaderForKey:@"X-Gpgmail-State"];
-	MutableMessageHeaders *newHeaders = [message headers];
-	NSData *bodyData = [[message bodyData] copy];
-	newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[newHeaders encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];             // Needed, to ensure _data ivar is updated
-	[message setMutableHeaders:newHeaders];
-
-	// We need to recreate the whole raw data, headers + body.
-	NSMutableData *newRawData = [NSMutableData dataWithData:[newHeaders headerData]];
-	[newRawData appendData:bodyData];
-	[message setRawData:newRawData offsetOfBody:[(NSData *)[newHeaders headerData] length]];
-	[newHeaders release];
-	[bodyData release];
-
-#if 0
-	// Look for keys
-	[self findMatchingPublicKeys];
-	// Look for custom PGP rules in recipients list
-	[self searchKnownPersonsOptions];
-#else
-	[self evaluateRules];
-#endif
-
-	// Now, verify rules conflicts
-	if (verifyRulesConflicts) {
-		if ([self hasRulesConflicts]) {
-			[self performSelector:@selector(resolveRulesConflicts:) withObject:nil afterDelay:0];
-
-			return NO;
-		}
-	}
-//    [self findMatchingPublicKeys]; // Again??
-
-	if (result && ((encryptsMessage || signsMessage) && ![self messageHasAlreadyBeenEncryptedOrSigned:message])) {
-		NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
-		GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
-		GPGMailFormat mailFormat;
-		NSMutableArray *recipients = nil;
-		BOOL trustsAllKeys = [mailBundle trustsAllKeys];
-
-#warning S/MIME & PGP
-		// Disable S/MIME if still possible, or at least warn user.
-		// Maybe we should allow double-signature (opt.), as it seems to work,
-		// but not double-encryption! (except if we can have separate MIME parts)
-		if (usesOnlyOpenPGPStyle) {
-			mailFormat = GPGOpenPGPMailFormat;
-		} else {
-			// TODO: Support forcing inline
-			mailFormat = GPGAutomaticMailFormat;
-		}
-
-		// First, prepare arguments (recipients, etc.)
-		if (encryptsMessage) {
-			// Messages are indexed after having been encrypted or signed, i.e. after sending
-			if (!usesSymetricEncryption) {
-				GPGKey *aKey;
-				NSEnumerator *anEnum;
-
-				recipients = [NSMutableArray array];
-				if (!useCustomPublicKeys) {
-					if ([missingPublicKeyEmails count]) {
-						// Method is invoked in the main thread
-						// => Impossible to block it by asking something to the user
-						// We display missing keys, and tell user to assign them manually
-						// before trying to send message again
-						[self performSelector:@selector(missingKeysAlert:) withObject:[missingPublicKeyEmails allObjects] afterDelay:0.0];
-
-						return NO;
-					}
-				}
-				anEnum = [selectedPublicKeys objectEnumerator];
-				while (aKey = [anEnum nextObject])
-					if ([mailBundle canKeyBeUsedForEncryption:aKey]) {
-						[recipients addObject:aKey];
-					}
-				if ([recipients count] == 0) {
-					// Can happen, in some error situation (proxy died), that we have no selectedPublicKeys!
-					NSException *anException = [[NSException alloc] initWithName:GPGMailException reason:@"NO_VALID_PUBLIC_KEY" userInfo:nil];
-
-					[self performSelector:@selector(displayException:) withObject:anException afterDelay:0.0];
-					[anException release];
-
-					return NO;
-				}
-			}
-
-			if (signsMessage && ![mailBundle canKeyBeUsedForSigning:selectedPersonalKey]) {
-				// Can happen, in some error situation (proxy died), that we have no selectedPersonalKey!
-				NSException *anException = [[NSException alloc] initWithName:GPGMailException reason:@"NO_VALID_PRIVATE_KEY" userInfo:nil];
-
-				[self performSelector:@selector(displayException:) withObject:anException afterDelay:0.0];
-				[anException release];
-
-				return NO;
-			}
-		} else {
-			if (![mailBundle canKeyBeUsedForSigning:selectedPersonalKey]) {
-				// Can happen, in some error situation (proxy died), that we have no selectedPersonalKey!
-				NSException *anException = [[NSException alloc] initWithName:GPGMailException reason:@"NO_VALID_PRIVATE_KEY" userInfo:nil];
-
-				[self performSelector:@selector(displayException:) withObject:anException afterDelay:0.0];
-				[anException release];
-
-				return NO;
-			}
-		}
-
-		// Finally, prepare PGP message for delivery
-		if (encryptsMessage) {
-			GPGProgressIndicatorController *aController = [GPGProgressIndicatorController sharedController];
-
-#warning TODO: Use a sheet (-> no longer shared instance)
-			[aController startWithTitle:NSLocalizedStringFromTableInBundle(@"ENCRYPTING", @"GPGMail", aBundle, "") delegate:self];
-
-			@try {
-				[message gpgEncryptForRecipients:recipients trustAllKeys:trustsAllKeys signWithKey:(signsMessage ? selectedPersonalKey : nil) passphraseDelegate:self format:mailFormat];
-			} @catch (NSException *localException) {
-				result = NO;
-				if (![[localException name] isEqualToString:GPGException] || [mailBundle gpgErrorCodeFromError:[[[localException userInfo] objectForKey:GPGErrorKey] intValue]] != /*GPGErrorNoData*/ GPGErrorCancelled) {
-					[self performSelector:@selector(displayException:) withObject:localException afterDelay:0.0];
-				}
-				// Else, user cancelled passphrase entry; do nothing special, return.
-			}
-			[aController stop];
-		} else {
-			@try {
-				[message gpgSignWithKey:selectedPersonalKey passphraseDelegate:self format:mailFormat];
-			} @catch (NSException *localException) {
-				result = NO;
-				if (![[localException name] isEqualToString:GPGException] || [mailBundle gpgErrorCodeFromError:[[[localException userInfo] objectForKey:GPGErrorKey] unsignedIntValue]] != /*GPGErrorNoData*/ GPGErrorCancelled) {
-					[self performSelector:@selector(displayException:) withObject:localException afterDelay:0.0];
-				}
-				// Else, user cancelled passphrase entry; do nothing special, return.
-			}
-		}
-
-		// There is a problem with Compose window: it is not redisplayed correctly
-		if (!result) {
-// #warning VERIFY Is it still the case in 10.3?
-			[[[self composeAccessoryView] window] makeKeyAndOrderFront:nil];
-			// Even this call is not enough: the window shadow/border is not redisplayed
-			// This is probably due to the alert panel raised by -[GPGHandler displayException:]
-		}
-	}
-
-	verifyRulesConflicts = YES;
-
-	return result;
-}
+// TODO: Fix me for Libmacgpg
+//- (BOOL)messageWillBeDelivered:(OutgoingMessage *)message {
+//	DebugLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
+//	// Runtime super call - CORRECT !
+//	struct objc_super s = { self, [self superclass] };
+//	BOOL result = (BOOL)objc_msgSendSuper(&s, @selector(messageWillBeDelivered:), message);
+//
+//	// Remove draft headers
+//#warning CHECKME LEOPARD
+//	[(MutableMessageHeaders *)[message headers] removeHeaderForKey:@"X-Gpgmail-State"];
+//	MutableMessageHeaders *newHeaders = [message headers];
+//	NSData *bodyData = [[message bodyData] copy];
+//	newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[newHeaders encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];             // Needed, to ensure _data ivar is updated
+//	[message setMutableHeaders:newHeaders];
+//
+//	// We need to recreate the whole raw data, headers + body.
+//	NSMutableData *newRawData = [NSMutableData dataWithData:[newHeaders headerData]];
+//	[newRawData appendData:bodyData];
+//	[message setRawData:newRawData offsetOfBody:[(NSData *)[newHeaders headerData] length]];
+//	[newHeaders release];
+//	[bodyData release];
+//
+//#if 0
+//	// Look for keys
+//	[self findMatchingPublicKeys];
+//	// Look for custom PGP rules in recipients list
+//	[self searchKnownPersonsOptions];
+//#else
+//	[self evaluateRules];
+//#endif
+//
+//	// Now, verify rules conflicts
+//	if (verifyRulesConflicts) {
+//		if ([self hasRulesConflicts]) {
+//			[self performSelector:@selector(resolveRulesConflicts:) withObject:nil afterDelay:0];
+//
+//			return NO;
+//		}
+//	}
+////    [self findMatchingPublicKeys]; // Again??
+//
+//	if (result && ((encryptsMessage || signsMessage) && ![self messageHasAlreadyBeenEncryptedOrSigned:message])) {
+//		NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
+//		GPGMailBundle *mailBundle = [GPGMailBundle sharedInstance];
+//		GPGMailFormat mailFormat;
+//		NSMutableArray *recipients = nil;
+//		BOOL trustsAllKeys = [mailBundle trustsAllKeys];
+//
+//#warning S/MIME & PGP
+//		// Disable S/MIME if still possible, or at least warn user.
+//		// Maybe we should allow double-signature (opt.), as it seems to work,
+//		// but not double-encryption! (except if we can have separate MIME parts)
+//		if (usesOnlyOpenPGPStyle) {
+//			mailFormat = GPGOpenPGPMailFormat;
+//		} else {
+//			// TODO: Support forcing inline
+//			mailFormat = GPGAutomaticMailFormat;
+//		}
+//
+//		// First, prepare arguments (recipients, etc.)
+//		if (encryptsMessage) {
+//			// Messages are indexed after having been encrypted or signed, i.e. after sending
+//			if (!usesSymetricEncryption) {
+//				GPGKey *aKey;
+//				NSEnumerator *anEnum;
+//
+//				recipients = [NSMutableArray array];
+//				if (!useCustomPublicKeys) {
+//					if ([missingPublicKeyEmails count]) {
+//						// Method is invoked in the main thread
+//						// => Impossible to block it by asking something to the user
+//						// We display missing keys, and tell user to assign them manually
+//						// before trying to send message again
+//						[self performSelector:@selector(missingKeysAlert:) withObject:[missingPublicKeyEmails allObjects] afterDelay:0.0];
+//
+//						return NO;
+//					}
+//				}
+//				anEnum = [selectedPublicKeys objectEnumerator];
+//				while (aKey = [anEnum nextObject])
+//					if ([mailBundle canKeyBeUsedForEncryption:aKey]) {
+//						[recipients addObject:aKey];
+//					}
+//				if ([recipients count] == 0) {
+//					// Can happen, in some error situation (proxy died), that we have no selectedPublicKeys!
+//					NSException *anException = [[NSException alloc] initWithName:GPGMailException reason:@"NO_VALID_PUBLIC_KEY" userInfo:nil];
+//
+//					[self performSelector:@selector(displayException:) withObject:anException afterDelay:0.0];
+//					[anException release];
+//
+//					return NO;
+//				}
+//			}
+//
+//			if (signsMessage && ![mailBundle canKeyBeUsedForSigning:selectedPersonalKey]) {
+//				// Can happen, in some error situation (proxy died), that we have no selectedPersonalKey!
+//				NSException *anException = [[NSException alloc] initWithName:GPGMailException reason:@"NO_VALID_PRIVATE_KEY" userInfo:nil];
+//
+//				[self performSelector:@selector(displayException:) withObject:anException afterDelay:0.0];
+//				[anException release];
+//
+//				return NO;
+//			}
+//		} else {
+//			if (![mailBundle canKeyBeUsedForSigning:selectedPersonalKey]) {
+//				// Can happen, in some error situation (proxy died), that we have no selectedPersonalKey!
+//				NSException *anException = [[NSException alloc] initWithName:GPGMailException reason:@"NO_VALID_PRIVATE_KEY" userInfo:nil];
+//
+//				[self performSelector:@selector(displayException:) withObject:anException afterDelay:0.0];
+//				[anException release];
+//
+//				return NO;
+//			}
+//		}
+//
+//		// Finally, prepare PGP message for delivery
+//		if (encryptsMessage) {
+//			GPGProgressIndicatorController *aController = [GPGProgressIndicatorController sharedController];
+//
+//#warning TODO: Use a sheet (-> no longer shared instance)
+//			[aController startWithTitle:NSLocalizedStringFromTableInBundle(@"ENCRYPTING", @"GPGMail", aBundle, "") delegate:self];
+//
+//			@try {
+//				[message gpgEncryptForRecipients:recipients trustAllKeys:trustsAllKeys signWithKey:(signsMessage ? selectedPersonalKey : nil) passphraseDelegate:self format:mailFormat];
+//			} @catch (NSException *localException) {
+//				result = NO;
+//				if (![[localException name] isEqualToString:GPGException] || [mailBundle gpgErrorCodeFromError:[[[localException userInfo] objectForKey:GPGErrorKey] intValue]] != /*GPGErrorNoData*/ GPGErrorCancelled) {
+//					[self performSelector:@selector(displayException:) withObject:localException afterDelay:0.0];
+//				}
+//				// Else, user cancelled passphrase entry; do nothing special, return.
+//			}
+//			[aController stop];
+//		} else {
+//			@try {
+//				[message gpgSignWithKey:selectedPersonalKey passphraseDelegate:self format:mailFormat];
+//			} @catch (NSException *localException) {
+//				result = NO;
+//				if (![[localException name] isEqualToString:GPGException] || [mailBundle gpgErrorCodeFromError:[[[localException userInfo] objectForKey:GPGErrorKey] unsignedIntValue]] != /*GPGErrorNoData*/ GPGErrorCancelled) {
+//					[self performSelector:@selector(displayException:) withObject:localException afterDelay:0.0];
+//				}
+//				// Else, user cancelled passphrase entry; do nothing special, return.
+//			}
+//		}
+//
+//		// There is a problem with Compose window: it is not redisplayed correctly
+//		if (!result) {
+//// #warning VERIFY Is it still the case in 10.3?
+//			[[[self composeAccessoryView] window] makeKeyAndOrderFront:nil];
+//			// Even this call is not enough: the window shadow/border is not redisplayed
+//			// This is probably due to the alert panel raised by -[GPGHandler displayException:]
+//		}
+//	}
+//
+//	verifyRulesConflicts = YES;
+//
+//	return result;
+//}
 
 - (void)progressIndicatorDidCancel:(GPGProgressIndicatorController *)controller {
 	// Currently it is not possible to cancel a running operation
@@ -1925,17 +1928,18 @@ static NSComparisonResult compareKeysWithSelector(id key, id otherKey, void *con
 }
 
 
-- (NSString *)context:(GPGContext *)context passphraseForKey:(GPGKey *)key again:(BOOL)again {
-	NSString *passphrase;
-
-	if (again && key != nil) {
-		[GPGPassphraseController flushCachedPassphraseForUser:key];
-	}
-
-	passphrase = [[GPGPassphraseController controller] passphraseForUser:key title:NSLocalizedStringFromTableInBundle(@"MESSAGE_AUTHENTICATION_TITLE", @"GPGMail", [NSBundle bundleForClass:[self class]], "") window:[[self composeAccessoryView] window]];
-
-	return passphrase;
-}
+// TODO: Fix me for libmacgpg
+//- (NSString *)context:(GPGContext *)context passphraseForKey:(GPGKey *)key again:(BOOL)again {
+//	NSString *passphrase;
+//
+//	if (again && key != nil) {
+//		[GPGPassphraseController flushCachedPassphraseForUser:key];
+//	}
+//
+//	passphrase = [[GPGPassphraseController controller] passphraseForUser:key title:NSLocalizedStringFromTableInBundle(@"MESSAGE_AUTHENTICATION_TITLE", @"GPGMail", [NSBundle bundleForClass:[self class]], "") window:[[self composeAccessoryView] window]];
+//
+//	return passphrase;
+//}
 
 - (NSString *)senderEmail {
 	NSString *mailAddress = [[[[self messageEditor] gpgFromPopup] selectedItem] title];

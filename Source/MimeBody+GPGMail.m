@@ -43,6 +43,7 @@
 // #import <MimeTextAttachment.h>
 
 #import <Foundation/Foundation.h>
+#import "CCLog.h"
 
 
 @interface MimeBody (GPGMailPrivate)
@@ -50,6 +51,78 @@
 @end
 
 @implementation MimeBody (GPGMail)
+
+- (id)GPGAttributedString {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    id ret = [self GPGAttributedString];
+    CCLog(@"[DEBUG] %s return value", __PRETTY_FUNCTION__, ret);
+    return ret;
+}
+
+- (id)GPGAllPartsEnumerator {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    id ret = [self GPGAllPartsEnumerator];
+    CCLog(@"[DEBUG] %s return value", __PRETTY_FUNCTION__, ret);
+    return ret;
+}
+
+- (id)GPGPartWithNumber:(id)arg1 {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    CCLog(@"[DEBUG] %s number: %@", __PRETTY_FUNCTION__, arg1);
+    id ret = [self GPGPartWithNumber:arg1];
+    CCLog(@"[DEBUG] %s return value", __PRETTY_FUNCTION__, ret);
+    return ret;
+}
+
+- (id)GPGTextHtmlPart {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    id ret = [self GPGTextHtmlPart];
+    CCLog(@"[DEBUG] %s return value", __PRETTY_FUNCTION__, ret);
+    return ret;
+}
+
+- (id)GPGTopLevelPart {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    CCLog(@"[DEBUG] mime body pointer: %p", self);
+//    NSLog(@"<MimeBody data>: %@", [[NSString alloc] initWithData:[self bodyData] encoding:NSUTF8StringEncoding]);
+    id ret = [self GPGTopLevelPart];
+    CCLog(@"[DEBUG] %s return value", __PRETTY_FUNCTION__, ret);
+    return ret;
+}
+
+- (id)GPGInit {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    return [self GPGInit];
+}
+
+- (void)GPGSetTopLevelPart:(id)arg1 {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    [self GPGSetTopLevelPart:arg1];
+}
+
+- (id)GPGDataForMimePart:(id)arg1 {
+    CCLog(@"[DEBUG] %s mime part: %@", __PRETTY_FUNCTION__, arg1);
+    return [self GPGDataForMimePart:arg1];
+}
+
+- (unsigned int)GPGNumberOfAttachmentsSigned:(char *)arg1 encrypted:(char *)arg2 numberOfTNEFAttachments:(unsigned int *)arg3 {
+    return [self GPGNumberOfAttachmentsSigned:arg1 encrypted:arg2 numberOfTNEFAttachments:arg3];
+}
+- (void)GPGDecodeIfNecessaryWithContext:(id)arg1 {
+    [self GPGDecodeIfNecessaryWithContext:arg1];
+}
+- (BOOL)GPG_isPossiblySignedOrEncrypted {
+    return [self GPG_isPossiblySignedOrEncrypted];
+}
+
++ (id)GPGNewMimeBoundary {
+    CCLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    id ret = [self GPGNewMimeBoundary];
+    CCLog(@"[DEBUG] %s return %@", __PRETTY_FUNCTION__, ret);
+    return ret;
+}
+
+
 
 - (BOOL)gpgIsEncrypted {
 	// In this case we assume that we don't need to decode quoted-printable/base64
@@ -146,182 +219,183 @@
 	return nil;
 }
 
-- (NSData *)gpgOpenPGPEncryptForRecipients:(NSArray *)recipients trustAllKeys:(BOOL)trustsAllKeys signWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate headers:(MutableMessageHeaders **)headersPtr {
-	// (Message may be signed or not; if signed, signature is embedded in encrypted file)
-	// Copy headers content-transfer-encoding and content-type to the beginning of the body (+ empty line)
-	// Set headers Content-Type = multipart/encrypted; boundary=foo; protocol="application/pgp-encrypted"
-	// and content-transfer-encoding = ???
-	// Encode modified body
-	// Modify body this way:
-
-	// --foo
-	// Content-Type: application/pgp-encrypted
-	//
-	// Version: 1
-	//
-	// --foo
-	// Content-Type: application/octet-stream
-	//
-	// <PGP block>
-	//
-	// --foo--
-
-	// Perhaps we will need to register ourself as handler for these new MIME types.
-	// Other headers: content-id, content-description, content-disposition
-
-	// First, we need to retrieve the MIME-specific headers; they need to be embedded in the encrypted data.
-	NSMutableData *dataToEncrypt = [NSMutableData data];
-	NSData *encryptedData = nil;
-	MutableMessageHeaders *newHeaders = [[[self message] headers] mutableCopy];
-	MutableMessageHeaders *headersToEncrypt = [[MutableMessageHeaders alloc] init];
-	NSString *newBoundary = [MimeBody createMimeBoundary];
-	BOOL usesQuotedPrintable = NO;
-	GPGContext *aContext;
-	GPGData *inputData;
-	NSData *rawData = [self gpgRawData];
-
-	[headersToEncrypt setHeader:[newHeaders firstHeaderForKey:@"content-type"] forKey:@"content-type"];
-	[headersToEncrypt setHeader:[newHeaders firstHeaderForKey:@"content-transfer-encoding"] forKey:@"content-transfer-encoding"];
-
-	NSAssert2([rawData length] > 0, @"-[%@ %@]: No data to encrypt!", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
-
-	// We don't support 8bit data from Mail; this is OK currently.
-	// Would we support it, we should check all MIME parts for their charset
-	// (if content-transfer-encoding is 8bit), and find the common one,
-	// then convert parts to this encoding, OR use quoted-printable or base64.
-	// Much too complicated, and not necessary currently.
-	// Note that RFC3156 accepts encrypting 8bit data, if data is not signed.
-//    NSAssert(![rawData gpgContainsNonASCIICharacter], @"We support only 7bit content-transfer-encoding");
-
-	if (key != nil) {
-		if (![[GPGMailBundle sharedInstance] usesEncapsulatedSignature]) {
-			[dataToEncrypt appendData:[headersToEncrypt gpgEncodedHeadersExcludingFromSpace]];                                     // Already contains ending spacer
-			[dataToEncrypt appendData:rawData];
-			// Fix for attachments which contain non-ASCII chars: despite this has been reported to Apple,
-			// they don't consider it a bug; let's replace non-ASCII chars (normally only in headers) by '_'
-			[dataToEncrypt gpgASCIIfy];
-//            [dataToEncrypt gpgNormalizeDataForSigning];
-		} else {
-			// RFC 1847 Encapsulation
-			NSData *tempData = [self gpgOpenPGPSignWithKey:key passphraseDelegate:passphraseDelegate encapsulated:YES headers:headersPtr];
-
-			key = nil;
-			[dataToEncrypt appendData:tempData];
-		}
-	} else {
-		[dataToEncrypt appendData:[headersToEncrypt gpgEncodedHeadersExcludingFromSpace]];                         // Already contains ending spacer
-		[dataToEncrypt appendData:rawData];
-	}
-
-	aContext = [[GPGContext alloc] init];
-	[aContext setPassphraseDelegate:passphraseDelegate];
-	[aContext setUsesArmor:YES];
-	[aContext setUsesTextMode:YES];
-	if (key != nil) {
-		[aContext addSignerKey:key];
-	}
-	inputData = [[GPGData alloc] initWithData:dataToEncrypt];
-	if (GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask) {
-		NSString *filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"txt"]];
-
-		if ([dataToEncrypt writeToFile:filename atomically:NO]) {
-			NSLog(@"[DEBUG] Data to encrypt/sign in %@", filename);
-		} else {
-			NSLog(@"[DEBUG] FAILED to write data to encrypt/sign in %@", filename);
-		}
-	}
-	@try {
-		GPGData *outputData;
-
-#warning Set encoding!
-		if (key != nil) {
-			outputData = [aContext encryptedSignedData:inputData withKeys:recipients trustAllKeys:trustsAllKeys /* encoding:kCFStringEncodingISOLatin1*/];             // Can raise an exception
-		} else {
-			if (recipients == nil) {
-				// Symetric encryption
-				outputData = [aContext encryptedData:inputData /* encoding:kCFStringEncodingISOLatin1*/];                                                                  // Can raise an exception
-			} else {
-				outputData = [aContext encryptedData:inputData withKeys:recipients trustAllKeys:trustsAllKeys /* encoding:kCFStringEncodingISOLatin1*/];                   // Can raise an exception
-			}
-		}
-
-		// Can also happen when a key has been revoked, is invalid, has expired
-//            [NSException raise:NSGenericException format:@"Unable to find public keys for some addresses, or keys need to be (locally) signed"];
-		encryptedData = [[[outputData data] retain] autorelease];                                                                                                  // Because context will be freed
-	}@catch (NSException *localException) {
-		[inputData release];
-		[aContext release];
-		[newHeaders release];
-		[headersToEncrypt release];
-		[localException raise];
-	}
-	[inputData release];
-	[aContext release];
-	[headersToEncrypt release];
-
-	// We check whether encryptedData contains only ASCII; might not be the case
-	// if user added a comment to the armor with other chars... (this is bad practice)
-	// In that case, we always use UTF-8 (We could/should test whether data is valid UTF8).
-	if ([encryptedData gpgContainsNonASCIICharacter]) {
-		encryptedData = [encryptedData encodeQuotedPrintableForText:YES];
-		usesQuotedPrintable = YES;
-	}
-
-	[newHeaders removeHeaderForKey:@"content-type"];
-	[newHeaders removeHeaderForKey:@"content-transfer-encoding"];
-	[newHeaders setHeader:@"7bit" forKey:@"content-transfer-encoding"];
-	[newHeaders setHeader:[NSString stringWithFormat:@"multipart/encrypted; protocol=\"application/pgp-encrypted\";\n\tboundary=\"%@\"", newBoundary] forKey:@"content-type"];
-	if ([[GPGMailBundle sharedInstance] addsCustomHeaders]) {
-		[newHeaders setHeader:[@"GPGMail " stringByAppendingString:[(GPGMailBundle *)[GPGMailBundle sharedInstance] version]] forKey:GPGMailHeaderKey];
-	}
-	newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[[newHeaders autorelease] encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];                 // Needed, to ensure _data ivar is updated
-	if (headersPtr != NULL) {
-		*headersPtr = newHeaders;
-	}
-	[newHeaders autorelease];
-
-	dataToEncrypt = [NSMutableData data];
-#if 0
-	[dataToEncrypt appendData:[@"\n--" dataUsingEncoding:NSASCIIStringEncoding]];
-#else
-#warning According to Tomio, we should not have a LF as first char
-	[dataToEncrypt appendData:[@"--" dataUsingEncoding:NSASCIIStringEncoding]];
-#endif
-	[dataToEncrypt appendData:[newBoundary dataUsingEncoding:NSASCIIStringEncoding]];
-	[dataToEncrypt appendData:[@"\n" dataUsingEncoding:NSASCIIStringEncoding]];
-	[dataToEncrypt appendData:[@"content-type: application/pgp-encrypted\n" dataUsingEncoding:NSASCIIStringEncoding]];
-	[dataToEncrypt appendData:[@"content-transfer-encoding: 7bit\n" dataUsingEncoding:NSASCIIStringEncoding]];
-	[dataToEncrypt appendData:[@"content-description: " dataUsingEncoding:NSASCIIStringEncoding]];
-	[dataToEncrypt appendData:[NSLocalizedStringFromTableInBundle (@"CONTENT_DESCRIPTION_HEADER", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")encodedHeaderData]];
-	[dataToEncrypt appendData:[@"\n\n"dataUsingEncoding:NSASCIIStringEncoding]];
-	[dataToEncrypt appendData:[@"Version: 1\n\n--" dataUsingEncoding:NSASCIIStringEncoding]];
-	[dataToEncrypt appendData:[newBoundary dataUsingEncoding:NSASCIIStringEncoding]];
-	[dataToEncrypt appendData:[@"\n" dataUsingEncoding:NSASCIIStringEncoding]];
-	[dataToEncrypt appendData:[@"content-type: application/octet-stream; name=\"" dataUsingEncoding:NSASCIIStringEncoding]];
-	[dataToEncrypt appendData:[NSLocalizedStringFromTableInBundle (@"PGP_ENCRYPTED_FILENAME", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")encodedHeaderData]];
-	[dataToEncrypt appendData:[@".asc\"" dataUsingEncoding:NSASCIIStringEncoding]];
-	if (!usesQuotedPrintable) {
-		[dataToEncrypt appendData:[@"\n" dataUsingEncoding:NSASCIIStringEncoding]];
-		[dataToEncrypt appendData:[@"content-transfer-encoding: 7bit\n" dataUsingEncoding:NSASCIIStringEncoding]];
-	} else {
-		[dataToEncrypt appendData:[[@"; charset=" stringByAppendingString:(NSString *)CFStringConvertEncodingToIANACharSetName(kCFStringEncodingUTF8)] dataUsingEncoding:NSASCIIStringEncoding]];
-		[dataToEncrypt appendData:[@"content-transfer-encoding: quoted-printable\n" dataUsingEncoding:NSASCIIStringEncoding]];
-	}
-	[dataToEncrypt appendData:[@"content-description: " dataUsingEncoding:NSASCIIStringEncoding]];
-#warning Take care of line length
-	[dataToEncrypt appendData:[NSLocalizedStringFromTableInBundle (@"This is an encrypted message part", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")encodedHeaderData]];
-	// Now we do it like Enigmail: we put content inline (but still provide a file name)
-	[dataToEncrypt appendData:[@"\ncontent-disposition: inline; filename=\"" dataUsingEncoding:NSASCIIStringEncoding]];
-#warning Take care of line length
-	[dataToEncrypt appendData:[NSLocalizedStringFromTableInBundle (@"PGP_ENCRYPTED_FILENAME", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")encodedHeaderData]];
-	[dataToEncrypt appendData:[@".asc\"\n\n" dataUsingEncoding:NSASCIIStringEncoding]];
-	[dataToEncrypt appendData:encryptedData];
-	[dataToEncrypt appendData:[@"\n--" dataUsingEncoding:NSASCIIStringEncoding]];
-	[dataToEncrypt appendData:[newBoundary dataUsingEncoding:NSASCIIStringEncoding]];
-	[dataToEncrypt appendData:[@"--\n" dataUsingEncoding:NSASCIIStringEncoding]];
-
-	return [[dataToEncrypt retain] autorelease];
-}
+// TODO: Fix me for libmacgpg
+//- (NSData *)gpgOpenPGPEncryptForRecipients:(NSArray *)recipients trustAllKeys:(BOOL)trustsAllKeys signWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate headers:(MutableMessageHeaders **)headersPtr {
+//	// (Message may be signed or not; if signed, signature is embedded in encrypted file)
+//	// Copy headers content-transfer-encoding and content-type to the beginning of the body (+ empty line)
+//	// Set headers Content-Type = multipart/encrypted; boundary=foo; protocol="application/pgp-encrypted"
+//	// and content-transfer-encoding = ???
+//	// Encode modified body
+//	// Modify body this way:
+//
+//	// --foo
+//	// Content-Type: application/pgp-encrypted
+//	//
+//	// Version: 1
+//	//
+//	// --foo
+//	// Content-Type: application/octet-stream
+//	//
+//	// <PGP block>
+//	//
+//	// --foo--
+//
+//	// Perhaps we will need to register ourself as handler for these new MIME types.
+//	// Other headers: content-id, content-description, content-disposition
+//
+//	// First, we need to retrieve the MIME-specific headers; they need to be embedded in the encrypted data.
+//	NSMutableData *dataToEncrypt = [NSMutableData data];
+//	NSData *encryptedData = nil;
+//	MutableMessageHeaders *newHeaders = [[[self message] headers] mutableCopy];
+//	MutableMessageHeaders *headersToEncrypt = [[MutableMessageHeaders alloc] init];
+//	NSString *newBoundary = [MimeBody createMimeBoundary];
+//	BOOL usesQuotedPrintable = NO;
+//	GPGContext *aContext;
+//	GPGData *inputData;
+//	NSData *rawData = [self gpgRawData];
+//
+//	[headersToEncrypt setHeader:[newHeaders firstHeaderForKey:@"content-type"] forKey:@"content-type"];
+//	[headersToEncrypt setHeader:[newHeaders firstHeaderForKey:@"content-transfer-encoding"] forKey:@"content-transfer-encoding"];
+//
+//	NSAssert2([rawData length] > 0, @"-[%@ %@]: No data to encrypt!", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+//
+//	// We don't support 8bit data from Mail; this is OK currently.
+//	// Would we support it, we should check all MIME parts for their charset
+//	// (if content-transfer-encoding is 8bit), and find the common one,
+//	// then convert parts to this encoding, OR use quoted-printable or base64.
+//	// Much too complicated, and not necessary currently.
+//	// Note that RFC3156 accepts encrypting 8bit data, if data is not signed.
+////    NSAssert(![rawData gpgContainsNonASCIICharacter], @"We support only 7bit content-transfer-encoding");
+//
+//	if (key != nil) {
+//		if (![[GPGMailBundle sharedInstance] usesEncapsulatedSignature]) {
+//			[dataToEncrypt appendData:[headersToEncrypt gpgEncodedHeadersExcludingFromSpace]];                                     // Already contains ending spacer
+//			[dataToEncrypt appendData:rawData];
+//			// Fix for attachments which contain non-ASCII chars: despite this has been reported to Apple,
+//			// they don't consider it a bug; let's replace non-ASCII chars (normally only in headers) by '_'
+//			[dataToEncrypt gpgASCIIfy];
+////            [dataToEncrypt gpgNormalizeDataForSigning];
+//		} else {
+//			// RFC 1847 Encapsulation
+//			NSData *tempData = [self gpgOpenPGPSignWithKey:key passphraseDelegate:passphraseDelegate encapsulated:YES headers:headersPtr];
+//
+//			key = nil;
+//			[dataToEncrypt appendData:tempData];
+//		}
+//	} else {
+//		[dataToEncrypt appendData:[headersToEncrypt gpgEncodedHeadersExcludingFromSpace]];                         // Already contains ending spacer
+//		[dataToEncrypt appendData:rawData];
+//	}
+//
+//	aContext = [[GPGContext alloc] init];
+//	[aContext setPassphraseDelegate:passphraseDelegate];
+//	[aContext setUsesArmor:YES];
+//	[aContext setUsesTextMode:YES];
+//	if (key != nil) {
+//		[aContext addSignerKey:key];
+//	}
+//	inputData = [[GPGData alloc] initWithData:dataToEncrypt];
+//	if (GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask) {
+//		NSString *filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"txt"]];
+//
+//		if ([dataToEncrypt writeToFile:filename atomically:NO]) {
+//			NSLog(@"[DEBUG] Data to encrypt/sign in %@", filename);
+//		} else {
+//			NSLog(@"[DEBUG] FAILED to write data to encrypt/sign in %@", filename);
+//		}
+//	}
+//	@try {
+//		GPGData *outputData;
+//
+//#warning Set encoding!
+//		if (key != nil) {
+//			outputData = [aContext encryptedSignedData:inputData withKeys:recipients trustAllKeys:trustsAllKeys /* encoding:kCFStringEncodingISOLatin1*/];             // Can raise an exception
+//		} else {
+//			if (recipients == nil) {
+//				// Symetric encryption
+//				outputData = [aContext encryptedData:inputData /* encoding:kCFStringEncodingISOLatin1*/];                                                                  // Can raise an exception
+//			} else {
+//				outputData = [aContext encryptedData:inputData withKeys:recipients trustAllKeys:trustsAllKeys /* encoding:kCFStringEncodingISOLatin1*/];                   // Can raise an exception
+//			}
+//		}
+//
+//		// Can also happen when a key has been revoked, is invalid, has expired
+////            [NSException raise:NSGenericException format:@"Unable to find public keys for some addresses, or keys need to be (locally) signed"];
+//		encryptedData = [[[outputData data] retain] autorelease];                                                                                                  // Because context will be freed
+//	}@catch (NSException *localException) {
+//		[inputData release];
+//		[aContext release];
+//		[newHeaders release];
+//		[headersToEncrypt release];
+//		[localException raise];
+//	}
+//	[inputData release];
+//	[aContext release];
+//	[headersToEncrypt release];
+//
+//	// We check whether encryptedData contains only ASCII; might not be the case
+//	// if user added a comment to the armor with other chars... (this is bad practice)
+//	// In that case, we always use UTF-8 (We could/should test whether data is valid UTF8).
+//	if ([encryptedData gpgContainsNonASCIICharacter]) {
+//		encryptedData = [encryptedData encodeQuotedPrintableForText:YES];
+//		usesQuotedPrintable = YES;
+//	}
+//
+//	[newHeaders removeHeaderForKey:@"content-type"];
+//	[newHeaders removeHeaderForKey:@"content-transfer-encoding"];
+//	[newHeaders setHeader:@"7bit" forKey:@"content-transfer-encoding"];
+//	[newHeaders setHeader:[NSString stringWithFormat:@"multipart/encrypted; protocol=\"application/pgp-encrypted\";\n\tboundary=\"%@\"", newBoundary] forKey:@"content-type"];
+//	if ([[GPGMailBundle sharedInstance] addsCustomHeaders]) {
+//		[newHeaders setHeader:[@"GPGMail " stringByAppendingString:[(GPGMailBundle *)[GPGMailBundle sharedInstance] version]] forKey:GPGMailHeaderKey];
+//	}
+//	newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[[newHeaders autorelease] encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];                 // Needed, to ensure _data ivar is updated
+//	if (headersPtr != NULL) {
+//		*headersPtr = newHeaders;
+//	}
+//	[newHeaders autorelease];
+//
+//	dataToEncrypt = [NSMutableData data];
+//#if 0
+//	[dataToEncrypt appendData:[@"\n--" dataUsingEncoding:NSASCIIStringEncoding]];
+//#else
+//#warning According to Tomio, we should not have a LF as first char
+//	[dataToEncrypt appendData:[@"--" dataUsingEncoding:NSASCIIStringEncoding]];
+//#endif
+//	[dataToEncrypt appendData:[newBoundary dataUsingEncoding:NSASCIIStringEncoding]];
+//	[dataToEncrypt appendData:[@"\n" dataUsingEncoding:NSASCIIStringEncoding]];
+//	[dataToEncrypt appendData:[@"content-type: application/pgp-encrypted\n" dataUsingEncoding:NSASCIIStringEncoding]];
+//	[dataToEncrypt appendData:[@"content-transfer-encoding: 7bit\n" dataUsingEncoding:NSASCIIStringEncoding]];
+//	[dataToEncrypt appendData:[@"content-description: " dataUsingEncoding:NSASCIIStringEncoding]];
+//	[dataToEncrypt appendData:[NSLocalizedStringFromTableInBundle (@"CONTENT_DESCRIPTION_HEADER", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")encodedHeaderData]];
+//	[dataToEncrypt appendData:[@"\n\n"dataUsingEncoding:NSASCIIStringEncoding]];
+//	[dataToEncrypt appendData:[@"Version: 1\n\n--" dataUsingEncoding:NSASCIIStringEncoding]];
+//	[dataToEncrypt appendData:[newBoundary dataUsingEncoding:NSASCIIStringEncoding]];
+//	[dataToEncrypt appendData:[@"\n" dataUsingEncoding:NSASCIIStringEncoding]];
+//	[dataToEncrypt appendData:[@"content-type: application/octet-stream; name=\"" dataUsingEncoding:NSASCIIStringEncoding]];
+//	[dataToEncrypt appendData:[NSLocalizedStringFromTableInBundle (@"PGP_ENCRYPTED_FILENAME", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")encodedHeaderData]];
+//	[dataToEncrypt appendData:[@".asc\"" dataUsingEncoding:NSASCIIStringEncoding]];
+//	if (!usesQuotedPrintable) {
+//		[dataToEncrypt appendData:[@"\n" dataUsingEncoding:NSASCIIStringEncoding]];
+//		[dataToEncrypt appendData:[@"content-transfer-encoding: 7bit\n" dataUsingEncoding:NSASCIIStringEncoding]];
+//	} else {
+//		[dataToEncrypt appendData:[[@"; charset=" stringByAppendingString:(NSString *)CFStringConvertEncodingToIANACharSetName(kCFStringEncodingUTF8)] dataUsingEncoding:NSASCIIStringEncoding]];
+//		[dataToEncrypt appendData:[@"content-transfer-encoding: quoted-printable\n" dataUsingEncoding:NSASCIIStringEncoding]];
+//	}
+//	[dataToEncrypt appendData:[@"content-description: " dataUsingEncoding:NSASCIIStringEncoding]];
+//#warning Take care of line length
+//	[dataToEncrypt appendData:[NSLocalizedStringFromTableInBundle (@"This is an encrypted message part", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")encodedHeaderData]];
+//	// Now we do it like Enigmail: we put content inline (but still provide a file name)
+//	[dataToEncrypt appendData:[@"\ncontent-disposition: inline; filename=\"" dataUsingEncoding:NSASCIIStringEncoding]];
+//#warning Take care of line length
+//	[dataToEncrypt appendData:[NSLocalizedStringFromTableInBundle (@"PGP_ENCRYPTED_FILENAME", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")encodedHeaderData]];
+//	[dataToEncrypt appendData:[@".asc\"\n\n" dataUsingEncoding:NSASCIIStringEncoding]];
+//	[dataToEncrypt appendData:encryptedData];
+//	[dataToEncrypt appendData:[@"\n--" dataUsingEncoding:NSASCIIStringEncoding]];
+//	[dataToEncrypt appendData:[newBoundary dataUsingEncoding:NSASCIIStringEncoding]];
+//	[dataToEncrypt appendData:[@"--\n" dataUsingEncoding:NSASCIIStringEncoding]];
+//
+//	return [[dataToEncrypt retain] autorelease];
+//}
 
 - (NSData *)gpgEncryptForRecipients:(NSArray *)recipients trustAllKeys:(BOOL)trustsAllKeys signWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate format:(GPGMailFormat *)mailFormatPtr headers:(MutableMessageHeaders **)headersPtr {
 	NSParameterAssert(mailFormatPtr != NULL);
@@ -395,194 +469,195 @@
 	return [self gpgRawData];
 }
 
-- (NSData *)gpgOpenPGPSignWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate encapsulated:(BOOL)encapsulated headers:(MutableMessageHeaders **)headersPtr {
-	// Copy headers content-transfer-encoding and content-type to the beginning of the body (+ empty line?)
-	// Set headers Content-Type = multipart/signed; boundary=bar; micalg=pgp-md5; protocol="application/pgp-signature"
-	// and content-transfer-encoding = ???
-	// Encode modified body
-	// Modify body this way:
-
-	// --bar
-	// <PGP signed block, without PGP boundaries => original encoded body, prepended with headers (used for sig too)>
-	//
-	// --bar
-	// Content-Type: application/pgp-signature
-	//
-	// <PGP sig block>
-	//
-	// --foo--
-
-	NSMutableData *dataToSign = [NSMutableData data], *signedData;
-	NSData *signatureData = nil;
-	MutableMessageHeaders *newHeaders = [[[self message] headers] mutableCopy];
-	MutableMessageHeaders *headersToSign = [[MutableMessageHeaders alloc] init];
-	NSString *newBoundary = [MimeBody createMimeBoundary];
-	GPGHandler *aHandler;
-	BOOL signatureDataIsOnlyASCII;
-	GPGContext *aContext;
-	GPGData *inputData;
-//    NSData                  *data;
-	GPGSignature *newSignature;
-	NSData *rawData = /*[self gpgRawData]*/ [self gpgRawDataWithEnforcedQuotedPrintable];
-
-	[headersToSign setHeader:[newHeaders firstHeaderForKey:@"content-type"] forKey:@"content-type"];
-	[headersToSign setHeader:[newHeaders firstHeaderForKey:@"content-transfer-encoding"] forKey:@"content-transfer-encoding"];
-
-	NSAssert2([rawData length] > 0, @"-[%@ %@]: No data to sign!", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
-
-	// 'From ' escaping is done by Mail, no need to check.
-	// We also don't need to check for trailing spaces, Mail cares for it. FIXME: NOT TRUE!!!
-	[dataToSign appendData:[headersToSign gpgEncodedHeadersExcludingFromSpace]];             // Already contains ending spacer
-	[dataToSign appendData:rawData];
-	[dataToSign gpgNormalizeDataForSigning];
-	// "all data signed according to this protocol MUST be constrained to 7 bits"
-	// Normally, Mail already takes care of it, by using quoted-printable or base64 if necessary
-	if ([dataToSign gpgContainsNonASCIICharacter]) {
-		// Fix for attachments which contain non-ASCII chars: despite this has been reported to Apple,
-		// they don't consider it a bug; let's replace non-ASCII chars (normally only in headers) by '_'
-		[dataToSign gpgASCIIfy];
-	}
-	NSAssert(![dataToSign gpgContainsNonASCIICharacter], @"Signed part can only contain 7bit bytes");
-
-	aContext = [[GPGContext alloc] init];
-	[aContext setPassphraseDelegate:passphraseDelegate];
-	[aContext setUsesArmor:YES];
-	[aContext setUsesTextMode:YES];
-	[aContext addSignerKey:key];
-#warning FIXME: For each text/plain format=flowed MIME part, fix the usenet sig space by quoting it
-//    if([[eachPart bodyParameterForKey:@"format"] isEqualToString:@"flowed"])
-//        dataToSign = [dataToSign gpgFormatFlowedFixedWithCRLF:useCRLF useQP:NO];
-	// We can iterate through all parts, and ask them for their format=flowed, and getting their data
-	// out of [self rawData] using their -range
-	inputData = [[GPGData alloc] initWithData:dataToSign];
-	if (GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask) {
-		NSString *filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"txt"]];
-
-		if ([dataToSign writeToFile:filename atomically:NO]) {
-			NSLog(@"[DEBUG] Data to sign in %@", filename);
-		} else {
-			NSLog(@"[DEBUG] FAILED to write data to sign in %@", filename);
-		}
-	}
-	@try {
-#warning Use kCFStringEncodingISOLatin1 encoding!
-		GPGData *outputData = [aContext signedData:inputData signatureMode:GPGSignatureModeDetach /*encoding:kCFStringEncodingISOLatin1*/];                          // Can raise an exception
-		// We can safely use kCFStringEncodingISOLatin1, because dataToSign is only on 7 bits
-
-		signatureData = [outputData data];
-	}@catch (NSException *localException) {
-		[inputData release];
-		[aContext release];
-		[newHeaders release];
-		[headersToSign release];
-		[localException raise];
-	}
-	[inputData release];
-
-	newSignature = [[[aContext operationResults] objectForKey:@"newSignatures"] lastObject];
-	if (newSignature == nil) {
-		NSLog(@"### GPGMail: unable to create signature!");
-		[aContext release];
-		[newHeaders release];
-		[headersToSign release];
-#warning FIXME: Use specific error message
-		[NSException raise:GPGMailException format:@"NO_VALID_PRIVATE_KEY"];
-	}
-
-	aHandler = [GPGHandler handler];
-	if (!encapsulated) {
-		NSString *hashAlgorithm = [[GPGMailBundle sharedInstance] hashAlgorithmDescription:[newSignature hashAlgorithm]];                            // FIXME: Should we check strict conformance to OpenPGP in hash choice?
-
-		[newHeaders removeHeaderForKey:@"content-type"];
-		[newHeaders removeHeaderForKey:@"content-transfer-encoding"];
-		[newHeaders setHeader:[NSString stringWithFormat:@"multipart/signed; protocol=\"application/pgp-signature\";\n\tmicalg=%@; boundary=\"%@\"", [@"pgp-" stringByAppendingString:hashAlgorithm], newBoundary] forKey:@"content-type"];
-		[newHeaders setHeader:@"7bit" forKey:@"content-transfer-encoding"];
-		if ([[GPGMailBundle sharedInstance] addsCustomHeaders]) {
-			[newHeaders setHeader:[@"GPGMail " stringByAppendingString:[(GPGMailBundle *)[GPGMailBundle sharedInstance] version]] forKey:GPGMailHeaderKey];
-		}
-		newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[[newHeaders autorelease] encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];                                 // Needed, to ensure _data ivar is updated
-		if (headersPtr != NULL) {
-			*headersPtr = newHeaders;
-		}
-	}
-	[newHeaders autorelease];
-
-	signedData = [NSMutableData data];
-	if (!encapsulated)
-#if 1
-								   #warning RESTORED THIS, BECAUSE WAS MISSING SPACER
-	{
-		[signedData appendData:[@"\n--" dataUsingEncoding:NSASCIIStringEncoding]];
-	}
-#else
-								   #warning According to Tomio, we should not have LF as first char
-	{
-		[signedData appendData:[@"--" dataUsingEncoding:NSASCIIStringEncoding]];
-	}
-#endif
-	else {
-		NSString *hashAlgorithm = [[GPGMailBundle sharedInstance] hashAlgorithmDescription:[newSignature hashAlgorithm]];                            // FIXME: Should we check strict conformance to OpenPGP in hash choice?
-
-		[signedData appendData:[[NSString stringWithFormat:@"Content-type: multipart/signed; protocol=\"application/pgp-signature\";\n\tmicalg=%@; boundary=\"%@\"\n", [@"pgp-" stringByAppendingString:hashAlgorithm], newBoundary] dataUsingEncoding:NSASCIIStringEncoding]];
-		[signedData appendData:[@"Content-transfer-encoding: 7bit\n" dataUsingEncoding:NSASCIIStringEncoding]];
-		if ([[GPGMailBundle sharedInstance] addsCustomHeaders]) {
-			[signedData appendData:[[NSString stringWithFormat:@"%@: GPGMail %@\n", GPGMailHeaderKey, [(GPGMailBundle *)[GPGMailBundle sharedInstance] version]] dataUsingEncoding:NSASCIIStringEncoding]];
-		}
-
-		[signedData appendData:[@"\n--" dataUsingEncoding:NSASCIIStringEncoding]];
-	}
-	[signedData appendData:[newBoundary dataUsingEncoding:NSASCIIStringEncoding]];
-	[signedData appendData:[@"\n" dataUsingEncoding:NSASCIIStringEncoding]];
-#if 0
-	[signedData appendData:[headersToSign gpgEncodedHeadersExcludingFromSpace]];             // Already contains ending spacer
-	[signedData appendData:[self rawData]];
-#else
-#warning CHECK THIS
-	{
-		NSMutableData *convertedData = [NSMutableData dataWithData:dataToSign];
-
-		[convertedData convertNetworkLineEndingsToUnix];
-		[signedData appendData:convertedData];
-	}
-#endif
-	[signedData appendData:[[NSString stringWithFormat:@"\n--%@\n", newBoundary] dataUsingEncoding:NSASCIIStringEncoding]];
-	[headersToSign release];
-
-	// Signature part
-	// We check whether signatureData contains only ASCII; might not be the case
-	// if user added a comment to the armor with other chars... (this is bad practice)
-	// In that case, we always use UTF-8 (We could/should test whether data is valid UTF8).
-	signatureDataIsOnlyASCII = ![signatureData gpgContainsNonASCIICharacter];
-	[signedData appendData:[@"content-type: application/pgp-signature; x-mac-type=70674453;\n\tname=" dataUsingEncoding:NSASCIIStringEncoding]];
-#warning CHECK whether we need to enclose filename in double-quotes
-#warning Take care of line length
-	[signedData appendData:[NSLocalizedStringFromTableInBundle (@"PGP_SIGNATURE_FILENAME", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")encodedHeaderData]];
-	[signedData appendData:[@".sig" dataUsingEncoding:NSASCIIStringEncoding]];
-	if (!signatureDataIsOnlyASCII) {
-		[signedData appendData:[[@"; charset=" stringByAppendingString:(NSString *)CFStringConvertEncodingToIANACharSetName(kCFStringEncodingUTF8)] dataUsingEncoding:NSASCIIStringEncoding]];
-	}
-	[signedData appendData:[@"\ncontent-description: " dataUsingEncoding:NSASCIIStringEncoding]];
-#warning Take care of line length
-	[signedData appendData:[NSLocalizedStringFromTableInBundle (@"This is a digitally signed message part", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")encodedHeaderData]];
-	[signedData appendData:[@"\ncontent-disposition: inline; filename=" dataUsingEncoding:NSASCIIStringEncoding]];
-#warning CHECK whether we need to enclose filename in double-quotes
-#warning Take care of line length
-	[signedData appendData:[NSLocalizedStringFromTableInBundle (@"PGP_SIGNATURE_FILENAME", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")encodedHeaderData]];
-	[signedData appendData:[@".sig\n" dataUsingEncoding:NSASCIIStringEncoding]];
-	// Force the use of quoted-printable. It should be more robust (Idea by Roberto Aguilar!)
-	if (!signatureDataIsOnlyASCII) {
-		signatureData = [signatureData encodeQuotedPrintableForText:YES];
-		// What about base64 instead?
-		[signedData appendData:[@"content-transfer-encoding: quoted-printable\n\n" dataUsingEncoding:NSASCIIStringEncoding]];
-	} else {
-		[signedData appendData:[@"content-transfer-encoding: 7bit\n\n" dataUsingEncoding:NSASCIIStringEncoding]];
-	}
-	[signedData appendData:signatureData];
-	[signedData appendData:[[NSString stringWithFormat:@"\n--%@--\n", newBoundary] dataUsingEncoding:NSASCIIStringEncoding]];
-	[aContext release];
-
-	return [[signedData retain] autorelease];
-}
+// TODO: Fix me for libmacgpg
+//- (NSData *)gpgOpenPGPSignWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate encapsulated:(BOOL)encapsulated headers:(MutableMessageHeaders **)headersPtr {
+//	// Copy headers content-transfer-encoding and content-type to the beginning of the body (+ empty line?)
+//	// Set headers Content-Type = multipart/signed; boundary=bar; micalg=pgp-md5; protocol="application/pgp-signature"
+//	// and content-transfer-encoding = ???
+//	// Encode modified body
+//	// Modify body this way:
+//
+//	// --bar
+//	// <PGP signed block, without PGP boundaries => original encoded body, prepended with headers (used for sig too)>
+//	//
+//	// --bar
+//	// Content-Type: application/pgp-signature
+//	//
+//	// <PGP sig block>
+//	//
+//	// --foo--
+//
+//	NSMutableData *dataToSign = [NSMutableData data], *signedData;
+//	NSData *signatureData = nil;
+//	MutableMessageHeaders *newHeaders = [[[self message] headers] mutableCopy];
+//	MutableMessageHeaders *headersToSign = [[MutableMessageHeaders alloc] init];
+//	NSString *newBoundary = [MimeBody createMimeBoundary];
+//	GPGHandler *aHandler;
+//	BOOL signatureDataIsOnlyASCII;
+//	GPGContext *aContext;
+//	GPGData *inputData;
+////    NSData                  *data;
+//	GPGSignature *newSignature;
+//	NSData *rawData = /*[self gpgRawData]*/ [self gpgRawDataWithEnforcedQuotedPrintable];
+//
+//	[headersToSign setHeader:[newHeaders firstHeaderForKey:@"content-type"] forKey:@"content-type"];
+//	[headersToSign setHeader:[newHeaders firstHeaderForKey:@"content-transfer-encoding"] forKey:@"content-transfer-encoding"];
+//
+//	NSAssert2([rawData length] > 0, @"-[%@ %@]: No data to sign!", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+//
+//	// 'From ' escaping is done by Mail, no need to check.
+//	// We also don't need to check for trailing spaces, Mail cares for it. FIXME: NOT TRUE!!!
+//	[dataToSign appendData:[headersToSign gpgEncodedHeadersExcludingFromSpace]];             // Already contains ending spacer
+//	[dataToSign appendData:rawData];
+//	[dataToSign gpgNormalizeDataForSigning];
+//	// "all data signed according to this protocol MUST be constrained to 7 bits"
+//	// Normally, Mail already takes care of it, by using quoted-printable or base64 if necessary
+//	if ([dataToSign gpgContainsNonASCIICharacter]) {
+//		// Fix for attachments which contain non-ASCII chars: despite this has been reported to Apple,
+//		// they don't consider it a bug; let's replace non-ASCII chars (normally only in headers) by '_'
+//		[dataToSign gpgASCIIfy];
+//	}
+//	NSAssert(![dataToSign gpgContainsNonASCIICharacter], @"Signed part can only contain 7bit bytes");
+//
+//	aContext = [[GPGContext alloc] init];
+//	[aContext setPassphraseDelegate:passphraseDelegate];
+//	[aContext setUsesArmor:YES];
+//	[aContext setUsesTextMode:YES];
+//	[aContext addSignerKey:key];
+//#warning FIXME: For each text/plain format=flowed MIME part, fix the usenet sig space by quoting it
+////    if([[eachPart bodyParameterForKey:@"format"] isEqualToString:@"flowed"])
+////        dataToSign = [dataToSign gpgFormatFlowedFixedWithCRLF:useCRLF useQP:NO];
+//	// We can iterate through all parts, and ask them for their format=flowed, and getting their data
+//	// out of [self rawData] using their -range
+//	inputData = [[GPGData alloc] initWithData:dataToSign];
+//	if (GPGMailLoggingLevel & GPGMailDebug_SaveInputDataMask) {
+//		NSString *filename = [NSTemporaryDirectory () stringByAppendingPathComponent:[[[NSProcessInfo processInfo] globallyUniqueString] stringByAppendingPathExtension:@"txt"]];
+//
+//		if ([dataToSign writeToFile:filename atomically:NO]) {
+//			NSLog(@"[DEBUG] Data to sign in %@", filename);
+//		} else {
+//			NSLog(@"[DEBUG] FAILED to write data to sign in %@", filename);
+//		}
+//	}
+//	@try {
+//#warning Use kCFStringEncodingISOLatin1 encoding!
+//		GPGData *outputData = [aContext signedData:inputData signatureMode:GPGSignatureModeDetach /*encoding:kCFStringEncodingISOLatin1*/];                          // Can raise an exception
+//		// We can safely use kCFStringEncodingISOLatin1, because dataToSign is only on 7 bits
+//
+//		signatureData = [outputData data];
+//	}@catch (NSException *localException) {
+//		[inputData release];
+//		[aContext release];
+//		[newHeaders release];
+//		[headersToSign release];
+//		[localException raise];
+//	}
+//	[inputData release];
+//
+//	newSignature = [[[aContext operationResults] objectForKey:@"newSignatures"] lastObject];
+//	if (newSignature == nil) {
+//		NSLog(@"### GPGMail: unable to create signature!");
+//		[aContext release];
+//		[newHeaders release];
+//		[headersToSign release];
+//#warning FIXME: Use specific error message
+//		[NSException raise:GPGMailException format:@"NO_VALID_PRIVATE_KEY"];
+//	}
+//
+//	aHandler = [GPGHandler handler];
+//	if (!encapsulated) {
+//		NSString *hashAlgorithm = [[GPGMailBundle sharedInstance] hashAlgorithmDescription:[newSignature hashAlgorithm]];                            // FIXME: Should we check strict conformance to OpenPGP in hash choice?
+//
+//		[newHeaders removeHeaderForKey:@"content-type"];
+//		[newHeaders removeHeaderForKey:@"content-transfer-encoding"];
+//		[newHeaders setHeader:[NSString stringWithFormat:@"multipart/signed; protocol=\"application/pgp-signature\";\n\tmicalg=%@; boundary=\"%@\"", [@"pgp-" stringByAppendingString:hashAlgorithm], newBoundary] forKey:@"content-type"];
+//		[newHeaders setHeader:@"7bit" forKey:@"content-transfer-encoding"];
+//		if ([[GPGMailBundle sharedInstance] addsCustomHeaders]) {
+//			[newHeaders setHeader:[@"GPGMail " stringByAppendingString:[(GPGMailBundle *)[GPGMailBundle sharedInstance] version]] forKey:GPGMailHeaderKey];
+//		}
+//		newHeaders = [[MutableMessageHeaders alloc] initWithHeaderData:[[newHeaders autorelease] encodedHeadersIncludingFromSpace:NO] encoding:[newHeaders preferredEncoding]];                                 // Needed, to ensure _data ivar is updated
+//		if (headersPtr != NULL) {
+//			*headersPtr = newHeaders;
+//		}
+//	}
+//	[newHeaders autorelease];
+//
+//	signedData = [NSMutableData data];
+//	if (!encapsulated)
+//#if 1
+//								   #warning RESTORED THIS, BECAUSE WAS MISSING SPACER
+//	{
+//		[signedData appendData:[@"\n--" dataUsingEncoding:NSASCIIStringEncoding]];
+//	}
+//#else
+//								   #warning According to Tomio, we should not have LF as first char
+//	{
+//		[signedData appendData:[@"--" dataUsingEncoding:NSASCIIStringEncoding]];
+//	}
+//#endif
+//	else {
+//		NSString *hashAlgorithm = [[GPGMailBundle sharedInstance] hashAlgorithmDescription:[newSignature hashAlgorithm]];                            // FIXME: Should we check strict conformance to OpenPGP in hash choice?
+//
+//		[signedData appendData:[[NSString stringWithFormat:@"Content-type: multipart/signed; protocol=\"application/pgp-signature\";\n\tmicalg=%@; boundary=\"%@\"\n", [@"pgp-" stringByAppendingString:hashAlgorithm], newBoundary] dataUsingEncoding:NSASCIIStringEncoding]];
+//		[signedData appendData:[@"Content-transfer-encoding: 7bit\n" dataUsingEncoding:NSASCIIStringEncoding]];
+//		if ([[GPGMailBundle sharedInstance] addsCustomHeaders]) {
+//			[signedData appendData:[[NSString stringWithFormat:@"%@: GPGMail %@\n", GPGMailHeaderKey, [(GPGMailBundle *)[GPGMailBundle sharedInstance] version]] dataUsingEncoding:NSASCIIStringEncoding]];
+//		}
+//
+//		[signedData appendData:[@"\n--" dataUsingEncoding:NSASCIIStringEncoding]];
+//	}
+//	[signedData appendData:[newBoundary dataUsingEncoding:NSASCIIStringEncoding]];
+//	[signedData appendData:[@"\n" dataUsingEncoding:NSASCIIStringEncoding]];
+//#if 0
+//	[signedData appendData:[headersToSign gpgEncodedHeadersExcludingFromSpace]];             // Already contains ending spacer
+//	[signedData appendData:[self rawData]];
+//#else
+//#warning CHECK THIS
+//	{
+//		NSMutableData *convertedData = [NSMutableData dataWithData:dataToSign];
+//
+//		[convertedData convertNetworkLineEndingsToUnix];
+//		[signedData appendData:convertedData];
+//	}
+//#endif
+//	[signedData appendData:[[NSString stringWithFormat:@"\n--%@\n", newBoundary] dataUsingEncoding:NSASCIIStringEncoding]];
+//	[headersToSign release];
+//
+//	// Signature part
+//	// We check whether signatureData contains only ASCII; might not be the case
+//	// if user added a comment to the armor with other chars... (this is bad practice)
+//	// In that case, we always use UTF-8 (We could/should test whether data is valid UTF8).
+//	signatureDataIsOnlyASCII = ![signatureData gpgContainsNonASCIICharacter];
+//	[signedData appendData:[@"content-type: application/pgp-signature; x-mac-type=70674453;\n\tname=" dataUsingEncoding:NSASCIIStringEncoding]];
+//#warning CHECK whether we need to enclose filename in double-quotes
+//#warning Take care of line length
+//	[signedData appendData:[NSLocalizedStringFromTableInBundle (@"PGP_SIGNATURE_FILENAME", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")encodedHeaderData]];
+//	[signedData appendData:[@".sig" dataUsingEncoding:NSASCIIStringEncoding]];
+//	if (!signatureDataIsOnlyASCII) {
+//		[signedData appendData:[[@"; charset=" stringByAppendingString:(NSString *)CFStringConvertEncodingToIANACharSetName(kCFStringEncodingUTF8)] dataUsingEncoding:NSASCIIStringEncoding]];
+//	}
+//	[signedData appendData:[@"\ncontent-description: " dataUsingEncoding:NSASCIIStringEncoding]];
+//#warning Take care of line length
+//	[signedData appendData:[NSLocalizedStringFromTableInBundle (@"This is a digitally signed message part", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")encodedHeaderData]];
+//	[signedData appendData:[@"\ncontent-disposition: inline; filename=" dataUsingEncoding:NSASCIIStringEncoding]];
+//#warning CHECK whether we need to enclose filename in double-quotes
+//#warning Take care of line length
+//	[signedData appendData:[NSLocalizedStringFromTableInBundle (@"PGP_SIGNATURE_FILENAME", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "")encodedHeaderData]];
+//	[signedData appendData:[@".sig\n" dataUsingEncoding:NSASCIIStringEncoding]];
+//	// Force the use of quoted-printable. It should be more robust (Idea by Roberto Aguilar!)
+//	if (!signatureDataIsOnlyASCII) {
+//		signatureData = [signatureData encodeQuotedPrintableForText:YES];
+//		// What about base64 instead?
+//		[signedData appendData:[@"content-transfer-encoding: quoted-printable\n\n" dataUsingEncoding:NSASCIIStringEncoding]];
+//	} else {
+//		[signedData appendData:[@"content-transfer-encoding: 7bit\n\n" dataUsingEncoding:NSASCIIStringEncoding]];
+//	}
+//	[signedData appendData:signatureData];
+//	[signedData appendData:[[NSString stringWithFormat:@"\n--%@--\n", newBoundary] dataUsingEncoding:NSASCIIStringEncoding]];
+//	[aContext release];
+//
+//	return [[signedData retain] autorelease];
+//}
 
 - (NSData *)gpgSignWithKey:(GPGKey *)key passphraseDelegate:(id)passphraseDelegate format:(GPGMailFormat *)mailFormatPtr headers:(MutableMessageHeaders **)headersPtr {
 	NSParameterAssert(mailFormatPtr != NULL);

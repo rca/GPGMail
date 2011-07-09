@@ -226,6 +226,35 @@ IMP GPGMail_ReplaceImpOfInstanceSelectorOfClassWithImpOfInstanceSelectorOfClass(
 	free(classMethods);
 }
 
++ (void)addClassMethodsFromClass:(Class)aClass toClass:(Class)bClass {
+	unsigned int methodCount;
+	unsigned int i;
+    
+	if (GPGMailLoggingLevel) {
+		NSLog(@"Original method: %@", NSStringFromClass(aClass));
+	}
+	if (aClass == NULL) {
+		if (GPGMailLoggingLevel) {
+			NSLog(@"Class can't be null!");
+		}
+		return;
+	}
+	Method *classMethods = class_copyMethodList(object_getClass(aClass), &methodCount);
+    
+	if (GPGMailLoggingLevel) {
+		NSLog(@"Found %d methods", methodCount);
+	}
+	for (i = 0; i < methodCount; i++) {
+		SEL selector = method_getName((Method)classMethods[i]);
+		//if (GPGMailLoggingLevel) {
+			NSLog(@"Adding method %@ to %@", NSStringFromSelector(selector), NSStringFromClass(bClass));
+		//}
+		[GPGMailSwizzler addMethod:selector fromClass:object_getClass(aClass) toClass:object_getClass(bClass)];
+	}
+	free(classMethods);
+}
+
+
 + (void)addIVarsFromClass:(Class)aClass toClass:(Class)bClass {
 	unsigned int iVarCount;
 	unsigned int i;
