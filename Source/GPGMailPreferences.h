@@ -32,26 +32,16 @@
 #import "NSPreferencesModule.h"
 
 @class GPGMailBundle;
+@class SUUpdater;
 
 @interface GPGMailPreferences : NSPreferencesModule {
-	IBOutlet NSPopUpButton *personalKeysPopUpButton;
-
-	NSMutableDictionary *tableColumnPerIdentifier;
-	IBOutlet NSTableView *keyIdentifiersTableView;
-	IBOutlet NSPopUpButton *keyIdentifiersPopUpButton;
-
-	BOOL initializingPrefs;
 }
-
-- (IBAction)changeDefaultKey:(id)sender;
-- (IBAction)flushCachedPassphrases:(id)sender;
-- (IBAction)refreshKeys:(id)sender;
-- (IBAction)toggleShowKeyInformation:(id)sender;
 
 @property (readonly) NSString *copyright;
 @property (readonly) NSAttributedString *credits;
 @property (readonly) NSAttributedString *websiteLink;
 @property (readonly) GPGMailBundle *bundle;
+@property (readonly) SUUpdater *updater;
 
 @end
 
