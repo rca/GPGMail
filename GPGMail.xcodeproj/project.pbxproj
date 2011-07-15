@@ -3010,7 +3010,6 @@
 			};
 			buildConfigurationList = 55541F56085AE6B100548474 /* Build configuration list for PBXProject "GPGMail" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -3706,7 +3705,7 @@
 					"-undefined",
 					dynamic_lookup,
 				);
-				SDKROOT = macosx;
+				SDKROOT = "";
 				SYMROOT = build;
 				VALID_ARCHS = "x86_64 i386";
 			};
@@ -3748,7 +3747,7 @@
 					"-undefined",
 					dynamic_lookup,
 				);
-				SDKROOT = macosx;
+				SDKROOT = "";
 				SYMROOT = build;
 				VALID_ARCHS = "x86_64 i386";
 			};
