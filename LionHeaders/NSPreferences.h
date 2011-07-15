@@ -6,7 +6,7 @@
 
 @class NSBox, NSButtonCell, NSMatrix, NSMutableArray, NSMutableDictionary, NSWindow;
 
-@interface NSPreferences : NSObject <NSWindowRestoration>
+@interface NSPreferences : NSObject
 {
     NSWindow *_preferencesPanel;
     NSBox *_preferenceBox;
