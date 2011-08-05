@@ -154,6 +154,9 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     return content;
 }
 
+// TODO: Implement better check to understand whether the decrypted data contains mail headers or not (pgp inline encrypted).
+// TODO: If it doesn't contain mail headers add a method for better understanding if the decrypted data
+//       contains HTML and don't change \n to <br> in that case.
 - (id)MADecodeApplicationPgp_EncryptedWithData:(NSData *)encryptedData context:(id)ctx {
     __block NSData *decryptedData;
     __block NSArray *signatures = nil;
@@ -186,12 +189,18 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     // If the encrypted message contains no mime parts (in plain text encrypted case)
     // messageWithRFC822Data will contain an empty message body. In that case, let's add
     // a fake boundary.
+    DebugLog(@"[DEBUG] %s decrypted message: %@", __PRETTY_FUNCTION__, [NSString stringWithData:decryptedData encoding:NSASCIIStringEncoding]);
     DebugLog(@"[DEBUG] %s decrypted message size: %llu", __PRETTY_FUNCTION__, [decryptedMessage messageSize]);
-    if([decryptedMessage messageSize] == 0) {
+#warning This is no good check at all for finding out if the decrypted data contains email headers (pgp inline encrypted) but must do for now...
+    if([decryptedMessage messageSize] == 0 || [[NSString stringWithData:decryptedData encoding:NSASCIIStringEncoding] rangeOfString:@"content-type" options:NSCaseInsensitiveSearch].location == NSNotFound) {
         // We'll try to use the message writer to get something we can use.
         NSMutableData *bodyData = [[NSMutableData alloc] initWithCapacity:0];
         MessageWriter *mw = [[MessageWriter alloc] init];
         MimePart *topLevelPart = [[MimePart alloc] init];
+        // Use text/html so html contained is rendered correctly.
+        // Not sure this makes sense, but let's keep it for the moment.
+        // Only problem, \n must be replaced with <br>.
+        // If the content actually contains HTML, this unfortunately adds another <br>...
         [topLevelPart setType:@"text"];
         [topLevelPart setSubtype:@"html"];
         [topLevelPart setBodyParameter:[[MimeBody newMimeBoundary] autorelease] forKey:@"boundary"];
@@ -206,6 +215,10 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
         [headers removeHeaderForKey:@"content-disposition"];
         [headers removeHeaderForKey:@"from "];
         [bodyData appendData:[headers encodedHeadersIncludingFromSpace:NO]];
+        // Convert newlines to breaks.
+        NSString *decryptedDataString = [decryptedData gpgString];
+        decryptedDataString = [decryptedDataString stringByReplacingOccurrencesOfString:@"\n" withString:@"<br>"];
+        decryptedData = [decryptedDataString dataUsingEncoding:NSUTF8StringEncoding];
         // Don't set neither charset nor encoding, so hopefully Mail
         // will guess.
         CFMutableDictionaryRef partsRef = CFDictionaryCreateMutable(NULL, 0, NULL, NULL);
