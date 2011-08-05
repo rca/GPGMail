@@ -83,6 +83,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
+		309A1A6413E4BD890069DC0F /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*InfoPlist.strings";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"${DERIVED_FILES_DIR}/${INPUT_FILE_NAME}",
+			);
+			script = "sed 's/\\${BUNDLE_VERSION}/'${BUNDLE_VERSION}'/g' \"${INPUT_FILE_PATH}\" > \"${DERIVED_FILES_DIR}/${INPUT_FILE_NAME}\"";
+		};
 		552507E90BAD561900466016 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = com.apple.compilers.proxy.script;
@@ -1404,7 +1415,7 @@
 		559A812D0838EEFD0052F47C /* Message.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Message.framework; path = /System/Library/Frameworks/Message.framework; sourceTree = "<absolute>"; };
 		559A812E0838EEFD0052F47C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
 		559A812F0838EEFD0052F47C /* System.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = System.framework; path = /System/Library/Frameworks/System.framework; sourceTree = "<absolute>"; };
-		559A81860838F3C30052F47C /* Info-GPGMail.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-GPGMail.plist"; path = "Plists/Info-GPGMail.plist"; sourceTree = "<group>"; };
+		559A81860838F3C30052F47C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Plists/Info.plist; sourceTree = "<group>"; };
 		8D5B49B6048680CD000E48DA /* GPGMail.mailbundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPGMail.mailbundle; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -1472,7 +1483,7 @@
 				30CDB07412B2D45900F5F8B7 /* Strings */,
 				559A80E60838ED590052F47C /* GPGMailBundle.defaults */,
 				559A80E80838ED6D0052F47C /* KeyServers.plist */,
-				559A81860838F3C30052F47C /* Info-GPGMail.plist */,
+				559A81860838F3C30052F47C /* Info.plist */,
 				30913B4512B19B3B00327FDF /* Credits.rtf */,
 				1B6B7E5111CD24440055F528 /* dsa_pub.pem */,
 			);
@@ -2810,6 +2821,7 @@
 				30F40BC012B76FAE002E2374 /* Run Script */,
 			);
 			buildRules = (
+				309A1A6413E4BD890069DC0F /* PBXBuildRule */,
 				552507E90BAD561900466016 /* PBXBuildRule */,
 			);
 			comments = "Old working:\nheader_search_path ..\nlibrary_style static\nother_linker_flags -force_flat_namespace -undefined suppress \nmacosx deployment target: default\n\n-bundle_loader /Applications/Mail.app/Contents/MacOS/Mail  -undefined dynamic_lookup\n";
@@ -2952,7 +2964,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "pushd $SRCROOT > /dev/null\n\necho \"Localize GPGMailPreferences.xib\"\nUtilities/localizeXIB Resources/English.lproj/GPGMailPreferences.xib German sv French\n\necho \"Localize GPGMenu.xib\"\nUtilities/localizeXIB Resources/English.lproj/GPGMenu.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGKeyDownload.xib\"\nUtilities/localizeXIB Resources/English.lproj/GPGKeyDownload.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGMailCompose.xib\"\nUtilities/localizeXIB Resources/English.lproj/GPGMailCompose.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGMessageViewerAccessoryView.xib\"\nUtilities/localizeXIB Resources/English.lproj/GPGMessageViewerAccessoryView.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\n\nUtilities/localizeXIB Resources/GPG.subproj/English.lproj/GPGPassphrase.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\nUtilities/localizeXIB Resources/GPG.subproj/English.lproj/GPGProgressIndicatorController.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\n\n\npopd > /dev/null\n";
+			shellScript = "pushd $SRCROOT > /dev/null\n\necho \"Localize GPGMailPreferences.xib\"\nDependencies/GPGTools_Core/bin/localizeXIB Resources/English.lproj/GPGMailPreferences.xib German sv French\n\necho \"Localize GPGMenu.xib\"\nDependencies/GPGTools_Core/bin/localizeXIB Resources/English.lproj/GPGMenu.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGKeyDownload.xib\"\nDependencies/GPGTools_Core/bin/localizeXIB Resources/English.lproj/GPGKeyDownload.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGMailCompose.xib\"\nDependencies/GPGTools_Core/bin/localizeXIB Resources/English.lproj/GPGMailCompose.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGMessageViewerAccessoryView.xib\"\nDependencies/GPGTools_Core/bin/localizeXIB Resources/English.lproj/GPGMessageViewerAccessoryView.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\n\nDependencies/GPGTools_Core/bin/localizeXIB Resources/GPG.subproj/English.lproj/GPGPassphrase.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\nDependencies/GPGTools_Core/bin/localizeXIB Resources/GPG.subproj/English.lproj/GPGProgressIndicatorController.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\n\n\npopd > /dev/null\n";
 		};
 		30F40BC012B76FAE002E2374 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3234,6 +3246,7 @@
 					i386,
 				);
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
+				BUNDLE_VERSION = 1.5.0a;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 52;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3255,7 +3268,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include;
-				INFOPLIST_FILE = "Plists/Info-GPGMail.plist";
+				INFOPLIST_FILE = Plists/Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -3284,6 +3297,7 @@
 					i386,
 				);
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
+				BUNDLE_VERSION = 1.5.0a;
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 52;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -3302,7 +3316,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = Dependencies;
-				INFOPLIST_FILE = "Plists/Info-GPGMail.plist";
+				INFOPLIST_FILE = Plists/Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS)";

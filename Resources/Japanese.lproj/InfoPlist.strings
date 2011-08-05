@@ -1,6 +1,4 @@
 /* Localized versions of Info.plist keys */
 
-CFBundleShortVersionString = "2.0a";
-CFBundleGetInfoHTML = "<A HREF=\"http://www.gpgtools.org/\">GPGMail</A> version 2.0a, Copyright 2000-2011, GPGTools Project Team.";
-CFBundleGetInfoString = "GPGMail　バージョン　2.0a, 著作権 2000-2011, GPGTools Project Team.";
+CFBundleGetInfoString = "GPGMail　バージョン　${BUNDLE_VERSION}, 著作権 2000-2011, GPGTools Project Team.";
 NSHumanReadableCopyright = "© GPGTools Project Team, 2000-2011";

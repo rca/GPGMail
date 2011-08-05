@@ -10,4 +10,4 @@ The project is currently in a heavy state of development. For the latest news an
 * [http://lists.gpgtools.org/mailman/listinfo/gpgtools-users](http://lists.gpgtools.org/mailman/listinfo/gpgtools-users)
 * [http://lists.gpgtools.org/mailman/listinfo/gpgtools-devel](http://lists.gpgtools.org/mailman/listinfo/gpgtools-devel)
 
-For instructions on how to build the code and further information have a look at the wiki: [http://wiki.github.com/GPGMail/GPGMail/](http://wiki.github.com/GPGMail/GPGMail/).
+For instructions on how to build the code and further information have a look at the wiki: [http://wiki.github.com/gpgtools/GPGMail/](http://wiki.github.com/gpgtools/GPGMail/).
