@@ -110,7 +110,9 @@
         NSAttributedString *signedAttachmentString = [NSAttributedString attributedStringWithAttachment:[[[NSTextAttachment alloc] init] autorelease] 
                                                                                                   image:[NSImage imageNamed:@"Signed_Glyph"] 
                                                                                                    link:@"gpgmail://show-signature"];
-        [securityHeader appendAttributedString:[NSAttributedString attributedStringWithString:@", "]];
+        // Only add, if message was encrypted.
+        if(isEncrypted)
+            [securityHeader appendAttributedString:[NSAttributedString attributedStringWithString:@", "]];
         [securityHeader appendAttributedString:signedAttachmentString];
         NSString *signerLabelsString = [NSString stringWithFormat:@"%@ (%@)", NSLocalizedStringFromTableInBundle(@"SIGNED", 
                                                                                                                  @"Alerts", 
