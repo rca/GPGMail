@@ -1199,6 +1199,7 @@ static BOOL gpgMailWorks = YES;
     if(!gpgMailWorks) return nil;
     if(!cachedGPGKeys) {
         GPGController *gpgc = [[GPGController alloc] init];
+        gpgc.verbose = (GPGMailLoggingLevel > 0);
         cachedGPGKeys = [gpgc allKeys];
         [cachedGPGKeys retain];
         [gpgc release];

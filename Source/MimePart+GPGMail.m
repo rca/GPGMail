@@ -159,7 +159,7 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     __block NSArray *signatures = nil;
     [[GPGMailBundle sharedInstance] addDecryptionTask:^{
         GPGController *gpgc = [[GPGController alloc] init];
-        //gpgc.verbose = YES;
+        gpgc.verbose = (GPGMailLoggingLevel > 0);
         @try {
             decryptedData = [gpgc decryptData:encryptedData];
             signatures = [gpgc signatures];
@@ -265,9 +265,9 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     NSArray *normalKeyList = [[GPGMailBundle sharedInstance] publicKeyListForAddresses:normalRecipients];
     NSArray *bccKeyList = [[GPGMailBundle sharedInstance] publicKeyListForAddresses:bccRecipients];
     GPGController *gpgc = [[GPGController alloc] init];
+    gpgc.verbose = (GPGMailLoggingLevel > 0);
     gpgc.useArmor = YES;
     gpgc.useTextMode = YES;
-    //gpgc.verbose = YES;
     // Automatically trust keys, even though they are not specifically
     // marked as such.
     // Eventually add warning for this.
@@ -312,14 +312,13 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     DebugLog(@"[DEBUG] %s sender: %@", __PRETTY_FUNCTION__, arg2);
     NSArray *normalKeyList = [[GPGMailBundle sharedInstance] signingKeyListForAddresses:[NSArray arrayWithObject:arg2]];
     GPGController *gpgc = [[GPGController alloc] init];
+    gpgc.verbose = (GPGMailLoggingLevel > 0);
     gpgc.useArmor = YES;
     gpgc.useTextMode = YES;
-    //gpgc.verbose = YES;
     // Automatically trust keys, even though they are not specifically
     // marked as such.
     // Eventually add warning for this.
     gpgc.trustAllKeys = YES;
-    // gpgc.verbose = YES; // see issue 223
     // Recipients are not needed for signing. Use addSignerKey instead.
     for(NSString *fingerprint in normalKeyList)
         [gpgc addSignerKey:fingerprint];
@@ -401,7 +400,7 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     NSData *signatureData = [signaturePart bodyData];
     //DebugLog(@"[DEBUG] %s signature: %@", __PRETTY_FUNCTION__, [NSString stringWithData:signatureData encoding:[self guessedEncoding]]);
     GPGController *gpgc = [[GPGController alloc] init];
-    //gpgc.verbose = YES;
+    gpgc.verbose = (GPGMailLoggingLevel > 0);
     NSArray *signatures;
     @try {
         signatures = [gpgc verifySignature:signatureData originalData:signedData];
@@ -431,7 +430,7 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     if(![signedData length] || [self rangeOfPlainPGPSignatures].location == NSNotFound)
         return;
     GPGController *gpgc = [[GPGController alloc] init];
-    //gpgc.verbose = YES; // see issue 223
+    gpgc.verbose = (GPGMailLoggingLevel > 0);
     NSArray *signatures;
     @try {
         signatures = [gpgc verifySignedData:signedData];
