@@ -181,7 +181,9 @@
         [contentTypeData appendData:[[NSString stringWithFormat:@"\n\t%@=\"%@\";", key, [topPart bodyParameterForKey:key]] dataUsingEncoding:NSASCIIStringEncoding]];
     [headers setHeader:contentTypeData forKey:@"content-type"];
     [contentTypeData release];
-    [headers setHeader:@"GPGMail 1.4" forKey:@"x-pgp-agent"];
+    //FIXME: issue 194
+    NSString* bundleVersion = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"BUNDLE_VERSION"];
+    [headers setHeader:[NSString stringWithFormat:@"GPGMail %@", bundleVersion] forKey:@"x-pgp-agent"];
     [headers setHeader:@"7bit" forKey:@"content-transfer-encoding"];
     [headers removeHeaderForKey:@"content-disposition"];
     [headers removeHeaderForKey:@"from "];
