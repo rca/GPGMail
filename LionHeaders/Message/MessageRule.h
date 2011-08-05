@@ -7,8 +7,6 @@
 
 
 #import "MFChanging-Protocol.h"
-#import "NSCopying-Protocol.h"
-
 @class MailboxUid, NSArray, NSColor, NSDictionary, NSMutableArray, NSNumber, NSString;
 
 @interface MessageRule : NSObject <NSCopying, MFChanging>

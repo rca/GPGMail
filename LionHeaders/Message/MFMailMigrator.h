@@ -6,8 +6,6 @@
 
 
 
-#import "NSFileManagerDelegate-Protocol.h"
-
 @class LibraryUpgrader, NSFileManager, NSMutableDictionary, NSString;
 
 @interface MFMailMigrator : NSObject <NSFileManagerDelegate>

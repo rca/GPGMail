@@ -30,11 +30,11 @@
 		1B6B7DF411CD1C600055F528 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6B7DF311CD1C600055F528 /* Sparkle.framework */; };
 		1B6B7E2C11CD1C810055F528 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B6B7DF311CD1C600055F528 /* Sparkle.framework */; };
 		1B6B7E5211CD24440055F528 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 1B6B7E5111CD24440055F528 /* dsa_pub.pem */; };
-		1B7BF24D13E33BA90023C3C8 /* GPGCertLargeNotTrusted.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1B7BF24C13E33BA90023C3C8 /* GPGCertLargeNotTrusted.tif */; };
 		1B8C01D513E4F12D00DB9FA4 /* GPGSignatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C01D413E4F12D00DB9FA4 /* GPGSignatureView.m */; };
 		1B8C01D813E4F25900DB9FA4 /* GPGSignatureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B8C01D613E4F25900DB9FA4 /* GPGSignatureView.xib */; };
 		1B8C01DA13E4F26500DB9FA4 /* GPGSignatureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B8C01D613E4F25900DB9FA4 /* GPGSignatureView.xib */; };
-		1BACCC2313AB6680006BF8DD /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BACCC2213AB6680006BF8DD /* JRSwizzle.m */; };
+		1BACB2EB13EBF66300C750AA /* GPGCertLargeNotTrusted.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1BACB2EA13EBF66300C750AA /* GPGCertLargeNotTrusted.tif */; };
+		1BACB2ED13EBF6A800C750AA /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BACB2EC13EBF6A800C750AA /* JRSwizzle.m */; };
 		1BAEF64413E9F57700A59CED /* MailAccount+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAEF64313E9F57700A59CED /* MailAccount+GPGMail.m */; };
 		1BBEF49C13A9115E0037E53D /* NSSet+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBEF49B13A9115E0037E53D /* NSSet+Functional.m */; };
 		1BCEE1E311CC051500488D19 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BCEE1E211CC051500488D19 /* LICENSE.txt */; };
@@ -1257,13 +1257,13 @@
 		1B64F62013E38E9200C5B4C9 /* GPG related notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "GPG related notes"; path = "Docs/GPG related notes"; sourceTree = "<group>"; };
 		1B6B7DF311CD1C600055F528 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
 		1B6B7E5111CD24440055F528 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dsa_pub.pem; path = Resources/dsa_pub.pem; sourceTree = "<group>"; };
-		1B7BF24C13E33BA90023C3C8 /* GPGCertLargeNotTrusted.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GPGCertLargeNotTrusted.tif; sourceTree = "<group>"; };
 		1B8C01D313E4F11D00DB9FA4 /* GPGSignatureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPGSignatureView.h; path = Source/GPGSignatureView.h; sourceTree = "<group>"; };
 		1B8C01D413E4F12D00DB9FA4 /* GPGSignatureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GPGSignatureView.m; path = Source/GPGSignatureView.m; sourceTree = "<group>"; };
 		1B8C01D713E4F25900DB9FA4 /* German */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = German; path = Resources/German.lproj/GPGSignatureView.xib; sourceTree = "<group>"; };
 		1B8C01D913E4F26500DB9FA4 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Resources/English.lproj/GPGSignatureView.xib; sourceTree = "<group>"; };
-		1BACCC2013AB6675006BF8DD /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
-		1BACCC2213AB6680006BF8DD /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
+		1BACB2EA13EBF66300C750AA /* GPGCertLargeNotTrusted.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = GPGCertLargeNotTrusted.tif; path = Resources/Images/GPGCertLargeNotTrusted.tif; sourceTree = "<group>"; };
+		1BACB2EC13EBF6A800C750AA /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JRSwizzle.m; path = Source/JRSwizzle.m; sourceTree = "<group>"; };
+		1BACB2EE13EBF6B900C750AA /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JRSwizzle.h; path = Source/JRSwizzle.h; sourceTree = "<group>"; };
 		1BAEF64213E9F57700A59CED /* MailAccount+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MailAccount+GPGMail.h"; path = "Source/MailAccount+GPGMail.h"; sourceTree = "<group>"; };
 		1BAEF64313E9F57700A59CED /* MailAccount+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MailAccount+GPGMail.m"; path = "Source/MailAccount+GPGMail.m"; sourceTree = "<group>"; };
 		1BBEF49A13A9115E0037E53D /* NSSet+Functional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSSet+Functional.h"; path = "Source/NSSet+Functional.h"; sourceTree = "<group>"; };
@@ -2613,9 +2613,9 @@
 		1BAEF63F13E9F44800A59CED /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				1BACB2EC13EBF6A800C750AA /* JRSwizzle.m */,
 				30B90DE11284656500B3FA6A /* GPGDefaults.m */,
 				1B32AFF613AF827B0072079B /* CCLog.m */,
-				1BACCC2213AB6680006BF8DD /* JRSwizzle.m */,
 				1BBEF49B13A9115E0037E53D /* NSSet+Functional.m */,
 				559A807B0838E9B10052F47C /* NSString+GPGMail.m */,
 				1B3F2F9113E58D3D006A8333 /* NSObject+LPDynamicIvars.m */,
@@ -2684,9 +2684,9 @@
 		1BDAA67213EB4CB600F27826 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				1BACB2EE13EBF6B900C750AA /* JRSwizzle.h */,
 				30B90DE01284656500B3FA6A /* GPGDefaults.h */,
 				1B32AFF513AF827B0072079B /* CCLog.h */,
-				1BACCC2013AB6675006BF8DD /* JRSwizzle.h */,
 				1BBEF49A13A9115E0037E53D /* NSSet+Functional.h */,
 				559A80600838E8300052F47C /* NSString+GPGMail.h */,
 				1B3F2F9313E58D66006A8333 /* NSObject+LPDynamicIvars.h */,
@@ -2770,7 +2770,7 @@
 		559A80DC0838EC770052F47C /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				1B7BF24C13E33BA90023C3C8 /* GPGCertLargeNotTrusted.tif */,
+				1BACB2EA13EBF66300C750AA /* GPGCertLargeNotTrusted.tif */,
 				3094CD6C12F5EBA200ABCE8A /* GPGMail.icns */,
 				30E4F6A712B3B1350093608D /* CheckMark.png */,
 				30E4F6A912B3B1350093608D /* clear.png */,
@@ -2926,7 +2926,6 @@
 				30E4F6D512B3B1350093608D /* unsigned.png in Resources */,
 				30E4F6D612B3B1350093608D /* ValidBadge.png in Resources */,
 				3094CD6D12F5EBA200ABCE8A /* GPGMail.icns in Resources */,
-				1B7BF24D13E33BA90023C3C8 /* GPGCertLargeNotTrusted.tif in Resources */,
 				1BECA61613E372AC00C622B0 /* SignatureView.strings in Resources */,
 				1B64F62113E38E9200C5B4C9 /* GPG related notes in Resources */,
 				1B637BC413E39FDF00196286 /* GPGMail TODOs in Resources */,
@@ -2934,6 +2933,7 @@
 				1B8C01D813E4F25900DB9FA4 /* GPGSignatureView.xib in Resources */,
 				1B8C01DA13E4F26500DB9FA4 /* GPGSignatureView.xib in Resources */,
 				1BDAA67413EB680E00F27826 /* CODING in Resources */,
+				1BACB2EB13EBF66300C750AA /* GPGCertLargeNotTrusted.tif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2986,7 +2986,6 @@
 				30B90DE21284656500B3FA6A /* GPGDefaults.m in Sources */,
 				30744AB512B9733800CC3EC5 /* MessageContentController+GPGMail.m in Sources */,
 				1BBEF49C13A9115E0037E53D /* NSSet+Functional.m in Sources */,
-				1BACCC2313AB6680006BF8DD /* JRSwizzle.m in Sources */,
 				1B32AFF713AF827B0072079B /* CCLog.m in Sources */,
 				1B8C01D513E4F12D00DB9FA4 /* GPGSignatureView.m in Sources */,
 				1B3F2F9013E58B70006A8333 /* ComposeHeaderView+GPGMail.m in Sources */,
@@ -2997,6 +2996,7 @@
 				1B3F2F9E13E59639006A8333 /* ComposeBackEnd+GPGMail.m in Sources */,
 				1B3F2FA113E59EE3006A8333 /* OptionalView+GPGMail.m in Sources */,
 				1BAEF64413E9F57700A59CED /* MailAccount+GPGMail.m in Sources */,
+				1BACB2ED13EBF6A800C750AA /* JRSwizzle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

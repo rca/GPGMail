@@ -7,7 +7,6 @@
 #import "MailBarContainerButton.h"
 
 #import "FavoritesMenuDelegateProtocol-Protocol.h"
-#import "NSCopying-Protocol.h"
 
 @class FavoritesMenuController, MailboxUid, NSTimer;
 

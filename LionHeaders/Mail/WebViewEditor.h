@@ -7,7 +7,6 @@
 
 
 #import "EditingMessageWebViewDelegate-Protocol.h"
-#import "NSUserInterfaceValidations-Protocol.h"
 
 @class ComposeBackEnd, DOMHTMLAnchorElement, DocumentEditor, EditableWebMessageDocument, EditingMessageWebView, EditingWebMessageController, HyperlinkEditor, NSArray, NSDictionary, NSMutableSet, WebFrame;
 

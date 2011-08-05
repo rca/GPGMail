@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'Run in Mail' target in the 'Run in Mail' project
-//
-
-#ifdef __OBJC__
-    #import <Cocoa/Cocoa.h>
-#endif

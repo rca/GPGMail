@@ -7,7 +7,6 @@
 
 
 #import "AssistantDelegate-Protocol.h"
-#import "NSWindowDelegate-Protocol.h"
 
 @class Assistant, NSButton, NSView, NSWindow;
 

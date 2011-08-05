@@ -6,8 +6,6 @@
 
 #import "NSTextAttachment.h"
 
-#import "NSCopying-Protocol.h"
-
 @class CachingABRecord, NSColor, NSFont, NSString;
 
 @interface AddressAttachment : NSTextAttachment <NSCopying>

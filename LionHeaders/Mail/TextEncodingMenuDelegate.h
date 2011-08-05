@@ -6,8 +6,6 @@
 
 
 
-#import "NSMenuDelegate-Protocol.h"
-
 @interface TextEncodingMenuDelegate : NSObject <NSMenuDelegate>
 {
 }

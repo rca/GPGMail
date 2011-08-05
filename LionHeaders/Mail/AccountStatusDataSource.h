@@ -6,7 +6,6 @@
 
 #import "SafeObserver.h"
 
-#import "NSMenuDelegate-Protocol.h"
 #import "NSTableViewDataSource-Protocol.h"
 #import "NSTableViewDelegate-Protocol.h"
 

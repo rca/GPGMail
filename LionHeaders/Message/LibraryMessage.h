@@ -4,11 +4,22 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2010 by Steve Nygard.
  */
 
-#import <Message/Message.h>
+#import <Message.h>
 
-#import "LibraryObject-Protocol.h"
 
 @class LibraryCalendarEvent, NSString;
+
+typedef struct {
+    unsigned int reserved:26;
+    unsigned int hasCustomEncoding:1;
+    unsigned int isPartial:1;
+    unsigned int partsHaveBeenCached:1;
+    unsigned int hasTemporaryUid:1;
+    unsigned int isHTML:1;
+    unsigned int isRich:1;
+} CDStruct_3292de3e;
+
+#import "LibraryObject-Protocol.h"
 
 @interface LibraryMessage : Message <LibraryObject>
 {

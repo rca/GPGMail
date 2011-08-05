@@ -8,7 +8,6 @@
 
 #import "MVSelectionOwner-Protocol.h"
 #import "MailFullScreenWindowDelegate-Protocol.h"
-#import "NSToolbarDelegate-Protocol.h"
 
 @class MessageContentController, NSArray, NSOperation, NSSet, NSView, SpotlightBar;
 

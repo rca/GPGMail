@@ -6,8 +6,6 @@
 
 
 
-#import "NSCopying-Protocol.h"
-
 @class MessageAttachment, NSArray, NSImage, NSMutableArray;
 
 @interface MessageAttachmentViewController : NSObject <NSCopying>

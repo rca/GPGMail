@@ -4,8 +4,6 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2010 by Steve Nygard.
  */
 
-#import "NSObject-Protocol.h"
-
 @protocol POP3ConnectionDelegate <NSObject>
 - (void)connection:(id)arg1 receivedNumberOfBytes:(unsigned long long)arg2;
 - (long long)connection:(id)arg1 willRetrieveMessageNumber:(unsigned long long)arg2 header:(id)arg3 size:(unsigned long long)arg4;

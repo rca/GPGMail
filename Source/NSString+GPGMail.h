@@ -32,8 +32,15 @@
 
 @interface NSString (GPGMail)
 
-+ (NSStringEncoding)gpgEncodingForMIMECharset:(NSString *)charset;
-+ (NSString *)gpgMIMECharsetForEncoding:(NSStringEncoding)encoding;
+/**
+ Return the lowercase and uncommented version of an email address.
+ 
+ If the email address is using the commented form, being 
+ "Some Comment <address@me.com>", the commented part "Some Comment <>" is stripped
+ and only the actual address (e.g.: address@me.com) returned.
+ 
+ The comment part might be a name of the owner of the email address.
+ */
 - (NSString *)gpgNormalizedEmail;
 
 @end

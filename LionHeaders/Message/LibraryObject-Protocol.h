@@ -6,7 +6,6 @@
 
 #import "IMAPObject-Protocol.h"
 #import "MFChanging-Protocol.h"
-#import "NSCopying-Protocol.h"
 
 @protocol LibraryObject <NSCopying, IMAPObject, MFChanging>
 - (long long)libraryID;

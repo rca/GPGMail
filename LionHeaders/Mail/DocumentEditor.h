@@ -8,9 +8,6 @@
 
 #import "MVTerminationHandler-Protocol.h"
 #import "MailFullScreenWindowDelegate-Protocol.h"
-#import "NSToolbarDelegate-Protocol.h"
-#import "NSUserInterfaceValidations-Protocol.h"
-#import "NSWindowDelegate-Protocol.h"
 
 @class ComposeBackEnd, ComposeHeaderView, EditingMessageWebView, EditingWebMessageController, HeadersEditor, LoadingOverlay, MFUUID, MailInspectorBarItemController, MessageViewer, NSDictionary, NSInspectorBar, NSMutableDictionary, NSOperation, NSOperationQueue, NSToolbar, NSWindow, WebViewEditor;
 

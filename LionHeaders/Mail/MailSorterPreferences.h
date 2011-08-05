@@ -6,9 +6,6 @@
 
 #import "NSPreferencesModule.h"
 
-#import "NSTableViewDataSource-Protocol.h"
-#import "NSTableViewDelegate-Protocol.h"
-#import "NSWindowDelegate-Protocol.h"
 #import "SyncableDataInterestedParty-Protocol.h"
 
 @class AddressTextField, CriteriaUIHelper, DraggingTextView, MailboxesChooser, MessageRule, NSButton, NSMenu, NSMutableArray, NSPanel, NSPopUpButton, NSScrollView, NSTableView, NSTextField, NSTextView, NSView, SoundPopUpButton;

@@ -6,7 +6,6 @@
 
 
 #import "MFMessageSortingInterface-Protocol.h"
-#import "NSCopying-Protocol.h"
 
 @class MFUUID, MessageStore, NSArray, NSData, NSIndexSet, NSString;
 

@@ -6,8 +6,6 @@
 
 
 
-#import "NSURLDownloadDelegate-Protocol.h"
-
 @class MimeBody, MimePart, NSArray, NSData, NSDictionary, NSFileWrapper, NSImage, NSNumber, NSString, NSURL;
 
 @interface MessageAttachment : NSObject <NSURLDownloadDelegate>

@@ -4,8 +4,6 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2010 by Steve Nygard.
  */
 
-#import "NSObject-Protocol.h"
-
 @protocol EWSAutodiscoverBindingDelegate <NSObject>
 - (void)autodiscoverBinding:(id)arg1 didCancelAuthenticationChallenge:(id)arg2;
 - (void)autodiscoverBinding:(id)arg1 didReceiveAuthenticationChallenge:(id)arg2;

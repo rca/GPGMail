@@ -4,8 +4,6 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2010 by Steve Nygard.
  */
 
-#import "NSTextViewDelegate-Protocol.h"
-
 @protocol AddressTextViewDelegate <NSTextViewDelegate>
 - (void)textView:(id)arg1 clickedOnCell:(id)arg2 event:(id)arg3 inRect:(struct CGRect)arg4 atIndex:(unsigned long long)arg5;
 @end

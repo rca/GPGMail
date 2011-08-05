@@ -6,8 +6,6 @@
 
 
 
-#import "NSMenuDelegate-Protocol.h"
-
 @class NSArray, NSMenu, NSMutableSet, NSPopUpButton;
 
 @interface MailboxesChooser : NSObject <NSMenuDelegate>

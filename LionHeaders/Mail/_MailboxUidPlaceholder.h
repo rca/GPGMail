@@ -7,7 +7,6 @@
 
 
 #import "MFUIMailbox-Protocol.h"
-#import "NSCopying-Protocol.h"
 
 @class NSString;
 

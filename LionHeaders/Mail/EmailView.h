@@ -7,8 +7,6 @@
 #import "NSView.h"
 
 #import "NSAnimationDelegate-Protocol.h"
-#import "NSTextViewDelegate-Protocol.h"
-
 @class EmailViewController, MessageBodyScrollView, MessageHeaderView, NSImageView, NSTrackingArea, NSViewAnimation, RolloverActionButtonsView;
 
 @interface EmailView : NSView <NSTextViewDelegate, NSAnimationDelegate>

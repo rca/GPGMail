@@ -6,9 +6,6 @@
 
 
 
-#import "NSCopying-Protocol.h"
-#import "NSMutableCopying-Protocol.h"
-
 @class NSData;
 
 @interface MessageHeaders : NSObject <NSCopying, NSMutableCopying>

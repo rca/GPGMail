@@ -6,8 +6,6 @@
 
 
 
-#import "NSCopying-Protocol.h"
-
 @class NSData, NSString;
 
 @interface Signature : NSObject <NSCopying>

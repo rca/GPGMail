@@ -7,7 +7,6 @@
 #import "NSTextView.h"
 
 #import "AtomicAddressTextView-Protocol.h"
-#import "NSLayoutManagerDelegate-Protocol.h"
 
 @interface DraggingTextView : NSTextView <AtomicAddressTextView, NSLayoutManagerDelegate>
 {

@@ -6,8 +6,6 @@
 
 
 
-#import "NSWindowDelegate-Protocol.h"
-
 @class NSButton, NSMutableString, NSProgressIndicator, NSTextField, NSView, NSWindow, WebView;
 
 @interface FeedbackCollector : NSObject <NSWindowDelegate>

@@ -4,8 +4,6 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2010 by Steve Nygard.
  */
 
-#import "NSObject-Protocol.h"
-
 @protocol MailboxListCellDelegate <NSObject>
 - (void)cell:(id)arg1 didAddTrackingAreas:(id)arg2;
 - (void)cell:(id)arg1 positionProgressIndicatorInRect:(struct CGRect)arg2 withRoundDeterminateColor:(id)arg3;

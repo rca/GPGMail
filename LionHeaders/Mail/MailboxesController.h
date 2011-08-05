@@ -7,8 +7,6 @@
 
 
 #import "MVTerminationHandler-Protocol.h"
-#import "NSMenuDelegate-Protocol.h"
-
 @class InvocationQueue, MailboxUid, MailboxesChooser, NSArray, NSButton, NSConditionLock, NSMutableDictionary, NSMutableSet, NSPopUpButton, NSTextField, NSView, NSWindow;
 
 @interface MailboxesController : NSObject <MVTerminationHandler, NSMenuDelegate>

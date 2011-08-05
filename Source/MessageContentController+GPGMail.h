@@ -1,3 +1,5 @@
+/* MessageContentController+GPGMail.h created by Lukas Pitschl (@lukele) on Wed 03-Aug-2011 */
+
 /*
  * Copyright (c) 2000-2011, GPGTools Project Team <gpgtools-devel@lists.gpgtools.org>
  * All rights reserved.
@@ -27,29 +29,34 @@
 
 #import <MessageContentController.h>
 
+@interface MessageContentController_GPGMail : NSObject
 
-@class GPGMessageViewerAccessoryViewOwner;
+/**
+ This method is used to implement auto-decryption of GPG messages.
+ Sometimes it fails to detect a gpg message though.
+ Maybe it would be better embed this directly in the appropriate
+ decodeWithContext method.
+ Auto decryption also fixes a problem where attachments are not 
+ properly displayed in manual mode.
+ */
+- (void)MASetMessageToDisplay:(id)message;
 
-#ifdef SNOW_LEOPARD_64
-@interface GPGMail_MessageContentController : NSObject
-#else
-@interface MessageContentController (GPGMail)
-#endif
-
-- (Message *)gpgMessage;
-
-- (void)gpgShowPGPSignatureBanner;
-- (void)gpgShowPGPEncryptedBanner;
-- (void)gpgHideBanner;
-
-- (BOOL)gpgValidateAction:(SEL)anAction;
-
-// Actions connected to menus
-- (IBAction)gpgDecrypt:(id)sender;
-- (IBAction)gpgAuthenticate:(id)sender;
-
-- (void)gpgForwardAction:(SEL) action from:(id)sender;
-
-- (GPGMessageViewerAccessoryViewOwner *)gpgMessageViewerAccessoryViewOwner;
+/**
+ This method is called when the encrypted icon is clicked in a message view.
+ It's only used in the case, when encrypted messages should not be decrypted automatically,
+ but manually by a user interaction.
+ 
+ It adds some information to the message, so decodeWithContext knows it should return
+ the decrypted body.
+ 
+ Calling MessageContentController.reloadCurrentMessageShouldReparseBody: reloads the current
+ message in a separate thread, showing a spinner animation while the body data is retrieved
+ using decodeWithContext which returns the decrypted message body. 
+ Upon receiving the decrypted message body, the spinner animation fades and the decrypted message
+ is displayed. (All done automatically by Mail! that's how I like it!)
+ 
+ TODO: Only decrypt the message, if it's not already displayed decrypted.
+ */
+- (void)decryptPGPMessage;
 
 @end

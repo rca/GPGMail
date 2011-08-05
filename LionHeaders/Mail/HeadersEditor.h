@@ -7,8 +7,6 @@
 
 
 #import "AccountStatusDataSourceDelegate-Protocol.h"
-#import "NSUserInterfaceValidations-Protocol.h"
-#import "NSWindowDelegate-Protocol.h"
 
 @class AccountStatusDataSource, AddressTextField, CompletionController, ComposeHeaderView, DraggingTextView, MailDocumentEditor, NSMutableArray, NSPopUpButton, NSSegmentedControl, NSTextField;
 

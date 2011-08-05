@@ -8,7 +8,6 @@
 
 #import "AddressTextViewDelegate-Protocol.h"
 #import "DraggingTextViewDelegate-Protocol.h"
-#import "NSCopying-Protocol.h"
 
 @class AddressAttachment, NSMutableArray, NSMutableDictionary, _AddressRectangleView;
 

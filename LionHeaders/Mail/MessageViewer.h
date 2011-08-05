@@ -13,11 +13,6 @@
 #import "MailboxesOutlineViewControllerDelegate-Protocol.h"
 #import "MessageTransferDelegate-Protocol.h"
 #import "MessageViewerSearchFieldFocusDelegate-Protocol.h"
-#import "NSAnimationDelegate-Protocol.h"
-#import "NSSpeechSynthesizerDelegate-Protocol.h"
-#import "NSToolbarDelegate-Protocol.h"
-#import "NSUserInterfaceValidations-Protocol.h"
-#import "NSWindowDelegate-Protocol.h"
 #import "SearchScopeDelegate-Protocol.h"
 #import "MessageMall-Protocol.h"
 

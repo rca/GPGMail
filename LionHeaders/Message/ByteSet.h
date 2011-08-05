@@ -6,9 +6,6 @@
 
 
 
-#import "NSCopying-Protocol.h"
-#import "NSMutableCopying-Protocol.h"
-
 @interface ByteSet : NSObject <NSCopying, NSMutableCopying>
 {
     char _mySet[32];

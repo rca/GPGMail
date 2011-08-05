@@ -236,4 +236,7 @@
 "REVOKED_USER_ID_QUALIFIER" = "widerrufen";
 
 "COPY_MSG_URL_MENUITEM" = "Copy Message URL";
+    
+/* Signature view strings. */
+"VALIDITY_NO_TRUST" = "Diese Signatur ist nicht vertrauenswürdig."
 }

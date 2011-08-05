@@ -6,9 +6,6 @@
 
 
 
-#import "NSCoding-Protocol.h"
-#import "NSCopying-Protocol.h"
-
 @class NSString;
 
 @interface RegularExpression : NSObject <NSCopying, NSCoding>

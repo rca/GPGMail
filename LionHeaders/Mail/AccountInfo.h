@@ -6,9 +6,6 @@
 
 
 
-#import "NSTabViewDelegate-Protocol.h"
-#import "NSWindowDelegate-Protocol.h"
-
 @class AccountSummary, IMAPMailboxes, MailAccount, NSMutableSet, NSPopUpButton, NSTabView, NSTabViewItem, NSView, NSWindow, OofPanelController, Quota, SpecialMailboxes;
 
 @interface AccountInfo : NSObject <NSTabViewDelegate, NSWindowDelegate>

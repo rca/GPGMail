@@ -6,8 +6,6 @@
 
 
 
-#import "NSCopying-Protocol.h"
-
 @interface SafeObserver : NSObject <NSCopying>
 {
     unsigned long long _retainCount;

@@ -4,12 +4,9 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2010 by Steve Nygard.
  */
 
-#import "NSApplication.h"
-
+#import "MVSelectionOwner-Protocol.h"
 #import "MFUserAgent-Protocol.h"
 #import "MVTerminationHandler-Protocol.h"
-#import "NSApplicationDelegate-Protocol.h"
-#import "NSMenuDelegate-Protocol.h"
 #import "SyncableApp-Protocol.h"
 
 @class ActivityViewer, ActivityViewerMailSound, DeliveryQueue, DockCountController, DynamicErrorWindowController, FlagsMenuItemView, MailboxesController, NSMenu, NSMenuItem, NSMutableArray, NSMutableSet, NSString, NSWindow;
@@ -54,7 +51,7 @@
     NSMutableSet *_accountsCurrentlySynchronizing;
     unsigned long long _numberOfAccountsEmptyingTrash;
     long long _currentPasswordPanelCount;
-    id <Syncer> _syncer;
+    id _syncer;
     BOOL _accountsAreNew;
     BOOL _useAddressAtoms;
     BOOL _runningEmptyTrashSheet;

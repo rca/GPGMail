@@ -6,8 +6,6 @@
 
 
 
-#import "NSTextViewDelegate-Protocol.h"
-
 @class Message, MessageTextView, NSAttributedString, NSWindow;
 
 @interface TextMessageDisplay : NSObject <NSTextViewDelegate>

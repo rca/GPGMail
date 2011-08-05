@@ -7,8 +7,6 @@
 
 
 #import "AddressTextViewDelegate-Protocol.h"
-#import "NSLayoutManagerDelegate-Protocol.h"
-#import "NSTextViewDelegate-Protocol.h"
 
 @class EmailViewController, HeaderAttachmentsController, MessageHeaderView, NSAttributedString, NSString, SenderImageView;
 

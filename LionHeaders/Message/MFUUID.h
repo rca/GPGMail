@@ -6,8 +6,6 @@
 
 
 
-#import "NSCopying-Protocol.h"
-
 @interface MFUUID : NSObject <NSCopying>
 {
     struct __CFUUID *_uuidRef;

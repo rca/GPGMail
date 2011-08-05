@@ -1,4 +1,5 @@
 /* MimeBody+GPGMail.h created by stephane on Thu 06-Jul-2000 */
+/* MimeBody+GPGMail.h re-created by Lukas Pitschl (@lukele) on Wed 03-Aug-2011 */
 
 /*
  * Copyright (c) 2000-2011, GPGTools Project Team <gpgtools-devel@lists.gpgtools.org>
@@ -29,30 +30,17 @@
 
 #import <MimeBody.h>
 
-#import "GPGMailBundle.h"
-
-
-@class MutableMessageHeaders;
-
-
 @interface MimeBody (GPGMail)
 
-- (BOOL)gpgIsEncrypted;
-
-- (NSData *)gpgEncryptForRecipients:(NSArray *)recipients trustAllKeys:(BOOL) trustsAllKeys signWithKey:(GPGKey *)key passphraseDelegate:(id) passphraseDelegate format:(GPGMailFormat *)mailFormatPtr headers:(MutableMessageHeaders **)headersPtr;
-// Signs only if key is not nil; passphraseDelegate is necessary only if key is not nil.
-// Can raise an exception
-
-- (BOOL)gpgHasSignature;
-- (GPGSignature *)gpgAuthenticationSignature;
-// Can raise an exception
-- (GPGSignature *)gpgEmbeddedAuthenticationSignature;
-// Can raise an exception
-// Must be used for OpenPGP embedded signatures, to avoid some checks
-
-- (NSData *)gpgSignWithKey:(GPGKey *)key passphraseDelegate:(id) passphraseDelegate format:(GPGMailFormat *)mailFormatPtr headers:(MutableMessageHeaders **)headersPtr;
-// Can raise an exception
-
-- (BOOL)gpgIsPGPMIMEMessage;
+/**
+ This method is call by Mail internally and it's not exactly clear
+ what it is used for, but if not replaced, Mail crashes, if PGP signatures
+ are found for this message, since Mail doesn't know how to deal
+ with GPGMail's GPGSignatures.
+ 
+ TODO: Should probably check, if one of the signatures matches a mail account
+ configured in Mail. (Not necessary at the moment though)
+ */
+- (BOOL)MAIsSignedByMe;
 
 @end

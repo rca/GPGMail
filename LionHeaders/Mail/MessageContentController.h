@@ -7,7 +7,6 @@
 
 #import "MessageContentDisplay-Protocol.h"
 #import "DocumentEditorManaging-Protocol.h"
-#import "NSCopying-Protocol.h"
 
 @class ActivityMonitor, BannerController, EmbeddedNoteDocumentEditor, MFTaskOperation, Message, MessageContentView, MessageViewingPaneController, MessageViewingState, NSArray, NSMutableDictionary, NSSet, NSView;
 

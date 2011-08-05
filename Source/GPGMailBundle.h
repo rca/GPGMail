@@ -29,6 +29,7 @@
 
 #import <MVMailBundle.h>
 
+#import <CoreFoundation/CoreFoundation.h>
 #import <Foundation/NSDate.h>
 #import <Foundation/NSMapTable.h>
 #import <AppKit/NSNibDeclarations.h>
@@ -58,7 +59,6 @@ extern NSString *GPGMissingKeysNotification;
 // UserInfo: 'fingerprints' = NSArray of fingerprints as NSStrings,
 //           'emails' = NSArray of email addresses as NSStrings
 
-
 #define GPGENCRYPTION_MENU_ITEMS_COUNT (5)
 
 
@@ -74,12 +74,9 @@ enum {
 	GPGMailDebug_SaveInputDataMask = 0x0001
 };
 
-#ifdef SNOW_LEOPARD_64
-@interface GPGMailBundle : NSObject <NSToolbarDelegate>
-#else
-@interface GPGMailBundle : MVMailBundle <NSToolbarDelegate>
-#endif
-{
+typedef void (^gpgmail_decryption_task_t)(void);
+
+@interface GPGMailBundle : NSObject <NSToolbarDelegate> {
 	IBOutlet NSMenuItem *decryptMenuItem;
 	IBOutlet NSMenuItem *authenticateMenuItem;
 	IBOutlet NSMenuItem *encryptsNewMessageMenuItem;
@@ -104,14 +101,35 @@ enum {
 	NSMenuItem *pgpViewMenuItem;
 	IBOutlet NSMenuItem *allUserIDsMenuItem;
 	NSDictionary *locale;
-//    GPGEngine *engine;
+    
     NSSet *cachedPersonalGPGKeys;
     NSSet *cachedPublicGPGKeys;
     NSSet *cachedGPGKeys;
+    
+    // A serial queue which makes sure that only one pinentry
+    // password request is run at once.
+    dispatch_queue_t decryptionQueue;
+    // Map which uses a fingerprint to lookup a personal key.
+    NSDictionary *_cachedPersonalGPGKeysByFingerprint;
+    // Map which uses a fingerprint to lookup a public key.
+    NSDictionary *_cachedPublicGPGKeysByFingerprint;
+    // Map which uses the email address to lookup a personal key.
+    NSDictionary *_cachedPersonalGPGKeysByEmail;
+    // Map which uses the email address to lookup a public key.
+    NSDictionary *_cachedPublicGPGKeysByEmail;
 }
 
 + (id)sharedInstance;
-+ (void)addSnowLeopardCompatibility;
+// Install all methods used by GPGMail. 
++ (void)_installGPGMail;
+// Load all necessary images.
++ (void)_loadImages;
+// Install the Sparkle Updater.
++ (void)_installSparkleUpdater;
+// Returns the bundle version.
++ (NSString *)bundleVersion;
+- (void)workspaceDidMount:(NSNotification *)notification;
+- (void)workspaceDidUnmount:(NSNotification *)notification;
 - (void)setAlwaysSignMessages:(BOOL)flag;
 - (BOOL)alwaysSignMessages;
 - (void)setAlwaysEncryptMessages:(BOOL)flag;
@@ -169,7 +187,7 @@ enum {
 - (void)setShowsPassphrase:(BOOL)flag;
 - (BOOL)showsPassphrase;
 - (void)setLineWrappingLength:(int)value;
-- (int)lineWrappingLength;
+- (long)lineWrappingLength;
 - (void)setIgnoresPGPPresence:(BOOL)flag;
 - (BOOL)ignoresPGPPresence;
 - (void)setRefreshesKeysOnVolumeMount:(BOOL)flag;
@@ -237,6 +255,7 @@ enum {
 - (BOOL)canKeyBeUsedForEncryption:(GPGKey *)key;
 - (BOOL)canKeyBeUsedForSigning:(GPGKey *)key;
 - (BOOL)canUserIDBeUsed:(GPGUserID *)userID;
+- (GPGKey *)publicKeyForSecretKey:(GPGKey *)secretKey;
 
 //- (NSString *)descriptionForError:(GPGError)error;
 - (NSString *)descriptionForException:(NSException *)exception;
@@ -250,6 +269,16 @@ enum {
 - (id)locale;
 
 - (NSSet *)loadGPGKeys;
+- (NSSet *)allGPGKeys;
+- (NSArray *)publicKeyListForAddresses:(NSArray *)recipients;
+- (BOOL)canEncryptMessagesToAddress:(NSString *)address;
+- (BOOL)canSignMessagesFromAddress:(NSString *)address;
+- (NSArray *)signingKeyListForAddresses:(NSArray *)senders;
+
+// Allows to schedule decryption tasks which will block as
+// long as a second decryption task is running, but shouldn't
+// block the main thread.
+- (void)addDecryptionTask:(gpgmail_decryption_task_t)task;
 
 @end
 

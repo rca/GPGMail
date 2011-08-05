@@ -4,8 +4,6 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2010 by Steve Nygard.
  */
 
-#import "NSObject-Protocol.h"
-
 @protocol MessageSortContext <NSObject>
 - (long long)compareByNumberMessage:(id)arg1 andMessage:(id)arg2 sortedAscending:(BOOL)arg3;
 - (unsigned long long)sizeForMessage:(id)arg1;

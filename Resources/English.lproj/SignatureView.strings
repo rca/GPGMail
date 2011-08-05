@@ -1,0 +1,14 @@
+/* 
+  SignatureView.strings
+  GPGMail
+
+  Created by Lukas Pitschl on 30.07.11.
+  Copyright 2011 GPGMail. All rights reserved.
+
+  Defines the strings used in the signature view.
+ */
+{
+    "NO_EXPIRATION_DATE" = "No expiration is set on this key";
+    "VALIDITY_NO_TRUST" = "This signature is not to be trusted.";
+    "VALIDITY_OK" = "This signature can be trusted";
+}

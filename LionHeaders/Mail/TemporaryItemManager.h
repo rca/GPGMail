@@ -6,8 +6,6 @@
 
 
 
-#import "NSFileManagerDelegate-Protocol.h"
-
 @class NSString, NSTimer;
 
 @interface TemporaryItemManager : NSObject <NSFileManagerDelegate>

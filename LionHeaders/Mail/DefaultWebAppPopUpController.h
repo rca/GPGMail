@@ -6,8 +6,6 @@
 
 
 
-#import "NSMenuDelegate-Protocol.h"
-
 @class NSArray, NSDictionary, NSOpenPanel, NSPopUpButton, NSURL;
 
 @interface DefaultWebAppPopUpController : NSObject <NSMenuDelegate>
