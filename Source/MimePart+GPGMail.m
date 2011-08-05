@@ -46,7 +46,6 @@ const NSString *PGP_MESSAGE_END = @"-----END PGP MESSAGE-----";
 const NSString *PGP_SIGNED_MESSAGE_BEGIN = @"-----BEGIN PGP SIGNED MESSAGE-----";
 const NSString *PGP_MESSAGE_SIGNATURE_BEGIN = @"-----BEGIN PGP SIGNATURE-----";
 const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
-const NSString *PGP_AGENT = @"GPGMail %@";
 
 @implementation MimePart (GPGMail)
 
@@ -203,7 +202,7 @@ const NSString *PGP_AGENT = @"GPGMail %@";
             [contentTypeData appendData:[[NSString stringWithFormat:@"\n\t%@=\"%@\";", key, [topLevelPart bodyParameterForKey:key]] dataUsingEncoding:NSASCIIStringEncoding]];
         [headers setHeader:contentTypeData forKey:@"content-type"];
         [contentTypeData release];
-        [headers setHeader:[NSString stringWithFormat:(NSString *)PGP_AGENT, [GPGMailBundle bundleVersion]] forKey:@"x-pgp-agent"];
+        [headers setHeader:[GPGMailBundle agentHeader] forKey:@"x-pgp-agent"];
         [headers removeHeaderForKey:@"content-disposition"];
         [headers removeHeaderForKey:@"from "];
         [bodyData appendData:[headers encodedHeadersIncludingFromSpace:NO]];

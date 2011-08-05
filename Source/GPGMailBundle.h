@@ -128,6 +128,8 @@ typedef void (^gpgmail_decryption_task_t)(void);
 + (void)_installSparkleUpdater;
 // Returns the bundle version.
 + (NSString *)bundleVersion;
+// Returns the string used for the x-pgp-agent message header.
++ (NSString *)agentHeader;
 - (void)workspaceDidMount:(NSNotification *)notification;
 - (void)workspaceDidUnmount:(NSNotification *)notification;
 - (void)setAlwaysSignMessages:(BOOL)flag;

@@ -52,7 +52,7 @@ NSString *GPGMissingKeysNotification = @"GPGMissingKeysNotification";
 NSString *GPGKeyringChangedNotification = @"GPGKeyringChangedNotification";
 NSString *GPGMailException = @"GPGMailException";
 NSString *GPGMailSwizzledMethodPrefix = @"MA";
-
+NSString *GPGMailAgent = @"GPGMail %@";
 
 int GPGMailLoggingLevel = 1;
 
@@ -1571,6 +1571,10 @@ static BOOL gpgMailWorks = YES;
 + (NSString *)bundleVersion {
     return [[[NSBundle bundleForClass:self] infoDictionary]
             valueForKey:@"CFBundleVersion"];
+}
+
++ (NSString *)agentHeader {
+    return [NSString stringWithFormat:GPGMailAgent, [self bundleVersion]];
 }
 
 @end
