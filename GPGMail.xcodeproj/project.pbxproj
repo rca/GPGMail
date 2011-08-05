@@ -3252,14 +3252,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_PKGINFO_FILE = YES;
-				HEADER_SEARCH_PATHS = /usr/local/include;
+				HEADER_SEARCH_PATHS = "Dependencies/**";
 				INFOPLIST_FILE = Plists/Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					/usr/local/lib,
-					"$(LIBRARY_SEARCH_PATHS)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS)";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -3289,8 +3286,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
-					"\"$(SRCROOT)/../Libmacgpg/build/Debug\"",
-					"\"$(SRCROOT)/Dependencies/Libmacgpg/build/Debug\"",
+					"\"$(SRCROOT)/../Libmacgpg/build/Release\"",
+					"\"$(SRCROOT)/Dependencies/Libmacgpg/build/Release\"",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "";
