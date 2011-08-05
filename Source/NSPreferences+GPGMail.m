@@ -1,3 +1,6 @@
+//
+//  NSPreferences_GPGMail.m
+//  GPGMail
 /*
  * Copyright (c) 2000-2011, GPGTools Project Team <gpgtools-devel@lists.gpgtools.org>
  * All rights reserved.
@@ -13,10 +16,10 @@
  *       contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY GPGTools Project Team AND CONTRIBUTORS ``AS IS'' AND ANY
+ * THIS SOFTWARE IS PROVIDED BY THE GPGTools Project Team ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL GPGTools Project Team AND CONTRIBUTORS BE LIABLE FOR ANY
+ * DISCLAIMED. IN NO EVENT SHALL THE GPGTools Project Team BE LIABLE FOR ANY
  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -25,32 +28,25 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Message.h>
-#import <MimeBody.h>
-#import <MessageContentController.h>
-#import "CCLog.h"
-#import "NSObject+LPDynamicIvars.h"
-#import "MimePart+GPGMail.h"
+#import "NSPreferences+GPGMail.h"
+#import "GPGMailPreferences.h"
 #import "GPGMailBundle.h"
-#import "MessageContentController+GPGMail.h"
 
-@implementation MessageContentController_GPGMail : NSObject
+@implementation NSPreferences (GPGMail)
 
-- (void)MASetMessageToDisplay:(id)message {
-    if(message && [[GPGMailBundle sharedInstance] decryptsMessagesAutomatically]) {
-        BOOL isEncrypted = [[[message messageBody] topLevelPart] isEncrypted];
-        if(isEncrypted) {
-            [message setIvar:@"shouldBeDecrypting" value:[NSNumber numberWithBool:YES]];
-            NSLog(@"Message: %@ - message body - %@ should be decrypting: %@", message, [message messageBody], [message getIvar:@"shouldBeDecrypting"] ? @"YES" : @"NO");
-        }
-    }
-    [self MASetMessageToDisplay:message];
++ (id)MASharedPreferences
+{
+	static BOOL added = NO;
+	id preferences = [self MASharedPreferences];
+    
+	if (preferences != nil && !added) {
+		added = YES;
+		if ([GPGMailBundle gpgMailWorks]) {
+			[preferences addPreferenceNamed:NSLocalizedStringFromTableInBundle(@"PGP_PREFERENCES", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "PGP preferences panel name") owner:[GPGMailPreferences sharedInstance]];
+		}
+	}
+
+	return preferences;
 }
-
-- (void)decryptPGPMessage {
-    [[((MessageContentController *)self) message] setIvar:@"shouldBeDecrypting" value:[NSNumber numberWithBool:YES]];
-    [((MessageContentController *)self) reloadCurrentMessageShouldReparseBody:YES];
-}
-
 
 @end

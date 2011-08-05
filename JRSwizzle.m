@@ -3,6 +3,7 @@
 
 #import "JRSwizzle.h"
 #import <objc/objc-class.h>
+#import "CCLog.h"
 
 #define SetNSErrorFor(FUNC, ERROR_VAR, FORMAT,...)	\
 	if (ERROR_VAR) {	\
@@ -114,5 +115,45 @@
 + (BOOL)jr_swizzleClassMethod:(SEL)origSel_ withClassMethod:(SEL)altSel_ error:(NSError**)error_ {
 	return [GetClass((id)self) jr_swizzleMethod:origSel_ withMethod:altSel_ error:error_];
 }
+
++ (BOOL)jr_addMethodsFromClass:(Class)aClass error:(NSError **)error {
+	unsigned int methodCount;
+    SEL currentSelector;
+    Method *classMethods;
+    for(unsigned int i = 0; i < 2; i++) {
+        classMethods = class_copyMethodList(i == 0 ? aClass : object_getClass(aClass), &methodCount);
+        DebugLog(@"Number of methods found for class %@: %u", aClass, methodCount);
+        
+        for (unsigned int j = 0; j < methodCount; j++) {
+            currentSelector = method_getName((Method)classMethods[j]);
+            DebugLog(@"%d: Adding method %@ from %@", i, NSStringFromSelector(currentSelector), i == 0 ? aClass : object_getClass(aClass));
+            [i == 0 ? self : object_getClass(self) jr_addMethod:currentSelector fromClass:i == 0 ? aClass : object_getClass(aClass) error:error];
+            if(*error) {
+                NSLog(@"failed to add method: %@", NSStringFromSelector(currentSelector));
+                free(classMethods);
+                return NO;
+            }
+        }
+        free(classMethods);
+    }
+    
+    return YES;
+}
+
++ (BOOL)jr_addMethod:(SEL)selector fromClass:(Class)class error:(NSError **)error {
+    Method method = class_getInstanceMethod(class, selector);
+    if (method == NULL) {
+        SetNSError(error, @"method %@ doesn't exit in class: %@", NSStringFromSelector(selector), [self class]);
+        return NO;
+    }
+    class_addMethod(self, selector, method_getImplementation(method), method_getTypeEncoding(method));
+    return YES;
+}
+
++ (BOOL)jr_addClassMethod:(SEL)selector fromClass:(Class)class error:(NSError **)error {
+    return [object_getClass(self) jr_addClassMethod:selector fromClass:class error:error];
+}
+
+
 
 @end

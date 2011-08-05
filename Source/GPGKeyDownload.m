@@ -27,8 +27,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <Libmacgpg/Libmacgpg.h>
 #import "GPGKeyDownload.h"
-#import "GPGMEAdditions.h"
 
 
 NSString *GPGDidFindKeysNotification = @"GPGDidFindKeysNotification";
@@ -39,7 +39,7 @@ NSString *GPGDidFindKeysNotification = @"GPGDidFindKeysNotification";
 static GPGKeyDownload *_sharedInstance = nil;
 
 + (void)load {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(missingKeysNotification:) name:GPGMissingKeysNotification object:nil];
+	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(missingKeysNotification:) name:GPGMissingKeysNotification object:nil];
 }
 
 + (id)sharedInstance {
@@ -375,11 +375,11 @@ static GPGKeyDownload *_sharedInstance = nil;
 	}
 }
 
-- (int)numberOfItemsInComboBox:(NSComboBox *)aComboBox {
+- (NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox {
 	return [serverList count];
 }
 
-- (id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(int)index {
+- (id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)index {
 	if (index < 0 || index >= [serverList count]) {
 		NSLog(@"[DEBUG] [GPGKeyDownload comboBox:objectValueForItemAtIndex:] - This shouldn't happen! NEVER!");
 		return nil;
@@ -416,7 +416,7 @@ static GPGKeyDownload *_sharedInstance = nil;
 	if ([[tableColumn identifier] isEqualToString:@"selection"]) {
 		return [NSNumber numberWithBool:[selectedKeys containsObject:item]];
 	} else if ([item canHaveChildren]) {
-		NSString *resultString = [NSString stringWithFormat:@"0x%@", [item keyID]];
+		NSString *resultString = [NSString stringWithFormat:@"0x%@", ((GPGKey *)item).keyID];
 		NSString *aString = [item algorithmDescription];
 		NSCalendarDate *aDate;
 		NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
@@ -429,23 +429,23 @@ static GPGKeyDownload *_sharedInstance = nil;
 				resultString = [resultString stringByAppendingFormat:NSLocalizedStringFromTableInBundle(@" (%u bits)", @"GPGMail", aBundle, ""), aLength];
 			}
 		}
-		aDate = [item creationDate];
+		aDate = (NSCalendarDate *)[item creationDate];
 		if (aDate) {
 			resultString = [resultString stringByAppendingFormat:NSLocalizedStringFromTableInBundle(@", created on %@", @"GPGMail", aBundle, ""), [aDate descriptionWithCalendarFormat:NSLocalizedStringFromTableInBundle(@"SIGNATURE_CREATION_DATE_FORMAT", @"GPGMail", aBundle, "") locale:[(GPGMailBundle *)[GPGMailBundle sharedInstance] locale]]];
 		}
-		aDate = [item expirationDate];
+		aDate = (NSCalendarDate *)[item expirationDate];
 		if (aDate) {
-			if ([item hasKeyExpired]) {
+			if (((GPGKey *)item).expired) {
 				resultString = [resultString stringByAppendingFormat:NSLocalizedStringFromTableInBundle(@", expired on %@", @"GPGMail", aBundle, ""), [aDate descriptionWithCalendarFormat:NSLocalizedStringFromTableInBundle(@"SIGNATURE_EXPIRATION_DATE_FORMAT", @"GPGMail", aBundle, "") locale:[(GPGMailBundle *)[GPGMailBundle sharedInstance] locale]]];
 			} else {
 				resultString = [resultString stringByAppendingFormat:NSLocalizedStringFromTableInBundle(@", expires on %@", @"GPGMail", aBundle, ""), [aDate descriptionWithCalendarFormat:NSLocalizedStringFromTableInBundle(@"SIGNATURE_EXPIRATION_DATE_FORMAT", @"GPGMail", aBundle, "") locale:[(GPGMailBundle *)[GPGMailBundle sharedInstance] locale]]];
 			}
 		}
-		if ([item isKeyRevoked]) {
+		if (((GPGKey *)item).revoked) {
 			resultString = [NSLocalizedStringFromTableInBundle (@"REVOKED_KEY - ", @"GPGMail", aBundle, "") stringByAppendingString:resultString];
 		}
 
-		if ([item hasKeyExpired] || [item isKeyRevoked] /* || [item isKeyInvalid] || [item isKeyDisabled]*/) {
+		if (((GPGKey *)item).expired || ((GPGKey *)item).revoked /* || [item isKeyInvalid] || [item isKeyDisabled]*/) {
 			// TODO: Prefix with warning icon
 			return [[[NSAttributedString alloc] initWithString:resultString attributes:[NSDictionary dictionaryWithObject:[NSColor redColor] forKey:NSForegroundColorAttributeName]] autorelease];
 		} else {

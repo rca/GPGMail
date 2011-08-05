@@ -10,14 +10,14 @@
 
 @implementation NSSet (Functional)
 
-- (NSSet *)map:(id (^)(id))block {
+- (NSSet *)filter:(id (^)(id))block {
     NSMutableSet *set = [NSMutableSet set];
     for(id obj in self) {
         id ret = block(obj);
         if(!ret) continue;
         [set addObject:obj];
     }
-    return set;
+    return [NSSet setWithSet:set];
 }
 
 @end

@@ -51,7 +51,7 @@ static NSMutableDictionary *_sharedInstances = nil;
 	return defaultsController;
 }
 - (id)initWithDomain:(NSString *)domain {
-	if ([self init]) {
+	if (self = [self init]) {
 		self.domain = domain;
 	}
 	return self;

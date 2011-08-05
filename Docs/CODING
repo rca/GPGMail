@@ -1,0 +1,2 @@
+Every Mail.app method which is to be swizzled, has to be prefixed
+with MA (MailApp).
