@@ -320,7 +320,7 @@ const NSString *PGP_AGENT = @"GPGMail %@";
     // marked as such.
     // Eventually add warning for this.
     gpgc.trustAllKeys = YES;
-    gpgc.verbose = YES;
+    // gpgc.verbose = YES; // see issue 223
     // Recipients are not needed for signing. Use addSignerKey instead.
     for(NSString *fingerprint in normalKeyList)
         [gpgc addSignerKey:fingerprint];
@@ -432,7 +432,7 @@ const NSString *PGP_AGENT = @"GPGMail %@";
     if(![signedData length] || [self rangeOfPlainPGPSignatures].location == NSNotFound)
         return;
     GPGController *gpgc = [[GPGController alloc] init];
-    gpgc.verbose = YES;
+    //gpgc.verbose = YES; // see issue 223
     NSArray *signatures;
     @try {
         signatures = [gpgc verifySignedData:signedData];
