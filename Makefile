@@ -25,6 +25,9 @@ clean-gpgmail:
 
 clean: clean-gpgme clean-gpgmail
 
+test-compile:
+	@./Utilities/testCompile.sh
+
 check-all-warnings: clean-gpgmail
 	make | grep "warning: "
 
