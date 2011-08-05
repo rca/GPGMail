@@ -1,14 +1,16 @@
 all: compile
 
 update:
-	@git submodule foreach git pull origin master
+	@#git submodule foreach git pull origin lion
+	@cd Dependencies/GPGTools_Core; git pull origin master; cd -
+	@cd Dependencies/Libmacgpg; git pull origin lion; cd -
 	@git pull
 
 compile:
-	INSTALL_GPGMAIL=0 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release build
+	INSTALL_GPGMAIL=0 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Debug build
 
 install: install
-	INSTALL_GPGMAIL=1 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release build
+	INSTALL_GPGMAIL=1 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Debug build
 
 dmg: compile
 	@./Utilities/create_sparkle.sh
