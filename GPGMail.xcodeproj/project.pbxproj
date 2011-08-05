@@ -115,13 +115,6 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = Libmacgpg;
 		};
-		1BECA61113E36F1600C622B0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1B04A0DD13DF2EF1003B7616;
-			remoteInfo = SignatureViewApp;
-		};
 		222C442713C91A330035BEDE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */;
@@ -2710,7 +2703,6 @@
 			children = (
 				222C442813C91A330035BEDE /* Libmacgpg.framework */,
 				222C442A13C91A330035BEDE /* UnitTest.octest */,
-				1BECA61213E36F1600C622B0 /* SignatureViewApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2878,13 +2870,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		1BECA61213E36F1600C622B0 /* SignatureViewApp.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = SignatureViewApp.app;
-			remoteRef = 1BECA61113E36F1600C622B0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		222C442813C91A330035BEDE /* Libmacgpg.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -3315,7 +3300,7 @@
 				GCC_PREFIX_HEADER = GPGMail_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GENERATE_PKGINFO_FILE = YES;
-				HEADER_SEARCH_PATHS = Dependencies;
+				HEADER_SEARCH_PATHS = "Dependencies/**";
 				INFOPLIST_FILE = Plists/Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
