@@ -116,7 +116,7 @@
     MimePart *topPart;
     MimePart *versionPart;
     MimePart *dataPart;
-    if(shouldBeMIME) {
+    if(!shouldBeMIME) {
         topPart = [[MimePart alloc] init];
         [topPart setType:@"text"];
         [topPart setSubtype:@"plain"];
@@ -165,7 +165,7 @@
     
     CFMutableDictionaryRef partBodyMapRef = CFDictionaryCreateMutable(NULL, 0, NULL, NULL);
     CFDictionaryAddValue(partBodyMapRef, topPart, topData);
-    if(!shouldBeMIME) {
+    if(shouldBeMIME) {
         CFDictionaryAddValue(partBodyMapRef, versionPart, versionData);
         CFDictionaryAddValue(partBodyMapRef, dataPart, encryptedData);
     }
@@ -203,7 +203,7 @@
     MessageWriter *messageWriter = [[MessageWriter alloc] init];
     [messageWriter appendDataForMimePart:topPart toData:bodyData withPartData:partBodyMap];
     [messageWriter release];
-    if(!shouldBeMIME) {
+    if(shouldBeMIME) {
         [versionPart release];
         [dataPart release];
     }
