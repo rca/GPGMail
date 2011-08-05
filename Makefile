@@ -1,7 +1,9 @@
 all: compile
 
 update:
-	@git submodule foreach git pull origin master
+	@#git submodule foreach git pull origin lion
+	@cd Dependencies/GPGTools_Core; git pull origin master; cd -
+	@cd Dependencies/Libmacgpg; git pull origin lion; cd -
 	@git pull
 
 compile:
