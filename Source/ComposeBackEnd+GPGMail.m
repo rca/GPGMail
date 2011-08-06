@@ -61,6 +61,15 @@
     
     OutgoingMessage *outgoingMessage = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldPGPSign shouldEncrypt:shouldPGPEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
     
+    // Signing only results in an outgoing message which can be sent
+    // out exactly as created by Mail.app. No need to further modify.
+    // Only encrypted messages have to be adjusted.
+    if(shouldPGPSign && !shouldPGPEncrypt)
+        return outgoingMessage;
+    
+    DebugLog(@"[DEBUG] %s outgoingMessage: %@", __PRETTY_FUNCTION__, [NSString stringWithData:[outgoingMessage valueForKey:@"_rawData"] encoding:NSUTF8StringEncoding]);
+    
+    
     // Fetch the encrypted data from the body data.
     NSData *encryptedData = [((_OutgoingMessageBody *)[outgoingMessage messageBody]) rawData];
     
