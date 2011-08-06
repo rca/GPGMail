@@ -15,6 +15,7 @@
 #import "NSObject+LPDynamicIvars.h"
 #import "GPGSignatureView.h"
 #import "GPGMailBundle.h"
+#import "MimePart+GPGMail.h"
 #import "NSAttributedString+GPGMail.h"
 #import "MessageHeaderDisplay+GPGMail.h"
 #import "MessageContentController+GPGMail.h"
@@ -66,6 +67,7 @@
     // body and check again if that body is signed.
     BOOL isSigned = [topPart isSigned];
     BOOL isEncrypted = [topPart isEncrypted];
+    BOOL isPGPSigned = [topPart isPGPSigned];
     char is_encrypted, is_signed;
     NSError *error;
     NSArray *signerLabels = nil; 
@@ -75,12 +77,13 @@
         // If it's encrypted, only the decrypted part is of interest.
         topPart = decryptedTopPart;
         isSigned = [decryptedTopPart isSigned];
+        isPGPSigned = [decryptedTopPart isPGPSigned];
     }
     
     // Only add the encrypted attachment if the message is PGP/MIME encrypted.
-    if(!isEncrypted && !isSigned && [securityHeader length] == 0)
+    if(!isEncrypted && !isSigned && !isPGPSigned && [securityHeader length] == 0)
         return [securityHeader autorelease];
-    if([securityHeader length] != 0 && (isEncrypted || isSigned))
+    if([securityHeader length] != 0 && (isEncrypted || isSigned) && !isPGPSigned)
         return [securityHeader autorelease];
     
     [securityHeader release];

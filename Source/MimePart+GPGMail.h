@@ -147,6 +147,14 @@
 - (id)MACopySignerLabels;
 
 /**
+ Necessary to understand whether the message is
+ S/MIME signed or PGP signed. Apparently MAIsSigned is true for S/MIME signed
+ and PGP/MIME signed, so this way it's possible to know for sure, what it is
+ signed with.
+ */
+- (BOOL)isPGPSigned;
+
+/**
  Is called by Mail.app to check if a message is signed. It's not yet entirely
  clear how Mail finds out whether a message is signed or not, but GPGMail uses
  the MimePart._messageSigners variable. 

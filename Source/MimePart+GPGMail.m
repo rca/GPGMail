@@ -501,6 +501,12 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     return (ret | hasMessageSigners);
 }
 
+- (BOOL)isPGPSigned {
+    NSArray *messageSigners = [self valueForKey:@"_messageSigners"];
+    BOOL hasMessageSigners = ([messageSigners count] > 0 && [[messageSigners objectAtIndex:0] isKindOfClass:[GPGSignature class]]);
+    return hasMessageSigners;
+}
+
 - (BOOL)isPGPInlineEncrypted {
     // Fetch body data to look for the leading GPG string.
     // For some reason textEncoding doesn't really work... and is actually never called
