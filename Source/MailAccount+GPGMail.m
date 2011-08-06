@@ -10,6 +10,8 @@
 
 @implementation MailAccount_GPGMail
 
+// TODO: Only display security view if OpenPGP keys are available
+//       for signing. Analog to S/MIME
 + (BOOL)MAAccountExistsForSigning {
     return YES;
 }
