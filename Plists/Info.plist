@@ -5,7 +5,7 @@
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 	<key>SUFeedURL</key>
-	<string>http://www.gpgtools.org/gpgmail2/appcast.xml</string>
+	<string>http://www.gpgtools.org/gpgmail/appcast.xml</string>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
