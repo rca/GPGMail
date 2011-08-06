@@ -7,10 +7,11 @@ update:
 	@git pull
 
 compile:
-	INSTALL_GPGMAIL=0 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Debug build
+	@INSTALL_GPGMAIL=0 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Debug build
 
-install: install
-	INSTALL_GPGMAIL=1 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Debug build
+install:
+	@killall Mail||/usr/bin/true
+	@INSTALL_GPGMAIL=1 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Debug build
 
 dmg: compile
 	@./Utilities/create_sparkle.sh
