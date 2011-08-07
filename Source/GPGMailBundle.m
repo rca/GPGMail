@@ -456,69 +456,23 @@ static BOOL gpgMailWorks = YES;
 
 // TODO: Fix me for libmacgpg
 - (BOOL)checkGPG {
-    return YES;
-//	NSString *errorTitle = nil;
-//	GPGError anError = GPGErrorNoError;
-//	NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
-//	GPGEngine *anEngine = [self engine];
-//
-///*    NSArray     *availableExecutablePaths = [anEngine availableExecutablePaths];
-// *  NSString    *chosenPath = nil;
-// *
-// *  if(![anEngine usesCustomExecutablePath]){
-// *      if([availableExecutablePaths count] == 1){
-// *          chosenPath = [availableExecutablePaths lastObject];
-// *          @try {
-// *              [[GPGEngine engineForProtocol:GPGOpenPGPProtocol] setExecutablePath:chosenPath];
-// *          } @catch(NSException *localException){
-// *              chosenPath = nil;
-// *          }
-// *      }
-// *      else{
-// *          // Give choice to user: either from availables, or custom, or cancel
-// *      }
-// *  }*/
-//
-//
-//	anError = [GPGEngine checkVersionForProtocol:GPGOpenPGPProtocol];
-//	if (anError != GPGErrorNoError) {
-//		errorTitle = [self gpgErrorDescription:anError];
-//	} else {
-//		// Now that engine executable path is configurable, we need to check it
-//		if ([anEngine version] == nil) {
-//			anError = GPGErrorInvalidEngine;
-//		}
-//	}
-//
-//	if (anError != GPGErrorNoError) {
-//		NSString *errorMessage = nil;
-//
-//		if (GPGErrorInvalidEngine == [self gpgErrorCodeFromError:anError]) {
-//			NSString *currentVersion;
-//			NSString *requiredVersion;
-//			NSString *executablePath;
-//
-//			requiredVersion = [anEngine requestedVersion];
-//			currentVersion = [anEngine version];
-//			executablePath = [anEngine executablePath];
-//
-//			if (currentVersion == nil) {
-//				errorMessage = NSLocalizedStringFromTableInBundle(@"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@", @"GPGMail", myBundle, "");
-//				errorMessage = [NSString stringWithFormat:errorMessage, executablePath, requiredVersion];
-//			} else {
-//				errorMessage = NSLocalizedStringFromTableInBundle(@"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@", @"GPGMail", myBundle, "");
-//				errorMessage = [NSString stringWithFormat:errorMessage, executablePath, currentVersion, requiredVersion];
-//			}
-//		} else {
-//			errorMessage = NSLocalizedStringFromTableInBundle(@"GPGMAIL_CANNOT_WORK", @"GPGMail", myBundle, "");
-//		}
-//		(void)NSRunCriticalAlertPanel(errorTitle, @"%@", nil, nil, nil, errorMessage);
-//
-//		return NO;
-//	} else {
-//		return YES;
-//	}
+    GPGErrorCode errorCode = [[GPGController gpgController] testGPG];
+    NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
+    switch (errorCode) {
+        case GPGErrorNotFound:
+            NSRunCriticalAlertPanel(NSLocalizedStringFromTableInBundle(@"GPG_NOT_FOUND_TITLE", @"GPGMail", myBundle, ""), NSLocalizedStringFromTableInBundle(@"GPG_NOT_FOUND_MESSAGE", @"GPGMail", myBundle, ""), nil, nil, nil);
+            break;
+        case GPGErrorConfigurationError:
+            NSRunCriticalAlertPanel(NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_TITLE", @"GPGMail", myBundle, ""), NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_MESSAGE", @"GPGMail", myBundle, ""), nil, nil, nil);
+            break;
+        case GPGErrorNoError:
+            return YES;
+        default:
+            break;
+    }
+    return NO;
 }
+
 
 // TODO: Rewrite! Find better way to check for Snow Leopard and
 // Lion. (Isn't setting the deployment target enough?!)
