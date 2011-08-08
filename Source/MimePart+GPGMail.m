@@ -275,8 +275,11 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     // TODO: unfortunately we don't know the hidden recipients in here...
     //       gotta find a workaround.
     // Ask the mail bundle for the GPGKeys matching the email address.
-    NSArray *normalKeyList = [[GPGMailBundle sharedInstance] publicKeyListForAddresses:normalRecipients];
-    NSArray *bccKeyList = [[GPGMailBundle sharedInstance] publicKeyListForAddresses:bccRecipients];
+    NSSet *normalKeyList = [[GPGMailBundle sharedInstance] publicKeyListForAddresses:normalRecipients];
+    NSMutableSet *bccKeyList = [[GPGMailBundle sharedInstance] publicKeyListForAddresses:bccRecipients];
+	[bccKeyList minusSet:normalKeyList];
+
+
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.verbose = (GPGMailLoggingLevel > 0);
     gpgc.useArmor = YES;
@@ -323,7 +326,7 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
     DebugLog(@"[DEBUG] %s data: %@", __PRETTY_FUNCTION__, arg1);
     DebugLog(@"[DEBUG] %s sender: %@", __PRETTY_FUNCTION__, arg2);
-    NSArray *normalKeyList = [[GPGMailBundle sharedInstance] signingKeyListForAddresses:[NSArray arrayWithObject:arg2]];
+    NSSet *normalKeyList = [[GPGMailBundle sharedInstance] signingKeyListForAddresses:[NSArray arrayWithObject:arg2]];
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.verbose = (GPGMailLoggingLevel > 0);
     gpgc.useArmor = YES;

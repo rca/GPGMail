@@ -272,10 +272,10 @@ typedef void (^gpgmail_decryption_task_t)(void);
 
 - (NSSet *)loadGPGKeys;
 - (NSSet *)allGPGKeys;
-- (NSArray *)publicKeyListForAddresses:(NSArray *)recipients;
+- (NSMutableSet *)publicKeyListForAddresses:(NSArray *)recipients;
 - (BOOL)canEncryptMessagesToAddress:(NSString *)address;
 - (BOOL)canSignMessagesFromAddress:(NSString *)address;
-- (NSArray *)signingKeyListForAddresses:(NSArray *)senders;
+- (NSMutableSet *)signingKeyListForAddresses:(NSArray *)senders;
 
 // Allows to schedule decryption tasks which will block as
 // long as a second decryption task is running, but shouldn't

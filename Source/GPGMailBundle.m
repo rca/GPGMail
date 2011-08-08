@@ -1129,21 +1129,29 @@ static BOOL gpgMailWorks = YES;
     return (fingerprint != nil);
 }
 
-- (NSArray *)publicKeyListForAddresses:(NSArray *)recipients {
-    NSMutableArray *keyList = [NSMutableArray array];
+- (NSMutableSet *)publicKeyListForAddresses:(NSArray *)recipients {
+    NSMutableSet *keyList = [NSMutableSet setWithCapacity:[recipients count]];
     GPGKey *tmpKey;
-    for(id recipient in recipients) {
+    for(NSString *recipient in recipients) {
+        recipient = [[recipient description] lowercaseString];
         tmpKey = [_cachedPublicGPGKeysByEmail objectForKey:recipient];
+        if (!tmpKey) {
+            [NSException raise:NSGenericException format:@"Public key for E-Mail \"%@\" not found!", recipient];
+        }
         [keyList addObject:tmpKey];
     }
     return keyList;
 }
 
-- (NSArray *)signingKeyListForAddresses:(NSArray *)senders {
-    NSMutableArray *keyList = [NSMutableArray array];
+- (NSMutableSet *)signingKeyListForAddresses:(NSArray *)senders {
+    NSMutableSet *keyList = [NSMutableSet setWithCapacity:[senders count]];
     GPGKey *tmpKey;
-    for(id sender in senders) {
+    for(NSString *sender in senders) {
+        sender = [[sender description] lowercaseString];
         tmpKey = [_cachedPersonalGPGKeysByEmail objectForKey:sender];
+        if (!tmpKey) {
+            [NSException raise:NSGenericException format:@"Signing key for E-Mail \"%@\" not found!", sender];
+        }
         [keyList addObject:tmpKey];
     }
     return keyList;
