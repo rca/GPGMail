@@ -28,6 +28,7 @@
  */
 
 #import <Libmacgpg/Libmacgpg.h>
+#import <Libmacgpg/GPGKey.h>
 #import "CCLog.h"
 #import "NSObject+LPDynamicIvars.h"
 #import "MimePart+GPGMail.h"
@@ -290,6 +291,9 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     gpgc.trustAllKeys = YES;
     @try {
         *encryptedData = [gpgc processData:data withEncryptSignMode:GPGPublicKeyEncrypt recipients:normalKeyList hiddenRecipients:bccKeyList];
+		if (gpgc.error) {
+			@throw gpgc.error;
+		}
     }
     @catch(NSException *e) {
         DebugLog(@"[DEBUG] %s encryption error: %@", __PRETTY_FUNCTION__, e);
@@ -340,9 +344,16 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
         [gpgc addSignerKey:fingerprint];
     @try {
         *arg3 = [gpgc processData:arg1 withEncryptSignMode:GPGDetachedSign recipients:nil hiddenRecipients:nil];
+		if (gpgc.error) {
+			@throw gpgc.error;
+		}
     }
     @catch(NSException *e) {
+		if ([e isKindOfClass:[GPGException class]] && [(GPGException *)e errorCode] == GPGErrorCancelled) {
+			//TODO: Handle GPGErrorCancelled. 
+		}
         DebugLog(@"[DEBUG] %s sign error: %@", __PRETTY_FUNCTION__, e);
+		@throw e;
     }
     @finally {
         [gpgc release];
