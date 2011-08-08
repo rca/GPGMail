@@ -1133,12 +1133,10 @@ static BOOL gpgMailWorks = YES;
     NSMutableSet *keyList = [NSMutableSet setWithCapacity:[recipients count]];
     GPGKey *tmpKey;
     for(NSString *recipient in recipients) {
-        recipient = [[recipient description] lowercaseString];
+        recipient = [recipient gpgNormalizedEmail];
         tmpKey = [_cachedPublicGPGKeysByEmail objectForKey:recipient];
-        if (!tmpKey) {
-            [NSException raise:NSGenericException format:@"Public key for E-Mail \"%@\" not found!", recipient];
-        }
-        [keyList addObject:tmpKey];
+        if (tmpKey)
+            [keyList addObject:tmpKey];
     }
     return keyList;
 }
@@ -1147,12 +1145,10 @@ static BOOL gpgMailWorks = YES;
     NSMutableSet *keyList = [NSMutableSet setWithCapacity:[senders count]];
     GPGKey *tmpKey;
     for(NSString *sender in senders) {
-        sender = [[sender description] lowercaseString];
+        sender = [sender gpgNormalizedEmail];
         tmpKey = [_cachedPersonalGPGKeysByEmail objectForKey:sender];
-        if (!tmpKey) {
-            [NSException raise:NSGenericException format:@"Signing key for E-Mail \"%@\" not found!", sender];
-        }
-        [keyList addObject:tmpKey];
+        if (tmpKey)
+            [keyList addObject:tmpKey];
     }
     return keyList;
 }
