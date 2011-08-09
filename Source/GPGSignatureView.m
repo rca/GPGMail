@@ -244,7 +244,7 @@ GPGSignatureView *_sharedInstance;
 	return proposedMinimumPosition + 20;
 }
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMaximumPosition ofSubviewAt:(NSInteger)dividerIndex {
-	return proposedMaximumPosition - 60;
+	return proposedMaximumPosition - 90;
 }
 - (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize {
 	NSArray *subviews = [splitView subviews];

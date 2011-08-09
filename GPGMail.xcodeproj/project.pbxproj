@@ -45,6 +45,8 @@
 		1BED936B107958C700D22B4C /* NSString+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A807B0838E9B10052F47C /* NSString+GPGMail.m */; };
 		1BED93851079597600D22B4C /* NSPreferences+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80900838EA1C0052F47C /* NSPreferences+GPGMail.m */; };
 		1BF51A70108FCD1900AC8268 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BF51A6F108FCD1900AC8268 /* ExceptionHandling.framework */; };
+		3031749F13F1E0C900279CFB /* GPGSignatureView.xib.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3031749D13F1E0C900279CFB /* GPGSignatureView.xib.strings */; };
+		303174A113F1E0D400279CFB /* GPGSignatureView.xib.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3031749D13F1E0C900279CFB /* GPGSignatureView.xib.strings */; };
 		30744AB512B9733800CC3EC5 /* MessageContentController+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A808C0838EA1C0052F47C /* MessageContentController+GPGMail.m */; };
 		308B8F8512A6AE2D00C99BD2 /* GPGKeyDownload.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8F7B12A6AE2D00C99BD2 /* GPGKeyDownload.xib */; };
 		308B8F8812A6AE2D00C99BD2 /* GPGMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8F8112A6AE2D00C99BD2 /* GPGMenu.xib */; };
@@ -1325,6 +1327,8 @@
 		301A1199131E6D5800F27446 /* Danish */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Danish; path = Resources/GPG.subproj/Danish.lproj/GPGProgressIndicatorController.xib.strings; sourceTree = "<group>"; };
 		302ED23912B2FD2C0094DECD /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = German; path = Resources/German.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
 		302ED23B12B2FD350094DECD /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = Resources/English.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
+		3031749E13F1E0C900279CFB /* German */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = German; path = Resources/German.lproj/GPGSignatureView.xib.strings; sourceTree = "<group>"; };
+		303174A013F1E0D400279CFB /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = Resources/English.lproj/GPGSignatureView.xib.strings; sourceTree = "<group>"; };
 		30432AED13786A7B005D7AD5 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = French; path = Resources/French.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
 		307E1C6612B17CFF0012F3DF /* GPGMailBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPGMailBundle.h; path = Source/GPGMailBundle.h; sourceTree = "<group>"; };
 		308B8F7C12A6AE2D00C99BD2 /* Danish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Danish; path = Resources/Danish.lproj/GPGKeyDownload.xib; sourceTree = "<group>"; };
@@ -2722,6 +2726,7 @@
 		30CDB07412B2D45900F5F8B7 /* Strings */ = {
 			isa = PBXGroup;
 			children = (
+				3031749D13F1E0C900279CFB /* GPGSignatureView.xib.strings */,
 				301A10C2131E6C3F00F27446 /* GPGKeyDownload.xib.strings */,
 				301A10CA131E6C3F00F27446 /* GPGMenu.xib.strings */,
 				302ED23812B2FD2C0094DECD /* GPGMailPreferences.xib.strings */,
@@ -2932,6 +2937,8 @@
 				1B8C01DA13E4F26500DB9FA4 /* GPGSignatureView.xib in Resources */,
 				1BDAA67413EB680E00F27826 /* CODING in Resources */,
 				1BACB2EB13EBF66300C750AA /* GPGCertLargeNotTrusted.tif in Resources */,
+				3031749F13F1E0C900279CFB /* GPGSignatureView.xib.strings in Resources */,
+				303174A113F1E0D400279CFB /* GPGSignatureView.xib.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2950,7 +2957,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "pushd $SRCROOT > /dev/null\n\nalias localizeXIB=Dependencies/GPGTools_Core/bin/localizeXIB\n\necho \"Localize GPGMailPreferences.xib\"\nlocalizeXIB Resources/English.lproj/GPGMailPreferences.xib German sv French\n\necho \"Localize GPGMenu.xib\"\nlocalizeXIB Resources/English.lproj/GPGMenu.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGKeyDownload.xib\"\nlocalizeXIB Resources/English.lproj/GPGKeyDownload.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGMailCompose.xib\"\nlocalizeXIB Resources/English.lproj/GPGMailCompose.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGMessageViewerAccessoryView.xib\"\nlocalizeXIB Resources/English.lproj/GPGMessageViewerAccessoryView.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\n\necho \"Localize GPGProgressIndicatorController.xib\"\nlocalizeXIB Resources/GPG.subproj/English.lproj/GPGProgressIndicatorController.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\n\n\npopd > /dev/null\n";
+			shellScript = "pushd $SRCROOT > /dev/null\n\nalias localizeXIB=Dependencies/GPGTools_Core/bin/localizeXIB\n\necho \"Localize GPGMailPreferences.xib\"\nlocalizeXIB Resources/English.lproj/GPGMailPreferences.xib German sv French\n\necho \"Localize GPGMenu.xib\"\nlocalizeXIB Resources/English.lproj/GPGMenu.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGKeyDownload.xib\"\nlocalizeXIB Resources/English.lproj/GPGKeyDownload.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGMailCompose.xib\"\nlocalizeXIB Resources/English.lproj/GPGMailCompose.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGMessageViewerAccessoryView.xib\"\nlocalizeXIB Resources/English.lproj/GPGMessageViewerAccessoryView.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\necho \"Localize GPGSignatureView.xib\"\nlocalizeXIB Resources/English.lproj/GPGSignatureView.xib German\n\n\necho \"Localize GPGProgressIndicatorController.xib\"\nlocalizeXIB Resources/GPG.subproj/English.lproj/GPGProgressIndicatorController.xib Danish Dutch French German Italian Japanese Spanish sv fi ko\n\n\n\npopd > /dev/null\n";
 		};
 		30F40BC012B76FAE002E2374 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3143,6 +3150,15 @@
 				30432AED13786A7B005D7AD5 /* French */,
 			);
 			name = GPGMailPreferences.xib.strings;
+			sourceTree = "<group>";
+		};
+		3031749D13F1E0C900279CFB /* GPGSignatureView.xib.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3031749E13F1E0C900279CFB /* German */,
+				303174A013F1E0D400279CFB /* English */,
+			);
+			name = GPGSignatureView.xib.strings;
 			sourceTree = "<group>";
 		};
 		308B8F7B12A6AE2D00C99BD2 /* GPGKeyDownload.xib */ = {
