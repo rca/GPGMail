@@ -11,12 +11,14 @@ bundle="GPGMail.mailbundle";
 
 
 # determine where to install the bundle to #####################################
-if ( test -e "$netdir/$bundle" ) then
+if test -e "$netdir/$bundle"; then
     _target="$netdir";
-elif ( test -e "$sysdir/$bundle" ) then
+elif test -e "$sysdir/$bundle"; then
     _target="$sysdir";
+elif test -e "$homedir/$bundle"; then
+	_target="$homedir";
 else
-    _target="$homedir";
+    _target="$sysdir";
 fi
 ################################################################################
 
