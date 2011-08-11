@@ -4,7 +4,7 @@ From: GPGTools Test Key <test@gpgtools.org>
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:5.0) Gecko/20110624 Thunderbird/5.0
 MIME-Version: 1.0
 To: test@gpgtools.org
-Subject: MS/NN/VT/NA/S
+Subject: MS/NN/MT/NA/S
 X-Enigmail-Version: 1.2
 Content-Type: multipart/signed; micalg=pgp-sha1;
  protocol="application/pgp-signature";
