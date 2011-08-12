@@ -10,24 +10,25 @@ update-me:
 update: update-core update-libmac update-me
 
 compile:
-	@INSTALL_GPGMAIL=0 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Debug build
+	@INSTALL_GPGMAIL=0 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release build
 
 install:
 	@killall Mail||/usr/bin/true
-	@INSTALL_GPGMAIL=1 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Debug build
+	@INSTALL_GPGMAIL=1 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release build
 
-dmg: compile
+dmg: clean compile
 	@./Utilities/create_sparkle.sh
 	@./Dependencies/GPGTools_Core/scripts/create_dmg.sh
 
-clean-gpgme:
-	rm -rf Dependencies/MacGPGME/build/dist
+clean-libmacgpg:
+	xcodebuild -project Dependencies/Libmacgpg/Libmacgpg.xcodeproj -target Libmacgpg -configuration Release clean > /dev/null
+	xcodebuild -project Dependencies/Libmacgpg/Libmacgpg.xcodeproj -target Libmacgpg -configuration Debug clean > /dev/null
 
 clean-gpgmail:
 	xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release clean > /dev/null
 	xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Debug clean > /dev/null
 
-clean: clean-gpgme clean-gpgmail
+clean: clean-libmacgpg clean-gpgmail
 
 test-compile:
 	@./Utilities/testCompile.sh
