@@ -1,5 +1,7 @@
 GPGMail
-Version: 1.3.3
+Version: 2.0a2 (for OS X 10.7 Lion)
+
+ATTENTION: this is an early pre-release for testing purposes only!
 
 It includes a plugin for Apple Mail to sign, encrypt and decrypt pgp-messages.
 
