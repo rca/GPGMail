@@ -1,10 +1,13 @@
 all: compile
 
-update:
-	@#git submodule foreach git pull origin lion
+update-core:
 	@cd Dependencies/GPGTools_Core; git pull origin master; cd -
+update-libmac:
 	@cd Dependencies/Libmacgpg; git pull origin lion; cd -
+update-me:
 	@git pull
+	
+update: update-core update-libmac update-me
 
 compile:
 	@INSTALL_GPGMAIL=0 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Debug build
