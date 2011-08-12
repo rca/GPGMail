@@ -79,7 +79,7 @@
 													<string key="NSFrameSize">{429, 65}</string>
 													<reference key="NSSuperview" ref="895841702"/>
 													<reference key="NSWindow"/>
-													<reference key="NSNextKeyView" ref="839768565"/>
+													<reference key="NSNextKeyView" ref="605643674"/>
 													<bool key="NSEnabled">YES</bool>
 													<object class="_NSCornerView" key="NSCornerView">
 														<nil key="NSNextResponder"/>
@@ -231,7 +231,7 @@
 									<string key="NSFrameSize">{446, 67}</string>
 									<reference key="NSSuperview" ref="301058323"/>
 									<reference key="NSWindow"/>
-									<reference key="NSNextKeyView" ref="605643674"/>
+									<reference key="NSNextKeyView" ref="895841702"/>
 									<int key="NSsFlags">133138</int>
 									<reference key="NSVScroller" ref="839768565"/>
 									<reference key="NSHScroller" ref="605643674"/>
@@ -356,7 +356,7 @@
 																<object class="NSTextField" id="1041425286">
 																	<reference key="NSNextResponder" ref="766203597"/>
 																	<int key="NSvFlags">268</int>
-																	<string key="NSFrame">{{169, 57}, {243, 14}}</string>
+																	<string key="NSFrame">{{166, 57}, {246, 14}}</string>
 																	<reference key="NSSuperview" ref="766203597"/>
 																	<reference key="NSWindow"/>
 																	<reference key="NSNextKeyView" ref="941235458"/>
@@ -480,7 +480,7 @@
 													<string key="NSFrameSize">{429, 120}</string>
 													<reference key="NSSuperview" ref="469925721"/>
 													<reference key="NSWindow"/>
-													<reference key="NSNextKeyView" ref="766203597"/>
+													<reference key="NSNextKeyView" ref="388287401"/>
 													<int key="NSViewLayerContentsRedrawPolicy">2</int>
 													<string key="NSClassName">FlippedView</string>
 												</object>
@@ -523,7 +523,7 @@
 									<string key="NSFrame">{{0, 76}, {446, 122}}</string>
 									<reference key="NSSuperview" ref="301058323"/>
 									<reference key="NSWindow"/>
-									<reference key="NSNextKeyView" ref="388287401"/>
+									<reference key="NSNextKeyView" ref="469925721"/>
 									<int key="NSsFlags">133138</int>
 									<reference key="NSVScroller" ref="280853786"/>
 									<reference key="NSHScroller" ref="388287401"/>
@@ -541,7 +541,6 @@
 							<string key="NSFrame">{{390, 12}, {82, 32}}</string>
 							<reference key="NSSuperview" ref="90009846"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="244229571">
 								<int key="NSCellFlags">67239424</int>
@@ -742,7 +741,6 @@
 						<string key="NSFrame">{{105, 20}, {307, 14}}</string>
 						<reference key="NSSuperview" ref="163030963"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="1046594397">
 							<int key="NSCellFlags">70385217</int>
@@ -1319,22 +1317,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: gpgKey.expirationDate</string>
-						<reference key="source" ref="1009811417"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="1009811417"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: gpgKey.expirationDate</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">gpgKey.expirationDate</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">417</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: gpgKey.ownerTrust</string>
 						<reference key="source" ref="780524800"/>
 						<reference key="destination" ref="1001"/>
@@ -1364,22 +1346,6 @@
 						</object>
 					</object>
 					<int key="connectionID">438</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: signature.creationDate</string>
-						<reference key="source" ref="1068857947"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="1068857947"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: signature.creationDate</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">signature.creationDate</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">439</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1456,26 +1422,6 @@
 						</object>
 					</object>
 					<int key="connectionID">465</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: signature.expirationDateDescription</string>
-						<reference key="source" ref="1041425286"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="1041425286"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: signature.expirationDateDescription</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">signature.expirationDateDescription</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSAllowsEditingMultipleValuesSelection</string>
-								<boolean value="NO" key="NS.object.0"/>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">470</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1561,6 +1507,66 @@
 						<reference key="destination" ref="133544485"/>
 					</object>
 					<int key="connectionID">522</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: signature.expirationDate</string>
+						<reference key="source" ref="1068857947"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1068857947"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">value: signature.expirationDate</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">signature.expirationDate</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNullPlaceholder</string>
+								<string key="NS.object.0">Diese Signatur hat kein Verfallsdatum</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">531</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: gpgKey.expirationDate</string>
+						<reference key="source" ref="1009811417"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1009811417"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">value: gpgKey.expirationDate</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">gpgKey.expirationDate</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNullPlaceholder</string>
+								<string key="NS.object.0">Dieser Schlüssel hat kein Verfallsdatum</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">532</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.expirationDate</string>
+						<reference key="source" ref="1041425286"/>
+						<reference key="destination" ref="407065042"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1041425286"/>
+							<reference key="NSDestination" ref="407065042"/>
+							<string key="NSLabel">value: selection.expirationDate</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.expirationDate</string>
+							<dictionary key="NSOptions">
+								<boolean value="NO" key="NSAllowsEditingMultipleValuesSelection"/>
+								<string key="NSNullPlaceholder">Diese Signatur hat kein Verfallsdatum</string>
+							</dictionary>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">536</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -2293,7 +2299,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">522</int>
+			<int key="maxID">537</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

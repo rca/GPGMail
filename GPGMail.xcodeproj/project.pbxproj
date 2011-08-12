@@ -2712,6 +2712,17 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		3019330213F5602000C7F407 /* XIB Strings */ = {
+			isa = PBXGroup;
+			children = (
+				3031749D13F1E0C900279CFB /* GPGSignatureView.xib.strings */,
+				301A10C2131E6C3F00F27446 /* GPGKeyDownload.xib.strings */,
+				301A10CA131E6C3F00F27446 /* GPGMenu.xib.strings */,
+				302ED23812B2FD2C0094DECD /* GPGMailPreferences.xib.strings */,
+			);
+			name = "XIB Strings";
+			sourceTree = "<group>";
+		};
 		30CDB07312B2D44700F5F8B7 /* XIBs */ = {
 			isa = PBXGroup;
 			children = (
@@ -2726,10 +2737,7 @@
 		30CDB07412B2D45900F5F8B7 /* Strings */ = {
 			isa = PBXGroup;
 			children = (
-				3031749D13F1E0C900279CFB /* GPGSignatureView.xib.strings */,
-				301A10C2131E6C3F00F27446 /* GPGKeyDownload.xib.strings */,
-				301A10CA131E6C3F00F27446 /* GPGMenu.xib.strings */,
-				302ED23812B2FD2C0094DECD /* GPGMailPreferences.xib.strings */,
+				3019330213F5602000C7F407 /* XIB Strings */,
 				1B194B8D11CC57250092B810 /* InfoPlist.strings */,
 				1B194B5911CC55A80092B810 /* GPGMail.strings */,
 				1BECA61413E372AC00C622B0 /* SignatureView.strings */,

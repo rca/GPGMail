@@ -72,13 +72,6 @@ GPGSignatureView *_sharedInstance;
     return value;
 }
 
-- (NSString *)expirationDateDescription {
-    if(gpgKey.expirationDate)
-        return [gpgKey.expirationDate description];
-    
-    return localized(@"NO_EXPIRATION_DATE");
-}
-
 - (NSString *)validityDescription {
 	if (!signature) return nil;
 	

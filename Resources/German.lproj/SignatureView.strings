@@ -8,7 +8,6 @@
  Defines the strings used in the signature view.
  */
 {
-    "NO_EXPIRATION_DATE" = "Diese Signatur hat kein Verfallsdatum";
     "VALIDITY_NO_TRUST" = "Diese Signatur ist nicht vertrauenswürig.";
     "VALIDITY_OK" = "Diese Signature ist vertrauenswürdig";
 }
