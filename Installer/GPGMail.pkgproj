@@ -749,7 +749,7 @@
 							<key>LANGUAGE</key>
 							<string>English</string>
 							<key>SECONDARY_VALUE</key>
-							<string>Neither GnuPG nor GnuPG 2 is found on your system! Make sure you have at least one of them installed. Visit http://gpgtools.org</string>
+							<string>Neither GnuPG nor GnuPG 2 is found on your system! Make sure you have at least one of them installed. Please visit http://www.gpgtools.org</string>
 							<key>VALUE</key>
 							<string>GnuPG missing</string>
 						</dict>
@@ -800,6 +800,55 @@
 					<key>STATE</key>
 					<true/>
 				</dict>
+				<dict>
+					<key>BEHAVIOR</key>
+					<integer>3</integer>
+					<key>DICTIONARY</key>
+					<dict>
+						<key>IC_REQUIREMENT_SCRIPT_ARGUMENTS</key>
+						<array>
+							<dict>
+								<key>IC_REQUIREMENT_SCRIPT_ARGUMENT_STATE</key>
+								<true/>
+								<key>IC_REQUIREMENT_SCRIPT_ARGUMENT_VALUE</key>
+								<string>7</string>
+							</dict>
+						</array>
+						<key>IC_REQUIREMENT_SCRIPT_COMPARATOR</key>
+						<integer>0</integer>
+						<key>IC_REQUIREMENT_SCRIPT_EMBED</key>
+						<true/>
+						<key>IC_REQUIREMENT_SCRIPT_PATH</key>
+						<dict>
+							<key>PATH</key>
+							<string>../Dependencies/GPGTools_Core/scripts/check_for_osver.sh</string>
+							<key>PATH_TYPE</key>
+							<integer>1</integer>
+						</dict>
+						<key>IC_REQUIREMENT_SCRIPT_VALUE</key>
+						<integer>0</integer>
+					</dict>
+					<key>IC_REQUIREMENT_CHECK_TYPE</key>
+					<integer>0</integer>
+					<key>IDENTIFIER</key>
+					<string>fr.whitebox.Packages.requirement.scripts</string>
+					<key>MESSAGE</key>
+					<array>
+						<dict>
+							<key>LANGUAGE</key>
+							<string>English</string>
+							<key>SECONDARY_VALUE</key>
+							<string>This version is for OS X 10.7 (Lion) only.
+Please visit http://www.gpgtools.org for more downloads.</string>
+							<key>VALUE</key>
+							<string>Wrong OS</string>
+						</dict>
+					</array>
+					<key>NAME</key>
+					<string>OS</string>
+					<key>STATE</key>
+					<true/>
+				</dict>
 			</array>
 			<key>POSTINSTALL_PATH</key>
 			<dict/>
@@ -815,7 +864,7 @@
 			<key>ADVANCED_OPTIONS</key>
 			<dict/>
 			<key>BUILD_FORMAT</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>BUILD_PATH</key>
 			<dict>
 				<key>PATH</key>
