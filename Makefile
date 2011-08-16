@@ -16,7 +16,7 @@ install:
 	@killall Mail||/usr/bin/true
 	@INSTALL_GPGMAIL=1 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release build
 
-dmg: clean compile
+dmg: clean update compile
 	@./Utilities/create_sparkle.sh
 	@./Dependencies/GPGTools_Core/scripts/create_dmg.sh
 
