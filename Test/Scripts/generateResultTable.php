@@ -8,14 +8,15 @@
 
 /* -------------------------------------------------------------------------- */
 define("STATUS_TBT","TBT");
-define("COLOR_TBT","yellow");
+define("COLOR_TBT","orange");
 define("STATUS_INV","INV");
 define("COLOR_INV","gray");
 define("STATUS_OK","OK");
 define("COLOR_OK","green");
 define("STATUS_NYI","NYI");
 define("COLOR_NYI","red");
-define("COLOR_ISSUE","orange");
+define("STATUS_ISSUE","#xxx");
+define("COLOR_ISSUE","blue");
 define("SEND",0);
 define("RECV",1);
 define("COMMENT",2);
@@ -54,7 +55,7 @@ $result["MS"]["NN"]["VT"]["VA"]["S"][RECV] = STATUS_OK;
 $result["MS"]["NN"]["VT"]["VA"]["S"][SEND] = STATUS_OK;
 /* -------------------------------------------------------------------------- */
 
-function printRow($a, $b, $c, $d, $e, $i, $result) {
+function printRow($a, $b, $c, $d, $e, $i, $stats, $result) {
     /* config --------------------------------------------------------------- */
     $template = "|%04d|%s/%s/%s/%s/%s|<font color='%s'>%s</font>|<font color='%s'>%s</font>|%s|\n";
     /* ---------------------------------------------------------------------- */
@@ -92,30 +93,34 @@ function printRow($a, $b, $c, $d, $e, $i, $result) {
     /* ---------------------------------------------------------------------- */
 
     /* set the color -------------------------------------------------------- */
-    if (STATUS_TBT == $send_status) {$send_color=COLOR_TBT;}
-    if (STATUS_TBT == $recv_status) {$recv_color=COLOR_TBT;}
-    if (STATUS_INV == $send_status) {$send_color=COLOR_INV;}
-    if (STATUS_INV == $recv_status) {$recv_color=COLOR_INV;}
-    if (STATUS_OK == $send_status) {$send_color=COLOR_OK;}
-    if (STATUS_OK == $recv_status) {$recv_color=COLOR_OK;}
-    if (STATUS_NYI == $send_status) {$send_color=COLOR_NYI;}
-    if (STATUS_NYI == $recv_status) {$recv_color=COLOR_NYI;}
+    if (STATUS_TBT == $send_status) {$send_color=COLOR_TBT; ++$stats[STATUS_TBT];}
+    if (STATUS_TBT == $recv_status) {$recv_color=COLOR_TBT; ++$stats[STATUS_TBT];}
+    if (STATUS_INV == $send_status) {$send_color=COLOR_INV; ++$stats[STATUS_INV];}
+    if (STATUS_INV == $recv_status) {$recv_color=COLOR_INV; ++$stats[STATUS_INV];}
+    if (STATUS_OK == $send_status) {$send_color=COLOR_OK; ++$stats[STATUS_OK];}
+    if (STATUS_OK == $recv_status) {$recv_color=COLOR_OK; ++$stats[STATUS_OK];}
+    if (STATUS_NYI == $send_status) {$send_color=COLOR_NYI; ++$stats[STATUS_NYI];}
+    if (STATUS_NYI == $recv_status) {$recv_color=COLOR_NYI; ++$stats[STATUS_NYI];}
     if ("#" == substr($send_status, 0, 1)) {
         $nr = substr($send_status, 1);
         $send_status = "<a href='http://gpgtools.lighthouseapp.com/projects/65764/tickets/$nr'>#$nr</a>";
         $send_color=COLOR_ISSUE;
+        ++$stats[STATUS_ISSUE];
     }
     if ("#" == substr($recv_status, 0, 1)) {
         $nr = substr($recv_status, 1);
         $recv_status = "<a href='http://gpgtools.lighthouseapp.com/projects/65764/tickets/$nr'>#$nr</a>";
         $recv_color=COLOR_ISSUE;
+        ++$stats[STATUS_ISSUE];
     }
     /* ---------------------------------------------------------------------- */
 
 
     /* ---------------------------------------------------------------------- */
     if (! (STATUS_INV == $send_status && STATUS_INV == $recv_status)) {
-        $i++;
+        if (STATUS_INV != $send_status) ++$j;
+        if (STATUS_INV != $recv_status) ++$j;
+        ++$i;
         printf ($template, $i, $a, $b, $c, $d, $e,
                 $send_color, $send_status, $recv_color, $recv_status, $comment);
     }
@@ -124,17 +129,25 @@ function printRow($a, $b, $c, $d, $e, $i, $result) {
 
 /* main --------------------------------------------------------------------- */
 $i = 0;
+$stats = array();
 foreach ($openpgp as $a) {
     foreach ($smime as $b) {
         foreach ($message as $c) {
             foreach ($attachment as $d) {
                 foreach ($receiver as $e) {
-                    printRow($a, $b, $c, $d, $e, &$i, &$result);
+                    printRow($a, $b, $c, $d, $e, &$i, &$stats, &$result);
                 }
             }
         }
     }
 }
 /* -------------------------------------------------------------------------- */
+
+echo "\n";
+echo " * Seems to work (<font color='". COLOR_OK ."'>" . STATUS_OK ."</font>): ". $stats[STATUS_OK] ."\n";
+echo " * To be tested (<font color='". COLOR_TBT ."'>" . STATUS_TBT ."</font>): ". $stats[STATUS_TBT] ."\n";
+echo " * Has issues (<font color='". COLOR_ISSUE ."'>" . STATUS_ISSUE ."</font>): ". $stats[STATUS_ISSUE] ."\n";
+//echo " * Not yet implemented (<font color='". COLOR_NYI ."'>" . STATUS_NYI ."</font>): ". $stats[STATUS_NYI] ."\n";
+echo " * Combination not possible, out of scope or no testing needed (<font color='". COLOR_INV ."'>" . STATUS_INV ."</font>): ". $stats[STATUS_INV] ."\n";
 
 ?>
