@@ -675,7 +675,7 @@
 						<key>VALUE</key>
 						<dict>
 							<key>PATH</key>
-							<string>package-introduction.txt</string>
+							<string>package-introduction.rtf</string>
 							<key>PATH_TYPE</key>
 							<integer>1</integer>
 						</dict>
