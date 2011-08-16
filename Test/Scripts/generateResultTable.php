@@ -57,7 +57,6 @@ $result["MS"]["NN"]["VT"]["VA"]["S"][SEND] = STATUS_OK;
 function printRow($a, $b, $c, $d, $e, $i, $result) {
     /* config --------------------------------------------------------------- */
     $template = "|%04d|%s/%s/%s/%s/%s|<font color='%s'>%s</font>|<font color='%s'>%s</font>|%s|\n";
-    $skip=false;
     /* ---------------------------------------------------------------------- */
 
     /* results -------------------------------------------------------------- */
@@ -80,21 +79,15 @@ function printRow($a, $b, $c, $d, $e, $i, $result) {
         $send_status = STATUS_INV;
         $recv_status = STATUS_INV;
         $comment = "Can't use MIME twice";
-        $skip = true;
     }
     if ("NN" == $a) {
         $send_status = STATUS_INV;
         $recv_status = STATUS_INV;
         $comment .= " (No testing needed)";
-        $skip = true;
     }
-    if ("I" == substr($a, 0, 1) && "NN" != $b) {
+    if ("I" == substr($a, 0, 1)) {
         $send_status = STATUS_INV;
-        $comment .= " (sending not planned)";
-    }
-    if ("I" == substr($a, 0, 1) && "NN" == $b) {
-        $send_status=STATUS_NYI;
-        $comment .= " (inline support later)";
+        $comment .= " (Sending PGP/Inline not supported)";
     }
     /* ---------------------------------------------------------------------- */
 
@@ -121,7 +114,7 @@ function printRow($a, $b, $c, $d, $e, $i, $result) {
 
 
     /* ---------------------------------------------------------------------- */
-    if (!$skip) {
+    if (! (STATUS_INV == $send_status && STATUS_INV == $recv_status)) {
         $i++;
         printf ($template, $i, $a, $b, $c, $d, $e,
                 $send_color, $send_status, $recv_color, $recv_status, $comment);
