@@ -425,6 +425,10 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
         return;
     // And now the funny part, the actual verification.
     NSData *signatureData = [signaturePart bodyData];
+	if (![signatureData length]) {
+		return;
+	}
+	
     //DebugLog(@"[DEBUG] %s signature: %@", __PRETTY_FUNCTION__, [NSString stringWithData:signatureData encoding:[self guessedEncoding]]);
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.verbose = (GPGMailLoggingLevel > 0);
