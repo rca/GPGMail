@@ -264,12 +264,14 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     NSMutableArray *normalRecipients = [[NSMutableArray alloc] initWithCapacity:1];
     NSMutableArray *bccRecipients = [[NSMutableArray alloc] initWithCapacity:1];
     for(NSString *recipient in recipients) {
-        if(((NSRange)[recipient rangeOfString:@"gpg-mail-bcc::"]).location != NSNotFound)
-            [bccRecipients addObject:[recipient stringByReplacingCharactersInRange:[recipient rangeOfString:@"gpg-mail-bcc::"] withString:@""]];
-        else if(((NSRange)[recipient rangeOfString:@"gpg-mail-from::"]).location != NSNotFound)
-            [bccRecipients addObject:[recipient stringByReplacingCharactersInRange:[recipient rangeOfString:@"gpg-mail-from::"] withString:@""]];
-        else
+		NSLog(@"Class: %@ DESC: %@", [recipient className], [recipient description]);
+        if([recipient hasPrefix:@"gpg-mail-bcc::"]) {
+			[bccRecipients addObject:[recipient substringFromIndex:14]];
+        } else if([recipient hasPrefix:@"gpg-mail-from::"]) {
+			[normalRecipients addObject:[recipient substringFromIndex:15]];
+		} else {
             [normalRecipients addObject:recipient];
+		}
     }
     DebugLog(@"BCC Recipients: %@", bccRecipients);
     DebugLog(@"Recipients: %@", normalRecipients);
