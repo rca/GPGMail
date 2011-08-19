@@ -108,6 +108,21 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     return ret;
 }
 
+- (id)MADecodeMultipartAlternativeWithContext:(id)ctx {
+    // This is a special case. A multipart/alternative message.
+    // For multipart/alternative messages, Mail.app uses favorited part
+    // given in the settings.
+    NSNumber *shouldBeDecrypting = [[(MimeBody *)[self mimeBody] message] getIvar:@"shouldBeDecrypting"];
+    // If not in decrypt mode, OUT OF HERE!
+    if(!shouldBeDecrypting)
+        return [self MADecodeMultipartAlternativeWithContext:ctx];
+    
+    for(MimePart *part in [self subparts]) {
+        if([part isType:@"text" subtype:@"plain"])
+            return [part decodeTextPlainWithContext:ctx];
+    }
+    return [self MADecodeMultipartAlternativeWithContext:ctx];
+}
 - (id)MADecodeTextPlainWithContext:(id)ctx {
     // 1. Step, check if the message was already decrypted.
     char isEncrypted, isSigned;

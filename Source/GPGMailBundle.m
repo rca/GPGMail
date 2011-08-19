@@ -145,7 +145,9 @@ static BOOL gpgMailWorks = YES;
                 @"copySignerLabels", 
                 @"isSigned", 
                 @"usesKnownSignatureProtocol", 
-                @"decodeTextPlainWithContext:", nil], @"selectors", nil],
+                @"decodeTextPlainWithContext:",
+                @"decodeMultipartAlternativeWithContext:",
+             nil], @"selectors", nil],
         [NSDictionary dictionaryWithObjectsAndKeys:
             @"MimeBody", @"class", 
             [NSArray arrayWithObjects:

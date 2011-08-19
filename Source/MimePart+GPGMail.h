@@ -60,6 +60,18 @@
 - (id)decodeMultipartEncryptedWithContext:(id)ctx;
 
 /**
+ Some Mail applications send PGP inline encrypted messages in text and
+ html form.
+ Based on what's set in preferences, Mail.app chooses to display the text/html
+ part, in which case decodeTextPlain is not called, and such, the message
+ is not decrypted.
+ Using the multipart/alternative entry point, it's checked if a text/plain
+ part is available. If so, call decodeTextPlain which decrypts the message
+ and returns the decrypted message.
+ */
+- (id)MADecodeMultipartAlternativeWithContext:(id)ctx;
+
+/**
  Is called by GPGDecodeWithContext if a plain/text mime part is
  found, which contains gpg inline data. The GPG data might either be
  encrypted data or signature data. Based on the found data, the decryption
