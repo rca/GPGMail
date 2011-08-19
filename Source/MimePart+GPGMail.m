@@ -512,13 +512,14 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     // Now on to fetching the signed data.
     NSData *signedData = [self signedData];
     // And last finding the signature.
-    MimePart *signaturePart;
+    MimePart *signaturePart = nil;
     for(MimePart *part in [self subparts]) {
         if([part isType:@"application" subtype:@"pgp-signature"]) {
             signaturePart = part;
             break;
         }
     }
+    
     if(![signedData length] || !signaturePart)
         return;
     // And now the funny part, the actual verification.
