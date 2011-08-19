@@ -32,7 +32,7 @@
 @interface Message (GPGMail)
 
 /**
- Mail.app uses this method to gather various internal information
+ Mail.app uses -[Message messageFlags] to gather various internal information
  about the message, including whether the email is encrypted and|or
  signed.
  It's also used to determine whether or not the message error banner
@@ -41,15 +41,17 @@
  Unfortunately PGP messages are not recognized as signed or encrypted
  and hence, the error banner is never shown.
  
- To fix this behaviour a special var 'fakeMessageFlags' is set on the message, whenever
- a PGP encrypted and|or signed message is encountered.
- If the var is available the signed (0x00800000) and encrypted bits (0x00000008) are
- added to the current flags.
+ To fix whenever a PGP encrypted and|or signed message is encountered
+ a call to this method temporarily adds the signed (0x00800000) and 
+ encrypted bits (0x00000008) to the current flags.
  
  This way the banner is shown for PGP messages as well, since Mail now believes
  this message is indeed encrypted and|or signed.
+ 
+ N.B.: Previously setIvar was used. messageFlags is called a bazillion times
+       which caused getIvar to deadlock. DON'T USE setIvar FOR METHODS
+       which are called very often.
  */
-- (unsigned int)MAMessageFlag;
-
+- (void)fakeMessageFlags;
 
 @end

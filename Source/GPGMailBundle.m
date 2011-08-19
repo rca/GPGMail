@@ -148,10 +148,6 @@ static BOOL gpgMailWorks = YES;
             [NSArray arrayWithObjects:
                 @"isSignedByMe", nil], @"selectors", nil],
         [NSDictionary dictionaryWithObjectsAndKeys:
-            @"Message", @"class",
-            [NSArray arrayWithObjects:
-                @"messageFlags", nil], @"selectors", nil],
-        [NSDictionary dictionaryWithObjectsAndKeys:
             @"MailAccount", @"class",
             [NSArray arrayWithObjects:
                 @"accountExistsForSigning", nil], @"selectors", nil],

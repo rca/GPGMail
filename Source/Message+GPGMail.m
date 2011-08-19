@@ -32,17 +32,8 @@
 
 @implementation Message (GPGMail)
 
-- (unsigned int)MAMessageFlags {
-    unsigned int flags = [self MAMessageFlags];
-    if(flags > 0 && [self ivarExists:@"fakeMessageFlags"]) {
-        // Adding sign and encrypted flag.
-        // Should probably check for signed first, before adding signed flag.
-        // Encrypted flag is: 0x00000008 - int value: 8
-        // Signed flag is: 0x00800000 - int value: 8388608
-        flags = flags | 0x00000008 | 0x00800000;
-    }
-    return flags;
+- (void)fakeMessageFlags {
+    _messageFlags = _messageFlags | 0x00000008 | 0x00800000;
 }
-
 
 @end

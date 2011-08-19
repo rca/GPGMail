@@ -35,6 +35,7 @@
 #import "GPGFlaggedHeaderValue.h"
 #import "MimePart+GPGMail.h"
 #import "NSString+GPGMail.h"
+#import "Message+GPGMail.h"
 #import <MFMessageFramework.h>
 #import <ActivityMonitor.h>
 #import <NSString-NSStringUtils.h>
@@ -322,7 +323,7 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     [[ActivityMonitor currentMonitor] setError:error];
     // Tell the message to fake the message flags, means adding the signed
     // and encrypted flag, otherwise the error banner is not shown.
-    [[(MimeBody *)[self mimeBody] message] setIvar:@"fakeMessageFlags" value:[NSNumber numberWithBool:YES]];
+    [[(MimeBody *)[self mimeBody] message] fakeMessageFlags];
 }
 
 - (id)MANewEncryptedPartWithData:(id)data recipients:(id)recipients encryptedData:(id *)encryptedData {
@@ -498,10 +499,16 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
 - (void)MAVerifySignature {
     // If this is a non GPG signed message, let's call the original method
     // and get out of here!
-    if(![[self bodyParameterForKey:@"protocol"] isEqualToString:@"application/pgp-signature"])
-        return [self MAVerifySignature];
+    if(![[self bodyParameterForKey:@"protocol"] isEqualToString:@"application/pgp-signature"]) {
+        [self MAVerifySignature];
+        return;
+    }
     MFError *error;
     BOOL needsVerification = [self needsSignatureVerification:&error];
+    if(!error)
+        error = [[[self mimeBody] topLevelPart] valueForKey:@"_smimeError"];
+    
+    DebugLog(@"Error: %@", error);
     if(!needsVerification || error)
         return;
     // If the signature was not yet verified, check if we recognize the protocol.
@@ -527,25 +534,33 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
 	if (![signatureData length]) {
 		return;
 	}
+    
+    __block NSArray *signatures = nil;
+    __block NSException *verificationException = nil;
+    [[GPGMailBundle sharedInstance] addDecryptionTask:^{
+        GPGController *gpgc = [[GPGController alloc] init];
+        gpgc.verbose = (GPGMailLoggingLevel > 0);
+        @try {
+            signatures = [gpgc verifySignature:signatureData originalData:signedData];
+            [signatures retain];
+            if(gpgc.error)
+                @throw gpgc.error;
+        }
+        @catch(NSException *e) {
+            verificationException = e;
+            signatures = nil;
+            DebugLog(@"[DEBUG] %s - verification errror: %@", __PRETTY_FUNCTION__, e);
+        }
+        @finally {
+            [gpgc release];
+        }
+    }];
 	
-    //DebugLog(@"[DEBUG] %s signature: %@", __PRETTY_FUNCTION__, [NSString stringWithData:signatureData encoding:[self guessedEncoding]]);
-    GPGController *gpgc = [[GPGController alloc] init];
-    gpgc.verbose = (GPGMailLoggingLevel > 0);
-    NSArray *signatures;
-    @try {
-        signatures = [gpgc verifySignature:signatureData originalData:signedData];
-        [signatures retain];
-        if(gpgc.error)
-            @throw gpgc.error;
-    }
-    @catch (NSException* e) {
-        [self failedToVerifyWithException:e];
-        DebugLog(@"[DEBUG] %s - verification errror: %@", __PRETTY_FUNCTION__, e);
+    if(![signatures count] && verificationException) {
+        [self failedToVerifyWithException:verificationException];
         return;
     }
-    @finally {
-        [gpgc release];
-    }
+    
     // Signatures are stored in _messageSigners. that might not work, but
     // hopefully it does.
     [self setValue:[signatures retain] forKey:@"_messageSigners"];
@@ -590,10 +605,11 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     NSString *message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
     MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:nil title:title helpTag:nil 
                                      userInfo:[NSDictionary dictionaryWithObjectsAndKeys:title, @"_MFShortDescription", message, @"NSLocalizedDescription", nil]];
+    [[[self mimeBody] topLevelPart] setValue:error forKey:@"_smimeError"];
     [[ActivityMonitor currentMonitor] setError:error];
     // Tell the message to fake the message flags, means adding the signed
     // and encrypted flag, otherwise the error banner is not shown.
-    [[(MimeBody *)[self mimeBody] message] setIvar:@"fakeMessageFlags" value:[NSNumber numberWithBool:YES]];
+    [[(MimeBody *)[self mimeBody] message] fakeMessageFlags];
 }
          
 - (id)MACopySignerLabels {
