@@ -78,15 +78,19 @@
  only the relevant email addresses from the original headers are passed in.
  
  To guess the method to be used within these methods, the email addresses are prefixed
- with 'gpgmail-<header-key>::' if the OpenPGP checkbox is checked.
+ with 'gpg-flagged-<id>-<header-key>::' if the OpenPGP checkbox is checked.
  
  In addition this prefix is used to distinguish bcc recipients from normal recipients.
  GPG allows to add bcc recipients which receive the message, but the encrypted
  or signed data contains no information that these recipients exist.
  As it seems it's not necessary for S/MIME to treat the two types of recipients 
  differentely.
+ 
+ Based on what operations are performed (signing, encrypting, encrypting+signing)
+ different info is added to the original headers.
+ forEncrypting and forSigning decide which headers are added.
  */
-- (void)_injectGPGRelevantHeaders;
+- (void)_addGPGFlaggedHeaderValuesToHeaders:(NSMutableDictionary *)headers forEncrypting:(BOOL)forEncrypting forSigning:(BOOL)forSigning;
 
 /**
  Is called whenever a recipient is added to the message and decides

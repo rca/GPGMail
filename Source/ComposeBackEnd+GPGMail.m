@@ -14,10 +14,13 @@
 #import <MimePart.h>
 #import <MessageWriter.h>
 #import <NSString-EmailAddressString.h>
+#import <NSString-NSStringUtils.h>
+#import <MutableMessageHeaders.h>
 #import <ComposeBackEnd.h>
 #import "CCLog.h"
 #import "NSObject+LPDynamicIvars.h"
 #import "NSString+GPGMail.h"
+#import "GPGFlaggedHeaderValue.h"
 #import "GPGMailBundle.h"
 #import "ComposeBackEnd+GPGMail.h"
 
@@ -57,10 +60,8 @@
         return outMessage;
     }
     
-	if (shouldPGPEncrypt) {
-		// Inject the headers needed in newEncryptedPart.
-		[self _injectGPGRelevantHeaders];
-	}
+    // Inject the headers needed in newEncryptedPart and newSignedPart.
+    [self _addGPGFlaggedHeaderValuesToHeaders:[(ComposeBackEnd *)self cleanHeaders] forEncrypting:shouldPGPEncrypt forSigning:shouldPGPSign];
     
     OutgoingMessage *outgoingMessage = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldPGPSign shouldEncrypt:shouldPGPEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
     
@@ -92,32 +93,29 @@
     return outgoingMessage;
 }
 
-- (void)_injectGPGRelevantHeaders {
-    // the original makeMessageWithContents will create the encrypted message body for us.
-    // Unfortunately a single list of recipients is passed to the method creating the
-    // encrypted part newEncryptedPartForData.
-    // To be able to distinguish bcc recipients and other recipients, we modify
-    // the headers, which is used to pass the recipients list to newEncryptedPartForData
-    // and flag the bcc recipients.
-    
-    // Preserve the old bcc recipients. They'll be restored before the message is sent,
-    // since the modified ones are only needed in MimePart->newEncryptedPart and 
-    // MimePart->newSignedPart.
-    NSArray *originalBCCRecipients = [NSArray arrayWithArray:[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"bcc"]];
-    [self setIvar:@"originalBCCRecipients" value:originalBCCRecipients];
-    // Add the bcc information and from information (from is used for self encryption, so the
-    // message can always be decryped by the sender. This is needed to decrypt the message in
-    // the sent folder.
-    NSMutableDictionary *modifiedHeaders = [(ComposeBackEnd *)self cleanHeaders];
-    NSMutableArray *modifiedAddresses = [[NSMutableArray alloc] initWithCapacity:0];
-    for(id address in [modifiedHeaders valueForKey:@"bcc"]) {
-        [modifiedAddresses addObject:[@"gpg-mail-bcc::" stringByAppendingString:[address gpgNormalizedEmail]]];
+- (void)_addGPGFlaggedHeaderValuesToHeaders:(NSMutableDictionary *)headers forEncrypting:(BOOL)forEncrypting forSigning:(BOOL)forSigning {
+    // To decide whether S/MIME or PGP operations should be performed on
+    // the message, different headers have to be flagged.
+    //
+    // For signing:
+    // * flag the "from" value
+    // 
+    // For encrypting:
+    // * temporarily add the flagged sender ("from") to the bcc recipients list,
+    //   to encrypt for self, so each message can also be decrypted by the sender.
+    //   (the "from" value is not inlucded in the recipients list passed to the encryption
+    //    method)
+    if(forSigning) {
+        [headers setObject:[[headers valueForKey:@"from"] flaggedValueWithKey:@"from"] forKey:@"from"];
     }
-    // Always add the sender to bcc to encrypt for self.
-    [modifiedAddresses addObject:[@"gpg-mail-from::" stringByAppendingString:[[modifiedHeaders valueForKey:@"from"] gpgNormalizedEmail]]];
-    // Replace the current headers with the flagged ones. 
-    [modifiedHeaders setValue:modifiedAddresses forKey:@"bcc"];
-    [modifiedAddresses release];
+    else if(forEncrypting) {
+        // Save the original bcc recipients, to restore later.
+        [self setIvar:@"originalBCCRecipients" value:[headers valueForKey:@"bcc"]];
+        NSMutableArray *newBCCList = [NSMutableArray array];
+        [newBCCList addObjectsFromArray:[headers valueForKey:@"bcc"]];
+        [newBCCList addObject:[[headers valueForKey:@"from"] flaggedValueWithKey:@"from"]];
+        [headers setValue:newBCCList forKey:@"bcc"];
+    }
 }
 
 - (Subdata *)_newPGPBodyDataWithEncryptedData:(NSData *)encryptedData headers:(MutableMessageHeaders *)headers shouldBeMIME:(BOOL)shouldBeMIME {
@@ -200,15 +198,11 @@
 	
 	// Set the original bcc recipients.
     DebugLog(@"[DEBUG] %s originalBCCRecipients: %@", __PRETTY_FUNCTION__, [self getIvar:@"originalBCCRecipients"]);
-	
-    NSArray *originalBCCRecipients = [self getIvar:@"originalBCCRecipients"];
-    if([originalBCCRecipients count]) {
+    NSArray *originalBCCRecipients = (NSArray *)[self getIvar:@"originalBCCRecipients"];
+    if([originalBCCRecipients count])
         [headers setHeader:originalBCCRecipients forKey:@"bcc"];
-	} else {
+	else
         [headers removeHeaderForKey:@"bcc"];
-	}
-
-	
     // Create the actualy body data.
     NSData *headerData = [headers encodedHeadersIncludingFromSpace:NO];
     DebugLog(@"[DEBUG] %s header string: %@", __PRETTY_FUNCTION__, [[[NSString alloc] initWithData:headerData encoding:NSUTF8StringEncoding] autorelease]);

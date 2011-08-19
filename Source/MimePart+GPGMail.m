@@ -30,7 +30,9 @@
 #import <Libmacgpg/Libmacgpg.h>
 #import <Libmacgpg/GPGKey.h>
 #import "CCLog.h"
+#import "NSArray+Functional.h"
 #import "NSObject+LPDynamicIvars.h"
+#import "GPGFlaggedHeaderValue.h"
 #import "MimePart+GPGMail.h"
 #import "NSString+GPGMail.h"
 #import <MFMessageFramework.h>
@@ -296,21 +298,26 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     [[(MimeBody *)[self mimeBody] message] setIvar:@"fakeMessageFlags" value:[NSNumber numberWithBool:YES]];
 }
 
-// TODO: Should calll the original method if open pgp checkox is not checked.
 - (id)MANewEncryptedPartWithData:(id)data recipients:(id)recipients encryptedData:(id *)encryptedData {
     DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    // First thing todo, check if an address with the gpg-mail prefix is found.
+    // If not, S/MIME is wanted.
+    NSArray *prefixedAddresses = [recipients filter:^(id recipient){
+        return [(NSString *)recipient isFlaggedValue] ? recipient : nil;
+    }];
+    if(![prefixedAddresses count])
+        return [self MANewEncryptedPartWithData:data recipients:recipients encryptedData:encryptedData];
+    
     // Split the recipients in normal and bcc recipients.
     NSMutableArray *normalRecipients = [[NSMutableArray alloc] initWithCapacity:1];
     NSMutableArray *bccRecipients = [[NSMutableArray alloc] initWithCapacity:1];
     for(NSString *recipient in recipients) {
-		NSLog(@"Class: %@ DESC: %@", [recipient className], [recipient description]);
-        if([recipient hasPrefix:@"gpg-mail-bcc::"]) {
-			[bccRecipients addObject:[recipient substringFromIndex:14]];
-        } else if([recipient hasPrefix:@"gpg-mail-from::"]) {
-			[normalRecipients addObject:[recipient substringFromIndex:15]];
-		} else {
+        if([recipient isFlaggedValueWithKey:@"bcc"])
+            [bccRecipients addObject:recipient];
+        else if([recipient isFlaggedValueWithKey:@"from"])
+            [bccRecipients addObject:recipient];
+        else
             [normalRecipients addObject:recipient];
-		}
     }
     DebugLog(@"BCC Recipients: %@", bccRecipients);
     DebugLog(@"Recipients: %@", normalRecipients);
@@ -366,12 +373,27 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
 }
 
 // TODO: sha1 the right algorithm?
-// TODO: Should calll the original method if open pgp checkox is not checked.
-- (id)MANewSignedPartWithData:(id)arg1 sender:(id)arg2 signatureData:(id *)arg3 {
+// TODO: Implement visual exception if no valid signing keys are found.
+// TODO: Translate the error message if creating the signature fails.
+//       At the moment the standard S/MIME message is used.
+// TODO: Translate "OpenPGP digital signature".
+- (id)MANewSignedPartWithData:(id)data sender:(id)sender signatureData:(id *)signatureData {
     DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
-    DebugLog(@"[DEBUG] %s data: %@", __PRETTY_FUNCTION__, arg1);
-    DebugLog(@"[DEBUG] %s sender: %@", __PRETTY_FUNCTION__, arg2);
-    NSSet *normalKeyList = [[GPGMailBundle sharedInstance] signingKeyListForAddresses:[NSArray arrayWithObject:arg2]];
+    DebugLog(@"[DEBUG] %s data: %@", __PRETTY_FUNCTION__, data);
+    DebugLog(@"[DEBUG] %s sender: [%@] %@", __PRETTY_FUNCTION__, [sender class], sender);
+    // If sender doesn't show any injected header values, S/MIME is wanted,
+    // hence the original method called.
+    if(![sender isFlaggedValueWithKey:@"from"]) {
+        return [self MANewSignedPartWithData:data sender:sender signatureData:signatureData];
+    }
+    
+    NSSet *normalKeyList = [[GPGMailBundle sharedInstance] signingKeyListForAddresses:[NSArray arrayWithObject:sender]];
+    // Should not happen, but if no valid signing keys are found
+    // raise an error. Returning nil tells Mail that an error occured.
+    if(![normalKeyList count]) {
+        [self failedToSignForSender:sender];
+        return nil;
+    }
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.verbose = (GPGMailLoggingLevel > 0);
     gpgc.useArmor = YES;
@@ -384,7 +406,7 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     for(NSString *fingerprint in normalKeyList)
         [gpgc addSignerKey:fingerprint];
     @try {
-        *arg3 = [gpgc processData:arg1 withEncryptSignMode:GPGDetachedSign recipients:nil hiddenRecipients:nil];
+        *signatureData = [gpgc processData:data withEncryptSignMode:GPGDetachedSign recipients:nil hiddenRecipients:nil];
 		if (gpgc.error) {
 			@throw gpgc.error;
 		}
@@ -400,7 +422,6 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     @finally {
         [gpgc release];
     }
-    DebugLog(@"[DEBUG] %s signature: %@", __PRETTY_FUNCTION__, [[[NSString alloc] initWithData:*arg3 encoding:NSUTF8StringEncoding] autorelease]);
     
     MimePart *topPart = [[MimePart alloc] init];
     [topPart setType:@"multipart"];
@@ -424,11 +445,6 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     // and add the signature part to the top part and voila!
     [topPart addSubpart:self];
     [topPart addSubpart:signaturePart];
-    
-    //return signaturePart;
-    DebugLog(@"[DEBUG] %s part before: %@", __PRETTY_FUNCTION__, self);
-    //id ret = [self GPGNewSignedPartWithData:arg1 sender:arg2 signatureData:&signedData];
-    DebugLog(@"[DEBUG] %s gpg signed part: %@", __PRETTY_FUNCTION__, topPart);
     
     return topPart;
 }
