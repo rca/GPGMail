@@ -67,6 +67,11 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     // mime part and call the appropriate method.
     SEL selector = NSSelectorFromString(selectorName);
     
+    // Fixes an issue with a very early alpha of GPGMail 2.0
+    // which sent out completely fucked up messages.
+    if([self isType:@"multipart" subtype:@"mixed"] && ![[self getIvar:@"wasFuckedUpMessage"] boolValue])
+        return [self performSelector:selector withObject:ctx];
+    
     NSNumber *shouldBeDecrypting = [[(MimeBody *)[self mimeBody] message] getIvar:@"shouldBeDecrypting"];
     if([shouldBeDecrypting boolValue] && [self respondsToSelector:selector]) {
         // It's necessary to set this var on the message, so the flags are changed.
@@ -124,6 +129,56 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     }
     return [self MADecodeMultipartAlternativeWithContext:ctx];
 }
+
+- (id)decodeMultipartMixedWithContext:(id)ctx {
+    // Fixes an issue with a very early alpha of GPGMail 2.0
+    // which sent out completely fucked up messages.
+    // Starting with a multipart/mixed mime type.
+    // After that the usual multipart/encrypted or multipart/signed mime type.
+    // If such a message is encountered parse the content in application/octet.
+    MimePart *actualPart = nil;
+    BOOL isFuckedUpEncryptedMessage = NO;
+    BOOL isFuckedUpSignedMessage = NO;
+    for(MimePart *currentPart in [self subparts]) {
+        if([currentPart isType:@"multipart" subtype:@"encrypted"]) {
+            isFuckedUpEncryptedMessage = YES;
+            break;
+        }
+        if([currentPart isType:@"multipart" subtype:@"signed"]) {
+            isFuckedUpSignedMessage = YES;
+            break;
+        }
+    }
+    // No fucked up message, out of here.
+    if(!isFuckedUpEncryptedMessage && !isFuckedUpSignedMessage) {
+        [self setIvar:@"wasFuckedUpMessage" value:[NSNumber numberWithBool:YES]];
+        return [self decodeWithContext:ctx];
+    }
+    
+    NSString *bodyString = [NSString stringWithData:[[self mimeBody] bodyData] encoding:NSUTF8StringEncoding];
+    NSRange rangeOfContentType = [bodyString rangeOfString:@"Content-Type:"];
+    if(rangeOfContentType.location == NSNotFound)
+        return nil;
+    // Strip the strings till the first Content-Type is found, to get valid RFC822 data.
+    NSString *messageBody = [bodyString substringWithRange:NSMakeRange(rangeOfContentType.location, [bodyString length]-rangeOfContentType.location)];
+    // Create a new message. Unfortunately, this can't be used either.
+    Message *newMessage = [Message messageWithRFC822Data:[messageBody dataUsingEncoding:NSUTF8StringEncoding]];
+    if(isFuckedUpSignedMessage)
+        return [[[newMessage messageBody] topLevelPart] decodeWithContext:ctx];
+    
+    actualPart = nil;
+    for(MimePart *currentPart in [[[newMessage messageBody] topLevelPart] subparts]) {
+        if([currentPart isType:@"application" subtype:@"octet-stream"]) {
+            actualPart = currentPart;
+            break;
+        }
+    }
+    // Make a new message from the octet-stream content, which contains the actual message.
+    Message *realMessage = [Message messageWithRFC822Data:[actualPart bodyData]];
+    return [[[realMessage messageBody] topLevelPart] decodeWithContext:ctx];
+}
+
+
 - (id)MADecodeTextPlainWithContext:(id)ctx {
     // 1. Step, check if the message was already decrypted.
     char isEncrypted, isSigned;

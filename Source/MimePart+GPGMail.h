@@ -72,6 +72,17 @@
 - (id)MADecodeMultipartAlternativeWithContext:(id)ctx;
 
 /**
+ Fixes an issue with a very early alpha of GPGMail 2.0
+ which sent out completely fucked up messages.
+ Starting with a multipart/mixed mime type.
+ After that the usual multipart/encrypted or multipart/signed mime type.
+ If such a message is encountered parse the content in application/octet.
+ If the message is multipart/mixed but not a fucked up one, the
+ original Mail.app method is invoked.
+ */
+- (id)decodeMultipartMixedWithContext:(id)ctx;
+
+/**
  Is called by GPGDecodeWithContext if a plain/text mime part is
  found, which contains gpg inline data. The GPG data might either be
  encrypted data or signature data. Based on the found data, the decryption
