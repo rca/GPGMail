@@ -29,7 +29,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MailAccount_GPGMail : NSObject
+@interface MailAccount (GPGMail)
 
 /**
  This method decides whether or not the security view, being
