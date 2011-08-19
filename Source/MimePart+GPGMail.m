@@ -781,6 +781,14 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     return NO;
 }
 
+- (BOOL)isPGPEncrypted {
+    if([self isPGPMimeEncrypted])
+        return YES;
+    if([self isPGPInlineEncrypted])
+        return YES;
+    return NO;
+}
+
 - (BOOL)MAIsEncrypted {
     // If this is not a topLevelPart, we simply return the original
     // MimePart.isEncrypted value.

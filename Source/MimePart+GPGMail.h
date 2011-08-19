@@ -230,6 +230,11 @@
 - (BOOL)isPGPMimeEncrypted;
 
 /**
+ Returns true if the message is either PGP inline or mime encrypted.
+ */
+- (BOOL)isPGPEncrypted;
+
+/**
  This method is called by Mail.app internally in various occasions, especially
  in MessageHeaderDisplay._attributedStringForSecurityHeader to check whether or not
  the security UI for a message should be displayed or not.

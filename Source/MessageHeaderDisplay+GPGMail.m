@@ -66,32 +66,11 @@
     if(viewingState.headerSecurityString)
         return viewingState.headerSecurityString;
     
-    NSMutableAttributedString *securityHeader = [[self MA_attributedStringForSecurityHeader] mutableCopy];
-    // After checking the message flags the top level part is checked for being signed.
-    // After that checking if the message is encrypted. If it is, request the decrypted message
-    // body and check again if that body is signed.
-    BOOL isSigned = [topPart isSigned];
-    BOOL isEncrypted = [topPart isEncrypted];
     BOOL isPGPSigned = [topPart isPGPSigned];
-    char is_encrypted, is_signed;
-    MFError *error;
-    NSArray *signerLabels = nil; 
-    if(isEncrypted) {
-        MimeBody *decryptedMessageBody = [topPart decryptedMessageBodyIsEncrypted:&is_encrypted isSigned:&is_signed error:&error];
-        MimePart *decryptedTopPart = [decryptedMessageBody topLevelPart];
-        // If it's encrypted, only the decrypted part is of interest.
-        topPart = decryptedTopPart;
-        isSigned = [decryptedTopPart isSigned];
-        isPGPSigned = [decryptedTopPart isPGPSigned];
-    }
+    BOOL isPGPEncrypted = [topPart isPGPEncrypted];
+    BOOL isSigned = [topPart isSigned];
     
-    // Only add the encrypted attachment if the message is PGP/MIME encrypted.
-    if(!isEncrypted && !isSigned && !isPGPSigned && [securityHeader length] == 0) {
-        viewingState.headerSecurityString = securityHeader;
-        return [securityHeader autorelease];
-    }
-    
-    if([securityHeader length] != 0 && (isEncrypted || isSigned) && !isPGPSigned) {
+    if(!isPGPSigned && !isPGPEncrypted) {
         // If for example the signature attachment was stripped from the message
         // it still appears as signed, but doesn't have any signature information.
         // In that case, don't show the security header.
@@ -100,20 +79,33 @@
         // Unfortunately Mail.app would still think the message is signed and add
         // the security header which would result in signed being shown.
         // To fix this, the copySigners are checked again.
-        if(![[topPart copySignerLabels] count]) {
-            [securityHeader release];
-            securityHeader = [[NSMutableAttributedString alloc] initWithString:@""];
+        NSAttributedString *securityHeader = [NSAttributedString attributedStringWithString:@""];
+        if(isSigned && ![[topPart copySignerLabels] count]) {
+            return securityHeader;
         }
-        viewingState.headerSecurityString = securityHeader;
-        return [securityHeader autorelease];
+        return [self MA_attributedStringForSecurityHeader];
     }
         
-    [securityHeader release];
-    securityHeader = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\t%@\t", NSLocalizedStringFromTableInBundle(@"SECURITY_HEADER", @"Encryption", [NSBundle mainBundle], @"")]];
+    
+    // After checking the message flags the top level part is checked for being signed.
+    // After that checking if the message is encrypted. If it is, request the decrypted message
+    // body and check again if that body is signed.
+    char is_encrypted, is_signed;
+    MFError *error;
+    NSArray *signerLabels = nil; 
+    if(isPGPEncrypted) {
+        MimeBody *decryptedMessageBody = [topPart decryptedMessageBodyIsEncrypted:&is_encrypted isSigned:&is_signed error:&error];
+        MimePart *decryptedTopPart = [decryptedMessageBody topLevelPart];
+        // If it's encrypted, only the decrypted part is of interest.
+        topPart = decryptedTopPart;
+        isPGPSigned = [decryptedTopPart isPGPSigned];
+    }
+    
+    NSMutableAttributedString *securityHeader = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\t%@\t", NSLocalizedStringFromTableInBundle(@"SECURITY_HEADER", @"Encryption", [NSBundle mainBundle], @"")]];
     [securityHeader addAttributes:[NSAttributedString boldGrayHeaderAttributes] range:NSMakeRange(0, [securityHeader length])];
     
     // Add the encrypted part to the security header.
-    if(isEncrypted) {
+    if(isPGPEncrypted) {
         NSAttributedString *encryptAttachmentString = [NSAttributedString attributedStringWithAttachment:[[[NSTextAttachment alloc] init] autorelease] 
                                                                                                    image:[NSImage imageNamed:@"Encrypted_Glyph"] 
                                                                                                     link:@"gpgmail://decrypt"];
@@ -121,7 +113,7 @@
         [securityHeader appendAttributedString:encryptAttachmentString];
         [securityHeader appendAttributedString:[NSAttributedString attributedStringWithString:NSLocalizedStringFromTableInBundle(@"ENCRYPTED", @"Encryption", [NSBundle mainBundle], @"")]];
     }
-    if(isSigned) {
+    if(isPGPSigned) {
         signerLabels = [topPart copySignerLabels];
         // Set the message signers on the message header display, so they are available
         // for the signature view.
@@ -132,7 +124,7 @@
                                                                                                   image:[NSImage imageNamed:@"Signed_Glyph"] 
                                                                                                    link:@"gpgmail://show-signature"];
         // Only add, if message was encrypted.
-        if(isEncrypted)
+        if(isPGPEncrypted)
             [securityHeader appendAttributedString:[NSAttributedString attributedStringWithString:@", "]];
         [securityHeader appendAttributedString:signedAttachmentString];
         NSString *signerLabelsString = [NSString stringWithFormat:@"%@ (%@)", NSLocalizedStringFromTableInBundle(@"SIGNED", 
