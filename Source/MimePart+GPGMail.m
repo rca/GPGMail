@@ -602,6 +602,10 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     // so, copy the email addresses and return them.
     NSMutableArray *signerLabels = [NSMutableArray array];
     NSArray *messageSigners = [self copyMessageSigners];
+    // In case there are no message signers, simply return the original method.
+    // Might be a problem, but shouldn't.
+    if(![messageSigners count])
+        return [self MACopySignerLabels];
     if(![[messageSigners objectAtIndex:0] isKindOfClass:[GPGSignature class]]) {
         [messageSigners release];
         return [self MACopySignerLabels];
