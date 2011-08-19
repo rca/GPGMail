@@ -54,10 +54,10 @@
 - (id)MADecodeWithContext:(id)ctx;
 
 /**
- * Is called by GPGDecodeWithContext if a multipart/encrypted mime part
- * is found. Performs the decryption and returns the result.
+ Is called by GPGDecodeWithContext if a multipart/encrypted mime part
+ is found. Performs the decryption and returns the result.
  */
-- (id)MADecodeMultipartEncryptedWithContext:(id)ctx;
+- (id)decodeMultipartEncryptedWithContext:(id)ctx;
 
 /**
  Is called by GPGDecodeWithContext if a plain/text mime part is
@@ -84,7 +84,7 @@
  is created, otherwise messageWithRFC822Data ends up creating an empty
  message body.
  */
-- (id)MADecodeApplicationPgp_EncryptedWithData:(NSData *)encryptedData context:(id)ctx;
+- (id)decryptedMessageBodyForEncryptedData:(NSData *)encryptedData;
 
 /**
  Fail to decrypt a message and set the error which is displayed to the user.

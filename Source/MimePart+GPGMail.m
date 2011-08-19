@@ -60,68 +60,81 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
           [(Message *)[(MimeBody *)[self mimeBody] message] subject]);
     NSString *type = [NSString stringWithString:(NSString *)[self type]];
 	NSString *subtype = [NSString stringWithString:(NSString *)[self subtype]];
-	NSString *selectorName = [NSString stringWithFormat:@"MADecode%@%@WithContext:", [type capitalizedString], [[subtype stringByReplacingOccurrencesOfString:@"-" withString:@"_"] capitalizedString]];
-    char isEncrypted, isSigned;
-    NSError *error;
-    MimeBody *decryptedMessageBody;
-    // decodeApplicationGpg_EncryptedWithContext is not automatically called
-    // by GPGMail, therefore we need to call it ourselves. 
-    // At the moment this only happens if decrypting was initiated by the
-    // user. 
-    // This might be extended to whenever Mail loads the message.
+	NSString *selectorName = [NSString stringWithFormat:@"decode%@%@WithContext:", [type capitalizedString], [[subtype stringByReplacingOccurrencesOfString:@"-" withString:@"_"] capitalizedString]];
+    // Mail.app doesn't know how to deal with multipart/encrypted mime parts, 
+    // so it's GPGMail's responsibility to detect a multipart/encrypted
+    // mime part and call the appropriate method.
     SEL selector = NSSelectorFromString(selectorName);
     
-    // We have two different scenarios.
-    // 1.) Non MIME GPG.
-    //     The problem is, this could be either text/plain or multipart/alternative (for what reason ever, enigmail does that).
-    //     So let's check if the message is encrypted, in that case find the data part and return it decoded.
-    // 2.) MIME GPG.
-    //     Way easiert, just call the MADecodeMultipartEncryptedWithContext and done!
     NSNumber *shouldBeDecrypting = [[(MimeBody *)[self mimeBody] message] getIvar:@"shouldBeDecrypting"];
-    id pgpInfo = [[[self mimeBody] topLevelPart] getIvar:@"gpgDataRange"];
-
-    // Check if we're in shouldBeDecrypting state AND if either we have implemented
-    // a matching selector (would be PGP/MIME) or gpgDataRange (Non PGP/MIME) is set.
-    if([shouldBeDecrypting boolValue] && (pgpInfo != nil || [self respondsToSelector:selector])) {
-        // One of the two matches so first check if the message has already been decrypted and cached.
-        decryptedMessageBody = [self decryptedMessageBodyIsEncrypted:&isEncrypted isSigned:&isSigned error:&error];
-        if(decryptedMessageBody != nil) {
-            ((MFMimeDecodeContext *)ctx).shouldSkipUpdatingMessageFlags = NO;
-            return [[decryptedMessageBody topLevelPart] decodeWithContext:ctx];
-        }
-        // Not yet decrypted and cached, perform either PGP/MIME or Non PGP/MIME operation.
-        if(pgpInfo) {
-            return [self decodeTextPlainWithContext:ctx];
-        }
-        // Otherwise it's PGP/MIME and our own decode selector for multipart/encrypted is called.
-        return [self performSelector:selector withObject:ctx];
+    if([shouldBeDecrypting boolValue] && [self respondsToSelector:selector]) {
+        // It's necessary to set this var on the message, so the flags are changed.
+        // Changing the flags is necessary for the error banner to show!
+        id ret = [self performSelector:selector withObject:ctx];
+        // Call the original implementation so that the mime parts
+        // are displayed as attachments.
+        if(!ret)
+            return [self MADecodeWithContext:ctx];
+        return ret;
     }
+    
     // Not decrypting or not encrypted message -> invoking original method.
     return [self MADecodeWithContext:ctx];
 }
 
-- (id)MADecodeMultipartEncryptedWithContext:(id)ctx {
-    // If this is the top level part, decrypt it!
-    MimePart *dataPart = [[[self mimeBody] topLevelPart] subpartAtIndex:1];
+- (id)decodeMultipartEncryptedWithContext:(id)ctx {
+    // 1. Step, check if the message was already decrypted.
+    char isEncrypted, isSigned;
+    MFError *error;
+    MimeBody *decryptedMessageBody = [self decryptedMessageBodyIsEncrypted:&isEncrypted isSigned:&isSigned error:&error];
+    // If an error is found and no decryptedMessageBody is set, push the error
+    // to the current activity monitor (this is necessary for the error banner to be shown)
+    // and leave with nil.
+    // If decryptedMessageBody is set, return its content using decodeWithContext:ctx.
+    if(decryptedMessageBody || error) {
+        if(error)
+            [[ActivityMonitor currentMonitor] setError:error];
+        return decryptedMessageBody ? [[decryptedMessageBody topLevelPart] decodeWithContext:ctx] : nil;
+    }
+    // 2. Fetch the data part. (Version part should be there, otherwise this message wouldn't
+    //                          be in decryption mode.)
+    MimePart *dataPart = [self subpartAtIndex:1];
     NSData *encryptedData = [dataPart bodyData];
-    // TODO: Don't always use the decodeQuotedPrintable. It might return nothing
-    // useful if quoted-printable is not set on the e-
-    return [self MADecodeApplicationPgp_EncryptedWithData:[encryptedData decodeQuotedPrintableForText:YES] context:ctx];
+    BOOL quotedPrintable = [[dataPart.contentTransferEncoding lowercaseString] isEqualToString:@"quoted-printable"];
+    encryptedData = quotedPrintable ? [encryptedData decodeQuotedPrintableForText:YES] : encryptedData;
+    
+    decryptedMessageBody = [self decryptedMessageBodyForEncryptedData:encryptedData];
+    id ret = [decryptedMessageBody parsedMessageWithContext:ctx];
+    return ret;
 }
 
 - (id)MADecodeTextPlainWithContext:(id)ctx {
+    // 1. Step, check if the message was already decrypted.
+    char isEncrypted, isSigned;
+    MFError *error;
+    MimeBody *decryptedMessageBody = [self decryptedMessageBodyIsEncrypted:&isEncrypted isSigned:&isSigned error:&error];
+    // If an error is found and no decryptedMessageBody is set, push the error
+    // to the current activity monitor (this is necessary for the error banner to be shown)
+    // and leave with nil.
+    // If decryptedMessageBody is set, return its content using decodeWithContext:ctx.
+    if(decryptedMessageBody || error) {
+        if(error)
+            [[ActivityMonitor currentMonitor] setError:error];
+        return decryptedMessageBody ? [[decryptedMessageBody topLevelPart] decodeWithContext:ctx] : nil;
+    }
+    
     // Extract the PGP block from the plain text, if available.
     // Check if gpgDataRange is available, otherwise just exit decryption mode.
     // Check if there's a PGP signature in the plain text.
-    BOOL isEncrypted = NO;
-    BOOL isSigned = NO;
+    BOOL isPGPEncrypted = NO;
+    BOOL isPGPSigned = NO;
     NSRange pgpSignedRange = [self rangeOfPlainPGPSignatures];
     if([[[self mimeBody] topLevelPart] ivarExists:@"gpgDataRange"])
-        isEncrypted = YES;
+        isPGPEncrypted = YES;
     if(pgpSignedRange.location != NSNotFound)
-        isSigned = YES;
+        isPGPSigned = YES;
     
-    if(isEncrypted) {
+    if(isPGPEncrypted) {
         NSRange gpgDataRange = [[[[self mimeBody] topLevelPart] getIvar:@"gpgDataRange"] rangeValue];
         NSData *encryptedData = [[[self mimeBody] bodyData] subdataWithRange:gpgDataRange];
         // If the transfer encoding is set to quoted-printable, we have to run the data 
@@ -130,17 +143,16 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
         NSData *realEncryptedData = quotedPrintable ? [encryptedData decodeQuotedPrintableForText:YES] : encryptedData;
         
         
-        return [self MADecodeApplicationPgp_EncryptedWithData:realEncryptedData context:ctx];
+        decryptedMessageBody = [self decryptedMessageBodyForEncryptedData:realEncryptedData];
+        return [decryptedMessageBody parsedMessageWithContext:ctx]; 
     }
-    else if(isSigned) {
+    else if(isPGPSigned) {
         [self _verifyPGPInlineSignature];
     }
     
     id ret = [self MADecodeTextPlainWithContext:ctx];
-    DebugLog(@"[DEBUG] before Return value: %@", ret);
-    if(isSigned)
+    if(isPGPSigned)
         ret = [self stripSignatureFromContent:ret];
-    DebugLog(@"[DEBUG] after Return value: %@", ret);
     
     return ret;
 }
@@ -179,7 +191,7 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
 // TODO: Implement better check to understand whether the decrypted data contains mail headers or not (pgp inline encrypted).
 // TODO: If it doesn't contain mail headers add a method for better understanding if the decrypted data
 //       contains HTML and don't change \n to <br> in that case.
-- (id)MADecodeApplicationPgp_EncryptedWithData:(NSData *)encryptedData context:(id)ctx {
+- (id)decryptedMessageBodyForEncryptedData:(NSData *)encryptedData {
     __block NSData *decryptedData;
     __block NSArray *signatures = nil;
     __block NSException *decryptionException = nil;
@@ -282,7 +294,7 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     [self setDecryptedMessageBody:decryptedMimeBody isEncrypted:YES isSigned:isSigned error:nil];
     // Last step, remove the shouldBeDecrypting, otherwise the message is
     // automatically decrypted every time it's selected.
-    return [[decryptedMimeBody topLevelPart] decodeWithContext:ctx];
+    return decryptedMimeBody;
 }
 
 - (void)failedToDecryptWithException:(NSException *)exception {
@@ -684,12 +696,11 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     if([self parentPart] != nil)
         return [self MAIsEncrypted];
     
-    [self isPGPMimeEncrypted];
-    [self isPGPInlineEncrypted];
-    
-    // If either inline PGP or MIME PGP encrypted data is found
-    // return true.
-    if([self ivarExists:@"isEncrypted"])
+    BOOL isPGPMimeEncrypted = [self isPGPMimeEncrypted];
+    if(isPGPMimeEncrypted)
+        return YES;
+    BOOL isPGPInlineEncrypted = [self isPGPInlineEncrypted];
+    if(isPGPInlineEncrypted)
         return YES;
     
     // Otherwise to also support S/MIME encrypted messages, call
