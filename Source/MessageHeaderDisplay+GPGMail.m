@@ -61,7 +61,6 @@
     MessageViewingState *viewingState = [((MessageHeaderDisplay *)self) viewingState];
     MimePart *topPart = [[viewingState mimeBody] topLevelPart];
     NSMutableAttributedString *securityHeader = [[self MA_attributedStringForSecurityHeader] mutableCopy];
-    // SOOOOO, new stuff has been learned.
     // After checking the message flags the top level part is checked for being signed.
     // After that checking if the message is encrypted. If it is, request the decrypted message
     // body and check again if that body is signed.
@@ -69,7 +68,7 @@
     BOOL isEncrypted = [topPart isEncrypted];
     BOOL isPGPSigned = [topPart isPGPSigned];
     char is_encrypted, is_signed;
-    NSError *error;
+    MFError *error;
     NSArray *signerLabels = nil; 
     if(isEncrypted) {
         MimeBody *decryptedMessageBody = [topPart decryptedMessageBodyIsEncrypted:&is_encrypted isSigned:&is_signed error:&error];
