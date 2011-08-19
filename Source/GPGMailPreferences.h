@@ -37,6 +37,13 @@
 @interface GPGMailPreferences : NSPreferencesModule {
 }
 
+/* Open FAQ page. */
+- (IBAction)openFAQ:(id)pId;
+/* Open donation page. */
+- (IBAction)openDonation:(id)pId;
+/* Open contact page. */
+- (IBAction)openContact:(id)pId;
+
 @property (readonly) NSString *copyright;
 @property (readonly) NSAttributedString *credits;
 @property (readonly) NSAttributedString *websiteLink;

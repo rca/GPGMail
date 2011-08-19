@@ -73,5 +73,19 @@
 	return [NSImage imageNamed:@"GPGMailPreferences"];
 }
 
+/* Open FAQ page. */
+- (IBAction)openFAQ:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://gpgtools.org/faq.html"]];
+}
+/* Open donation page. */
+- (IBAction)openDonation:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://gpgtools.org/donate.html"]];
+}
+/* Open contact page. */
+- (IBAction)openContact:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://gpgtools.org/about.html"]];
+}
+
+
 @end
 
