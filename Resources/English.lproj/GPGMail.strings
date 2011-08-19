@@ -236,4 +236,11 @@
 "REVOKED_USER_ID_QUALIFIER" = "revoked";
 
 "COPY_MSG_URL_MENUITEM" = "Copy Message URL";
+
+/* Message Error Banner messages. */
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "Unable to decrypt PGP message.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "There was a problem decrypting this message. Verify that you have a valid key in your GPG Keychain.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Unable to verify PGP message signature.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "There was a problem reading the PGP signature for this message.";
+
 }

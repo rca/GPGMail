@@ -237,6 +237,10 @@
 
 "COPY_MSG_URL_MENUITEM" = "Copy Message URL";
     
-/* Signature view strings. */
-"VALIDITY_NO_TRUST" = "Diese Signatur ist nicht vertrauenswürdig."
+/* Message Error Banner messages. */
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "PGP E-Mail konnte nicht entschlüsselt werden.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "Beim Entschlüsseln dieser E-Mail ist ein Problem aufgetreten. Vergewissern Sie sich, dass in Ihrem GPG Schlüsselbund ein gültiger Schlüssel vorhanden ist.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Die PGP E-Mail-Signatur konnte nicht überprüft werden.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Beim Lesen der PGP Signatur dieser E-Mail ist ein Problem aufgetreten.";
+
 }
