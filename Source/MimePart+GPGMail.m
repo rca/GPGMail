@@ -33,9 +33,12 @@
 #import "NSObject+LPDynamicIvars.h"
 #import "MimePart+GPGMail.h"
 #import "NSString+GPGMail.h"
+#import <MFMessageFramework.h>
+#import <ActivityMonitor.h>
 #import <NSString-NSStringUtils.h>
 #import <NSData-MimeDataEncoding.h>
 #import <MFMimeDecodeContext.h>
+#import <MFError.h>
 #import <Message.h>
 #import <MessageWriter.h>
 #import <MimeBody.h>
@@ -177,16 +180,21 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
 - (id)MADecodeApplicationPgp_EncryptedWithData:(NSData *)encryptedData context:(id)ctx {
     __block NSData *decryptedData;
     __block NSArray *signatures = nil;
+    __block NSException *decryptionException = nil;
     [[GPGMailBundle sharedInstance] addDecryptionTask:^{
         GPGController *gpgc = [[GPGController alloc] init];
         gpgc.verbose = (GPGMailLoggingLevel > 0);
         @try {
             decryptedData = [gpgc decryptData:encryptedData];
+            if(gpgc.error) {
+                @throw gpgc.error;
+            }
             signatures = [gpgc signatures];
             [signatures retain];
         }
         @catch(NSException *e) {
             DebugLog(@"[DEBUG] %s exception: %@", __PRETTY_FUNCTION__, e);
+            decryptionException = e;
             decryptedData = nil;
         }
         @finally {
@@ -194,8 +202,10 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
         }
     }];
     // TODO: Perform some error handling here. Store the error in self->_smimeError.
-    if(decryptedData == nil)
+    if(decryptedData == nil && decryptionException) {
+        [self failedToDecryptWithException:decryptionException];
         return nil;
+    }
     // Remove all added ivars, otherwise mail could try to decrypt
     // already decrypted data again. 
     [[(MimeBody *)[self mimeBody] message] removeIvar:@"shouldBeDecrypting"];
@@ -271,6 +281,19 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     // Last step, remove the shouldBeDecrypting, otherwise the message is
     // automatically decrypted every time it's selected.
     return [[decryptedMimeBody topLevelPart] decodeWithContext:ctx];
+}
+
+- (void)failedToDecryptWithException:(NSException *)exception {
+    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+    NSString *title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+    NSString *message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+    MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:nil title:title helpTag:nil 
+                                     userInfo:[NSDictionary dictionaryWithObjectsAndKeys:title, @"_MFShortDescription", message, @"NSLocalizedDescription", nil]];
+    [self setDecryptedMessageBody:nil isEncrypted:NO isSigned:NO error:error];
+    [[ActivityMonitor currentMonitor] setError:error];
+    // Tell the message to fake the message flags, means adding the signed
+    // and encrypted flag, otherwise the error banner is not shown.
+    [[(MimeBody *)[self mimeBody] message] setIvar:@"fakeMessageFlags" value:[NSNumber numberWithBool:YES]];
 }
 
 // TODO: Should calll the original method if open pgp checkox is not checked.
@@ -368,7 +391,8 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     }
     @catch(NSException *e) {
 		if ([e isKindOfClass:[GPGException class]] && [(GPGException *)e errorCode] == GPGErrorCancelled) {
-			//TODO: Handle GPGErrorCancelled. 
+			[self failedToSignForSender:sender];
+            return nil;
 		}
         DebugLog(@"[DEBUG] %s sign error: %@", __PRETTY_FUNCTION__, e);
 		@throw e;
@@ -407,6 +431,19 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     DebugLog(@"[DEBUG] %s gpg signed part: %@", __PRETTY_FUNCTION__, topPart);
     
     return topPart;
+}
+
+- (void)failedToSignForSender:(NSString *)sender {
+    NSBundle *messagesFramework = [NSBundle bundleForClass:[MimePart class]];
+    NSString *localizedDescription = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"SMIME_CANT_SIGN_MESSAGE", @"Delayed", messagesFramework, @""),
+                                      [sender gpgNormalizedEmail]];
+    NSString *titleDescription = NSLocalizedStringFromTableInBundle(@"SMIME_CANT_SIGN_TITLE", @"Delayed", messagesFramework, @"");
+    MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:nil title:titleDescription
+                                      helpTag:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:localizedDescription,
+                                                            @"NSLocalizedDescription", titleDescription, @"_MFShortDescription", nil]];
+    // Puh, this was all but easy, to find out where the error is used.
+    // Overreleasing allows to track it's path as an NSZombie in Instruments!
+    [[ActivityMonitor currentMonitor] setError:error];
 }
 
 - (BOOL)MAUsesKnownSignatureProtocol {
@@ -454,8 +491,11 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     @try {
         signatures = [gpgc verifySignature:signatureData originalData:signedData];
         [signatures retain];
+        if(gpgc.error)
+            @throw gpgc.error;
     }
     @catch (NSException* e) {
+        [self failedToVerifyWithException:e];
         DebugLog(@"[DEBUG] %s - verification errror: %@", __PRETTY_FUNCTION__, e);
         return;
     }
@@ -472,7 +512,7 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     
     return;
 }
-
+         
 - (void)_verifyPGPInlineSignature {
     NSData *signedData = [self bodyData];
     DebugLog(@"[DEBUG] %s plain message signed data: %@", __PRETTY_FUNCTION__, [NSString stringWithData:signedData encoding:[[[self mimeBody] preferredBodyPart] guessedEncoding]]);
@@ -500,6 +540,18 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     [signatures release];
 }
 
+- (void)failedToVerifyWithException:(NSException *)exception {
+    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+    NSString *title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+    NSString *message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+    MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:nil title:title helpTag:nil 
+                                     userInfo:[NSDictionary dictionaryWithObjectsAndKeys:title, @"_MFShortDescription", message, @"NSLocalizedDescription", nil]];
+    [[ActivityMonitor currentMonitor] setError:error];
+    // Tell the message to fake the message flags, means adding the signed
+    // and encrypted flag, otherwise the error banner is not shown.
+    [[(MimeBody *)[self mimeBody] message] setIvar:@"fakeMessageFlags" value:[NSNumber numberWithBool:YES]];
+}
+         
 - (id)MACopySignerLabels {
     DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
     DebugLog(@"[DEBUG] %s who am i: %@", __PRETTY_FUNCTION__, self);

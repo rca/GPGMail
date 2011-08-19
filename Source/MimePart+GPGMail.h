@@ -87,6 +87,12 @@
 - (id)MADecodeApplicationPgp_EncryptedWithData:(NSData *)encryptedData context:(id)ctx;
 
 /**
+ Fail to decrypt a message and set the error which is displayed to the user.
+ The received exception decides what error message is displayed.
+ */
+- (void)failedToDecryptWithException:(NSException *)exception;
+
+/**
  This methods is called internally by Mail's MessageWriter. The MessageWriter
  class is used to create outgoing messages and has various flags among them shouldSign
  and shouldEncrypt.
@@ -108,6 +114,12 @@
  to the *signatureData pointer. 
  */
 - (id)MANewSignedPartWithData:(id)arg1 sender:(id)arg2 signatureData:(id *)arg3;
+
+/**
+ Uses the ActivityMonitor to display an error message if the signing process failed.
+ Analog to what S/MIME uses.
+ */
+- (void)failedToSignForSender:(NSString *)sender;
 
 /**
  Called by verifySignature, after checking with needs signature verification
@@ -138,6 +150,13 @@
  Is only called, if ----BEGIN PGP SIGNATURE---- is found.
  */
 - (void)_verifyPGPInlineSignature;
+
+/**
+ Is called when the verification of a PGP signature fails
+ and displays the error to the user using the message error banner.
+ Analog to S/MIME.
+ */
+- (void)failedToVerifyWithException:(NSException *)exception;
 
 /**
  Is called by Mail.app in various occasions, not all of them explored
