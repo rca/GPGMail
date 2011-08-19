@@ -60,6 +60,12 @@
     // and calls copySingerLabels on the topLevelPart.
     MessageViewingState *viewingState = [((MessageHeaderDisplay *)self) viewingState];
     MimePart *topPart = [[viewingState mimeBody] topLevelPart];
+    // Check if the securityHeader is already set.
+    // If so, out of here!
+    DebugLog(@"[DEBUG] %s viewingState security string: %@", __PRETTY_FUNCTION__, viewingState.headerSecurityString);
+    if(viewingState.headerSecurityString)
+        return viewingState.headerSecurityString;
+    
     NSMutableAttributedString *securityHeader = [[self MA_attributedStringForSecurityHeader] mutableCopy];
     // After checking the message flags the top level part is checked for being signed.
     // After that checking if the message is encrypted. If it is, request the decrypted message
@@ -80,11 +86,28 @@
     }
     
     // Only add the encrypted attachment if the message is PGP/MIME encrypted.
-    if(!isEncrypted && !isSigned && !isPGPSigned && [securityHeader length] == 0)
+    if(!isEncrypted && !isSigned && !isPGPSigned && [securityHeader length] == 0) {
+        viewingState.headerSecurityString = securityHeader;
         return [securityHeader autorelease];
-    if([securityHeader length] != 0 && (isEncrypted || isSigned) && !isPGPSigned)
-        return [securityHeader autorelease];
+    }
     
+    if([securityHeader length] != 0 && (isEncrypted || isSigned) && !isPGPSigned) {
+        // If for example the signature attachment was stripped from the message
+        // it still appears as signed, but doesn't have any signature information.
+        // In that case, don't show the security header.
+        // in that case isSigned is true, but since isPGPSigned checks the number of signers
+        // isPGPSigned will be false.
+        // Unfortunately Mail.app would still think the message is signed and add
+        // the security header which would result in signed being shown.
+        // To fix this, the copySigners are checked again.
+        if(![[topPart copySignerLabels] count]) {
+            [securityHeader release];
+            securityHeader = [[NSMutableAttributedString alloc] initWithString:@""];
+        }
+        viewingState.headerSecurityString = securityHeader;
+        return [securityHeader autorelease];
+    }
+        
     [securityHeader release];
     securityHeader = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\t%@\t", NSLocalizedStringFromTableInBundle(@"SECURITY_HEADER", @"Encryption", [NSBundle mainBundle], @"")]];
     [securityHeader addAttributes:[NSAttributedString boldGrayHeaderAttributes] range:NSMakeRange(0, [securityHeader length])];
@@ -100,10 +123,6 @@
     }
     if(isSigned) {
         signerLabels = [topPart copySignerLabels];
-        if(![signerLabels count]) {
-            DebugLog(@"[DEBUG] %s - this message is supposed to be signed, but no message signers found... HOW IS THIS POSSIBLE?!",
-                     __PRETTY_FUNCTION__);
-        }
         // Set the message signers on the message header display, so they are available
         // for the signature view.
         NSArray *messageSigners = [topPart copyMessageSigners];
@@ -125,7 +144,7 @@
     }
     // And last but not least, add a new line.
     [securityHeader appendAttributedString:[NSAttributedString attributedStringWithString:@"\n"]];
-    [viewingState setHeaderSecurityString:securityHeader];
+    viewingState.headerSecurityString = securityHeader;
     
     return [securityHeader autorelease];
 }
