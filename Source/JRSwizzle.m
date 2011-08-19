@@ -129,7 +129,7 @@
             DebugLog(@"%d: Adding method %@ from %@", i, NSStringFromSelector(currentSelector), i == 0 ? aClass : object_getClass(aClass));
             [i == 0 ? self : object_getClass(self) jr_addMethod:currentSelector fromClass:i == 0 ? aClass : object_getClass(aClass) error:error];
             if(*error) {
-                NSLog(@"failed to add method: %@", NSStringFromSelector(currentSelector));
+                DebugLog(@"failed to add method: %@", NSStringFromSelector(currentSelector));
                 free(classMethods);
                 return NO;
             }
