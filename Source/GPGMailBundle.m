@@ -104,15 +104,10 @@ static BOOL gpgMailWorks = YES;
                 @"_attributedStringForSecurityHeader", 
                 @"textView:clickedOnLink:atIndex:", nil], @"selectors", nil],
         [NSDictionary dictionaryWithObjectsAndKeys:
-            @"MailAccount", @"class",
-            @"MailAccount_GPGMail", @"gpgMailClass", 
-            [NSArray arrayWithObjects:
-                @"accountExistsForSigning", nil], @"selectors", nil],
-        [NSDictionary dictionaryWithObjectsAndKeys:
             @"ComposeBackEnd", @"class", 
             @"ComposeBackEnd_GPGMail", @"gpgMailClass", 
             [NSArray arrayWithObjects:
-                @"_makeMessageWithContents:isDraft:shouldSign:shouldEncrypt:shouldSkipSignature:shouldBePlainText:", 
+                @"_makeMessageWithContents:isDraft:shouldSign:shouldEncrypt:shouldSkipSignature:shouldBePlainText:",
                 @"canEncryptForRecipients:sender:",
                 @"canSignFromAddress:",
                 @"recipientsThatHaveNoKeyForEncryption", nil], @"selectors", nil],
@@ -152,6 +147,11 @@ static BOOL gpgMailWorks = YES;
             @"MimeBody", @"class", 
             [NSArray arrayWithObjects:
                 @"isSignedByMe", nil], @"selectors", nil],
+        [NSDictionary dictionaryWithObjectsAndKeys:
+            @"MailAccount", @"class",
+            [NSArray arrayWithObjects:
+                @"accountExistsForSigning", nil], @"selectors", nil],
+                           
         [NSDictionary dictionaryWithObjectsAndKeys:
             @"NSPreferences", @"class", 
             [NSArray arrayWithObjects:
