@@ -86,6 +86,5 @@
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://gpgtools.org/about.html"]];
 }
 
-
 @end
 

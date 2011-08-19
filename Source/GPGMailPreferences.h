@@ -44,6 +44,7 @@
 /* Open contact page. */
 - (IBAction)openContact:(id)pId;
 
+
 @property (readonly) NSString *copyright;
 @property (readonly) NSAttributedString *credits;
 @property (readonly) NSAttributedString *websiteLink;

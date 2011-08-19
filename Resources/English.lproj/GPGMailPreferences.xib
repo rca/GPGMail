@@ -292,7 +292,7 @@
 											<reference key="NSNextKeyView" ref="97310430"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSButtonCell" key="NSCell" id="342507718">
-												<int key="NSCellFlags">-1543373312</int>
+												<int key="NSCellFlags">-2080244224</int>
 												<int key="NSCellFlags2">0</int>
 												<string key="NSContents">Enable OpenPGP/MIME</string>
 												<reference key="NSSupport" ref="706304668"/>
@@ -604,22 +604,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: bundle.usesOnlyOpenPGPStyle</string>
-						<reference key="source" ref="572428511"/>
-						<reference key="destination" ref="359798784"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="572428511"/>
-							<reference key="NSDestination" ref="359798784"/>
-							<string key="NSLabel">value: bundle.usesOnlyOpenPGPStyle</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">bundle.usesOnlyOpenPGPStyle</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">721</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: bundle.versionDescription</string>
 						<reference key="source" ref="244718305"/>
 						<reference key="destination" ref="359798784"/>
@@ -671,22 +655,6 @@
 					<int key="connectionID">726</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: bundle.usesOnlyOpenPGPStyle</string>
-						<reference key="source" ref="728125071"/>
-						<reference key="destination" ref="359798784"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="728125071"/>
-							<reference key="NSDestination" ref="359798784"/>
-							<string key="NSLabel">value: bundle.usesOnlyOpenPGPStyle</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">bundle.usesOnlyOpenPGPStyle</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">746</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">openFAQ:</string>
 						<reference key="source" ref="359798784"/>
@@ -709,6 +677,38 @@
 						<reference key="destination" ref="607240547"/>
 					</object>
 					<int key="connectionID">749</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.usesOpenPGPToSend</string>
+						<reference key="source" ref="572428511"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="572428511"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.usesOpenPGPToSend</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.usesOpenPGPToSend</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">750</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.usesOpenPGPToReceive</string>
+						<reference key="source" ref="728125071"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="728125071"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.usesOpenPGPToReceive</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.usesOpenPGPToReceive</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">752</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1085,7 +1085,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">749</int>
+			<int key="maxID">752</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
