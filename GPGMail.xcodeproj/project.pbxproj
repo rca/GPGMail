@@ -2819,9 +2819,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55541F4C085AE6B100548474 /* Build configuration list for PBXNativeTarget "GPGMail" */;
 			buildPhases = (
+				8D5B49B1048680CD000E48DA /* Sources */,
 				30DA468812B2D5E800E20039 /* Localize XIBs */,
 				8D5B49AF048680CD000E48DA /* Resources */,
-				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
 				1B45A52111CC977700ED4663 /* Copy Frameworks */,
 				30F40BC012B76FAE002E2374 /* Run Script */,

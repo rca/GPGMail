@@ -34,11 +34,11 @@
 
 @implementation NSPreferences (GPGMail)
 
-+ (id)MASharedPreferences
-{
++ (id)MASharedPreferences {
 	static BOOL added = NO;
+	
 	id preferences = [self MASharedPreferences];
-    
+	
 	if (preferences != nil && !added) {
 		added = YES;
 		if ([GPGMailBundle gpgMailWorks]) {

@@ -63,7 +63,8 @@ static BOOL gpgMailWorks = YES;
 - (void)mailTo:(NSPasteboard *)pasteboard userData:(NSString *)userData error:(NSString **)error;
 @end
 
-@interface GPGMailBundle (Private)
+@interface GPGMailBundle ()
+@property (nonatomic, retain) SUUpdater *updater;
 - (void)refreshPersonalKeysMenu;
 - (void)refreshPublicKeysMenu;
 - (void)flushKeyCache:(BOOL)flag;
@@ -71,7 +72,7 @@ static BOOL gpgMailWorks = YES;
 
 @implementation GPGMailBundle
 
-@synthesize cachedPublicGPGKeys, cachedPersonalGPGKeys, cachedGPGKeys;
+@synthesize cachedPublicGPGKeys, cachedPersonalGPGKeys, cachedGPGKeys, updater;
 
 + (void)load {
 	//GPGMailLoggingLevel = [[GPGDefaults standardDefaults] integerForKey:@"GPGMailDebug"];
@@ -249,15 +250,28 @@ static BOOL gpgMailWorks = YES;
  TODO: Sparkle should automatically start to check, but sometimes it doesn't work.
  */
 + (void)_installSparkleUpdater {
-	SUUpdater *updater = [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
+    SUUpdater *updater = [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
 	updater.delegate = [self sharedInstance];
-	// [updater setAutomaticallyChecksForUpdates:YES];
 	[updater resetUpdateCycle];
+    [[self sharedInstance] setUpdater:updater];
 }
 
 - (NSString *)pathToRelaunchForUpdater:(SUUpdater *)updater {
 	return @"/Applications/Mail.app";
 }
+
+- (void)updaterWillRelaunchApplication:(SUUpdater *)updater {
+	NSArray *windows = [NSApp windows];
+	Class delegateClass = NSClassFromString(@"MailPreferences");
+	for (NSWindow *window in windows) {
+		if ([[window delegate] isKindOfClass:delegateClass]) {
+			[window close];
+			return;
+		}
+	}
+}
+
+
 
 + (BOOL)hasPreferencesPanel {
 	return gpgMailWorks;             // LEOPARD Invoked on +initialize. Else, invoked from +registerBundle
@@ -580,6 +594,8 @@ static BOOL gpgMailWorks = YES;
     cachedPublicGPGKeys = nil;
     [cachedPublicGPGKeys release];
     [cachedGPGKeys release];
+    
+    self.updater = nil;
     
 	// Never invoked...
 	if (cachedUserIDsPerKey != NULL) {

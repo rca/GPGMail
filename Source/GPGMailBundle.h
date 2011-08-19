@@ -39,7 +39,7 @@
 @class NSMenu;
 @class NSMutableDictionary;
 @class Message;
-
+@class SUUpdater;
 
 
 // The following strings are used as toolbarItem identifiers and userDefault keys (value is the position index)
@@ -117,6 +117,8 @@ typedef void (^gpgmail_decryption_task_t)(void);
     NSDictionary *_cachedPersonalGPGKeysByEmail;
     // Map which uses the email address to lookup a public key.
     NSDictionary *_cachedPublicGPGKeysByEmail;
+	
+	SUUpdater *updater;
 }
 
 + (id)sharedInstance;
@@ -223,6 +225,9 @@ typedef void (^gpgmail_decryption_task_t)(void);
 @property (nonatomic, retain) NSSet *cachedPersonalGPGKeys;
 @property (nonatomic, retain) NSSet *cachedPublicGPGKeys;
 @property (nonatomic, retain) NSSet *cachedGPGKeys;
+
+@property (nonatomic, readonly, retain) SUUpdater *updater;
+
 
 - (NSString *)version;
 - (NSString *)versionDescription;
