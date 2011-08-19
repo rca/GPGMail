@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import <AppKit/AppKit.h>
 #import <OutgoingMessage.h>
 #import <_OutgoingMessageBody.h>
 #import <MessageBody.h>
@@ -238,7 +239,7 @@
 
 - (BOOL)MACanEncryptForRecipients:(NSArray *)recipients sender:(NSString *)sender {
     // If gpg is not enabled, call the original method.
-    if(![self getIvar:@"PGPEnabled"])
+    if(![[self getIvar:@"PGPEnabled"] boolValue])
         return [self MACanEncryptForRecipients:recipients sender:sender];
     // Otherwise check the gpg keys.
     // Loop through all the addresses and check if we can encrypt for them.
@@ -262,15 +263,17 @@
 
 - (BOOL)MACanSignFromAddress:(NSString *)address {
     // If gpg is not enabled, call the original method.
-    if(![self getIvar:@"PGPEnabled"])
+    DebugLog(@"[DEBUG] %s enabled: %@", __PRETTY_FUNCTION__, [self getIvar:@"PGPEnabled"]);
+    if(![[self getIvar:@"PGPEnabled"] boolValue])
         return [self MACanSignFromAddress:address];
     // Otherwise check the gpg keys.
-    return [[GPGMailBundle sharedInstance] canSignMessagesFromAddress:[address uncommentedAddress]];
+    BOOL canSign = [[GPGMailBundle sharedInstance] canSignMessagesFromAddress:[address uncommentedAddress]];
+    return canSign;
 }
 
 - (id)MARecipientsThatHaveNoKeyForEncryption {
     // If gpg is not enabled, call the original method.
-    if(![self getIvar:@"PGPEnabled"])
+    if(![[self getIvar:@"PGPEnabled"] boolValue])
         return [self MARecipientsThatHaveNoKeyForEncryption];
     
     DebugLog(@"All recipients: %@", [((ComposeBackEnd *)self) allRecipients]);
