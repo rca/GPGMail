@@ -140,16 +140,32 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     return ret;
 }
 
+// TODO: Find out if this "algorithm" always works, due to HTML input.
 - (id)stripSignatureFromContent:(id)content {
     if([content isKindOfClass:[NSString class]]) {
-        NSRange startRange = [content rangeOfString:(NSString *)PGP_MESSAGE_SIGNATURE_BEGIN];
+        // Find -----BEGIN PGP SIGNED MESSAGE----- and
+        // remove everything to the next empty line.
+        NSRange beginRange = [content rangeOfString:(NSString *)PGP_SIGNED_MESSAGE_BEGIN];
+        if(beginRange.location == NSNotFound)
+            return content;
+        NSString *remainingContent = [content stringByReplacingCharactersInRange:beginRange withString:@""];
+        // Find the first occurence of two newlines (\n\n). This is HTML so it's <BR><BR> (can't be good!)
+        // This delimits the signature part.
+        NSRange signatureDelimiterRange = [content rangeOfString:@"<BR><BR>"];
+        if(signatureDelimiterRange.location == NSNotFound)
+            return content;
+        NSRange pgpDelimiterRange = NSUnionRange(beginRange, signatureDelimiterRange);
+        remainingContent = [content stringByReplacingCharactersInRange:pgpDelimiterRange withString:@""];
+        
+        NSRange startRange = [remainingContent rangeOfString:(NSString *)PGP_MESSAGE_SIGNATURE_BEGIN];
         if(startRange.location == NSNotFound)
             return content;
-        NSRange endRange = [content rangeOfString:(NSString *)PGP_MESSAGE_SIGNATURE_END];
+        NSRange endRange = [remainingContent rangeOfString:(NSString *)PGP_MESSAGE_SIGNATURE_END];
         if(endRange.location == NSNotFound)
             return content;
         NSRange gpgSignatureRange = NSUnionRange(startRange, endRange);
-        NSString *strippedContent = [content stringByReplacingCharactersInRange:gpgSignatureRange withString:@""];
+        NSString *strippedContent = [remainingContent stringByReplacingCharactersInRange:gpgSignatureRange withString:@""];
+        
         return strippedContent;
     }
     return content;
