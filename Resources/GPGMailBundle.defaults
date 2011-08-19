@@ -1,5 +1,5 @@
 {
-    /* 
+    /*
      * Do not modify that file. Use the Terminal, and type:
      * defaults write com.apple.mail TheDefaultName TheValue
      */
@@ -27,6 +27,7 @@
  	GPGDisplaysButtonsInComposeWindow = YES;
     GPGButtonsShowState = YES;
     GPGUsesEncapsulatedSignature = YES;
+    GPGUsesOpenPGPToSend = YES;
 
     /* Viewing */
 	GPGAuthenticatesMessagesAutomatically = YES;
@@ -34,13 +35,14 @@
 	GPGDecryptsMessagesAutomatically = YES;
     GPGDecryptsOnlyUnreadMessagesAutomatically = YES;
     GPGAutomaticallyShowsAllInfo = NO;
+    GPGUsesOpenPGPToReceive = YES;
 
     /* Misc */
     GPGDisplayedKeyIdentifiers = (name, email, comment);
     GPGDisplaysAllUserIDs = YES;
     GPGRefreshesKeysOnVolumeMount = YES;
     GPGDisablesSMIME = NO;
-    
+
     GPGSortingTableColumnTag = 1;
     GPGVisibleTableColumnTags = (0, 1, 2, 3);
     GPGAscendingSorting = YES;

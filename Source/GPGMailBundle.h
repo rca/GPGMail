@@ -101,11 +101,11 @@ typedef void (^gpgmail_decryption_task_t)(void);
 	NSMenuItem *pgpViewMenuItem;
 	IBOutlet NSMenuItem *allUserIDsMenuItem;
 	NSDictionary *locale;
-    
+
     NSSet *cachedPersonalGPGKeys;
     NSSet *cachedPublicGPGKeys;
     NSSet *cachedGPGKeys;
-    
+
     // A serial queue which makes sure that only one pinentry
     // password request is run at once.
     dispatch_queue_t decryptionQueue;
@@ -117,12 +117,12 @@ typedef void (^gpgmail_decryption_task_t)(void);
     NSDictionary *_cachedPersonalGPGKeysByEmail;
     // Map which uses the email address to lookup a public key.
     NSDictionary *_cachedPublicGPGKeysByEmail;
-	
+
 	SUUpdater *updater;
 }
 
 + (id)sharedInstance;
-// Install all methods used by GPGMail. 
+// Install all methods used by GPGMail.
 + (void)_installGPGMail;
 // Load all necessary images.
 + (void)_loadImages;
@@ -134,6 +134,14 @@ typedef void (^gpgmail_decryption_task_t)(void);
 + (NSString *)agentHeader;
 - (void)workspaceDidMount:(NSNotification *)notification;
 - (void)workspaceDidUnmount:(NSNotification *)notification;
+/* Set: use OpenPGP to send messages */
+- (void)setUsesOpenPGPToSend:(BOOL)flag;
+/* Get: use OpenPGP to send messages */
+- (BOOL)usesOpenPGPToSend;
+/* Set: use OpenPGP to receive messages */
+- (void)setUsesOpenPGPToReceive:(BOOL)flag;
+/* Get: use OpenPGP to receive messages */
+- (BOOL)usesOpenPGPToReceive;
 - (void)setAlwaysSignMessages:(BOOL)flag;
 - (BOOL)alwaysSignMessages;
 - (void)setAlwaysEncryptMessages:(BOOL)flag;
