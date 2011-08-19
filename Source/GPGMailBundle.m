@@ -171,11 +171,11 @@ static BOOL gpgMailWorks = YES;
         if([swizzleInfo objectForKey:@"gpgMailClass"]) {
             Class gpgMailClass = NSClassFromString([swizzleInfo objectForKey:@"gpgMailClass"]);
             if(!mailClass) {
-                NSLog(@"Class %@ doesn't exist", mailClass);
+                DebugLog(@"Class %@ doesn't exist", mailClass);
                 break;
             }
             if(!gpgMailClass) {
-                NSLog(@"Class %@ doesn't exist", gpgMailClass);
+                DebugLog(@"Class %@ doesn't exist", gpgMailClass);
                 break;
             }
             [mailClass jr_addMethodsFromClass:gpgMailClass error:&error];
