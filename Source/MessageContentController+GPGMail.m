@@ -38,10 +38,9 @@
 
 - (void)MASetMessageToDisplay:(id)message {
     if(message && [[GPGMailBundle sharedInstance] decryptsMessagesAutomatically]) {
-        BOOL isEncrypted = [[[message messageBody] topLevelPart] isEncrypted];
+        BOOL isEncrypted = [[[message messageBody] topLevelPart] isPGPMimeEncrypted] || [[[message messageBody] topLevelPart] isPGPInlineEncrypted];
         if(isEncrypted) {
             [message setIvar:@"shouldBeDecrypting" value:[NSNumber numberWithBool:YES]];
-            NSLog(@"Message: %@ - message body - %@ should be decrypting: %@", message, [message messageBody], [message getIvar:@"shouldBeDecrypting"] ? @"YES" : @"NO");
         }
     }
     [self MASetMessageToDisplay:message];
@@ -51,6 +50,5 @@
     [[((MessageContentController *)self) message] setIvar:@"shouldBeDecrypting" value:[NSNumber numberWithBool:YES]];
     [((MessageContentController *)self) reloadCurrentMessageShouldReparseBody:YES];
 }
-
 
 @end
