@@ -1,2 +1,22 @@
 Every Mail.app method which is to be swizzled, has to be prefixed
 with MA (MailApp).
+
+There's a folder in Resources which is called old. This folder
+is used to diff the a modified xib with the latest xib.
+It's used for localizeXIB. 
+DON'T EVER DELETE THIS FOLDER!
+
+* Reverse Engineering *
+
+- Sometimes it's not to easy to find out what happens to an
+  object you created. In that case you can over release it,
+  using autorelease or release. This way, the object will be
+  ending up an NSZombie, which can later be tracked using Instruments
+  allocation tool. (VERY HELPFUL)
+
+- clearCachedDecrypted is called everytime the message is unlodaed.
+  we should better cache it.
+
+- Mail internally seems to use firstChildPart to determine the charset of the message.
+
+_getSomeCharsetFromPartTree -> exists only internally
