@@ -8,7 +8,6 @@
   Defines the strings used in the signature view.
  */
 {
-    "NO_EXPIRATION_DATE" = "No expiration is set on this key";
     "VALIDITY_NO_TRUST" = "This signature is not to be trusted.";
     "VALIDITY_OK" = "This signature can be trusted";
 }

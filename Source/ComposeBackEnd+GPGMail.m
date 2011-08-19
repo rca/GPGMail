@@ -56,8 +56,10 @@
         return outMessage;
     }
     
-    // Inject the headers needed in newEncryptedPart and newSignedPart.
-    [self _injectGPGRelevantHeaders];
+	if (shouldPGPEncrypt) {
+		// Inject the headers needed in newEncryptedPart.
+		[self _injectGPGRelevantHeaders];
+	}
     
     OutgoingMessage *outgoingMessage = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldPGPSign shouldEncrypt:shouldPGPEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
     
@@ -193,15 +195,19 @@
     [headers setHeader:[GPGMailBundle agentHeader] forKey:@"x-pgp-agent"];
     [headers setHeader:@"7bit" forKey:@"content-transfer-encoding"];
     [headers removeHeaderForKey:@"content-disposition"];
-    [headers removeHeaderForKey:@"from "];
-    // Set the original bcc recipients.
+    [headers removeHeaderForKey:@"from "];	
+	
+	// Set the original bcc recipients.
     DebugLog(@"[DEBUG] %s originalBCCRecipients: %@", __PRETTY_FUNCTION__, [self getIvar:@"originalBCCRecipients"]);
-    /*[headers setHeader:originalBCCRecipients forKey:@"bcc"];*/
-    NSArray *originalBCCRecipients = (NSArray *)[self getIvar:@"originalBCCRecipients"];
-    if([originalBCCRecipients count])
+	
+    NSArray *originalBCCRecipients = [self getIvar:@"originalBCCRecipients"];
+    if([originalBCCRecipients count]) {
         [headers setHeader:originalBCCRecipients forKey:@"bcc"];
-    else
+	} else {
         [headers removeHeaderForKey:@"bcc"];
+	}
+
+	
     // Create the actualy body data.
     NSData *headerData = [headers encodedHeadersIncludingFromSpace:NO];
     DebugLog(@"[DEBUG] %s header string: %@", __PRETTY_FUNCTION__, [[[NSString alloc] initWithData:headerData encoding:NSUTF8StringEncoding] autorelease]);

@@ -264,12 +264,14 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     NSMutableArray *normalRecipients = [[NSMutableArray alloc] initWithCapacity:1];
     NSMutableArray *bccRecipients = [[NSMutableArray alloc] initWithCapacity:1];
     for(NSString *recipient in recipients) {
-        if(((NSRange)[recipient rangeOfString:@"gpg-mail-bcc::"]).location != NSNotFound)
-            [bccRecipients addObject:[recipient stringByReplacingCharactersInRange:[recipient rangeOfString:@"gpg-mail-bcc::"] withString:@""]];
-        else if(((NSRange)[recipient rangeOfString:@"gpg-mail-from::"]).location != NSNotFound)
-            [bccRecipients addObject:[recipient stringByReplacingCharactersInRange:[recipient rangeOfString:@"gpg-mail-from::"] withString:@""]];
-        else
+		NSLog(@"Class: %@ DESC: %@", [recipient className], [recipient description]);
+        if([recipient hasPrefix:@"gpg-mail-bcc::"]) {
+			[bccRecipients addObject:[recipient substringFromIndex:14]];
+        } else if([recipient hasPrefix:@"gpg-mail-from::"]) {
+			[normalRecipients addObject:[recipient substringFromIndex:15]];
+		} else {
             [normalRecipients addObject:recipient];
+		}
     }
     DebugLog(@"BCC Recipients: %@", bccRecipients);
     DebugLog(@"Recipients: %@", normalRecipients);
@@ -315,10 +317,10 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     
     [dataPart setType:@"application"];
     [dataPart setSubtype:@"octet-stream"];
-    [dataPart setBodyParameter:@"PGP.asc" forKey:@"name"];
+    [dataPart setBodyParameter:@"encrypted.asc" forKey:@"name"];
     dataPart.contentTransferEncoding = @"7bit";
     [dataPart setDisposition:@"inline"];
-    [dataPart setDispositionParameter:@"PGP.asc" forKey:@"filename"];
+    [dataPart setDispositionParameter:@"encrypted.asc" forKey:@"filename"];
     [dataPart setContentDescription:@"Message encrypted with OpenPGP using GPGMail"];
     
     return dataPart;
@@ -370,12 +372,12 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     MimePart *signaturePart = [[MimePart alloc] init];
     [signaturePart setType:@"application"];
     [signaturePart setSubtype:@"pgp-signature"];
-    [signaturePart setBodyParameter:@"PGP.sig" forKey:@"name"];
+    [signaturePart setBodyParameter:@"signature.asc" forKey:@"name"];
     signaturePart.contentTransferEncoding = @"7bit";
     [signaturePart setDisposition:@"inline"];
-    [signaturePart setDispositionParameter:@"PGP.sig" forKey:@"filename"];
+    [signaturePart setDispositionParameter:@"signature.asc" forKey:@"filename"];
     // TODO: translate this string.
-    [signaturePart setContentDescription:@"OpenPGP digital signature"];
+    [signaturePart setContentDescription:@"Message signed with OpenPGP using GPGMail"];
     
     // Self is actually the whole current message part.
     // So the only thing to do is, add self to our top part
@@ -425,6 +427,10 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
         return;
     // And now the funny part, the actual verification.
     NSData *signatureData = [signaturePart bodyData];
+	if (![signatureData length]) {
+		return;
+	}
+	
     //DebugLog(@"[DEBUG] %s signature: %@", __PRETTY_FUNCTION__, [NSString stringWithData:signatureData encoding:[self guessedEncoding]]);
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.verbose = (GPGMailLoggingLevel > 0);

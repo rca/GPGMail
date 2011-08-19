@@ -72,13 +72,6 @@ GPGSignatureView *_sharedInstance;
     return value;
 }
 
-- (NSString *)expirationDateDescription {
-    if(gpgKey.expirationDate)
-        return [gpgKey.expirationDate description];
-    
-    return localized(@"NO_EXPIRATION_DATE");
-}
-
 - (NSString *)validityDescription {
 	if (!signature) return nil;
 	
@@ -244,7 +237,7 @@ GPGSignatureView *_sharedInstance;
 	return proposedMinimumPosition + 20;
 }
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMaximumPosition ofSubviewAt:(NSInteger)dividerIndex {
-	return proposedMaximumPosition - 60;
+	return proposedMaximumPosition - 90;
 }
 - (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize {
 	NSArray *subviews = [splitView subviews];
