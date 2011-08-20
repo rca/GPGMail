@@ -80,7 +80,7 @@
         // the security header which would result in signed being shown.
         // To fix this, the copySigners are checked again.
         NSAttributedString *securityHeader = [NSAttributedString attributedStringWithString:@""];
-        if(isSigned && ![[topPart copySignerLabels] count]) {
+        if(isSigned && ![(NSArray *)[topPart copySignerLabels] count]) {
             return securityHeader;
         }
         return [self MA_attributedStringForSecurityHeader];
@@ -93,8 +93,9 @@
     char is_encrypted, is_signed;
     MFError *error;
     NSArray *signerLabels = nil; 
+    MimeBody *decryptedMessageBody = nil;
     if(isPGPEncrypted) {
-        MimeBody *decryptedMessageBody = [topPart decryptedMessageBodyIsEncrypted:&is_encrypted isSigned:&is_signed error:&error];
+        decryptedMessageBody = [topPart decryptedMessageBodyIsEncrypted:&is_encrypted isSigned:&is_signed error:&error];
         MimePart *decryptedTopPart = [decryptedMessageBody topLevelPart];
         // If it's encrypted, only the decrypted part is of interest.
         topPart = decryptedTopPart;
@@ -106,9 +107,10 @@
     
     // Add the encrypted part to the security header.
     if(isPGPEncrypted) {
+        NSImage *encryptedBadge = decryptedMessageBody ? [NSImage imageNamed:@"decryptedBadge"] : [NSImage imageNamed:@"Encrypted_Glyph"];
         NSAttributedString *encryptAttachmentString = [NSAttributedString attributedStringWithAttachment:[[[NSTextAttachment alloc] init] autorelease] 
-                                                                                                   image:[NSImage imageNamed:@"Encrypted_Glyph"] 
-                                                                                                    link:@"gpgmail://decrypt"];
+                                                                                                   image:encryptedBadge
+                                                                                                    link:decryptedMessageBody ? nil : @"gpgmail://decrypt"];
         [securityHeader appendAttributedString:[NSAttributedString attributedStringWithString:@"\t"]];
         [securityHeader appendAttributedString:encryptAttachmentString];
         [securityHeader appendAttributedString:[NSAttributedString attributedStringWithString:NSLocalizedStringFromTableInBundle(@"ENCRYPTED", @"Encryption", [NSBundle mainBundle], @"")]];

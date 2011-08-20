@@ -248,6 +248,8 @@ static BOOL gpgMailWorks = YES;
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"EmptyImage"]] setName:@"gpgEmptyImage"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"ValidBadge"]] setName:@"gpgValidBadge"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"InvalidBadge"]] setName:@"gpgInvalidBadge"];
+    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"encryption_unlocked"]] setName:@"decryptedBadge"];
+    
 }
 
 /**
