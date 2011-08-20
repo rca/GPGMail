@@ -1537,6 +1537,10 @@ static BOOL gpgMailWorks = YES;
 
 // TODO: Implement synchronize key groups with addressbook groups.
 
+- (void)synchronizeKeyGroupsWithAddressBookGroups {
+    // Not Implemented.
+}
+
 - (void)abDatabaseChangedExternally:(NSNotification *)notification {
 	// FIXME: Update only what's needed
 	[self synchronizeKeyGroupsWithAddressBookGroups];

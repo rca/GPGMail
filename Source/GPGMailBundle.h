@@ -126,7 +126,6 @@ typedef void (^gpgmail_verification_task_t)(void);
 	SUUpdater *updater;
 }
 
-+ (id)sharedInstance;
 // Install all methods used by GPGMail.
 + (void)_installGPGMail;
 // Load all necessary images.
@@ -273,6 +272,11 @@ typedef void (^gpgmail_verification_task_t)(void);
  */
 - (void)addVerificationTask:(gpgmail_verification_task_t)task;
 
+@end
+
+@interface GPGMailBundle (NoImplementation)
+// Prevent "incomplete implementation" warning.
++ (id)sharedInstance;
 @end
 
 @interface GPGMailBundle (AddressGroups)
