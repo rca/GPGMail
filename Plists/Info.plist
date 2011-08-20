@@ -40,6 +40,8 @@
 	<string>GPGMailBundle</string>
 	<key>SupportedPluginCompatibilityUUIDs</key>
 	<array>
+		<string>EF59EC5E-EFCD-4EA7-B617-6C5708397D24</string>
+		<string>6E7970A3-E5F1-4C41-A904-B18D3D8FAA7D</string>
 		<string>2DE49D65-B49E-4303-A280-8448872EFE87</string>
 		<string>1146A009-E373-4DB6-AB4D-47E59A7E50FD</string>
 		<string>E71BD599-351A-42C5-9B63-EA5C47F7CE8E</string>
