@@ -21,8 +21,11 @@
     // Set a link attribute on the attachment, so we get an event
     // when the attachment is clicked in the MessageHeaderDisplay.
     // See textView:clickOnLink:
-    [attachmentString addAttribute:NSLinkAttributeName value:link 
-                             range:NSMakeRange(0, [attachmentString length])];
+    // If link is nil, just create the attachment with the image.
+    if(link) {
+        [attachmentString addAttribute:NSLinkAttributeName value:link 
+                                 range:NSMakeRange(0, [attachmentString length])];
+    }
     [attachmentString addAttribute:NSCursorAttributeName value:[NSCursor arrowCursor] 
                              range:NSMakeRange(0, [attachmentString length])];
     [attachmentString addAttribute:NSBaselineOffsetAttributeName 

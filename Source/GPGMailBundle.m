@@ -73,7 +73,7 @@ static BOOL gpgMailWorks = YES;
 
 @implementation GPGMailBundle
 
-@synthesize cachedPublicGPGKeys, cachedPersonalGPGKeys, cachedGPGKeys, updater;
+@synthesize cachedPublicGPGKeys, cachedPersonalGPGKeys, cachedGPGKeys, updater, accountExistsForSigning;
 
 + (void)load {
 	//GPGMailLoggingLevel = [[GPGOptions sharedOptions] integerForKey:@"GPGMailDebug"];
@@ -249,6 +249,8 @@ static BOOL gpgMailWorks = YES;
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"EmptyImage"]] setName:@"gpgEmptyImage"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"ValidBadge"]] setName:@"gpgValidBadge"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"InvalidBadge"]] setName:@"gpgInvalidBadge"];
+    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"encryption_unlocked"]] setName:@"decryptedBadge"];
+    
 }
 
 /**
@@ -306,6 +308,11 @@ static BOOL gpgMailWorks = YES;
 - (void)addDecryptionTask:(gpgmail_decryption_task_t)task {
     dispatch_sync(decryptionQueue, task);
 }
+
+- (void)addVerificationTask:(gpgmail_verification_task_t)task {
+    dispatch_sync(verificationQueue, task);
+}
+
 
 - (BOOL)gpgMailWorks {
 	return gpgMailWorks;
@@ -502,11 +509,12 @@ static BOOL gpgMailWorks = YES;
     // Load all keys.
     [self loadGPGKeys];
 
-    DebugLog(@"Personal Keys: %@", [self personalKeys]);
-    DebugLog(@"Public Keys: %@", [self publicKeys]);
-
+    if([[self personalKeys] count])
+        self.accountExistsForSigning = YES;
+    
     // Create the decryption queue.
     decryptionQueue = dispatch_queue_create("org.gpgmail.decryption", NULL);
+    verificationQueue = dispatch_queue_create("org.gpgmail.verification", NULL);
 
 	// There's a bug in MOX: added menu items are not enabled/disabled correctly
 	// if they are instantiated programmatically
@@ -1133,13 +1141,13 @@ static BOOL gpgMailWorks = YES;
 
 - (NSSet *)loadGPGKeys {
     if(!gpgMailWorks) return nil;
-    if(!cachedGPGKeys) {
-        GPGController *gpgc = [[GPGController alloc] init];
-        gpgc.verbose = (GPGMailLoggingLevel > 0);
-        cachedGPGKeys = [gpgc allKeys];
-        [cachedGPGKeys retain];
-        [gpgc release];
-    }
+    
+    GPGController *gpgc = [[GPGController alloc] init];
+    gpgc.verbose = (GPGMailLoggingLevel > 0);
+    cachedGPGKeys = [gpgc allKeys];
+    [cachedGPGKeys retain];
+    [gpgc release];
+    
     return cachedGPGKeys;
 }
 
@@ -1178,7 +1186,7 @@ static BOOL gpgMailWorks = YES;
 
     if(!cachedPersonalGPGKeys) {
         filterKeys = [self filtersOutUnusableKeys];
-        allKeys = [self loadGPGKeys];
+        allKeys = [self allGPGKeys];
         cachedPersonalGPGKeys = [[allKeys filter:^(id obj) {
             return ((GPGKey *)obj).secret && (!filterKeys || [self canKeyBeUsedForSigning:obj]) ? obj : nil;
         }] retain];
@@ -1205,7 +1213,7 @@ static BOOL gpgMailWorks = YES;
 
     if(!cachedPublicGPGKeys) {
         filterKeys = [self filtersOutUnusableKeys];
-        allKeys = [self loadGPGKeys];
+        allKeys = [self allGPGKeys];
         cachedPublicGPGKeys = [[allKeys filter:^(id obj) {
             return !filterKeys || [self canKeyBeUsedForEncryption:obj] ? obj : nil;
         }] retain];

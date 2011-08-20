@@ -250,6 +250,12 @@
 - (NSRange)rangeOfPlainPGPSignatures;
 
 /**
+ Finds inline pgp encrypted data in the current part. Unlike isPGPMimeEncrypted,
+ only the current part is checked for inline data and the range returned.
+ */
+- (NSRange)rangeOfPGPInlineEnryptedData;
+
+/**
  Guesses the encoding of the mime body by checking the mime part
  for charset information.
  TODO: probably improve.

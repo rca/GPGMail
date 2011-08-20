@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1B02D70813F1E9D80032CFD1 /* GPGFlaggedHeaderValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D70713F1E9D80032CFD1 /* GPGFlaggedHeaderValue.m */; };
 		1B02D70A13F1E9F00032CFD1 /* NSArray+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D70913F1E9F00032CFD1 /* NSArray+Functional.m */; };
+		1B08634013FF9976001AF6E7 /* encryption_unlocked.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B08633F13FF9976001AF6E7 /* encryption_unlocked.png */; };
 		1B141AA410800EA8007BE344 /* GPGProgressIndicatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A7FAE0838E4170052F47C /* GPGProgressIndicatorController.m */; };
 		1B165C6913D78E3C00CA5D61 /* Libmacgpg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 222C442813C91A330035BEDE /* Libmacgpg.framework */; };
 		1B165C6A13D78E4400CA5D61 /* Libmacgpg.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 222C442813C91A330035BEDE /* Libmacgpg.framework */; };
@@ -153,6 +154,7 @@
 		1B02D70913F1E9F00032CFD1 /* NSArray+Functional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+Functional.m"; path = "Source/NSArray+Functional.m"; sourceTree = "<group>"; };
 		1B02D70B13F1EA1D0032CFD1 /* GPGFlaggedHeaderValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPGFlaggedHeaderValue.h; path = Source/GPGFlaggedHeaderValue.h; sourceTree = "<group>"; };
 		1B02D70C13F1EA290032CFD1 /* NSArray+Functional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+Functional.h"; path = "Source/NSArray+Functional.h"; sourceTree = "<group>"; };
+		1B08633F13FF9976001AF6E7 /* encryption_unlocked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = encryption_unlocked.png; path = Resources/Images/encryption_unlocked.png; sourceTree = "<group>"; };
 		1B194B5A11CC55A80092B810 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = Resources/English.lproj/GPGMail.strings; sourceTree = "<group>"; };
 		1B194B5C11CC55B40092B810 /* Dutch */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Dutch; path = Resources/Dutch.lproj/GPGMail.strings; sourceTree = "<group>"; };
 		1B194B5D11CC55C20092B810 /* Danish */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Danish; path = Resources/Danish.lproj/GPGMail.strings; sourceTree = "<group>"; };
@@ -2798,6 +2800,7 @@
 		559A80DC0838EC770052F47C /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				1B08633F13FF9976001AF6E7 /* encryption_unlocked.png */,
 				1BACB2EA13EBF66300C750AA /* GPGCertLargeNotTrusted.tif */,
 				3094CD6C12F5EBA200ABCE8A /* GPGMail.icns */,
 				30E4F6A712B3B1350093608D /* CheckMark.png */,
@@ -2955,6 +2958,7 @@
 				1B637BC413E39FDF00196286 /* GPGMail TODOs in Resources */,
 				1BDAA67413EB680E00F27826 /* CODING in Resources */,
 				1BCEE1E311CC051500488D19 /* LICENSE.txt in Resources */,
+				1B08634013FF9976001AF6E7 /* encryption_unlocked.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
