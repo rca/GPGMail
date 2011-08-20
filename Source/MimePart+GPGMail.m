@@ -616,6 +616,17 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
         return;
     }
     
+    // Check if the public key is in the keychain, otherwise display a warning [#269]
+    BOOL nonDownloadedKeyFound = NO;
+    for(GPGSignature *signature in signatures) {
+        if(!signature.hasFilled) {
+            nonDownloadedKeyFound = YES;
+            break;
+        }
+    }
+    if(nonDownloadedKeyFound)
+        [self failedToVerifyWithException:[NSException exceptionWithName:@"PGPKeyNotInKeychain" reason:@"The PGP key of the signature is not in your keychain" userInfo:nil]];
+    
     // Signatures are stored in _messageSigners. that might not work, but
     // hopefully it does.
     [self setValue:[signatures retain] forKey:@"_messageSigners"];
@@ -646,6 +657,18 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     @finally {
         [gpgc release];
     }
+    
+    // Check if the public key is in the keychain, otherwise display a warning [#269]
+    BOOL nonDownloadedKeyFound = NO;
+    for(GPGSignature *signature in signatures) {
+        if(!signature.userID) {
+            nonDownloadedKeyFound = YES;
+            break;
+        }
+    }
+    if(nonDownloadedKeyFound)
+        [self failedToVerifyWithException:[NSException exceptionWithName:@"PGPKeyNotInKeychain" reason:@"The PGP key of the signature is not in your keychain" userInfo:nil]];
+    
     DebugLog(@"[DEBUG] %s mime part: %@", __PRETTY_FUNCTION__, self);
     // Store the signature and done!
     [self setValue:signatures forKey:@"_messageSigners"];
@@ -655,9 +678,16 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
 }
 
 - (void)failedToVerifyWithException:(NSException *)exception {
+    NSString *localizedKeyTitle = @"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE";
+    NSString *localizedKeyMessage = @"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE";
+    if([exception.name isEqualToString:@"PGPKeyNotInKeychain"]) {
+        localizedKeyTitle = @"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE";
+        localizedKeyMessage = @"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE";
+    }
+    
     NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
-    NSString *title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
-    NSString *message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+    NSString *title = NSLocalizedStringFromTableInBundle(localizedKeyTitle, @"GPGMail", gpgMailBundle, @"");
+    NSString *message = NSLocalizedStringFromTableInBundle(localizedKeyMessage, @"GPGMail", gpgMailBundle, @"");
     MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:nil title:title helpTag:nil 
                                      userInfo:[NSDictionary dictionaryWithObjectsAndKeys:title, @"_MFShortDescription", message, @"NSLocalizedDescription", nil]];
     [[[self mimeBody] topLevelPart] setValue:error forKey:@"_smimeError"];
@@ -694,6 +724,14 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     [messageSigners release];
     
     return [signerLabels copy];
+}
+
+- (id)MACopyMessageSigners {
+    // Only invoke the original method if _messageSigners is not set yet.
+    if([[[self mimeBody] topLevelPart] valueForKey:@"_messageSigners"])
+        return [[[[self mimeBody] topLevelPart] valueForKey:@"_messageSigners"] copy];
+    
+    return [self MACopyMessageSigners];
 }
 
 - (BOOL)MAIsSigned {

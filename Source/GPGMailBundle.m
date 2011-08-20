@@ -138,6 +138,7 @@ static BOOL gpgMailWorks = YES;
                 @"verifySignature",
                 @"decodeWithContext:",
                 @"copySignerLabels",
+                @"copyMessageSigners",
                 @"isSigned",
                 @"usesKnownSignatureProtocol",
                 @"decodeTextPlainWithContext:",
