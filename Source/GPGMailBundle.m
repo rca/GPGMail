@@ -1387,19 +1387,18 @@ static BOOL gpgMailWorks = YES;
 		id aValue;
 		NSString *aComponent;
 
-		if ([anIdentifier isEqualToString:@"validity"]) {
-			anIdentifier = @"validityNumber";
-		} else if ([anIdentifier isEqualToString:@"keyID"]) {
+		if ([anIdentifier isEqualToString:@"keyID"]) {
 			anIdentifier = @"shortKeyID";
 		} else if ([anIdentifier isEqualToString:@"longKeyID"]) {
 			anIdentifier = @"keyID";
-		} else if ([anIdentifier isEqualToString:@"algorithm"]) {
-			anIdentifier = @"algorithmDescription";
-		} else if ([anIdentifier isEqualToString:@"fingerprint"]) {
-			anIdentifier = @"formattedFingerprint";
-		}
-		aValue = [publicKey performSelector:NSSelectorFromString(anIdentifier)];
-		if (aValue == nil || ([aValue isKindOfClass:[NSString class]] && [(NSString *) aValue length] == 0)) {
+        }
+        // Only call the method if it exists on the key.
+        if([publicKey respondsToSelector:NSSelectorFromString(anIdentifier)])
+            aValue = [publicKey performSelector:NSSelectorFromString(anIdentifier)];
+        else
+            aValue = nil;
+        
+        if (aValue == nil || ([aValue isKindOfClass:[NSString class]] && [(NSString *) aValue length] == 0)) {
 			continue;
 		}
 
@@ -1407,17 +1406,8 @@ static BOOL gpgMailWorks = YES;
 			aComponent = [NSString stringWithFormat:@"<%@>", aValue];
 		} else if ([anIdentifier isEqualToString:@"comment"]) {
 			aComponent = [NSString stringWithFormat:@"(%@)", aValue];
-		} else if ([anIdentifier isEqualToString:@"validityNumber"]) {
-			// Validity has no meaning yet for secret keys, always unknown, so we never display it
-			if (!publicKey.secret) {
-				NSString *aDesc = [NSString stringWithFormat:@"Validity=%@", aValue];
-
-				aDesc = NSLocalizedStringFromTableInBundle(aDesc, @"GPGMail", myBundle, "");
-				aComponent = [NSString stringWithFormat:@"[%@%@]", NSLocalizedStringFromTableInBundle(@"VALIDITY: ", @"GPGMail", myBundle, ""), aDesc];
-			} else {
-				continue;
-			}
-		} else if ([anIdentifier isEqualToString:@"shortKeyID"]) {
+		}
+        else if ([anIdentifier isEqualToString:@"shortKeyID"]) {
 			aComponent = [NSString stringWithFormat:@"0x%@", aValue];
 		} else if ([anIdentifier isEqualToString:@"keyID"]) {
 			aComponent = [NSString stringWithFormat:@"0x%@", aValue];
@@ -1448,12 +1438,11 @@ static BOOL gpgMailWorks = YES;
 		if ([anIdentifier isEqualToString:@"fingerprint"] || [anIdentifier isEqualToString:@"keyID"] || [anIdentifier isEqualToString:@"algorithm"] || [anIdentifier isEqualToString:@"longKeyID"]) {
 			continue;
 		}
-		if ([anIdentifier isEqualToString:@"validity"]) {
-			anIdentifier = @"validityNumber";
-		}
-
-		aValue = [userID performSelector:NSSelectorFromString(anIdentifier)];
-
+		
+        if([userID respondsToSelector:NSSelectorFromString(anIdentifier)])
+            aValue = [userID performSelector:NSSelectorFromString(anIdentifier)];
+        else
+            aValue = nil;
 		if (aValue == nil || ([aValue isKindOfClass:[NSString class]] && [(NSString *) aValue length] == 0)) {
 			continue;
 		}
@@ -1462,15 +1451,8 @@ static BOOL gpgMailWorks = YES;
 			[titleElements addObject:[NSString stringWithFormat:@"<%@>", aValue]];
 		} else if ([anIdentifier isEqualToString:@"comment"]) {
 			[titleElements addObject:[NSString stringWithFormat:@"(%@)", aValue]];
-		} else if ([anIdentifier isEqualToString:@"validityNumber"]) {
-			// Validity has no meaning yet for secret keys, always unknown, so we never display it
-			if (!userID.primaryKey.secret) {
-				NSString *aDesc = [NSString stringWithFormat:@"Validity=%@", aValue];
-
-				aDesc = NSLocalizedStringFromTableInBundle(aDesc, @"GPGMail", myBundle, "");
-				[titleElements addObject:[NSString stringWithFormat:@"[%@%@]", NSLocalizedStringFromTableInBundle(@"VALIDITY: ", @"GPGMail", myBundle, ""), aDesc]];                                                 // Would be nice to have an image for that
-			}
-		} else {
+		}
+        else {
 			[titleElements addObject:aValue];
 		}
 	}
