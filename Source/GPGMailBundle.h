@@ -111,6 +111,9 @@ typedef void (^gpgmail_verification_task_t)(void);
     // password request is run at once.
     dispatch_queue_t decryptionQueue;
     dispatch_queue_t verificationQueue;
+    
+    BOOL accountExistsForSigning;
+    
     // Map which uses a fingerprint to lookup a personal key.
     NSDictionary *_cachedPersonalGPGKeysByFingerprint;
     // Map which uses a fingerprint to lookup a public key.
@@ -238,6 +241,7 @@ typedef void (^gpgmail_verification_task_t)(void);
 
 @property (nonatomic, readonly, retain) SUUpdater *updater;
 
+@property (nonatomic, assign) BOOL accountExistsForSigning;
 
 - (NSString *)version;
 - (NSString *)versionDescription;

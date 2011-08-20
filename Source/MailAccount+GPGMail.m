@@ -29,13 +29,16 @@
 
 #import <MailAccount.h>
 #import "MailAccount+GPGMail.h"
+#import "GPGMailBundle.h"
 
 @implementation MailAccount (GPGMail)
 
-// TODO: Only display security view if OpenPGP keys are available
-//       for signing. Analog to S/MIME
 + (BOOL)MAAccountExistsForSigning {
-    return YES;
+    BOOL PGPAccountExistsForSigning = ((GPGMailBundle *)[GPGMailBundle sharedInstance]).accountExistsForSigning;
+    if(PGPAccountExistsForSigning)
+        return YES;
+    
+    return [self MAAccountExistsForSigning];
 }
 
 @end
