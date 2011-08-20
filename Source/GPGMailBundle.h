@@ -134,88 +134,52 @@ typedef void (^gpgmail_decryption_task_t)(void);
 + (NSString *)agentHeader;
 - (void)workspaceDidMount:(NSNotification *)notification;
 - (void)workspaceDidUnmount:(NSNotification *)notification;
-/* Set: use OpenPGP to send messages */
-- (void)setUsesOpenPGPToSend:(BOOL)flag;
-/* Get: use OpenPGP to send messages */
-- (BOOL)usesOpenPGPToSend;
-/* Set: use OpenPGP to receive messages */
-- (void)setUsesOpenPGPToReceive:(BOOL)flag;
-/* Get: use OpenPGP to receive messages */
-- (BOOL)usesOpenPGPToReceive;
-- (void)setAlwaysSignMessages:(BOOL)flag;
-- (BOOL)alwaysSignMessages;
-- (void)setAlwaysEncryptMessages:(BOOL)flag;
-- (BOOL)alwaysEncryptMessages;
-- (void)setEncryptMessagesWhenPossible:(BOOL)flag;
-- (BOOL)encryptMessagesWhenPossible;
-- (void)setDefaultKey:(GPGKey *)key;
-- (GPGKey *)defaultKey;
-- (void)setRemembersPassphrasesDuringSession:(BOOL)flag;
-- (BOOL)remembersPassphrasesDuringSession;
-- (void)setDecryptsMessagesAutomatically:(BOOL)flag;
-- (BOOL)decryptsMessagesAutomatically;
-- (void)setAuthenticatesMessagesAutomatically:(BOOL)flag;
-- (BOOL)authenticatesMessagesAutomatically;
-- (void)setDisplaysButtonsInComposeWindow:(BOOL)flag;
-- (BOOL)displaysButtonsInComposeWindow;
-- (void)setEncryptsToSelf:(BOOL)flag;
-- (BOOL)encryptsToSelf;
- - (void) setUsesKeychain:(BOOL)flag;
- - (BOOL) usesKeychain;
+
+
+
+
+@property BOOL usesOpenPGPToSend; // use OpenPGP to send messages
+@property BOOL usesOpenPGPToReceive; // use OpenPGP to receive messages
+
+
+@property (retain) GPGKey *defaultKey;
+@property BOOL decryptsMessagesAutomatically;
+@property BOOL authenticatesMessagesAutomatically;
+@property BOOL encryptsToSelf;
+@property BOOL decryptsOnlyUnreadMessagesAutomatically;
+@property BOOL authenticatesOnlyUnreadMessagesAutomatically;
+@property (retain) NSArray *displayedKeyIdentifiers;
+@property (readonly) NSArray *allDisplayedKeyIdentifiers;
+@property BOOL displaysAllUserIDs;
+@property BOOL filtersOutUnusableKeys;
+@property BOOL ignoresPGPPresence;
+@property BOOL refreshesKeysOnVolumeMount;
+@property BOOL encryptMessagesWhenPossible;
+@property BOOL alwaysSignMessages;
+@property BOOL alwaysEncryptMessages;
+@property BOOL displaysButtonsInComposeWindow;
 @property BOOL usesKeychain;
-- (void)setDecryptsOnlyUnreadMessagesAutomatically:(BOOL)flag;
-- (BOOL)decryptsOnlyUnreadMessagesAutomatically;
-- (void)setAuthenticatesOnlyUnreadMessagesAutomatically:(BOOL)flag;
-- (BOOL)authenticatesOnlyUnreadMessagesAutomatically;
-- (void)setUsesOnlyOpenPGPStyle:(BOOL)flag;
-- (BOOL)usesOnlyOpenPGPStyle;
-- (void)setUsesEncapsulatedSignature:(BOOL)flag;
-- (BOOL)usesEncapsulatedSignature;
-- (void)setUsesOnlyOpenPGPStyle:(BOOL)flag;
-- (BOOL)usesOnlyOpenPGPStyle;
-- (void)setUsesEncapsulatedSignature:(BOOL)flag;
-- (BOOL)usesEncapsulatedSignature;
-- (void)setUsesBCCRecipients:(BOOL)flag;
-- (BOOL)usesBCCRecipients;
-- (void)setTrustsAllKeys:(BOOL)flag;
-- (BOOL)trustsAllKeys;
-- (void)setAutomaticallyShowsAllInfo:(BOOL)flag;
-- (BOOL)automaticallyShowsAllInfo;
-- (void)setPassphraseFlushTimeout:(NSTimeInterval)timeout;
-- (NSTimeInterval)passphraseFlushTimeout;
-- (void)setChoosesPersonalKeyAccordingToAccount:(BOOL)flag;
-- (BOOL)choosesPersonalKeyAccordingToAccount;
-- (void)setButtonsShowState:(BOOL)flag;
-- (BOOL)buttonsShowState;
-- (void)setSignWhenEncrypting:(BOOL)flag;
-- (BOOL)signWhenEncrypting;
-- (NSArray *)allDisplayedKeyIdentifiers;
-- (void)setDisplayedKeyIdentifiers:(NSArray *)keyIdentifiers;
-- (NSArray *)displayedKeyIdentifiers;
-- (void)setDisplaysAllUserIDs:(BOOL)flag;
-- (BOOL)displaysAllUserIDs;
-- (void)setFiltersOutUnusableKeys:(BOOL)flag;
-- (BOOL)filtersOutUnusableKeys;
-- (void)setShowsPassphrase:(BOOL)flag;
-- (BOOL)showsPassphrase;
-- (void)setLineWrappingLength:(int)value;
-- (long)lineWrappingLength;
-- (void)setIgnoresPGPPresence:(BOOL)flag;
-- (BOOL)ignoresPGPPresence;
-- (void)setRefreshesKeysOnVolumeMount:(BOOL)flag;
-- (BOOL)refreshesKeysOnVolumeMount;
-- (void)setDisablesSMIME:(BOOL)flag;
-- (BOOL)disablesSMIME;
-- (void)setWarnedAboutMissingPrivateKeys:(BOOL)flag;
-- (BOOL)warnedAboutMissingPrivateKeys;
-- (void)setEncryptsReplyToEncryptedMessage:(BOOL)flag;
-- (BOOL)encryptsReplyToEncryptedMessage;
-- (void)setSignsReplyToSignedMessage:(BOOL)flag;
-- (BOOL)signsReplyToSignedMessage;
-- (void)setUsesABEntriesRules:(BOOL)flag;
-- (BOOL)usesABEntriesRules;
-- (void)setAddsCustomHeaders:(BOOL)flag;
-- (BOOL)addsCustomHeaders;
+@property BOOL usesOnlyOpenPGPStyle;
+@property BOOL usesEncapsulatedSignature;
+@property BOOL usesBCCRecipients;
+@property BOOL trustsAllKeys;
+@property BOOL automaticallyShowsAllInfo;
+@property NSTimeInterval passphraseFlushTimeout;
+@property BOOL choosesPersonalKeyAccordingToAccount;
+@property BOOL buttonsShowState;
+@property BOOL signWhenEncrypting;
+@property BOOL showsPassphrase;
+@property BOOL disablesSMIME;
+@property BOOL warnedAboutMissingPrivateKeys;
+@property BOOL encryptsReplyToEncryptedMessage;
+@property BOOL signsReplyToSignedMessage;
+@property BOOL usesABEntriesRules;
+@property BOOL addsCustomHeaders;
+
+
+
+
+
 
 @property (assign) NSMenuItem *decryptMenuItem;
 @property (assign) NSMenuItem *authenticateMenuItem;
@@ -248,10 +212,12 @@ typedef void (^gpgmail_decryption_task_t)(void);
 - (NSSet *)personalKeys;
 - (NSSet *)publicKeys;
 - (NSArray *)secondaryUserIDsForKey:(GPGKey *)key;
-- (NSArray *)keyGroups;
+//NOT IMPLEMENTED - (NSArray *)keyGroups;
 - (IBAction)gpgReloadPGPKeys:(id)sender;
 
-- (IBAction)gpgToggleEncryptionForNewMessage:(id)sender;
+
+//NOT IMPLEMENTED
+/*- (IBAction)gpgToggleEncryptionForNewMessage:(id)sender;
 - (IBAction)gpgToggleSignatureForNewMessage:(id)sender;
 - (IBAction)gpgChoosePublicKeys:(id)sender;
 - (IBAction)gpgChoosePersonalKey:(id)sender;
@@ -260,7 +226,7 @@ typedef void (^gpgmail_decryption_task_t)(void);
 - (IBAction)gpgToggleSymetricEncryption:(id)sender;
 - (IBAction)gpgToggleUsesOnlyOpenPGPStyle:(id)sender;
 - (IBAction)gpgToggleDisplayAllUserIDs:(id)sender;
-- (IBAction)gpgToggleShowKeyInformation:(id)sender;
+- (IBAction)gpgToggleShowKeyInformation:(id)sender;*/
 
 - (NSString *)menuItemTitleForKey:(GPGKey *)key;
 - (NSString *)menuItemTitleForUserID:(GPGUserID *)userID indent:(unsigned)indent;
@@ -273,7 +239,7 @@ typedef void (^gpgmail_decryption_task_t)(void);
 - (GPGKey *)publicKeyForSecretKey:(GPGKey *)secretKey;
 
 //- (NSString *)descriptionForError:(GPGError)error;
-- (NSString *)descriptionForException:(NSException *)exception;
+//NOT IMPLEMENTED - (NSString *)descriptionForException:(NSException *)exception;
 
 //- (NSString *)hashAlgorithmDescription:(GPGHashAlgorithm)algorithm;
 //- (NSString *)gpgErrorDescription:(GPGError)error;

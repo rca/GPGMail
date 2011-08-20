@@ -37,16 +37,17 @@
 #import "CCLog.h"
 #import "NSSet+Functional.h"
 #import "NSString+GPGMail.h"
-#import "GPGDefaults.h"
+//#import "GPGDefaults.h"
 #import "GPGMailPreferences.h"
 #import "GPGKeyDownload.h"
 #import "GPGProgressIndicatorController.h"
 #import "GPGMailBundle.h"
+#import "GPGVersionComparator.h"
 
 
 // The following strings are used as toolbarItem identifiers and userDefault keys (value is the position index)
 NSString *GPGKeyListWasInvalidatedNotification = @"GPGKeyListWasInvalidatedNotification";
-NSString *GPGPreferencesDidChangeNotification = @"GPGPreferencesDidChangeNotification";
+//NSString *GPGPreferencesDidChangeNotification = @"GPGPreferencesDidChangeNotification";
 NSString *GPGKeyGroupsChangedNotification = @"GPGKeyGroupsChangedNotification";
 NSString *GPGMissingKeysNotification = @"GPGMissingKeysNotification";
 NSString *GPGKeyringChangedNotification = @"GPGKeyringChangedNotification";
@@ -75,7 +76,7 @@ static BOOL gpgMailWorks = YES;
 @synthesize cachedPublicGPGKeys, cachedPersonalGPGKeys, cachedGPGKeys, updater;
 
 + (void)load {
-	//GPGMailLoggingLevel = [[GPGDefaults standardDefaults] integerForKey:@"GPGMailDebug"];
+	//GPGMailLoggingLevel = [[GPGOptions sharedOptions] integerForKey:@"GPGMailDebug"];
 	[[NSExceptionHandler defaultExceptionHandler] setExceptionHandlingMask:NSLogOtherExceptionMask | NSLogTopLevelExceptionMask];
 }
 
@@ -264,6 +265,22 @@ static BOOL gpgMailWorks = YES;
 - (NSString *)pathToRelaunchForUpdater:(SUUpdater *)updater {
 	return @"/Applications/Mail.app";
 }
+
+- (id <SUVersionComparison>)versionComparatorForUpdater:(SUUpdater *)updater {
+    return [GPGVersionComparator sharedVersionComparator];
+}
+
+- (void)updaterWillRelaunchApplication:(SUUpdater *)updater {
+	NSArray *windows = [NSApp windows];
+	Class delegateClass = NSClassFromString(@"MailPreferences");
+	for (NSWindow *window in windows) {
+		if ([[window delegate] isKindOfClass:delegateClass]) {
+			[window close];
+			return;
+		}
+	}
+}
+
 
 + (BOOL)hasPreferencesPanel {
 	return gpgMailWorks;             // LEOPARD Invoked on +initialize. Else, invoked from +registerBundle
@@ -493,7 +510,7 @@ static BOOL gpgMailWorks = YES;
 
 	// There's a bug in MOX: added menu items are not enabled/disabled correctly
 	// if they are instantiated programmatically
-	NSAssert([NSBundle loadNibNamed:@"GPGMenu" owner:self], @"### GPGMail: -[GPGMailBundle init]: Unable to load nib named GPGMenu");
+	//UNUSED NSAssert([NSBundle loadNibNamed:@"GPGMenu" owner:self], @"### GPGMail: -[GPGMailBundle init]: Unable to load nib named GPGMenu");
 	// If we disable usurpation, we can't set contextual menu?!
 
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(workspaceDidMount:) name:NSWorkspaceDidMountNotification object:[NSWorkspace sharedWorkspace]];
@@ -510,7 +527,7 @@ static BOOL gpgMailWorks = YES;
     [aMenuItem release];
 
 	// Addition which has nothing to do with GPGMail
-	if ([[GPGDefaults gpgDefaults] boolForKey:@"GPGEnableMessageURLCopy"]) {
+	if ([[GPGOptions sharedOptions] boolForKey:@"EnableMessageURLCopy"]) {
 		aMenuItem = [self newMenuItemWithTitle:NSLocalizedStringFromTableInBundle(@"COPY_MSG_URL_MENUITEM", @"GPGMail", [NSBundle bundleForClass:[self class]], "<Copy Message URL> menuItem title") action:@selector(gpgCopyMessageURL:) andKeyEquivalent:@"" inMenu:[[NSApplication sharedApplication] mainMenu] relativeToItemWithSelector:@selector(pasteAsQuotation:) offset:0];
         [aMenuItem release];
     }
@@ -529,8 +546,9 @@ static BOOL gpgMailWorks = YES;
 			gpgMailWorks = [self checkSystem];
 		}
 
+        [[GPGOptions sharedOptions] setStandardDomain:[[NSBundle bundleForClass:[self class]] bundleIdentifier]];
 		if (defaultsDictionary) {
-			[[GPGDefaults gpgDefaults] registerDefaults:defaultsDictionary];
+			[[GPGOptions sharedOptions] registerDefaults:defaultsDictionary];
 		}
 
 		if (gpgMailWorks) {
@@ -595,104 +613,90 @@ static BOOL gpgMailWorks = YES;
 
 /* Set: use OpenPGP to send messages */
 - (void)setUsesOpenPGPToSend:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGUsesOpenPGPToSend"];
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"UseOpenPGPToSend"];
 }
 
 /* Get: use OpenPGP to send messages */
 - (BOOL)usesOpenPGPToSend {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGUsesOpenPGPToSend"];
+	return [[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"];
 }
 
 /* Set: use OpenPGP to receive messages */
 - (void)setUsesOpenPGPToReceive:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGUsesOpenPGPToReceive"];
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"UseOpenPGPToReceive"];
 }
 
 /* Get: use OpenPGP to receive messages */
 - (BOOL)usesOpenPGPToReceive {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGUsesOpenPGPToReceive"];
+	return [[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"];
 }
 
-@synthesize decryptMenuItem;
-@synthesize authenticateMenuItem;
-@synthesize encryptsNewMessageMenuItem;
-@synthesize signsNewMessageMenuItem;
-@synthesize personalKeysMenuItem;
-@synthesize choosePublicKeysMenuItem;
-@synthesize automaticPublicKeysMenuItem;
-@synthesize symetricEncryptionMenuItem;
-@synthesize usesOnlyOpenPGPStyleMenuItem;
-@synthesize pgpMenuItem;
-@synthesize pgpViewMenuItem;
-@synthesize allUserIDsMenuItem;
+@synthesize decryptMenuItem, authenticateMenuItem, encryptsNewMessageMenuItem, signsNewMessageMenuItem, personalKeysMenuItem, choosePublicKeysMenuItem, automaticPublicKeysMenuItem, symetricEncryptionMenuItem, usesOnlyOpenPGPStyleMenuItem, pgpMenuItem, pgpViewMenuItem, allUserIDsMenuItem;
 
-- (void)preferencesDidChange:(SEL)selector {
+
+
+/*- (void)preferencesDidChange:(SEL)selector {
 	NSString *aString = NSStringFromSelector(selector);
 
 	aString = [[[aString substringWithRange:NSMakeRange(3, 1)] lowercaseString] stringByAppendingString:[aString substringWithRange:NSMakeRange(4, [aString length] - 5)]];
 	// aString is the 'getter' derived from the 'setter' selector (setXXX:)
 	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] postNotificationName:GPGPreferencesDidChangeNotification object:self userInfo:[NSDictionary dictionaryWithObject:aString forKey:@"key"]];
+}*/
+
+
+
+
+- (void)setDecryptsMessagesAutomatically:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"DecryptMessagesAutomatically"];
 }
 
-- (void)setAlwaysSignMessages:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGAlwaysSignMessage"];
-	if (![signsNewMessageMenuItem isEnabled]) {
-		[signsNewMessageMenuItem setState:(flag ? NSOnState:NSOffState)];
-	}
-	[self preferencesDidChange:_cmd];
+- (BOOL)decryptsMessagesAutomatically {
+	return [[GPGOptions sharedOptions] boolForKey:@"DecryptMessagesAutomatically"];
 }
 
-- (BOOL)alwaysSignMessages {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGAlwaysSignMessage"];
+- (void)setAuthenticatesMessagesAutomatically:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"AuthenticateMessagesAutomatically"];
 }
 
-- (void)setAlwaysEncryptMessages:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGAlwaysEncryptMessage"];
-	// FIXME: Update menu for mixed
-	if (![encryptsNewMessageMenuItem isEnabled]) {
-		[encryptsNewMessageMenuItem setState:(flag ? NSOnState:NSOffState)];
-	}
-	[self preferencesDidChange:_cmd];
+- (BOOL)authenticatesMessagesAutomatically {
+	return [[GPGOptions sharedOptions] boolForKey:@"AuthenticateMessagesAutomatically"];
+}
+- (void)setDecryptsOnlyUnreadMessagesAutomatically:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"DecryptOnlyUnreadMessagesAutomatically"];
 }
 
-- (BOOL)alwaysEncryptMessages {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGAlwaysEncryptMessage"];
+- (BOOL)decryptsOnlyUnreadMessagesAutomatically {
+	return [[GPGOptions sharedOptions] boolForKey:@"DecryptOnlyUnreadMessagesAutomatically"];
 }
 
-- (void)setEncryptMessagesWhenPossible:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGEncryptMessageWhenPossible"];
-	// FIXME: Update menu
-//    if(![encryptsNewMessageMenuItem isEnabled])
-//        [encryptsNewMessageMenuItem setState:(flag ? NSOnState:NSOffState)];
-	[self preferencesDidChange:_cmd];
+- (void)setAuthenticatesOnlyUnreadMessagesAutomatically:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"AuthenticateOnlyUnreadMessagesAutomatically"];
 }
 
-- (BOOL)encryptMessagesWhenPossible {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGEncryptMessageWhenPossible"];
+- (BOOL)authenticatesOnlyUnreadMessagesAutomatically {
+	return [[GPGOptions sharedOptions] boolForKey:@"AuthenticateOnlyUnreadMessagesAutomatically"];
 }
-
 - (void)setDefaultKey:(GPGKey *)key {
 	if (key != nil) {
-		[[GPGDefaults gpgDefaults] setObject:[key fingerprint] forKey:@"GPGDefaultKeyFingerprint"];
+		[[GPGOptions sharedOptions] setValue:[key fingerprint] forKey:@"default-key"];
 		[key retain];
 		[defaultKey release];
 		defaultKey = key;
 	} else {
-		[[GPGDefaults gpgDefaults] removeObjectForKey:@"GPGDefaultKeyFingerprint"];
+		[[GPGOptions sharedOptions] removeValueForKey:@"default-key"];
 		[defaultKey release];
 		defaultKey = nil;
 	}
 	[self refreshPersonalKeysMenu];
 	[self refreshPublicKeysMenu];
-	[self preferencesDidChange:_cmd];
 }
 
 - (GPGKey *)defaultKey {
 	if (defaultKey == nil && gpgMailWorks) {
-		NSString *aPattern = [[GPGDefaults gpgDefaults] stringForKey:@"GPGDefaultKeyFingerprint"];
+		NSString *aPattern = [[GPGOptions sharedOptions] stringForKey:@"default-key"];
 		BOOL searchedAllKeys = NO;
 		BOOL fprPattern = YES;
-
+        
 		if (!aPattern || [aPattern length] == 0) {
             // Lion doesn't have userEmail... unfortunately.
             //aPattern = [NSApp userEmail];
@@ -702,7 +706,7 @@ static BOOL gpgMailWorks = YES;
                 aPattern = nil; // Return all secret keys
             }
 		}
-
+        
 		do {
             NSArray *patterns;
             if (aPattern) {
@@ -714,13 +718,13 @@ static BOOL gpgMailWorks = YES;
             } else {
                 patterns = nil;
             }
-
+            
             NSArray *keys = [self keysForSearchPatterns:patterns attributeName:(fprPattern ? @"primaryKey.fingerprint" : @"email") secretKeys:YES];
             if ([keys count] > 0) {
                 [defaultKey release];
                 defaultKey = [[keys objectAtIndex:0] retain];
             }
-
+            
 			if (aPattern == nil) {
 				searchedAllKeys = YES;
 			} else {
@@ -728,305 +732,273 @@ static BOOL gpgMailWorks = YES;
 			}
 		} while (defaultKey == nil && !searchedAllKeys);
 	}
-
+    
 	return defaultKey;
 }
-
-//- (void)setRemembersPassphrasesDuringSession:(BOOL)flag {
-//	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGRemembersPassphrasesDuringSession"];
-//	[GPGPassphraseController setCachesPassphrases:flag];
-//	[self preferencesDidChange:_cmd];
-//}
-//
-- (BOOL)remembersPassphrasesDuringSession {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGRemembersPassphrasesDuringSession"];
-}
-
-- (void)setDecryptsMessagesAutomatically:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGDecryptsMessagesAutomatically"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (BOOL)decryptsMessagesAutomatically {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGDecryptsMessagesAutomatically"];
-}
-
-- (void)setAuthenticatesMessagesAutomatically:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGAuthenticatesMessagesAutomatically"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (BOOL)authenticatesMessagesAutomatically {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGAuthenticatesMessagesAutomatically"];
-}
-
-- (void)setDisplaysButtonsInComposeWindow:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGDisplaysButtonsInComposeWindow"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (BOOL)displaysButtonsInComposeWindow {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGDisplaysButtonsInComposeWindow"];
-}
-
 - (void)setEncryptsToSelf:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGEncryptsToSelf"];
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"EncryptToSelf"];
 	[self refreshPublicKeysMenu];
-	[self preferencesDidChange:_cmd];
 }
 
 - (BOOL)encryptsToSelf {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGEncryptsToSelf"];
+	return [[GPGOptions sharedOptions] boolForKey:@"EncryptToSelf"];
 }
-
-- (void)setUsesKeychain:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGUsesKeychain"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (BOOL)usesKeychain {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGUsesKeychain"];
-}
-
-- (void)setUsesOnlyOpenPGPStyle:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGOpenPGPStyleOnly"];
-	if (![usesOnlyOpenPGPStyleMenuItem isEnabled]) {
-		[usesOnlyOpenPGPStyleMenuItem setState:(flag ? NSOnState:NSOffState)];
-	}
-	[self preferencesDidChange:_cmd];
-}
-
-- (BOOL)usesOnlyOpenPGPStyle {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGOpenPGPStyleOnly"];
-}
-
-- (void)setDecryptsOnlyUnreadMessagesAutomatically:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGDecryptsOnlyUnreadMessagesAutomatically"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (BOOL)decryptsOnlyUnreadMessagesAutomatically {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGDecryptsOnlyUnreadMessagesAutomatically"];
-}
-
-- (void)setAuthenticatesOnlyUnreadMessagesAutomatically:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGAuthenticatesOnlyUnreadMessagesAutomatically"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (BOOL)authenticatesOnlyUnreadMessagesAutomatically {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGAuthenticatesOnlyUnreadMessagesAutomatically"];
-}
-
-- (void)setUsesEncapsulatedSignature:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGUsesEncapsulatedSignature"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (BOOL)usesEncapsulatedSignature {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGUsesEncapsulatedSignature"];
-}
-
-- (void)setUsesBCCRecipients:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGUsesBCCRecipients"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (BOOL)usesBCCRecipients {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGUsesBCCRecipients"];
-}
-
-- (void)setTrustsAllKeys:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGTrustsAllKeys"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (BOOL)trustsAllKeys {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGTrustsAllKeys"];
-}
-
-- (void)setAutomaticallyShowsAllInfo:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGAutomaticallyShowsAllInfo"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (BOOL)automaticallyShowsAllInfo {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGAutomaticallyShowsAllInfo"];
-}
-
-- (void)setPassphraseFlushTimeout:(NSTimeInterval)timeout {
-	NSParameterAssert(timeout >= 0.0);
-	[[GPGDefaults gpgDefaults] setFloat:timeout forKey:@"GPGPassphraseFlushTimeout"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (NSTimeInterval)passphraseFlushTimeout {
-	return [[GPGDefaults gpgDefaults] floatForKey:@"GPGPassphraseFlushTimeout"];
-}
-
-- (void)setChoosesPersonalKeyAccordingToAccount:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGChoosesPersonalKeyAccordingToAccount"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (BOOL)choosesPersonalKeyAccordingToAccount {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGChoosesPersonalKeyAccordingToAccount"];
-}
-
-- (void)setButtonsShowState:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGButtonsShowState"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (BOOL)buttonsShowState {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGButtonsShowState"];
-}
-
-- (void)setSignWhenEncrypting:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGSignWhenEncrypting"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (BOOL)signWhenEncrypting {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGSignWhenEncrypting"];
-}
-
 - (NSArray *)allDisplayedKeyIdentifiers {
 	static NSArray *allDisplayedKeyIdentifiers = nil;
-
+    
 	if (!allDisplayedKeyIdentifiers) {
 		// TODO: After adding longKeyID, update GPGPreferences.nib
 		allDisplayedKeyIdentifiers = [[NSArray arrayWithObjects:@"name", @"email", @"comment", @"fingerprint", @"keyID", /*@"longKeyID",*/ @"validity", @"algorithm", nil] retain];
 	}
-
+    
 	return allDisplayedKeyIdentifiers;
 }
 
 - (void)setDisplayedKeyIdentifiers:(NSArray *)keyIdentifiers {
     NSArray *allKeyIdentifiers = [self allDisplayedKeyIdentifiers];
-
+    
     for (NSString *anIdentifier in keyIdentifiers) {
         NSAssert1([allKeyIdentifiers containsObject:anIdentifier], @"### GPGMail: -[GPGMailBundle setDisplayedKeyIdentifiers:]: invalid identifier '%@'", anIdentifier);
     }
-
-
-    [[GPGDefaults gpgDefaults] setObject:keyIdentifiers forKey:@"GPGDisplayedKeyIdentifiers"];
+    
+    
+    [[GPGOptions sharedOptions] setValue:keyIdentifiers forKey:@"DisplayedKeyIdentifiers"];
 	[self refreshPublicKeysMenu];
 	[self refreshPersonalKeysMenu];
 	[self refreshKeyIdentifiersDisplayInMenu:[[self pgpViewMenuItem] submenu]];
-	[self preferencesDidChange:_cmd];
 }
 
 - (NSArray *)displayedKeyIdentifiers {
-	return [[GPGDefaults gpgDefaults] arrayForKey:@"GPGDisplayedKeyIdentifiers"];
+	return [[GPGOptions sharedOptions] arrayForKey:@"DisplayedKeyIdentifiers"];
 }
-
 - (void)setDisplaysAllUserIDs:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGDisplaysAllUserIDs"];
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"DisplayAllUserIDs"];
 	[self refreshPublicKeysMenu];
 	[self refreshPersonalKeysMenu];
 	[allUserIDsMenuItem setState:([self displaysAllUserIDs] ? NSOnState:NSOffState)];
-	[self preferencesDidChange:_cmd];
 }
 
 - (BOOL)displaysAllUserIDs {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGDisplaysAllUserIDs"];
+	return [[GPGOptions sharedOptions] boolForKey:@"DisplayAllUserIDs"];
 }
 
 - (void)setFiltersOutUnusableKeys:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGFiltersOutUnusableKeys"];
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"FilterOutUnusableKeys"];
 	[self flushKeyCache:YES];
-	[self preferencesDidChange:_cmd];
 }
 
 - (BOOL)filtersOutUnusableKeys {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGFiltersOutUnusableKeys"];
+	return [[GPGOptions sharedOptions] boolForKey:@"FilterOutUnusableKeys"];
 }
-
-- (void)setShowsPassphrase:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGShowsPassphrase"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (BOOL)showsPassphrase {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGShowsPassphrase"];
-}
-
-- (void)setLineWrappingLength:(int)value {
-	[[NSUserDefaults standardUserDefaults] setInteger:value forKey:@"LineLength"];
-	[self preferencesDidChange:_cmd];
-}
-
-- (long)lineWrappingLength {
-	return [[NSUserDefaults standardUserDefaults] integerForKey:@"LineLength"];
-}
-
 - (void)setIgnoresPGPPresence:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGIgnoresPGPPresence"];
-	[self preferencesDidChange:_cmd];
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"IgnorePGPPresence"];
 }
 
 - (BOOL)ignoresPGPPresence {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGIgnoresPGPPresence"];
+	return [[GPGOptions sharedOptions] boolForKey:@"IgnorePGPPresence"];
 }
-
 - (void)setRefreshesKeysOnVolumeMount:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGRefreshesKeysOnVolumeMount"];
-	[self preferencesDidChange:_cmd];
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"RefresheKeysOnVolumeMount"];
 }
 
 - (BOOL)refreshesKeysOnVolumeMount {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGRefreshesKeysOnVolumeMount"];
+	return [[GPGOptions sharedOptions] boolForKey:@"RefresheKeysOnVolumeMount"];
 }
 
+
+
+
+- (void)setAlwaysSignMessages:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"AlwaysSignMessage"];
+	if (![signsNewMessageMenuItem isEnabled]) {
+		[signsNewMessageMenuItem setState:(flag ? NSOnState:NSOffState)];
+	}
+}
+
+- (BOOL)alwaysSignMessages {
+	return [[GPGOptions sharedOptions] boolForKey:@"AlwaysSignMessage"];
+}
+
+- (void)setAlwaysEncryptMessages:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"AlwaysEncryptMessage"];
+	// FIXME: Update menu for mixed
+	if (![encryptsNewMessageMenuItem isEnabled]) {
+		[encryptsNewMessageMenuItem setState:(flag ? NSOnState:NSOffState)];
+	}
+}
+
+- (BOOL)alwaysEncryptMessages {
+	return [[GPGOptions sharedOptions] boolForKey:@"AlwaysEncryptMessage"];
+}
+
+- (void)setEncryptMessagesWhenPossible:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"EncryptMessageWhenPossible"];
+	// FIXME: Update menu
+//    if(![encryptsNewMessageMenuItem isEnabled])
+//        [encryptsNewMessageMenuItem setState:(flag ? NSOnState:NSOffState)];
+}
+
+- (BOOL)encryptMessagesWhenPossible {
+	return [[GPGOptions sharedOptions] boolForKey:@"EncryptMessageWhenPossible"];
+}
+
+
+- (void)setDisplaysButtonsInComposeWindow:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"DisplayButtonsInComposeWindow"];
+}
+
+
+- (BOOL)displaysButtonsInComposeWindow {
+	return [[GPGOptions sharedOptions] boolForKey:@"DisplayButtonsInComposeWindow"];
+}
+
+
+- (void)setUsesKeychain:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"UseKeychain"];
+}
+
+- (BOOL)usesKeychain {
+	return [[GPGOptions sharedOptions] boolForKey:@"UseKeychain"];
+}
+
+- (void)setUsesOnlyOpenPGPStyle:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"OpenPGPStyleOnly"];
+	if (![usesOnlyOpenPGPStyleMenuItem isEnabled]) {
+		[usesOnlyOpenPGPStyleMenuItem setState:(flag ? NSOnState:NSOffState)];
+	}
+}
+
+- (BOOL)usesOnlyOpenPGPStyle {
+	return [[GPGOptions sharedOptions] boolForKey:@"OpenPGPStyleOnly"];
+}
+
+- (void)setUsesEncapsulatedSignature:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"UseEncapsulatedSignature"];
+}
+
+- (BOOL)usesEncapsulatedSignature {
+	return [[GPGOptions sharedOptions] boolForKey:@"UseEncapsulatedSignature"];
+}
+
+- (void)setUsesBCCRecipients:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"UseBCCRecipients"];
+}
+
+- (BOOL)usesBCCRecipients {
+	return [[GPGOptions sharedOptions] boolForKey:@"UseBCCRecipients"];
+}
+
+- (void)setTrustsAllKeys:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"TrustAllKeys"];
+}
+
+- (BOOL)trustsAllKeys {
+	return [[GPGOptions sharedOptions] boolForKey:@"TrustAllKeys"];
+}
+
+- (void)setAutomaticallyShowsAllInfo:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"AutomaticallyShowAllInfo"];
+}
+
+- (BOOL)automaticallyShowsAllInfo {
+	return [[GPGOptions sharedOptions] boolForKey:@"AutomaticallyShowAllInfo"];
+}
+
+- (void)setPassphraseFlushTimeout:(NSTimeInterval)timeout {
+	NSParameterAssert(timeout >= 0.0);
+	[[GPGOptions sharedOptions] setFloat:timeout forKey:@"PassphraseCacheTime"];
+}
+
+- (NSTimeInterval)passphraseFlushTimeout {
+	return [[GPGOptions sharedOptions] floatForKey:@"PassphraseCacheTime"];
+}
+
+- (void)setChoosesPersonalKeyAccordingToAccount:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"ChoosePersonalKeyAccordingToAccount"];
+}
+
+- (BOOL)choosesPersonalKeyAccordingToAccount {
+	return [[GPGOptions sharedOptions] boolForKey:@"ChoosePersonalKeyAccordingToAccount"];
+}
+
+- (void)setButtonsShowState:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"ButtonsShowState"];
+}
+
+- (BOOL)buttonsShowState {
+	return [[GPGOptions sharedOptions] boolForKey:@"ButtonsShowState"];
+}
+
+- (void)setSignWhenEncrypting:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"SignWhenEncrypting"];
+}
+
+- (BOOL)signWhenEncrypting {
+	return [[GPGOptions sharedOptions] boolForKey:@"SignWhenEncrypting"];
+}
+
+
+
+- (void)setShowsPassphrase:(BOOL)flag {
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"ShowPassphrase"];
+}
+
+- (BOOL)showsPassphrase {
+	return [[GPGOptions sharedOptions] boolForKey:@"ShowPassphrase"];
+}
+
+
 - (void)setDisablesSMIME:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGDisablesSMIME"];
-	[self preferencesDidChange:_cmd];
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"DisableSMIME"];
 }
 
 - (BOOL)disablesSMIME {
-	return gpgMailWorks && [[GPGDefaults gpgDefaults] boolForKey:@"GPGDisablesSMIME"];
+	return gpgMailWorks && [[GPGOptions sharedOptions] boolForKey:@"DisableSMIME"];
 }
 
-- (void)setWarnedAboutMissingPrivateKeys:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGWarnedAboutMissingPrivateKeys"];
-}
-
-- (BOOL)warnedAboutMissingPrivateKeys {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGWarnedAboutMissingPrivateKeys"];
-}
 
 - (void)setEncryptsReplyToEncryptedMessage:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGEncryptsReplyToEncryptedMessage"];
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"EncryptReplyToEncryptedMessage"];
 }
 
 - (BOOL)encryptsReplyToEncryptedMessage {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGEncryptsReplyToEncryptedMessage"];
+	return [[GPGOptions sharedOptions] boolForKey:@"EncryptReplyToEncryptedMessage"];
 }
 
 - (void)setSignsReplyToSignedMessage:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGSignsReplyToSignedMessage"];
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"SignReplyToSignedMessage"];
 }
 
 - (BOOL)signsReplyToSignedMessage {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGSignsReplyToSignedMessage"];
+	return [[GPGOptions sharedOptions] boolForKey:@"SignReplyToSignedMessage"];
 }
 
 - (void)setUsesABEntriesRules:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGUsesABEntriesRules"];
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"UseABEntriesRules"];
 }
 
 - (BOOL)usesABEntriesRules {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGUsesABEntriesRules"];
+	return [[GPGOptions sharedOptions] boolForKey:@"UseABEntriesRules"];
 }
 
 - (void)setAddsCustomHeaders:(BOOL)flag {
-	[[GPGDefaults gpgDefaults] setBool:flag forKey:@"GPGAddCustomHeaders"];
+	[[GPGOptions sharedOptions] setBool:flag forKey:@"AddCustomHeaders"];
 }
 
 - (BOOL)addsCustomHeaders {
-	return [[GPGDefaults gpgDefaults] boolForKey:@"GPGAddCustomHeaders"];
+	return [[GPGOptions sharedOptions] boolForKey:@"AddCustomHeaders"];
 }
+- (void)setWarnedAboutMissingPrivateKeys:(BOOL)flag {
+    [[GPGOptions sharedOptions] setBool:flag forKey:@"WarnAboutMissingPrivateKeys"];
+}
+
+- (BOOL)warnedAboutMissingPrivateKeys {
+    return [[GPGOptions sharedOptions] boolForKey:@"WarnAboutMissingPrivateKeys"];
+}
+
+
+
+
 
 - (void)mailTo:(id)sender {
 	NSString *error = nil;

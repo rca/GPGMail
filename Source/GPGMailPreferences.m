@@ -41,7 +41,6 @@
 	return [[GPGMailBundle sharedInstance] updater];
 }
 
-
 - (NSString *)copyright {
 	return [[[NSBundle bundleForClass:[self class]] infoDictionary] objectForKey:@"NSHumanReadableCopyright"];
 }

@@ -398,7 +398,7 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
         if([recipient isFlaggedValueWithKey:@"bcc"])
             [bccRecipients addObject:recipient];
         else if([recipient isFlaggedValueWithKey:@"from"])
-            [bccRecipients addObject:recipient];
+            [normalRecipients addObject:recipient]; // We shouldn't add the sender as hidden-recipient.
         else
             [normalRecipients addObject:recipient];
     }
