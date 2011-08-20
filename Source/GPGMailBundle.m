@@ -293,6 +293,13 @@ static BOOL gpgMailWorks = YES;
 	return gpgMailWorks;
 }
 
+// TODO: Re-enable @selector(gpgSearchKeys:) menu item, once implemented.
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
+    if((SEL)[(NSMenuItem *)menuItem action] == @selector(gpgSearchKeys:))
+        return NO;
+    return YES;
+}
+
 - (NSMenuItem *)newMenuItemWithTitle:(NSString *)title action:(SEL)action andKeyEquivalent:(NSString *)keyEquivalent inMenu:(NSMenu *)menu relativeToItemWithSelector:(SEL)selector offset:(int)offset {
 // Taken from /System/Developer/Examples/EnterpriseObjects/AppKit/ModelerBundle/EOUtil.m
 
@@ -1071,11 +1078,6 @@ static BOOL gpgMailWorks = YES;
 //		[messageEditor performSelector:action withObject:sender];
 //	}
 //}
-
-// TODO: Implement something useful!
-- (BOOL)validateMenuItem:(NSMenuItem *)theItem {
-	return YES;
-}
 
 - (IBAction)gpgReloadPGPKeys:(id)sender {
 	[self flushKeyCache:YES];
