@@ -439,8 +439,6 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     for(NSString *recipient in recipients) {
         if([recipient isFlaggedValueWithKey:@"bcc"])
             [bccRecipients addObject:recipient];
-        else if([recipient isFlaggedValueWithKey:@"from"])
-            [bccRecipients addObject:recipient];
         else
             [normalRecipients addObject:recipient];
     }

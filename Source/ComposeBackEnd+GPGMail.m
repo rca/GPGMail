@@ -109,11 +109,15 @@
     if(forSigning) {
         [headers setObject:[[headers valueForKey:@"from"] flaggedValueWithKey:@"from"] forKey:@"from"];
     }
-    else if(forEncrypting) {
+    if(forEncrypting) {
         // Save the original bcc recipients, to restore later.
         [self setIvar:@"originalBCCRecipients" value:[headers valueForKey:@"bcc"]];
         NSMutableArray *newBCCList = [NSMutableArray array];
-        [newBCCList addObjectsFromArray:[headers valueForKey:@"bcc"]];
+        // Flag BCCs as bcc, so we can use hidden-recipient.
+        NSArray *bccRecipients = [headers valueForKey:@"bcc"];
+        for(NSString *bcc in bccRecipients)
+            [newBCCList addObject:[bcc flaggedValueWithKey:@"bcc"]];
+        
         [newBCCList addObject:[[headers valueForKey:@"from"] flaggedValueWithKey:@"from"]];
         [headers setValue:newBCCList forKey:@"bcc"];
     }
