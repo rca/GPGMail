@@ -75,6 +75,7 @@ enum {
 };
 
 typedef void (^gpgmail_decryption_task_t)(void);
+typedef void (^gpgmail_verification_task_t)(void);
 
 @interface GPGMailBundle : NSObject <NSToolbarDelegate> {
 	IBOutlet NSMenuItem *decryptMenuItem;
@@ -109,6 +110,7 @@ typedef void (^gpgmail_decryption_task_t)(void);
     // A serial queue which makes sure that only one pinentry
     // password request is run at once.
     dispatch_queue_t decryptionQueue;
+    dispatch_queue_t verificationQueue;
     // Map which uses a fingerprint to lookup a personal key.
     NSDictionary *_cachedPersonalGPGKeysByFingerprint;
     // Map which uses a fingerprint to lookup a public key.
@@ -294,6 +296,12 @@ typedef void (^gpgmail_decryption_task_t)(void);
 // long as a second decryption task is running, but shouldn't
 // block the main thread.
 - (void)addDecryptionTask:(gpgmail_decryption_task_t)task;
+
+/**
+ Allows to schedule verification tasks which will block as
+ long as second verification task is running.
+ */
+- (void)addVerificationTask:(gpgmail_verification_task_t)task;
 
 @end
 

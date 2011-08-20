@@ -632,7 +632,7 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     
     __block NSArray *signatures = nil;
     __block NSException *verificationException = nil;
-    [[GPGMailBundle sharedInstance] addDecryptionTask:^{
+    [[GPGMailBundle sharedInstance] addVerificationTask:^{
         GPGController *gpgc = [[GPGController alloc] init];
         gpgc.verbose = (GPGMailLoggingLevel > 0);
         @try {
@@ -643,7 +643,8 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
         }
         @catch(NSException *e) {
             verificationException = e;
-            signatures = nil;
+            if(!signatures)
+                signatures = nil;
             DebugLog(@"[DEBUG] %s - verification errror: %@", __PRETTY_FUNCTION__, e);
         }
         @finally {
@@ -683,19 +684,31 @@ const NSString *PGP_MESSAGE_SIGNATURE_END = @"-----END PGP SIGNATURE-----";
     DebugLog(@"[DEBUG] %s plain message signed data: %@", __PRETTY_FUNCTION__, [NSString stringWithData:signedData encoding:[[[self mimeBody] preferredBodyPart] guessedEncoding]]);
     if(![signedData length] || [self rangeOfPlainPGPSignatures].location == NSNotFound)
         return;
-    GPGController *gpgc = [[GPGController alloc] init];
-    gpgc.verbose = (GPGMailLoggingLevel > 0);
-    NSArray *signatures;
-    @try {
-        signatures = [gpgc verifySignedData:signedData];
-        [signatures retain];
-    }
-    @catch (NSException* e) {
-        DebugLog(@"[DEBUG] %s - verification errror: %@", __PRETTY_FUNCTION__, e);
+    
+    __block NSArray *signatures = nil;
+    __block NSException *verificationException = nil;
+    [[GPGMailBundle sharedInstance] addVerificationTask:^{
+        GPGController *gpgc = [[GPGController alloc] init];
+        gpgc.verbose = (GPGMailLoggingLevel > 0);
+        @try {
+            signatures = [gpgc verifySignedData:signedData];
+            [signatures retain];
+            if(gpgc.error)
+                @throw gpgc.error;
+        }
+        @catch(NSException *e) {
+            verificationException = e;
+            if(!signatures)
+                signatures = nil;
+        }
+        @finally {
+            [gpgc release];
+        }
+    }];
+    
+    if(![signatures count] && verificationException) {
+        [self failedToVerifyWithException:verificationException];
         return;
-    }
-    @finally {
-        [gpgc release];
     }
     
     // Check if the public key is in the keychain, otherwise display a warning [#269]

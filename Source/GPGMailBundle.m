@@ -292,6 +292,11 @@ static BOOL gpgMailWorks = YES;
     dispatch_sync(decryptionQueue, task);
 }
 
+- (void)addVerificationTask:(gpgmail_verification_task_t)task {
+    dispatch_sync(verificationQueue, task);
+}
+
+
 - (BOOL)gpgMailWorks {
 	return gpgMailWorks;
 }
@@ -489,9 +494,9 @@ static BOOL gpgMailWorks = YES;
 
     DebugLog(@"Personal Keys: %@", [self personalKeys]);
     DebugLog(@"Public Keys: %@", [self publicKeys]);
-
     // Create the decryption queue.
     decryptionQueue = dispatch_queue_create("org.gpgmail.decryption", NULL);
+    verificationQueue = dispatch_queue_create("org.gpgmail.verification", NULL);
 
 	// There's a bug in MOX: added menu items are not enabled/disabled correctly
 	// if they are instantiated programmatically
