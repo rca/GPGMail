@@ -27,6 +27,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/*
+ * Credit for the re-inserting toolbar code when preference pane is restored
+ * no re-opened (Lion restore feature) goes to Adam Nohejl.
+ *
+ * http://nohejl.name/2011/07/21/mail-preferences-modules-in-mac-os-x-10-7/
+ */
+
 #import "CCLog.h"
 #import "NSObject+LPDynamicIvars.h"
 #import <NSPreferences.h>
