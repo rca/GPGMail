@@ -366,31 +366,7 @@ static BOOL gpgMailWorks = YES;
 }
 
 - (void)setPGPViewMenu:(NSMenu *)pgpViewMenu {
-	if (gpgMailWorks) {
-		SEL targetSelector;
-
-		targetSelector = @selector(toggleThreadedMode:);
-		pgpViewMenuItem = [self newMenuItemWithTitle:NSLocalizedStringFromTableInBundle(@"PGP_KEYS_MENU", @"GPGMail", [NSBundle bundleForClass:[self class]], "<PGP Keys> submenu title") action:NULL andKeyEquivalent:@"" inMenu:[[NSApplication sharedApplication] mainMenu] relativeToItemWithSelector:targetSelector offset:-1];
-
-		if (!pgpViewMenuItem) {
-			DebugLog(@"### GPGMail: unable to add submenu <PGP Keys>");
-		} else {
-			NSMenu *aMenu = [pgpViewMenuItem menu];
-/*            int		anIndex = [aMenu indexOfItem:pgpViewMenuItem];
- *
- *          [pgpViewMenuItem retain];
- *          while(--anIndex > 0)
- *              if([[aMenu itemAtIndex:anIndex] isSeparatorItem])
- *                  break;
- *          if(anIndex > 0){
- *              [aMenu removeItem:pgpViewMenuItem];
- *              [aMenu insertItem:pgpViewMenuItem atIndex:anIndex];
- *          }*/
-			[aMenu setSubmenu:pgpViewMenu forItem:pgpViewMenuItem];
-
-			[self refreshKeyIdentifiersDisplayInMenu:pgpViewMenu];
-		}
-	}
+	// The menu is removed. Will be readded if necessary.
 }
 
 #pragma mark Toolbar stuff (+contextual menu)
