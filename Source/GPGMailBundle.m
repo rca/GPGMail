@@ -151,11 +151,13 @@ static BOOL gpgMailWorks = YES;
             @"MailAccount", @"class",
             [NSArray arrayWithObjects:
                 @"accountExistsForSigning", nil], @"selectors", nil],
-
         [NSDictionary dictionaryWithObjectsAndKeys:
             @"NSPreferences", @"class",
             [NSArray arrayWithObjects:
-                @"sharedPreferences", nil], @"selectors", nil],
+                @"sharedPreferences",
+                @"windowWillResize:toSize:",
+                @"toolbarItemClicked:",
+                @"showPreferencesPanelForOwner:", nil], @"selectors", nil],
         nil];
 
 
@@ -261,19 +263,6 @@ static BOOL gpgMailWorks = YES;
 - (NSString *)pathToRelaunchForUpdater:(SUUpdater *)updater {
 	return @"/Applications/Mail.app";
 }
-
-- (void)updaterWillRelaunchApplication:(SUUpdater *)updater {
-	NSArray *windows = [NSApp windows];
-	Class delegateClass = NSClassFromString(@"MailPreferences");
-	for (NSWindow *window in windows) {
-		if ([[window delegate] isKindOfClass:delegateClass]) {
-			[window close];
-			return;
-		}
-	}
-}
-
-
 
 + (BOOL)hasPreferencesPanel {
 	return gpgMailWorks;             // LEOPARD Invoked on +initialize. Else, invoked from +registerBundle

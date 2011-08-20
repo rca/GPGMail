@@ -1,6 +1,5 @@
-//
-//  NSPreferences_GPGMail.h
-//  GPGMail
+/* NSPreferences+GPGMail.m created by Lukas Pitschl (lukele) on Sat 20-Aug-2011 */
+
 /*
  * Copyright (c) 2000-2011, GPGTools Project Team <gpgtools-devel@lists.gpgtools.org>
  * All rights reserved.
@@ -30,10 +29,45 @@
 
 #import <NSPreferences.h>
 
-
 @interface NSPreferences (GPGMail)
 
-+ (void)load;
 + (id)MASharedPreferences;
+
+/**
+ Returns the window size necessary to fit all toolbar items.
+ */
+- (CGSize)sizeForWindowShowingAllToolbarItems:(NSWindow *)window;
+
+/**
+ Is called when the preference pane is first shown, or the user
+ resizes the preference pane.
+ If a use resizes the preference pane, the original method is invoked.
+ If the preference is first shown, it calulcates the size needed to fit
+ all toolbar items using -[NSPreferences(GPGMail)sizeForWindowShowingAllToolbarItems:]
+ and returns that value, so the window is correctly resized.
+*/
+- (struct CGSize)MAWindowWillResize:(id)window toSize:(struct CGSize)toSize;
+
+/**
+ Helper function to resize the preference pane window to fit all
+ toolbar items.
+ */
+- (void)resizeWindowToShowAllToolbarItems:(NSWindow *)window;
+
+/**
+ Is called whenever the user clicks on a toolbar item.
+ This also resizes the window, which is why internally
+ -[NSPreferences(GPGMail) resizeWindowToShowAllToolbarItems:]
+ is called, to force the window to resize again to fit all toolbar items.
+ */
+- (void)MAToolbarItemClicked:(id)toolbarItem;
+
+/**
+ Is called whenever the preference pane is displayed.
+ This also resizes the window, which is why internally
+ -[NSPreferences(GPGMail) resizeWindowToShowAllToolbarItems:]
+ is called, to force the window to resize again to fit all toolbar items.
+ */
+- (void)MAShowPreferencesPanelForOwner:(id)owner;
 
 @end
