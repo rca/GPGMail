@@ -272,7 +272,7 @@ static BOOL gpgMailWorks = YES;
     return [GPGVersionComparator sharedVersionComparator];
 }
 
-- (void)updaterWillRelaunchApplication:(SUUpdater *)updater {
+/*- (void)updaterWillRelaunchApplication:(SUUpdater *)updater {
 	NSArray *windows = [NSApp windows];
 	Class delegateClass = NSClassFromString(@"MailPreferences");
 	for (NSWindow *window in windows) {
@@ -281,7 +281,7 @@ static BOOL gpgMailWorks = YES;
 			return;
 		}
 	}
-}
+}*/
 
 
 + (BOOL)hasPreferencesPanel {
