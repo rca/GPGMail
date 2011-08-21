@@ -117,7 +117,11 @@
 										<key>LANGUAGE</key>
 										<string>English</string>
 										<key>VALUE</key>
-										<string>OpenPGP plugin for Apple Mail.app.</string>
+										<string>Version: 2.0 ALPHA3
+Web: http://gpgtools.org/gpgmail.html
+Requirements: OS X 10.7 (Lion)
+Installs to: ~/Library/Mail/Bundles
+Description: OpenPGP for Apple Mail.</string>
 									</dict>
 								</array>
 								<key>OPTIONS</key>
@@ -130,14 +134,59 @@
 								<key>PACKAGE_UUID</key>
 								<string>3F98DECB-9D11-4CFD-A8D1-5C2897F128BA</string>
 								<key>REQUIREMENTS</key>
-								<array/>
+								<array>
+									<dict>
+										<key>BEHAVIOR</key>
+										<integer>1</integer>
+										<key>DICTIONARY</key>
+										<dict>
+											<key>IC_REQUIREMENT_SCRIPT_ARGUMENTS</key>
+											<array>
+												<dict>
+													<key>IC_REQUIREMENT_SCRIPT_ARGUMENT_STATE</key>
+													<true/>
+													<key>IC_REQUIREMENT_SCRIPT_ARGUMENT_VALUE</key>
+													<string>7</string>
+												</dict>
+											</array>
+											<key>IC_REQUIREMENT_SCRIPT_COMPARATOR</key>
+											<integer>0</integer>
+											<key>IC_REQUIREMENT_SCRIPT_EMBED</key>
+											<true/>
+											<key>IC_REQUIREMENT_SCRIPT_PATH</key>
+											<dict>
+												<key>PATH</key>
+												<string>../Dependencies/GPGTools_Core/scripts/check_for_osver.sh</string>
+												<key>PATH_TYPE</key>
+												<integer>1</integer>
+											</dict>
+											<key>IC_REQUIREMENT_SCRIPT_VALUE</key>
+											<integer>0</integer>
+										</dict>
+										<key>IDENTIFIER</key>
+										<string>fr.whitebox.Packages.requirement.scripts</string>
+										<key>MESSAGE</key>
+										<array>
+											<dict>
+												<key>LANGUAGE</key>
+												<string>English</string>
+												<key>VALUE</key>
+												<string>OS X 10.7 Lion only.</string>
+											</dict>
+										</array>
+										<key>NAME</key>
+										<string>OS</string>
+										<key>STATE</key>
+										<true/>
+									</dict>
+								</array>
 								<key>TITLE</key>
 								<array>
 									<dict>
 										<key>LANGUAGE</key>
 										<string>English</string>
 										<key>VALUE</key>
-										<string>GPGTools GPGMail 2.0a2</string>
+										<string>GPGTools GPGMail</string>
 									</dict>
 								</array>
 								<key>TOOLTIP</key>
@@ -154,44 +203,7 @@
 										<key>LANGUAGE</key>
 										<string>English</string>
 										<key>VALUE</key>
-										<string>Adds the public GPGTools OpenPGP key to the keychain.</string>
-									</dict>
-								</array>
-								<key>OPTIONS</key>
-								<dict>
-									<key>HIDDEN</key>
-									<false/>
-									<key>STATE</key>
-									<integer>1</integer>
-								</dict>
-								<key>PACKAGE_UUID</key>
-								<string>864C3F68-BD50-46E1-A757-784577F7E81E</string>
-								<key>REQUIREMENTS</key>
-								<array/>
-								<key>TITLE</key>
-								<array>
-									<dict>
-										<key>LANGUAGE</key>
-										<string>English</string>
-										<key>VALUE</key>
-										<string>GPGTools Public OpenPGP Key</string>
-									</dict>
-								</array>
-								<key>TOOLTIP</key>
-								<array/>
-								<key>TYPE</key>
-								<integer>0</integer>
-								<key>UUID</key>
-								<string>031E34BB-F0A8-4533-AACA-9C7CCB96A318</string>
-							</dict>
-							<dict>
-								<key>DESCRIPTION</key>
-								<array>
-									<dict>
-										<key>LANGUAGE</key>
-										<string>English</string>
-										<key>VALUE</key>
-										<string>Automatically fixes possible issues with your installation.</string>
+										<string>Automatically fixes issues you might have with your GPGTools installation.</string>
 									</dict>
 								</array>
 								<key>OPTIONS</key>
@@ -220,6 +232,43 @@
 								<integer>0</integer>
 								<key>UUID</key>
 								<string>A39A68E2-F467-4443-8BEA-0D57B28D6F3C</string>
+							</dict>
+							<dict>
+								<key>DESCRIPTION</key>
+								<array>
+									<dict>
+										<key>LANGUAGE</key>
+										<string>English</string>
+										<key>VALUE</key>
+										<string>Adds the GPGTolls public OpenPGP key to the keychain.</string>
+									</dict>
+								</array>
+								<key>OPTIONS</key>
+								<dict>
+									<key>HIDDEN</key>
+									<false/>
+									<key>STATE</key>
+									<integer>1</integer>
+								</dict>
+								<key>PACKAGE_UUID</key>
+								<string>864C3F68-BD50-46E1-A757-784577F7E81E</string>
+								<key>REQUIREMENTS</key>
+								<array/>
+								<key>TITLE</key>
+								<array>
+									<dict>
+										<key>LANGUAGE</key>
+										<string>English</string>
+										<key>VALUE</key>
+										<string>GPGTools Public OpenPGP Key</string>
+									</dict>
+								</array>
+								<key>TOOLTIP</key>
+								<array/>
+								<key>TYPE</key>
+								<integer>0</integer>
+								<key>UUID</key>
+								<string>031E34BB-F0A8-4533-AACA-9C7CCB96A318</string>
 							</dict>
 						</array>
 						<key>REMOVED</key>
