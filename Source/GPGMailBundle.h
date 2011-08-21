@@ -165,7 +165,6 @@ typedef void (^gpgmail_verification_task_t)(void);
 @property BOOL usesKeychain;
 @property BOOL usesOnlyOpenPGPStyle;
 @property BOOL usesEncapsulatedSignature;
-@property BOOL usesBCCRecipients;
 @property BOOL trustsAllKeys;
 @property BOOL automaticallyShowsAllInfo;
 @property NSTimeInterval passphraseFlushTimeout;

@@ -888,14 +888,6 @@ static BOOL gpgMailWorks = YES;
 	return [[GPGOptions sharedOptions] boolForKey:@"UseEncapsulatedSignature"];
 }
 
-- (void)setUsesBCCRecipients:(BOOL)flag {
-	[[GPGOptions sharedOptions] setBool:flag forKey:@"UseBCCRecipients"];
-}
-
-- (BOOL)usesBCCRecipients {
-	return [[GPGOptions sharedOptions] boolForKey:@"UseBCCRecipients"];
-}
-
 - (void)setTrustsAllKeys:(BOOL)flag {
 	[[GPGOptions sharedOptions] setBool:flag forKey:@"TrustAllKeys"];
 }
