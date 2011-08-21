@@ -6,11 +6,13 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import <MFError.h>
 #import <MimePart.h>
 #import <MimeBody.h>
 #import <NSAttributedString-FontAdditions.h>
 #import <MessageHeaderDisplay.h>
 #import <MessageViewingState.h>
+#import <NSAlert-MFErrorSupport.h>
 #import "CCLog.h"
 #import "NSObject+LPDynamicIvars.h"
 #import "GPGSignatureView.h"
@@ -39,6 +41,23 @@
     NSArray *messageSigners = [self getIvar:@"messageSigners"];
     if(![messageSigners count])
         return;
+    BOOL notInKeychain = NO;
+    for(GPGSignature *signature in messageSigners) {
+        if(!signature.userID) {
+            notInKeychain = YES;
+            break;
+        }
+    }
+    if(notInKeychain) {
+        NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+        NSString *title = NSLocalizedStringFromTableInBundle(@"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE", @"GPGMail", gpgMailBundle, @"");
+        NSString *message = NSLocalizedStringFromTableInBundle(@"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+        
+        MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:message title:title helpTag:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:title, @"_MFShortDescription", message, @"NSLocalizedDescription", nil]];
+        NSAlert *alert = [NSAlert alertForError:error defaultButton:@"OK" alternateButton:nil otherButton:nil];
+        [alert beginSheetModalForWindow:[NSApp mainWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
+        return;
+    }
     GPGSignatureView *signatureView = [GPGSignatureView signatureView];
     signatureView.keyList = [[GPGMailBundle sharedInstance] allGPGKeys];
     signatureView.signatures = messageSigners; 
@@ -70,7 +89,7 @@
     BOOL isPGPEncrypted = [topPart isPGPEncrypted];
     BOOL isSigned = [topPart isSigned];
     
-    if(!isPGPSigned && !isPGPEncrypted) {
+    if(!(isPGPSigned || isPGPEncrypted)) {
         // If for example the signature attachment was stripped from the message
         // it still appears as signed, but doesn't have any signature information.
         // In that case, don't show the security header.
@@ -80,7 +99,7 @@
         // the security header which would result in signed being shown.
         // To fix this, the copySigners are checked again.
         NSAttributedString *securityHeader = [NSAttributedString attributedStringWithString:@""];
-        if(isSigned && ![(NSArray *)[topPart copySignerLabels] count]) {
+        if(![(NSArray *)[topPart copySignerLabels] count]) {
             return securityHeader;
         }
         return [self MA_attributedStringForSecurityHeader];

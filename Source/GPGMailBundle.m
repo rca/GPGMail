@@ -137,12 +137,12 @@ static BOOL gpgMailWorks = YES;
             [NSArray arrayWithObjects:
                 @"_calculateSecurityFrame:",
                 @"awakeFromNib", nil], @"selectors", nil],
-                           [NSDictionary dictionaryWithObjectsAndKeys:
-                            @"MailDocumentEditor", @"class",
-                            @"MailDocumentEditor_GPGMail", @"gpgMailClass",
-                            [NSArray arrayWithObjects:
-                             @"backEndDidLoadInitialContent:",
-                              nil], @"selectors", nil],
+//                           [NSDictionary dictionaryWithObjectsAndKeys:
+//                            @"MailDocumentEditor", @"class",
+//                            @"MailDocumentEditor_GPGMail", @"gpgMailClass",
+//                            [NSArray arrayWithObjects:
+//                             @"backEndDidLoadInitialContent:",
+//                              nil], @"selectors", nil],
         [NSDictionary dictionaryWithObjectsAndKeys:
             @"OptionalView", @"class",
             @"OptionalView_GPGMail", @"gpgMailClass",
@@ -422,35 +422,38 @@ static BOOL gpgMailWorks = YES;
 
 #pragma mark Toolbar stuff (+contextual menu)
 
+// TODO: Implement if needed later!
 - (void)refreshPersonalKeysMenu {
-	GPGKey *theDefaultKey = [self defaultKey];
-	NSMenu *aSubmenu = [personalKeysMenuItem submenu];
-	NSMenuItem *anItem;
-	BOOL displaysAllUserIDs = [self displaysAllUserIDs];
+    // No longer used.
+    //	GPGKey *theDefaultKey = [self defaultKey];
+//	NSMenu *aSubmenu = [personalKeysMenuItem submenu];
+//	NSMenuItem *anItem;
+//	BOOL displaysAllUserIDs = [self displaysAllUserIDs];
+//
+//
+//    [aSubmenu removeAllItems];
+//
+//    DebugLog(@"Personal Keys: %@", [self personalKeys]);
 
 
-    [aSubmenu removeAllItems];
-
-    DebugLog(@"Personal Keys: %@", [self personalKeys]);
-
-    for (GPGKey *aKey in [self personalKeys]) {
-		NSString *title = [self menuItemTitleForKey:aKey];
-        anItem = [aSubmenu addItemWithTitle:title action:@selector(gpgChoosePersonalKey:) keyEquivalent:@""];
-        [anItem setRepresentedObject:aKey];
-		[anItem setTarget:self];
-		if (![self canKeyBeUsedForSigning:aKey]) {
-			[anItem setEnabled:NO];
-		}
-        if (theDefaultKey && [aKey isEqual:theDefaultKey]) {
-            [anItem setState:NSMixedState];
-        }
-		if (displaysAllUserIDs) {
-            for (GPGUserID *aUserID in [self secondaryUserIDsForKey:aKey]) {
-				anItem = [aSubmenu addItemWithTitle:[self menuItemTitleForUserID:aUserID indent:1] action:NULL keyEquivalent:@""];
-				[anItem setEnabled:NO];
-			}
-		}
-	}
+//    for (GPGKey *aKey in [self personalKeys]) {
+//		NSString *title = [self menuItemTitleForKey:aKey];
+//        anItem = [aSubmenu addItemWithTitle:title action:@selector(gpgChoosePersonalKey:) keyEquivalent:@""];
+//        [anItem setRepresentedObject:aKey];
+//		[anItem setTarget:self];
+//		if (![self canKeyBeUsedForSigning:aKey]) {
+//			[anItem setEnabled:NO];
+//		}
+//        if (theDefaultKey && [aKey isEqual:theDefaultKey]) {
+//            [anItem setState:NSMixedState];
+//        }
+//		if (displaysAllUserIDs) {
+//            for (GPGUserID *aUserID in [self secondaryUserIDsForKey:aKey]) {
+//				anItem = [aSubmenu addItemWithTitle:[self menuItemTitleForUserID:aUserID indent:1] action:NULL keyEquivalent:@""];
+//				[anItem setEnabled:NO];
+//			}
+//		}
+//	}
 }
 
 - (void)refreshPublicKeysMenu {
