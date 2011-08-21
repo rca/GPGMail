@@ -1,60 +1,49 @@
 {
-    /*
-     * Do not modify that file. Use the Terminal, and type:
-     * defaults write com.apple.mail TheDefaultName TheValue
-     */
+	/*
+	* Do not modify that file. Use the Terminal, and type:
+	* defaults write org.gpgtools.gpgmail TheDefaultName TheValue
+	*/
 
-    /* Keys */
-    GPGChoosesPersonalKeyAccordingToAccount = NO;
-    GPGUsesKeychain = NO;
-	GPGRemembersPassphrasesDuringSession = NO;
-	GPGPassphraseFlushTimeout = "60.0";
-    GPGShowsPassphrase = NO;
+	/* Keys */
+	ChoosePersonalKeyAccordingToAccount = YES;
+	UseKeychain = NO;
+	ShowPassphrase = NO;
 
-    /* Composing */
-	GPGAlwaysSignMessage = NO;
-    GPGSignsReplyToSignedMessage = YES;
-    GPGSignWhenEncrypting = YES;
-    GPGAlwaysEncryptMessage = NO;
-    GPGEncryptsReplyToEncryptedMessage = YES;
-    GPGEncryptMessageWhenPossible = YES;
-	GPGEncryptsToSelf = YES;
-    GPGUsesABEntriesRules = YES;
-    GPGTrustsAllKeys = YES;
-    GPGFiltersOutUnusableKeys = YES;
-    GPGOpenPGPStyleOnly = NO;
-    GPGUsesBCCRecipients = NO;
- 	GPGDisplaysButtonsInComposeWindow = YES;
-    GPGButtonsShowState = YES;
-    GPGUsesEncapsulatedSignature = YES;
-    GPGUsesOpenPGPToSend = YES;
+	/* Composing */
+	AlwaysSignMessage = NO;
+	SignReplyToSignedMessage = YES;
+	SignWhenEncrypting = YES;
+	AlwaysEncryptMessage = NO;
+	EncryptReplyToEncryptedMessage = YES;
+	EncryptMessageWhenPossible = YES;
+	EncryptToSelf = YES;
+	UseABEntriesRules = YES;
+	TrustAllKeys = YES;
+	FilterOutUnusableKeys = YES;
+	OpenPGPStyleOnly = NO;
+	DisplayButtonsInComposeWindow = YES;
+	ButtonsShowState = YES;
+	UseEncapsulatedSignature = YES;
+	UseOpenPGPToSend = YES;
 
-    /* Viewing */
-	GPGAuthenticatesMessagesAutomatically = YES;
-    GPGAuthenticatesOnlyUnreadMessagesAutomatically = YES;
-	GPGDecryptsMessagesAutomatically = YES;
-    GPGDecryptsOnlyUnreadMessagesAutomatically = YES;
-    GPGAutomaticallyShowsAllInfo = NO;
-    GPGUsesOpenPGPToReceive = YES;
+	/* Viewing */
+	AuthenticateMessagesAutomatically = YES;
+	AuthenticateOnlyUnreadMessagesAutomatically = YES;
+	DecryptMessagesAutomatically = YES;
+	DecryptOnlyUnreadMessagesAutomatically = YES;
+	AutomaticallyShowAllInfo = NO;
+	UseOpenPGPToReceive = YES;
 
-    /* Misc */
-    GPGDisplayedKeyIdentifiers = (name, email, comment);
-    GPGDisplaysAllUserIDs = YES;
-    GPGRefreshesKeysOnVolumeMount = YES;
-    GPGDisablesSMIME = NO;
+	/* Misc */
+	DisplayedKeyIdentifiers = (name, email, comment);
+	DisplayAllUserIDs = YES;
+	RefresheKeysOnVolumeMount = YES;
+	DisableSMIME = NO;
 
-    GPGSortingTableColumnTag = 1;
-    GPGVisibleTableColumnTags = (0, 1, 2, 3);
-    GPGAscendingSorting = YES;
 
-    /* Hidden */
-    GPGMailDebug = 0;
-	GPGTraceEnabled = NO;
-	GPGLogStderrEnabled = NO;
-    GPGIgnoresPGPPresence = NO;
-	GPGHashAlgorithm = "SHA1"; /* No longer used */
-    GPGWarnedAboutMissingPrivateKeys = NO;
-    GPGAddCustomHeaders = YES;
-    /* GPGOpenPGPExecutablePath = "/usr/local/bin/gpg"; */
-    GPGUsesAlwaysCRLF = NO;
+	/* Hidden */
+	GPGMailDebug = 0;
+	IgnorePGPPresence = NO;
+	WarnAboutMissingPrivateKeys = NO;
+	AddCustomHeaders = YES;
 }

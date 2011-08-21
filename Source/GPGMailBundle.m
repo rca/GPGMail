@@ -298,7 +298,7 @@ static BOOL gpgMailWorks = YES;
     return [GPGVersionComparator sharedVersionComparator];
 }
 
-- (void)updaterWillRelaunchApplication:(SUUpdater *)updater {
+/*- (void)updaterWillRelaunchApplication:(SUUpdater *)updater {
 	NSArray *windows = [NSApp windows];
 	Class delegateClass = NSClassFromString(@"MailPreferences");
 	for (NSWindow *window in windows) {
@@ -307,7 +307,7 @@ static BOOL gpgMailWorks = YES;
 			return;
 		}
 	}
-}
+}*/
 
 
 + (BOOL)hasPreferencesPanel {
@@ -912,14 +912,6 @@ static BOOL gpgMailWorks = YES;
 
 - (BOOL)usesEncapsulatedSignature {
 	return [[GPGOptions sharedOptions] boolForKey:@"UseEncapsulatedSignature"];
-}
-
-- (void)setUsesBCCRecipients:(BOOL)flag {
-	[[GPGOptions sharedOptions] setBool:flag forKey:@"UseBCCRecipients"];
-}
-
-- (BOOL)usesBCCRecipients {
-	return [[GPGOptions sharedOptions] boolForKey:@"UseBCCRecipients"];
 }
 
 - (void)setTrustsAllKeys:(BOOL)flag {
