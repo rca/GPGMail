@@ -3271,7 +3271,7 @@
 					i386,
 				);
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
-				BUNDLE_VERSION = "2.0a2+";
+				BUNDLE_VERSION = "2.0a3+";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 52;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3319,7 +3319,7 @@
 					i386,
 				);
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
-				BUNDLE_VERSION = "2.0a2+";
+				BUNDLE_VERSION = "2.0a3+";
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 52;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
