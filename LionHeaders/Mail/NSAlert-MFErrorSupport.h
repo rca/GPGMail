@@ -4,8 +4,6 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2010 by Steve Nygard.
  */
 
-#import "NSAlert.h"
-
 @interface NSAlert (MFErrorSupport)
 + (id)alertForError:(id)arg1 defaultButton:(id)arg2 alternateButton:(id)arg3 otherButton:(id)arg4;
 - (void)setEscapeKeyEquivalentOnButtonWithTitle:(id)arg1;

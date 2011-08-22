@@ -31,6 +31,7 @@
 #import <objc/objc-class.h>
 #import <ExceptionHandling/ExceptionHandling.h>
 #import <Sparkle/Sparkle.h>
+#import <Libmacgpg/Libmacgpg.h>
 #import <MailApp.h>
 #import <MailAccount.h>
 #import "JRSwizzle.h"
@@ -71,6 +72,21 @@ static BOOL gpgMailWorks = YES;
 - (void)flushKeyCache:(BOOL)flag;
 @end
 
+@interface MailDocumentEditor_GPGMail : NSObject
+@end
+
+@implementation MailDocumentEditor_GPGMail
+
+- (void)MABackEndDidLoadInitialContent:(id)arg1 {
+    NSWindow *window = [self valueForKey:@"_window"];
+    DebugLog(@"[DEBUG] %s: %@", __PRETTY_FUNCTION__, window);
+    DebugLog(@"[DEBUG] %s: subviews - %@", __PRETTY_FUNCTION__, [window subviews]);
+    [self MABackEndDidLoadInitialContent:arg1];
+}
+
+@end
+
+    
 @implementation GPGMailBundle
 
 @synthesize cachedPublicGPGKeys, cachedPersonalGPGKeys, cachedGPGKeys, updater, accountExistsForSigning;
@@ -111,23 +127,32 @@ static BOOL gpgMailWorks = YES;
                 @"_makeMessageWithContents:isDraft:shouldSign:shouldEncrypt:shouldSkipSignature:shouldBePlainText:",
                 @"canEncryptForRecipients:sender:",
                 @"canSignFromAddress:",
-                @"recipientsThatHaveNoKeyForEncryption", nil], @"selectors", nil],
+                @"recipientsThatHaveNoKeyForEncryption",
+                @"setEncryptIfPossible:",
+                @"setSignIfPossible:",
+             nil], @"selectors", nil],
         [NSDictionary dictionaryWithObjectsAndKeys:
             @"ComposeHeaderView", @"class",
             @"ComposeHeaderView_GPGMail", @"gpgMailClass",
             [NSArray arrayWithObjects:
                 @"_calculateSecurityFrame:",
                 @"awakeFromNib", nil], @"selectors", nil],
+//                           [NSDictionary dictionaryWithObjectsAndKeys:
+//                            @"MailDocumentEditor", @"class",
+//                            @"MailDocumentEditor_GPGMail", @"gpgMailClass",
+//                            [NSArray arrayWithObjects:
+//                             @"backEndDidLoadInitialContent:",
+//                              nil], @"selectors", nil],
         [NSDictionary dictionaryWithObjectsAndKeys:
             @"OptionalView", @"class",
             @"OptionalView_GPGMail", @"gpgMailClass",
             [NSArray arrayWithObjects:
                 @"widthIncludingOptionSwitch:", nil], @"selectors", nil],
-        [NSDictionary dictionaryWithObjectsAndKeys:
-            @"MessageContentController", @"class",
-            @"MessageContentController_GPGMail", @"gpgMailClass",
-            [NSArray arrayWithObjects:
-                @"setMessageToDisplay:", nil], @"selectors", nil],
+//        [NSDictionary dictionaryWithObjectsAndKeys:
+//            @"MessageContentController", @"class",
+//            @"MessageContentController_GPGMail", @"gpgMailClass",
+//            [NSArray arrayWithObjects:
+//                @"setMessageToDisplay:", nil], @"selectors", nil],
         // Messages.framework classes. Messages.framework classes can be extended using
         // categories. No need for a special GPGMail class.
         [NSDictionary dictionaryWithObjectsAndKeys:
@@ -144,6 +169,7 @@ static BOOL gpgMailWorks = YES;
                 @"usesKnownSignatureProtocol",
                 @"decodeTextPlainWithContext:",
                 @"decodeMultipartAlternativeWithContext:",
+                @"decodeApplicationOctet_streamWithContext:",
              nil], @"selectors", nil],
         [NSDictionary dictionaryWithObjectsAndKeys:
             @"MimeBody", @"class",
@@ -348,7 +374,7 @@ static BOOL gpgMailWorks = YES;
 			return ([[menu insertItemWithTitle:title action:action keyEquivalent:keyEquivalent atIndex:iI + offset] retain]);
 		} else if ([[menuItem target] isKindOfClass:[NSMenu class]]) {
 			menuItem = [self newMenuItemWithTitle:title action:action andKeyEquivalent:keyEquivalent inMenu:[menuItem target] relativeToItemWithSelector:selector offset:offset];
-			if (menuItem) {
+            if (menuItem) {
 				return menuItem;
 			}
 		}
@@ -396,35 +422,38 @@ static BOOL gpgMailWorks = YES;
 
 #pragma mark Toolbar stuff (+contextual menu)
 
+// TODO: Implement if needed later!
 - (void)refreshPersonalKeysMenu {
-	GPGKey *theDefaultKey = [self defaultKey];
-	NSMenu *aSubmenu = [personalKeysMenuItem submenu];
-	NSMenuItem *anItem;
-	BOOL displaysAllUserIDs = [self displaysAllUserIDs];
+    // No longer used.
+    //	GPGKey *theDefaultKey = [self defaultKey];
+//	NSMenu *aSubmenu = [personalKeysMenuItem submenu];
+//	NSMenuItem *anItem;
+//	BOOL displaysAllUserIDs = [self displaysAllUserIDs];
+//
+//
+//    [aSubmenu removeAllItems];
+//
+//    DebugLog(@"Personal Keys: %@", [self personalKeys]);
 
 
-    [aSubmenu removeAllItems];
-
-    DebugLog(@"Personal Keys: %@", [self personalKeys]);
-
-    for (GPGKey *aKey in [self personalKeys]) {
-		NSString *title = [self menuItemTitleForKey:aKey];
-        anItem = [aSubmenu addItemWithTitle:title action:@selector(gpgChoosePersonalKey:) keyEquivalent:@""];
-        [anItem setRepresentedObject:aKey];
-		[anItem setTarget:self];
-		if (![self canKeyBeUsedForSigning:aKey]) {
-			[anItem setEnabled:NO];
-		}
-        if (theDefaultKey && [aKey isEqual:theDefaultKey]) {
-            [anItem setState:NSMixedState];
-        }
-		if (displaysAllUserIDs) {
-            for (GPGUserID *aUserID in [self secondaryUserIDsForKey:aKey]) {
-				anItem = [aSubmenu addItemWithTitle:[self menuItemTitleForUserID:aUserID indent:1] action:NULL keyEquivalent:@""];
-				[anItem setEnabled:NO];
-			}
-		}
-	}
+//    for (GPGKey *aKey in [self personalKeys]) {
+//		NSString *title = [self menuItemTitleForKey:aKey];
+//        anItem = [aSubmenu addItemWithTitle:title action:@selector(gpgChoosePersonalKey:) keyEquivalent:@""];
+//        [anItem setRepresentedObject:aKey];
+//		[anItem setTarget:self];
+//		if (![self canKeyBeUsedForSigning:aKey]) {
+//			[anItem setEnabled:NO];
+//		}
+//        if (theDefaultKey && [aKey isEqual:theDefaultKey]) {
+//            [anItem setState:NSMixedState];
+//        }
+//		if (displaysAllUserIDs) {
+//            for (GPGUserID *aUserID in [self secondaryUserIDsForKey:aKey]) {
+//				anItem = [aSubmenu addItemWithTitle:[self menuItemTitleForUserID:aUserID indent:1] action:NULL keyEquivalent:@""];
+//				[anItem setEnabled:NO];
+//			}
+//		}
+//	}
 }
 
 - (void)refreshPublicKeysMenu {
@@ -469,7 +498,7 @@ static BOOL gpgMailWorks = YES;
 
 // TODO: Fix me for libmacgpg
 - (BOOL)checkGPG {
-    GPGErrorCode errorCode = [[GPGController gpgController] testGPG];
+    GPGErrorCode errorCode = (GPGErrorCode)[[GPGController gpgController] testGPG];
     NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
     switch (errorCode) {
         case GPGErrorNotFound:
@@ -1267,20 +1296,6 @@ static BOOL gpgMailWorks = YES;
 	return result;
 }
 
-// TODO: Fix for libmacgpg
-//- (NSString *)context:(GPGContext *)context passphraseForKey:(GPGKey *)key again:(BOOL)again {
-//	NSString *passphrase;
-//
-//	if (again && key != nil) {
-//		[GPGPassphraseController flushCachedPassphraseForUser:key];
-//	}
-//
-//	// (Find current window) No longer necessary - will be replaced by agent
-//	passphrase = [[GPGPassphraseController controller] passphraseForUser:key title:NSLocalizedStringFromTableInBundle(@"MESSAGE_DECRYPTION_PASSPHRASE_TITLE", @"GPGMail", [NSBundle bundleForClass:[self class]], "") window:/*[[self composeAccessoryView] window]*/ nil];
-//
-//	return passphrase;
-//}
-
 - (GPGKey *)publicKeyForSecretKey:(GPGKey *)secretKey {
 	// Do not invoke -[GPGKey publicKey], because it will perform a gpg op
 	// Get key from cached public keys
@@ -1496,6 +1511,10 @@ static BOOL gpgMailWorks = YES;
 + (NSString *)bundleVersion {
     return [[[NSBundle bundleForClass:self] infoDictionary]
             valueForKey:@"CFBundleVersion"];
+}
+
++ (NSNumber *)bundleBuildNumber {
+    return [[[NSBundle bundleForClass:self] infoDictionary] valueForKey:@"CFBuildNumber"];
 }
 
 + (NSString *)agentHeader {
