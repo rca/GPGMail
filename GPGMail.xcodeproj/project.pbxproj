@@ -96,17 +96,6 @@
 			);
 			script = "sed 's/\\${BUNDLE_VERSION}/'${BUNDLE_VERSION}'/g' \"${INPUT_FILE_PATH}\" > \"${DERIVED_FILES_DIR}/${INPUT_FILE_NAME}\"";
 		};
-		552507E90BAD561900466016 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.proxy.script;
-			filePatterns = "*.plist";
-			fileType = pattern.proxy;
-			isEditable = 1;
-			outputFiles = (
-				"${DERIVED_FILES_DIR}/${INPUT_FILE_NAME}",
-			);
-			script = "/usr/bin/plutil -lint -- \"${INPUT_FILE_PATH}\" && cp -pR \"${INPUT_FILE_PATH}\" \"${DERIVED_FILES_DIR}/\"";
-		};
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2839,10 +2828,10 @@
 				8D5B49B3048680CD000E48DA /* Frameworks */,
 				1B45A52111CC977700ED4663 /* Copy Frameworks */,
 				30F40BC012B76FAE002E2374 /* Run Script */,
+				30D2E1BF140302E100062793 /* ShellScript */,
 			);
 			buildRules = (
 				309A1A6413E4BD890069DC0F /* PBXBuildRule */,
-				552507E90BAD561900466016 /* PBXBuildRule */,
 			);
 			comments = "Old working:\nheader_search_path ..\nlibrary_style static\nother_linker_flags -force_flat_namespace -undefined suppress \nmacosx deployment target: default\n\n-bundle_loader /Applications/Mail.app/Contents/MacOS/Mail  -undefined dynamic_lookup\n";
 			dependencies = (
@@ -2965,6 +2954,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		30D2E1BF140302E100062793 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$CONFIGURATION\" = \"Release\" ]] ;then\n    BUILD_NUMBER=$(sed -En '/^#define INCREMENTAL_BUILD_NUMBER ([0-9]+).*$/{s//\\1/;p;q;}' \"$PROJECT_DIR/version.h\")\n    ((BUILD_NUMBER++))\n    sed -i '' -E '/^(#define INCREMENTAL_BUILD_NUMBER )([0-9]+)(.*)$/s//\\1'\"$BUILD_NUMBER\"'\\3/' \"$PROJECT_DIR/version.h\"\n    rm -f \"$TEMP_DIR/Preprocessed-Info.plist\" \nfi";
+		};
 		30DA468812B2D5E800E20039 /* Localize XIBs */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3273,7 +3275,6 @@
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
 				BUNDLE_VERSION = "2.0a3+";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 52;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
@@ -3294,6 +3295,9 @@
 				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = "Dependencies/**";
 				INFOPLIST_FILE = Plists/Info.plist;
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-ansi";
+				INFOPLIST_PREFIX_HEADER = version.h;
+				INFOPLIST_PREPROCESS = YES;
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS)";
@@ -3306,7 +3310,7 @@
 				);
 				PRODUCT_NAME = GPGMail;
 				VALID_ARCHS = "x86_64 i386";
-				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "-traditional";
 				WRAPPER_EXTENSION = mailbundle;
 			};
 			name = Debug;
@@ -3321,7 +3325,6 @@
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
 				BUNDLE_VERSION = "2.0a3+";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 52;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
@@ -3340,6 +3343,9 @@
 				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = "Dependencies/**";
 				INFOPLIST_FILE = Plists/Info.plist;
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-ansi";
+				INFOPLIST_PREFIX_HEADER = version.h;
+				INFOPLIST_PREPROCESS = YES;
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS)";
@@ -3352,7 +3358,7 @@
 				);
 				PRODUCT_NAME = GPGMail;
 				VALID_ARCHS = "x86_64 i386";
-				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "-traditional";
 				WRAPPER_EXTENSION = mailbundle;
 			};
 			name = Release;

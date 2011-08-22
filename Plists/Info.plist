@@ -2,42 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>SUPublicDSAKeyFile</key>
-	<string>dsa_pub.pem</string>
-	<key>SUFeedURL</key>
-	<string>http://www.gpgtools.org/gpgmail/appcast.xml</string>
-	<key>SUEnableAutomaticChecks</key>
-	<true/>
-	<key>SUScheduledCheckInterval</key>
-	<integer>86400</integer>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>CFBundleDocumentTypes</key>
-	<array/>
-	<key>CFBundleExecutable</key>
-	<string>GPGMail</string>
-	<key>CFBundleGetInfoString</key>
-	<string>GPGMail version ${BUNDLE_VERSION}, Copyright 2000-2011, GPGTools Project Team.</string>
-	<key>NSHumanReadableCopyright</key>
-	<string>Copyright 2000-2011, GPGTools Project Team</string>
-	<key>CFBundleIconFile</key>
-	<string>GPGMail.icns</string>
+	<key>CFBundleShortVersionString</key>
+	<string>BUNDLE_VERSION</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.gpgtools.gpgmail</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>GPGMail</string>
-	<key>CFBundlePackageType</key>
-	<string>BNDL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>${BUNDLE_VERSION}</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
+	<key>SUScheduledCheckInterval</key>
+	<integer>86400</integer>
 	<key>CFBundleVersion</key>
-	<string>${BUNDLE_VERSION}</string>
-	<key>NSPrincipalClass</key>
-	<string>GPGMailBundle</string>
+	<string>BUILD_NUMBER</string>
+	<key>CFBundleExecutable</key>
+	<string>GPGMail</string>
 	<key>SupportedPluginCompatibilityUUIDs</key>
 	<array>
 		<string>EF59EC5E-EFCD-4EA7-B617-6C5708397D24</string>
@@ -58,5 +34,27 @@
 		<string>9049EF7D-5873-4F54-A447-51D722009310</string>
 		<string>1C58722D-AFBD-464E-81BB-0E05C108BE06</string>
 	</array>
+	<key>CFBundleGetInfoString</key>
+	<string>GPGMail version BUNDLE_VERSION, Copyright 2000-2011, GPGTools Project Team.</string>
+	<key>SUPublicDSAKeyFile</key>
+	<string>dsa_pub.pem</string>
+	<key>CFBundleDocumentTypes</key>
+	<array/>
+	<key>NSPrincipalClass</key>
+	<string>GPGMailBundle</string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleIconFile</key>
+	<string>GPGMail.icns</string>
+	<key>SUFeedURL</key>
+	<string>http://www.gpgtools.org/gpgmail/appcast.xml</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright 2000-2011, GPGTools Project Team</string>
+	<key>CFBundleName</key>
+	<string>GPGMail</string>
 </dict>
 </plist>
