@@ -28,6 +28,7 @@
  */
 
 #import <Libmacgpg/Libmacgpg.h>
+#import "NSObject+LPDynamicIvars.h"
 #import <MailAccount.h>
 #import <MailDocumentEditor.h>
 #import "GPGTitlebarAccessoryView.h"
@@ -40,17 +41,18 @@
     if(![MailAccount accountExistsForSigning])
         return [self MABackEndDidLoadInitialContent:content];
     
-    //    [[GPGOptions sharedOptions] addObserver:self forKeyPath:@"UseOpenPGPToSend" options:NSKeyValueObservingOptionNew context:nil];
+    [[GPGOptions sharedOptions] addObserver:self forKeyPath:@"UseOpenPGPToSend" options:NSKeyValueObservingOptionNew context:nil];
     
     [self drawEncryptionMethodHint];
     
     [self MABackEndDidLoadInitialContent:content];
 }
 
-- (void)drawEncryptionMethodHint {
-    NSString *encryptionMethod = nil;
+- (void)drawEncryptionMethodTitle {
     NSRect textFrame;
+    NSString *encryptionMethod = nil;
     BOOL monochrome = ![[GPGOptions sharedOptions] boolForKey:@"UseNonMonochromeEncryptionMethodHint"];
+    
     if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
         encryptionMethod = @"OpenPGP";
         if(monochrome)
@@ -65,11 +67,20 @@
         else
             textFrame = NSMakeRect(17.0, -2.0, 80.0f, 17.0f);
     }
-    GPGTitlebarAccessoryView *accessoryView = [[GPGTitlebarAccessoryView alloc] initWithFrame:NSMakeRect(0.0, 0.0, 80.0f, 17.0f)];
-    accessoryView.monochrome = monochrome;
+    GPGTitlebarAccessoryView *accessoryView = (GPGTitlebarAccessoryView *)[self getIvar:@"AccessoryView"];
     accessoryView.title = encryptionMethod;
     accessoryView.titleView.frame = textFrame;
     
+    [accessoryView setNeedsDisplay:YES];
+}
+
+- (void)drawEncryptionMethodHint {
+    BOOL monochrome = ![[GPGOptions sharedOptions] boolForKey:@"UseNonMonochromeEncryptionMethodHint"];
+    GPGTitlebarAccessoryView *accessoryView = [[GPGTitlebarAccessoryView alloc] initWithFrame:NSMakeRect(0.0, 0.0, 80.0f, 17.0f)];
+    [self setIvar:@"AccessoryView" value:accessoryView];
+    accessoryView.monochrome = monochrome;
+    
+    [self drawEncryptionMethodTitle];
     
     NSWindow *window = [self valueForKey:@"_window"];
     NSView *themeFrame = [[window contentView] superview];
@@ -89,6 +100,16 @@
     [themeFrame addSubview:accessoryView];
     
     [accessoryView release];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+    if(![keyPath isEqualToString:@"UseOpenPGPToSend"])
+        return;
+    
+    [self drawEncryptionMethodTitle];
 }
 
 @end
