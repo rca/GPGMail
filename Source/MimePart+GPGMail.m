@@ -118,6 +118,10 @@
 - (id)MADecodeWithContext:(id)ctx {
     DebugLog(@"[DEBUG] %s enter - decoding: %@", __PRETTY_FUNCTION__,
              [(Message *)[(MimeBody *)[self mimeBody] message] subject]);
+    // Check if PGP is enabled in Mail.app settings for decoding messages,
+    // otherwise leave.
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MADecodeWithContext:ctx];
     
     if([[[(MimeBody *)[self mimeBody] message] getIvar:@"skipPGPProcessing"] boolValue]) {
         return [self MADecodeWithContext:ctx];
@@ -181,6 +185,9 @@
     return ret;
 }
 
+- (void)MAClearCachedDecryptedMessageBody {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MAClearCachedDecryptedMessageBody];
     
     // Don't clear PGP messages for now. Just for testing!
     //    if([[self mimeBody] containsPGPEncryptedData])
@@ -773,12 +780,18 @@
 }
 
 - (BOOL)MAUsesKnownSignatureProtocol {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MAUsesKnownSignatureProtocol];
+    
     if([[self bodyParameterForKey:@"protocol"] isEqualToString:@"application/pgp-signature"])
         return YES;
     return [self MAUsesKnownSignatureProtocol];
 }
 
 - (void)MAVerifySignature {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MAVerifySignature];
+    
     // If this is a non GPG signed message, let's call the original method
     // and get out of here!    
     if(![[self bodyParameterForKey:@"protocol"] isEqualToString:@"application/pgp-signature"]) {
@@ -963,6 +976,9 @@
 }
          
 - (id)MACopySignerLabels {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MACopySignerLabels];
+
     // Check if the signature in the message signers is a GPGSignature, if
     // so, copy the email addresses and return them.
     NSMutableArray *signerLabels = [NSMutableArray array];
@@ -993,6 +1009,9 @@
 }
 
 - (id)MACopyMessageSigners {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MACopyMessageSigners];
+    
     // Only invoke the original method if _messageSigners is not set yet.
     if([[[self mimeBody] topLevelPart] valueForKey:@"_messageSigners"])
         return [[[[self mimeBody] topLevelPart] valueForKey:@"_messageSigners"] copy];
@@ -1001,6 +1020,9 @@
 }
 
 - (BOOL)MAIsSigned {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MAIsSigned];
+    
     BOOL ret = [self MAIsSigned];
     // For plain text message is signed doesn't automatically find
     // the right signed status, so we check if copy signers are available.
@@ -1084,6 +1106,8 @@
 }
 
 - (BOOL)MAIsEncrypted {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MAIsEncrypted];
     // If this is not a topLevelPart, we simply return the original
     // MimePart.isEncrypted value.
     if([self parentPart] != nil)

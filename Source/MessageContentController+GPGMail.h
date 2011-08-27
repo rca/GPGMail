@@ -32,16 +32,6 @@
 @interface MessageContentController_GPGMail : NSObject
 
 /**
- This method is used to implement auto-decryption of GPG messages.
- Sometimes it fails to detect a gpg message though.
- Maybe it would be better embed this directly in the appropriate
- decodeWithContext method.
- Auto decryption also fixes a problem where attachments are not 
- properly displayed in manual mode.
- */
-- (void)MASetMessageToDisplay:(id)message;
-
-/**
  This method is called when the encrypted icon is clicked in a message view.
  It's only used in the case, when encrypted messages should not be decrypted automatically,
  but manually by a user interaction.

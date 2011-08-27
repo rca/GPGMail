@@ -137,6 +137,9 @@ static BOOL gpgMailWorks = YES;
             @"MailDocumentEditor_GPGMail", @"gpgMailClass",
             [NSArray arrayWithObjects:
                 @"backEndDidLoadInitialContent:", nil], @"selectors", nil],
+        [NSDictionary dictionaryWithObjectsAndKeys:
+            @"MessageContentController", @"class",
+            @"MessageContentController_GPGMail", @"gpgMailClass", nil],
         // Messages.framework classes. Messages.framework classes can be extended using
         // categories. No need for a special GPGMail class.
         [NSDictionary dictionaryWithObjectsAndKeys:
