@@ -68,12 +68,24 @@
         return preferences;
     
     BOOL gpgMailPreferencesToolbarExists = NO;
+    // Mail Preferences is not able to restore to the GPGMail preference module
+    // if it was last open.
+    // That's why GPGMail saves the information of the last open one and restores it
+    // on its own.
+    NSToolbarItem *lastSelectedItem = nil;
+    NSString *lastSelectedItemIdentifier = [[GPGOptions sharedOptions] valueForKey:@"MailPreferencesLastSelectedToolbarItem"];
+    int i = 0;
     for(id item in [toolbar items]) {
+        if((!lastSelectedItemIdentifier && i == 0) || [lastSelectedItemIdentifier isEqualToString:[item itemIdentifier]])
+            lastSelectedItem = item;
+        
         if([[item itemIdentifier] isEqualToString:preferencesName]) {
             gpgMailPreferencesToolbarExists = YES;
             break;
         }
+        i++;
     }
+    
     // If the GPGMail Preference toolbar item doesn't exist,
     // add it.
     if(!gpgMailPreferencesToolbarExists)
@@ -85,10 +97,15 @@
     // and the last preference module to be shown was GPGMail,
     // Mail.app doesn't show it automatically after restarting and restoring
     // the preference pane window.
-    // Using _selectModuleOwner the preference pane is forced to display
-    // the GPGMail preference pane.
-    NSPreferencesModule *selectedModule = [[preferences valueForKey:@"_preferenceModules"] objectAtIndex:[[NSUserDefaults standardUserDefaults] integerForKey:@"NSPreferencesSelectedIndex"]];
-    [preferences _selectModuleOwner:selectedModule];
+    // In case of GPGMail being the last item, it's not in the toolbar yet
+    // since it was just recently added. Use _selectModuleOwner to select it.
+    if(!lastSelectedItem && [lastSelectedItemIdentifier isEqualToString:preferencesName]) {
+        NSToolbarItem *toolbarItem = [[NSToolbarItem alloc] initWithItemIdentifier:preferencesName];
+        [preferences toolbarItemClicked:toolbarItem];
+        [toolbarItem release];
+    }
+    else
+        [preferences toolbarItemClicked:lastSelectedItem];
     // Force resizing of the window so that all toolbar items fit.
     [preferences resizeWindowToShowAllToolbarItems:preferencesPanel];
     
@@ -127,6 +144,7 @@
 - (void)MAToolbarItemClicked:(id)toolbarItem {
     // Resize the window, otherwise it would make it small
     // again.
+    [[GPGOptions sharedOptions] setValue:[toolbarItem itemIdentifier] forKey:@"MailPreferencesLastSelectedToolbarItem"];
     [self MAToolbarItemClicked:toolbarItem];
     [self resizeWindowToShowAllToolbarItems:[self valueForKey:@"_preferencesPanel"]];
 }
