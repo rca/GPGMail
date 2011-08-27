@@ -4,7 +4,7 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2010 by Steve Nygard.
  */
 
-#import <Message/MessageStore.h>
+#import <MessageStore.h>
 
 @class MessageCriterion, NSMutableArray, NSMutableSet, NSString;
 
