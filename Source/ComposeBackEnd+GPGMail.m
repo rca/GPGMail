@@ -26,27 +26,19 @@
 
 @implementation ComposeBackEnd_GPGMail
 
-- (void)setPGPState:(id)sender {
-    DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
-    DebugLog(@"[DEBUG] %s sender: %@", __PRETTY_FUNCTION__, sender);
-    BOOL enabled = NO;
-    if([sender isKindOfClass:[NSNumber class]])
-        enabled = [sender boolValue];
-    else
-        enabled = [(NSButton *)sender state] == NSOnState;
-    DebugLog(@"[DEBUG] %s state: %@", __PRETTY_FUNCTION__, enabled ? @"Checked" : @"Unchecked");
-    [self setIvar:@"PGPEnabled" value:[NSNumber numberWithBool:enabled]];
 }
 
 - (id)MA_makeMessageWithContents:(WebComposeMessageContents *)contents isDraft:(BOOL)isDraft shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt shouldSkipSignature:(BOOL)shouldSkipSignature shouldBePlainText:(BOOL)shouldBePlainText {
-    DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"])
+        return [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldSign shouldEncrypt:shouldEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
+    
     // The encryption part is a little tricky that's why
     // Mail.app is gonna do the heavy lifting with our GPG encryption method
     // instead of the S/MIME one.
     // After that's done, we only have to extract the encrypted part.
     BOOL shouldPGPEncrypt = NO;
     BOOL shouldPGPSign = NO;
-    if([self ivarExists:@"PGPEnabled"] && [[self getIvar:@"PGPEnabled"] boolValue]) {
+    if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
         shouldPGPEncrypt = shouldEncrypt;
         shouldPGPSign = shouldSign;
     }
@@ -238,7 +230,7 @@
 
 - (BOOL)MACanEncryptForRecipients:(NSArray *)recipients sender:(NSString *)sender {
     // If gpg is not enabled, call the original method.
-    if(![[self getIvar:@"PGPEnabled"] boolValue])
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"])
         return [self MACanEncryptForRecipients:recipients sender:sender];
     // Otherwise check the gpg keys.
     // Loop through all the addresses and check if we can encrypt for them.
@@ -262,8 +254,7 @@
 
 - (BOOL)MACanSignFromAddress:(NSString *)address {
     // If gpg is not enabled, call the original method.
-    DebugLog(@"[DEBUG] %s enabled: %@", __PRETTY_FUNCTION__, [self getIvar:@"PGPEnabled"]);
-    if(![[self getIvar:@"PGPEnabled"] boolValue])
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"])
         return [self MACanSignFromAddress:address];
     // Otherwise check the gpg keys.
     BOOL canSign = [[GPGMailBundle sharedInstance] canSignMessagesFromAddress:[address uncommentedAddress]];
@@ -272,10 +263,9 @@
 
 - (id)MARecipientsThatHaveNoKeyForEncryption {
     // If gpg is not enabled, call the original method.
-    if(![[self getIvar:@"PGPEnabled"] boolValue])
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"])
         return [self MARecipientsThatHaveNoKeyForEncryption];
     
-    DebugLog(@"All recipients: %@", [((ComposeBackEnd *)self) allRecipients]);
     NSMutableArray *nonEligibleRecipients = [NSMutableArray array];
     for(NSString *recipient in [((ComposeBackEnd *)self) allRecipients]) {
         if(![[GPGMailBundle sharedInstance] canSignMessagesFromAddress:[recipient uncommentedAddress]])

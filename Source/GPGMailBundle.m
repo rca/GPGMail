@@ -72,21 +72,6 @@ static BOOL gpgMailWorks = YES;
 - (void)flushKeyCache:(BOOL)flag;
 @end
 
-@interface MailDocumentEditor_GPGMail : NSObject
-@end
-
-@implementation MailDocumentEditor_GPGMail
-
-- (void)MABackEndDidLoadInitialContent:(id)arg1 {
-    NSWindow *window = [self valueForKey:@"_window"];
-    DebugLog(@"[DEBUG] %s: %@", __PRETTY_FUNCTION__, window);
-    DebugLog(@"[DEBUG] %s: subviews - %@", __PRETTY_FUNCTION__, [window subviews]);
-    [self MABackEndDidLoadInitialContent:arg1];
-}
-
-@end
-
-    
 @implementation GPGMailBundle
 
 @synthesize cachedPublicGPGKeys, cachedPersonalGPGKeys, cachedGPGKeys, updater, accountExistsForSigning;
@@ -137,22 +122,16 @@ static BOOL gpgMailWorks = YES;
             [NSArray arrayWithObjects:
                 @"_calculateSecurityFrame:",
                 @"awakeFromNib", nil], @"selectors", nil],
-//                           [NSDictionary dictionaryWithObjectsAndKeys:
-//                            @"MailDocumentEditor", @"class",
-//                            @"MailDocumentEditor_GPGMail", @"gpgMailClass",
-//                            [NSArray arrayWithObjects:
-//                             @"backEndDidLoadInitialContent:",
-//                              nil], @"selectors", nil],
         [NSDictionary dictionaryWithObjectsAndKeys:
             @"OptionalView", @"class",
             @"OptionalView_GPGMail", @"gpgMailClass",
             [NSArray arrayWithObjects:
                 @"widthIncludingOptionSwitch:", nil], @"selectors", nil],
-//        [NSDictionary dictionaryWithObjectsAndKeys:
-//            @"MessageContentController", @"class",
-//            @"MessageContentController_GPGMail", @"gpgMailClass",
-//            [NSArray arrayWithObjects:
-//                @"setMessageToDisplay:", nil], @"selectors", nil],
+        [NSDictionary dictionaryWithObjectsAndKeys:
+            @"MailDocumentEditor", @"class",
+            @"MailDocumentEditor_GPGMail", @"gpgMailClass",
+            [NSArray arrayWithObjects:
+                @"backEndDidLoadInitialContent:", nil], @"selectors", nil],
         // Messages.framework classes. Messages.framework classes can be extended using
         // categories. No need for a special GPGMail class.
         [NSDictionary dictionaryWithObjectsAndKeys:

@@ -1,4 +1,4 @@
-/* ComposeHeaderView+GPGMail.h created by Lukas Pitschl (@lukele) on Wed 03-Aug-2011 */
+/* MailDocumentEditor+GPGMail.h re-created by Lukas Pitschl (@lukele) on Sat 27-Aug-2011 */
 
 /*
  * Copyright (c) 2000-2011, GPGTools Project Team <gpgtools-devel@lists.gpgtools.org>
@@ -27,31 +27,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <AppKit/AppKit.h>
-#import <ComposeBackEnd.h>
-#import <DocumentEditor.h>
-#import <OptionalView.h>
-#import "CCLog.h"
-#import "NSObject+LPDynamicIvars.h"
-#import "ComposeBackEnd+GPGMail.h"
-#import "ComposeHeaderView+GPGMail.h"
+@interface MailDocumentEditor_GPGMail : NSObject
 
-@implementation ComposeHeaderView_GPGMail
+/**
+ Entry point to add the title bar accessory view.
+ */
+- (void)MABackEndDidLoadInitialContent:(id)content;
 
-- (void)MAAwakeFromNib {
-    ComposeBackEnd *backEnd = [(DocumentEditor *)[[((ComposeHeaderView *)self) delegate] valueForKey:@"_documentEditor"] backEnd];
-    [backEnd setIvar:@"PGPEnabled" value:[NSNumber numberWithBool:YES]];
-
-    [self MAAwakeFromNib];
-}
-
-- (CGRect)MA_calculateSecurityFrame:(CGRect)frame {
-    if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
-        if([[self valueForKey:@"_securityOptionalView"] ivarExists:@"securityViewWidth"])
-            frame.size.width = [[[self valueForKey:@"_securityOptionalView"] getIvar:@"securityViewWidth"] floatValue];
-    }
-    CGRect newRect = [self MA_calculateSecurityFrame:frame];
-    return newRect;
-}
+/**
+ Draws the title bar accessory view to indicate to the user that
+ either OpenPGP or S/MIME methods are used to process the message.
+ 
+ Updates accordingly to preference changes.
+ */
+- (void)drawEncryptionMethodHint;
 
 @end
