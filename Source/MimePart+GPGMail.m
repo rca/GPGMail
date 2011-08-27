@@ -127,6 +127,14 @@
         return [self MADecodeWithContext:ctx];
     }
     
+    // Multipart mixed might contain PGP/MIME signed parts.
+    // Don't ask me who generates this, but some client does...
+    // Apparently this happens when a mail goes through the mailinglist daemon.
+    // FRECK!
+    if([self isType:@"multipart" subtype:@"mixed"]) {
+        return [self MADecodeWithContext:ctx];
+    }
+    
     // 1.) Check if this is the top level mime part.
     //     If so, check the whole body if PGP data is included.
     MimePart *topLevelPart = [[self mimeBody] topLevelPart];
