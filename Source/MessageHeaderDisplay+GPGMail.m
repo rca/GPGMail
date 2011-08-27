@@ -18,6 +18,7 @@
 #import "GPGSignatureView.h"
 #import "GPGMailBundle.h"
 #import "MimePart+GPGMail.h"
+#import "MimeBody+GPGMail.h"
 #import "NSAttributedString+GPGMail.h"
 #import "MessageHeaderDisplay+GPGMail.h"
 #import "MessageContentController+GPGMail.h"
@@ -71,6 +72,9 @@
 }
 
 - (id)MA_attributedStringForSecurityHeader {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MA_attributedStringForSecurityHeader];
+    
     // This is also called if the message is neither signed nor encrypted.
     // In that case the empty string is returned.
     // Internally this method checks the message's messageFlags
@@ -78,6 +82,7 @@
     // based on that information creates the encrypted symbol
     // and calls copySingerLabels on the topLevelPart.
     MessageViewingState *viewingState = [((MessageHeaderDisplay *)self) viewingState];
+    MimeBody *mimeBody = [viewingState mimeBody];
     MimePart *topPart = [[viewingState mimeBody] topLevelPart];
     // Check if the securityHeader is already set.
     // If so, out of here!
@@ -85,23 +90,11 @@
     if(viewingState.headerSecurityString)
         return viewingState.headerSecurityString;
     
-    BOOL isPGPSigned = [topPart isPGPSigned];
-    BOOL isPGPEncrypted = [topPart isPGPEncrypted];
-    BOOL isSigned = [topPart isSigned];
+    // Check the mime body, is more reliable.
+    BOOL isPGPSigned = [mimeBody containsPGPSignedData];
+    BOOL isPGPEncrypted = [mimeBody containsPGPEncryptedData] || [mimeBody ivarExists:@"PGPEarlyAlphaFuckedUpEncrypted"];
     
     if(!(isPGPSigned || isPGPEncrypted)) {
-        // If for example the signature attachment was stripped from the message
-        // it still appears as signed, but doesn't have any signature information.
-        // In that case, don't show the security header.
-        // in that case isSigned is true, but since isPGPSigned checks the number of signers
-        // isPGPSigned will be false.
-        // Unfortunately Mail.app would still think the message is signed and add
-        // the security header which would result in signed being shown.
-        // To fix this, the copySigners are checked again.
-        NSAttributedString *securityHeader = [NSAttributedString attributedStringWithString:@""];
-        if(![(NSArray *)[topPart copySignerLabels] count]) {
-            return securityHeader;
-        }
         return [self MA_attributedStringForSecurityHeader];
     }
         
@@ -118,7 +111,10 @@
         MimePart *decryptedTopPart = [decryptedMessageBody topLevelPart];
         // If it's encrypted, only the decrypted part is of interest.
         topPart = decryptedTopPart;
-        isPGPSigned = [decryptedTopPart isPGPSigned];
+        isPGPSigned = [decryptedMessageBody containsPGPSignedData];
+        // And remove the isPGPEncrypted flag, so it doesn't show as encrypted, since it is not really encrypted.
+        if([decryptedMessageBody ivarExists:@"PGPEarlyAlphaFuckedUpEncrypted"])
+            isPGPEncrypted = NO;
     }
     
     NSMutableAttributedString *securityHeader = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\t%@\t", NSLocalizedStringFromTableInBundle(@"SECURITY_HEADER", @"Encryption", [NSBundle mainBundle], @"")]];
