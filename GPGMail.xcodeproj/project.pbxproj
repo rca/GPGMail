@@ -40,7 +40,6 @@
 		1B8437661404AB9C00968293 /* NSData+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8437651404AB9C00968293 /* NSData+GPGMail.m */; };
 		1B8C01D513E4F12D00DB9FA4 /* GPGSignatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C01D413E4F12D00DB9FA4 /* GPGSignatureView.m */; };
 		1B8C01DA13E4F26500DB9FA4 /* GPGSignatureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B8C01D613E4F25900DB9FA4 /* GPGSignatureView.xib */; };
-		1BA4B1681407287900FAF8AE /* GPGComposerAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1BA4B1661407287900FAF8AE /* GPGComposerAccessoryView.xib */; };
 		1BACB2EB13EBF66300C750AA /* GPGCertLargeNotTrusted.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1BACB2EA13EBF66300C750AA /* GPGCertLargeNotTrusted.tif */; };
 		1BACB2ED13EBF6A800C750AA /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BACB2EC13EBF6A800C750AA /* JRSwizzle.m */; };
 		1BAEF64413E9F57700A59CED /* MailAccount+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAEF64313E9F57700A59CED /* MailAccount+GPGMail.m */; };
@@ -1282,7 +1281,6 @@
 		1B8C01D413E4F12D00DB9FA4 /* GPGSignatureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GPGSignatureView.m; path = Source/GPGSignatureView.m; sourceTree = "<group>"; };
 		1B8C01D713E4F25900DB9FA4 /* German */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = German; path = Resources/German.lproj/GPGSignatureView.xib; sourceTree = "<group>"; };
 		1B8C01D913E4F26500DB9FA4 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Resources/English.lproj/GPGSignatureView.xib; sourceTree = "<group>"; };
-		1BA4B1671407287900FAF8AE /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Resources/English.lproj/GPGComposerAccessoryView.xib; sourceTree = "<group>"; };
 		1BACB2EA13EBF66300C750AA /* GPGCertLargeNotTrusted.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = GPGCertLargeNotTrusted.tif; path = Resources/Images/GPGCertLargeNotTrusted.tif; sourceTree = "<group>"; };
 		1BACB2EC13EBF6A800C750AA /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JRSwizzle.m; path = Source/JRSwizzle.m; sourceTree = "<group>"; };
 		1BACB2EE13EBF6B900C750AA /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JRSwizzle.h; path = Source/JRSwizzle.h; sourceTree = "<group>"; };
@@ -2787,7 +2785,6 @@
 				308B8F7B12A6AE2D00C99BD2 /* GPGKeyDownload.xib */,
 				308B8FA812A6AE5F00C99BD2 /* GPGMailPreferences.xib */,
 				308B8F8112A6AE2D00C99BD2 /* GPGMenu.xib */,
-				1BA4B1661407287900FAF8AE /* GPGComposerAccessoryView.xib */,
 			);
 			name = XIBs;
 			sourceTree = "<group>";
@@ -3004,7 +3001,6 @@
 				1BDAA67413EB680E00F27826 /* CODING in Resources */,
 				1BCEE1E311CC051500488D19 /* LICENSE.txt in Resources */,
 				1B08634013FF9976001AF6E7 /* encryption_unlocked.png in Resources */,
-				1BA4B1681407287900FAF8AE /* GPGComposerAccessoryView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3166,14 +3162,6 @@
 				1B8C01D913E4F26500DB9FA4 /* English */,
 			);
 			name = GPGSignatureView.xib;
-			sourceTree = "<group>";
-		};
-		1BA4B1661407287900FAF8AE /* GPGComposerAccessoryView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1BA4B1671407287900FAF8AE /* English */,
-			);
-			name = GPGComposerAccessoryView.xib;
 			sourceTree = "<group>";
 		};
 		1BECA61413E372AC00C622B0 /* SignatureView.strings */ = {
