@@ -25,6 +25,7 @@
 	ButtonsShowState = YES;
 	UseEncapsulatedSignature = YES;
 	UseOpenPGPToSend = YES;
+    ShouldOptionallyEncryptDrafts = NO;
 
 	/* Viewing */
 	AuthenticateMessagesAutomatically = YES;

@@ -42,6 +42,29 @@
 - (void)setPGPState:(id)sender;
 
 /**
+ Is called by Mail.app when the user clicks on the encrypt button in the
+ compose window.
+ 
+ When a message should be saved as draft, the encrypted and signed flags are
+ not send along as arguments to the _makeContents method and there's no way
+ to access the information since it is internally stored in a struct, which 
+ unfortunately can't be easily accessed on runtime.
+ 
+ This entry point allows GPGMail to save the encrypted status in a dynamic ivar,
+ which can later be accessed when the message is saved as draft.
+ */
+- (void)MASetEncryptIfPossible:(BOOL)encryptIfPossible;
+
+/**
+ Is called by Mail.app when the user clicks on the sign button in the
+ compose window.
+ 
+ See -[self MASetEncryptIfPossible:] for further information why this is an important
+ entry point.
+ */
+- (void)MASetSignIfPossible:(BOOL)signIfPossible;
+
+/**
  This method is called by Mail.app when a new message is to be sent or a draft
  is to be saved.
  Based on the message contents it creates all necessary mime parts, signs 

@@ -123,6 +123,11 @@ static BOOL gpgMailWorks = YES;
                 @"_calculateSecurityFrame:",
                 @"awakeFromNib", nil], @"selectors", nil],
         [NSDictionary dictionaryWithObjectsAndKeys:
+            @"HeadersEditor", @"class",
+            @"HeadersEditor_GPGMail", @"gpgMailClass",
+            [NSArray arrayWithObjects:
+                @"securityControlChanged:", nil], @"selectors", nil],
+        [NSDictionary dictionaryWithObjectsAndKeys:
             @"OptionalView", @"class",
             @"OptionalView_GPGMail", @"gpgMailClass",
             [NSArray arrayWithObjects:

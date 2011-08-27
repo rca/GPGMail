@@ -26,6 +26,36 @@
 
 @implementation ComposeBackEnd_GPGMail
 
+- (void)MASetEncryptIfPossible:(BOOL)encryptIfPossible {
+    // This method is not only called, when the user clicks the encrypt button,
+    // but also when a new message is loaded.
+    // This causes the message to always be in a "has changed" state and sometimes
+    // keeps existing as a draft, even after sending the message.
+    // To prevent this GPGMail uses the entry point -[HeadersEditor securityControlChanged:]
+    // which is triggered whenever the user clicks the encrypt button.
+    // In that entry point a variable is set on the backend, shouldUpdateHasChanges.
+    // Only if that variable is found, the has changes property of the backEnd is actually
+    // updated.
+    if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
+        if([self ivarExists:@"shouldUpdateHasChanges"] && ![(ComposeBackEnd *)self hasChanges]) {
+            [(ComposeBackEnd *)self setHasChanges:YES];
+            [self removeIvar:@"shouldUpdateHasChanges"];
+        }
+        [self setIvar:@"shouldEncrypt" value:[NSNumber numberWithBool:encryptIfPossible]];
+    }
+    [self MASetEncryptIfPossible:encryptIfPossible];
+}
+
+- (void)MASetSignIfPossible:(BOOL)signIfPossible {
+    // See MASetEncryptIfPossible: why shouldUpdateHasChanges is checked. 
+    if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
+        if([self ivarExists:@"shouldUpdateHasChanges"] && ![(ComposeBackEnd *)self hasChanges]) {
+            [(ComposeBackEnd *)self setHasChanges:YES];
+            [self removeIvar:@"shouldUpdateHasChanges"];
+        }
+        [self setIvar:@"shouldSign" value:[NSNumber numberWithBool:signIfPossible]];
+    }
+    [self MASetSignIfPossible:signIfPossible];
 }
 
 - (id)MA_makeMessageWithContents:(WebComposeMessageContents *)contents isDraft:(BOOL)isDraft shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt shouldSkipSignature:(BOOL)shouldSkipSignature shouldBePlainText:(BOOL)shouldBePlainText {
@@ -42,26 +72,60 @@
         shouldPGPEncrypt = shouldEncrypt;
         shouldPGPSign = shouldSign;
     }
-    
+    // If this message is to be saved as draft, shouldEncrypt and shouldSign is always false.
+    // That's why GPGMail takes the values store by clicking on the signed and encrypt icons.
+    if(isDraft && [[GPGOptions sharedOptions] boolForKey:@"OptionallyEncryptDrafts"]) {
+        shouldPGPSign = [[self getIvar:@"shouldSign"] boolValue];
+        shouldPGPEncrypt = [[self getIvar:@"shouldEncrypt"] boolValue];
+    }
     // At the moment for drafts signing and encrypting is disabled.
     // GPG not enabled, or neither encrypt nor sign are checked, let's get the shit out of here.
     DebugLog(@"%s: Should encrypt: %@", __PRETTY_FUNCTION__, shouldPGPEncrypt ? @"YES" : @"NO");
     DebugLog(@"%s: Should sign: %@", __PRETTY_FUNCTION__, shouldPGPSign ? @"YES" : @"NO");
-    if((!shouldPGPEncrypt && !shouldPGPSign) || isDraft) {
+    if(!shouldPGPEncrypt && !shouldPGPSign) {
         OutgoingMessage *outMessage = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldSign shouldEncrypt:shouldEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
         return outMessage;
     }
     
+    // Save the original headers.
+    // If isDraft is set cleanHeaders are an NSDictionary they need to be a NSMutableDictionary
+    // though, since Mail.app otherwise complains.
+    // The isDraft flag is removed before calling the makeMessageWithContents method, otherwise
+    // the encrypting and signing methods wouldn't be invoked.
+    // Mail.app only wants NSMutableDictionary cleanHeaders if it's not a draft.
+    // Since the isDraft flag is removed, Mail.app assumes it creates a normal message
+    // to send out and therefore wants NSMutableDictionary clean headers.
+    id copiedCleanHeaders = nil; 
+    if(isDraft)
+        copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
+    else
+        copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] copy];
+        
+    [self setIvar:@"originalCleanHeaders" value:copiedCleanHeaders];
+    [copiedCleanHeaders release];
+    // If isDraft is set the cleanHeaders are an NSDictionary instead of an NSMutableDictionary.
+    // Using mutableCopy they are converted into an NSMutableDictionary.
+    if(isDraft) {
+        copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
+        [self setValue:copiedCleanHeaders forKey:@"_cleanHeaders"];
+        [copiedCleanHeaders release];
+    }
     // Inject the headers needed in newEncryptedPart and newSignedPart.
     [self _addGPGFlaggedHeaderValuesToHeaders:[(ComposeBackEnd *)self cleanHeaders] forEncrypting:shouldPGPEncrypt forSigning:shouldPGPSign];
     
-    OutgoingMessage *outgoingMessage = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldPGPSign shouldEncrypt:shouldPGPEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
+    // Drafts store the messages with a very minor set of headers and mime types
+    // not suitable for encrypted/signed messages. But fortunately, Mail.app doesn't
+    // have a problem if a normal message is stored as draft, so GPGMail just needs
+    // to disable the isDraft parameter, Mail.app will take care of the rest.
+    OutgoingMessage *outgoingMessage = [self MA_makeMessageWithContents:contents isDraft:NO shouldSign:shouldPGPSign shouldEncrypt:shouldPGPEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
+    
+    // And restore the original headers.
+    [(ComposeBackEnd *)self setValue:[self getIvar:@"originalCleanHeaders"] forKey:@"_cleanHeaders"];
     
     // Signing only results in an outgoing message which can be sent
     // out exactly as created by Mail.app. No need to further modify.
     // Only encrypted messages have to be adjusted.
     if(shouldPGPSign && !shouldPGPEncrypt) {
-        DebugLog(@"[DEBUG] %s outgoingMessage: %@", __PRETTY_FUNCTION__, [NSString stringWithData:[outgoingMessage valueForKey:@"_rawData"] encoding:NSUTF8StringEncoding]);
         return outgoingMessage;
     }
         
@@ -194,7 +258,6 @@
     [headers removeHeaderForKey:@"from "];	
 	
 	// Set the original bcc recipients.
-    DebugLog(@"[DEBUG] %s originalBCCRecipients: %@", __PRETTY_FUNCTION__, [self getIvar:@"originalBCCRecipients"]);
     NSArray *originalBCCRecipients = (NSArray *)[self getIvar:@"originalBCCRecipients"];
     if([originalBCCRecipients count])
         [headers setHeader:originalBCCRecipients forKey:@"bcc"];
@@ -202,7 +265,6 @@
         [headers removeHeaderForKey:@"bcc"];
     // Create the actualy body data.
     NSData *headerData = [headers encodedHeadersIncludingFromSpace:NO];
-    DebugLog(@"[DEBUG] %s header string: %@", __PRETTY_FUNCTION__, [[[NSString alloc] initWithData:headerData encoding:NSUTF8StringEncoding] autorelease]);
     NSMutableData *bodyData = [[NSMutableData alloc] init];
     // First add the header data.
     [bodyData appendData:headerData];
