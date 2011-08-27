@@ -56,7 +56,7 @@ NSString *GPGMailException = @"GPGMailException";
 NSString *GPGMailSwizzledMethodPrefix = @"MA";
 NSString *GPGMailAgent = @"GPGMail %@";
 
-int GPGMailLoggingLevel = 1;
+int GPGMailLoggingLevel = 0;
 
 static BOOL gpgMailWorks = YES;
 
@@ -77,7 +77,7 @@ static BOOL gpgMailWorks = YES;
 @synthesize cachedPublicGPGKeys, cachedPersonalGPGKeys, cachedGPGKeys, updater, accountExistsForSigning;
 
 + (void)load {
-	//GPGMailLoggingLevel = [[GPGOptions sharedOptions] integerForKey:@"GPGMailDebug"];
+	GPGMailLoggingLevel = [[GPGOptions sharedOptions] integerForKey:@"GPGMailDebug"];
 	[[NSExceptionHandler defaultExceptionHandler] setExceptionHandlingMask:NSLogOtherExceptionMask | NSLogTopLevelExceptionMask];
 }
 
