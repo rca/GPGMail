@@ -26,3 +26,16 @@ _getSomeCharsetFromPartTree -> exists only internally
 - Always use git -p <filename>. This let's you decide for each file
   what lines should be added to a commit.
 - Use this to create commits which only fix one problem at a time.
+
+* Other *
+
+- Mail.app comes with a lot of general class enhancements. It's best to look
+  them through to find helpful ones.
+  
+  @interface NSData (MessageAdditions)
+  - (id)initWithDataConvertingLineEndingsFromUnixToNetwork:(id)arg1;
+  - (id)initWithDataConvertingLineEndingsFromNetworkToUnix:(id)arg1;
+  - (id)dataByConvertingLineEndingsFromUnixToNetwork;
+  
+  // To detect if the data contains real message headers.
+  - (struct _NSRange)rangeOfRFC822HeaderData;
