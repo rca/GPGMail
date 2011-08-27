@@ -38,7 +38,7 @@ static NSString* gpgFlaggedHeaderValueIdentifier;
 
 @implementation GPGFlaggedHeaderValue
 
-@synthesize key = _key, flaggedValue = _flaggedValue;
+@synthesize key = _key, flaggedValue = _flaggedValue, value = _value;
 
 + (void)initialize {
     if(!gpgFlaggedHeaderValueIdentifier)
