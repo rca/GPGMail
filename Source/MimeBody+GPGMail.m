@@ -30,12 +30,20 @@
 #import <Foundation/Foundation.h>
 #import <Libmacgpg/Libmacgpg.h>
 #import "CCLog.h"
+#import "NSObject+LPDynamicIvars.h"
+#import "NSData+GPGMail.h"
+#import <Message.h>
+#import <MessageStore.h>
+#import "MimeBody.h"
 #import "MimeBody+GPGMail.h"
 #import "MimePart+GPGMail.h"
 
 @implementation MimeBody (GPGMail)
 
 - (BOOL)MAIsSignedByMe {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MAIsSignedByMe];
+    
     // This method tries to check the
     // signatures internally, if some are set.
     // This results in a crash, since Mail.app
@@ -49,6 +57,61 @@
     // Otherwise call the original method.
     BOOL ret = [self MAIsSignedByMe];
     return ret;
+}
+
+/**
+ It's not exactly clear when this method is used, but internally it
+ checks the message for mime parts signaling S/MIME encrypted or signed
+ messages.
+ 
+ It can't be bad to fix it for PGP messages, anyway.
+ Instead of the mime parts, which due to inline PGP are not reliable enough,
+ GPGMail checks for PGP armor, which is included in inline and PGP/MIME messages.
+ 
+ Apparently 
+ 
+ */
+- (BOOL)MA_isPossiblySignedOrEncrypted {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MA_isPossiblySignedOrEncrypted];
+    
+    return [self containsPGPData] || [self MA_isPossiblySignedOrEncrypted];
+}
+
+- (BOOL)containsPGPEncryptedData {
+    if(![[self message] ivarExists:@"containsPGPEncryptedData"]) {
+        // This might be expensive, but heck...
+        // The problem is, for messages with large attachments Mail.app doesn't return the complete
+        // body data for -[MimeBody bodyData].
+        // To get the complete data, the message store has to be asked directly.
+        NSRange encryptedDataRange = [[[[self message] messageStore] fullBodyDataForMessage:[self message]] rangeOfPGPInlineEncryptedData];
+        if(encryptedDataRange.location != NSNotFound)
+            [[self message] setIvar:@"containsPGPEncryptedData" value:[NSNumber numberWithBool:YES]];
+        else
+            [[self message] setIvar:@"containsPGPEncryptedData" value:[NSNumber numberWithBool:NO]];
+    }   
+    return [[[self message] getIvar:@"containsPGPEncryptedData"] boolValue];
+}
+
+- (BOOL)containsPGPSignedData {
+    if(![[self message] ivarExists:@"containsPGPSignedData"]) {
+        NSRange signedDataRange = [[self bodyData] rangeOfPGPSignatures];
+        if(signedDataRange.location != NSNotFound)
+            [[self message] setIvar:@"containsPGPSignedData" value:[NSNumber numberWithBool:YES]];
+        else
+            [[self message] setIvar:@"containsPGPSignedData" value:[NSNumber numberWithBool:NO]];
+    }
+    // In case of a inline decrypted message body, the decrypted data doesn't contain the signature
+    // but only the top level part of the decrypted message body.
+    return [[[self message] getIvar:@"containsPGPSignedData"] boolValue] || [[self topLevelPart] isPGPSigned];
+}
+
+- (BOOL)containsPGPData {
+    if([self containsPGPEncryptedData])
+        return YES;
+    if([self containsPGPSignedData])
+        return YES;
+    return NO;
 }
 
 @end

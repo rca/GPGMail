@@ -1,4 +1,4 @@
-/* NSObject+LPDynamicIvars.h created by Lukas Pitschl (@lukele) on Wed 03-Aug-2011 */
+/* NSData+GPGMail.h created by Lukas Pitschl (@lukele) on Wed 24-Aug-2011 */
 
 /*
  * Copyright (c) 2000-2011, GPGTools Project Team <gpgtools-devel@lists.gpgtools.org>
@@ -27,36 +27,38 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- The following methods extends every object to support additional 
- variables to be added/removed/checked at runtime.
- 
- Internally uses associated objects to add this functionality.
- 
- TODO: support class variables. (might work already, using objc_getClass(self))
- */
-@interface NSObject (LPDynamicIvars)
+#define PGP_MESSAGE_BEGIN @"-----BEGIN PGP MESSAGE-----"
+#define PGP_MESSAGE_END @"-----END PGP MESSAGE-----"
+#define PGP_SIGNED_MESSAGE_BEGIN @"-----BEGIN PGP SIGNED MESSAGE-----"
+#define PGP_MESSAGE_SIGNATURE_BEGIN @"-----BEGIN PGP SIGNATURE-----"
+#define PGP_MESSAGE_SIGNATURE_END @"-----END PGP SIGNATURE-----"
+
+@interface NSData (GPGMail)
 
 /**
- Add a variable with value <value> to the object.
+ Returns the string representation for data by trying
+ to decode it using different encoding.
  */
-- (void)setIvar:(id)key value:(id)value;
-/**
- Retrieve the value for a variable.
- */
-- (id)getIvar:(id)key;
-/**
- Remove an existing variable.
- */
-- (void)removeIvar:(id)key;
-/**
- Check if a variable is set on an object.
- */
-- (BOOL)ivarExists:(id)key;
+- (NSString *)stringByGuessingEncoding;
 
 /**
- Removes every added ivar.
+ Finds inline pgp signed data including the signatures. 
+ Starts with -----BEGIN PGP SIGNED MESSAGE-----
+ and ends with -----END PGP SIGNATURE-----.
+ 
+ Returns the range of the signature or NSNotFound.
  */
-- (void)removeIvars;
+- (NSRange)rangeOfPGPInlineSignatures;
+
+/**
+ Finds all PGP signatures, not only inline.
+ */
+- (NSRange)rangeOfPGPSignatures;
+
+/**
+ Finds inline pgp encrypted data in the current part. Unlike isPGPMimeEncrypted,
+ only the current part is checked for inline data and the range returned.
+ */
+- (NSRange)rangeOfPGPInlineEncryptedData;
 
 @end

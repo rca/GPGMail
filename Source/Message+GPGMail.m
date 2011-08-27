@@ -28,12 +28,17 @@
  */
 
 #import "NSObject+LPDynamicIvars.h"
+#import <MimePart.h>
+#import <MimeBody.h>
 #import "Message+GPGMail.h"
 
 @implementation Message (GPGMail)
 
-- (void)fakeMessageFlags {
-    _messageFlags = _messageFlags | 0x00000008 | 0x00800000;
+- (void)fakeMessageFlagsIsEncrypted:(BOOL)isEncrypted isSigned:(BOOL)isSigned {
+    if(isEncrypted)
+        _messageFlags |= 0x00000008;
+    if(isSigned)
+        _messageFlags |= 0x00800000;
 }
 
 @end

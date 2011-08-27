@@ -146,14 +146,13 @@ static BOOL gpgMailWorks = YES;
                 @"copyMessageSigners",
                 @"isSigned",
                 @"usesKnownSignatureProtocol",
-                @"decodeTextPlainWithContext:",
-                @"decodeMultipartAlternativeWithContext:",
-                @"decodeApplicationOctet_streamWithContext:",
+                @"clearCachedDecryptedMessageBody",
              nil], @"selectors", nil],
         [NSDictionary dictionaryWithObjectsAndKeys:
             @"MimeBody", @"class",
             [NSArray arrayWithObjects:
-                @"isSignedByMe", nil], @"selectors", nil],
+                @"isSignedByMe",
+                @"_isPossiblySignedOrEncrypted", nil], @"selectors", nil],
         [NSDictionary dictionaryWithObjectsAndKeys:
             @"MailAccount", @"class",
             [NSArray arrayWithObjects:

@@ -29,9 +29,9 @@
  */
 
 #import <MimePart.h>
-
 #import <Libmacgpg/Libmacgpg.h>
 
+@class MFMimeDecodeContext;
 
 @interface MimePart (GPGMail)
 
@@ -54,33 +54,27 @@
 - (id)MADecodeWithContext:(id)ctx;
 
 /**
+ Recursively walk through all mime parts and find inline or signed encrypted
+ parts.
+ If found, store them on the message using PGPEncryptedPart or PGPSignedPart
+ as key.
+ */
+- (void)findPGPInlineSignedAndEncryptedMimeParts;
+
+/**
  Is called by GPGDecodeWithContext if a multipart/encrypted mime part
  is found. Performs the decryption and returns the result.
  */
 - (id)decodeMultipartEncryptedWithContext:(id)ctx;
 
 /**
- Some Mail applications send PGP inline encrypted messages in text and
- html form.
- Based on what's set in preferences, Mail.app chooses to display the text/html
- part, in which case decodeTextPlain is not called, and such, the message
- is not decrypted.
- Using the multipart/alternative entry point, it's checked if a text/plain
- part is available. If so, call decodeTextPlain which decrypts the message
- and returns the decrypted message.
- */
-- (id)MADecodeMultipartAlternativeWithContext:(id)ctx;
-
-/**
  Fixes an issue with a very early alpha of GPGMail 2.0
  which sent out completely fucked up messages.
- Starting with a multipart/mixed mime type.
- After that the usual multipart/encrypted or multipart/signed mime type.
- If such a message is encountered parse the content in application/octet.
- If the message is multipart/mixed but not a fucked up one, the
- original Mail.app method is invoked.
+ The encrypted part of those messages doesn't contain any encrypted data
+ but the plain data of the message.
+ Returns the plain data.
  */
-- (id)decodeMultipartMixedWithContext:(id)ctx;
+- (id)decodeFuckedUpEarlyAlphaData:(NSData *)data context:(MFMimeDecodeContext *)ctx;
 
 /**
  Is called by GPGDecodeWithContext if a plain/text mime part is
@@ -90,7 +84,7 @@
  
  Strips away the signature if found.
  */
-- (id)MADecodeTextPlainWithContext:(id)ctx;
+- (id)decodeInlinePGPDataWithContext:(id)ctx;
 
 /**
  Removes the PGP signature part from the parsed message.
@@ -107,7 +101,19 @@
  is created, otherwise messageWithRFC822Data ends up creating an empty
  message body.
  */
-- (id)decryptedMessageBodyForEncryptedData:(NSData *)encryptedData;
+- (id)decryptedMessageBodyForEncryptedData:(NSData *)encryptedData inlineEncrypted:(BOOL)inlineEncrypted;
+
+/**
+ Is called when the decrypted body is supposed to be cleared.
+ Mostly happens when a message is deselected.
+ In that case all data added to the message has to be removed.
+ */
+- (void)MAClearCachedDecryptedMessageBody;
+
+/**
+ Create a new message text/plain message for decrypted pgp inline data.
+ */
+- (Message *)messageWithMessageData:(NSData *)messageData;
 
 /**
  Fail to decrypt a message and set the error which is displayed to the user.
@@ -218,6 +224,11 @@
 - (BOOL)isPGPInlineEncrypted;
 
 /**
+ Checks if the message is PGP/Mime signed using the conditions described by RFC 3156.
+ */
+- (BOOL)isPGPMimeSigned;
+
+/**
  This method checks if two special PGP related mime parts exist for the message. 
  1.) Part of type application/pgp-encrypted which contains the version (basically
  always version: 1)
@@ -240,27 +251,6 @@
  the security UI for a message should be displayed or not.
  */
 - (BOOL)MAIsEncrypted;
-
-/**
- Finds inline pgp signatures which start with -----BEGIN PGP SIGNATURE-----
- and ends with -----END PGP SIGNATURE-----.
- 
- Returns the range of the signature or NSNotFound.
- */
-- (NSRange)rangeOfPlainPGPSignatures;
-
-/**
- Finds inline pgp encrypted data in the current part. Unlike isPGPMimeEncrypted,
- only the current part is checked for inline data and the range returned.
- */
-- (NSRange)rangeOfPGPInlineEnryptedData;
-
-/**
- Guesses the encoding of the mime body by checking the mime part
- for charset information.
- TODO: probably improve.
- */
-- (NSUInteger)guessedEncoding;
 
 @end
 

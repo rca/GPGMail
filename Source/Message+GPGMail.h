@@ -52,6 +52,7 @@
        which caused getIvar to deadlock. DON'T USE setIvar FOR METHODS
        which are called very often.
  */
-- (void)fakeMessageFlags;
+
+- (void)fakeMessageFlagsIsEncrypted:(BOOL)isEncrypted isSigned:(BOOL)isSigned;
 
 @end

@@ -27,4 +27,8 @@
     return [self getIvar:key] == nil ? NO : YES;
 }
 
+- (void)removeIvars {
+    objc_removeAssociatedObjects(self);
+}
+
 @end

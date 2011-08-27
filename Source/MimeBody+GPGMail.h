@@ -43,4 +43,31 @@
  */
 - (BOOL)MAIsSignedByMe;
 
+/**
+ It's not exactly clear when this method is used, but internally it
+ checks the message for mime parts signaling S/MIME encrypted or signed
+ messages.
+ 
+ It can't be bad to fix it for PGP messages, anyway.
+ Instead of the mime parts, which due to inline PGP are not reliable enough,
+ GPGMail checks for PGP armor, which is included in inline and PGP/MIME messages.
+ */
+- (BOOL)MA_isPossiblySignedOrEncrypted;
+
+/**
+ Returns true if the PGP encrypted data armor is found in the message body.
+ */
+- (BOOL)containsPGPEncryptedData;
+
+/**
+ Returns true if the PGP signed data armor is found in the message body.
+ */
+- (BOOL)containsPGPSignedData;
+
+/**
+ Returns true if either the PGP signed data armor or the PGP encrypted
+ data armor is found in the message body.
+ */
+- (BOOL)containsPGPData;
+
 @end
