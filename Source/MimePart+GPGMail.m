@@ -136,6 +136,14 @@
         return [self MADecodeWithContext:ctx];
     }
     
+    // Early alpha Fucked up messages also are multipart/mixed.
+    if([self isPGPMimeEncrypted]) {
+        id ret = [self decodeMultipartEncryptedWithContext:ctx];
+        if(!ret)
+            return [self MADecodeWithContext:ctx];
+        return ret;
+    }
+    
     // 1.) Check if this is the top level mime part.
     //     If so, check the whole body if PGP data is included.
     MimePart *topLevelPart = [[self mimeBody] topLevelPart];
