@@ -246,4 +246,7 @@
 "MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "It was possible to read the PGP signature for this message, but the PGP key is not in your keychain. Please use GPG Keychain to add it to your keychain.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "No additional information available for this PGP key.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "It's not possible to display additional information about this PGP key, because it's not in your keychain.";
+    
+"GPG_CONFIG_ERROR_NO_PINENTRY_TITLE" = "Pinentry-mac is not installed.";
+"GPG_CONFIG_ERROR_NO_PINENTRY_MESSAGE" = "Pinentry-mac, an important component used by GPGMail couldn't be found. Please make sure to install the latest GPGTools (http://www.gpgtools.org/installer/index.html)";
 }

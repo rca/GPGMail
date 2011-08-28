@@ -246,4 +246,7 @@
 "MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Die PGP-Signatur wurde erfolgreich gelesen, jedoch befindet sich der PGP-Schlüssel nicht in Ihrem Schlüsselbund. Bitte verwenden Sie GPG Schlüsselbund, um den Schlüssel hinzuzufügen.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Keine Informationen für diesen PGP-Schlüssel vorhanden.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Es ist leider nicht möglich, erweiterte Informationen zu diesem PGP-Schlüssel anzuzeigen, er sich nicht in ihrem GPG Schlüsselbund befindet.";
+
+"GPG_CONFIG_ERROR_NO_PINENTRY_TITLE" = "Pinentry-mac ist nicht installiert.";
+"GPG_CONFIG_ERROR_NO_PINENTRY_MESSAGE" = "Die Komponente Pinentry-mac konnte nicht gefunden werden. Bitte installieren Sie die aktuellsten GPGTools (http://www.gpgtools.org/installer/index.html)";
 }

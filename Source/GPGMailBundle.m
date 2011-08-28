@@ -493,11 +493,19 @@ static BOOL gpgMailWorks = YES;
         case GPGErrorConfigurationError:
             NSRunCriticalAlertPanel(NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_TITLE", @"GPGMail", myBundle, ""), NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_MESSAGE", @"GPGMail", myBundle, ""), nil, nil, nil);
             break;
-        case GPGErrorNoError:
+        case GPGErrorNoError: {
+            NSString *pinentryPath = [GPGTask pinentryPath];
+            BOOL pinentryAvailable = [pinentryPath length] > 0;
+            if(!pinentryAvailable) {
+                NSRunCriticalAlertPanel(NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_NO_PINENTRY_TITLE", @"GPGMail", myBundle, ""), NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_NO_PINENTRY_MESSAGE", @"GPGMail", myBundle, ""), nil, nil, nil);
+            }
+            
             return YES;
+        }
         default:
             break;
     }
+    
     return NO;
 }
 
