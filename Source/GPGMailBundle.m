@@ -226,7 +226,9 @@ static BOOL gpgMailWorks = YES;
         return;
 
     class_setSuperclass([self class], mvMailBundleClass);
-	// Last step necessary to completely setup our bundle is
+	// Automatically performs the check, since the check is performed in init.
+    GPGMailBundle *instance = [GPGMailBundle sharedInstance];
+    // Last step necessary to completely setup our bundle is
     // swizzling the Mail classes.
     [self _installGPGMail];
     // Load all necessary images.
@@ -496,7 +498,7 @@ static BOOL gpgMailWorks = YES;
         case GPGErrorNoError: {
             NSString *pinentryPath = [GPGTask pinentryPath];
             BOOL pinentryAvailable = [pinentryPath length] > 0;
-            self.componentsMissing = YES;
+            self.componentsMissing = !pinentryAvailable;
             if(!pinentryAvailable) {
                 NSRunCriticalAlertPanel(NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_NO_PINENTRY_TITLE", @"GPGMail", myBundle, ""), NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_NO_PINENTRY_MESSAGE", @"GPGMail", myBundle, ""), nil, nil, nil);
             }
@@ -506,7 +508,7 @@ static BOOL gpgMailWorks = YES;
         default:
             break;
     }
-    self.componentsMissing = NO;
+    self.componentsMissing = YES;
     return NO;
 }
 
