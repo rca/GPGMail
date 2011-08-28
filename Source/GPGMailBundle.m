@@ -496,6 +496,7 @@ static BOOL gpgMailWorks = YES;
         case GPGErrorNoError: {
             NSString *pinentryPath = [GPGTask pinentryPath];
             BOOL pinentryAvailable = [pinentryPath length] > 0;
+            self.componentsMissing = YES;
             if(!pinentryAvailable) {
                 NSRunCriticalAlertPanel(NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_NO_PINENTRY_TITLE", @"GPGMail", myBundle, ""), NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_NO_PINENTRY_MESSAGE", @"GPGMail", myBundle, ""), nil, nil, nil);
             }
@@ -505,7 +506,7 @@ static BOOL gpgMailWorks = YES;
         default:
             break;
     }
-    
+    self.componentsMissing = NO;
     return NO;
 }
 

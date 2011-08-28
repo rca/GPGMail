@@ -122,7 +122,9 @@ typedef void (^gpgmail_verification_task_t)(void);
     NSDictionary *_cachedPersonalGPGKeysByEmail;
     // Map which uses the email address to lookup a public key.
     NSDictionary *_cachedPublicGPGKeysByEmail;
-
+    
+    BOOL _componentsMissing;
+    
 	SUUpdater *updater;
 }
 
@@ -204,6 +206,7 @@ typedef void (^gpgmail_verification_task_t)(void);
 @property (nonatomic, readonly, retain) SUUpdater *updater;
 
 @property (nonatomic, assign) BOOL accountExistsForSigning;
+@property (nonatomic, assign) BOOL componentsMissing;
 
 - (NSString *)version;
 - (NSString *)versionDescription;

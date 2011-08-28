@@ -120,7 +120,8 @@
              [(Message *)[(MimeBody *)[self mimeBody] message] subject]);
     // Check if PGP is enabled in Mail.app settings for decoding messages,
     // otherwise leave.
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"] ||
+       [[GPGMailBundle sharedInstance] componentsMissing])
         return [self MADecodeWithContext:ctx];
     
     if([[[(MimeBody *)[self mimeBody] message] getIvar:@"skipPGPProcessing"] boolValue]) {

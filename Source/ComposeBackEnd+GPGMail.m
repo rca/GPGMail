@@ -59,7 +59,8 @@
 }
 
 - (id)MA_makeMessageWithContents:(WebComposeMessageContents *)contents isDraft:(BOOL)isDraft shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt shouldSkipSignature:(BOOL)shouldSkipSignature shouldBePlainText:(BOOL)shouldBePlainText {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"])
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"] ||
+       [[GPGMailBundle sharedInstance] componentsMissing])
         return [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldSign shouldEncrypt:shouldEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
     
     // The encryption part is a little tricky that's why
