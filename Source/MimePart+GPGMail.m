@@ -871,7 +871,9 @@
         }
     }];
 	
-    if(![signatures count] && verificationException) {
+    if(![signatures count] || verificationException) {
+        if([signatures count])
+            [[[self mimeBody] topLevelPart] setValue:signatures forKey:@"_messageSigners"];
         [self failedToVerifyWithException:verificationException];
         return;
     }
@@ -930,7 +932,9 @@
         }
     }];
     
-    if(![signatures count] && verificationException) {
+    if(![signatures count] || verificationException) {
+        if([signatures count])
+            [[[self mimeBody] topLevelPart] setValue:signatures forKey:@"_messageSigners"];
         [self failedToVerifyWithException:verificationException];
         return;
     }
