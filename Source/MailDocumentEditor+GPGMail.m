@@ -112,4 +112,9 @@
     [self drawEncryptionMethodTitle];
 }
 
+- (void)MADealloc {
+    [[GPGOptions sharedOptions] removeObserver:self forKeyPath:@"UseOpenPGPToSend"];
+    [self MADealloc];
+}
+
 @end

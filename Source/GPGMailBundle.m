@@ -136,7 +136,8 @@ static BOOL gpgMailWorks = YES;
             @"MailDocumentEditor", @"class",
             @"MailDocumentEditor_GPGMail", @"gpgMailClass",
             [NSArray arrayWithObjects:
-                @"backEndDidLoadInitialContent:", nil], @"selectors", nil],
+                @"backEndDidLoadInitialContent:",
+                @"dealloc", nil], @"selectors", nil],
         [NSDictionary dictionaryWithObjectsAndKeys:
             @"MessageContentController", @"class",
             @"MessageContentController_GPGMail", @"gpgMailClass", nil],
