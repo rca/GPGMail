@@ -30,11 +30,24 @@
 #import <Libmacgpg/Libmacgpg.h>
 #import "NSObject+LPDynamicIvars.h"
 #import <MailAccount.h>
+#import <HeadersEditor.h>
 #import <MailDocumentEditor.h>
+#import <MailNotificationCenter.h>
 #import "GPGTitlebarAccessoryView.h"
 #import "MailDocumentEditor+GPGMail.h"
 
 @implementation MailDocumentEditor_GPGMail
+
+- (void)securityButtonsDidUpdate:(id)notification {
+    id object = [[(NSNotification *)notification userInfo] valueForKey:@"backEnd"];
+    if(![[object getIvar:@"shouldSign"] boolValue] && ![[object getIvar:@"shouldEncrypt"] boolValue])
+        [self removeEncryptionHint];
+    else {
+        if(![self ivarExists:@"AccessoryView"])
+            [self drawEncryptionMethodHint];
+    }
+        
+}
 
 - (void)MABackEndDidLoadInitialContent:(id)content {
     // If no account exists for signing, don't draw anything.
@@ -42,10 +55,17 @@
         return [self MABackEndDidLoadInitialContent:content];
     
     [[GPGOptions sharedOptions] addObserver:self forKeyPath:@"UseOpenPGPToSend" options:NSKeyValueObservingOptionNew context:nil];
+    [[NSClassFromString(@"MailNotificationCenter") defaultCenter] addObserver:self selector:@selector(securityButtonsDidUpdate:) name:@"SecurityButtonsDidChange" object:nil];
     
     [self drawEncryptionMethodHint];
     
     [self MABackEndDidLoadInitialContent:content];
+}
+
+- (void)removeEncryptionHint {
+    GPGTitlebarAccessoryView *accessoryView = (GPGTitlebarAccessoryView *)[self getIvar:@"AccessoryView"];
+    [accessoryView removeFromSuperview];
+    [self removeIvar:@"AccessoryView"];
 }
 
 - (void)drawEncryptionMethodTitle {
@@ -58,7 +78,7 @@
         if(monochrome)
             textFrame = NSMakeRect(15.0, -2.0, 80.0f, 17.0f);
         else
-            textFrame = NSMakeRect(11.0, -2.0, 80.0f, 17.0f);
+            textFrame = NSMakeRect(14.0, -2.0, 80.0f, 17.0f);
     }
     else {
         encryptionMethod = @"S/MIME";
@@ -109,11 +129,14 @@
     if(![keyPath isEqualToString:@"UseOpenPGPToSend"])
         return;
     
+    // Also, update the security controls.
+    [[(MailDocumentEditor *)self headersEditor] updateSecurityControls];
     [self drawEncryptionMethodTitle];
 }
 
 - (void)MADealloc {
     [[GPGOptions sharedOptions] removeObserver:self forKeyPath:@"UseOpenPGPToSend"];
+    [[(MailNotificationCenter *)NSClassFromString(@"MailNotificationCenter") defaultCenter] removeObserver:self name:@"SecurityButtonsDidChange" object:nil];
     [self MADealloc];
 }
 

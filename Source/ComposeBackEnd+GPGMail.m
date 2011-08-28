@@ -16,6 +16,7 @@
 #import <NSString-EmailAddressString.h>
 #import <NSString-NSStringUtils.h>
 #import <MutableMessageHeaders.h>
+#import <MailNotificationCenter.h>
 #import <ComposeBackEnd.h>
 #import "CCLog.h"
 #import "NSObject+LPDynamicIvars.h"
@@ -25,6 +26,11 @@
 #import "ComposeBackEnd+GPGMail.h"
 
 @implementation ComposeBackEnd_GPGMail
+
+- (void)postSecurityUpdateNotification {
+    NSNotification *notification = [NSNotification notificationWithName:@"SecurityButtonsDidChange" object:nil userInfo:[NSDictionary dictionaryWithObject:self forKey:@"backEnd"]];
+    [[NSClassFromString(@"MailNotificationCenter") defaultCenter] postNotification:notification];
+}
 
 - (void)MASetEncryptIfPossible:(BOOL)encryptIfPossible {
     // This method is not only called, when the user clicks the encrypt button,
@@ -42,6 +48,7 @@
             [self removeIvar:@"shouldUpdateHasChanges"];
         }
         [self setIvar:@"shouldEncrypt" value:[NSNumber numberWithBool:encryptIfPossible]];
+        [self postSecurityUpdateNotification];
     }
     [self MASetEncryptIfPossible:encryptIfPossible];
 }
@@ -54,6 +61,7 @@
             [self removeIvar:@"shouldUpdateHasChanges"];
         }
         [self setIvar:@"shouldSign" value:[NSNumber numberWithBool:signIfPossible]];
+        [self postSecurityUpdateNotification];
     }
     [self MASetSignIfPossible:signIfPossible];
 }
