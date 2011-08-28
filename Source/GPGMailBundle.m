@@ -74,7 +74,7 @@ static BOOL gpgMailWorks = YES;
 
 @implementation GPGMailBundle
 
-@synthesize cachedPublicGPGKeys, cachedPersonalGPGKeys, cachedGPGKeys, updater, accountExistsForSigning;
+@synthesize cachedPublicGPGKeys, cachedPersonalGPGKeys, cachedGPGKeys, updater, accountExistsForSigning, componentsMissing = _componentsMissing;
 
 + (void)load {
 	GPGMailLoggingLevel = [[GPGOptions sharedOptions] integerForKey:@"GPGMailDebug"];
