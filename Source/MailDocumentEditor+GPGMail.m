@@ -38,6 +38,14 @@
 
 @implementation MailDocumentEditor_GPGMail
 
+
+- (id)MAWindowForMailFullScreen {
+    if([self ivarExists:@"AccessoryView"]) {
+        [self removeEncryptionHint];
+    }
+    return [self MAWindowForMailFullScreen];
+}
+
 - (void)securityButtonsDidUpdate:(id)notification {
     id object = [[(NSNotification *)notification userInfo] valueForKey:@"backEnd"];
     if(![[object getIvar:@"shouldSign"] boolValue] && ![[object getIvar:@"shouldEncrypt"] boolValue])
