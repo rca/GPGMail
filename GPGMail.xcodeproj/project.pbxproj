@@ -3018,7 +3018,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$CONFIGURATION\" = \"Release\" ]] ;then\n    BUILD_NUMBER=$(sed -En '/^#define INCREMENTAL_BUILD_NUMBER ([0-9]+).*$/{s//\\1/;p;q;}' \"$PROJECT_DIR/version.h\")\n    ((BUILD_NUMBER++))\n    sed -i '' -E '/^(#define INCREMENTAL_BUILD_NUMBER )([0-9]+)(.*)$/s//\\1'\"$BUILD_NUMBER\"'\\3/' \"$PROJECT_DIR/version.h\"\n    rm -f \"$TEMP_DIR/Preprocessed-Info.plist\" \nfi";
+			shellScript = "if [[ \"$CONFIGURATION\" = \"Release\" ]] ;then\n    BUILD_NUMBER=$(sed -En '/^#define INCREMENTAL_BUILD_NUMBER ([0-9]+).*$/{s//\\1/;p;q;}' \"$PROJECT_DIR/version.h\")\n    ((BUILD_NUMBER++))\n    sed -i '' -E '/^(#define INCREMENTAL_BUILD_NUMBER )([0-9]+)(.*)$/s//\\1'\"$BUILD_NUMBER\"'\\3/' \"$PROJECT_DIR/version.h\"\nfi\nrm -f \"$TEMP_DIR/Preprocessed-Info.plist\" \ntouch \"$INFOPLIST_FILE\"";
 		};
 		30DA468812B2D5E800E20039 /* Localize XIBs */ = {
 			isa = PBXShellScriptBuildPhase;
