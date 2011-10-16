@@ -9,7 +9,7 @@ GPGSignatureView *_sharedInstance;
 
 - (NSString *)unlocalizedValidityKey {
 	NSString *text = nil;
-	
+
 	switch (signature.status) {
 		case GPGErrorNoError:
 			if (signature.trust > 1) {
@@ -47,23 +47,23 @@ GPGSignatureView *_sharedInstance;
 
 - (NSImage *)validityImage {
 	if (!signature) return nil;
-	
+
 	static NSArray *images = nil;
 	if (!images) {
 		images = [[NSArray alloc] initWithObjects:
 				  [[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/ValidBadge.tif"],
 				  [[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/InvalidBadge.tif"],
-				  nil];	
+				  nil];
 	}
 	if (signature.status != 0 || signature.trust <= 1) {
 		return [images objectAtIndex:1];
 	} else {
 		return [images objectAtIndex:0];
-	}		
+	}
 }
 
 - (NSString *)emailAndID {
-    
+
     NSString *value = [NSString stringWithFormat:@"%@", gpgKey.email];
     NSString *keyID = [self keyID];
     if(keyID) {
@@ -74,7 +74,7 @@ GPGSignatureView *_sharedInstance;
 
 - (NSString *)validityDescription {
 	if (!signature) return nil;
-	
+
 	NSString *text = [self unlocalizedValidityKey];
 	if (text) {
 		return localized(text);
@@ -85,7 +85,7 @@ GPGSignatureView *_sharedInstance;
 
 - (NSString *)validityToolTip {
 	if (!signature) return nil;
-	
+
 	NSString *text = [self unlocalizedValidityKey];
 	text = [text stringByAppendingString:@"_TOOLTIP"];
 	if (text) {
@@ -100,24 +100,25 @@ GPGSignatureView *_sharedInstance;
 	if (!keyID) {
 		keyID = signature.fingerprint;
 	}
-	return getShortKeyID(keyID);
+	/* return getShortKeyID(keyID); */
+	return [keyID shortKeyID];
 }
 
 - (NSImage *)signatureImage {
 	static NSArray *images = nil;
 	if (!images) {
-		images = [[NSArray alloc] initWithObjects: 
+		images = [[NSArray alloc] initWithObjects:
 				  [[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertLargeStd.tif"],
 				  [[NSImage alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForImageResource:@"GPGCertLargeNotTrusted"]],
-				  nil];		
+				  nil];
 	}
-	
+
 	if ([signature isKindOfClass:[GPGSignature class]]) {
 		if (signature.status != 0 || signature.trust <= 1) {
 			return [images objectAtIndex:1];
 		} else {
 			return [images objectAtIndex:0];
-		}		
+		}
 	}
 	return nil;
 }
@@ -136,7 +137,7 @@ GPGSignatureView *_sharedInstance;
 	if (value != signature) {
 		[signature release];
 		signature = [value retain];
-		
+
 		GPGKey *key = nil;
 		if (signature) {
 			NSString *fingerprint = signature.primaryFingerprint;
@@ -154,7 +155,7 @@ GPGSignatureView *_sharedInstance;
 						goto found;
 					}
 				}
-			}					
+			}
 		}
 	found:
 		[self setGpgKey:key];
@@ -228,7 +229,7 @@ GPGSignatureView *_sharedInstance;
 		} else {
 			self.signature = nil;
 		}
-		
+
 	}
 }
 
@@ -247,17 +248,17 @@ GPGSignatureView *_sharedInstance;
 	NSSize size1 = [view1 frame].size;
 	NSRect frame2 = [view2 frame];
 	CGFloat dividerThickness = [splitView dividerThickness];
-	
+
 	size1.width = splitViewSize.width;
 	frame2.size.width = splitViewSize.width;
-	
+
 	frame2.size.height = splitViewSize.height - dividerThickness - size1.height;
 	if (frame2.size.height < 60) {
 		frame2.size.height = 60;
 		size1.height = splitViewSize.height - 60 - dividerThickness;
 	}
 	frame2.origin.y = splitViewSize.height - frame2.size.height;
-	
+
 	[view1 setFrameSize:size1];
 	[view2 setFrame:frame2];
 }
@@ -275,7 +276,7 @@ GPGSignatureView *_sharedInstance;
 	NSSize windowSize = windowFrame.size;
 	NSSize scrollContentSize = [scrollContentView frame].size;
 	NSSize detailSize = [detailView frame].size;
-	
+
 	if ([detailView superview]) {
 		if (minHeight > 0 && minHeight < windowSize.height) {
 			maxHeight = windowSize.height;
@@ -299,16 +300,16 @@ GPGSignatureView *_sharedInstance;
 		scrollContentSize.height += detailSize.height;
 		[detailView setFrameSize:NSMakeSize(scrollContentSize.width, [detailView frame].size.height)];
 		//infoSize.width = [detailView frame].size.width;
-		
+
 		[scrollContentView addSubview:detailView];
 	}
 	[scrollContentView setFrameSize:scrollContentSize];
-	
-	
+
+
 	windowFrame.origin.x = windowFrame.origin.x + (windowSize.width - windowFrame.size.width) / 2;
 	windowFrame.origin.y = windowFrame.origin.y + windowFrame.size.height - windowSize.height;
 	windowFrame.size = windowSize;
-		
+
 	[window setFrame:windowFrame display:YES animate:YES];
 }
 
@@ -333,10 +334,10 @@ GPGSignatureView *_sharedInstance;
 @implementation GPGSignatureCertImageTransformer
 NSArray *images;
 + (void)initialize {
-	images = [[NSArray alloc] initWithObjects: 
+	images = [[NSArray alloc] initWithObjects:
 			  [[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertSmallStd.tif"],
 			  [[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertSmallStd_Invalid.tif"],
-			  nil];	
+			  nil];
 }
 + (Class)transformedValueClass { return [NSImage class]; }
 + (BOOL)allowsReverseTransformation { return NO; }
@@ -347,7 +348,7 @@ NSArray *images;
 			image = [images objectAtIndex:1];
 		} else {
 			image = [images objectAtIndex:0];
-		}		
+		}
 	}
 	return image;
 }
@@ -357,7 +358,7 @@ NSArray *images;
 
 @implementation FlippedView
 - (BOOL)isFlipped {
-	return YES;	
+	return YES;
 }
 @end
 
