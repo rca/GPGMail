@@ -37,7 +37,8 @@
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Debug"
-      enablesOpenGLESFrameCapture = "YES">
+      debugDocumentVersioning = "YES"
+      allowLocationSimulation = "YES">
       <PathRunnable
          FilePath = "/Applications/Mail.app">
       </PathRunnable>
@@ -50,7 +51,8 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release">
+      buildConfiguration = "Release"
+      debugDocumentVersioning = "YES">
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
