@@ -20,6 +20,9 @@ dmg: clean update compile
 	@./Utilities/create_sparkle.sh
 	@./Dependencies/GPGTools_Core/scripts/create_dmg.sh
 
+test: compile
+	@./Dependencies/GPGTools_Core/scripts/create_dmg.sh auto
+
 clean-libmacgpg:
 	xcodebuild -project Dependencies/Libmacgpg/Libmacgpg.xcodeproj -target Libmacgpg -configuration Release clean > /dev/null
 	xcodebuild -project Dependencies/Libmacgpg/Libmacgpg.xcodeproj -target Libmacgpg -configuration Debug clean > /dev/null
