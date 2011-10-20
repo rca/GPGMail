@@ -488,7 +488,7 @@ static BOOL gpgMailWorks = YES;
 
 // TODO: Fix me for libmacgpg
 - (BOOL)checkGPG {
-    GPGErrorCode errorCode = (GPGErrorCode)[[GPGController gpgController] testGPG];
+    GPGErrorCode errorCode = [GPGController testGPG];
     NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
     switch (errorCode) {
         case GPGErrorNotFound:

@@ -38,7 +38,8 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Debug"
       debugDocumentVersioning = "YES"
-      allowLocationSimulation = "YES">
+      allowLocationSimulation = "YES"
+      enablesOpenGLESFrameCapture = "YES">
       <PathRunnable
          FilePath = "/Applications/Mail.app">
       </PathRunnable>
