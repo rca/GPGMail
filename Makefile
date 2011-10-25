@@ -22,10 +22,6 @@ install:
 	@killall Mail||/usr/bin/true
 	@INSTALL_GPGMAIL=1 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release build
 
-dmg: clean update compile
-	@./Utilities/create_sparkle.sh
-	@./Dependencies/GPGTools_Core/scripts/create_dmg.sh
-
 test: compile
 	@./Dependencies/GPGTools_Core/scripts/create_dmg.sh auto
 
@@ -42,10 +38,4 @@ clean: clean-libmacgpg clean-gpgmail
 test-compile:
 	@./Utilities/testCompile.sh
 
-style:
-	@if [ "`which uncrustify`" == "" ]; then echo 'usage: PATH=$$PATH:path_to_uncrustify make style'; echo "see: https://github.com/bengardner/uncrustify"; exit 1; fi
-	uncrustify -c Utilities/uncrustify.cfg --no-backup Source/*.h
-	uncrustify -c Utilities/uncrustify.cfg --no-backup Source/*.m
-	uncrustify -c Utilities/uncrustify.cfg --no-backup Source/PrivateHeaders/*
-	uncrustify -c Utilities/uncrustify.cfg --no-backup Source/GPG.subproj/*
 
