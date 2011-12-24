@@ -117,7 +117,7 @@
 										<key>LANGUAGE</key>
 										<string>English</string>
 										<key>VALUE</key>
-										<string>Version: 2.0 ALPHA4
+										<string>Version: 2.0 ALPHA19
 Web: http://gpgtools.org/gpgmail.html
 Requirements: OS X 10.7 (Lion)
 Installs to: ~/Library/Mail/Bundles
@@ -373,7 +373,19 @@ Description: OpenPGP for Apple Mail.</string>
 			<key>SUMMARY</key>
 			<dict>
 				<key>LOCALIZATIONS</key>
-				<array/>
+				<array>
+					<dict>
+						<key>LANGUAGE</key>
+						<string>English</string>
+						<key>VALUE</key>
+						<dict>
+							<key>PATH</key>
+							<string>../Dependencies/GPGTools_Core/installer/package-end.rtfd</string>
+							<key>PATH_TYPE</key>
+							<integer>1</integer>
+						</dict>
+					</dict>
+				</array>
 			</dict>
 			<key>TITLE</key>
 			<dict>
