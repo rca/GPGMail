@@ -35,6 +35,7 @@
 #import <Message.h>
 #import <MessageStore.h>
 #import "MimeBody.h"
+#import "Message+GPGMail.h"
 #import "MimeBody+GPGMail.h"
 #import "MimePart+GPGMail.h"
 
@@ -48,12 +49,10 @@
     // signatures internally, if some are set.
     // This results in a crash, since Mail.app
     // can't handle GPGSignature signatures.
-    NSArray *messageSigners = [[self topLevelPart] copyMessageSigners];
+    NSArray *messageSigners = [[self message] PGPSignatures];
     if([messageSigners count] && [[messageSigners objectAtIndex:0] isKindOfClass:[GPGSignature class]]) {
-        [messageSigners release];
         return YES;
     }
-    [messageSigners release];
     // Otherwise call the original method.
     BOOL ret = [self MAIsSignedByMe];
     return ret;
@@ -103,7 +102,7 @@
     }
     // In case of a inline decrypted message body, the decrypted data doesn't contain the signature
     // but only the top level part of the decrypted message body.
-    return [[[self message] getIvar:@"containsPGPSignedData"] boolValue] || [[self topLevelPart] isPGPSigned];
+    return [[[self message] getIvar:@"containsPGPSignedData"] boolValue] || [[self topLevelPart] PGPSigned];
 }
 
 - (BOOL)containsPGPData {

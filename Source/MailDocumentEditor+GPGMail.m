@@ -63,7 +63,7 @@
         return [self MABackEndDidLoadInitialContent:content];
     
     [[GPGOptions sharedOptions] addObserver:self forKeyPath:@"UseOpenPGPToSend" options:NSKeyValueObservingOptionNew context:nil];
-    [[NSClassFromString(@"MailNotificationCenter") defaultCenter] addObserver:self selector:@selector(securityButtonsDidUpdate:) name:@"SecurityButtonsDidChange" object:nil];
+    [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] addObserver:self selector:@selector(securityButtonsDidUpdate:) name:@"SecurityButtonsDidChange" object:nil];
     
     [self drawEncryptionMethodHint];
     
@@ -143,8 +143,14 @@
 }
 
 - (void)MADealloc {
-    [[GPGOptions sharedOptions] removeObserver:self forKeyPath:@"UseOpenPGPToSend"];
-    [[(MailNotificationCenter *)NSClassFromString(@"MailNotificationCenter") defaultCenter] removeObserver:self name:@"SecurityButtonsDidChange" object:nil];
+    // Sometimes this fails, so simply ignore it.
+    @try {
+        [[GPGOptions sharedOptions] removeObserver:self forKeyPath:@"UseOpenPGPToSend"];
+        [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] removeObserver:self name:@"SecurityButtonsDidChange" object:nil];
+    }
+    @catch(NSException *e) {
+        
+    }
     [self MADealloc];
 }
 

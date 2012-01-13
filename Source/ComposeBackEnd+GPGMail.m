@@ -21,15 +21,19 @@
 #import "CCLog.h"
 #import "NSObject+LPDynamicIvars.h"
 #import "NSString+GPGMail.h"
+#import "NSData+GPGMail.h"
+#import "MimePart+GPGMail.h"
 #import "GPGFlaggedHeaderValue.h"
 #import "GPGMailBundle.h"
 #import "ComposeBackEnd+GPGMail.h"
+
+#import "ActivityMonitor.h"
 
 @implementation ComposeBackEnd_GPGMail
 
 - (void)postSecurityUpdateNotification {
     NSNotification *notification = [NSNotification notificationWithName:@"SecurityButtonsDidChange" object:nil userInfo:[NSDictionary dictionaryWithObject:self forKey:@"backEnd"]];
-    [[NSClassFromString(@"MailNotificationCenter") defaultCenter] postNotification:notification];
+    [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] postNotification:notification];
 }
 
 - (void)MASetEncryptIfPossible:(BOOL)encryptIfPossible {
@@ -68,8 +72,11 @@
 
 - (id)MA_makeMessageWithContents:(WebComposeMessageContents *)contents isDraft:(BOOL)isDraft shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt shouldSkipSignature:(BOOL)shouldSkipSignature shouldBePlainText:(BOOL)shouldBePlainText {
     if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"] ||
-       [[GPGMailBundle sharedInstance] componentsMissing])
-        return [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldSign shouldEncrypt:shouldEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
+       [[GPGMailBundle sharedInstance] componentsMissing]) {
+        id ret = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldSign shouldEncrypt:shouldEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
+        return ret;
+    }
+    DebugLog(@"[DEBUG] Content: %@", contents);
 
     // The encryption part is a little tricky that's why
     // Mail.app is gonna do the heavy lifting with our GPG encryption method
@@ -77,6 +84,11 @@
     // After that's done, we only have to extract the encrypted part.
     BOOL shouldPGPEncrypt = NO;
     BOOL shouldPGPSign = NO;
+    BOOL shouldPGPInlineSign = NO;
+    BOOL shouldPGPInlineEncrypt = NO;
+    // It might not be possible to inline encrypt drafts, since contents.text is nil.
+    // Maybe it's not problem, and simply html should be used. (TODO: Figure that out.)
+    BOOL shouldCreatePGPInlineMessage = [[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPInlineToSend"] && !isDraft;
     if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
         shouldPGPEncrypt = shouldEncrypt;
         shouldPGPSign = shouldSign;
@@ -122,19 +134,39 @@
     // Inject the headers needed in newEncryptedPart and newSignedPart.
     [self _addGPGFlaggedHeaderValuesToHeaders:[(ComposeBackEnd *)self cleanHeaders] forEncrypting:shouldPGPEncrypt forSigning:shouldPGPSign];
 
+    // If the message is supposed to be encrypted or signed inline,
+    // GPGMail does that directly in the Compose back end, and not use
+    // the message write to create it, yet, to get an OutgoingMessage to work with.
+    // Mail.app is instructed to create the Outgoing message with no encrypting and no
+    // signing. 
+    // After that the body is replaced by the pgp inline data.
+    if(shouldCreatePGPInlineMessage) {
+        shouldPGPInlineSign = shouldPGPSign;
+        shouldPGPInlineEncrypt = shouldPGPEncrypt;
+        shouldPGPSign = NO;
+        shouldPGPEncrypt = NO;
+    }
+    
     // Drafts store the messages with a very minor set of headers and mime types
     // not suitable for encrypted/signed messages. But fortunately, Mail.app doesn't
     // have a problem if a normal message is stored as draft, so GPGMail just needs
     // to disable the isDraft parameter, Mail.app will take care of the rest.
     OutgoingMessage *outgoingMessage = [self MA_makeMessageWithContents:contents isDraft:NO shouldSign:shouldPGPSign shouldEncrypt:shouldPGPEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
 
+    // If there was an error creating the outgoing message it's gonna be nil
+    // and the error is stored away for later display.
+    if(!outgoingMessage)
+        return outgoingMessage;
+    
     // And restore the original headers.
     [(ComposeBackEnd *)self setValue:[self getIvar:@"originalCleanHeaders"] forKey:@"_cleanHeaders"];
 
     // Signing only results in an outgoing message which can be sent
     // out exactly as created by Mail.app. No need to further modify.
     // Only encrypted messages have to be adjusted.
-    if(shouldPGPSign && !shouldPGPEncrypt) {
+    if(shouldPGPSign && !shouldPGPEncrypt && !shouldCreatePGPInlineMessage) {
+//        NSLog(@"[DEBUG] Outgoing message: %@", [[outgoingMessage valueForKey:@"_rawData"] stringByGuessingEncoding]);
+//        NSLog(@"[DEBUG] Outgoing message: %@", [[((_OutgoingMessageBody *)[outgoingMessage messageBody]) rawData] stringByGuessingEncoding]);
         return outgoingMessage;
     }
 
@@ -143,13 +175,20 @@
     // Fetch the encrypted data from the body data.
     NSData *encryptedData = [((_OutgoingMessageBody *)[outgoingMessage messageBody]) rawData];
 
-    // Check for preferences here, and set mime or plain version.
-    Subdata *newBodyData = [self _newPGPBodyDataWithEncryptedData:encryptedData headers:[outgoingMessage headers] shouldBeMIME:YES];
+    Subdata *newBodyData = nil;
+    
+    if(!shouldCreatePGPInlineMessage) {
+        // Check for preferences here, and set mime or plain version.
+        newBodyData = [self _newPGPBodyDataWithEncryptedData:encryptedData headers:[outgoingMessage headers] shouldBeMIME:YES];
+    }
+    else {
+        newBodyData = [self _newPGPInlineBodyDataWithData:[[contents.plainText string] dataUsingEncoding:NSUTF8StringEncoding] headers:[outgoingMessage headers] shouldSign:shouldPGPInlineSign shouldEncrypt:shouldPGPInlineEncrypt];
+    }
 
     // AND NOW replace the current message body with the new gpg message body.
     // The subdata contains the range of the actual body excluding the headers
     // but references the entrie message (NSMutableData).
-    [(_OutgoingMessageBody *)[outgoingMessage messageBody] setRawData:newBodyData];
+    [(_OutgoingMessageBody *)[outgoingMessage messageBody] setValue:newBodyData forKey:@"_rawData"];
     // _rawData instance variable has to hold the NSMutableData which
     // contains the data of the entire message including the header data.
     // Not sure why it's done this way, but HECK it works!
@@ -222,7 +261,6 @@
         [versionPart setContentDescription:@"PGP/MIME Versions Identification"];
         versionPart.contentTransferEncoding = @"7bit";
         // 3. Create the pgp data subpart.
-        //todo: duplicate code? see MimePart+GPGMail.m
         dataPart = [[MimePart alloc] init];
         [dataPart setType:@"application"];
         [dataPart setSubtype:@"octet-stream"];
@@ -300,6 +338,77 @@
     return contentSubdata;
 }
 
+- (Subdata *)_newPGPInlineBodyDataWithData:(NSData *)data headers:(MutableMessageHeaders *)headers shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt {
+    // Now on to creating a new body and replacing the old one. 
+    NSString *boundary = (NSString *)[MimeBody newMimeBoundary];
+    NSData *topData = nil;
+    MimePart *topPart;
+    
+    NSData *signedData = nil;
+    NSData *encryptedData = nil;
+    
+    topPart = [[MimePart alloc] init];
+    topPart.type = @"text";
+    topPart.subtype = @"plain";
+    topPart.contentTransferEncoding = @"8bit";
+    [topPart setBodyParameter:@"utf8" forKey:@"charset"];
+    
+    if(shouldSign) {
+        signedData = [topPart newInlineSignedDataForData:data sender:[headers firstHeaderForKey:@"from"]];
+        topData = signedData;
+    }
+    if(shouldEncrypt) {
+        NSMutableArray *recipients = [[NSMutableArray alloc] init];
+        [recipients addObjectsFromArray:[headers headersForKey:@"to"]];
+        [recipients addObjectsFromArray:[headers headersForKey:@"cc"]];
+        [recipients addObjectsFromArray:[headers headersForKey:@"bcc"]];
+        [topPart newEncryptedPartWithData:signedData recipients:recipients encryptedData:&encryptedData];
+        topData = encryptedData;
+    }
+    
+    if(!topData)
+        return nil;
+    
+    // The body is done, now on to updating the headers since we'll use the original headers
+    // but have to change the top part headers.
+    // And also add our own special GPGMail header.
+    // Create the new top part headers.
+    NSMutableData *contentTypeData = [[NSMutableData alloc] initWithLength:0];
+    [contentTypeData appendData:[[NSString stringWithFormat:@"%@/%@;", [topPart type], [topPart subtype]] dataUsingEncoding:NSASCIIStringEncoding]];
+    for(id key in [topPart bodyParameterKeys])
+        [contentTypeData appendData:[[NSString stringWithFormat:@"\n\t%@=\"%@\";", key, [topPart bodyParameterForKey:key]] dataUsingEncoding:NSASCIIStringEncoding]];
+    [headers setHeader:contentTypeData forKey:@"content-type"];
+    [contentTypeData release];
+    [headers setHeader:[GPGMailBundle agentHeader] forKey:@"x-pgp-agent"];
+    [headers setHeader:topPart.contentTransferEncoding forKey:@"content-transfer-encoding"];
+    [headers removeHeaderForKey:@"content-disposition"];
+    [headers removeHeaderForKey:@"from "];	
+	
+	// Set the original bcc recipients.
+    NSArray *originalBCCRecipients = (NSArray *)[self getIvar:@"originalBCCRecipients"];
+    if([originalBCCRecipients count])
+        [headers setHeader:originalBCCRecipients forKey:@"bcc"];
+	else
+        [headers removeHeaderForKey:@"bcc"];
+    // Create the actualy body data.
+    NSData *headerData = [headers encodedHeadersIncludingFromSpace:NO];
+    NSMutableData *bodyData = [[NSMutableData alloc] init];
+    // First add the header data.
+    [bodyData appendData:headerData];
+    [bodyData appendData:topData];
+    [topPart release];
+    [boundary release];
+    // Contains the range, which separates the mail headers
+    // from the actual mime content.
+    // JUST FOR INFO: messageDataIncludingFromSpace: returns an instance of NSMutableData, so basically
+    // it might be the same as _rawData. But we don't need that, so, that's alright.
+    NSRange contentRange = NSMakeRange([headerData length], 
+                                       ([bodyData length] - [headerData length]));
+    Subdata *contentSubdata = [[Subdata alloc] initWithParent:bodyData range:contentRange];
+    [bodyData release];
+    return contentSubdata;
+}
+
 - (BOOL)MACanEncryptForRecipients:(NSArray *)recipients sender:(NSString *)sender {
     // If gpg is not enabled, call the original method.
     if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"])
@@ -340,7 +449,7 @@
 
     NSMutableArray *nonEligibleRecipients = [NSMutableArray array];
     for(NSString *recipient in [((ComposeBackEnd *)self) allRecipients]) {
-        if(![[GPGMailBundle sharedInstance] canSignMessagesFromAddress:[recipient uncommentedAddress]])
+        if(![[GPGMailBundle sharedInstance] canEncryptMessagesToAddress:[recipient uncommentedAddress]])
             [nonEligibleRecipients addObject:[recipient uncommentedAddress]];
     }
 

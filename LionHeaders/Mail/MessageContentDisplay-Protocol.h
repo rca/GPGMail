@@ -38,7 +38,7 @@
 - (void)removeAccessibilityLinks;
 - (id)messageHeaderDisplay;
 @property(nonatomic) BOOL isForPrinting;
-@property id parentController;
+@property(assign) id parentController;
 @property BOOL isSelected;
 @property BOOL displayAsSingleMessage;
 @end

@@ -31,9 +31,50 @@
 #import <MimePart.h>
 #import <Libmacgpg/Libmacgpg.h>
 
-@class MFMimeDecodeContext;
+@class MimeBody;
+
+#define PGP_ATTACHMENT_EXTENSION @"pgp"
+#define PGP_PART_MARKER_START @"::gpgmail-start-pgp-part::"
+#define PGP_PART_MARKER_END @"::gpgmail-end-pgp-part::"
+
+typedef enum {
+    /* This error describes any error but a non found secret key and NO_DATA 1 (No armored data). */
+    GPG_OPERATION_DECRYPTION_GENERAL_ERROR = 100,
+    /* This error describes the lack of a secret key, if no decryption okay is received. */
+    GPG_OPERATION_DECRYPTION_NO_SECKEY_ERROR,
+    /* This error describes a no armored data error, if the data armor was modified or corrupted. */
+    GPG_OPERATION_DECRYPTION_CORRUPTED_DATA_ERROR, 
+    /* This errors describes if on verification a signature was expected but not found 
+       (data might have been modified.)
+     */
+    GPG_OPERATION_VERIFICATION_CORRUPTED_DATA_ERROR,
+    /* This error describes the lack of the public key used to sign the data. */
+    GPG_OPERATION_VERIFICATION_NO_PUBKEY_ERROR
+} GPG_OPERATION_ERRORS;
+
+typedef enum {
+    GPG_OPERATION_DECRYPTION = 200,
+    GPG_OPERATION_VERIFICATION
+}  GPG_OPERATION;
+
+@class MFMimeDecodeContext, _NSDataMessageStoreMessage;
 
 @interface MimePart (GPGMail)
+
+@property (assign) BOOL PGPEncrypted;
+@property (assign) BOOL PGPPartlyEncrypted;
+@property (assign) BOOL PGPSigned;
+@property (assign) BOOL PGPPartlySigned;
+@property (assign) BOOL PGPDecrypted;
+@property (assign) BOOL PGPVerified;
+@property (assign) BOOL PGPAttachment;
+@property (retain) NSArray *PGPSignatures;
+@property (retain) MFError *PGPError;
+@property (retain) NSData *PGPDecryptedData;
+@property (retain) MessageBody *PGPDecryptedBody;
+@property (retain) NSString *PGPDecryptedContent;
+@property (retain) NSString *PGPVerifiedContent;
+@property (retain) NSData *PGPVerifiedData;
 
 /**
  Creates the parsed message (content of the emai) which is then
@@ -54,12 +95,54 @@
 - (id)MADecodeWithContext:(id)ctx;
 
 /**
- Recursively walk through all mime parts and find inline or signed encrypted
- parts.
- If found, store them on the message using PGPEncryptedPart or PGPSignedPart
- as key.
+ * Loops through all mime parts and runs a block on them.
  */
-- (void)findPGPInlineSignedAndEncryptedMimeParts;
+- (void)enumerateSubpartsWithBlock:(void (^)(MimePart *))partBlock;
+
+/**
+ Calling topLevelPart on the mimeBody forces the parts to be regenerated.
+ This way it's possible to access the top level part by walking up
+ the mime part tree avoiding the regeneration.
+ */
+- (MimePart *)topPart;
+
+/**
+ Is called for every text/plain part. Firt checks if it contains any encrypted or
+ signed data and if so operates on it.
+ */
+- (id)MADecodeTextPlainWithContext:(MFMimeDecodeContext *)ctx;
+
+/**
+ Is called for every text/html part. text/html is not easy to parse, so
+ if any PGP data if found the text/part is used instead, if it exists.
+ */
+- (id)MADecodeTextHtmlWithContext:(MFMimeDecodeContext *)ctx;
+
+/**
+ Is called for every application/octet-stream part which might contain
+ a PGP encrypted/signed attachment.
+ If any PGP data is found, decrypt is called on it.
+ */
+- (id)MADecodeApplicationOctet_streamWithContext:(MFMimeDecodeContext *)ctx;
+
+- (id)decodePGPEncryptedAttachment;
+- (id)decodePGPSignatureAttachment;
+
+/**
+ Internally calls attachmentMightBePGPProcessed: passing the extensions to be checked.
+ */
+- (BOOL)attachmentMightBePGPEncrypted;
+
+/**
+ Internally calls attachmentMightBePGPProcessed: passing the extensions to be checked.
+ */
+- (BOOL)attachmentMightBePGPSignature;
+
+/**
+ Checks the extension for known PGP Data extensions and only if this returns true,
+ the mime part is tried to process.
+ */
+- (BOOL)attachmentMightBePGPProcessed:(NSArray *)extensions;
 
 /**
  Is called by GPGDecodeWithContext if a multipart/encrypted mime part
@@ -77,38 +160,121 @@
 - (id)decodeFuckedUpEarlyAlphaData:(NSData *)data context:(MFMimeDecodeContext *)ctx;
 
 /**
- Is called by GPGDecodeWithContext if a plain/text mime part is
- found, which contains gpg inline data. The GPG data might either be
- encrypted data or signature data. Based on the found data, the decryption
- or signature verification is performed and the result returned.
- 
- Strips away the signature if found.
+ Decrypts the data and sets all important PGP information for the mime part.
  */
-- (id)decodeInlinePGPDataWithContext:(id)ctx;
+- (id)decryptData:(NSData *)encryptedData;
 
 /**
- Removes the PGP signature part from the parsed message.
- Currently handles NSString type only!
+ Helper method which calls either errorFromDecryptionOperation: or errorFromVerificationOperation:
+ based on the operation.
+ */
+- (id)errorFromGPGOperation:(GPG_OPERATION)operation controller:(GPGController *)gpgc;
+
+/**
+ Checks the GPGController for decryption errors and returns the appropriate
+ error message.
+ */
+- (MFError *)errorFromDecryptionOperation:(GPGController *)gpgc;
+
+
+/**
+ Checks the GPGController for verification errors and returns the appropriate
+ error message.
+ */
+- (MFError *)errorFromVerificationOperation:(GPGController *)gpgc;
+
+/**
+ Helper method to process GPGController NODATA errors.
+ */
+- (BOOL)hasError:(NSString *)errorName noDataErrors:(NSArray *)noDataErrors;
+
+/**
+ Creates a new message similar the way S/MIME does it, from the decryptedData.
+ */
+- (MimeBody *)decryptedMessageBodyFromDecryptedData:(NSData *)decryptedData;
+
+/**
+ Returns the complete part data but replaces the encrypted data with the decrypted
+ first or leaves the encrypted data in, if there was an decryption error.
+ */
+- (NSData *)partDataByReplacingEncryptedData:(NSData *)originalPartData decryptedData:(NSData *)decryptedData encryptedRange:(NSRange)encryptedRange;
+
+/**
+ Calls decryptData: for either PGP/MIME or PGP/Inline encrypted data.
+ */
+- (id)decryptedMessageBodyOrDataForEncryptedData:(NSData *)encryptedData encryptedInlineRange:(NSRange)encryptedRange;
+
+/**
+ Verifies the passed data and sets the PGP information for the part.
+ */
+- (void)verifyData:(NSData *)signedData signatureData:(NSData *)signatureData;
+
+/**
+ For signed messages Mail.app automatically calls verifySignature.
+ After first checking if the verification has not already been performed,
+ using the MimePart.needsSignatureVerification method, this method
+ verifies the signature, and stores all found signatures in MimePart._messageSigners.
+ 
+ Unfortunately verifySignature understands that the signature
+ is no MIME signature, hence never calls _verifySignatureWithCMSDecoder,
+ therefore we have to hijack this method and re-implement it for our own.
+ To decide whether or not the original method should be called, we'll
+ use the protocol information.
+ */
+- (void)MAVerifySignature;
+
+/**
+ Is used to verify PGP/inline signatures.
+ */
+- (void)_verifyPGPInlineSignatureInData:(NSData *)data range:(NSRange)signedRange;
+
+/**
+ Strips the PGP SIGNED markes from the part HTML string.
  */
 - (id)stripSignatureFromContent:(id)content;
 
 /**
- Performs the decryption of GPG encrypted data and returns
- the result, parsing all the mime parts of the decoded message
- using GPGDecodeWithContext.
- 
- If the encrypted data doesn't contain any mime parts, a new mime part
- is created, otherwise messageWithRFC822Data ends up creating an empty
- message body.
+ Is called internally from Mail.app by verify signature.
+ Needs to be overridden to allow application/pgp-signature parts
+ which ensures that the PGP/MIME signed message is actually verified.
  */
-- (id)decryptedMessageBodyForEncryptedData:(NSData *)encryptedData inlineEncrypted:(BOOL)inlineEncrypted;
+- (BOOL)MAUsesKnownSignatureProtocol;
 
 /**
- Is called when the decrypted body is supposed to be cleared.
- Mostly happens when a message is deselected.
- In that case all data added to the message has to be removed.
+ Adds markers for encrypted/signed parts which are later replaced
+ by the HTML to display the markers in the message.
  */
-- (void)MAClearCachedDecryptedMessageBody;
+- (void)addPGPPartMarkerToData:(NSMutableData *)data partData:(NSData *)partData;
+
+/**
+ Replace the markers with the appropriate HTML for display.
+ */
+- (NSString *)contentWithReplacedPGPMarker:(NSString *)content isEncrypted:(BOOL)isEncrypted isSigned:(BOOL)isSigned;
+
+/**
+ Checks if the data contains markers.
+ */
+- (BOOL)containsPGPMarker:(NSData *)data;
+
+/**
+ Is called by Mail.app to check if a message is signed. It's not yet entirely
+ clear how Mail finds out whether a message is signed or not, but GPGMail uses
+ the MimePart.PGPSigned variable. 
+ If message signers are available, this returns true.
+ */
+- (BOOL)MAIsSigned;
+
+/**
+ If a PGP/MIME message is sent through an Exchange Server the
+ message headers are being modified.
+ This method checks for those modified headers.
+ */
+- (BOOL)_isExchangeServerModifiedPGPMimeEncrypted;
+
+/**
+ Checks if the message is PGP/MIME Encrypted.
+ */
+- (BOOL)isPGPMimeEncrypted;
 
 /**
  Create a new message text/plain message for decrypted pgp inline data.
@@ -116,10 +282,11 @@
 - (Message *)messageWithMessageData:(NSData *)messageData;
 
 /**
- Fail to decrypt a message and set the error which is displayed to the user.
- The received exception decides what error message is displayed.
+ Is called when the decrypted body is supposed to be cleared.
+ Mostly happens when a message is deselected.
+ In that case all data added to the message has to be removed.
  */
-- (void)failedToDecryptWithException:(NSException *)exception;
+- (void)MAClearCachedDecryptedMessageBody;
 
 /**
  This methods is called internally by Mail's MessageWriter. The MessageWriter
@@ -142,115 +309,19 @@
  Again, the mime part containing the data is returned and the signature written
  to the *signatureData pointer. 
  */
-- (id)MANewSignedPartWithData:(id)arg1 sender:(id)arg2 signatureData:(id *)arg3;
+- (id)MANewSignedPartWithData:(id)data sender:(id)sender signatureData:(id *)signatureData;
+
+/**
+ Create the data for a new PGP/Inline signed message.
+ EXPERIMENTAL!
+ */
+- (NSData *)newInlineSignedDataForData:(id)data sender:(id)sender;
 
 /**
  Uses the ActivityMonitor to display an error message if the signing process failed.
  Analog to what S/MIME uses.
  */
 - (void)failedToSignForSender:(NSString *)sender;
-
-/**
- Called by verifySignature, after checking with needs signature verification
- is the verification has not already happened.
- If this method returns true, verifySignatureWithCMSDecoder is called, otherwise
- no validation happens.
- TODO: Allow for SMIME to still work!
- Using some kind of flag to signal gpg message.
- */
-- (BOOL)MAUsesKnownSignatureProtocol;
-
-/**
- For signed messages Mail.app automatically calls verifySignature.
- After first checking if the verification has not already been performed,
- using the MimePart.needsSignatureVerification method, this method
- verifies the signature, and stores all found signatures in MimePart._messageSigners.
- 
- Unfortunately verifySignature understands that the signature
- is no MIME signature, hence never calls _verifySignatureWithCMSDecoder,
- therefore we have to hijack this method and re-implement it for our own.
- To decide whether or not the original method should be called, we'll
- use the protocol information.
- */
-- (void)MAVerifySignature;
-
-/**
- Verify an inline message signature and set GPGSignatures on mime part.
- Is only called, if ----BEGIN PGP SIGNATURE---- is found.
- */
-- (void)_verifyPGPInlineSignature;
-
-/**
- Is called when the verification of a PGP signature fails
- and displays the error to the user using the message error banner.
- Analog to S/MIME.
- */
-- (void)failedToVerifyWithException:(NSException *)exception;
-
-/**
- Is called by Mail.app in various occasions, not all of them explored
- yet.
- It simply returns the email address of each signature.
- */
-- (id)MACopySignerLabels;
-
-/**
- Necessary to understand whether the message is
- S/MIME signed or PGP signed. Apparently MAIsSigned is true for S/MIME signed
- and PGP/MIME signed, so this way it's possible to know for sure, what it is
- signed with.
- */
-- (BOOL)isPGPSigned;
-
-/**
- Is called by Mail.app to check if a message is signed. It's not yet entirely
- clear how Mail finds out whether a message is signed or not, but GPGMail uses
- the MimePart._messageSigners variable. 
- If message signers are available, this returns true.
- */
-- (BOOL)MAIsSigned;
-
-/**
- This methods checks if the mail body contains some inline PGP
- encrypted data, which starts with -----BEGIN PGP MESSAGE-----
- and ends with -----END PGP MESSAGE-----.
- 
- If encrypted data is found, the range of the data is stored internally
- for use in the decoding functions and returns true.
- 
- TODO: Cache this status, best on message level. Top level part
- didn't work so well...
- */
-- (BOOL)isPGPInlineEncrypted;
-
-/**
- Checks if the message is PGP/Mime signed using the conditions described by RFC 3156.
- */
-- (BOOL)isPGPMimeSigned;
-
-/**
- This method checks if two special PGP related mime parts exist for the message. 
- 1.) Part of type application/pgp-encrypted which contains the version (basically
- always version: 1)
- 2.) Part of type application/octet-stream which contains the actual encrypted data.
- Returns true if the parts are found, otherwise false.
- 
- TODO: Cache this status, best on message level. Top level part
- didn't work so well...
- */
-- (BOOL)isPGPMimeEncrypted;
-
-/**
- Returns true if the message is either PGP inline or mime encrypted.
- */
-- (BOOL)isPGPEncrypted;
-
-/**
- This method is called by Mail.app internally in various occasions, especially
- in MessageHeaderDisplay._attributedStringForSecurityHeader to check whether or not
- the security UI for a message should be displayed or not.
- */
-- (BOOL)MAIsEncrypted;
 
 @end
 

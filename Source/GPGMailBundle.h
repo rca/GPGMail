@@ -111,6 +111,7 @@ typedef void (^gpgmail_verification_task_t)(void);
     // password request is run at once.
     dispatch_queue_t decryptionQueue;
     dispatch_queue_t verificationQueue;
+    dispatch_queue_t collectingQueue;
     
     BOOL accountExistsForSigning;
     
@@ -235,10 +236,10 @@ typedef void (^gpgmail_verification_task_t)(void);
 - (IBAction)gpgToggleDisplayAllUserIDs:(id)sender;
 - (IBAction)gpgToggleShowKeyInformation:(id)sender;*/
 
-- (NSString *)menuItemTitleForKey:(GPGKey *)key;
-- (NSString *)menuItemTitleForUserID:(GPGUserID *)userID indent:(unsigned)indent;
-
-- (void)refreshKeyIdentifiersDisplayInMenu:(NSMenu *)menu;
+//- (NSString *)menuItemTitleForKey:(GPGKey *)key;
+//- (NSString *)menuItemTitleForUserID:(GPGUserID *)userID indent:(unsigned)indent;
+//
+//- (void)refreshKeyIdentifiersDisplayInMenu:(NSMenu *)menu;
 
 - (BOOL)canKeyBeUsedForEncryption:(GPGKey *)key;
 - (BOOL)canKeyBeUsedForSigning:(GPGKey *)key;
@@ -273,6 +274,13 @@ typedef void (^gpgmail_verification_task_t)(void);
  long as second verification task is running.
  */
 - (void)addVerificationTask:(gpgmail_verification_task_t)task;
+
+/**
+ Allows to schedule info collection tasks which will block
+ as long as a second collection task is running, but shouldn't
+ block the main thread.
+ */
+- (void)addCollectionTask:(gpgmail_verification_task_t)task;
 
 @end
 

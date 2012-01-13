@@ -42,6 +42,8 @@
  */
 - (void)_showSignaturePanel;
 
+- (void)_showAttachmentsPanel;
+
 /**
  Starts the decryption of a message. Invoked when clicking on the decrypt icon.
  (Only used if automatic decryption is disabled.)

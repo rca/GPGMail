@@ -5,6 +5,7 @@
  */
 
 
+#import "CDStructures.h"
 
 @class NSArray, NSString;
 

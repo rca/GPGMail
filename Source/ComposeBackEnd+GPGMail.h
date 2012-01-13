@@ -35,13 +35,6 @@
 @interface ComposeBackEnd_GPGMail : NSObject
 
 /**
- Is called whenever the user clicks the OpenPGP checkbox and
- decides, whether the security view buttons should be used for PGP or S/MIME
- encryption or signing.
- */
-- (void)setPGPState:(id)sender;
-
-/**
  Is called by Mail.app when the user clicks on the encrypt button in the
  compose window.
  
@@ -150,5 +143,7 @@
  If the OpenPGP checkbox is not checked it calls the original method for S/MIME support.
  */
 - (id)MARecipientsThatHaveNoKeyForEncryption;
+
+- (Subdata *)_newPGPInlineBodyDataWithData:(NSData *)data headers:(MutableMessageHeaders *)headers shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt;
 
 @end

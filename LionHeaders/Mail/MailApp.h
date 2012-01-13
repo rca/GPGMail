@@ -4,6 +4,7 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2010 by Steve Nygard.
  */
 
+#import "CDStructures.h"
 #import "MVSelectionOwner-Protocol.h"
 #import "MFUserAgent-Protocol.h"
 #import "MVTerminationHandler-Protocol.h"

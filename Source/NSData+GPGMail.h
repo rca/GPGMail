@@ -32,6 +32,8 @@
 #define PGP_SIGNED_MESSAGE_BEGIN @"-----BEGIN PGP SIGNED MESSAGE-----"
 #define PGP_MESSAGE_SIGNATURE_BEGIN @"-----BEGIN PGP SIGNATURE-----"
 #define PGP_MESSAGE_SIGNATURE_END @"-----END PGP SIGNATURE-----"
+#define PGP_MESSAGE_PUBLIC_KEY_BEGIN @"-----BEGIN PGP PUBLIC KEY BLOCK-----"
+#define PGP_MESSAGE_PUBLIC_KEY_END @"-----END PGP PUBLIC KEY BLOCK-----"
 
 @interface NSData (GPGMail)
 
@@ -60,5 +62,19 @@
  only the current part is checked for inline data and the range returned.
  */
 - (NSRange)rangeOfPGPInlineEncryptedData;
+
+/**
+ Checks if the data might contain PGP encrypted data
+ by looking for the ----BEGIN PGP MESSAGE---- header.
+ 
+ This method detects the data even if the header is prefixed
+ by other chars. (important to detect the header in text/html parts)
+ */
+- (BOOL)mightContainPGPEncryptedData;
+
+/**
+ Finds public keys in the data.
+ */
+- (NSRange)rangeOfPGPPublicKey;
 
 @end

@@ -6,30 +6,6 @@
 
 #pragma mark Named Structures
 
-struct CGAffineTransform {
-    double _field1;
-    double _field2;
-    double _field3;
-    double _field4;
-    double _field5;
-    double _field6;
-};
-
-struct CGPoint {
-    double x;
-    double y;
-};
-
-struct CGRect {
-    struct CGPoint origin;
-    struct CGSize size;
-};
-
-struct CGSize {
-    double width;
-    double height;
-};
-
 struct MailAlertInfo {
     id _field1;
     id _field2;
@@ -45,19 +21,9 @@ struct MailPasswordInfo {
     id _field4;
 };
 
-struct ProcessSerialNumber {
-    unsigned int highLongOfPSN;
-    unsigned int lowLongOfPSN;
-};
-
 struct QuotaSimpleSortDescriptor {
     void *comparator;
     char ascending;
-};
-
-struct _NSRange {
-    unsigned long long location;
-    unsigned long long length;
 };
 
 struct menuItemInfo {

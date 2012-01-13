@@ -6,7 +6,7 @@
 
 
 
-#import "NSMachPortDelegate-Protocol.h"
+#import <Foundation/Foundation.h>
 
 @class MFError, NSInvocation, NSMachPort, NSMutableSet, NSString, SafeValueCache;
 

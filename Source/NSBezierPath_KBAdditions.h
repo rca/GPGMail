@@ -8,6 +8,7 @@
 //	Based on Andy Matuschak's PXRoundedRectangleAdditions, but with an added 'flipped' option.
 //
 
+#import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
 
 typedef enum KBCornerTypes

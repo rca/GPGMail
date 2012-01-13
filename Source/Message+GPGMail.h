@@ -55,4 +55,21 @@
 
 - (void)fakeMessageFlagsIsEncrypted:(BOOL)isEncrypted isSigned:(BOOL)isSigned;
 
+- (void)collectPGPInformationStartingWithMimePart:(MimePart *)topPart decryptedBody:(MimeBody *)decryptedBody;
+- (void)clearPGPInformation;
+
+@property (assign) BOOL PGPInfoCollected;
+@property (assign) BOOL PGPEncrypted;
+@property (assign) BOOL PGPPartlyEncrypted;
+@property (assign) BOOL PGPSigned;
+@property (assign) BOOL PGPPartlySigned;
+@property (assign) BOOL PGPDecrypted;
+@property (assign) BOOL PGPVerified;
+@property (retain) NSArray *PGPSignatures;
+@property (retain, readonly) NSArray *PGPSignatureLabels;
+@property (retain) NSArray *PGPErrors;
+@property (assign) NSUInteger numberOfPGPAttachments;
+@property (retain) NSArray *PGPAttachments; 
+
 @end
+

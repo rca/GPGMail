@@ -100,7 +100,6 @@ GPGSignatureView *_sharedInstance;
 	if (!keyID) {
 		keyID = signature.fingerprint;
 	}
-	/* return getShortKeyID(keyID); */
 	return [keyID shortKeyID];
 }
 

@@ -42,4 +42,5 @@
  */
 - (void)drawEncryptionMethodHint;
 
+- (void)removeEncryptionHint;
 @end

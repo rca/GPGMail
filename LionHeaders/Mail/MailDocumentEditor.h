@@ -6,7 +6,7 @@
 
 #import "DocumentEditor.h"
 
-#import "NSAnimationDelegate-Protocol.h"
+#import <AppKit/AppKit.h>
 
 @class CALayer, ColorBackgroundView, DeliveryFailure, MailWindowShadowLayer, MessageViewer, NSButton, NSMutableArray, NSPopUpButton, NSProgressIndicator, NSScroller, NSTextField, NSView, NSViewAnimation, NSWindow, StationerySelector;
 

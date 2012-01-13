@@ -67,9 +67,190 @@ static BOOL gpgMailWorks = YES;
 
 @interface GPGMailBundle ()
 @property (nonatomic, retain) SUUpdater *updater;
-- (void)refreshPersonalKeysMenu;
-- (void)refreshPublicKeysMenu;
+//- (void)refreshPersonalKeysMenu;
+//- (void)refreshPublicKeysMenu;
 - (void)flushKeyCache:(BOOL)flag;
+@end
+
+// Remove registerBundle warning.
+@interface NSObject (GPGMail)
+- (void)registerBundle;
+@end
+
+//#import "MimePart.h"
+//@interface HeaderAttachmentsController_GPGMail : NSObject
+//@end
+//
+//@implementation HeaderAttachmentsController_GPGMail
+//
+//- (NSArray *)MAAttachments {
+//    NSArray *attachments = [self MAAttachments];
+//    return attachments;
+//}
+//
+//- (void)MA_configureSaveMenu:(id)arg1 {
+//    NSLog(@"[DEBUG] %s menu: %@", __PRETTY_FUNCTION__, arg1);
+//    [self MA_configureSaveMenu:arg1];
+//    NSLog(@"[DEBUG] %s menu: %@", __PRETTY_FUNCTION__, arg1);
+//    NSImage *encryptedBadge = [NSImage imageNamed:@"Encrypted_Glyph"];
+//    NSAttributedString *encryptAttachmentString = [NSAttributedString attributedStringWithAttachment:[[[NSTextAttachment alloc] init] autorelease] 
+//                                                                                               image:encryptedBadge
+//                                                                                                link:@"gpgmail://decrypt"];
+//    NSAttributedString *signedAttachmentString = [NSAttributedString attributedStringWithAttachment:[[[NSTextAttachment alloc] init] autorelease] 
+//                                                                                              image:[NSImage imageNamed:@"Signed_Glyph"] 
+//                                                                                               link:@"gpgmail://show-signature"];
+//    int i = 0;
+//    for(id menuItem in [arg1 itemArray]) {
+//        if(i != 0) {
+//            NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:@""];
+//            [title appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", [menuItem title]]]];
+//            MimePart *part = [[[menuItem representedObject] attachment] mimePart];
+//            if([part attachmentMightBePGPEncrypted]) {
+//                [title appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %C ", 0x2014]]];
+//                if([[part getIvar:@"isPGPEncrypted"] boolValue])
+//                    [title appendAttributedString:encryptAttachmentString];
+//                if([[part getIvar:@"isPGPSigned"] boolValue]) {
+//                    [title appendAttributedString:[[NSAttributedString alloc] initWithString:@"  "]];
+//                    [title appendAttributedString:signedAttachmentString];
+//                }
+//            }
+//            [menuItem setAttributedTitle:title];
+//            NSLog(@"Represented object: %@", [menuItem representedObject]);
+//            [title release];
+//        }
+//        i++;
+//    }
+//}
+//
+//@end
+
+#import "MimePart.h"
+#import "MimePart+GPGMail.h"
+#import "MessageAttachment.h"
+@interface MessageAttachment_GPGMail : NSObject
+@end
+
+@implementation MessageAttachment_GPGMail
+
+- (id)MAFilename {
+    id filename = [self MAFilename];
+    MimePart *part = [((MessageAttachment *)self) mimePart];
+    if(part.PGPAttachment && part.PGPDecrypted)
+        return [[filename lastPathComponent] stringByDeletingPathExtension];
+    
+    return filename;
+}
+
+- (id)MAIconImage {
+    NSImage *icon = [self MAIconImage];
+    return icon;
+    NSImage *icon2 = [NSImage imageNamed:@"invalid-signature-icon-overlay"];
+    
+    NSImage *newImage = [[NSImage alloc] initWithSize:NSMakeSize(icon.size.width, icon.size.height)];
+    
+    [newImage lockFocus];
+    [icon compositeToPoint:NSMakePoint(0,0) operation:NSCompositeSourceOver];
+    [icon2 compositeToPoint:NSMakePoint(icon.size.width-icon2.size.width,icon.size.height-icon2.size.height) operation:NSCompositeSourceOver];
+    [newImage unlockFocus];
+    
+    return newImage;
+}
+
+@end
+
+@interface MessageAttachmentViewController_GPGMail : NSObject
+@end
+
+@implementation MessageAttachmentViewController_GPGMail
+
+- (id)MAInlineImage {
+    NSImage *icon = [self MAInlineImage];
+    return icon;
+    NSImage *icon2 = [NSImage imageNamed:@"invalid-signature-icon-overlay"];
+    
+    NSImage *newImage = [[NSImage alloc] initWithSize:NSMakeSize(icon.size.width, icon.size.height)];
+    
+    [newImage lockFocus];
+    [icon compositeToPoint:NSMakePoint(0,0) operation:NSCompositeSourceOver];
+    [icon2 compositeToPoint:NSMakePoint(icon.size.width-icon2.size.width,icon.size.height-icon2.size.height) operation:NSCompositeSourceOver];
+    [newImage unlockFocus];
+    
+    return newImage;
+}
+
+@end
+
+#import "DDAction.h"
+
+@interface DDAction_GPGMail : NSObject
+@end
+
+@implementation DDAction_GPGMail
+
+- (id)MAInitWithDict:(id)arg1 {
+    return [self MAInitWithDict:arg1];
+}
+
+- (id)MAMenuItem {
+    id ret = [self MAMenuItem];
+    return ret;
+}
+
+@end
+
+@interface DDHTMLMessageScanningOperation_GPGMail : NSObject
+@end
+
+@implementation DDHTMLMessageScanningOperation_GPGMail
+
+- (id)MAInitWithWebView:(id)arg1 threadManager:(id)arg2 {
+    Class controller = NSClassFromString(@"DDSignatureNewContactEditorController");
+    unsigned int methodCount;
+    SEL currentSelector;
+    Method *classMethods;
+    for(unsigned int i = 0; i < 2; i++) {
+        classMethods = class_copyMethodList(i == 0 ? controller : object_getClass(controller), &methodCount);
+//        NSLog(@"Number of methods found for class %@: %u", controller, methodCount);
+        
+        for (unsigned int j = 0; j < methodCount; j++) {
+            currentSelector = method_getName((Method)classMethods[j]);
+//            NSLog(@"%d: Adding method %@ from %@", i, NSStringFromSelector(currentSelector), i == 0 ? controller : object_getClass(controller));
+        }
+        free(classMethods);
+    }
+    
+    
+    return [self MAInitWithWebView:arg1 threadManager:arg2];
+}
+
+@end
+
+@interface WebView_GPGMail : NSObject
+@end
+
+@implementation WebView_GPGMail
+
+- (void)MASetPreferences:(WebPreferences *)preferences {
+    [preferences setJavaScriptCanOpenWindowsAutomatically:YES];
+    [preferences setJavaScriptEnabled:YES];
+    [self MASetPreferences:preferences];
+}
+
+@end
+
+#import "MessageCriterion.h"
+@implementation MessageCriterion (GPGMail)
+
+- (BOOL)MA_evaluateIsDigitallySignedCriterion:(id)arg1 {
+    BOOL ret = [self MA_evaluateIsDigitallySignedCriterion:arg1];
+    return ret;
+}
+
+- (BOOL)MA_evaluateIsEncryptedCriterion:(id)arg1 {
+    BOOL ret = [self MA_evaluateIsEncryptedCriterion:arg1];
+    return ret;
+}
+
 @end
 
 @implementation GPGMailBundle
@@ -96,7 +277,6 @@ static BOOL gpgMailWorks = YES;
  */
 + (void)_installGPGMail {
 	DebugLog(@"Adding GPGMail methods");
-
     NSArray *swizzleMap = [NSArray arrayWithObjects:
         // Mail internal classes.
         [NSDictionary dictionaryWithObjectsAndKeys:
@@ -127,7 +307,18 @@ static BOOL gpgMailWorks = YES;
             @"HeadersEditor_GPGMail", @"gpgMailClass",
             [NSArray arrayWithObjects:
                 @"securityControlChanged:", nil], @"selectors", nil],
-        [NSDictionary dictionaryWithObjectsAndKeys:
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"MessageAttachment", @"class",
+                            @"MessageAttachment_GPGMail", @"gpgMailClass",
+                            [NSArray arrayWithObjects:
+                             @"filename", nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"MessageAttachmentViewController", @"class",
+                            @"MessageAttachmentViewController_GPGMail", @"gpgMailClass",
+                            [NSArray arrayWithObjects:
+                             @"inlineImage", nil], @"selectors", nil],
+
+                           [NSDictionary dictionaryWithObjectsAndKeys:
             @"OptionalView", @"class",
             @"OptionalView_GPGMail", @"gpgMailClass",
             [NSArray arrayWithObjects:
@@ -139,9 +330,6 @@ static BOOL gpgMailWorks = YES;
                 @"backEndDidLoadInitialContent:",
                 @"dealloc",
                 @"windowForMailFullScreen", nil], @"selectors", nil],
-        [NSDictionary dictionaryWithObjectsAndKeys:
-            @"MessageContentController", @"class",
-            @"MessageContentController_GPGMail", @"gpgMailClass", nil],
         // Messages.framework classes. Messages.framework classes can be extended using
         // categories. No need for a special GPGMail class.
         [NSDictionary dictionaryWithObjectsAndKeys:
@@ -152,21 +340,40 @@ static BOOL gpgMailWorks = YES;
                 @"newSignedPartWithData:sender:signatureData:",
                 @"verifySignature",
                 @"decodeWithContext:",
-                @"copySignerLabels",
-                @"copyMessageSigners",
+                @"decodeTextPlainWithContext:",
+                @"decodeTextHtmlWithContext:",
+                @"decodeApplicationOctet_streamWithContext:",
+//                @"copySignerLabels",
+//                @"copyMessageSigners",
                 @"isSigned",
+                @"isMimeSigned",
+                @"isMimeEncrypted",
                 @"usesKnownSignatureProtocol",
                 @"clearCachedDecryptedMessageBody",
+                @"setDecryptedMessageBody:isEncrypted:isSigned:error:",
              nil], @"selectors", nil],
         [NSDictionary dictionaryWithObjectsAndKeys:
             @"MimeBody", @"class",
             [NSArray arrayWithObjects:
                 @"isSignedByMe",
                 @"_isPossiblySignedOrEncrypted", nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"Message", @"class",
+                            [NSArray arrayWithObjects:
+                             @"messageBodyUpdatingFlags:", nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"MessageCriterion", @"class",
+                            [NSArray arrayWithObjects:
+                             @"_evaluateIsDigitallySignedCriterion:",
+                             @"_evaluateIsEncryptedCriterion:", nil], @"selectors", nil],                   
         [NSDictionary dictionaryWithObjectsAndKeys:
             @"MailAccount", @"class",
             [NSArray arrayWithObjects:
                 @"accountExistsForSigning", nil], @"selectors", nil],
+//                           [NSDictionary dictionaryWithObjectsAndKeys:
+//                            @"Message", @"class",
+//                            [NSArray arrayWithObjects:
+//                             @"messageBodyUpdatingFlags:", nil], @"selectors", nil],
         [NSDictionary dictionaryWithObjectsAndKeys:
             @"NSPreferences", @"class",
             [NSArray arrayWithObjects:
@@ -230,6 +437,7 @@ static BOOL gpgMailWorks = YES;
     class_setSuperclass([self class], mvMailBundleClass);
 	// Automatically performs the check, since the check is performed in init.
     GPGMailBundle *instance = [GPGMailBundle sharedInstance];
+    [instance description];
     // Last step necessary to completely setup our bundle is
     // swizzling the Mail classes.
     [self _installGPGMail];
@@ -266,6 +474,8 @@ static BOOL gpgMailWorks = YES;
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"ValidBadge"]] setName:@"gpgValidBadge"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"InvalidBadge"]] setName:@"gpgInvalidBadge"];
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"encryption_unlocked"]] setName:@"decryptedBadge"];
+    
+    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"invalid-signature-icon-overlay"]] setName:@"invalid-signature-icon-overlay"];
     
 }
 
@@ -329,6 +539,9 @@ static BOOL gpgMailWorks = YES;
     dispatch_sync(verificationQueue, task);
 }
 
+- (void)addCollectionTask:(gpgmail_verification_task_t)task {
+    dispatch_sync(verificationQueue, task);
+}
 
 - (BOOL)gpgMailWorks {
 	return gpgMailWorks;
@@ -392,83 +605,83 @@ static BOOL gpgMailWorks = YES;
 //	}
 }
 
-- (void)refreshKeyIdentifiersDisplayInMenu:(NSMenu *)menu {
-	NSArray *displayedKeyIdentifiers = [self displayedKeyIdentifiers];
-	int i = 1;
+//- (void)refreshKeyIdentifiersDisplayInMenu:(NSMenu *)menu {
+//	NSArray *displayedKeyIdentifiers = [self displayedKeyIdentifiers];
+//	int i = 1;
+//
+//    for (NSString *anIdentifier in [self allDisplayedKeyIdentifiers]) {
+//		if (![displayedKeyIdentifiers containsObject:anIdentifier]) {
+//			[[menu itemWithTag:i] setState:NSOffState];
+//		} else {
+//			[[menu itemWithTag:i] setState:NSOnState];
+//		}
+//		i++;
+//	}
+//}
 
-    for (NSString *anIdentifier in [self allDisplayedKeyIdentifiers]) {
-		if (![displayedKeyIdentifiers containsObject:anIdentifier]) {
-			[[menu itemWithTag:i] setState:NSOffState];
-		} else {
-			[[menu itemWithTag:i] setState:NSOnState];
-		}
-		i++;
-	}
-}
-
-- (void)setPGPViewMenu:(NSMenu *)pgpViewMenu {
-	// The menu is removed. Will be readded if necessary.
-}
+//- (void)setPGPViewMenu:(NSMenu *)pgpViewMenu {
+//	// The menu is removed. Will be readded if necessary.
+//}
 
 #pragma mark Toolbar stuff (+contextual menu)
 
 // TODO: Implement if needed later!
-- (void)refreshPersonalKeysMenu {
-    // No longer used.
-    //	GPGKey *theDefaultKey = [self defaultKey];
-//	NSMenu *aSubmenu = [personalKeysMenuItem submenu];
-//	NSMenuItem *anItem;
-//	BOOL displaysAllUserIDs = [self displaysAllUserIDs];
+//- (void)refreshPersonalKeysMenu {
+//    // No longer used.
+//    //	GPGKey *theDefaultKey = [self defaultKey];
+////	NSMenu *aSubmenu = [personalKeysMenuItem submenu];
+////	NSMenuItem *anItem;
+////	BOOL displaysAllUserIDs = [self displaysAllUserIDs];
+////
+////
+////    [aSubmenu removeAllItems];
+////
+////    DebugLog(@"Personal Keys: %@", [self personalKeys]);
 //
 //
-//    [aSubmenu removeAllItems];
-//
-//    DebugLog(@"Personal Keys: %@", [self personalKeys]);
+////    for (GPGKey *aKey in [self personalKeys]) {
+////		NSString *title = [self menuItemTitleForKey:aKey];
+////        anItem = [aSubmenu addItemWithTitle:title action:@selector(gpgChoosePersonalKey:) keyEquivalent:@""];
+////        [anItem setRepresentedObject:aKey];
+////		[anItem setTarget:self];
+////		if (![self canKeyBeUsedForSigning:aKey]) {
+////			[anItem setEnabled:NO];
+////		}
+////        if (theDefaultKey && [aKey isEqual:theDefaultKey]) {
+////            [anItem setState:NSMixedState];
+////        }
+////		if (displaysAllUserIDs) {
+////            for (GPGUserID *aUserID in [self secondaryUserIDsForKey:aKey]) {
+////				anItem = [aSubmenu addItemWithTitle:[self menuItemTitleForUserID:aUserID indent:1] action:NULL keyEquivalent:@""];
+////				[anItem setEnabled:NO];
+////			}
+////		}
+////	}
+//}
 
-
-//    for (GPGKey *aKey in [self personalKeys]) {
-//		NSString *title = [self menuItemTitleForKey:aKey];
-//        anItem = [aSubmenu addItemWithTitle:title action:@selector(gpgChoosePersonalKey:) keyEquivalent:@""];
-//        [anItem setRepresentedObject:aKey];
-//		[anItem setTarget:self];
-//		if (![self canKeyBeUsedForSigning:aKey]) {
-//			[anItem setEnabled:NO];
-//		}
-//        if (theDefaultKey && [aKey isEqual:theDefaultKey]) {
-//            [anItem setState:NSMixedState];
-//        }
-//		if (displaysAllUserIDs) {
-//            for (GPGUserID *aUserID in [self secondaryUserIDsForKey:aKey]) {
+//- (void)refreshPublicKeysMenu {
+//	DebugLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
+//    NSMenu *aSubmenu = [choosePublicKeysMenuItem menu];
+//    GPGKey *theDefaultKey = [self publicKeyForSecretKey:[self defaultKey]];
+//    NSMenuItem *anItem;
+//
+//    NSUInteger count = [[aSubmenu itemArray] count];
+//    for (; count > GPGENCRYPTION_MENU_ITEMS_COUNT; count--) {
+//        [aSubmenu removeItemAtIndex:GPGENCRYPTION_MENU_ITEMS_COUNT];
+//    }
+//
+//	if ([self encryptsToSelf] && theDefaultKey) {
+//		anItem = [aSubmenu addItemWithTitle:[self menuItemTitleForKey:theDefaultKey] action:NULL keyEquivalent:@""];
+//        [anItem setEnabled:[self canKeyBeUsedForEncryption:theDefaultKey]];
+//
+//		if ([self displaysAllUserIDs]) {
+//            for (GPGUserID *aUserID in [self secondaryUserIDsForKey:theDefaultKey]) {
 //				anItem = [aSubmenu addItemWithTitle:[self menuItemTitleForUserID:aUserID indent:1] action:NULL keyEquivalent:@""];
 //				[anItem setEnabled:NO];
 //			}
 //		}
 //	}
-}
-
-- (void)refreshPublicKeysMenu {
-	DebugLog(@"[DEBUG] %s", __PRETTY_FUNCTION__);
-    NSMenu *aSubmenu = [choosePublicKeysMenuItem menu];
-    GPGKey *theDefaultKey = [self publicKeyForSecretKey:[self defaultKey]];
-    NSMenuItem *anItem;
-
-    NSUInteger count = [[aSubmenu itemArray] count];
-    for (; count > GPGENCRYPTION_MENU_ITEMS_COUNT; count--) {
-        [aSubmenu removeItemAtIndex:GPGENCRYPTION_MENU_ITEMS_COUNT];
-    }
-
-	if ([self encryptsToSelf] && theDefaultKey) {
-		anItem = [aSubmenu addItemWithTitle:[self menuItemTitleForKey:theDefaultKey] action:NULL keyEquivalent:@""];
-        [anItem setEnabled:[self canKeyBeUsedForEncryption:theDefaultKey]];
-
-		if ([self displaysAllUserIDs]) {
-            for (GPGUserID *aUserID in [self secondaryUserIDsForKey:theDefaultKey]) {
-				anItem = [aSubmenu addItemWithTitle:[self menuItemTitleForUserID:aUserID indent:1] action:NULL keyEquivalent:@""];
-				[anItem setEnabled:NO];
-			}
-		}
-	}
-}
+//}
 
 - (void)checkPGPmailPresence {
 	if (![self ignoresPGPPresence]) {
@@ -488,7 +701,7 @@ static BOOL gpgMailWorks = YES;
 
 // TODO: Fix me for libmacgpg
 - (BOOL)checkGPG {
-    GPGErrorCode errorCode = [GPGController testGPG];
+    GPGErrorCode errorCode = (GPGErrorCode)[GPGController testGPG];
     NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
     switch (errorCode) {
         case GPGErrorNotFound:
@@ -532,7 +745,7 @@ static BOOL gpgMailWorks = YES;
 }
 
 - (void)finishInitialization {
-	NSMenuItem *aMenuItem;
+//	NSMenuItem *aMenuItem;
 
     // Load all keys.
     [self loadGPGKeys];
@@ -543,8 +756,9 @@ static BOOL gpgMailWorks = YES;
     // Create the decryption queue.
     decryptionQueue = dispatch_queue_create("org.gpgmail.decryption", NULL);
     verificationQueue = dispatch_queue_create("org.gpgmail.verification", NULL);
+    collectingQueue = dispatch_queue_create("org.gpgmail.collection", NULL);
 
-	// There's a bug in MOX: added menu items are not enabled/disabled correctly
+    // There's a bug in MOX: added menu items are not enabled/disabled correctly
 	// if they are instantiated programmatically
 	//UNUSED NSAssert([NSBundle loadNibNamed:@"GPGMenu" owner:self], @"### GPGMail: -[GPGMailBundle init]: Unable to load nib named GPGMenu");
 	// If we disable usurpation, we can't set contextual menu?!
@@ -553,20 +767,20 @@ static BOOL gpgMailWorks = YES;
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self selector:@selector(workspaceDidUnmount:) name:NSWorkspaceDidUnmountNotification object:[NSWorkspace sharedWorkspace]];
 	[allUserIDsMenuItem setState:([self displaysAllUserIDs] ? NSOnState:NSOffState)];
 
-	aMenuItem = [self newMenuItemWithTitle:NSLocalizedStringFromTableInBundle(@"PGP_SEARCH_KEYS_MENUITEM", @"GPGMail", [NSBundle bundleForClass:[self class]], "<PGP Key Search> menuItem title") action:@selector(gpgSearchKeys:) andKeyEquivalent:@"" inMenu:[[NSApplication sharedApplication] mainMenu] relativeToItemWithSelector:@selector(showAddressHistoryPanel:) offset:1];
-
-	if (!aMenuItem) {
-		DebugLog(@"### GPGMail: unable to add menuItem <PGP Key Search>");
-	} else {
-		[aMenuItem setTarget:self];
-	}
-    [aMenuItem release];
+//	aMenuItem = [self newMenuItemWithTitle:NSLocalizedStringFromTableInBundle(@"PGP_SEARCH_KEYS_MENUITEM", @"GPGMail", [NSBundle bundleForClass:[self class]], "<PGP Key Search> menuItem title") action:@selector(gpgSearchKeys:) andKeyEquivalent:@"" inMenu:[[NSApplication sharedApplication] mainMenu] relativeToItemWithSelector:@selector(showAddressHistoryPanel:) offset:1];
+//
+//	if (!aMenuItem) {
+//		DebugLog(@"### GPGMail: unable to add menuItem <PGP Key Search>");
+//	} else {
+//		[aMenuItem setTarget:self];
+//	}
+//    [aMenuItem release];
 
 	// Addition which has nothing to do with GPGMail
-	if ([[GPGOptions sharedOptions] boolForKey:@"EnableMessageURLCopy"]) {
-		aMenuItem = [self newMenuItemWithTitle:NSLocalizedStringFromTableInBundle(@"COPY_MSG_URL_MENUITEM", @"GPGMail", [NSBundle bundleForClass:[self class]], "<Copy Message URL> menuItem title") action:@selector(gpgCopyMessageURL:) andKeyEquivalent:@"" inMenu:[[NSApplication sharedApplication] mainMenu] relativeToItemWithSelector:@selector(pasteAsQuotation:) offset:0];
-        [aMenuItem release];
-    }
+//	if ([[GPGOptions sharedOptions] boolForKey:@"EnableMessageURLCopy"]) {
+//		aMenuItem = [self newMenuItemWithTitle:NSLocalizedStringFromTableInBundle(@"COPY_MSG_URL_MENUITEM", @"GPGMail", [NSBundle bundleForClass:[self class]], "<Copy Message URL> menuItem title") action:@selector(gpgCopyMessageURL:) andKeyEquivalent:@"" inMenu:[[NSApplication sharedApplication] mainMenu] relativeToItemWithSelector:@selector(pasteAsQuotation:) offset:0];
+//        [aMenuItem release];
+//    }
 
 	[self performSelector:@selector(checkPGPmailPresence) withObject:nil afterDelay:0];
 
@@ -719,12 +933,12 @@ static BOOL gpgMailWorks = YES;
 		[defaultKey release];
 		defaultKey = key;
 	} else {
-		[[GPGOptions sharedOptions] removeValueForKey:@"default-key"];
-		[defaultKey release];
-		defaultKey = nil;
+//		[[GPGOptions sharedOptions] removeValueForKey:@"default-key"];
+//		[defaultKey release];
+//		defaultKey = nil;
 	}
-	[self refreshPersonalKeysMenu];
-	[self refreshPublicKeysMenu];
+//	[self refreshPersonalKeysMenu];
+//	[self refreshPublicKeysMenu];
 }
 
 - (GPGKey *)defaultKey {
@@ -773,7 +987,7 @@ static BOOL gpgMailWorks = YES;
 }
 - (void)setEncryptsToSelf:(BOOL)flag {
 	[[GPGOptions sharedOptions] setBool:flag forKey:@"EncryptToSelf"];
-	[self refreshPublicKeysMenu];
+//	[self refreshPublicKeysMenu];
 }
 
 - (BOOL)encryptsToSelf {
@@ -799,9 +1013,9 @@ static BOOL gpgMailWorks = YES;
     
     
     [[GPGOptions sharedOptions] setValue:keyIdentifiers forKey:@"DisplayedKeyIdentifiers"];
-	[self refreshPublicKeysMenu];
-	[self refreshPersonalKeysMenu];
-	[self refreshKeyIdentifiersDisplayInMenu:[[self pgpViewMenuItem] submenu]];
+//	[self refreshPublicKeysMenu];
+//	[self refreshPersonalKeysMenu];
+//	[self refreshKeyIdentifiersDisplayInMenu:[[self pgpViewMenuItem] submenu]];
 }
 
 - (NSArray *)displayedKeyIdentifiers {
@@ -809,9 +1023,9 @@ static BOOL gpgMailWorks = YES;
 }
 - (void)setDisplaysAllUserIDs:(BOOL)flag {
 	[[GPGOptions sharedOptions] setBool:flag forKey:@"DisplayAllUserIDs"];
-	[self refreshPublicKeysMenu];
-	[self refreshPersonalKeysMenu];
-	[allUserIDsMenuItem setState:([self displaysAllUserIDs] ? NSOnState:NSOffState)];
+//	[self refreshPublicKeysMenu];
+//	[self refreshPersonalKeysMenu];
+//	[allUserIDsMenuItem setState:([self displaysAllUserIDs] ? NSOnState:NSOffState)];
 }
 
 - (BOOL)displaysAllUserIDs {
@@ -1029,22 +1243,22 @@ static BOOL gpgMailWorks = YES;
 
 
 - (void)mailTo:(id)sender {
-	NSString *error = nil;
-	NSPasteboard *aPasteboard = [NSPasteboard pasteboardWithUniqueName];
-	NSArray *pbTypes = [NSArray arrayWithObject:NSStringPboardType];
-	id serviceProvider = [NSApplication sharedApplication];
-
-	(void)[aPasteboard declareTypes:pbTypes owner:nil];
-	(void)[aPasteboard addTypes:pbTypes owner:nil];
-	(void)[aPasteboard setString:@"gpgtools-users@lists.gpgtools.org" forType:NSStringPboardType];
-
-	// Invoke <MailViewer/Mail To> service
-	if ([serviceProvider respondsToSelector:@selector(mailTo:userData:error:)]) {
-		[(MailApp *)serviceProvider mailTo:aPasteboard userData:nil error:&error];
-	}
-	if (error) {
-		NSBeep();
-	}
+//	NSString *error = nil;
+//	NSPasteboard *aPasteboard = [NSPasteboard pasteboardWithUniqueName];
+//	NSArray *pbTypes = [NSArray arrayWithObject:NSStringPboardType];
+//	id serviceProvider = [NSApplication sharedApplication];
+//
+//	(void)[aPasteboard declareTypes:pbTypes owner:nil];
+//	(void)[aPasteboard addTypes:pbTypes owner:nil];
+//	(void)[aPasteboard setString:@"gpgtools-users@lists.gpgtools.org" forType:NSStringPboardType];
+//
+//	// Invoke <MailViewer/Mail To> service
+//	if ([serviceProvider respondsToSelector:@selector(mailTo:userData:error:)]) {
+//		[(MailApp *)serviceProvider mailTo:aPasteboard userData:nil error:&error];
+//	}
+//	if (error) {
+//		NSBeep();
+//	}
 }
 
 //- (void)gpgForwardAction:(SEL)action from:(id)sender {
@@ -1064,7 +1278,7 @@ static BOOL gpgMailWorks = YES;
 }
 
 - (IBAction)gpgSearchKeys:(id)sender {
-	[[GPGKeyDownload sharedInstance] gpgSearchKeys:sender];
+//	[[GPGKeyDownload sharedInstance] gpgSearchKeys:sender];
 }
 
 - (void)flushKeyCache:(BOOL)refresh {
@@ -1082,10 +1296,9 @@ static BOOL gpgMailWorks = YES;
 	}
 	if (refresh) {
 		[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] postNotificationName:GPGKeyListWasInvalidatedNotification object:self];
-		[self refreshPersonalKeysMenu];                       // Was disabled
-		[self refreshPublicKeysMenu];                         // Was disabled
+//		[self refreshPersonalKeysMenu];                       // Was disabled
+//		[self refreshPublicKeysMenu];                         // Was disabled
 	}
-#warning CHECK: keys not synced with current editor!
 }
 
 - (void)warnUserForMissingPrivateKeys:(id)sender {
@@ -1126,12 +1339,13 @@ static BOOL gpgMailWorks = YES;
 }
 
 - (BOOL)canSignMessagesFromAddress:(NSString *)address {
-    NSString *fingerprint = [_cachedPublicGPGKeysByEmail valueForKey:[address gpgNormalizedEmail]];
+    NSString *fingerprint = [_cachedPersonalGPGKeysByEmail valueForKey:[address gpgNormalizedEmail]];
     return (fingerprint != nil);
 }
 
 - (BOOL)canEncryptMessagesToAddress:(NSString *)address {
     NSString *fingerprint = [_cachedPublicGPGKeysByEmail objectForKey:[address gpgNormalizedEmail]];
+    NSLog(@"Can encrypt to address: %@: %@", [address gpgNormalizedEmail], fingerprint != nil ? @"YES" : @"NO");
     return (fingerprint != nil);
 }
 
@@ -1311,141 +1525,140 @@ static BOOL gpgMailWorks = YES;
 	return nil;
 }
 
-- (NSString *)menuItemTitleForKey:(GPGKey *)key {
-	NSMutableArray *components = [NSMutableArray array];
-	NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
-	GPGUserID *primaryUserID;
-	BOOL isKeyRevoked, hasKeyExpired, isKeyDisabled, isKeyInvalid;
-	BOOL hasNonRevokedSubkey = NO, hasNonExpiredSubkey = NO, hasNonDisabledSubkey = NO, hasNonInvalidSubkey = NO;
-    GPGKey *publicKey;
+//- (NSString *)menuItemTitleForKey:(GPGKey *)key {
+//	NSMutableArray *components = [NSMutableArray array];
+//	NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
+//	GPGUserID *primaryUserID;
+//	BOOL isKeyRevoked, hasKeyExpired, isKeyDisabled, isKeyInvalid;
+//	BOOL hasNonRevokedSubkey = NO, hasNonExpiredSubkey = NO, hasNonDisabledSubkey = NO, hasNonInvalidSubkey = NO;
+//    GPGKey *publicKey;
+//
+//    [key retain];
+//#warning FIXME: Secret keys are never marked as revoked! Check expired/disabled/invalid
+//	publicKey = [self publicKeyForSecretKey:key];
+//    [key release];
+//	primaryUserID = ([[publicKey userIDs] count] > 0 ? [[publicKey userIDs] objectAtIndex:0] : nil);
+//	isKeyRevoked = publicKey.revoked;             // Secret keys are never marked as revoked!
+//	hasKeyExpired = publicKey.expired;
+//	isKeyDisabled = publicKey.disabled;
+//	isKeyInvalid = publicKey.invalid;
+//
+//	// A key can have no "problem" whereas the subkey it needs has such "problems"!!!
+//#warning We really need to filter keys according to SUBKEYS!
+//	// Currently we filter only according to key -> we display disabled keys,
+//	// whereas we shouldn't even show them
+//    for (GPGSubkey *aSubkey in [publicKey subkeys]) {
+//		if (!aSubkey.revoked) {
+//			hasNonRevokedSubkey = YES;
+//		}
+//		if (!aSubkey.expired) {
+//			hasNonExpiredSubkey = YES;
+//		}
+//		if (!aSubkey.disabled) {
+//			hasNonDisabledSubkey = YES;
+//		}
+//		if (!aSubkey.invalid) {
+//			hasNonInvalidSubkey = YES;
+//		}
+//	}
+//
+//	if (primaryUserID != nil) {
+//		if (primaryUserID.revoked) {
+//			[components addObject:NSLocalizedStringFromTableInBundle(@"REVOKED_USER_ID:", @"GPGMail", myBundle, "")];
+//		}
+//		if (primaryUserID.invalid) {
+//			[components addObject:NSLocalizedStringFromTableInBundle(@"INVALID_USER_ID:", @"GPGMail", myBundle, "")];
+//		}
+//	}
+//
+//	if (isKeyRevoked && !hasNonRevokedSubkey) {
+//		[components addObject:NSLocalizedStringFromTableInBundle(@"REVOKED_KEY:", @"GPGMail", myBundle, "")];
+//	}
+//	if (hasKeyExpired && !hasNonExpiredSubkey) {
+//		[components addObject:NSLocalizedStringFromTableInBundle(@"EXPIRED_KEY:", @"GPGMail", myBundle, "")];
+//	}
+//	if (isKeyDisabled && !hasNonDisabledSubkey) {
+//		[components addObject:NSLocalizedStringFromTableInBundle(@"DISABLED_KEY:", @"GPGMail", myBundle, "")];
+//	}
+//	if (isKeyInvalid && !hasNonInvalidSubkey) {
+//		[components addObject:NSLocalizedStringFromTableInBundle(@"INVALID_KEY:", @"GPGMail", myBundle, "")];
+//	}
+//
+//    for (NSString *anIdentifier in [self displayedKeyIdentifiers]) {
+//		id aValue;
+//		NSString *aComponent;
+//
+//		if ([anIdentifier isEqualToString:@"keyID"]) {
+//			anIdentifier = @"shortKeyID";
+//		} else if ([anIdentifier isEqualToString:@"longKeyID"]) {
+//			anIdentifier = @"keyID";
+//        }
+//        // Only call the method if it exists on the key.
+//        if([publicKey respondsToSelector:NSSelectorFromString(anIdentifier)])
+//            aValue = [publicKey performSelector:NSSelectorFromString(anIdentifier)];
+//        else
+//            aValue = nil;
+//        
+//        if (aValue == nil || ([aValue isKindOfClass:[NSString class]] && [(NSString *) aValue length] == 0)) {
+//			continue;
+//		}
+//
+//		if ([anIdentifier isEqualToString:@"email"]) {
+//			aComponent = [NSString stringWithFormat:@"<%@>", aValue];
+//		} else if ([anIdentifier isEqualToString:@"comment"]) {
+//			aComponent = [NSString stringWithFormat:@"(%@)", aValue];
+//		}
+//        else if ([anIdentifier isEqualToString:@"shortKeyID"]) {
+//			aComponent = [NSString stringWithFormat:@"0x%@", aValue];
+//		} else if ([anIdentifier isEqualToString:@"keyID"]) {
+//			aComponent = [NSString stringWithFormat:@"0x%@", aValue];
+//		} else {
+//			aComponent = aValue;
+//		}
+//		[components addObject:aComponent];
+//	}
+//
+//	return [components componentsJoinedByString:@" "];
+//}
 
-    [key retain];
-#warning FIXME: Secret keys are never marked as revoked! Check expired/disabled/invalid
-	publicKey = [self publicKeyForSecretKey:key];
-    [key release];
-	primaryUserID = ([[publicKey userIDs] count] > 0 ? [[publicKey userIDs] objectAtIndex:0] : nil);
-	isKeyRevoked = publicKey.revoked;             // Secret keys are never marked as revoked!
-	hasKeyExpired = publicKey.expired;
-	isKeyDisabled = publicKey.disabled;
-	isKeyInvalid = publicKey.invalid;
-
-	// A key can have no "problem" whereas the subkey it needs has such "problems"!!!
-#warning We really need to filter keys according to SUBKEYS!
-	// Currently we filter only according to key -> we display disabled keys,
-	// whereas we shouldn't even show them
-    for (GPGSubkey *aSubkey in [publicKey subkeys]) {
-		if (!aSubkey.revoked) {
-			hasNonRevokedSubkey = YES;
-		}
-		if (!aSubkey.expired) {
-			hasNonExpiredSubkey = YES;
-		}
-		if (!aSubkey.disabled) {
-			hasNonDisabledSubkey = YES;
-		}
-		if (!aSubkey.invalid) {
-			hasNonInvalidSubkey = YES;
-		}
-	}
-
-	if (primaryUserID != nil) {
-		if (primaryUserID.revoked) {
-			[components addObject:NSLocalizedStringFromTableInBundle(@"REVOKED_USER_ID:", @"GPGMail", myBundle, "")];
-		}
-		if (primaryUserID.invalid) {
-			[components addObject:NSLocalizedStringFromTableInBundle(@"INVALID_USER_ID:", @"GPGMail", myBundle, "")];
-		}
-	}
-
-	if (isKeyRevoked && !hasNonRevokedSubkey) {
-		[components addObject:NSLocalizedStringFromTableInBundle(@"REVOKED_KEY:", @"GPGMail", myBundle, "")];
-	}
-	if (hasKeyExpired && !hasNonExpiredSubkey) {
-		[components addObject:NSLocalizedStringFromTableInBundle(@"EXPIRED_KEY:", @"GPGMail", myBundle, "")];
-	}
-	if (isKeyDisabled && !hasNonDisabledSubkey) {
-		[components addObject:NSLocalizedStringFromTableInBundle(@"DISABLED_KEY:", @"GPGMail", myBundle, "")];
-	}
-	if (isKeyInvalid && !hasNonInvalidSubkey) {
-		[components addObject:NSLocalizedStringFromTableInBundle(@"INVALID_KEY:", @"GPGMail", myBundle, "")];
-	}
-
-    for (NSString *anIdentifier in [self displayedKeyIdentifiers]) {
-		id aValue;
-		NSString *aComponent;
-
-		if ([anIdentifier isEqualToString:@"keyID"]) {
-			anIdentifier = @"shortKeyID";
-		} else if ([anIdentifier isEqualToString:@"longKeyID"]) {
-			anIdentifier = @"keyID";
-        }
-        // Only call the method if it exists on the key.
-        if([publicKey respondsToSelector:NSSelectorFromString(anIdentifier)])
-            aValue = [publicKey performSelector:NSSelectorFromString(anIdentifier)];
-        else
-            aValue = nil;
-        
-        if (aValue == nil || ([aValue isKindOfClass:[NSString class]] && [(NSString *) aValue length] == 0)) {
-			continue;
-		}
-
-		if ([anIdentifier isEqualToString:@"email"]) {
-			aComponent = [NSString stringWithFormat:@"<%@>", aValue];
-		} else if ([anIdentifier isEqualToString:@"comment"]) {
-			aComponent = [NSString stringWithFormat:@"(%@)", aValue];
-		}
-        else if ([anIdentifier isEqualToString:@"shortKeyID"]) {
-			aComponent = [NSString stringWithFormat:@"0x%@", aValue];
-		} else if ([anIdentifier isEqualToString:@"keyID"]) {
-			aComponent = [NSString stringWithFormat:@"0x%@", aValue];
-		} else {
-			aComponent = aValue;
-		}
-		[components addObject:aComponent];
-	}
-
-	return [components componentsJoinedByString:@" "];
-}
-
-- (NSString *)menuItemTitleForUserID:(GPGUserID *)userID indent:(unsigned)indent {
-	NSMutableArray *titleElements = [NSMutableArray array];
-	NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
-
-#warning FIXME: Secret keys are never marked as revoked! Check expired/disabled/invalid
-	if (userID.revoked) {
-		[titleElements addObject:NSLocalizedStringFromTableInBundle(@"REVOKED_USER_ID:", @"GPGMail", myBundle, "")];
-	}
-	if (userID.invalid) {
-		[titleElements addObject:NSLocalizedStringFromTableInBundle(@"INVALID_USER_ID:", @"GPGMail", myBundle, "")];
-	}
-
-    for (NSString *anIdentifier in [self displayedKeyIdentifiers]) {
-		id aValue;
-
-		if ([anIdentifier isEqualToString:@"fingerprint"] || [anIdentifier isEqualToString:@"keyID"] || [anIdentifier isEqualToString:@"algorithm"] || [anIdentifier isEqualToString:@"longKeyID"]) {
-			continue;
-		}
-		
-        if([userID respondsToSelector:NSSelectorFromString(anIdentifier)])
-            aValue = [userID performSelector:NSSelectorFromString(anIdentifier)];
-        else
-            aValue = nil;
-		if (aValue == nil || ([aValue isKindOfClass:[NSString class]] && [(NSString *) aValue length] == 0)) {
-			continue;
-		}
-
-		if ([anIdentifier isEqualToString:@"email"]) {
-			[titleElements addObject:[NSString stringWithFormat:@"<%@>", aValue]];
-		} else if ([anIdentifier isEqualToString:@"comment"]) {
-			[titleElements addObject:[NSString stringWithFormat:@"(%@)", aValue]];
-		}
-        else {
-			[titleElements addObject:aValue];
-		}
-	}
-
-	return [[@"" stringByPaddingToLength:(indent * 4) withString:@" " startingAtIndex:0] stringByAppendingString:[titleElements componentsJoinedByString:@" "]];
-}
+//- (NSString *)menuItemTitleForUserID:(GPGUserID *)userID indent:(unsigned)indent {
+//	NSMutableArray *titleElements = [NSMutableArray array];
+//	NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
+//
+//	if (userID.revoked) {
+//		[titleElements addObject:NSLocalizedStringFromTableInBundle(@"REVOKED_USER_ID:", @"GPGMail", myBundle, "")];
+//	}
+//	if (userID.invalid) {
+//		[titleElements addObject:NSLocalizedStringFromTableInBundle(@"INVALID_USER_ID:", @"GPGMail", myBundle, "")];
+//	}
+//
+//    for (NSString *anIdentifier in [self displayedKeyIdentifiers]) {
+//		id aValue;
+//
+//		if ([anIdentifier isEqualToString:@"fingerprint"] || [anIdentifier isEqualToString:@"keyID"] || [anIdentifier isEqualToString:@"algorithm"] || [anIdentifier isEqualToString:@"longKeyID"]) {
+//			continue;
+//		}
+//		
+//        if([userID respondsToSelector:NSSelectorFromString(anIdentifier)])
+//            aValue = [userID performSelector:NSSelectorFromString(anIdentifier)];
+//        else
+//            aValue = nil;
+//		if (aValue == nil || ([aValue isKindOfClass:[NSString class]] && [(NSString *) aValue length] == 0)) {
+//			continue;
+//		}
+//
+//		if ([anIdentifier isEqualToString:@"email"]) {
+//			[titleElements addObject:[NSString stringWithFormat:@"<%@>", aValue]];
+//		} else if ([anIdentifier isEqualToString:@"comment"]) {
+//			[titleElements addObject:[NSString stringWithFormat:@"(%@)", aValue]];
+//		}
+//        else {
+//			[titleElements addObject:aValue];
+//		}
+//	}
+//
+//	return [[@"" stringByPaddingToLength:(indent * 4) withString:@" " startingAtIndex:0] stringByAppendingString:[titleElements componentsJoinedByString:@" "]];
+//}
 
 - (BOOL)canKeyBeUsedForEncryption:(GPGKey *)key {
 	// Only either the key or one of the subkeys has to be valid,

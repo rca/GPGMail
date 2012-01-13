@@ -28,8 +28,15 @@
     }
     [attachmentString addAttribute:NSCursorAttributeName value:[NSCursor arrowCursor] 
                              range:NSMakeRange(0, [attachmentString length])];
+    float offset = -1.0;
+    if([link isEqualToString:@"gpgmail://show-signature"])
+        offset = -2.0;
+    
+    if([link isEqualToString:@"gpgmail://show-attachments"])
+        offset = -3.0;
+    
     [attachmentString addAttribute:NSBaselineOffsetAttributeName 
-                             value:[NSNumber numberWithFloat:-1.0]
+                             value:[NSNumber numberWithFloat:offset]
                              range:NSMakeRange(0,[attachmentString length])];
     NSAttributedString *nonMutableAttachmentString = [[NSAttributedString alloc] initWithAttributedString:attachmentString];
     [attachmentString release];

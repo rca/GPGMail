@@ -6,6 +6,8 @@
 //  Copyright 2006 Keith Blount. All rights reserved.
 //
 
+#define MMIN(A,B)	({ A < B ? A : B; })
+
 #import "NSBezierPath_KBAdditions.h"
 
 
@@ -13,17 +15,17 @@
 
 + (NSBezierPath *)bezierPathWithRoundedRect:(NSRect)aRect
 								  inCorners:(KBCornerType)corners
-							   cornerRadius:(float)radius
+							   cornerRadius:(float)cornerRadius
 									flipped:(BOOL)isFlipped
 {
 	NSBezierPath* path = [self bezierPath];
-	radius = MIN(radius, 0.5f * MIN(NSWidth(aRect), NSHeight(aRect)));
-	NSRect rect = NSInsetRect(aRect, radius, radius);
+	float newRadius = MMIN(cornerRadius, 0.5f * MMIN(NSWidth(aRect), NSHeight(aRect)));
+	NSRect rect = NSInsetRect(aRect, newRadius, newRadius);
 	
 	if (corners & (isFlipped ? KBTopLeftCorner : KBBottomLeftCorner))
 	{
 		[path appendBezierPathWithArcWithCenter:NSMakePoint(NSMinX(rect), NSMinY(rect))
-										 radius:radius
+										 radius:newRadius
 									 startAngle:180.0
 									   endAngle:270.0];
 	}
@@ -36,7 +38,7 @@
 	if (corners & (isFlipped ? KBTopRightCorner : KBBottomRightCorner))
 	{
 		[path appendBezierPathWithArcWithCenter:NSMakePoint(NSMaxX(rect), NSMinY(rect))
-										 radius:radius
+										 radius:newRadius
 									 startAngle:270.0
 									   endAngle:360.0];
 	}
@@ -49,7 +51,7 @@
 	if (corners & (isFlipped ? KBBottomRightCorner : KBTopRightCorner))
 	{
 		[path appendBezierPathWithArcWithCenter:NSMakePoint(NSMaxX(rect), NSMaxY(rect))
-										 radius:radius
+										 radius:newRadius
 									 startAngle:0.0
 									   endAngle:90.0];
 	}
@@ -62,7 +64,7 @@
 	if (corners & (isFlipped ? KBBottomLeftCorner : KBTopLeftCorner))
 	{
 		[path appendBezierPathWithArcWithCenter:NSMakePoint(NSMinX(rect), NSMaxY(rect))
-										 radius:radius
+										 radius:newRadius
 									 startAngle:90.0
 									   endAngle:180.0];
 	}

@@ -108,7 +108,7 @@
 - (struct CGRect)rectOfFromAddress;
 @property BOOL messageHasBackground; // @synthesize messageHasBackground=_messageHasBackground;
 @property(retain) NSAttributedString *dateAttributedString; // @synthesize dateAttributedString=_dateAttributedString;
-@property EmailViewController *parentController; // @synthesize parentController=_parentController;
+@property(assign) EmailViewController *parentController; // @synthesize parentController=_parentController;
 
 @end
 

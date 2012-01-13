@@ -27,6 +27,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#define restrict
+#import <RegexKit/RegexKit.h>
 #import <NSString-NSStringUtils.h>
 #import "NSData+GPGMail.h"
 
@@ -39,9 +41,13 @@
 		return @"";
 	}
 	
-    int encodings[4] = {NSUTF8StringEncoding, NSISOLatin1StringEncoding, NSISOLatin2StringEncoding,
-        NSASCIIStringEncoding};
-    for(int i = 0; i < 4; i++) {
+    int items = 10;
+    int encodings[10] = {NSUTF8StringEncoding, 
+                            NSWindowsCP1251StringEncoding, NSWindowsCP1252StringEncoding, NSWindowsCP1253StringEncoding,
+                            NSWindowsCP1254StringEncoding, NSWindowsCP1250StringEncoding, NSISO2022JPStringEncoding,
+                            NSISOLatin1StringEncoding, NSISOLatin2StringEncoding,                    
+                            NSASCIIStringEncoding};
+    for(int i = 0; i < items; i++) {
         retString = [NSString stringWithData:self encoding:encodings[i]];
         if([retString length] > 0)
             return retString;
@@ -54,18 +60,25 @@
 
 - (NSRange)rangeOfPGPInlineSignatures  {
     NSRange range = NSMakeRange(NSNotFound, 0);
+    // Use the regular expression to ignore all signatures contained in a reply.
+    NSString *signatureRegex = [NSString stringWithFormat:@"(?sm)(^%@\r?\n(.*)\r?\n%@)", PGP_SIGNED_MESSAGE_BEGIN, PGP_MESSAGE_SIGNATURE_END];
     
     NSString *signedContent = [self stringByGuessingEncoding];
     if([signedContent length] == 0)
         return range;
-    NSRange startRange = [signedContent rangeOfString:PGP_SIGNED_MESSAGE_BEGIN];
-    if(startRange.location == NSNotFound)
-        return range;
-    NSRange endRange = [signedContent rangeOfString:PGP_MESSAGE_SIGNATURE_END];
-    if(endRange.location == NSNotFound)
+    
+    NSRange signedRange = NSMakeRange(NSNotFound, 0);
+    @try {
+         signedRange = [signedContent rangeOfRegex:signatureRegex inRange:NSMakeRange(0, [signedContent length]) capture:0];
+    }
+    @catch(id e) {
+        // Fail gracefully, if for example binary data is detected.
+    }
+    
+    if(signedRange.location == NSNotFound)
         return range;
     
-    return NSUnionRange(startRange, endRange);
+    return signedRange;
 }
 
 - (NSRange)rangeOfPGPSignatures  {
@@ -84,7 +97,6 @@
     return NSUnionRange(startRange, endRange);
 }
 
-
 - (NSRange)rangeOfPGPInlineEncryptedData {
     // Fetch part body to look for the leading GPG string.
     // For some reason textEncoding doesn't really work... and is actually never called
@@ -94,6 +106,25 @@
     // so let's get out of here.!
     if(![body length])
         return NSMakeRange(NSNotFound, 0);
+    
+    NSRange range = NSMakeRange(NSNotFound, 0);
+    // Use the regular expression to ignore all signatures contained in a reply.
+    NSString *encryptedRegex = [NSString stringWithFormat:@"(?sm)(^%@\r?\n(.*)\r?\n%@)", PGP_MESSAGE_BEGIN, PGP_MESSAGE_END];
+    
+    NSRange encryptedRange = NSMakeRange(NSNotFound, 0);
+    @try {
+        encryptedRange = [body rangeOfRegex:encryptedRegex inRange:NSMakeRange(0, [body length]) capture:0];
+    }
+    @catch(id e) {
+        // Fail gracefully, if for example binary data is detected.
+    }
+    
+    if(encryptedRange.location == NSNotFound)
+        return range;
+    
+    return encryptedRange;
+    
+    
     NSRange startRange = [body rangeOfString:PGP_MESSAGE_BEGIN];
     // For some reason (OS X Bug? Code bug?) comparing to NSNotFound doesn't
     // (always?) work.
@@ -106,6 +137,40 @@
     
     NSRange gpgRange = NSUnionRange(startRange, endRange);
     return gpgRange;
+}
+
+- (BOOL)mightContainPGPEncryptedData {
+    NSString *body = [self stringByGuessingEncoding];
+    // If the encoding can't be guessed, the body will probably be empty,
+    // so let's get out of here.!
+    if(![body length])
+        return NO;
+    
+    NSRange startRange = [body rangeOfString:PGP_MESSAGE_BEGIN];
+    // For some reason (OS X Bug? Code bug?) comparing to NSNotFound doesn't
+    // (always?) work.
+    //if(startRange.location == NSNotFound)
+    if(startRange.location == NSNotFound)
+        return NO;
+    NSRange endRange = [body rangeOfString:PGP_MESSAGE_END];
+    if(endRange.location == NSNotFound)
+        return NO;
+    
+    return YES;
+}
+
+- (NSRange)rangeOfPGPPublicKey {
+    NSString *body = [self stringByGuessingEncoding];
+    if(![body length])
+        return NSMakeRange(NSNotFound, 0);
+    NSRange startRange = [body rangeOfString:PGP_MESSAGE_PUBLIC_KEY_BEGIN];
+    if(startRange.location == NSNotFound)
+        return startRange;
+    NSRange endRange = [body rangeOfString:PGP_MESSAGE_PUBLIC_KEY_END];
+    if(endRange.location == NSNotFound)
+        return endRange;
+    
+    return NSUnionRange(startRange, endRange);
 }
 
 @end

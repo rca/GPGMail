@@ -176,7 +176,7 @@
 @property(retain) Message *parentMessageUsedForRedundantTextIdentification; // @synthesize parentMessageUsedForRedundantTextIdentification=_parentMessageUsedForRedundantTextIdentification;
 @property(readonly, retain, nonatomic) NSArray *selectedMailboxes; // @synthesize selectedMailboxes=_selectedMailboxes;
 @property(readonly, retain, nonatomic) NSSet *allMessagesInConversation; // @synthesize allMessagesInConversation=_allMessagesInConversation;
-@property MessageViewingPaneController *parentController; // @synthesize parentController=_parentController;
+@property(assign) MessageViewingPaneController *parentController; // @synthesize parentController=_parentController;
 @property(retain, nonatomic) Message *message; // @synthesize message=_message;
 @property(retain) ActivityMonitor *urlificationMonitor; // @synthesize urlificationMonitor=_urlificationMonitor;
 @property(retain) ActivityMonitor *documentMonitor; // @synthesize documentMonitor=_documentMonitor;

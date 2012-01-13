@@ -21,6 +21,16 @@ DON'T EVER DELETE THIS FOLDER!
 
 _getSomeCharsetFromPartTree -> exists only internally
 
+- -[Message setNumberOfAttachments:isSigned:isEncrypted:] is only called for
+  encrypted messages, strangely enough.
+  Still have to find out what usually sets the number.
+  Mail.app uses -[MessageStore setNumberOfAttachments:isSigned:isEncrypted:forMessage:] to set the number
+  of attachments for every message, but this is only called when the message comes in
+  and never touched again, except for encrypted messages.
+  
+  So to always work, GPGMail forces Mail.app to update the number for every message, each time
+  it's parsed or the number is different, by recalculating the number.
+
 * Committing *
 
 - Always use git -p <filename>. This let's you decide for each file
@@ -39,3 +49,10 @@ _getSomeCharsetFromPartTree -> exists only internally
   
   // To detect if the data contains real message headers.
   - (struct _NSRange)rangeOfRFC822HeaderData;
+
+* Data Detectors *
+
+- Extremely hard to implement native ones.
+- Enabling Javascript in WebViews works
+  [[WebView preferences] setJavaScriptEnabled:YES]
+- Using Javascript to emulate the bevaiour might be rather easy.

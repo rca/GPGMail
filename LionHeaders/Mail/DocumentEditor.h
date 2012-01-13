@@ -197,10 +197,10 @@
 - (void)restoreEditorForTAL;
 - (void)window:(id)arg1 willEncodeRestorableState:(id)arg2;
 @property BOOL shouldSaveWhenClosing; // @synthesize shouldSaveWhenClosing=_shouldSaveWhenClosing;
-@property MessageViewer *possibleFullScreenViewerParent; // @synthesize possibleFullScreenViewerParent=_possibleFullScreenViewerParent;
+@property(assign) MessageViewer *possibleFullScreenViewerParent; // @synthesize possibleFullScreenViewerParent=_possibleFullScreenViewerParent;
 @property(readonly) EditingWebMessageController *webMessageController; // @synthesize webMessageController=_webMessageController;
 @property(retain) NSDictionary *settings; // @synthesize settings=_settings;
-@property id loadDelegate; // @synthesize loadDelegate=_loadDelegate;
+@property(assign) id loadDelegate; // @synthesize loadDelegate=_loadDelegate;
 - (BOOL)validateToolbarItem:(id)arg1;
 - (void)setupToolbar;
 - (void)setupFullScreenButtonWidths;

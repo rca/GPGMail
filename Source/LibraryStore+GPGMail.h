@@ -31,6 +31,6 @@
 
 @interface LibraryStore (GPGMail)
 
-- (id)MASnippetsForMessages:(id)messages;
+//- (id)MASnippetsForMessages:(id)messages;
 
 @end

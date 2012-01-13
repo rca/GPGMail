@@ -44,6 +44,7 @@
 #import <NSData-MimeDataEncoding.h>
 #import <MFMimeDecodeContext.h>
 #import <MFError.h>
+#import <NSString-HTMLConversion.h>
 #import <Message.h>
 #import <MessageWriter.h>
 #import <MimeBody.h>
@@ -113,184 +114,322 @@
     * The advantage of the new method is that it completely ignores complex mime types,
       making the whole decoding process more reliable.
 
+ NEW METHOD 2
+   * Well, NEW METHOD is not really suitable, since it completely replaces multipart/mixed
+     messages with only the decrypted part, which wouldn't allow to have non-encrypted
+     attachments.
+ 
+   The steps which actually make sense are the following:
+   
+   1.) Directly in decodeWithContext: only check for multipart/encrypted.
+       If found, proceed decrypting the application/octet part and replacing
+       the whole message with the decrypted data, which must contain a valid
+       RFC 822 compliant message including all relevant headers.
+   
+   2.) Use the hook in decodeTextHtml and decodeTextPart
+     
+     2.1) Check if the part is decoded with base64. If so decode it.
+     2.1) Check the part data for PGP signatures or PGP encrypted data.
+     2.2) Decrypt the part data.
+     2.2) Replace the encrypted data with the decrypted data (for either the html or text part)
+     2.3) Cache the complete data just like the decrypted message body would
+          be cached.
+     2.4) DON'T REPLACE THE MESSAGE BODY but
+          return the complete data
+     2.5) Let Mail.app work it's magic for the rest
+          of the message.
+ 
  */
 // TODO: Extend to find multiple signatures and encrypted data parts, if necessary.
 - (id)MADecodeWithContext:(id)ctx {
-    DebugLog(@"[DEBUG] %s enter - decoding: %@", __PRETTY_FUNCTION__,
-             [(Message *)[(MimeBody *)[self mimeBody] message] subject]);
+    Message *currentMessage = [(MimeBody *)[self mimeBody] message];
+//    DebugLog(@"[DEBUG] %s enter - decoding: %@ - part: %@", __PRETTY_FUNCTION__,
+//             [currentMessage subject], self);
+    
+    // _calculateSnippetForMessages doesn't attempt to decode
+    // attachments. That's a problem, because once a message is displayed
+    // the PGPInfoCollected flag is already set on the message,
+    // but attachment were never taken into account.
+    // Resetting PGPInfoCollected on each decoding might solve
+    // this issue. (doesn't completely fix it, read on, fixes it better, but might cause other problems.)
+    // If the message is already selected when Mail.app is opened, the message doesn't seem
+    // to be reparsed, but the info from _calculateSnippetForMessages is somehow reused. 
+    if(![self parentPart]) {
+        ((Message *)[(MimeBody *)[self mimeBody] message]).PGPInfoCollected = NO;  
+        ((MFMimeDecodeContext *)ctx).decodeTextPartsOnly = NO;
+    }
+        
+//    NSLog(@"Only decode text parts: %@", ((MFMimeDecodeContext *)ctx).decodeTextPartsOnly ? @"YES" : @"NO");
+    
     // Check if PGP is enabled in Mail.app settings for decoding messages,
     // otherwise leave.
     if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"] ||
-       [[GPGMailBundle sharedInstance] componentsMissing])
-        return [self MADecodeWithContext:ctx];
-
-    if([[[(MimeBody *)[self mimeBody] message] getIvar:@"skipPGPProcessing"] boolValue]) {
+       [[GPGMailBundle sharedInstance] componentsMissing]) {
         return [self MADecodeWithContext:ctx];
     }
 
-    // Multipart mixed might contain PGP/MIME signed parts.
-    // Don't ask me who generates this, but some client does...
-    // Apparently this happens when a mail goes through the mailinglist daemon.
-    // FRECK!
-    if([self isType:@"multipart" subtype:@"mixed"]) {
-        return [self MADecodeWithContext:ctx];
-    }
-
-    // Early alpha Fucked up messages also are multipart/mixed.
+    id ret = nil;
     if([self isPGPMimeEncrypted]) {
-        id ret = [self decodeMultipartEncryptedWithContext:ctx];
+        MimeBody *decryptedBody = [self decodeMultipartEncryptedWithContext:ctx];
+        // Add PGP information from mime parts.
+        ((MFMimeDecodeContext *)ctx).shouldSkipUpdatingMessageFlags = YES;
+        ret = [decryptedBody parsedMessageWithContext:ctx];
+        [currentMessage collectPGPInformationStartingWithMimePart:self decryptedBody:decryptedBody];
+        // If decryption failed, call the original method.
         if(!ret)
-            return [self MADecodeWithContext:ctx];
-        return ret;
+            ret = [self MADecodeWithContext:ctx];
+    }
+    else {
+        ret = [self MADecodeWithContext:ctx];
+    }
+    
+    // Loop through all the mime parts that have been processed and set
+    // all necessary flags.
+    // This is pretty much crazy, in case of mailing list emails, the multipart/encrypted
+    // part is NOT the top part. So at this point all the information found for the message
+    // would be overwritten. To avoid this, a check is performed if the PGP info was already
+    // collected. If that's the case, skip the collecting
+    if([self parentPart] == nil && !currentMessage.PGPInfoCollected) {
+        [currentMessage collectPGPInformationStartingWithMimePart:self
+                                        decryptedBody:nil];
     }
 
-    // 1.) Check if this is the top level mime part.
-    //     If so, check the whole body if PGP data is included.
-    MimePart *topLevelPart = [[self mimeBody] topLevelPart];
-    MimePart *PGPSignedPart = nil;
-    MimePart *PGPEncryptedPart = nil;
-
-    if([topLevelPart isEqual:self]) {
-        BOOL isPGPMimeEncrypted = [topLevelPart isPGPMimeEncrypted];
-        // Try to decrypt the message using PGP/Mime methods and
-        // return the result.
-        // If an error occured the original Mail.app method is called.
-        if(isPGPMimeEncrypted) {
-            id ret = [self decodeMultipartEncryptedWithContext:ctx];
-            if(!ret)
-                return [self MADecodeWithContext:ctx];
-            return ret;
-        }
-        // Check if the message is PGP/Mime signed. If so the original
-        // Mail.app method is invoked, since PGP/MIME signatures behave basically
-        // exactly like S/MIME signatures.
-        BOOL isPGPMimeSigned = [topLevelPart isPGPMimeSigned];
-        if(isPGPMimeSigned)
-            return [self decodeMultipartSignedWithContext:ctx];
-
-        // PGP/MIME is covered. Now onto PGP inline data.
-        // First, look through the whole body data, to find pgp signatures
-        // and pgp encrypted data.
-        // If no PGP data is found let Mail.app take over and finish.
-        // Otherwise the heavy part starts.
-        // The data might be base64Decoded. If so, decode first, then check.
-        NSData *decodedData = nil;
-        if([self.contentTransferEncoding isEqualToString:@"base64"])
-            decodedData = [[[self mimeBody] bodyData] decodeBase64];
-        else
-            decodedData = [[self mimeBody] bodyData];
-        if([decodedData rangeOfPGPSignatures].location == NSNotFound && [decodedData rangeOfPGPInlineEncryptedData].location == NSNotFound)
-            return [self MADecodeWithContext:ctx];
-
-        // So, encrypted data or signature data was found. Now on to the hard part.
-        [self findPGPInlineSignedAndEncryptedMimeParts];
-        PGPEncryptedPart = [self getIvar:@"PGPEncryptedPart"];
-        PGPSignedPart = [self getIvar:@"PGPSignedPart"];
-        MimePart *earlyAlphaFuckedUpPart = [self getIvar:@"PGPFuckedUpEarlyAlpha"];
-
-        if(PGPEncryptedPart)
-            return [PGPEncryptedPart decodeInlinePGPDataWithContext:ctx];
-        if(PGPSignedPart)
-            return [PGPSignedPart decodeInlinePGPDataWithContext:ctx];
-        if(earlyAlphaFuckedUpPart)
-            return [earlyAlphaFuckedUpPart decodeMultipartEncryptedWithContext:ctx];
-
-        // Hopefully encrypted parts and signed parts were successfully found,
-        // now Mail.app takes over and parses every mime part.
-    }
-    id ret = [self MADecodeWithContext:ctx];
+    // To remove .sig attachments, they have to be removed.
+    // from the ParsedMessage html.
+    
+//    if([ret isKindOfClass:NSClassFromString(@"ParsedMessage")]) {
+//        NSMutableDictionary *attachments = [NSMutableDictionary dictionary];
+//        NSDictionary *attachmentsByURL = [ret attachmentsByURL];
+//        for(id key in attachmentsByURL) {
+//            if([[[attachmentsByURL objectForKey:key] mimePart] attachmentMightBePGPSignature])
+//                continue;
+//            NSLog(@"Key: %@ - %@ - %@", [key class], key, [attachmentsByURL objectForKey:key]);
+//            [attachments setObject:[attachmentsByURL objectForKey:key] forKey:key];
+//        }
+//        NSLog(@"Attachments: %@", attachments);
+//        [ret setValue:attachments forKey:@"_attachmentsByURL"];
+//        
+//        NSLog(@"[Parsed message]: %@ - %@ - %@", [[[self mimeBody] message] subject], ret, [ret attachmentsByURL]);
+//    }
+//    else
+//        NSLog(@"[NON Parsed Message]: %@ - %@ - %@", [[[self mimeBody] message] subject], [ret class], ret);
     return ret;
 }
 
-- (void)MAClearCachedDecryptedMessageBody {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
-        return [self MAClearCachedDecryptedMessageBody];
-
-    // Don't clear PGP messages for now. Just for testing!
-    //    if([[self mimeBody] containsPGPEncryptedData])
-    //        return;
-    Message *message = [(MimeBody *)[self mimeBody] message];
-    [message removeIvars];
-    [self MAClearCachedDecryptedMessageBody];
-}
-
-- (void)findPGPInlineSignedAndEncryptedMimeParts {
-    __block void (^_findPGPInlineSignedAndEncryptedMimeParts)(MimePart *);
-    __block MimePart *signedMimePart = nil;
-    __block MimePart *encryptedMimePart = nil;
-    __block MimePart *fuckedUpEarlyAlphaPart = nil;
-    _findPGPInlineSignedAndEncryptedMimeParts = ^(MimePart *currentPart) {
-        if([currentPart isType:@"text" subtype:@"plain"]) {
-            // Check the current part for signature or encrypted data.
-            NSRange encryptedDataRange = [[currentPart bodyData] rangeOfPGPInlineEncryptedData];
-            NSRange signatureDataRange = [[currentPart bodyData] rangeOfPGPInlineSignatures];
-            // GPGMail assumes that the message data is always first signed,
-            // then encrypted.
-            if(encryptedDataRange.location != NSNotFound) {
-                [self setIvar:@"PGPEncryptedPart" value:currentPart];
-                encryptedMimePart = currentPart;
-                NSValue *encryptedDataRangeValue = [NSValue valueWithBytes:&encryptedDataRange objCType:@encode(NSRange)];
-                [currentPart setIvar:@"PGPEncryptedDataRange" value:encryptedDataRangeValue];
-            }
-            if(signatureDataRange.location != NSNotFound) {
-                [self setIvar:@"PGPSignedPart" value:currentPart];
-                signedMimePart = currentPart;
-                NSValue *signatureDataRangeValue = [NSValue valueWithBytes:&signatureDataRange objCType:@encode(NSRange)];
-                [currentPart setIvar:@"PGPSignedDataRange" value:signatureDataRangeValue];
-            }
-        }
-        else if([currentPart isType:@"multipart" subtype:@"encrypted"] && ![[[self mimeBody] topLevelPart] isEqual:currentPart]) {
-            // It's one of the fucked up, early alpha messages.
-            fuckedUpEarlyAlphaPart = currentPart;
-            [self setIvar:@"PGPFuckedUpEarlyAlpha" value:fuckedUpEarlyAlphaPart];
-        }
-        // No match, search the subparts.
-        if(!signedMimePart || !encryptedMimePart) {
-            for(MimePart *tmpPart in [currentPart subparts]) {
-                _findPGPInlineSignedAndEncryptedMimeParts(tmpPart);
-            }
-
+- (void)enumerateSubpartsWithBlock:(void (^)(MimePart *))partBlock {
+    __block void (^_walkParts)(MimePart *);
+    _walkParts = ^(MimePart *currentPart) {
+        partBlock(currentPart);
+        for(MimePart *tmpPart in [currentPart subparts]) {
+            _walkParts(tmpPart);
         }
     };
-    _findPGPInlineSignedAndEncryptedMimeParts(self);
+    _walkParts(self);
+}
+
+- (MimePart *)topPart {
+    MimePart *parentPart = [self parentPart];
+    MimePart *currentPart = parentPart;
+    if(parentPart == nil)
+        return self;
+    // Call parentPart till we are on top.
+    while((currentPart = [currentPart parentPart])) {
+        if([currentPart parentPart] == nil)
+            return currentPart;
+    }
+    return nil;
+}
+
+- (id)MADecodeTextPlainWithContext:(MFMimeDecodeContext *)ctx {
+    // 1. Step, check if the message was already decrypted.
+    if(self.PGPEncrypted && self.PGPDecryptedData)
+        return self.PGPDecryptedData ? self.PGPDecryptedContent : [self MADecodeTextPlainWithContext:ctx];
+    if(self.PGPSigned && self.PGPVerifiedContent)
+        return self.PGPVerifiedContent ? self.PGPVerifiedContent : [self MADecodeTextPlainWithContext:ctx];
+    
+    // Check if the part is base64 encoded. If so, decode it.
+    NSData *partData = [self bodyData];
+    NSData *decryptedData = nil;
+    
+    NSRange encryptedRange = [partData rangeOfPGPInlineEncryptedData];
+    NSRange signatureRange = [partData rangeOfPGPInlineSignatures];
+    
+    // No encrypted PGP data and no signature PGP data found? OUT OF HERE!
+    if(encryptedRange.location == NSNotFound && signatureRange.location == NSNotFound) 
+        return [self MADecodeTextPlainWithContext:ctx];
+    
+    if(encryptedRange.location != NSNotFound) {
+        decryptedData = [self decryptedMessageBodyOrDataForEncryptedData:partData encryptedInlineRange:encryptedRange];
+        // Fetch the decrypted content, since that is already been processed, with markers and stuff.
+        // In case of an error, simply return the decrypted data.
+        NSString *content = nil;
+        if(self.PGPError)
+            content = [[decryptedData stringByGuessingEncoding] markupString];
+        else
+            content = self.PGPDecryptedContent;
+        
+        return content; 
+    }
+    
+    if(signatureRange.location != NSNotFound) {
+        [self _verifyPGPInlineSignatureInData:partData range:signatureRange];
+    }
+    
+    id ret = [self MADecodeTextPlainWithContext:ctx];
+    if(signatureRange.location != NSNotFound)
+        ret = [self stripSignatureFromContent:ret];
+    
+    return ret;
+}
+
+- (id)MADecodeTextHtmlWithContext:(MFMimeDecodeContext *)ctx {
+    /* If no snippets should be generated, call Mail's method. */
+    
+    if([[self bodyData] mightContainPGPEncryptedData] || [[self bodyData] rangeOfPGPSignatures].location != NSNotFound) {
+        // HTML is a bit hard to decrypt, so check if the parent part, if exists is a
+        // multipart/alternative.
+        // If that's the case, look for a text/plain part
+        MimePart *parentPart = [self parentPart];
+        MimePart *textPart = nil;
+        if(parentPart && [parentPart isType:@"multipart" subtype:@"alternative"]) {
+            for(MimePart *tmpPart in [parentPart subparts]) {
+                if([tmpPart isType:@"text" subtype:@"plain"]) {
+                    textPart = tmpPart;
+                    break;
+                }
+            }
+            if(textPart) {
+                return [textPart decodeTextPlainWithContext:ctx];
+            }
+        }
+    }
+    
+    return [self MADecodeTextHtmlWithContext:ctx];
+}
+
+- (id)MADecodeApplicationOctet_streamWithContext:(MFMimeDecodeContext *)ctx {
+    BOOL mightBeEncrypted = [self attachmentMightBePGPEncrypted];
+    BOOL mightBeSignature = [self attachmentMightBePGPSignature];
+    if(!mightBeEncrypted && !mightBeSignature)
+        return [self MADecodeApplicationOctet_streamWithContext:ctx];
+    
+    // It's a PGP attachment otherwise we wouldn't come in here, so set
+    // that status.
+    self.PGPAttachment = YES;
+    
+    if(mightBeEncrypted)
+        return [self decodePGPEncryptedAttachment];
+    
+    if(mightBeSignature)
+        return [self decodePGPSignatureAttachment];
+} 
+
+- (id)decodePGPEncryptedAttachment {
+    if(self.PGPDecryptedData)
+        return [self.PGPDecryptedData length] != 0 ? self.PGPDecryptedData : [self MADecodeApplicationOctet_streamWithContext:nil];
+    
+    NSData *partData = [self bodyData];
+    NSData *decryptedData = nil;
+    decryptedData = [self decryptedMessageBodyOrDataForEncryptedData:partData encryptedInlineRange:NSMakeRange(0, [partData length])];
+    
+    return decryptedData;
+}
+
+- (id)decodePGPSignatureAttachment {
+    MimePart *parentPart = [self parentPart];
+    MimePart *signedPart = nil;
+    NSString *signedFilename = [[[self dispositionParameterForKey:@"filename"] lastPathComponent] stringByDeletingPathExtension];
+    for(MimePart *part in [parentPart subparts]) {
+        if([[[part dispositionParameterForKey:@"filename"] lastPathComponent] isEqualToString:signedFilename]) {
+            signedPart = part;
+            break;
+        }
+    }
+    
+    // Now try to verify.
+    [self verifyData:[signedPart bodyData] signatureData:[self bodyData]];
+    
+    return [self MADecodeApplicationOctet_streamWithContext:nil];
+}
+
+
+- (BOOL)attachmentMightBePGPEncrypted {
+    NSArray *PGPExtensions = [NSArray arrayWithObjects:@"pgp", @"gpg", @"asc", nil];
+    return [self attachmentMightBePGPProcessed:PGPExtensions];
+}
+
+- (BOOL)attachmentMightBePGPSignature {
+    NSArray *PGPExtensions = [NSArray arrayWithObjects:@"sig", nil];
+    return [self attachmentMightBePGPProcessed:PGPExtensions];
+}
+
+- (BOOL)attachmentMightBePGPProcessed:(NSArray *)extensions {
+    NSString *nameExt = [[self bodyParameterForKey:@"name"] pathExtension];
+    NSString *filenameExt = [[self dispositionParameterForKey:@"filename"] pathExtension];
+    
+    // Check if the attachment is part of a pgp/mime encrypted message.
+    // In that case, don't try to inline decrypt it.
+    // This is necessary since decodeMultipartWithContext checks the attachments
+    // first and after that runs decodeWithContext apparently.
+    if([[[self mimeBody] topLevelPart] isType:@"multipart" subtype:@"encrypted"])
+        return NO;
+    
+    BOOL PGPExtensionFound = NO;
+    for(NSString *extension in extensions) {
+        if([nameExt isEqualToString:extension] || [filenameExt isEqualToString:extension]) {
+            PGPExtensionFound = YES;
+            break;
+        }
+    }
+    
+    // .asc attachments might contain a public key. See #123.
+    // So to avoid decrypting such attachments, check if the attachment
+    // contains a public key.
+    if([[self bodyData] rangeOfPGPPublicKey].location != NSNotFound)
+        return NO;
+    
+    return PGPExtensionFound;
 }
 
 - (id)decodeMultipartEncryptedWithContext:(id)ctx {
     // 1. Step, check if the message was already decrypted.
-    char isEncrypted, isSigned;
-    MFError *error;
-    MimeBody *decryptedMessageBody = [self decryptedMessageBodyIsEncrypted:&isEncrypted isSigned:&isSigned error:&error];
-    // If an error is found and no decryptedMessageBody is set, push the error
-    // to the current activity monitor (this is necessary for the error banner to be shown)
-    // and leave with nil.
-    // If decryptedMessageBody is set, return its content using decodeWithContext:ctx.
-    if(decryptedMessageBody || error) {
-        if(error)
-            [[ActivityMonitor currentMonitor] setError:error];
-        return decryptedMessageBody ? [decryptedMessageBody parsedMessageWithContext:ctx] : nil;
+    if(self.PGPDecryptedBody || self.PGPError)
+        return self.PGPDecryptedBody ? self.PGPDecryptedBody : nil;
+    
+    // 2. Fetch the data part.
+    // To support exchange server modified messages, the first found octect-stream part
+    // is used as data part. In case of exchange server modified messages, this part
+    // is not necessarily the second immediately after the application/pgp-encrypted.
+    MimePart *dataPart = nil;
+    for(MimePart *part in [self subparts]) {
+        if([part isType:@"application" subtype:@"octet-stream"])
+            dataPart = part;
     }
-    // 2. Fetch the data part. (Version part should be there, otherwise this message wouldn't
-    //                          be in decryption mode.)
-    MimePart *dataPart = [self subpartAtIndex:1];
+    MessageBody *decryptedMessageBody = nil;
     NSData *encryptedData = [dataPart bodyData];
+    
     // Check if the data part contains the Content-Type string.
     // If so, this is a message which was created by a very early alpha
     // of GPGMail 2.0 which sent out completely corrupted messages.
     if([encryptedData rangeOfData:[@"Content-Type" dataUsingEncoding:NSUTF8StringEncoding] options:0 range:NSMakeRange(0, [encryptedData length])].location != NSNotFound)
         return [self decodeFuckedUpEarlyAlphaData:encryptedData context:ctx];
 
-    BOOL quotedPrintable = [[dataPart.contentTransferEncoding lowercaseString] isEqualToString:@"quoted-printable"];
-    encryptedData = quotedPrintable ? [encryptedData decodeQuotedPrintableForText:YES] : encryptedData;
-
-    decryptedMessageBody = [self decryptedMessageBodyForEncryptedData:encryptedData inlineEncrypted:NO];
-
-    [[self mimeBody] setIvar:@"skipPGPProcessing" value:[NSNumber numberWithBool:YES]];
-    ((MFMimeDecodeContext *)ctx).shouldSkipUpdatingMessageFlags = YES;
-    return [decryptedMessageBody parsedMessageWithContext:ctx];
+#warning verify that it's still needed to check for quoted-printable. Also, it might be necessary to use decodeBase64 here.
+    if([[dataPart.contentTransferEncoding lowercaseString] isEqualToString:@"base64"] && 
+       [encryptedData isValidBase64Data])
+        encryptedData = [encryptedData decodeBase64];
+    else if([[dataPart.contentTransferEncoding lowercaseString] isEqualToString:@"quoted-printable"])
+        encryptedData = [encryptedData decodeQuotedPrintableForText:YES];
+    
+    // The message is definitely encrypted, otherwise this method would never
+    // be entered, so set that flag.
+    decryptedMessageBody = [self decryptedMessageBodyOrDataForEncryptedData:encryptedData encryptedInlineRange:NSMakeRange(NSNotFound, 0)];
+    
+    return decryptedMessageBody;
 }
 
+#warning verify that the decoding of such messages still works, otherwise fix it!
 - (id)decodeFuckedUpEarlyAlphaData:(NSData *)data context:(MFMimeDecodeContext *)ctx {
-    DebugLog(@"[DEBUG] Fucked up data: %@", [NSString stringWithData:data encoding:NSUTF8StringEncoding]);
     // This data might contain a signature part.
     // In that case it's a little bit more complicated since it's necessary to add a
     // top level mime part.
@@ -302,20 +441,17 @@
         [newData appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
         NSRange boundaryStart = [data rangeOfData:[@"--Apple-Mail=_" dataUsingEncoding:NSUTF8StringEncoding] options:0 range:NSMakeRange(0, [data length])];
         NSRange boundaryEnd = [data rangeOfData:[@"\n" dataUsingEncoding:NSUTF8StringEncoding] options:0 range:NSMakeRange(boundaryStart.location, [data length] - boundaryStart.location)];
-        DebugLog(@"[DEBUG] %s Boundary end: %@", __PRETTY_FUNCTION__, NSStringFromRange(boundaryEnd));
         NSString *partBoundary = [NSString stringWithData:[data subdataWithRange:NSMakeRange(boundaryStart.location+2, boundaryEnd.location-3)] encoding:NSUTF8StringEncoding];
-        DebugLog(@"[DEBUG] %s original boundary: %@ -- END", __PRETTY_FUNCTION__, partBoundary);
-        DebugLog(@"[DEBUG] %s Content-Type: %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:@"Content-Type: multipart/signed; boundary=\"%@\"; protocol=\"application/pgp-signature\";\r\n", partBoundary]);
         [newData appendData:[[NSString stringWithFormat:@"Content-Type: multipart/signed; boundary=\"%@\"; protocol=\"application/pgp-signature\";\r\n", partBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
         [newData appendData:[@"Content-Transfer-Encoding: 7bit\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
         [newData appendData:data];
         [newData appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", partBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        DebugLog(@"[DEBUG] %s boundary: %@", __PRETTY_FUNCTION__, partBoundary);
         data = newData;
     }
 
     Message *newMessage = [Message messageWithRFC822Data:data];
     ctx.shouldSkipUpdatingMessageFlags = YES;
+#warning verify that not skipping causes an endless loop. FIX IT!
     // Skip PGP Processing, otherwise this ends up in an endless loop.
     [newMessage setIvar:@"skipPGPProcessing" value:[NSNumber numberWithBool:YES]];
     // Process the message like a really encrypted message.
@@ -326,10 +462,10 @@
     // We'll save the message body for later, since it will be used to do a last
     // decodeWithContext and the output returned.
     // Fake the message flags on the decrypted message.
-    MimeBody *decryptedMimeBody = [newMessage messageBodyUpdatingFlags:YES];
+    MessageBody *decryptedMimeBody = [newMessage messageBodyUpdatingFlags:YES];
     // Check if the decrypted message contains any signatures, if so it's necessary
     // to unset the attachment flag.
-    BOOL isSigned = [decryptedMimeBody containsPGPSignedData];
+    BOOL isSigned = [(MimeBody *)decryptedMimeBody containsPGPSignedData];
     // Fixes the problem where an attachment icon is shown, when a message is either encrypted or signed.
     unsigned int numberOfAttachments = [(MimePart *)[[self mimeBody] topLevelPart] numberOfAttachments];
     if(numberOfAttachments > 0)
@@ -337,15 +473,20 @@
     // Set the new number of attachments.
     [[(MimeBody *)[self mimeBody] message] setNumberOfAttachments:numberOfAttachments isSigned:isSigned isEncrypted:YES];
     // After that set the decryptedMessage body with encrypted to yes!
-    MFError *error = [[decryptedMimeBody topLevelPart] valueForKey:@"_smimeError"];
+    MFError *error = [[(MimeBody *)decryptedMimeBody topLevelPart] valueForKey:@"_smimeError"];
     if(error)
         [[ActivityMonitor currentMonitor] setError:error];
-    [decryptedMimeBody setIvar:@"PGPEarlyAlphaFuckedUpEncrypted" value:[NSNumber numberWithBool:YES]];
-    [[[self mimeBody] topLevelPart] setDecryptedMessageBody:decryptedMimeBody isEncrypted:YES isSigned:isSigned error:error];
+    [newMessage setIvar:@"PGPEarlyAlphaFuckedUpEncrypted" value:[NSNumber numberWithBool:YES]];
+    self.PGPEncrypted = YES;
+    self.PGPSigned = isSigned;
+    self.PGPError = error;
+    [[self topPart] setDecryptedMessageBody:decryptedMimeBody isEncrypted:self.PGPEncrypted isSigned:isSigned error:error];
+    self.PGPDecryptedBody = self.decryptedMessageBody;
+    
     // Flag the message as process.
     [[(MimeBody *)[self mimeBody] message] setIvar:@"PGPMessageProcessed" value:[NSNumber numberWithBool:YES]];
-    [[[self mimeBody] topLevelPart] removeIvar:@"PGPEncryptedPart"];
-    [self removeIvar:@"PGPEncryptedDataRange"];
+    //[[[self mimeBody] topLevelPart] removeIvar:@"PGPEncryptedPart"];
+    //[self removeIvar:@"PGPEncryptedDataRange"];
     // I could really smash myself for ever introducing this bug!!!
     // For the security header to correctly show the signatures,
     // the message has to be flagged as specially encrypted.
@@ -353,71 +494,417 @@
     // For some reason, these messages are super complicated, so we store the messageBody ourselves.
     [[(MimeBody *)[self mimeBody] message] setIvar:@"PGPEarlyAlphaFuckedUpEncryptedMessageBody" value:decryptedMimeBody];
 
-    return [decryptedMimeBody parsedMessageWithContext:ctx];
+    return decryptedMimeBody;
 }
 
-- (id)decodeInlinePGPDataWithContext:(id)ctx {
-    // 1. Step, check if the message was already decrypted.
-    char isEncrypted, isSigned;
-    MFError *error;
-    MimeBody *decryptedMessageBody = [self decryptedMessageBodyIsEncrypted:&isEncrypted isSigned:&isSigned error:&error];
-    // If an error is found and no decryptedMessageBody is set, push the error
-    // to the current activity monitor (this is necessary for the error banner to be shown)
-    // and leave with nil.
-    // If decryptedMessageBody is set, return its content using decodeWithContext:ctx.
-    if(decryptedMessageBody || error) {
-        if(error)
-            [[ActivityMonitor currentMonitor] setError:error];
-        return decryptedMessageBody ? [decryptedMessageBody parsedMessageWithContext:ctx] : nil;
+- (id)decryptData:(NSData *)encryptedData {
+    GPGController *gpgc = [[GPGController alloc] init];
+    gpgc.verbose = NO;
+    //gpgc.verbose = (GPGMailLoggingLevel > 0);
+    NSData *decryptedData = [gpgc decryptData:encryptedData];
+    MFError *error = [self errorFromGPGOperation:GPG_OPERATION_DECRYPTION controller:gpgc];
+    NSArray *signatures = gpgc.signatures;
+    BOOL success = gpgc.decryptionOkay;
+    
+    // Part is encrypted, otherwise we wouldn't come here, so
+    // set that status.
+    self.PGPEncrypted = YES;
+    
+    // No error for decryption? Check the signatures for errors.
+    if(!error) {
+        // Decryption succeed, so set that status.
+        self.PGPDecrypted = YES;
+        error = [self errorFromGPGOperation:GPG_OPERATION_VERIFICATION controller:gpgc];
     }
-
-    // Extract the PGP block from the plain text, if available.
-    // Check if gpgDataRange is available, otherwise just exit decryption mode.
-    // Check if there's a PGP signature in the plain text.
-    BOOL isPGPEncrypted = NO;
-    BOOL isPGPSigned = NO;
-
-    NSRange pgpSignedRange = {NSNotFound, 0};
-    NSRange pgpEncryptedRange = {NSNotFound, 0};
-    if([self ivarExists:@"PGPEncryptedDataRange"])
-        [[self getIvar:@"PGPEncryptedDataRange"] getValue:&pgpEncryptedRange];
-    if([self ivarExists:@"PGPSignedDataRange"])
-        [[self getIvar:@"PGPSignedDataRange"] getValue:&pgpSignedRange];
-
-    if(pgpEncryptedRange.location != NSNotFound)
-        isPGPEncrypted = YES;
-    if(pgpSignedRange.location != NSNotFound)
-        isPGPSigned = YES;
-
-    if(isPGPEncrypted) {
-        NSData *encryptedData = [[self bodyData] subdataWithRange:pgpEncryptedRange];
-        // If the transfer encoding is set to quoted-printable, we have to run the data
-        // to decodeQuotedPrintableForText first.
-        BOOL quotedPrintable = [[self.contentTransferEncoding lowercaseString] isEqualToString:@"quoted-printable"];
-        NSData *realEncryptedData = quotedPrintable ? [encryptedData decodeQuotedPrintableForText:YES] : encryptedData;
-
-
-        // Inline encrypted might return a string or a message body.
-        decryptedMessageBody = [self decryptedMessageBodyForEncryptedData:realEncryptedData inlineEncrypted:YES];
-        if([decryptedMessageBody isKindOfClass:[NSString class]])
-            return decryptedMessageBody;
-        [ctx setIvar:@"skipPGPProcessing" value:[NSNumber numberWithBool:YES]];
-        return [decryptedMessageBody parsedMessageWithContext:ctx];
+    
+    // Signatures found, set is signed status, also store the signatures.
+    if([signatures count]) {
+        self.PGPSigned = YES;
+        self.PGPSignatures = signatures;
     }
-    else if(isPGPSigned) {
-        [self _verifyPGPInlineSignature];
-        // It might actually alright, to simply return the plain mime body, without
-        // running it through -[MimePart decodeTextPlainWithContext].
-    }
-    [ctx setIvar:@"skipPGPProcessing" value:[NSNumber numberWithBool:YES]];
-    id ret = [self decodeTextPlainWithContext:ctx];
-    if(isPGPSigned)
-        ret = [self stripSignatureFromContent:ret];
-
-    return ret;
+    // If there is an error and decrypted is yes, there was an error
+    // with a signature. Set verified to false.
+    self.PGPVerified = success && error ? NO : YES;
+    
+    // Last, store the error itself.
+    self.PGPError = error;
+    
+    [gpgc release];
+    
+    if(!success)
+        return nil;
+    
+    return decryptedData;
 }
 
-// TODO: Find out if this "algorithm" always works, due to HTML input.
+- (id)errorFromGPGOperation:(GPG_OPERATION)operation controller:(GPGController *)gpgc {
+    if(operation == GPG_OPERATION_DECRYPTION)
+        return [self errorFromDecryptionOperation:gpgc];
+    if(operation == GPG_OPERATION_VERIFICATION)
+        return [self errorFromVerificationOperation:gpgc];
+        
+    return nil;
+}
+
+- (MFError *)errorFromDecryptionOperation:(GPGController *)gpgc {
+    // No error? OUT OF HEEEEEAAAR!
+    if(gpgc.decryptionOkay)
+        return nil;
+    
+    // Might be an NSException or a GPGException
+    NSException *operationError = gpgc.error;
+    MFError *error = nil;
+    NSArray *noDataErrors = [gpgc.statusDict valueForKey:@"NODATA"];
+    
+    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+    NSString *title = nil, *message = nil;
+    NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithCapacity:0];
+    
+    if([operationError isMemberOfClass:[NSException class]]) {
+        title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+        message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+    }
+    else if(((GPGException *)operationError).errorCode == GPGErrorNoSecretKey) {
+        title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+        message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+    }
+    else if(((GPGException *)operationError).errorCode == GPGErrorWrongSecretKey) {
+        title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+        message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+    }
+    else if([self hasError:@"NO_ARMORED_DATA" noDataErrors:noDataErrors] || 
+            [self hasError:@"INVALID_PACKET" noDataErrors:noDataErrors]) {
+        title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+        message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+    }
+    else {
+        title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+        message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+    }
+    
+    [userInfo setValue:title forKey:@"_MFShortDescription"];
+    [userInfo setValue:message forKey:@"NSLocalizedDescription"];
+    
+    error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:nil title:title helpTag:nil 
+                            userInfo:userInfo];
+    
+    [userInfo release];
+    
+    return error;
+}
+
+- (MFError *)errorFromVerificationOperation:(GPGController *)gpgc {
+    NSException *operationError = gpgc.error;
+    NSArray *noDataErrors = [gpgc.statusDict valueForKey:@"NODATA"];
+    MFError *error = nil;
+    
+    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+    NSString *title = nil, *message = nil;
+    NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithCapacity:0];
+    
+    BOOL errorFound = NO;
+    
+    // If there was a GPG exception, the type should be GPGException, otherwise
+    // there was an error with the execution of the gpg executable or some other
+    // system error.
+    // Don't use is kindOfClass here, 'cause it will be true for GPGException as well,
+    // since it checks inheritance. memberOfClass doesn't.
+    if([operationError isMemberOfClass:[NSException class]]) {
+        title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+        message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+        errorFound = YES;
+    }
+    else if([self hasError:@"EXPECTED_SIGNATURE_NOT_FOUND" noDataErrors:noDataErrors]) {
+        title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+        message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+        errorFound = YES;
+    }
+    else {
+//        if(
+//        
+//        
+//        // Check the signatures for missing public keys.
+        GPGErrorCode errorCode = GPGErrorNoError;
+//        NSLog(@"Signatures: %@", gpgc.signatures);
+        for(GPGSignature *signature in gpgc.signatures) {
+            if(signature.status != GPGErrorNoError) {
+                errorCode = signature.status;
+                break;
+            }
+        }
+        errorFound = errorCode != GPGErrorNoError ? YES : NO;
+        
+//        NSLog(@"Error Code: %d", errorCode);
+        
+        switch (errorCode) {
+            case GPGErrorNoPublicKey:
+                title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_PUBKEY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+                message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_PUBKEY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+                break;
+            
+            case GPGErrorUnknownAlgorithm:
+                title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+                message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+                break;
+
+#warning SignatureExpired, KeyExpired, Certificate revoked are only warnings (Should be displayed in the Security header, not as an actual error.
+            
+            case GPGErrorBadSignature:
+                title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+                message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+                break;
+            
+            default:
+                break;
+        }
+    }
+    
+    [userInfo setValue:title forKey:@"_MFShortDescription"];
+    [userInfo setValue:message forKey:@"NSLocalizedDescription"];
+    
+    if(errorFound)
+        error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:nil title:title helpTag:nil 
+                                userInfo:userInfo];
+    [userInfo release];
+    
+    return error;
+}
+
+- (BOOL)hasError:(NSString *)errorName noDataErrors:(NSArray *)noDataErrors {
+    const NSDictionary *errorCodes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                [NSNumber numberWithInt:1], @"NO_ARMORED_DATA",
+                                [NSNumber numberWithInt:2], @"EXPECTED_PACKAGE_NOT_FOUND",
+                                [NSNumber numberWithInt:3], @"INVALID_PACKET",
+                                [NSNumber numberWithInt:4], @"EXPECTED_SIGNATURE_NOT_FOUND", nil];
+    
+    if([noDataErrors containsObject:[errorCodes valueForKey:errorName]])
+        return YES;
+    
+    return NO;
+}                           
+
+- (MimeBody *)decryptedMessageBodyFromDecryptedData:(NSData *)decryptedData {
+    if([decryptedData length] == 0)
+        return nil;
+    // 1. Create a new Message using messageWithRFC822Data:
+    // This creates the message store automatically!
+    Message *decryptedMessage;
+    MimeBody *decryptedMimeBody;
+    // Unfortunately the Evolution PGP plugins seems to fuck up the encrypted message,
+    // which renders it unreadable for Mail.app. This is frustrating but fixable.
+    // Actually even easier than i thought at first. Instead of messageWithRFC822Data:
+    // messageWithRFC822Data:sanitizeData: can be used to make the problem go away.
+    // BOOYAH!
+    decryptedMessage = [Message messageWithRFC822Data:decryptedData sanitizeData:YES];
+    
+    // 2. Set message info from the original encrypted message.
+    [decryptedMessage setMessageInfoFromMessage:[(MimeBody *)[self mimeBody] message]];
+    
+    // 3. Call message body updating flags to set the correct flags for the new message.
+    // This will setup the decrypted message, run through all parts and find signature part.
+    // We'll save the message body for later, since it will be used to do a last
+    // decodeWithContext and the output returned.
+    // Fake the message flags on the decrypted message.
+    decryptedMimeBody = [decryptedMessage messageBodyUpdatingFlags:YES];
+    
+    // Top Level part reparses the message. This method doesn't.
+    MimePart *topPart = [self topPart];
+    // Set the decrypted message here, otherwise we run into a memory problem.
+    [topPart setDecryptedMessageBody:decryptedMimeBody isEncrypted:self.PGPEncrypted isSigned:self.PGPSigned error:self.PGPError];
+//    NSLog(@"Part isEncrypted: %@ - isSigned: %@, error: %@", self.PGPEncrypted ? @"YES" : @"NO", self.PGPSigned ? @"YES" : @"NO", self.PGPError);
+//    NSLog(@"Decrypted message body in mime part: %@ - %@", [self valueForKey:@"_decryptedMessageBody"], decryptedMimeBody);
+    self.PGPDecryptedBody = self.decryptedMessageBody;
+//    NSLog(@"Decrypted message body: %p %@", self, self.PGPDecryptedBody);
+          
+    return decryptedMimeBody;
+}
+
+- (NSData *)partDataByReplacingEncryptedData:(NSData *)originalPartData decryptedData:(NSData *)decryptedData encryptedRange:(NSRange)encryptedRange {
+    NSMutableData *partData = [[NSMutableData alloc] init];
+    NSData *inlineEncryptedData = [originalPartData subdataWithRange:encryptedRange];
+    
+    BOOL (^otherDataFound)(NSData *) = ^(NSData *data) {
+        unsigned char *dataBytes = (unsigned char *)[data bytes];
+        for(NSUInteger i = 0; i < [data length]; i++) {
+            if(*dataBytes != '\n' && *dataBytes != '\r')
+                return YES;
+            dataBytes++;
+        }
+        return NO;
+    };
+    
+    NSData *originalData = originalPartData;
+    [partData appendData:[originalData subdataWithRange:NSMakeRange(0, encryptedRange.location)]];
+    NSData *restData = [originalData subdataWithRange:NSMakeRange(encryptedRange.location + encryptedRange.length, 
+                                                                  [originalData length] - encryptedRange.length - encryptedRange.location)];
+    if(decryptedData && [decryptedData length] != 0) {
+        // If there was data before or after the encrypted data, signal this
+        // with a banner.
+        BOOL hasOtherData = (encryptedRange.location != 0) | otherDataFound(restData);
+            
+        if(hasOtherData)
+            [self addPGPPartMarkerToData:partData partData:decryptedData];
+        else
+            [partData appendData:decryptedData];
+    }
+    else
+        [partData appendData:inlineEncryptedData];
+    
+    [partData appendData:restData];
+    
+    BOOL decryptionError = !decryptedData ? YES : NO;
+    
+    // If there was no decryption error, look for signatures in the partData.
+    if(!decryptionError) { 
+        NSRange signatureRange = [decryptedData rangeOfPGPInlineSignatures];
+        if(signatureRange.location != NSNotFound)
+            [self _verifyPGPInlineSignatureInData:decryptedData range:signatureRange];
+    }
+    
+    self.PGPDecryptedData = partData;
+    // Decrypted content is a HTML string generated from the decrypted data
+    // If the content is only partly encrypted or partly signed, that information
+    // is added to the HTML as well.
+    NSString *decryptedContent = [[partData stringByGuessingEncoding] markupString];
+    decryptedContent = [self contentWithReplacedPGPMarker:decryptedContent isEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];
+    // The decrypted data might contain an inline signature.
+    // If that's the case the armor is stripped from the data and stored
+    // under decryptedPGPContent.
+    if(self.PGPSigned)
+        self.PGPDecryptedContent = [self stripSignatureFromContent:decryptedContent];
+    else
+        self.PGPDecryptedContent = decryptedContent;
+    
+    if([self containsPGPMarker:partData]) {
+        self.PGPPartlySigned = self.PGPSigned;
+        self.PGPPartlyEncrypted = self.PGPEncrypted;
+    }
+    
+    [partData release];
+    
+    return self.PGPDecryptedData;
+}
+
+- (id)decryptedMessageBodyOrDataForEncryptedData:(NSData *)encryptedData encryptedInlineRange:(NSRange)encryptedRange {
+    __block NSData *decryptedData = nil;
+    __block id decryptedMimeBody = nil;
+    __block NSData *partDecryptedData = nil;
+    
+    BOOL inlineEncrypted = encryptedRange.location != NSNotFound ? YES : NO;
+    
+    NSData *inlineEncryptedData = nil;
+    if(inlineEncrypted)
+        inlineEncryptedData = [encryptedData subdataWithRange:encryptedRange];
+    
+    // Decrypt the data. This will already set the most important flags on the part.
+    // decryptData used to be run in a serial queue. This is no longer necessary due to
+    // the fact that the password dialog blocks just fine.
+    partDecryptedData = [self decryptData:inlineEncrypted ? inlineEncryptedData : encryptedData];
+    
+    // Creating a new message from the PGP decrypted data for PGP/MIME encrypted messages
+    // is not supposed to happen within the decryption task.
+    // Otherwise it could block the decryption queue for new jobs if the decrypted message contains
+    // PGP inline encrypted data which GPGMail tries to decrypt but can't since the old job didn't finish
+    // yet.
+    if(inlineEncryptedData)
+        decryptedData = [self partDataByReplacingEncryptedData:encryptedData decryptedData:partDecryptedData encryptedRange:encryptedRange];
+    else
+        decryptedMimeBody = [self decryptedMessageBodyFromDecryptedData:partDecryptedData];
+    
+    
+    if(inlineEncrypted)
+        return decryptedData;
+    
+    return decryptedMimeBody;    
+}
+
+#pragma mark Methods for verification
+
+- (void)verifyData:(NSData *)signedData signatureData:(NSData *)signatureData {
+    GPGController *gpgc = [[GPGController alloc] init];
+    gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
+    
+    // If signature data is set, the signature is detached, otherwise it's inline.
+    NSArray *signatures = nil;
+    if([signatureData length])
+        signatures = [gpgc verifySignature:signatureData originalData:signedData];
+    else
+        signatures = [gpgc verifySignedData:signedData];
+    
+    MFError *error = [self errorFromGPGOperation:GPG_OPERATION_VERIFICATION controller:gpgc];
+    self.PGPError = error;
+    self.PGPSigned = YES;
+    self.PGPVerified = self.PGPError ? NO : YES;
+    self.PGPSignatures = signatures;
+    self.PGPVerifiedContent = [self stripSignatureFromContent:[[signedData stringByGuessingEncoding] markupString]];
+    self.PGPVerifiedData = signedData;
+    
+    [gpgc release];
+}
+
+- (void)MAVerifySignature {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MAVerifySignature];
+    
+    // If this is a non GPG signed message, let's call the original method
+    // and get out of here!    
+    if(![[self bodyParameterForKey:@"protocol"] isEqualToString:@"application/pgp-signature"]) {
+        [self MAVerifySignature];
+        return;
+    }
+    
+    if(self.PGPVerified || self.PGPError || self.PGPVerifiedData)
+        return;
+    
+    // Set the signed status, otherwise we wouldn't be in here.
+    self.PGPSigned = YES;
+    
+    // Now on to fetching the signed data.
+    NSData *signedData = [self signedData];
+    // And last finding the signature.
+    MimePart *signaturePart = nil;
+    for(MimePart *part in [self subparts]) {
+        if([part isType:@"application" subtype:@"pgp-signature"]) {
+            signaturePart = part;
+            break;
+        }
+    }
+    
+#warning Should this trigger an error too?
+    if(![signedData length] || !signaturePart) {
+        self.PGPSigned = NO;
+        return;
+    }
+    
+    // And now the funny part, the actual verification.
+    NSData *signatureData = [signaturePart bodyData];
+	if (![signatureData length]) {
+		self.PGPSigned = NO;
+        return;
+	}
+    
+#warning Properly test if verification still requires a serial queue.
+    
+//    [[GPGMailBundle sharedInstance] addVerificationTask:^{
+    [self verifyData:signedData signatureData:signatureData];
+//    }];
+	
+    return;
+}
+
+- (void)_verifyPGPInlineSignatureInData:(NSData *)data range:(NSRange)signedRange {
+    if(![data length] || signedRange.location == NSNotFound)
+        return;
+    
+    NSData *signedData = [data subdataWithRange:signedRange];
+
+#warning Properly test if verification still requires a serial queue.
+    
+//    [[GPGMailBundle sharedInstance] addVerificationTask:^{
+        [self verifyData:signedData signatureData:nil];
+//    }];
+}
+
 - (id)stripSignatureFromContent:(id)content {
     if([content isKindOfClass:[NSString class]]) {
         // Find -----BEGIN PGP SIGNED MESSAGE----- and
@@ -426,14 +913,22 @@
         if(beginRange.location == NSNotFound)
             return content;
 
-        NSString *remainingContent = [content stringByReplacingCharactersInRange:beginRange withString:@""];
+        NSString *contentBefore = [content substringWithRange:NSMakeRange(0, beginRange.location)];
+        
+        NSString *remainingContent = [content substringWithRange:NSMakeRange(beginRange.location + beginRange.length, 
+                                                                             [(NSString *)content length] - (beginRange.location + beginRange.length))];
         // Find the first occurence of two newlines (\n\n). This is HTML so it's <BR><BR> (can't be good!)
         // This delimits the signature part.
         NSRange signatureDelimiterRange = [remainingContent rangeOfString:@"<BR><BR>"];
+        // Signature delimiter range only contains the range from the first <BR> to the
+        // second <BR>. But it's necessary to remove everything before that.
         if(signatureDelimiterRange.location == NSNotFound)
             return content;
-        NSRange pgpDelimiterRange = NSUnionRange(beginRange, signatureDelimiterRange);
-        remainingContent = [content stringByReplacingCharactersInRange:pgpDelimiterRange withString:@""];
+        
+        signatureDelimiterRange.length = signatureDelimiterRange.location + signatureDelimiterRange.length;
+        signatureDelimiterRange.location = 0;
+        
+        remainingContent = [remainingContent stringByReplacingCharactersInRange:signatureDelimiterRange withString:@""];
 
         // Now, there might be signatures in the quoted text, but the only interesting signature, will be at the end of the mail, that's
         // why the search is time done from the end.
@@ -446,145 +941,261 @@
         NSRange gpgSignatureRange = NSUnionRange(startRange, endRange);
         NSString *strippedContent = [remainingContent stringByReplacingCharactersInRange:gpgSignatureRange withString:@""];
 
-        return strippedContent;
+        NSString *completeContent = [contentBefore stringByAppendingString:strippedContent];
+        
+        return completeContent;
     }
     return content;
 }
 
+- (BOOL)MAUsesKnownSignatureProtocol {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MAUsesKnownSignatureProtocol];
+    
+    if([[self bodyParameterForKey:@"protocol"] isEqualToString:@"application/pgp-signature"])
+        return YES;
+    return [self MAUsesKnownSignatureProtocol];
+}
 
-- (id)decryptedMessageBodyForEncryptedData:(NSData *)encryptedData inlineEncrypted:(BOOL)inlineEncrypted {
-    __block NSData *decryptedData = nil;
-    __block NSArray *foundSignatures = nil;
-    __block NSException *decryptionException = nil;
-    __block id decryptedMimeBody = nil;
+- (void)addPGPPartMarkerToData:(NSMutableData *)data partData:(NSData *)partData {
+    [data appendData:[PGP_PART_MARKER_START dataUsingEncoding:NSUTF8StringEncoding]];
+    [data appendData:partData];
+    [data appendData:[PGP_PART_MARKER_END dataUsingEncoding:NSUTF8StringEncoding]];
+}
 
-    [[GPGMailBundle sharedInstance] addDecryptionTask:^{
-        MFError *foundError;
-        MimeBody *decryptedMessageBody = [self decryptedMessageBodyIsEncrypted:NULL isSigned:NULL error:&foundError];
-        // If an error is found and no decryptedMessageBody is set, push the error
-        // to the current activity monitor (this is necessary for the error banner to be shown)
-        // and leave with nil.
-        // If decryptedMessageBody is set, return its content using decodeWithContext:ctx.
-        if(decryptedMessageBody || foundError) {
-            if(foundError)
-                [[ActivityMonitor currentMonitor] setError:foundError];
-            decryptedMimeBody = decryptedMessageBody ? decryptedMessageBody : nil;
-            return;
+- (NSString *)contentWithReplacedPGPMarker:(NSString *)content isEncrypted:(BOOL)isEncrypted isSigned:(BOOL)isSigned {
+    NSMutableString *partString = [NSMutableString stringWithString:@"Encrypted "];
+    if(isSigned)
+        [partString appendString:@"& Signed "];
+    [partString appendString:@"PGP Part"];
+    
+    content = [content stringByReplacingString:PGP_PART_MARKER_START withString:[NSString stringWithFormat:@"<fieldset style=\"padding-top:10px; border:0px; border: 3px solid #CCC; padding-left: 20px;\"><legend style=\"font-weight:bold\">%@</legend><div style=\"padding-left:3px;\">", partString]];
+    content = [content stringByReplacingString:PGP_PART_MARKER_END withString:@"</div></fieldset>"];
+    
+    return content;
+}
+
+- (BOOL)containsPGPMarker:(NSData *)data {
+    if(![data length])
+        return NO;
+    return [data rangeOfData:[PGP_PART_MARKER_START dataUsingEncoding:NSUTF8StringEncoding] options:0 range:NSMakeRange(0, [data length])].location != NSNotFound;
+}
+
+#pragma mark MimePart property implementation.
+
+- (void)setPGPEncrypted:(BOOL)PGPEncrypted {
+    [self setIvar:@"PGPEncrypted" value:[NSNumber numberWithBool:PGPEncrypted]];
+}
+
+- (BOOL)PGPEncrypted {
+    return [[self getIvar:@"PGPEncrypted"] boolValue];
+}
+
+- (void)setPGPSigned:(BOOL)PGPSigned {
+    [self setIvar:@"PGPSigned" value:[NSNumber numberWithBool:PGPSigned]];
+}
+
+- (BOOL)PGPSigned {
+    return [[self getIvar:@"PGPSigned"] boolValue];
+}
+
+- (void)setPGPPartlySigned:(BOOL)PGPPartlySigned {
+    [self setIvar:@"PGPPartlySigned" value:[NSNumber numberWithBool:PGPPartlySigned]];
+}
+
+- (BOOL)PGPPartlySigned {
+    return [[self getIvar:@"PGPPartlySigned"] boolValue];
+}
+
+- (void)setPGPPartlyEncrypted:(BOOL)PGPPartlyEncrypted {
+    [self setIvar:@"PGPPartlyEncrypted" value:[NSNumber numberWithBool:PGPPartlyEncrypted]];
+}
+
+- (BOOL)PGPPartlyEncrypted {
+    return [[self getIvar:@"PGPPartlyEncrypted"] boolValue];
+}
+
+- (void)setPGPDecrypted:(BOOL)PGPDecrypted {
+    [self setIvar:@"PGPDecrypted" value:[NSNumber numberWithBool:PGPDecrypted]];
+}
+
+- (BOOL)PGPDecrypted {
+    return [[self getIvar:@"PGPDecrypted"] boolValue];
+}
+
+- (void)setPGPVerified:(BOOL)PGPVerified {
+    [self setIvar:@"PGPVerified" value:[NSNumber numberWithBool:PGPVerified]];
+}
+
+- (BOOL)PGPVerified {
+    return [[self getIvar:@"PGPVerified"] boolValue];
+}
+
+- (void)setPGPAttachment:(BOOL)PGPAttachment {
+    [self setIvar:@"PGPAttachment" value:[NSNumber numberWithBool:PGPAttachment]];
+}
+
+- (BOOL)PGPAttachment {
+    return [[self getIvar:@"PGPAttachment"] boolValue];
+}
+
+- (void)setPGPSignatures:(NSArray *)PGPSignatures {
+    NSMutableArray *signatures = nil;
+    if(![self getIvar:@"PGPSignatures"]) {
+        signatures = [[NSMutableArray alloc] initWithCapacity:0];
+        [self setIvar:@"PGPSignatures" value:signatures];
+    }
+    [[self getIvar:@"PGPSignatures"] addObjectsFromArray:PGPSignatures];
+    [signatures release];
+}
+
+- (NSArray *)PGPSignatures {
+    return [self getIvar:@"PGPSignatures"];
+}
+
+- (void)setPGPError:(MFError *)PGPError {
+    [self setIvar:@"PGPError" value:PGPError];
+}
+
+- (MFError *)PGPError {
+    return [self getIvar:@"PGPError"];
+}
+
+- (void)setPGPDecryptedData:(NSData *)PGPDecryptedData {
+    [self setIvar:@"PGPDecryptedData" value:PGPDecryptedData];
+}
+
+- (NSData *)PGPDecryptedData {
+    return [self getIvar:@"PGPDecryptedData"];
+}
+
+- (void)setPGPDecryptedContent:(NSString *)PGPDecryptedContent {
+    [self setIvar:@"PGPDecryptedContent" value:PGPDecryptedContent];
+}
+
+- (NSString *)PGPDecryptedContent {
+    return [self getIvar:@"PGPDecryptedContent"];
+}
+
+- (void)setPGPDecryptedBody:(MessageBody *)PGPDecryptedBody {
+    [self setIvar:@"PGPDecryptedBody" value:PGPDecryptedBody];
+}
+
+- (MessageBody *)PGPDecryptedBody {
+    return [self getIvar:@"PGPDecryptedBody"];
+}
+
+- (void)setPGPVerifiedContent:(NSString *)PGPVerifiedContent {
+    [self setIvar:@"PGPVerifiedContent" value:PGPVerifiedContent];
+}
+
+- (NSString *)PGPVerifiedContent {
+    return [self getIvar:@"PGPVerifiedContent"];
+}
+
+- (void)setPGPVerifiedData:(NSData *)PGPVerifiedData {
+    [self setIvar:@"PGPVerifiedData" value:PGPVerifiedData];
+}
+
+- (NSData *)PGPVerifiedData {
+    return [self getIvar:@"PGPVerifiedData"];
+}
+
+
+#pragma mark other stuff to test Xcode code folding.
+
+- (BOOL)MAIsSigned {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MAIsSigned];
+    
+    BOOL ret = [self MAIsSigned];
+    // For plain text message is signed doesn't automatically find
+    // the right signed status, so we check if copy signers are available.
+    return ret || self.PGPSigned;
+}
+
+- (BOOL)_isExchangeServerModifiedPGPMimeEncrypted {
+    if(![self isType:@"multipart" subtype:@"mixed"])
+        return NO;
+    // Find the application/pgp-encrypted subpart.
+    NSArray *subparts = [self subparts];
+    MimePart *applicationPGPEncrypted = nil;
+    for(MimePart *part in subparts) {
+        if([part isType:@"application" subtype:@"pgp-encrypted"]) {
+            applicationPGPEncrypted = part;
+            break;
         }
+    }
+    // If such a part is found, the message is exchange modified, otherwise
+    // not.
+    return applicationPGPEncrypted != nil;
+}
 
-        // Otherwise decrypt it.
-        GPGController *gpgc = [[GPGController alloc] init];
-        gpgc.verbose = (GPGMailLoggingLevel > 0);
-        @try {
-            decryptedData = [gpgc decryptData:encryptedData];
-            foundSignatures = [gpgc signatures];
-            [foundSignatures retain];
+- (BOOL)isPGPMimeEncrypted {
+    // Special case for PGP/MIME encrypted emails, which were sent through an
+    // exchange server, which unfortunately modifies the header.
+    if([self _isExchangeServerModifiedPGPMimeEncrypted])
+        return YES;
+    // Check for multipart/encrypted, protocol application/pgp-encrypted, otherwise exit!
+    if(![[[self type] lowercaseString] isEqualToString:@"multipart"] || ![[[self subtype] lowercaseString] isEqualToString:@"encrypted"])
+        return NO;
+    
+    if([self bodyParameterForKey:@"protocol"] != nil && ![[[self bodyParameterForKey:@"protocol"] lowercaseString] isEqualToString:@"application/pgp-encrypted"])
+        return NO;
+    
+    // Alright, passed. So next, subparts must be exactly 2!
+    if([(NSArray *)[self subparts] count] != 2)
+        return NO;
+    
+    MimePart *versionPart = [self subpartAtIndex:0];
+    MimePart *dataPart = [self subpartAtIndex:1];
+    
+    // Version Part is application/pgp- encrypted.
+    // Data Part is application/octet-stream OR application/pgp-signature (for FireGPG < 0.7.1)
+    if([[[versionPart type] lowercaseString] isEqualToString:@"application"] && [[[versionPart subtype] lowercaseString] isEqualToString:@"pgp-encrypted"] &&
+       [[[dataPart type] lowercaseString] isEqualToString:@"application"] && ([[[dataPart subtype] lowercaseString] isEqualToString:@"octet-stream"] ||
+                                                                              [[[dataPart subtype] lowercaseString] isEqualToString:@"pgp-signature"])) {
+           // For some strange reason version is NSUTF8 encoded, not ascii... hmm...
+           NSString *version = [[versionPart bodyData] stringByGuessingEncoding];
+           // All conditions matched.
+           if([[version lowercaseString] rangeOfString:@"version: 1"].location != NSNotFound || 
+              [[version lowercaseString] rangeOfString:@"version : 1"].location != NSNotFound) {
+               return YES;
+           }
+           else {
+               return NO;
+           }
+       }
+    
+    return NO;
+}
 
-            NSMutableData *messageData = [[NSMutableData alloc] init];
+- (BOOL)MAIsEncrypted {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MAIsEncrypted];
+    
+    if(self.PGPEncrypted)
+        return YES;
+    
+    // Otherwise to also support S/MIME encrypted messages, call
+    // the original method.
+    return [self MAIsEncrypted];
+}
 
-            if(inlineEncrypted) {
-                NSRange encryptedDataRange = {NSNotFound, 0};
-                if([self ivarExists:@"PGPEncryptedDataRange"])
-                    [[self getIvar:@"PGPEncryptedDataRange"] getValue:&encryptedDataRange];
-                NSData *originalData = [self bodyData];
-                // For some reasone sometimes the encrypted data range doesn't exist anymore at this point.
-                // (Threading issue?). In that case, simply return the original body, otherwise GPGMail
-                // crashes and Mail.app with it.
-                if(encryptedDataRange.location != NSNotFound) {
-                    [messageData appendData:[originalData subdataWithRange:NSMakeRange(0, encryptedDataRange.location)]];
-                    if(decryptedData && [decryptedData length] != 0)
-                        [messageData appendData:decryptedData];
-                    else
-                        [messageData appendData:encryptedData];
-                    [messageData appendData:[originalData subdataWithRange:NSMakeRange(encryptedDataRange.location+encryptedDataRange.length, [originalData length]-encryptedDataRange.length-encryptedDataRange.location)]];
-                }
-                else {
-                    [messageData appendData:originalData];
-                }
-                if(gpgc.error) {
-                    [self failedToDecryptWithException:gpgc.error];
-                    // Return the original content.
-                    NSString *messageString = [messageData stringByGuessingEncoding];
-                    messageString = [messageString stringByReplacingOccurrencesOfString:@"\n" withString:@"<br>"];
-                    decryptedMimeBody = messageString;
-                    return;
-                }
-            }
-            // Not inline encrypted, let Mail.app display the attachment.
-            if(gpgc.error || !decryptedData || (decryptedData && ![decryptedData length])) {
-                [self failedToDecryptWithException:gpgc.error];
-                // Return the original
-                decryptedMimeBody = nil;
-                return;
-            }
-            // 1. Create a new Message using messageWithRFC822Data:
-            // This creates the message store automatically!
-            Message *decryptedMessage;
-            if(inlineEncrypted)
-                decryptedMessage = [self messageWithMessageData:messageData];
-            else
-                decryptedMessage = [Message messageWithRFC822Data:decryptedData];
+- (BOOL)MAIsMimeEncrypted {
+    BOOL ret = [self MAIsMimeEncrypted];
+//    NSLog(@"%@: isMimeEncrypted: %@", 
+//          [[[self mimeBody] message] subject],
+//          ret ? @"YES" : @"NO");
+    return ret;
+}
 
-            // This is a test, to have the message seem signed... we'll see..
-            // 2. Set message info from the original encrypted message.
-            [decryptedMessage setMessageInfoFromMessage:[(MimeBody *)[self mimeBody] message]];
-
-            // 3. Call message body updating flags to set the correct flags for the new message.
-            // This will setup the decrypted message, run through all parts and find signature part.
-            // We'll save the message body for later, since it will be used to do a last
-            // decodeWithContext and the output returned.
-            // Fake the message flags on the decrypted message.
-            decryptedMimeBody = [decryptedMessage messageBodyUpdatingFlags:YES];
-            // Check if the decrypted message contains any signatures, if so it's necessary
-            // to unset the attachment flag.
-
-            // Check if signatures are available. If not, they could still be in a mime part,
-            // but messageBodyUpdatingFlags will take care of those.
-            // Let's just set them on the decrypted message body.
-            BOOL isSigned = NO;
-            if([foundSignatures count]) {
-                [[decryptedMimeBody topLevelPart] setValue:foundSignatures forKey:@"_messageSigners"];
-                isSigned = YES;
-            }
-            else {
-                // For PGP/MIME signed messages, the message signers can be found in the decryptedMimebody
-                isSigned = [decryptedMimeBody containsPGPSignedData];
-            }
-
-            // Fixes the problem where an attachment icon is shown, when a message is either encrypted or signed.
-            unsigned int decryptedNumberOfAttachments = [decryptedMimeBody numberOfAttachmentsSigned:NULL encrypted:NULL numberOfTNEFAttachments:NULL];
-            if(decryptedNumberOfAttachments == NSNotFound)
-                decryptedNumberOfAttachments = 0;
-            if(decryptedNumberOfAttachments > 0 && isSigned)
-                decryptedNumberOfAttachments -= 1;
-            // Set the new number of attachments.
-            [[(MimeBody *)[self mimeBody] message] setNumberOfAttachments:decryptedNumberOfAttachments isSigned:isSigned isEncrypted:YES];
-
-            // If a signature error has been found, set that one on the decrypted message as well.
-            // This is only necessary if the message body is not cleared.
-            // Otherwise the message is revaluated.
-            MFError *signatureError = [[decryptedMimeBody topLevelPart] valueForKey:@"_smimeError"];
-            if(signatureError)
-                [[ActivityMonitor currentMonitor] setError:signatureError];
-
-            // After that set the decryptedMessage body with encrypted to yes!
-            [[[self mimeBody] topLevelPart] setDecryptedMessageBody:decryptedMimeBody isEncrypted:YES isSigned:isSigned error:signatureError];
-            // Flag the message as process.
-            [[(MimeBody *)[self mimeBody] message] setIvar:@"PGPMessageProcessed" value:[NSNumber numberWithBool:YES]];
-            [[[self mimeBody] topLevelPart] removeIvar:@"PGPEncryptedPart"];
-            [self removeIvar:@"PGPEncryptedDataRange"];
-        }
-        @catch(NSException *e) {
-            DebugLog(@"[DEBUG] %s exception: %@", __PRETTY_FUNCTION__, e);
-            decryptionException = e;
-            decryptedData = nil;
-        }
-        @finally {
-            [gpgc release];
-        }
-    }];
-
-    return decryptedMimeBody;
+- (BOOL)MAIsMimeSigned {
+    BOOL ret = [self MAIsMimeSigned];
+//    NSLog(@"%@: isMimeSigned: %@", 
+//          [[[self mimeBody] message] subject],
+//          ret ? @"YES" : @"NO");
+    return ret;
 }
 
 - (Message *)messageWithMessageData:(NSData *)messageData {
@@ -609,22 +1220,31 @@
     return message;
 }
 
-- (void)failedToDecryptWithException:(NSException *)exception {
-    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
-    NSString *title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
-    NSString *message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
-    MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:nil title:title helpTag:nil
-                                     userInfo:[NSDictionary dictionaryWithObjectsAndKeys:title, @"_MFShortDescription", message, @"NSLocalizedDescription", nil]];
-    [[[self mimeBody] topLevelPart] setDecryptedMessageBody:nil isEncrypted:NO isSigned:NO error:error];
-    [[ActivityMonitor currentMonitor] setError:error];
-    // Set the message as processed, so it's not processed again.
-    [[(MimeBody *)[self mimeBody] message] setIvar:@"PGPMessageProcessed" value:[NSNumber numberWithBool:YES]];
-    [[(MimeBody *)[self mimeBody] topLevelPart] removeIvar:@"PGPEncryptedPart"];
-    [self removeIvar:@"PGPEncryptedDataRange"];
-    // Tell the message to fake the message flags, means adding the signed
-    // and encrypted flag, otherwise the error banner is not shown.
-    [[(MimeBody *)[self mimeBody] message] fakeMessageFlagsIsEncrypted:YES isSigned:NO];
+- (void)MASetDecryptedMessageBody:(id)arg1 isEncrypted:(BOOL)arg2 isSigned:(BOOL)arg3 error:(id)arg4 {
+//    NSLog(@"%@: Decrypted message body: %@", [[[self mimeBody] message] subject], arg1);
+//    NSLog(@"%@: isEncrypted: %@", [[[self mimeBody] message] subject], arg2 ? @"YES" : @"NO");
+//    NSLog(@"%@: isSigned: %@", [[[self mimeBody] message] subject], arg3 ? @"YES" : @"NO");
+//    NSLog(@"%@: error: %@", [[[self mimeBody] message] subject], arg4);
+//    NSLog(@"Decrypted message body before: %@ %@ %@ encrypted: %@ signed: %@", self.decryptedMessageBody, self.decryptedMessage, self.decryptedMessageStore, self.isMimeEncrypted ? @"YES" : @"NO", self.isMimeSigned ? @"YES" : @"NO");
+    [self MASetDecryptedMessageBody:arg1 isEncrypted:arg2 isSigned:arg3 error:arg4];
+//    NSLog(@"Decrypted message body after: %@ %@ %@ encrypted: %@ signed: %@", self.decryptedMessageBody, self.decryptedMessage, self.decryptedMessageStore, self.isMimeEncrypted ? @"YES" : @"NO", self.isMimeSigned ? @"YES" : @"NO");
 }
+
+- (void)MAClearCachedDecryptedMessageBody {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return [self MAClearCachedDecryptedMessageBody];
+    
+    /* The original method is called to clear PGP/MIME messages. */
+    // Loop through the parts and clear them.
+    [self enumerateSubpartsWithBlock:^(MimePart *currentPart) {
+        [currentPart removeIvars];
+    }];
+    [(Message *)[(MimeBody *)[self mimeBody] message] clearPGPInformation];
+    [self MAClearCachedDecryptedMessageBody];
+    
+}
+
+#pragma mark Methods for creating a new message.
 
 - (id)MANewEncryptedPartWithData:(id)data recipients:(id)recipients encryptedData:(id *)encryptedData {
     DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
@@ -665,6 +1285,7 @@
     // marked as such.
     // Eventually add warning for this.
     gpgc.trustAllKeys = YES;
+    gpgc.printVersion = YES;
     @try {
         *encryptedData = [gpgc processData:data withEncryptSignMode:GPGPublicKeyEncrypt recipients:normalKeyList hiddenRecipients:bccKeyList];
 		if (gpgc.error) {
@@ -672,6 +1293,7 @@
 		}
     }
     @catch(NSException *e) {
+        [self failedToSignForSender:@"t@t.com"];
         DebugLog(@"[DEBUG] %s encryption error: %@", __PRETTY_FUNCTION__, e);
         // TODO: Add encryption error handling. (Re-use the dialogs shown for S/MIME
         //       encryption errors?
@@ -689,7 +1311,6 @@
     // -> Not great, but not a big problem either (let's hope)
     MimePart *dataPart = [[MimePart alloc] init];
 
-    //todo: duplicate code? see ComposeBackEnd+GPGMail.m
     [dataPart setType:@"application"];
     [dataPart setSubtype:@"octet-stream"];
     [dataPart setBodyParameter:@"encrypted.asc" forKey:@"name"];
@@ -701,11 +1322,9 @@
     return dataPart;
 }
 
-// TODO: sha1 the right algorithm?
-// TODO: Implement visual exception if no valid signing keys are found.
+
 // TODO: Translate the error message if creating the signature fails.
 //       At the moment the standard S/MIME message is used.
-// TODO: Translate "OpenPGP digital signature".
 - (id)MANewSignedPartWithData:(id)data sender:(id)sender signatureData:(id *)signatureData {
     DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
     DebugLog(@"[DEBUG] %s data: [%@] %@", __PRETTY_FUNCTION__, [data class], data);
@@ -713,8 +1332,19 @@
     // If sender doesn't show any injected header values, S/MIME is wanted,
     // hence the original method called.
     if(![sender isFlaggedValueWithKey:@"from"]) {
-        return [self MANewSignedPartWithData:data sender:sender signatureData:signatureData];
+        id newPart = [self MANewSignedPartWithData:data sender:sender signatureData:signatureData];
+        return newPart;
     }
+//    
+//    // For pgp inline messages, replace the headers in data.
+//    NSString *dataString = [data stringByGuessingEncoding];
+//    NSRange beginOfData = [dataString rangeOfString:@"\n\n"];
+//    beginOfData.length = beginOfData.location + beginOfData.length;
+//    beginOfData.location = 0;
+//    NSData *partData = nil;
+//    if(beginOfData.location != NSNotFound)
+//        partData = [[dataString stringByReplacingCharactersInRange:beginOfData withString:@""] dataUsingEncoding:NSUTF8StringEncoding];
+//    NSLog(@"[DEBUG] part data: %@", [partData stringByGuessingEncoding]);
 
     NSSet *normalKeyList = [[GPGMailBundle sharedInstance] signingKeyListForAddresses:[NSArray arrayWithObject:sender]];
     // Should not happen, but if no valid signing keys are found
@@ -731,28 +1361,31 @@
     // marked as such.
     // Eventually add warning for this.
     gpgc.trustAllKeys = YES;
+    gpgc.printVersion = YES;
     // Recipients are not needed for signing. Use addSignerKey instead.
     for(NSString *fingerprint in normalKeyList)
         [gpgc addSignerKey:fingerprint];
     @try {
         *signatureData = [gpgc processData:data withEncryptSignMode:GPGDetachedSign recipients:nil hiddenRecipients:nil];
-		//*signatureData = [gpgc processData:data withEncryptSignMode:GPGClearSign recipients:nil hiddenRecipients:nil];
+		//*signatureData = [gpgc processData:partData withEncryptSignMode:GPGClearSign recipients:nil hiddenRecipients:nil];
         if (gpgc.error) {
 			@throw gpgc.error;
 		}
     }
     @catch(NSException *e) {
-		if ([e isKindOfClass:[GPGException class]] && [(GPGException *)e errorCode] == GPGErrorCancelled) {
-			[self failedToSignForSender:sender];
-            return nil;
-		}
+		[self failedToSignForSender:sender];
+        return nil;
+//        
+//        if ([e isKindOfClass:[GPGException class]] && [(GPGException *)e errorCode] == GPGErrorCancelled) {
+//			[self failedToSignForSender:sender];
+//            return nil;
+//		}
         DebugLog(@"[DEBUG] %s sign error: %@", __PRETTY_FUNCTION__, e);
-		@throw e;
+//		@throw e;
     }
     @finally {
         [gpgc release];
     }
-
 
     // This doesn't work for PGP Inline,
     // But actually the signature could be created inline
@@ -770,7 +1403,7 @@
     [signaturePart setSubtype:@"pgp-signature"];
     [signaturePart setBodyParameter:@"signature.asc" forKey:@"name"];
     signaturePart.contentTransferEncoding = @"7bit";
-    [signaturePart setDisposition:@"inline"];
+    [signaturePart setDisposition:@"attachment"];
     [signaturePart setDispositionParameter:@"signature.asc" forKey:@"filename"];
     // TODO: translate this string.
     [signaturePart setContentDescription:@"Message signed with OpenPGP using GPGMail"];
@@ -784,6 +1417,52 @@
     return topPart;
 }
 
+- (NSData *)newInlineSignedDataForData:(id)data sender:(id)sender {
+    DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+    DebugLog(@"[DEBUG] %s data: [%@] %@", __PRETTY_FUNCTION__, [data class], data);
+    DebugLog(@"[DEBUG] %s sender: [%@] %@", __PRETTY_FUNCTION__, [sender class], sender);
+    
+    NSSet *normalKeyList = [[GPGMailBundle sharedInstance] signingKeyListForAddresses:[NSArray arrayWithObject:sender]];
+    // Should not happen, but if no valid signing keys are found
+    // raise an error. Returning nil tells Mail that an error occured.
+    if(![normalKeyList count]) {
+        [self failedToSignForSender:sender];
+        return nil;
+    }
+    GPGController *gpgc = [[GPGController alloc] init];
+    gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
+    gpgc.useArmor = YES;
+    gpgc.useTextMode = YES;
+    // Automatically trust keys, even though they are not specifically
+    // marked as such.
+    // Eventually add warning for this.
+    gpgc.trustAllKeys = YES;
+    gpgc.printVersion = YES;
+    // Recipients are not needed for signing. Use addSignerKey instead.
+    NSData *signedData = nil;
+    for(NSString *fingerprint in normalKeyList)
+        [gpgc addSignerKey:fingerprint];
+    @try {
+        signedData = [gpgc processData:data withEncryptSignMode:GPGClearSign recipients:nil hiddenRecipients:nil];
+        if (gpgc.error) {
+			@throw gpgc.error;
+		}
+    }
+    @catch(NSException *e) {
+		if ([e isMemberOfClass:[GPGException class]] && [(GPGException *)e errorCode] == GPGErrorCancelled) {
+			[self failedToSignForSender:sender];
+            return nil;
+		}
+        DebugLog(@"[DEBUG] %s sign error: %@", __PRETTY_FUNCTION__, e);
+		@throw e;
+    }
+    @finally {
+        [gpgc release];
+    }
+    
+    return signedData;
+}
+
 - (void)failedToSignForSender:(NSString *)sender {
     NSBundle *messagesFramework = [NSBundle bundleForClass:[MimePart class]];
     NSString *localizedDescription = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"SMIME_CANT_SIGN_MESSAGE", @"Delayed", messagesFramework, @""),
@@ -795,356 +1474,6 @@
     // Puh, this was all but easy, to find out where the error is used.
     // Overreleasing allows to track it's path as an NSZombie in Instruments!
     [[ActivityMonitor currentMonitor] setError:error];
-}
-
-- (BOOL)MAUsesKnownSignatureProtocol {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
-        return [self MAUsesKnownSignatureProtocol];
-
-    if([[self bodyParameterForKey:@"protocol"] isEqualToString:@"application/pgp-signature"])
-        return YES;
-    return [self MAUsesKnownSignatureProtocol];
-}
-
-- (void)MAVerifySignature {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
-        return [self MAVerifySignature];
-
-    // If this is a non GPG signed message, let's call the original method
-    // and get out of here!
-    if(![[self bodyParameterForKey:@"protocol"] isEqualToString:@"application/pgp-signature"]) {
-        [self MAVerifySignature];
-        return;
-    }
-
-    // Set the new number of attachments.
-    unsigned int numberOfAttachments = [(MimePart *)[[self mimeBody] topLevelPart] numberOfAttachments];
-    if(numberOfAttachments > 0)
-        numberOfAttachments -= 1;
-    [[(MimeBody *)[self mimeBody] message] setNumberOfAttachments:numberOfAttachments isSigned:YES isEncrypted:NO];
-
-    MFError *error;
-    BOOL needsVerification = [self needsSignatureVerification:&error];
-    if(!error)
-        error = [[[self mimeBody] topLevelPart] valueForKey:@"_smimeError"];
-
-    DebugLog(@"Error: %@", error);
-    if(!needsVerification || error) {
-        if(error)
-            [[ActivityMonitor currentMonitor] setError:error];
-        return;
-    }
-    // If the signature was not yet verified, check if we recognize the protocol.
-    // This is not really necessary, but the original method does it like this,
-    // and this should mimic it the best way possible.
-    if(![self usesKnownSignatureProtocol])
-        return;
-    // Now on to fetching the signed data.
-    NSData *signedData = [self signedData];
-    // And last finding the signature.
-    MimePart *signaturePart = nil;
-    for(MimePart *part in [self subparts]) {
-        if([part isType:@"application" subtype:@"pgp-signature"]) {
-            signaturePart = part;
-            break;
-        }
-    }
-
-    if(![signedData length] || !signaturePart)
-        return;
-    // And now the funny part, the actual verification.
-    NSData *signatureData = [signaturePart bodyData];
-	if (![signatureData length]) {
-		return;
-	}
-
-    __block NSArray *signatures = nil;
-    __block NSException *verificationException = nil;
-    [[GPGMailBundle sharedInstance] addVerificationTask:^{
-        GPGController *gpgc = [[GPGController alloc] init];
-        gpgc.verbose = (GPGMailLoggingLevel > 0);
-        @try {
-            signatures = [gpgc verifySignature:signatureData originalData:signedData];
-            [signatures retain];
-            if(gpgc.error)
-                @throw gpgc.error;
-        }
-        @catch(NSException *e) {
-            verificationException = e;
-            if(!signatures)
-                signatures = nil;
-            DebugLog(@"[DEBUG] %s - verification errror: %@", __PRETTY_FUNCTION__, e);
-        }
-        @finally {
-            [gpgc release];
-        }
-    }];
-
-    if(![signatures count] || verificationException) {
-        if([signatures count])
-            [[[self mimeBody] topLevelPart] setValue:signatures forKey:@"_messageSigners"];
-        [self failedToVerifyWithException:verificationException];
-        return;
-    }
-
-    // Check if the public key is in the keychain, otherwise display a warning [#269]
-    BOOL nonDownloadedKeyFound = NO;
-    for(GPGSignature *signature in signatures) {
-        if(!signature.userID) {
-            nonDownloadedKeyFound = YES;
-            break;
-        }
-    }
-    if(nonDownloadedKeyFound)
-        [self failedToVerifyWithException:[NSException exceptionWithName:@"PGPKeyNotInKeychain" reason:@"The PGP key of the signature is not in your keychain" userInfo:nil]];
-
-    // Signatures are stored in _messageSigners. that might not work, but
-    // hopefully it does.
-    [[[self mimeBody] topLevelPart] setValue:[signatures retain] forKey:@"_messageSigners"];
-    DebugLog(@"[DEBUG] %s Found signatures: %@", __PRETTY_FUNCTION__, signatures);
-    DebugLog(@"[DEBUG] %s saved signatures: %@", __PRETTY_FUNCTION__, [self valueForKey:@"_messageSigners"]);
-    //[self setIvar:signatures value:@"messageSigners"];
-    [signatures release];
-
-    // Set a flag on the message that it has been completely process,
-    // to avoid reprocessing it.
-    [[(MimeBody *)[self mimeBody] message] setIvar:@"PGPMessageProcessed" value:[NSNumber numberWithBool:YES]];
-
-    return;
-}
-
-- (void)_verifyPGPInlineSignature {
-    NSData *signedData = [self bodyData];
-    DebugLog(@"[DEBUG] %s mime part: %@", __PRETTY_FUNCTION__, self);
-    DebugLog(@"[DEBUG] %s plain message signed data: %@", __PRETTY_FUNCTION__, [signedData stringByGuessingEncoding]);
-    if(![signedData length] || [[self bodyData] rangeOfPGPInlineSignatures].location == NSNotFound)
-        return;
-
-    __block NSArray *signatures = nil;
-    __block NSException *verificationException = nil;
-    [[GPGMailBundle sharedInstance] addVerificationTask:^{
-        GPGController *gpgc = [[GPGController alloc] init];
-        gpgc.verbose = (GPGMailLoggingLevel > 0);
-        @try {
-            signatures = [gpgc verifySignedData:signedData];
-            [signatures retain];
-            if(gpgc.error)
-                @throw gpgc.error;
-        }
-        @catch(NSException *e) {
-            verificationException = e;
-            if(!signatures)
-                signatures = nil;
-        }
-        @finally {
-            [gpgc release];
-        }
-    }];
-
-    if(![signatures count] || verificationException) {
-        if([signatures count])
-            [[[self mimeBody] topLevelPart] setValue:signatures forKey:@"_messageSigners"];
-        [self failedToVerifyWithException:verificationException];
-        return;
-    }
-
-    // Check if the public key is in the keychain, otherwise display a warning [#269]
-    BOOL nonDownloadedKeyFound = NO;
-    for(GPGSignature *signature in signatures) {
-        if(!signature.userID) {
-            nonDownloadedKeyFound = YES;
-            break;
-        }
-    }
-    if(nonDownloadedKeyFound)
-        [self failedToVerifyWithException:[NSException exceptionWithName:@"PGPKeyNotInKeychain" reason:@"The PGP key of the signature is not in your keychain" userInfo:nil]];
-
-    DebugLog(@"[DEBUG] %s mime part: %@", __PRETTY_FUNCTION__, self);
-    // Store the signature and done!
-    [[[self mimeBody] topLevelPart] setValue:signatures forKey:@"_messageSigners"];
-    DebugLog(@"[DEBUG] %s Found signatures: %@", __PRETTY_FUNCTION__, signatures);
-    DebugLog(@"[DEBUG] %s saved signatures: %@", __PRETTY_FUNCTION__, [self valueForKey:@"_messageSigners"]);
-    [signatures release];
-
-    // Set a flag on the message that it has been completely process,
-    // to avoid reprocessing it.
-    [[(MimeBody *)[self mimeBody] message] setIvar:@"PGPMessageProcessed" value:[NSNumber numberWithBool:YES]];
-    [[(MimeBody *)[self mimeBody] topLevelPart] removeIvar:@"PGPSignedPart"];
-    [self removeIvar:@"PGPSignedDataRange"];
-}
-
-- (void)failedToVerifyWithException:(NSException *)exception {
-    NSString *localizedKeyTitle = @"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE";
-    NSString *localizedKeyMessage = @"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE";
-    if([exception.name isEqualToString:@"PGPKeyNotInKeychain"]) {
-        localizedKeyTitle = @"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE";
-        localizedKeyMessage = @"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE";
-    }
-
-    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
-    NSString *title = NSLocalizedStringFromTableInBundle(localizedKeyTitle, @"GPGMail", gpgMailBundle, @"");
-    NSString *message = NSLocalizedStringFromTableInBundle(localizedKeyMessage, @"GPGMail", gpgMailBundle, @"");
-    MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:nil title:title helpTag:nil
-                                     userInfo:[NSDictionary dictionaryWithObjectsAndKeys:title, @"_MFShortDescription", message, @"NSLocalizedDescription", nil]];
-    [[[self mimeBody] topLevelPart] setValue:error forKey:@"_smimeError"];
-    [[ActivityMonitor currentMonitor] setError:error];
-    // Set the message as processed, so it's not processed again.
-    [[(MimeBody *)[self mimeBody] message] setIvar:@"PGPMessageProcessed" value:[NSNumber numberWithBool:YES]];
-    [[(MimeBody *)[self mimeBody] topLevelPart] removeIvar:@"PGPSignedPart"];
-    [self removeIvar:@"PGPSignedDataRange"];
-    // Tell the message to fake the message flags, means adding the signed
-    // and encrypted flag, otherwise the error banner is not shown.
-    [[(MimeBody *)[self mimeBody] message] fakeMessageFlagsIsEncrypted:NO isSigned:YES];
-}
-
-- (id)MACopySignerLabels {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
-        return [self MACopySignerLabels];
-
-    // Check if the signature in the message signers is a GPGSignature, if
-    // so, copy the email addresses and return them.
-    NSMutableArray *signerLabels = [NSMutableArray array];
-    NSArray *messageSigners = [self copyMessageSigners];
-    // In case there are no message signers, simply return the original method.
-    // Might be a problem, but shouldn't.
-    if(![messageSigners count]) {
-        [messageSigners release];
-        return [self MACopySignerLabels];
-    }
-    if(![[messageSigners objectAtIndex:0] isKindOfClass:[GPGSignature class]]) {
-        [messageSigners release];
-        return [self MACopySignerLabels];
-    }
-    for(GPGSignature *signature in messageSigners) {
-        // For some reason a signature might not have an email set.
-        // This happens if the public key is not available (not downloaded or imported
-        // from the signature server yet). In that case, display the user id.
-        // Also, add an appropriate warning.
-        NSString *email = [signature email];
-        if(!email)
-            email = [signature fingerprint];
-        [signerLabels addObject:email];
-    }
-    [messageSigners release];
-
-    return [signerLabels copy];
-}
-
-- (id)MACopyMessageSigners {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
-        return [self MACopyMessageSigners];
-
-    // Only invoke the original method if _messageSigners is not set yet.
-    if([[[self mimeBody] topLevelPart] valueForKey:@"_messageSigners"])
-        return [[[[self mimeBody] topLevelPart] valueForKey:@"_messageSigners"] copy];
-
-    return [self MACopyMessageSigners];
-}
-
-- (BOOL)MAIsSigned {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
-        return [self MAIsSigned];
-
-    BOOL ret = [self MAIsSigned];
-    // For plain text message is signed doesn't automatically find
-    // the right signed status, so we check if copy signers are available.
-    BOOL isPGPSigned = [self isPGPSigned];
-    return (ret | isPGPSigned);
-}
-
-- (BOOL)isPGPSigned {
-    NSArray *messageSigners = [[[self mimeBody] topLevelPart] valueForKey:@"_messageSigners"];
-    if(messageSigners)
-        DebugLog(@"[DEBUG] %s message signers: %@", __PRETTY_FUNCTION__, messageSigners);
-    BOOL hasMessageSigners = ([messageSigners count] > 0 && [[messageSigners objectAtIndex:0] isKindOfClass:[GPGSignature class]]);
-    return hasMessageSigners;
-}
-
-- (BOOL)isPGPInlineEncrypted {
-    // Fetch body data to look for the leading GPG string.
-    // For some reason textEncoding doesn't really work... and is actually never called
-    // by Mail.app itself it seems.
-    return [[self mimeBody] containsPGPEncryptedData];
-}
-
-- (BOOL)isPGPMimeSigned {
-    // Check for RFC 3156 defined parts. multipart/signed, protocol application/pgp-signature.
-    //
-    if([self isType:@"multipart" subtype:@"signed"] &&
-       [[self bodyParameterForKey:@"protocol"] isEqualToString:@"application/pgp-signature"] &&
-       [[self subparts] count] == 2 &&
-       [[self subpartAtIndex:1] isType:@"application" subtype:@"pgp-signature"]) {
-        return YES;
-    }
-
-    return NO;
-}
-
-- (BOOL)isPGPMimeEncrypted {
-    // Check for multipart/encrypted, protocol application/pgp-encrypted, otherwise exit!
-    if(![[[self type] lowercaseString] isEqualToString:@"multipart"] || ![[[self subtype] lowercaseString] isEqualToString:@"encrypted"])
-        return NO;
-
-    if([self bodyParameterForKey:@"protocol"] != nil && ![[[self bodyParameterForKey:@"protocol"] lowercaseString] isEqualToString:@"application/pgp-encrypted"])
-        return NO;
-
-    // Alright, passed. So next, subparts must be exactly 2!
-    if([(NSArray *)[self subparts] count] != 2)
-        return NO;
-
-    MimePart *versionPart = [self subpartAtIndex:0];
-    MimePart *dataPart = [self subpartAtIndex:1];
-
-    // Version Part is application/pgp- encrypted.
-    // Data Part is application/octet-stream OR application/pgp-signature (for FireGPG < 0.7.1)
-    if([[[versionPart type] lowercaseString] isEqualToString:@"application"] && [[[versionPart subtype] lowercaseString] isEqualToString:@"pgp-encrypted"] &&
-       [[[dataPart type] lowercaseString] isEqualToString:@"application"] && ([[[dataPart subtype] lowercaseString] isEqualToString:@"octet-stream"] ||
-                                                               [[[dataPart subtype] lowercaseString] isEqualToString:@"pgp-signature"])) {
-           // For some strange reason version is NSUTF8 encoded, not ascii... hmm...
-           NSString *version = [[versionPart bodyData] stringByGuessingEncoding];
-           // All conditions matched.
-           if([[version lowercaseString] rangeOfString:@"version: 1"].location != NSNotFound ||
-              [[version lowercaseString] rangeOfString:@"version : 1"].location != NSNotFound) {
-               // Save that this MimePart is encrypted for later. It's gonna trigger
-               // a method which Mail uses to draw the message header which is used
-               // for GPGMail's UI.
-               [self setIvar:@"isEncrypted" value:[NSNumber numberWithBool:YES]];
-               return YES;
-           }
-           else {
-               return NO;
-           }
-    }
-
-    return NO;
-}
-
-- (BOOL)isPGPEncrypted {
-    if([self isPGPMimeEncrypted])
-        return YES;
-    if([self isPGPInlineEncrypted])
-        return YES;
-    return NO;
-}
-
-- (BOOL)MAIsEncrypted {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
-        return [self MAIsEncrypted];
-    // If this is not a topLevelPart, we simply return the original
-    // MimePart.isEncrypted value.
-    if([self parentPart] != nil)
-        return [self MAIsEncrypted];
-
-    BOOL isPGPMimeEncrypted = [self isPGPMimeEncrypted];
-    if(isPGPMimeEncrypted)
-        return YES;
-    BOOL isPGPInlineEncrypted = [self isPGPInlineEncrypted];
-    if(isPGPInlineEncrypted)
-        return YES;
-
-    // Otherwise to also support S/MIME encrypted messages, call
-    // the original method.
-    return [self MAIsEncrypted];
 }
 
 @end

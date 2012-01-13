@@ -39,6 +39,6 @@
  Returns no, so the text attachment cell doesn't track mouse movement
  but only mouse clicks.
  */
-- (BOOL)wantsTotrackMouse;
+- (BOOL)wantsToTrackMouse;
 
 @end

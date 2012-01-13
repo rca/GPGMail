@@ -8,21 +8,6 @@
 
 #pragma mark Named Structures
 
-struct CGPoint {
-    double _field1;
-    double _field2;
-};
-
-struct CGRect {
-    struct CGPoint _field1;
-    struct CGSize _field2;
-};
-
-struct CGSize {
-    double width;
-    double height;
-};
-
 struct EnrichedState {
     unsigned int excerptLevel:8;
     unsigned int alignment:4;
@@ -35,19 +20,9 @@ struct EnrichedState {
     NSColor *color;
 };
 
-struct _NSRange {
-    unsigned long long location;
-    unsigned long long length;
-};
-
 struct __CFArray;
 
 struct __CFDictionary;
-
-struct __sbuf {
-    char *_base;
-    int _size;
-};
 
 struct internal_state;
 
