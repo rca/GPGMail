@@ -180,51 +180,6 @@ static BOOL gpgMailWorks = YES;
 
 @end
 
-#import "DDAction.h"
-
-@interface DDAction_GPGMail : NSObject
-@end
-
-@implementation DDAction_GPGMail
-
-- (id)MAInitWithDict:(id)arg1 {
-    return [self MAInitWithDict:arg1];
-}
-
-- (id)MAMenuItem {
-    id ret = [self MAMenuItem];
-    return ret;
-}
-
-@end
-
-@interface DDHTMLMessageScanningOperation_GPGMail : NSObject
-@end
-
-@implementation DDHTMLMessageScanningOperation_GPGMail
-
-- (id)MAInitWithWebView:(id)arg1 threadManager:(id)arg2 {
-    Class controller = NSClassFromString(@"DDSignatureNewContactEditorController");
-    unsigned int methodCount;
-    SEL currentSelector;
-    Method *classMethods;
-    for(unsigned int i = 0; i < 2; i++) {
-        classMethods = class_copyMethodList(i == 0 ? controller : object_getClass(controller), &methodCount);
-//        NSLog(@"Number of methods found for class %@: %u", controller, methodCount);
-        
-        for (unsigned int j = 0; j < methodCount; j++) {
-            currentSelector = method_getName((Method)classMethods[j]);
-//            NSLog(@"%d: Adding method %@ from %@", i, NSStringFromSelector(currentSelector), i == 0 ? controller : object_getClass(controller));
-        }
-        free(classMethods);
-    }
-    
-    
-    return [self MAInitWithWebView:arg1 threadManager:arg2];
-}
-
-@end
-
 @interface WebView_GPGMail : NSObject
 @end
 
