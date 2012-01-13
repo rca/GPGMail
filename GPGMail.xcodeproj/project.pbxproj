@@ -3472,7 +3472,7 @@
 					i386,
 				);
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
-				BUNDLE_VERSION = "2.0a23";
+				BUNDLE_VERSION = 2.0a23;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
@@ -3511,6 +3511,7 @@
 					suppress,
 				);
 				PRODUCT_NAME = GPGMail;
+				SYMLINK_GPGMAIL = 1;
 				VALID_ARCHS = "x86_64 i386";
 				VERSION_INFO_PREFIX = "-traditional";
 				WRAPPER_EXTENSION = mailbundle;
