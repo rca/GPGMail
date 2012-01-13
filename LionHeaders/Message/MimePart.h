@@ -5,6 +5,7 @@
  */
 
 
+#import "NSURLDownloadDelegate-Protocol.h"
 
 @class MFError, Message, MessageBody, MessageStore, NSArray, NSMutableDictionary, NSString;
 
