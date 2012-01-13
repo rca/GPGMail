@@ -210,10 +210,12 @@ static BOOL gpgMailWorks = YES;
 
 @implementation GPGMailBundle
 
-@synthesize cachedPublicGPGKeys, cachedPersonalGPGKeys, cachedGPGKeys, updater, accountExistsForSigning, componentsMissing = _componentsMissing;
+@synthesize publicGPGKeys, secretGPGKeys, GPGKeys, updater, accountExistsForSigning, componentsMissing = _componentsMissing,
+            secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGKeysByEmail;
 
 + (void)load {
-	GPGMailLoggingLevel = [[GPGOptions sharedOptions] integerForKey:@"GPGMailDebug"];
+	GPGMailLoggingLevel = 1; //[[GPGOptions sharedOptions] integerForKey:@"GPGMailDebug"];
+    NSLog(@"Logging Level: %d", GPGMailLoggingLevel);
 	[[NSExceptionHandler defaultExceptionHandler] setExceptionHandlingMask:NSLogOtherExceptionMask | NSLogTopLevelExceptionMask];
 }
 
@@ -704,15 +706,22 @@ static BOOL gpgMailWorks = YES;
 
     // Load all keys.
     [self loadGPGKeys];
-
-    if([[self personalKeys] count])
+    
+    if([self.secretGPGKeys count]) {
         self.accountExistsForSigning = YES;
+        NSLog(@"* GPGMail: Enabled - Account for signing found.");
+    }
+    else
+        NSLog(@"* GPGMail: Disabled - No Account for signing found.");
+    
+    DebugLog(@"Emails can be used to sign: %@", self.secretGPGKeysByEmail);
+    DebugLog(@"Emails can be used to encrypt: %@", self.publicGPGKeysByEmail);
     
     // Create the decryption queue.
     decryptionQueue = dispatch_queue_create("org.gpgmail.decryption", NULL);
     verificationQueue = dispatch_queue_create("org.gpgmail.verification", NULL);
     collectingQueue = dispatch_queue_create("org.gpgmail.collection", NULL);
-
+	
     // There's a bug in MOX: added menu items are not enabled/disabled correctly
 	// if they are instantiated programmatically
 	//UNUSED NSAssert([NSBundle loadNibNamed:@"GPGMenu" owner:self], @"### GPGMail: -[GPGMailBundle init]: Unable to load nib named GPGMenu");
@@ -787,19 +796,23 @@ static BOOL gpgMailWorks = YES;
     // Release the decryption queue.
     dispatch_release(decryptionQueue);
 
-    cachedPersonalGPGKeys = nil;
-    [cachedPersonalGPGKeys release];
-    cachedPublicGPGKeys = nil;
-    [cachedPublicGPGKeys release];
-    [cachedGPGKeys release];
-
+    self.secretGPGKeys = nil;
+    [secretGPGKeys release];
+    self.publicGPGKeys = nil;
+    [publicGPGKeys release];
+    self.GPGKeys = nil;
+    [GPGKeys release];
+    self.secretGPGKeysByEmail = nil;
+    [_secretGPGKeysByEmail release];
+    self.publicGPGKeysByEmail = nil;
+    [_publicGPGKeysByEmail release];
     self.updater = nil;
 
 	// Never invoked...
-	if (cachedUserIDsPerKey != NULL) {
-		NSFreeMapTable(cachedUserIDsPerKey);
-	}
-	[cachedKeyGroups release];
+//	if (cachedUserIDsPerKey != NULL) {
+//		NSFreeMapTable(cachedUserIDsPerKey);
+//	}
+//	[cachedKeyGroups release];
 	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:nil];
 	[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self name:nil object:nil];
 	[locale release];
@@ -1237,18 +1250,14 @@ static BOOL gpgMailWorks = YES;
 }
 
 - (void)flushKeyCache:(BOOL)refresh {
-	cachedPersonalGPGKeys = nil;
-    [cachedPersonalGPGKeys release];
-	cachedPublicGPGKeys = nil;
-	[cachedPublicGPGKeys release];
+    self.secretGPGKeys = nil;
+    [secretGPGKeys release];
+	self.publicGPGKeys = nil;
+	[publicGPGKeys release];
 	[cachedKeyGroups release];
 	cachedKeyGroups = nil;
 	[defaultKey release];
 	defaultKey = nil;
-	if (cachedUserIDsPerKey != NULL) {
-		NSFreeMapTable(cachedUserIDsPerKey);
-		cachedUserIDsPerKey = NULL;
-	}
 	if (refresh) {
 		[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] postNotificationName:GPGKeyListWasInvalidatedNotification object:self];
 //		[self refreshPersonalKeysMenu];                       // Was disabled
@@ -1269,7 +1278,7 @@ static BOOL gpgMailWorks = YES;
 	// We need to perform search in-memory, because asking gpgme/gpg to do it launches
 	// a task each time, starving the system resources!
 	NSMutableArray *keys = [NSMutableArray array];
-	NSSet *allKeys = (secretKeys ? [self personalKeys] : [self publicKeys]);
+	NSSet *allKeys = (secretKeys ? self.secretGPGKeys : self.publicGPGKeys);
 
 	if (!searchPatterns) {
 		[keys addObjectsFromArray:[allKeys allObjects]];
@@ -1294,12 +1303,12 @@ static BOOL gpgMailWorks = YES;
 }
 
 - (BOOL)canSignMessagesFromAddress:(NSString *)address {
-    NSString *fingerprint = [_cachedPersonalGPGKeysByEmail valueForKey:[address gpgNormalizedEmail]];
+    NSString *fingerprint = [self.secretGPGKeysByEmail valueForKey:[address gpgNormalizedEmail]];
     return (fingerprint != nil);
 }
 
 - (BOOL)canEncryptMessagesToAddress:(NSString *)address {
-    NSString *fingerprint = [_cachedPublicGPGKeysByEmail objectForKey:[address gpgNormalizedEmail]];
+    NSString *fingerprint = [self.publicGPGKeysByEmail objectForKey:[address gpgNormalizedEmail]];
     NSLog(@"Can encrypt to address: %@: %@", [address gpgNormalizedEmail], fingerprint != nil ? @"YES" : @"NO");
     return (fingerprint != nil);
 }
@@ -1309,7 +1318,7 @@ static BOOL gpgMailWorks = YES;
     GPGKey *tmpKey;
     for(NSString *recipient in recipients) {
         recipient = [recipient gpgNormalizedEmail];
-        tmpKey = [_cachedPublicGPGKeysByEmail objectForKey:recipient];
+        tmpKey = [self.publicGPGKeysByEmail objectForKey:recipient];
         if (tmpKey)
             [keyList addObject:tmpKey];
     }
@@ -1321,7 +1330,7 @@ static BOOL gpgMailWorks = YES;
     GPGKey *tmpKey;
     for(NSString *sender in senders) {
         sender = [sender gpgNormalizedEmail];
-        tmpKey = [_cachedPersonalGPGKeysByEmail objectForKey:sender];
+        tmpKey = [self.secretGPGKeysByEmail objectForKey:sender];
         if (tmpKey)
             [keyList addObject:tmpKey];
     }
@@ -1333,15 +1342,14 @@ static BOOL gpgMailWorks = YES;
     
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.verbose = (GPGMailLoggingLevel > 0);
-    cachedGPGKeys = [gpgc allKeys];
-    [cachedGPGKeys retain];
+    self.GPGKeys = [gpgc allKeys];
     [gpgc release];
     
-    return cachedGPGKeys;
+    return self.GPGKeys;
 }
 
 - (NSSet *)allGPGKeys {
-    return cachedGPGKeys;
+    return self.GPGKeys;
 }
 
 /**
@@ -1366,54 +1374,61 @@ static BOOL gpgMailWorks = YES;
 
 }
 
-- (NSSet *)personalKeys {
+- (NSSet *)secretGPGKeys {
     NSSet *allKeys;
     BOOL filterKeys;
 
     if(!gpgMailWorks)
         return nil;
 
-    if(!cachedPersonalGPGKeys) {
+    if(!secretGPGKeys) {
         filterKeys = [self filtersOutUnusableKeys];
         allKeys = [self allGPGKeys];
-        cachedPersonalGPGKeys = [[allKeys filter:^(id obj) {
+        self.secretGPGKeys = [allKeys filter:^(id obj) {
             return ((GPGKey *)obj).secret && (!filterKeys || [self canKeyBeUsedForSigning:obj]) ? obj : nil;
-        }] retain];
+        }];
 
-        if ([cachedPersonalGPGKeys count] == 0 && ![self warnedAboutMissingPrivateKeys]) {
+        if ([secretGPGKeys count] == 0 && ![self warnedAboutMissingPrivateKeys]) {
 			[self performSelector:@selector(warnUserForMissingPrivateKeys:) withObject:nil afterDelay:0];
 		}
-
-        NSMutableDictionary *emailMap = [self emailMapForGPGKeys:cachedPersonalGPGKeys];
-        _cachedPersonalGPGKeysByEmail = [[NSDictionary alloc] initWithDictionary:emailMap];
-
-        DebugLog(@"Emails can be used to sign: %@", _cachedPersonalGPGKeysByEmail);
     }
 
-    return cachedPersonalGPGKeys;
+    return secretGPGKeys;
 }
 
-- (NSSet *)publicKeys {
+- (NSDictionary *)secretGPGKeysByEmail {
+    if(!_secretGPGKeysByEmail) {
+        NSMutableDictionary *emailMap = [self emailMapForGPGKeys:self.secretGPGKeys];
+        self.secretGPGKeysByEmail = emailMap;
+    }
+    return _secretGPGKeysByEmail;
+}
+
+- (NSDictionary *)publicGPGKeysByEmail {
+    if(!_publicGPGKeysByEmail) {
+        NSMutableDictionary *emailMap = [self emailMapForGPGKeys:self.publicGPGKeys];
+        self.publicGPGKeysByEmail = emailMap;
+    }
+    return _publicGPGKeysByEmail;
+}
+
+
+- (NSSet *)publicGPGKeys {
     NSSet *allKeys;
     BOOL filterKeys;
 
     if(!gpgMailWorks)
         return nil;
 
-    if(!cachedPublicGPGKeys) {
+    if(!publicGPGKeys) {
         filterKeys = [self filtersOutUnusableKeys];
         allKeys = [self allGPGKeys];
-        cachedPublicGPGKeys = [[allKeys filter:^(id obj) {
+        self.publicGPGKeys = [allKeys filter:^(id obj) {
             return !filterKeys || [self canKeyBeUsedForEncryption:obj] ? obj : nil;
-        }] retain];
-
-        NSMutableDictionary *emailMap = [self emailMapForGPGKeys:cachedPublicGPGKeys];
-        _cachedPublicGPGKeysByEmail = [[NSDictionary alloc] initWithDictionary:emailMap];
-
-        DebugLog(@"Emails can be used to encrypt: %@", _cachedPublicGPGKeysByEmail);
+        }];
     }
 
-    return cachedPublicGPGKeys;
+    return publicGPGKeys;
 }
 
 // TODO: Fix for libmacgpg
@@ -1462,22 +1477,6 @@ static BOOL gpgMailWorks = YES;
 	}
 
 	return result;
-}
-
-- (GPGKey *)publicKeyForSecretKey:(GPGKey *)secretKey {
-	// Do not invoke -[GPGKey publicKey], because it will perform a gpg op
-	// Get key from cached public keys
-	[secretKey retain];
-    NSString *aFingerprint = [secretKey fingerprint];
-
-    for (GPGKey *aPublicKey in [self publicKeys]) {
-		if ([[aPublicKey fingerprint] isEqualToString:aFingerprint]) {
-            [secretKey release];
-			return aPublicKey;
-		}
-    }
-    [secretKey release];
-	return nil;
 }
 
 //- (NSString *)menuItemTitleForKey:(GPGKey *)key {

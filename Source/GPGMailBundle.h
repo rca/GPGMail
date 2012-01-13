@@ -103,9 +103,9 @@ typedef void (^gpgmail_verification_task_t)(void);
 	IBOutlet NSMenuItem *allUserIDsMenuItem;
 	NSDictionary *locale;
 
-    NSSet *cachedPersonalGPGKeys;
-    NSSet *cachedPublicGPGKeys;
-    NSSet *cachedGPGKeys;
+    NSSet *secretGPGKeys;
+    NSSet *publicGPGKeys;
+    NSSet *GPGKeys;
 
     // A serial queue which makes sure that only one pinentry
     // password request is run at once.
@@ -115,14 +115,10 @@ typedef void (^gpgmail_verification_task_t)(void);
     
     BOOL accountExistsForSigning;
     
-    // Map which uses a fingerprint to lookup a personal key.
-    NSDictionary *_cachedPersonalGPGKeysByFingerprint;
-    // Map which uses a fingerprint to lookup a public key.
-    NSDictionary *_cachedPublicGPGKeysByFingerprint;
     // Map which uses the email address to lookup a personal key.
-    NSDictionary *_cachedPersonalGPGKeysByEmail;
+    NSDictionary *_secretGPGKeysByEmail;
     // Map which uses the email address to lookup a public key.
-    NSDictionary *_cachedPublicGPGKeysByEmail;
+    NSDictionary *_publicGPGKeysByEmail;
     
     BOOL _componentsMissing;
     
@@ -200,9 +196,11 @@ typedef void (^gpgmail_verification_task_t)(void);
 @property (assign) NSMenuItem *pgpViewMenuItem;
 @property (assign) NSMenuItem *allUserIDsMenuItem;
 
-@property (nonatomic, retain) NSSet *cachedPersonalGPGKeys;
-@property (nonatomic, retain) NSSet *cachedPublicGPGKeys;
-@property (nonatomic, retain) NSSet *cachedGPGKeys;
+@property (nonatomic, retain) NSSet *secretGPGKeys;
+@property (nonatomic, retain) NSDictionary *secretGPGKeysByEmail;
+@property (nonatomic, retain) NSSet *publicGPGKeys;
+@property (nonatomic, retain) NSDictionary *publicGPGKeysByEmail;
+@property (nonatomic, retain) NSSet *GPGKeys;
 
 @property (nonatomic, readonly, retain) SUUpdater *updater;
 
@@ -217,8 +215,6 @@ typedef void (^gpgmail_verification_task_t)(void);
 - (void)mailTo:(id)sender;
 
 - (NSArray *)keysForSearchPatterns:(NSArray *)searchPatterns attributeName:(NSString *)attributeKeyPath secretKeys:(BOOL)secretKeys;
-- (NSSet *)personalKeys;
-- (NSSet *)publicKeys;
 - (NSArray *)secondaryUserIDsForKey:(GPGKey *)key;
 //NOT IMPLEMENTED - (NSArray *)keyGroups;
 - (IBAction)gpgReloadPGPKeys:(id)sender;
