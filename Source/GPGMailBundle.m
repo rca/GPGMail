@@ -56,7 +56,7 @@ NSString *GPGMailException = @"GPGMailException";
 NSString *GPGMailSwizzledMethodPrefix = @"MA";
 NSString *GPGMailAgent = @"GPGMail %@";
 
-int GPGMailLoggingLevel = 0;
+int GPGMailLoggingLevel = 1;
 
 static BOOL gpgMailWorks = YES;
 
@@ -1619,22 +1619,7 @@ static BOOL gpgMailWorks = YES;
 	// Only either the key or one of the subkeys has to be valid,
     // non-expired, non-disabled, non-revoked and be used for encryption.
     // We don't care about ownerTrust, validity
-	NSMutableArray* allKeys = [NSMutableArray array];
-    [allKeys addObject:key];
-    [allKeys addObjectsFromArray:[key subkeys]];
-    for(GPGSubkey *subkey in allKeys) {
-        if(subkey.canEncrypt && !subkey.expired && !subkey.revoked &&
-           !subkey.invalid && !subkey.disabled) {
-            return YES;
-        }
-        else {
-            // Apparently if the primary key doesn't match this criterias, subkeys
-            // don't need to be checked, and it's not included.
-            if([key.fingerprint isEqualToString:subkey.fingerprint])
-                return NO;
-        }
-    }
-    return NO;
+	return key.canAnyEncrypt && key.status < GPGKeyStatus_Invalid;
 }
 
 // TODO: Public key might not be available... how can this be?
@@ -1642,22 +1627,7 @@ static BOOL gpgMailWorks = YES;
 	// Only either the key or one of the subkeys has to be valid,
     // non-expired, non-disabled, non-revoked and be used for encryption.
     // We don't care about ownerTrust, validity
-	// We need the public key here, but get passed the secret key.
-    GPGKey *publicKey = [self publicKeyForSecretKey:key];
-
-    // Public Key might not be available... how can this be?
-    if(!publicKey)
-        return NO;
-    NSMutableSet* allKeys = [NSMutableSet set];
-    [allKeys addObject:publicKey];
-    [allKeys addObjectsFromArray:[publicKey subkeys]];
-    for(GPGSubkey *subkey in allKeys) {
-        if(subkey.canSign && !subkey.expired && !subkey.revoked &&
-           !subkey.invalid && !subkey.disabled) {
-            return YES;
-        }
-    }
-    return NO;
+	return key.canAnySign && key.status < GPGKeyStatus_Invalid;
 }
 
 - (BOOL)canUserIDBeUsed:(GPGUserID *)userID {
