@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">11B26</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1864</string>
-		<string key="IBDocument.AppKitVersion">1138</string>
-		<string key="IBDocument.HIToolboxVersion">566.00</string>
+		<string key="IBDocument.SystemVersion">11C73</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
+		<string key="IBDocument.AppKitVersion">1138.23</string>
+		<string key="IBDocument.HIToolboxVersion">567.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">1864</string>
+			<string key="NS.object.0">1938</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSNumberFormatter</string>
@@ -227,7 +227,7 @@
 										<object class="NSButton" id="572428511">
 											<reference key="NSNextResponder" ref="782958523"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{165, 268}, {165, 18}}</string>
+											<string key="NSFrame">{{165, 268}, {125, 18}}</string>
 											<reference key="NSSuperview" ref="782958523"/>
 											<reference key="NSNextKeyView" ref="696331322"/>
 											<bool key="NSEnabled">YES</bool>
@@ -304,7 +304,7 @@
 										<object class="NSButton" id="728125071">
 											<reference key="NSNextResponder" ref="782958523"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{165, 203}, {165, 18}}</string>
+											<string key="NSFrame">{{165, 203}, {125, 18}}</string>
 											<reference key="NSSuperview" ref="782958523"/>
 											<reference key="NSNextKeyView" ref="97310430"/>
 											<bool key="NSEnabled">YES</bool>
@@ -627,6 +627,30 @@
 					<int key="connectionID">23</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">openFAQ:</string>
+						<reference key="source" ref="359798784"/>
+						<reference key="destination" ref="758835818"/>
+					</object>
+					<int key="connectionID">747</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">openDonation:</string>
+						<reference key="source" ref="359798784"/>
+						<reference key="destination" ref="263402944"/>
+					</object>
+					<int key="connectionID">748</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">openContact:</string>
+						<reference key="source" ref="359798784"/>
+						<reference key="destination" ref="607240547"/>
+					</object>
+					<int key="connectionID">749</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: updater.automaticallyChecksForUpdates</string>
 						<reference key="source" ref="997375455"/>
@@ -641,22 +665,6 @@
 						</object>
 					</object>
 					<int key="connectionID">720</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: bundle.versionDescription</string>
-						<reference key="source" ref="244718305"/>
-						<reference key="destination" ref="359798784"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="244718305"/>
-							<reference key="NSDestination" ref="359798784"/>
-							<string key="NSLabel">value: bundle.versionDescription</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">bundle.versionDescription</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">723</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -695,40 +703,16 @@
 					<int key="connectionID">726</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">openFAQ:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="758835818"/>
-					</object>
-					<int key="connectionID">747</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">openDonation:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="263402944"/>
-					</object>
-					<int key="connectionID">748</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">openContact:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="607240547"/>
-					</object>
-					<int key="connectionID">749</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: DownloadBetaVersions</string>
-						<reference key="source" ref="667904677"/>
+						<string key="label">value: UseOpenPGPToSend</string>
+						<reference key="source" ref="572428511"/>
 						<reference key="destination" ref="89653837"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="667904677"/>
+							<reference key="NSSource" ref="572428511"/>
 							<reference key="NSDestination" ref="89653837"/>
-							<string key="NSLabel">value: DownloadBetaVersions</string>
+							<string key="NSLabel">value: UseOpenPGPToSend</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">DownloadBetaVersions</string>
+							<string key="NSKeyPath">UseOpenPGPToSend</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSConditionallySetsEnabled</string>
 								<boolean value="NO" key="NS.object.0"/>
@@ -736,7 +720,43 @@
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">762</int>
+					<int key="connectionID">773</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: bundle.versionDescription</string>
+						<reference key="source" ref="244718305"/>
+						<reference key="destination" ref="359798784"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="244718305"/>
+							<reference key="NSDestination" ref="359798784"/>
+							<string key="NSLabel">value: bundle.versionDescription</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">bundle.versionDescription</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">723</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: UseOpenPGPToSend</string>
+						<reference key="source" ref="360251952"/>
+						<reference key="destination" ref="89653837"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="360251952"/>
+							<reference key="NSDestination" ref="89653837"/>
+							<string key="NSLabel">value: UseOpenPGPToSend</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">UseOpenPGPToSend</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSConditionallySetsEnabled</string>
+								<boolean value="NO" key="NS.object.0"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">779</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -760,26 +780,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: UseOpenPGPToSend</string>
-						<reference key="source" ref="572428511"/>
-						<reference key="destination" ref="89653837"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="572428511"/>
-							<reference key="NSDestination" ref="89653837"/>
-							<string key="NSLabel">value: UseOpenPGPToSend</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">UseOpenPGPToSend</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSConditionallySetsEnabled</string>
-								<boolean value="NO" key="NS.object.0"/>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">773</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: UseOpenPGPToReceive</string>
 						<reference key="source" ref="342507718"/>
 						<reference key="destination" ref="89653837"/>
@@ -800,15 +800,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: UseOpenPGPToSend</string>
-						<reference key="source" ref="360251952"/>
+						<string key="label">value: DownloadBetaVersions</string>
+						<reference key="source" ref="667904677"/>
 						<reference key="destination" ref="89653837"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="360251952"/>
+							<reference key="NSSource" ref="667904677"/>
 							<reference key="NSDestination" ref="89653837"/>
-							<string key="NSLabel">value: UseOpenPGPToSend</string>
+							<string key="NSLabel">value: DownloadBetaVersions</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">UseOpenPGPToSend</string>
+							<string key="NSKeyPath">DownloadBetaVersions</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSConditionallySetsEnabled</string>
 								<boolean value="NO" key="NS.object.0"/>
@@ -816,7 +816,7 @@
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">779</int>
+					<int key="connectionID">762</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
