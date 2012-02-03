@@ -249,4 +249,11 @@
 
 "GPG_CONFIG_ERROR_NO_PINENTRY_TITLE" = "Pinentry-mac ist nicht installiert.";
 "GPG_CONFIG_ERROR_NO_PINENTRY_MESSAGE" = "Die Komponente Pinentry-mac konnte nicht gefunden werden. Bitte installieren Sie die aktuellsten GPGTools (http://www.gpgtools.org/installer/index.html)";
+
+"MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Teil-Verschlüsselt";
+"MESSAGE_IS_PGP_PARTLY_SIGNED" = "Teil-Signiert";
+"MESSAGE_IS_PGP_ENCRYPTED" = "Verschlüsselt";
+"MESSAGE_IS_PGP_SIGNED" = "Signiert";
+"MESSAGE_IS_PGP_SIGNED_INVALID" = "Ungültige Signatur";
+
 }

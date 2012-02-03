@@ -122,14 +122,14 @@
     Method *classMethods;
     for(unsigned int i = 0; i < 2; i++) {
         classMethods = class_copyMethodList(i == 0 ? aClass : object_getClass(aClass), &methodCount);
-        DebugLog(@"Number of methods found for class %@: %u", aClass, methodCount);
+//        DebugLog(@"Number of methods found for class %@: %u", aClass, methodCount);
         
         for (unsigned int j = 0; j < methodCount; j++) {
             currentSelector = method_getName((Method)classMethods[j]);
-            DebugLog(@"%d: Adding method %@ from %@", i, NSStringFromSelector(currentSelector), i == 0 ? aClass : object_getClass(aClass));
+//            DebugLog(@"%d: Adding method %@ from %@", i, NSStringFromSelector(currentSelector), i == 0 ? aClass : object_getClass(aClass));
             [i == 0 ? self : object_getClass(self) jr_addMethod:currentSelector fromClass:i == 0 ? aClass : object_getClass(aClass) error:error];
             if(*error) {
-                DebugLog(@"failed to add method: %@", NSStringFromSelector(currentSelector));
+//                DebugLog(@"failed to add method: %@", NSStringFromSelector(currentSelector));
                 free(classMethods);
                 return NO;
             }

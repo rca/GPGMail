@@ -233,7 +233,7 @@ static BOOL gpgMailWorks = YES;
  swizzleMap contains all classes and methods which need to be swizzled.
  */
 + (void)_installGPGMail {
-	DebugLog(@"Adding GPGMail methods");
+//	DebugLog(@"Adding GPGMail methods");
     NSArray *swizzleMap = [NSArray arrayWithObjects:
         // Mail internal classes.
         [NSDictionary dictionaryWithObjectsAndKeys:
@@ -349,16 +349,16 @@ static BOOL gpgMailWorks = YES;
         if([swizzleInfo objectForKey:@"gpgMailClass"]) {
             Class gpgMailClass = NSClassFromString([swizzleInfo objectForKey:@"gpgMailClass"]);
             if(!mailClass) {
-                DebugLog(@"Class %@ doesn't exist", mailClass);
+//                DebugLog(@"Class %@ doesn't exist", mailClass);
                 break;
             }
             if(!gpgMailClass) {
-                DebugLog(@"Class %@ doesn't exist", gpgMailClass);
+//                DebugLog(@"Class %@ doesn't exist", gpgMailClass);
                 break;
             }
             [mailClass jr_addMethodsFromClass:gpgMailClass error:&error];
             if(error)
-                DebugLog(@"[DEBUG] %s Error: %@", __PRETTY_FUNCTION__, error);
+//                DebugLog(@"[DEBUG] %s Error: %@", __PRETTY_FUNCTION__, error);
             error = nil;
         }
         for(NSString *method in [swizzleInfo objectForKey:@"selectors"]) {
@@ -369,8 +369,8 @@ static BOOL gpgMailWorks = YES;
                 error = nil;
                 // Try swizzling as class method on error.
                 [mailClass jr_swizzleClassMethod:NSSelectorFromString(method) withClassMethod:NSSelectorFromString(gpgMethod) error:&error];
-                if(error)
-                    DebugLog(@"[DEBUG] %s Class Error: %@", __PRETTY_FUNCTION__, error);
+//                if(error)
+//                    DebugLog(@"[DEBUG] %s Class Error: %@", __PRETTY_FUNCTION__, error);
             }
         }
     }
@@ -714,8 +714,8 @@ static BOOL gpgMailWorks = YES;
     else
         NSLog(@"* GPGMail: Disabled - No Account for signing found.");
     
-    DebugLog(@"Emails can be used to sign: %@", self.secretGPGKeysByEmail);
-    DebugLog(@"Emails can be used to encrypt: %@", self.publicGPGKeysByEmail);
+//    DebugLog(@"Emails can be used to sign: %@", self.secretGPGKeysByEmail);
+//    DebugLog(@"Emails can be used to encrypt: %@", self.publicGPGKeysByEmail);
     
     // Create the decryption queue.
     decryptionQueue = dispatch_queue_create("org.gpgmail.decryption", NULL);
@@ -1309,7 +1309,7 @@ static BOOL gpgMailWorks = YES;
 
 - (BOOL)canEncryptMessagesToAddress:(NSString *)address {
     NSString *fingerprint = [self.publicGPGKeysByEmail objectForKey:[address gpgNormalizedEmail]];
-    NSLog(@"Can encrypt to address: %@: %@", [address gpgNormalizedEmail], fingerprint != nil ? @"YES" : @"NO");
+//    NSLog(@"Can encrypt to address: %@: %@", [address gpgNormalizedEmail], fingerprint != nil ? @"YES" : @"NO");
     return (fingerprint != nil);
 }
 
@@ -1341,7 +1341,7 @@ static BOOL gpgMailWorks = YES;
     if(!gpgMailWorks) return nil;
     
     GPGController *gpgc = [[GPGController alloc] init];
-    gpgc.verbose = (GPGMailLoggingLevel > 0);
+    gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
     self.GPGKeys = [gpgc allKeys];
     [gpgc release];
     

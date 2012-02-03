@@ -41,9 +41,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "1990"
-         endingLineNumber = "1990"
-         landmarkName = "-GPGDecodeWithContext:"
-         landmarkType = "5">
+         endingLineNumber = "1990">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -55,9 +53,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "2035"
-         endingLineNumber = "2035"
-         landmarkName = "-GPGDecodeWithContext:"
-         landmarkType = "5">
+         endingLineNumber = "2035">
       </FileBreakpoint>
    </FileBreakpoints>
    <SymbolicBreakpoints>

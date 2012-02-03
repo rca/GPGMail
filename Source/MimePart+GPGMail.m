@@ -1247,7 +1247,7 @@
 #pragma mark Methods for creating a new message.
 
 - (id)MANewEncryptedPartWithData:(id)data recipients:(id)recipients encryptedData:(id *)encryptedData {
-    DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+//    DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
     // First thing todo, check if an address with the gpg-mail prefix is found.
     // If not, S/MIME is wanted.
     NSArray *prefixedAddresses = [recipients filter:^(id recipient){
@@ -1265,9 +1265,9 @@
         else
             [normalRecipients addObject:recipient];
     }
-    DebugLog(@"Recipients: %@", recipients);
-    DebugLog(@"BCC Recipients: %@", bccRecipients);
-    DebugLog(@"Recipients: %@", normalRecipients);
+//    DebugLog(@"Recipients: %@", recipients);
+//    DebugLog(@"BCC Recipients: %@", bccRecipients);
+//    DebugLog(@"Recipients: %@", normalRecipients);
     // TODO: unfortunately we don't know the hidden recipients in here...
     //       gotta find a workaround.
     // Ask the mail bundle for the GPGKeys matching the email address.
@@ -1275,10 +1275,10 @@
     NSMutableSet *bccKeyList = [[GPGMailBundle sharedInstance] publicKeyListForAddresses:bccRecipients];
 	[bccKeyList minusSet:normalKeyList];
 
-    DebugLog(@"BCC Recipients: %@", bccKeyList);
+//    DebugLog(@"BCC Recipients: %@", bccKeyList);
 
     GPGController *gpgc = [[GPGController alloc] init];
-    gpgc.verbose = (GPGMailLoggingLevel > 0);
+    gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
     gpgc.useArmor = YES;
     gpgc.useTextMode = YES;
     // Automatically trust keys, even though they are not specifically
@@ -1294,7 +1294,7 @@
     }
     @catch(NSException *e) {
         [self failedToSignForSender:@"t@t.com"];
-        DebugLog(@"[DEBUG] %s encryption error: %@", __PRETTY_FUNCTION__, e);
+//        DebugLog(@"[DEBUG] %s encryption error: %@", __PRETTY_FUNCTION__, e);
         // TODO: Add encryption error handling. (Re-use the dialogs shown for S/MIME
         //       encryption errors?
         return nil;
@@ -1326,9 +1326,9 @@
 // TODO: Translate the error message if creating the signature fails.
 //       At the moment the standard S/MIME message is used.
 - (id)MANewSignedPartWithData:(id)data sender:(id)sender signatureData:(id *)signatureData {
-    DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
-    DebugLog(@"[DEBUG] %s data: [%@] %@", __PRETTY_FUNCTION__, [data class], data);
-    DebugLog(@"[DEBUG] %s sender: [%@] %@", __PRETTY_FUNCTION__, [sender class], sender);
+//    DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+//    DebugLog(@"[DEBUG] %s data: [%@] %@", __PRETTY_FUNCTION__, [data class], data);
+//    DebugLog(@"[DEBUG] %s sender: [%@] %@", __PRETTY_FUNCTION__, [sender class], sender);
     // If sender doesn't show any injected header values, S/MIME is wanted,
     // hence the original method called.
     if(![sender isFlaggedValueWithKey:@"from"]) {
@@ -1354,7 +1354,7 @@
         return nil;
     }
     GPGController *gpgc = [[GPGController alloc] init];
-    gpgc.verbose = (GPGMailLoggingLevel > 0);
+    gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
     gpgc.useArmor = YES;
     gpgc.useTextMode = YES;
     // Automatically trust keys, even though they are not specifically
@@ -1380,7 +1380,7 @@
 //			[self failedToSignForSender:sender];
 //            return nil;
 //		}
-        DebugLog(@"[DEBUG] %s sign error: %@", __PRETTY_FUNCTION__, e);
+//        DebugLog(@"[DEBUG] %s sign error: %@", __PRETTY_FUNCTION__, e);
 //		@throw e;
     }
     @finally {
@@ -1418,9 +1418,9 @@
 }
 
 - (NSData *)newInlineSignedDataForData:(id)data sender:(id)sender {
-    DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
-    DebugLog(@"[DEBUG] %s data: [%@] %@", __PRETTY_FUNCTION__, [data class], data);
-    DebugLog(@"[DEBUG] %s sender: [%@] %@", __PRETTY_FUNCTION__, [sender class], sender);
+//    DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
+//    DebugLog(@"[DEBUG] %s data: [%@] %@", __PRETTY_FUNCTION__, [data class], data);
+//    DebugLog(@"[DEBUG] %s sender: [%@] %@", __PRETTY_FUNCTION__, [sender class], sender);
     
     NSSet *normalKeyList = [[GPGMailBundle sharedInstance] signingKeyListForAddresses:[NSArray arrayWithObject:sender]];
     // Should not happen, but if no valid signing keys are found
@@ -1453,7 +1453,7 @@
 			[self failedToSignForSender:sender];
             return nil;
 		}
-        DebugLog(@"[DEBUG] %s sign error: %@", __PRETTY_FUNCTION__, e);
+//        DebugLog(@"[DEBUG] %s sign error: %@", __PRETTY_FUNCTION__, e);
 		@throw e;
     }
     @finally {

@@ -84,7 +84,7 @@
     GPGAttachmentController *attachmentController = [[GPGAttachmentController alloc] initWithAttachmentParts:pgpAttachments];
     attachmentController.keyList = [[GPGMailBundle sharedInstance] allGPGKeys];
     [attachmentController beginSheetModalForWindow:[NSApp mainWindow] completionHandler:^(NSInteger result) {
-        DebugLog(@"Attachment panel was closed: %d", result);
+//        DebugLog(@"Attachment panel was closed: %d", result);
     }];
 }
 
@@ -113,7 +113,7 @@
     signatureView.keyList = [[GPGMailBundle sharedInstance] allGPGKeys];
     signatureView.signatures = messageSigners; 
     [signatureView beginSheetModalForWindow:[NSApp mainWindow] completionHandler:^(NSInteger result) {
-        DebugLog(@"Signature panel was closed: %d", result);
+//        DebugLog(@"Signature panel was closed: %d", result);
     }];
 }
 

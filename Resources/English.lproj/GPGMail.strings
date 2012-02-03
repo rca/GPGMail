@@ -249,4 +249,11 @@
     
 "GPG_CONFIG_ERROR_NO_PINENTRY_TITLE" = "Pinentry-mac is not installed.";
 "GPG_CONFIG_ERROR_NO_PINENTRY_MESSAGE" = "Pinentry-mac, an important component used by GPGMail couldn't be found. Please make sure to install the latest GPGTools (http://www.gpgtools.org/installer/index.html)";
+
+"MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Partly Encrypted";
+"MESSAGE_IS_PGP_PARTLY_SIGNED" = "Parly Signed";
+"MESSAGE_IS_PGP_ENCRYPTED" = "Encrypted";
+"MESSAGE_IS_PGP_SIGNED" = "Signed";
+"MESSAGE_IS_PGP_SIGNED_INVALID" = "Invalid Signature";
+
 }

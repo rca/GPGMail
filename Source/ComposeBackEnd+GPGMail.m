@@ -76,7 +76,6 @@
         id ret = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldSign shouldEncrypt:shouldEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
         return ret;
     }
-    DebugLog(@"[DEBUG] Content: %@", contents);
 
     // The encryption part is a little tricky that's why
     // Mail.app is gonna do the heavy lifting with our GPG encryption method
@@ -101,8 +100,6 @@
     }
     // At the moment for drafts signing and encrypting is disabled.
     // GPG not enabled, or neither encrypt nor sign are checked, let's get the shit out of here.
-    DebugLog(@"%s: Should encrypt: %@", __PRETTY_FUNCTION__, shouldPGPEncrypt ? @"YES" : @"NO");
-    DebugLog(@"%s: Should sign: %@", __PRETTY_FUNCTION__, shouldPGPSign ? @"YES" : @"NO");
     if(!shouldPGPEncrypt && !shouldPGPSign) {
         OutgoingMessage *outMessage = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldSign shouldEncrypt:shouldEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
         return outMessage;
@@ -169,8 +166,6 @@
 //        NSLog(@"[DEBUG] Outgoing message: %@", [[((_OutgoingMessageBody *)[outgoingMessage messageBody]) rawData] stringByGuessingEncoding]);
         return outgoingMessage;
     }
-
-    DebugLog(@"[DEBUG] %s outgoingMessage: %@", __PRETTY_FUNCTION__, [NSString stringWithData:[outgoingMessage valueForKey:@"_rawData"] encoding:NSUTF8StringEncoding]);
 
     // Fetch the encrypted data from the body data.
     NSData *encryptedData = [((_OutgoingMessageBody *)[outgoingMessage messageBody]) rawData];
@@ -426,7 +421,6 @@
         if(![[GPGMailBundle sharedInstance] canEncryptMessagesToAddress:[address gpgNormalizedEmail]])
             [nonEligibleRecipients addObject:address];
     }
-    DebugLog(@"Non eligible recipients: %@", nonEligibleRecipients);
     BOOL canEncrypt = [nonEligibleRecipients count] == 0;
     [mutableRecipients release];
 

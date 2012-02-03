@@ -1,7 +1,7 @@
 #define MAJOR_VERSION 2
 #define MINOR_VERSION 0
 /*#define MAINTENANCE_VERSION 0		/**/
-#define PRERELEASE_VERSION a24		/**/
+#define PRERELEASE_VERSION a30		/**/
 
 
 
