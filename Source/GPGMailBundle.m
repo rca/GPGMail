@@ -65,7 +65,7 @@ static BOOL gpgMailWorks = YES;
 @implementation GPGMailBundle
 
 @synthesize publicGPGKeys, secretGPGKeys, GPGKeys, updater, accountExistsForSigning, componentsMissing = _componentsMissing,
-            secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGKeysByEmail;
+secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGKeysByEmail, gpgc;
 
 + (void)load {
 	GPGMailLoggingLevel = 1; //[[GPGOptions sharedOptions] integerForKey:@"GPGMailDebug"];
@@ -76,114 +76,114 @@ static BOOL gpgMailWorks = YES;
 /**
  This method replaces all of Mail's methods which are necessary for GPGMail
  to work correctly.
-
+ 
  For each class of Mail that must be extended, a class with the same name
  and suffix _GPGMail (<ClassName>_GPGMail) exists which implements the methods
  to be relaced.
  On runtime, these methods are first added to the original Mail class and
  after that, the original Mail methods are swizzled with the ones of the
  <ClassName>_GPGMail class.
-
+ 
  swizzleMap contains all classes and methods which need to be swizzled.
  */
 + (void)_installGPGMail {
-//	DebugLog(@"Adding GPGMail methods");
+    //	DebugLog(@"Adding GPGMail methods");
     NSArray *swizzleMap = [NSArray arrayWithObjects:
-        // Mail internal classes.
-        [NSDictionary dictionaryWithObjectsAndKeys:
-            @"MessageHeaderDisplay", @"class",
-            @"MessageHeaderDisplay_GPGMail", @"gpgMailClass",
-            [NSArray arrayWithObjects:
-                @"_attributedStringForSecurityHeader",
-                @"textView:clickedOnLink:atIndex:", nil], @"selectors", nil],
-        [NSDictionary dictionaryWithObjectsAndKeys:
-            @"ComposeBackEnd", @"class",
-            @"ComposeBackEnd_GPGMail", @"gpgMailClass",
-            [NSArray arrayWithObjects:
-                @"_makeMessageWithContents:isDraft:shouldSign:shouldEncrypt:shouldSkipSignature:shouldBePlainText:",
-                @"canEncryptForRecipients:sender:",
-                @"canSignFromAddress:",
-                @"recipientsThatHaveNoKeyForEncryption",
-                @"setEncryptIfPossible:",
-                @"setSignIfPossible:",
-             nil], @"selectors", nil],
-        [NSDictionary dictionaryWithObjectsAndKeys:
-            @"ComposeHeaderView", @"class",
-            @"ComposeHeaderView_GPGMail", @"gpgMailClass",
-            [NSArray arrayWithObjects:
-                @"_calculateSecurityFrame:",
-                @"awakeFromNib", nil], @"selectors", nil],
-        [NSDictionary dictionaryWithObjectsAndKeys:
-            @"HeadersEditor", @"class",
-            @"HeadersEditor_GPGMail", @"gpgMailClass",
-            [NSArray arrayWithObjects:
-                @"securityControlChanged:", nil], @"selectors", nil],
-        [NSDictionary dictionaryWithObjectsAndKeys:
-            @"MessageAttachment", @"class",
-            @"MessageAttachment_GPGMail", @"gpgMailClass",
-            [NSArray arrayWithObjects:
-                @"filename", nil], @"selectors", nil],
-        [NSDictionary dictionaryWithObjectsAndKeys:
-            @"OptionalView", @"class",
-            @"OptionalView_GPGMail", @"gpgMailClass",
-            [NSArray arrayWithObjects:
-                @"widthIncludingOptionSwitch:", nil], @"selectors", nil],
-        [NSDictionary dictionaryWithObjectsAndKeys:
-            @"MailDocumentEditor", @"class",
-            @"MailDocumentEditor_GPGMail", @"gpgMailClass",
-            [NSArray arrayWithObjects:
-                @"backEndDidLoadInitialContent:",
-                @"dealloc",
-                @"windowForMailFullScreen", nil], @"selectors", nil],
-        // Messages.framework classes. Messages.framework classes can be extended using
-        // categories. No need for a special GPGMail class.
-        [NSDictionary dictionaryWithObjectsAndKeys:
-            @"MimePart", @"class",
-            [NSArray arrayWithObjects:
-                @"isEncrypted",
-                @"newEncryptedPartWithData:recipients:encryptedData:",
-                @"newSignedPartWithData:sender:signatureData:",
-                @"verifySignature",
-                @"decodeWithContext:",
-                @"decodeTextPlainWithContext:",
-                @"decodeTextHtmlWithContext:",
-                @"decodeApplicationOctet_streamWithContext:",
-//                @"copySignerLabels",
-//                @"copyMessageSigners",
-                @"isSigned",
-                @"isMimeSigned",
-                @"isMimeEncrypted",
-                @"usesKnownSignatureProtocol",
-                @"clearCachedDecryptedMessageBody",
-                @"setDecryptedMessageBody:isEncrypted:isSigned:error:",
-             nil], @"selectors", nil],
-        [NSDictionary dictionaryWithObjectsAndKeys:
-            @"MimeBody", @"class",
-            [NSArray arrayWithObjects:
-                @"isSignedByMe",
-                @"_isPossiblySignedOrEncrypted", nil], @"selectors", nil],
+                           // Mail internal classes.
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"MessageHeaderDisplay", @"class",
+                            @"MessageHeaderDisplay_GPGMail", @"gpgMailClass",
+                            [NSArray arrayWithObjects:
+                             @"_attributedStringForSecurityHeader",
+                             @"textView:clickedOnLink:atIndex:", nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"ComposeBackEnd", @"class",
+                            @"ComposeBackEnd_GPGMail", @"gpgMailClass",
+                            [NSArray arrayWithObjects:
+                             @"_makeMessageWithContents:isDraft:shouldSign:shouldEncrypt:shouldSkipSignature:shouldBePlainText:",
+                             @"canEncryptForRecipients:sender:",
+                             @"canSignFromAddress:",
+                             @"recipientsThatHaveNoKeyForEncryption",
+                             @"setEncryptIfPossible:",
+                             @"setSignIfPossible:",
+                             nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"ComposeHeaderView", @"class",
+                            @"ComposeHeaderView_GPGMail", @"gpgMailClass",
+                            [NSArray arrayWithObjects:
+                             @"_calculateSecurityFrame:",
+                             @"awakeFromNib", nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"HeadersEditor", @"class",
+                            @"HeadersEditor_GPGMail", @"gpgMailClass",
+                            [NSArray arrayWithObjects:
+                             @"securityControlChanged:", nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"MessageAttachment", @"class",
+                            @"MessageAttachment_GPGMail", @"gpgMailClass",
+                            [NSArray arrayWithObjects:
+                             @"filename", nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"OptionalView", @"class",
+                            @"OptionalView_GPGMail", @"gpgMailClass",
+                            [NSArray arrayWithObjects:
+                             @"widthIncludingOptionSwitch:", nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"MailDocumentEditor", @"class",
+                            @"MailDocumentEditor_GPGMail", @"gpgMailClass",
+                            [NSArray arrayWithObjects:
+                             @"backEndDidLoadInitialContent:",
+                             @"dealloc",
+                             @"windowForMailFullScreen", nil], @"selectors", nil],
+                           // Messages.framework classes. Messages.framework classes can be extended using
+                           // categories. No need for a special GPGMail class.
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"MimePart", @"class",
+                            [NSArray arrayWithObjects:
+                             @"isEncrypted",
+                             @"newEncryptedPartWithData:recipients:encryptedData:",
+                             @"newSignedPartWithData:sender:signatureData:",
+                             @"verifySignature",
+                             @"decodeWithContext:",
+                             @"decodeTextPlainWithContext:",
+                             @"decodeTextHtmlWithContext:",
+                             @"decodeApplicationOctet_streamWithContext:",
+                             //                @"copySignerLabels",
+                             //                @"copyMessageSigners",
+                             @"isSigned",
+                             @"isMimeSigned",
+                             @"isMimeEncrypted",
+                             @"usesKnownSignatureProtocol",
+                             @"clearCachedDecryptedMessageBody",
+                             @"setDecryptedMessageBody:isEncrypted:isSigned:error:",
+                             nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"MimeBody", @"class",
+                            [NSArray arrayWithObjects:
+                             @"isSignedByMe",
+                             @"_isPossiblySignedOrEncrypted", nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"Message", @"class",
                             [NSArray arrayWithObjects:
                              @"messageBodyUpdatingFlags:", nil], @"selectors", nil],
-        [NSDictionary dictionaryWithObjectsAndKeys:
-            @"MailAccount", @"class",
-            [NSArray arrayWithObjects:
-                @"accountExistsForSigning", nil], @"selectors", nil],
-//                           [NSDictionary dictionaryWithObjectsAndKeys:
-//                            @"Message", @"class",
-//                            [NSArray arrayWithObjects:
-//                             @"messageBodyUpdatingFlags:", nil], @"selectors", nil],
-        [NSDictionary dictionaryWithObjectsAndKeys:
-            @"NSPreferences", @"class",
-            [NSArray arrayWithObjects:
-                @"sharedPreferences",
-                @"windowWillResize:toSize:",
-                @"toolbarItemClicked:",
-                @"showPreferencesPanelForOwner:", nil], @"selectors", nil],
-        nil];
-
-
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"MailAccount", @"class",
+                            [NSArray arrayWithObjects:
+                             @"accountExistsForSigning", nil], @"selectors", nil],
+                           //                           [NSDictionary dictionaryWithObjectsAndKeys:
+                           //                            @"Message", @"class",
+                           //                            [NSArray arrayWithObjects:
+                           //                             @"messageBodyUpdatingFlags:", nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"NSPreferences", @"class",
+                            [NSArray arrayWithObjects:
+                             @"sharedPreferences",
+                             @"windowWillResize:toSize:",
+                             @"toolbarItemClicked:",
+                             @"showPreferencesPanelForOwner:", nil], @"selectors", nil],
+                           nil];
+    
+    
     NSError *error = nil;
     for(NSDictionary *swizzleInfo in swizzleMap) {
         // If this is a non Messages.framework class, add all methods
@@ -217,7 +217,7 @@ static BOOL gpgMailWorks = YES;
             }
         }
     }
-
+    
 }
 
 + (void)initialize {
@@ -226,14 +226,14 @@ static BOOL gpgMailWorks = YES;
     // GPGMailBundle.
     if(self != [GPGMailBundle class])
         return;
-
+    
     Class mvMailBundleClass = NSClassFromString(@"MVMailBundle");
     // If this class is not available that means Mail.app
     // doesn't allow plugins anymore. Fingers crossed that this
     // never happens!
     if(!mvMailBundleClass)
         return;
-
+    
     class_setSuperclass([self class], mvMailBundleClass);
 	// Automatically performs the check, since the check is performed in init.
     GPGMailBundle *instance = [GPGMailBundle sharedInstance];
@@ -246,7 +246,7 @@ static BOOL gpgMailWorks = YES;
     // Install the Sparkle Updater.
     [self _installSparkleUpdater];
     NSLog(@"Loaded GPGMail %@", [(GPGMailBundle *)[self sharedInstance] version]);
-
+    
     [((MVMailBundle *)[self class]) registerBundle];             // To force registering composeAccessoryView and preferences
 }
 
@@ -261,12 +261,12 @@ static BOOL gpgMailWorks = YES;
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"clear"]] setName:@"gpgClear"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"signed"]] setName:@"gpgSigned"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"unsigned"]] setName:@"gpgUnsigned"];
-
+    
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GPGMail"]] setName:@"GPGMail"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"MacGPG"]] setName:@"MacGPG"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GPGMail32"]] setName:@"GPGMail32"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GPGMailPreferences"]] setName:@"GPGMailPreferences"];
-
+    
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"questionMark"]] setName:@"gpgQuestionMark"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"SmallAlert12"]] setName:@"gpgSmallAlert12"];
 	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"SmallAlert16"]] setName:@"gpgSmallAlert16"];
@@ -384,12 +384,12 @@ static BOOL gpgMailWorks = YES;
 	if (self = [super init]) {
 		NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
 		NSDictionary *defaultsDictionary = [NSDictionary dictionaryWithContentsOfFile:[myBundle pathForResource:@"GPGMailBundle" ofType:@"defaults"]];
-
+        
 		[[GPGOptions sharedOptions] setStandardDomain:[[NSBundle bundleForClass:[self class]] bundleIdentifier]];
 		if (defaultsDictionary) {
 			[[GPGOptions sharedOptions] registerDefaults:defaultsDictionary];
 		}
-
+        
 		if (gpgMailWorks) {
 			gpgMailWorks = [self checkGPG];
 		}
@@ -397,14 +397,14 @@ static BOOL gpgMailWorks = YES;
 			[self finishInitialization];
 		}
 	}
-
+    
 	return self;
 }
 
 - (void)dealloc {
     // Release the decryption queue.
     dispatch_release(decryptionQueue);
-
+    
     self.secretGPGKeys = nil;
     [secretGPGKeys release];
     self.publicGPGKeys = nil;
@@ -416,11 +416,11 @@ static BOOL gpgMailWorks = YES;
     self.publicGPGKeysByEmail = nil;
     [_publicGPGKeysByEmail release];
     self.updater = nil;
-
+    
 	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:nil];
 	[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self name:nil object:nil];
 	[locale release];
-
+    
 	struct objc_super s = { self, [self superclass] };
     objc_msgSendSuper(&s, @selector(dealloc));
 }
@@ -465,7 +465,7 @@ static BOOL gpgMailWorks = YES;
 	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
 	NSString *aTitle = NSLocalizedStringFromTableInBundle(@"NO PGP PRIVATE KEY - TITLE", @"GPGMail", aBundle, "");
 	NSString *aMessage = NSLocalizedStringFromTableInBundle(@"NO PGP PRIVATE KEY - MESSAGE", @"GPGMail", aBundle, "");
-
+    
 	(void)NSRunAlertPanel(aTitle, @"%@", nil, nil, nil, aMessage);
 	[self setWarnedAboutMissingPrivateKeys:YES];
 }
@@ -538,7 +538,7 @@ static BOOL gpgMailWorks = YES;
         }
     }
     return keyEmailMap;
-
+    
 }
 
 - (NSSet *)secretGPGKeys {
@@ -551,12 +551,12 @@ static BOOL gpgMailWorks = YES;
         self.secretGPGKeys = [allKeys filter:^(id obj) {
             return ((GPGKey *)obj).secret && [self canKeyBeUsedForSigning:obj] ? obj : nil;
         }];
-
+        
         if ([secretGPGKeys count] == 0 && ![self warnedAboutMissingPrivateKeys]) {
 			[self performSelector:@selector(warnUserForMissingPrivateKeys:) withObject:nil afterDelay:0];
 		}
     }
-
+    
     return secretGPGKeys;
 }
 
@@ -582,14 +582,14 @@ static BOOL gpgMailWorks = YES;
     
     if(!gpgMailWorks)
         return nil;
-
+    
     if(!publicGPGKeys) {
         allKeys = [self allGPGKeys];
         self.publicGPGKeys = [allKeys filter:^(id obj) {
             return [self canKeyBeUsedForEncryption:obj] ? obj : nil;
         }];
     }
-
+    
     return publicGPGKeys;
 }
 
@@ -616,7 +616,7 @@ static BOOL gpgMailWorks = YES;
 }
 
 - (id)locale {
-//    return [NSLocale autoupdatingCurrentLocale]; // FIXME: does not work as expected
+    //    return [NSLocale autoupdatingCurrentLocale]; // FIXME: does not work as expected
 	return [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
 }
 

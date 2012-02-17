@@ -68,6 +68,9 @@ typedef void (^gpgmail_verification_task_t)(void);
     
     BOOL _componentsMissing;
     
+	GPGController *gpgc;
+	NSLock *updateLock;
+    
 	SUUpdater *updater;
 }
 
@@ -92,6 +95,8 @@ typedef void (^gpgmail_verification_task_t)(void);
 @property (nonatomic, retain) NSDictionary *secretGPGKeysByEmail;
 @property (nonatomic, retain) NSSet *publicGPGKeys;
 @property (nonatomic, retain) NSDictionary *publicGPGKeysByEmail;
+@property (readonly, retain) NSSet *allGPGKeys;
+@property (readonly) GPGController *gpgc;
 @property (nonatomic, retain) NSSet *GPGKeys;
 
 @property (nonatomic, readonly, retain) SUUpdater *updater;
@@ -104,12 +109,12 @@ typedef void (^gpgmail_verification_task_t)(void);
 + (BOOL)gpgMailWorks;
 - (BOOL)gpgMailWorks;
 
+- (NSSet *)loadGPGKeys;
 - (BOOL)canKeyBeUsedForEncryption:(GPGKey *)key;
 - (BOOL)canKeyBeUsedForSigning:(GPGKey *)key;
 - (BOOL)canUserIDBeUsed:(GPGUserID *)userID;
 - (id)locale;
-- (NSSet *)loadGPGKeys;
-- (NSSet *)allGPGKeys;
+
 - (NSMutableSet *)publicKeyListForAddresses:(NSArray *)recipients;
 - (BOOL)canEncryptMessagesToAddress:(NSString *)address;
 - (BOOL)canSignMessagesFromAddress:(NSString *)address;
