@@ -358,11 +358,15 @@
         [recipients addObjectsFromArray:[headers headersForKey:@"cc"]];
         [recipients addObjectsFromArray:[headers headersForKey:@"bcc"]];
         [topPart newEncryptedPartWithData:signedData recipients:recipients encryptedData:&encryptedData];
+        [recipients release];
         topData = encryptedData;
     }
     
-    if(!topData)
+    if(!topData) {
+        [boundary release];
+        [topPart release];
         return nil;
+    }
     
     // The body is done, now on to updating the headers since we'll use the original headers
     // but have to change the top part headers.
