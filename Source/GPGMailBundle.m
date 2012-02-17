@@ -579,16 +579,14 @@ static BOOL gpgMailWorks = YES;
 
 - (NSSet *)publicGPGKeys {
     NSSet *allKeys;
-    BOOL filterKeys;
-
+    
     if(!gpgMailWorks)
         return nil;
 
     if(!publicGPGKeys) {
-        filterKeys = [self filtersOutUnusableKeys];
         allKeys = [self allGPGKeys];
         self.publicGPGKeys = [allKeys filter:^(id obj) {
-            return !filterKeys || [self canKeyBeUsedForEncryption:obj] ? obj : nil;
+            return [self canKeyBeUsedForEncryption:obj] ? obj : nil;
         }];
     }
 
