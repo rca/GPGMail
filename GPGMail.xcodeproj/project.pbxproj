@@ -36,6 +36,7 @@
 		1B6B7DF411CD1C600055F528 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6B7DF311CD1C600055F528 /* Sparkle.framework */; };
 		1B6B7E2C11CD1C810055F528 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6B7DF311CD1C600055F528 /* Sparkle.framework */; };
 		1B6B7E5211CD24440055F528 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 1B6B7E5111CD24440055F528 /* dsa_pub.pem */; };
+		1B7E4DB714EEEAD90069E69C /* JRLPSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7E4DB614EEEAD90069E69C /* JRLPSwizzle.m */; };
 		1B8289FB13FD62880007E6A2 /* Message+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8289FA13FD62880007E6A2 /* Message+GPGMail.m */; };
 		1B8437661404AB9C00968293 /* NSData+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8437651404AB9C00968293 /* NSData+GPGMail.m */; };
 		1B8C01D513E4F12D00DB9FA4 /* GPGSignatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8C01D413E4F12D00DB9FA4 /* GPGSignatureView.m */; };
@@ -43,7 +44,6 @@
 		1B9EAAAB14352C270063F2F1 /* Frameworks/RegexKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9EAAAA14352C270063F2F1 /* Frameworks/RegexKit.framework */; };
 		1B9EAAAC14352C4D0063F2F1 /* Frameworks/RegexKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9EAAAA14352C270063F2F1 /* Frameworks/RegexKit.framework */; };
 		1BACB2EB13EBF66300C750AA /* GPGCertLargeNotTrusted.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1BACB2EA13EBF66300C750AA /* GPGCertLargeNotTrusted.tif */; };
-		1BACB2ED13EBF6A800C750AA /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BACB2EC13EBF6A800C750AA /* JRSwizzle.m */; };
 		1BAEF64413E9F57700A59CED /* MailAccount+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAEF64313E9F57700A59CED /* MailAccount+GPGMail.m */; };
 		1BB3DCCE1407F1CA00870DEB /* LibraryStore+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB3DCCD1407F1CA00870DEB /* LibraryStore+GPGMail.m */; };
 		1BB6B1DF143224DD00B58BD0 /* invalid-signature-icon-overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BB6B1DE143224DD00B58BD0 /* invalid-signature-icon-overlay.png */; };
@@ -1317,6 +1317,8 @@
 		1B64F62013E38E9200C5B4C9 /* GPG related notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "GPG related notes"; path = "Docs/GPG related notes"; sourceTree = "<group>"; };
 		1B6B7DF311CD1C600055F528 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
 		1B6B7E5111CD24440055F528 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dsa_pub.pem; path = Resources/dsa_pub.pem; sourceTree = "<group>"; };
+		1B7E4DB514EEEACE0069E69C /* JRLPSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JRLPSwizzle.h; path = Source/JRLPSwizzle.h; sourceTree = "<group>"; };
+		1B7E4DB614EEEAD90069E69C /* JRLPSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JRLPSwizzle.m; path = Source/JRLPSwizzle.m; sourceTree = "<group>"; };
 		1B8289F913FD62880007E6A2 /* Message+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Message+GPGMail.h"; path = "Source/Message+GPGMail.h"; sourceTree = "<group>"; };
 		1B8289FA13FD62880007E6A2 /* Message+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Message+GPGMail.m"; path = "Source/Message+GPGMail.m"; sourceTree = "<group>"; };
 		1B8437641404AB9C00968293 /* NSData+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+GPGMail.h"; path = "Source/NSData+GPGMail.h"; sourceTree = "<group>"; };
@@ -1327,8 +1329,6 @@
 		1B8C01D913E4F26500DB9FA4 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Resources/English.lproj/GPGSignatureView.xib; sourceTree = "<group>"; };
 		1B9EAAAA14352C270063F2F1 /* Frameworks/RegexKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Frameworks/RegexKit.framework; sourceTree = "<group>"; };
 		1BACB2EA13EBF66300C750AA /* GPGCertLargeNotTrusted.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = GPGCertLargeNotTrusted.tif; path = Resources/Images/GPGCertLargeNotTrusted.tif; sourceTree = "<group>"; };
-		1BACB2EC13EBF6A800C750AA /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JRSwizzle.m; path = Source/JRSwizzle.m; sourceTree = "<group>"; };
-		1BACB2EE13EBF6B900C750AA /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JRSwizzle.h; path = Source/JRSwizzle.h; sourceTree = "<group>"; };
 		1BAEF64213E9F57700A59CED /* MailAccount+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MailAccount+GPGMail.h"; path = "Source/MailAccount+GPGMail.h"; sourceTree = "<group>"; };
 		1BAEF64313E9F57700A59CED /* MailAccount+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MailAccount+GPGMail.m"; path = "Source/MailAccount+GPGMail.m"; sourceTree = "<group>"; };
 		1BB3DCCC1407F1CA00870DEB /* LibraryStore+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LibraryStore+GPGMail.h"; path = "Source/LibraryStore+GPGMail.h"; sourceTree = "<group>"; };
@@ -2757,7 +2757,7 @@
 		1BAEF63F13E9F44800A59CED /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				1BACB2EC13EBF6A800C750AA /* JRSwizzle.m */,
+				1B7E4DB614EEEAD90069E69C /* JRLPSwizzle.m */,
 				1B02D70713F1E9D80032CFD1 /* GPGFlaggedHeaderValue.m */,
 				1B32AFF613AF827B0072079B /* CCLog.m */,
 				1B02D70913F1E9F00032CFD1 /* NSArray+Functional.m */,
@@ -2846,7 +2846,7 @@
 		1BDAA67213EB4CB600F27826 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				1BACB2EE13EBF6B900C750AA /* JRSwizzle.h */,
+				1B7E4DB514EEEACE0069E69C /* JRLPSwizzle.h */,
 				1B02D70B13F1EA1D0032CFD1 /* GPGFlaggedHeaderValue.h */,
 				1B32AFF513AF827B0072079B /* CCLog.h */,
 				1B02D70C13F1EA290032CFD1 /* NSArray+Functional.h */,
@@ -3196,7 +3196,6 @@
 				1B3F2F9E13E59639006A8333 /* ComposeBackEnd+GPGMail.m in Sources */,
 				1B3F2FA113E59EE3006A8333 /* OptionalView+GPGMail.m in Sources */,
 				1BAEF64413E9F57700A59CED /* MailAccount+GPGMail.m in Sources */,
-				1BACB2ED13EBF6A800C750AA /* JRSwizzle.m in Sources */,
 				1B02D70813F1E9D80032CFD1 /* GPGFlaggedHeaderValue.m in Sources */,
 				1B02D70A13F1E9F00032CFD1 /* NSArray+Functional.m in Sources */,
 				1B8289FB13FD62880007E6A2 /* Message+GPGMail.m in Sources */,
@@ -3209,6 +3208,7 @@
 				1B51232514093795004D0818 /* NSBezierPath_KBAdditions.m in Sources */,
 				1B51232614093795004D0818 /* NSBezierPath+StrokeExtensions.m in Sources */,
 				1BC4778D1468AA4F0061120C /* GPGAttachmentController.m in Sources */,
+				1B7E4DB714EEEAD90069E69C /* JRLPSwizzle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,7 +1,7 @@
 //	Copyright (c) 2007-2011 Jonathan 'Wolf' Rentzsch: http://rentzsch.com
 //	Some rights reserved: http://opensource.org/licenses/mit-license.php
 
-#import "JRSwizzle.h"
+#import "JRLPSwizzle.h"
 #import <objc/objc-class.h>
 #import "CCLog.h"
 
@@ -20,9 +20,9 @@
 #define GetClass(obj)	(obj ? obj->isa : Nil)
 #endif
 
-@implementation NSObject (JRSwizzle)
+@implementation NSObject (JRLPSwizzle)
 
-+ (BOOL)jr_swizzleMethod:(SEL)origSel_ withMethod:(SEL)altSel_ error:(NSError**)error_ {
++ (BOOL)jrlp_swizzleMethod:(SEL)origSel_ withMethod:(SEL)altSel_ error:(NSError**)error_ {
 #if OBJC_API_VERSION >= 2
 	Method origMethod = class_getInstanceMethod(self, origSel_);
 	if (!origMethod) {
@@ -112,24 +112,24 @@
 #endif
 }
 
-+ (BOOL)jr_swizzleClassMethod:(SEL)origSel_ withClassMethod:(SEL)altSel_ error:(NSError**)error_ {
-	return [GetClass((id)self) jr_swizzleMethod:origSel_ withMethod:altSel_ error:error_];
++ (BOOL)jrlp_swizzleClassMethod:(SEL)origSel_ withClassMethod:(SEL)altSel_ error:(NSError**)error_ {
+	return [GetClass((id)self) jrlp_swizzleMethod:origSel_ withMethod:altSel_ error:error_];
 }
 
-+ (BOOL)jr_addMethodsFromClass:(Class)aClass error:(NSError **)error {
++ (BOOL)jrlp_addMethodsFromClass:(Class)aClass error:(NSError **)error {
 	unsigned int methodCount;
     SEL currentSelector;
     Method *classMethods;
     for(unsigned int i = 0; i < 2; i++) {
         classMethods = class_copyMethodList(i == 0 ? aClass : object_getClass(aClass), &methodCount);
-//        DebugLog(@"Number of methods found for class %@: %u", aClass, methodCount);
+        DebugLog(@"Number of methods found for class %@: %u", aClass, methodCount);
         
         for (unsigned int j = 0; j < methodCount; j++) {
             currentSelector = method_getName((Method)classMethods[j]);
-//            DebugLog(@"%d: Adding method %@ from %@", i, NSStringFromSelector(currentSelector), i == 0 ? aClass : object_getClass(aClass));
-            [i == 0 ? self : object_getClass(self) jr_addMethod:currentSelector fromClass:i == 0 ? aClass : object_getClass(aClass) error:error];
+            DebugLog(@"%d: Adding method %@ from %@", i, NSStringFromSelector(currentSelector), i == 0 ? aClass : object_getClass(aClass));
+            [i == 0 ? self : object_getClass(self) jrlp_addMethod:currentSelector fromClass:i == 0 ? aClass : object_getClass(aClass) error:error];
             if(*error) {
-//                DebugLog(@"failed to add method: %@", NSStringFromSelector(currentSelector));
+                DebugLog(@"failed to add method: %@", NSStringFromSelector(currentSelector));
                 free(classMethods);
                 return NO;
             }
@@ -140,7 +140,7 @@
     return YES;
 }
 
-+ (BOOL)jr_addMethod:(SEL)selector fromClass:(Class)class error:(NSError **)error {
++ (BOOL)jrlp_addMethod:(SEL)selector fromClass:(Class)class error:(NSError **)error {
     Method method = class_getInstanceMethod(class, selector);
     if (method == NULL) {
         SetNSError(error, @"method %@ doesn't exit in class: %@", NSStringFromSelector(selector), [self class]);
@@ -150,8 +150,8 @@
     return YES;
 }
 
-+ (BOOL)jr_addClassMethod:(SEL)selector fromClass:(Class)class error:(NSError **)error {
-    return [object_getClass(self) jr_addClassMethod:selector fromClass:class error:error];
++ (BOOL)jrlp_addClassMethod:(SEL)selector fromClass:(Class)class error:(NSError **)error {
+    return [object_getClass(self) jrlp_addClassMethod:selector fromClass:class error:error];
 }
 
 

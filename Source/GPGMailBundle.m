@@ -34,7 +34,7 @@
 #import <Libmacgpg/Libmacgpg.h>
 #import <MailApp.h>
 #import <MailAccount.h>
-#import "JRSwizzle.h"
+#import "JRLPSwizzle.h"
 #import "CCLog.h"
 #import "NSSet+Functional.h"
 #import "NSString+GPGMail.h"
@@ -356,7 +356,7 @@ static BOOL gpgMailWorks = YES;
 //                DebugLog(@"Class %@ doesn't exist", gpgMailClass);
                 break;
             }
-            [mailClass jr_addMethodsFromClass:gpgMailClass error:&error];
+            [mailClass jrlp_addMethodsFromClass:gpgMailClass error:&error];
             if(error)
 //                DebugLog(@"[DEBUG] %s Error: %@", __PRETTY_FUNCTION__, error);
             error = nil;
@@ -364,13 +364,13 @@ static BOOL gpgMailWorks = YES;
         for(NSString *method in [swizzleInfo objectForKey:@"selectors"]) {
             error = nil;
             NSString *gpgMethod = [NSString stringWithFormat:@"%@%@%@", GPGMailSwizzledMethodPrefix, [[method substringToIndex:1] uppercaseString], [method substringFromIndex:1]];
-            [mailClass jr_swizzleMethod:NSSelectorFromString(method) withMethod:NSSelectorFromString(gpgMethod) error:&error];
+            [mailClass jrlp_swizzleMethod:NSSelectorFromString(method) withMethod:NSSelectorFromString(gpgMethod) error:&error];
             if(error) {
                 error = nil;
                 // Try swizzling as class method on error.
-                [mailClass jr_swizzleClassMethod:NSSelectorFromString(method) withClassMethod:NSSelectorFromString(gpgMethod) error:&error];
-//                if(error)
-//                    DebugLog(@"[DEBUG] %s Class Error: %@", __PRETTY_FUNCTION__, error);
+                [mailClass jrlp_swizzleClassMethod:NSSelectorFromString(method) withClassMethod:NSSelectorFromString(gpgMethod) error:&error];
+                if(error)
+                    DebugLog(@"[DEBUG] %s Class Error: %@", __PRETTY_FUNCTION__, error);
             }
         }
     }
