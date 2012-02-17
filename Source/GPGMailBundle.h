@@ -51,7 +51,7 @@ typedef void (^gpgmail_verification_task_t)(void);
 
     NSSet *secretGPGKeys;
     NSSet *publicGPGKeys;
-    NSSet *GPGKeys;
+    NSMutableSet *allGPGKeys;
 
     // A serial queue which makes sure that only one pinentry
     // password request is run at once.

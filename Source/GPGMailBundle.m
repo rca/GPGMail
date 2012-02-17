@@ -64,7 +64,7 @@ static BOOL gpgMailWorks = YES;
 
 @implementation GPGMailBundle
 
-@synthesize publicGPGKeys, secretGPGKeys, GPGKeys, updater, accountExistsForSigning, componentsMissing = _componentsMissing,
+@synthesize publicGPGKeys, secretGPGKeys, allGPGKeys, updater, accountExistsForSigning, componentsMissing = _componentsMissing,
 secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGKeysByEmail, gpgc;
 
 + (void)load {
@@ -364,8 +364,8 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
 }
 
 - (void)finishInitialization {
-    // Load all keys.
-    [self loadGPGKeys];
+    // Init GPGController.
+    [self gpgc];
     
     if([self.secretGPGKeys count]) {
         self.accountExistsForSigning = YES;
@@ -409,13 +409,17 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
     [secretGPGKeys release];
     self.publicGPGKeys = nil;
     [publicGPGKeys release];
-    self.GPGKeys = nil;
-    [GPGKeys release];
     self.secretGPGKeysByEmail = nil;
     [_secretGPGKeysByEmail release];
     self.publicGPGKeysByEmail = nil;
     [_publicGPGKeysByEmail release];
     self.updater = nil;
+    [gpgc release];
+    gpgc = nil;
+    [updateLock release];
+    updateLock = nil;
+    [allGPGKeys release];
+    allGPGKeys = nil;
     
 	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:nil];
 	[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self name:nil object:nil];
@@ -504,19 +508,115 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
     return keyList;
 }
 
-- (NSSet *)loadGPGKeys {
-    if(!gpgMailWorks) return nil;
-    
-    GPGController *gpgc = [[GPGController alloc] init];
-    gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
-    self.GPGKeys = [gpgc allKeys];
-    [gpgc release];
-    
-    return self.GPGKeys;
-}
 
 - (NSSet *)allGPGKeys {
-    return self.GPGKeys;
+    if (!gpgMailWorks) return nil;
+    
+    //Lock and unlock  to give "updateGPGKeys:" a chance to fill allGPGKeys.
+    [updateLock lock];
+    [updateLock unlock];
+    
+    return allGPGKeys;
+}
+
+- (GPGController *)gpgc {
+    if (!gpgMailWorks) return nil;
+    if (!gpgc) {
+        updateLock = [NSLock new];
+        allGPGKeys = [[NSMutableSet alloc] init];
+        gpgc = [[GPGController alloc] init];
+        gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
+        gpgc.delegate = self;
+        [self performSelectorInBackground:@selector(updateGPGKeys:) withObject:nil];
+    }
+    return gpgc;
+}
+
+- (void)gpgController:(GPGController *)gpgc keysDidChanged:(NSObject<EnumerationList> *)keys external:(BOOL)external {
+    if ([NSThread isMainThread]) {
+        [self performSelectorInBackground:@selector(updateGPGKeys:) withObject:keys];
+    } else {
+        [self updateGPGKeys:keys];
+    }
+}
+
+- (void)updateGPGKeys:(NSObject <EnumerationList> *)keys {
+    if (!gpgMailWorks) return;
+    
+	NSLog(@"updateGPGKeys: start");
+	if (![updateLock tryLock]) {
+		NSLog(@"updateGPGKeys: tryLock return");
+		return;
+	}
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	@try {
+		NSMutableSet *realKeys = [NSMutableSet setWithCapacity:[keys count]];
+		
+		//Fingerabdrcke wenn mglich durch die entsprechenden Schlssel ersetzen.
+		Class keyClass = [GPGKey class];
+		for (GPGKey *key in keys) {
+			if (![key isKindOfClass:keyClass]) {
+				GPGKey *tempKey = [allGPGKeys member:key];
+				if (tempKey) {
+					key = tempKey;
+				}
+			}
+			[realKeys addObject:key];
+		}
+		keys = realKeys;
+        
+		
+		NSSet *updatedKeys;
+		if ([keys count] == 0) {
+            //Update all keys.
+			updatedKeys = [self.gpgc updateKeys:allGPGKeys searchFor:nil withSigs:NO];
+		} else {
+            //Update only the keys in 'keys'.
+			updatedKeys = [self.gpgc updateKeys:keys withSigs:NO];
+		}
+        
+		if (gpgc.error) {
+			@throw gpgc.error;
+		}
+		
+		if ([keys count] == 0) {
+			keys = allGPGKeys;
+		}
+		NSMutableSet *keysToRemove = [keys mutableCopy];
+		[keysToRemove minusSet:updatedKeys];
+		
+		NSDictionary *updateInfos = [NSDictionary dictionaryWithObjectsAndKeys:updatedKeys, @"keysToAdd", keysToRemove, @"keysToRemove", nil];
+		
+		[self performSelectorOnMainThread:@selector(updateKeyList:) withObject:updateInfos waitUntilDone:YES];
+        
+	} @catch (GPGException *e) {
+		NSLog(@"updateGPGKeys: failed - %@ (ErrorText: %@)", e, e.gpgTask.errText);
+	} @catch (NSException *e) {
+		NSLog(@"updateGPGKeys: failed - %@", e);
+	} @finally {
+		[pool drain];
+		[updateLock unlock];
+	}
+	
+	NSLog(@"updateGPGKeys: end");
+}
+
+- (void)updateKeyList:(NSDictionary *)dict {
+	NSAssert([NSThread isMainThread], @"updateKeyList must run in the main thread!");
+	
+	NSSet *keysToRemove = [dict objectForKey:@"keysToRemove"];
+	NSSet *keysToAdd = [dict objectForKey:@"keysToAdd"];
+	
+	[allGPGKeys minusSet:keysToRemove];
+	[allGPGKeys unionSet:keysToAdd];
+	
+    
+    //Flush caches.
+    self.secretGPGKeys = nil;
+    self.publicGPGKeys = nil;
+    //self.secretGPGKeysByEmail = nil;
+    //self.publicGPGKeysByEmail = nil;
 }
 
 /**
