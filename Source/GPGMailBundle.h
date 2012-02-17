@@ -44,7 +44,7 @@
 typedef void (^gpgmail_decryption_task_t)(void);
 typedef void (^gpgmail_verification_task_t)(void);
 
-@interface GPGMailBundle : NSObject <NSToolbarDelegate> {
+@interface GPGMailBundle : NSObject <NSToolbarDelegate, GPGControllerDelegate> {
 	NSArray *cachedPersonalKeys;
 	NSArray *cachedPublicKeys;
 	NSDictionary *locale;
