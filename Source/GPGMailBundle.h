@@ -41,66 +41,12 @@
 @class Message;
 @class SUUpdater;
 
-
-// The following strings are used as toolbarItem identifiers and userDefault keys (value is the position index)
-extern NSString *GPGAuthenticateMessageToolbarItemIdentifier;
-extern NSString *GPGDecryptMessageToolbarItemIdentifier;
-extern NSString *GPGSignMessageToolbarItemIdentifier;
-extern NSString *GPGEncryptMessageToolbarItemIdentifier;
-
-extern NSString *GPGKeyListWasInvalidatedNotification;
-extern NSString *GPGPreferencesDidChangeNotification;
-
-extern NSString *GPGMailException;
-extern NSString *GPGKeyGroupsChangedNotification;
-
-extern NSString *GPGMissingKeysNotification;
-// Notification object can be anything; posted when misses key on message verification or message encryption
-// UserInfo: 'fingerprints' = NSArray of fingerprints as NSStrings,
-//           'emails' = NSArray of email addresses as NSStrings
-
-#define GPGENCRYPTION_MENU_ITEMS_COUNT (5)
-
-
-typedef enum {
-	GPGAutomaticMailFormat,
-	GPGLegacyPGPMailFormat,
-	GPGOpenPGPMailFormat,
-	GPGSMIMEMailFormat
-} GPGMailFormat;
-
-
-enum {
-	GPGMailDebug_SaveInputDataMask = 0x0001
-};
-
 typedef void (^gpgmail_decryption_task_t)(void);
 typedef void (^gpgmail_verification_task_t)(void);
 
 @interface GPGMailBundle : NSObject <NSToolbarDelegate> {
-	IBOutlet NSMenuItem *decryptMenuItem;
-	IBOutlet NSMenuItem *authenticateMenuItem;
-	IBOutlet NSMenuItem *encryptsNewMessageMenuItem;
-	IBOutlet NSMenuItem *signsNewMessageMenuItem;
-	IBOutlet NSMenuItem *personalKeysMenuItem;
-	IBOutlet NSMenuItem *choosePublicKeysMenuItem;
-	IBOutlet NSMenuItem *automaticPublicKeysMenuItem;
-	IBOutlet NSMenuItem *usesOnlyOpenPGPStyleMenuItem;
-	IBOutlet NSMenuItem *symetricEncryptionMenuItem;
-	GPGKey *defaultKey;
-	NSMutableDictionary *realToolbarDelegates;
-	NSMutableDictionary *additionalToolbarItemIdentifiersPerToolbarIdentifier;
 	NSArray *cachedPersonalKeys;
 	NSArray *cachedPublicKeys;
-	NSMapTable *cachedUserIDsPerKey;
-	NSArray *cachedKeyGroups;
-#if 0
-	IBOutlet NSMenu *PGPMenu;                                 // Do not remove that line! (kludge for IB)
-	IBOutlet NSMenu *PGPViewMenu;                             // Do not remove that line! (kludge for IB)
-#endif
-	NSMenuItem *pgpMenuItem;
-	NSMenuItem *pgpViewMenuItem;
-	IBOutlet NSMenuItem *allUserIDsMenuItem;
 	NSDictionary *locale;
 
     NSSet *secretGPGKeys;
@@ -135,66 +81,12 @@ typedef void (^gpgmail_verification_task_t)(void);
 + (NSString *)bundleVersion;
 // Returns the string used for the x-pgp-agent message header.
 + (NSString *)agentHeader;
-- (void)workspaceDidMount:(NSNotification *)notification;
-- (void)workspaceDidUnmount:(NSNotification *)notification;
-
-
-
 
 @property BOOL usesOpenPGPToSend; // use OpenPGP to send messages
 @property BOOL usesOpenPGPToReceive; // use OpenPGP to receive messages
 
 
-@property (retain) GPGKey *defaultKey;
-@property BOOL decryptsMessagesAutomatically;
-@property BOOL authenticatesMessagesAutomatically;
-@property BOOL encryptsToSelf;
-@property BOOL decryptsOnlyUnreadMessagesAutomatically;
-@property BOOL authenticatesOnlyUnreadMessagesAutomatically;
-@property (retain) NSArray *displayedKeyIdentifiers;
-@property (readonly) NSArray *allDisplayedKeyIdentifiers;
-@property BOOL displaysAllUserIDs;
-@property BOOL filtersOutUnusableKeys;
-@property BOOL ignoresPGPPresence;
-@property BOOL refreshesKeysOnVolumeMount;
-@property BOOL encryptMessagesWhenPossible;
-@property BOOL alwaysSignMessages;
-@property BOOL alwaysEncryptMessages;
-@property BOOL displaysButtonsInComposeWindow;
-@property BOOL usesKeychain;
-@property BOOL usesOnlyOpenPGPStyle;
-@property BOOL usesEncapsulatedSignature;
-@property BOOL trustsAllKeys;
-@property BOOL automaticallyShowsAllInfo;
-@property NSTimeInterval passphraseFlushTimeout;
-@property BOOL choosesPersonalKeyAccordingToAccount;
-@property BOOL buttonsShowState;
-@property BOOL signWhenEncrypting;
-@property BOOL showsPassphrase;
-@property BOOL disablesSMIME;
 @property BOOL warnedAboutMissingPrivateKeys;
-@property BOOL encryptsReplyToEncryptedMessage;
-@property BOOL signsReplyToSignedMessage;
-@property BOOL usesABEntriesRules;
-@property BOOL addsCustomHeaders;
-
-
-
-
-
-
-@property (assign) NSMenuItem *decryptMenuItem;
-@property (assign) NSMenuItem *authenticateMenuItem;
-@property (assign) NSMenuItem *encryptsNewMessageMenuItem;
-@property (assign) NSMenuItem *signsNewMessageMenuItem;
-@property (assign) NSMenuItem *personalKeysMenuItem;
-@property (assign) NSMenuItem *choosePublicKeysMenuItem;
-@property (assign) NSMenuItem *automaticPublicKeysMenuItem;
-@property (assign) NSMenuItem *symetricEncryptionMenuItem;
-@property (assign) NSMenuItem *usesOnlyOpenPGPStyleMenuItem;
-@property (assign) NSMenuItem *pgpMenuItem;
-@property (assign) NSMenuItem *pgpViewMenuItem;
-@property (assign) NSMenuItem *allUserIDsMenuItem;
 
 @property (nonatomic, retain) NSSet *secretGPGKeys;
 @property (nonatomic, retain) NSDictionary *secretGPGKeysByEmail;
@@ -212,47 +104,10 @@ typedef void (^gpgmail_verification_task_t)(void);
 + (BOOL)gpgMailWorks;
 - (BOOL)gpgMailWorks;
 
-- (void)mailTo:(id)sender;
-
-- (NSArray *)keysForSearchPatterns:(NSArray *)searchPatterns attributeName:(NSString *)attributeKeyPath secretKeys:(BOOL)secretKeys;
-- (NSArray *)secondaryUserIDsForKey:(GPGKey *)key;
-//NOT IMPLEMENTED - (NSArray *)keyGroups;
-- (IBAction)gpgReloadPGPKeys:(id)sender;
-
-
-//NOT IMPLEMENTED
-/*- (IBAction)gpgToggleEncryptionForNewMessage:(id)sender;
-- (IBAction)gpgToggleSignatureForNewMessage:(id)sender;
-- (IBAction)gpgChoosePublicKeys:(id)sender;
-- (IBAction)gpgChoosePersonalKey:(id)sender;
-- (IBAction)gpgChoosePublicKey:(id)sender;
-- (IBAction)gpgToggleAutomaticPublicKeysChoice:(id)sender;
-- (IBAction)gpgToggleSymetricEncryption:(id)sender;
-- (IBAction)gpgToggleUsesOnlyOpenPGPStyle:(id)sender;
-- (IBAction)gpgToggleDisplayAllUserIDs:(id)sender;
-- (IBAction)gpgToggleShowKeyInformation:(id)sender;*/
-
-//- (NSString *)menuItemTitleForKey:(GPGKey *)key;
-//- (NSString *)menuItemTitleForUserID:(GPGUserID *)userID indent:(unsigned)indent;
-//
-//- (void)refreshKeyIdentifiersDisplayInMenu:(NSMenu *)menu;
-
 - (BOOL)canKeyBeUsedForEncryption:(GPGKey *)key;
 - (BOOL)canKeyBeUsedForSigning:(GPGKey *)key;
 - (BOOL)canUserIDBeUsed:(GPGUserID *)userID;
-- (GPGKey *)publicKeyForSecretKey:(GPGKey *)secretKey;
-
-//- (NSString *)descriptionForError:(GPGError)error;
-//NOT IMPLEMENTED - (NSString *)descriptionForException:(NSException *)exception;
-
-//- (NSString *)hashAlgorithmDescription:(GPGHashAlgorithm)algorithm;
-//- (NSString *)gpgErrorDescription:(GPGError)error;
-//- (GPGErrorCode)gpgErrorCodeFromError:(GPGError)error;
-//- (GPGErrorSource)gpgErrorSourceFromError:(GPGError)error;
-//- (GPGError)gpgMakeErrorWithSource:(GPGErrorSource) source code:(GPGErrorCode)code;
-
 - (id)locale;
-
 - (NSSet *)loadGPGKeys;
 - (NSSet *)allGPGKeys;
 - (NSMutableSet *)publicKeyListForAddresses:(NSArray *)recipients;
@@ -283,10 +138,4 @@ typedef void (^gpgmail_verification_task_t)(void);
 @interface GPGMailBundle (NoImplementation)
 // Prevent "incomplete implementation" warning.
 + (id)sharedInstance;
-@end
-
-@interface GPGMailBundle (AddressGroups)
-
-- (void)synchronizeKeyGroupsWithAddressBookGroups;
-
 @end

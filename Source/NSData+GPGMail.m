@@ -42,13 +42,21 @@
 	}
 	
     int items = 10;
+//    int encodings[10] = {NSUTF8StringEncoding, 
+//                            NSWindowsCP1251StringEncoding, NSWindowsCP1252StringEncoding, NSWindowsCP1253StringEncoding,
+//                            NSWindowsCP1254StringEncoding, NSWindowsCP1250StringEncoding, NSISO2022JPStringEncoding,
+//                            NSISOLatin1StringEncoding, NSISOLatin2StringEncoding,                    
+//                            NSASCIIStringEncoding};
     int encodings[10] = {NSUTF8StringEncoding, 
-                            NSWindowsCP1251StringEncoding, NSWindowsCP1252StringEncoding, NSWindowsCP1253StringEncoding,
-                            NSWindowsCP1254StringEncoding, NSWindowsCP1250StringEncoding, NSISO2022JPStringEncoding,
-                            NSISOLatin1StringEncoding, NSISOLatin2StringEncoding,                    
-                            NSASCIIStringEncoding};
+        NSISOLatin1StringEncoding, NSISOLatin2StringEncoding,
+        NSWindowsCP1251StringEncoding, NSWindowsCP1252StringEncoding, NSWindowsCP1253StringEncoding,
+        NSWindowsCP1254StringEncoding, NSWindowsCP1250StringEncoding, NSISO2022JPStringEncoding,
+        NSASCIIStringEncoding};
+
+    NSLog(@"Data length: %lu", [self length]);
     for(int i = 0; i < items; i++) {
         retString = [NSString stringWithData:self encoding:encodings[i]];
+        NSLog(@"String length: %lu", [retString length]);
         if([retString length] > 0)
             return retString;
         
