@@ -193,12 +193,12 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
         if([swizzleInfo objectForKey:@"gpgMailClass"]) {
             Class gpgMailClass = NSClassFromString([swizzleInfo objectForKey:@"gpgMailClass"]);
             if(!mailClass) {
-                NSLog(@"Class %@ doesn't exist", [swizzleInfo objectForKey:@"class"]);
-                break;
+                NSLog(@"WARNING: Class %@ doesn't exist. GPGMail might behave weirdly!", [swizzleInfo objectForKey:@"class"]);
+                continue;
             }
             if(!gpgMailClass) {
-                NSLog(@"Class %@ doesn't exist", [swizzleInfo objectForKey:@"gpgMailClass"]);
-                break;
+                NSLog(@"WARNING: Class %@ doesn't exist. GPGMail might behave weirdly!", [swizzleInfo objectForKey:@"gpgMailClass"]);
+                continue;
             }
             [mailClass jrlp_addMethodsFromClass:gpgMailClass error:&error];
             if(error)
