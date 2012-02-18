@@ -46,4 +46,9 @@
 	IgnorePGPPresence = NO;
 	WarnAboutMissingPrivateKeys = NO;
 	AddCustomHeaders = YES;
+    
+    /* Completely disable generating snippets even if the passphrase
+     * is cached.
+     */
+    NeverCreatePreviewSnippets = NO;
 }
