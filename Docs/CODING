@@ -56,3 +56,15 @@ _getSomeCharsetFromPartTree -> exists only internally
 - Enabling Javascript in WebViews works
   [[WebView preferences] setJavaScriptEnabled:YES]
 - Using Javascript to emulate the bevaiour might be rather easy.
+
+* Mountain Lion *
+
+- MimePart, MimeBody and other very important classes from Message.framework
+  are now in CoreMessage.framework
+- MessageStore does no longer exist but was replaced by MessageDataSource.
+- On Mountain Lion compiled GPGMail doesn't load, where on Lion compiled GPGMail loads
+  - Check Framework dependencies.
+  - Update Header files for Mountain Lion
+
+
+
