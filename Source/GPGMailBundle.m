@@ -29,6 +29,7 @@
 
 #import <objc/objc.h>
 #import <objc/objc-class.h>
+#import <dispatch/dispatch.h>
 #import <ExceptionHandling/ExceptionHandling.h>
 #import <Sparkle/Sparkle.h>
 #import <Libmacgpg/Libmacgpg.h>
