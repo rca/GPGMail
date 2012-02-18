@@ -306,7 +306,7 @@
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{165, 203}, {125, 18}}</string>
 											<reference key="NSSuperview" ref="782958523"/>
-											<reference key="NSNextKeyView" ref="898585553"/>
+											<reference key="NSNextKeyView" ref="113600817"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSButtonCell" key="NSCell" id="342507718">
 												<int key="NSCellFlags">-2080244224</int>
@@ -324,19 +324,19 @@
 												<int key="NSPeriodicInterval">25</int>
 											</object>
 										</object>
-										<object class="NSButton" id="898585553">
+										<object class="NSButton" id="113600817">
 											<reference key="NSNextResponder" ref="782958523"/>
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{165, 183}, {141, 18}}</string>
 											<reference key="NSSuperview" ref="782958523"/>
 											<reference key="NSNextKeyView" ref="97310430"/>
 											<bool key="NSEnabled">YES</bool>
-											<object class="NSButtonCell" key="NSCell" id="976576911">
+											<object class="NSButtonCell" key="NSCell" id="377024234">
 												<int key="NSCellFlags">-2080244224</int>
 												<int key="NSCellFlags2">0</int>
 												<string key="NSContents">Create List Preview</string>
 												<reference key="NSSupport" ref="706304668"/>
-												<reference key="NSControlView" ref="898585553"/>
+												<reference key="NSControlView" ref="113600817"/>
 												<int key="NSButtonFlags">1211912703</int>
 												<int key="NSButtonFlags2">2</int>
 												<reference key="NSNormalImage" ref="754596731"/>
@@ -824,10 +824,10 @@
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: CreatePreviewSnippets</string>
-						<reference key="source" ref="898585553"/>
+						<reference key="source" ref="113600817"/>
 						<reference key="destination" ref="89653837"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="898585553"/>
+							<reference key="NSSource" ref="113600817"/>
 							<reference key="NSDestination" ref="89653837"/>
 							<string key="NSLabel">value: CreatePreviewSnippets</string>
 							<string key="NSBinding">value</string>
@@ -906,7 +906,7 @@
 							<reference ref="63115413"/>
 							<reference ref="163650447"/>
 							<reference ref="915859109"/>
-							<reference ref="898585553"/>
+							<reference ref="113600817"/>
 						</array>
 						<reference key="parent" ref="619190699"/>
 					</object>
@@ -1148,16 +1148,16 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">786</int>
-						<reference key="object" ref="898585553"/>
+						<reference key="object" ref="113600817"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="976576911"/>
+							<reference ref="377024234"/>
 						</array>
 						<reference key="parent" ref="85714290"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">787</int>
-						<reference key="object" ref="976576911"/>
-						<reference key="parent" ref="898585553"/>
+						<reference key="object" ref="377024234"/>
+						<reference key="parent" ref="113600817"/>
 					</object>
 				</array>
 			</object>
@@ -1281,7 +1281,7 @@
 					<string key="NS.key.0">ToolTip</string>
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
-						<reference key="object" ref="898585553"/>
+						<reference key="object" ref="113600817"/>
 						<string key="toolTip">See Preferences -&gt; Viewing -&gt; List Preview.</string>
 					</object>
 				</object>
