@@ -405,13 +405,9 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
     dispatch_release(decryptionQueue);
     
     self.secretGPGKeys = nil;
-    [secretGPGKeys release];
     self.publicGPGKeys = nil;
-    [publicGPGKeys release];
     self.secretGPGKeysByEmail = nil;
-    [_secretGPGKeysByEmail release];
     self.publicGPGKeysByEmail = nil;
-    [_publicGPGKeysByEmail release];
     self.updater = nil;
     [gpgc release];
     gpgc = nil;
@@ -514,6 +510,7 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
     static dispatch_once_t onceQueue;
     
     dispatch_once(&onceQueue, ^{
+        allGPGKeys = [[NSMutableSet alloc] init];
         [self updateGPGKeys:nil];
     });
     
@@ -524,7 +521,6 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
     if (!gpgMailWorks) return nil;
     if (!gpgc) {
         updateLock = [NSLock new];
-        allGPGKeys = [[NSMutableSet alloc] init];
         gpgc = [[GPGController alloc] init];
         gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
         gpgc.delegate = self;
@@ -586,9 +582,14 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
 		NSMutableSet *keysToRemove = [keys mutableCopy];
 		[keysToRemove minusSet:updatedKeys];
 		
-		NSDictionary *updateInfos = [NSDictionary dictionaryWithObjectsAndKeys:updatedKeys, @"keysToAdd", keysToRemove, @"keysToRemove", nil];
-		
-		[self performSelectorOnMainThread:@selector(updateKeyList:) withObject:updateInfos waitUntilDone:YES];
+        [allGPGKeys minusSet:keysToRemove];
+        [allGPGKeys unionSet:updatedKeys];
+        
+        //Flush caches.
+        self.secretGPGKeys = nil;
+        self.publicGPGKeys = nil;
+        self.secretGPGKeysByEmail = nil;
+        self.publicGPGKeysByEmail = nil;
         
 	} @catch (GPGException *e) {
 		NSLog(@"updateGPGKeys: failed - %@ (ErrorText: %@)", e, e.gpgTask.errText);
@@ -602,21 +603,6 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
 	NSLog(@"updateGPGKeys: end");
 }
 
-- (void)updateKeyList:(NSDictionary *)dict {
-	NSAssert([NSThread isMainThread], @"updateKeyList must run in the main thread!");
-	
-	NSSet *keysToRemove = [dict objectForKey:@"keysToRemove"];
-	NSSet *keysToAdd = [dict objectForKey:@"keysToAdd"];
-	
-	[allGPGKeys minusSet:keysToRemove];
-	[allGPGKeys unionSet:keysToAdd];
-	
-    //Flush caches.
-    self.secretGPGKeys = nil;
-    self.publicGPGKeys = nil;
-    //self.secretGPGKeysByEmail = nil;
-    //self.publicGPGKeysByEmail = nil;
-}
 
 /**
  Create a map for the gpg keys which can be accessed by using
@@ -661,16 +647,14 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
 
 - (NSDictionary *)secretGPGKeysByEmail {
     if(!_secretGPGKeysByEmail) {
-        NSMutableDictionary *emailMap = [self emailMapForGPGKeys:self.secretGPGKeys];
-        self.secretGPGKeysByEmail = emailMap;
+        self.secretGPGKeysByEmail = [self emailMapForGPGKeys:self.secretGPGKeys];
     }
     return _secretGPGKeysByEmail;
 }
 
 - (NSDictionary *)publicGPGKeysByEmail {
     if(!_publicGPGKeysByEmail) {
-        NSMutableDictionary *emailMap = [self emailMapForGPGKeys:self.publicGPGKeys];
-        self.publicGPGKeysByEmail = emailMap;
+        self.publicGPGKeysByEmail = [self emailMapForGPGKeys:self.publicGPGKeys];
     }
     return _publicGPGKeysByEmail;
 }
