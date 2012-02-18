@@ -49,4 +49,14 @@
  */
 - (void)decryptPGPMessage;
 
+/**
+ Invoked by Mail.app if the user selects a message.
+ 
+ It's important to intercept this call, to set an internal variable UserSelectedMessage which
+ is checked by -[Message shouldBePGPProcessed].
+ -[Message shouldBePGPProcessed] needs to know whether a message was selected
+ by the user or if Mail.app tries to process it for generating the snippets.
+ */
+- (void)MASetMessageToDisplay:(id)message;
+
 @end

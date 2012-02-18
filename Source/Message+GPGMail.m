@@ -35,6 +35,7 @@
 #import <ActivityMonitor.h>
 #import "MimePart+GPGMail.h"
 #import "Message+GPGMail.h"
+#import "GPGMailBundle.h"
 
 @implementation Message (GPGMail)
 
@@ -276,6 +277,73 @@
 
 - (void)clearPGPInformation {
     [self removeIvars];
+}
+
+#warning Verify what to do if components are missing!
+- (BOOL)shouldBePGPProcessed {
+    // Components are missing? What to do...
+//    if([[GPGMailBundle sharedInstance] componentsMissing])
+//        return NO;
+    
+    // OpenPGP is disabled for reading? Return false.
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+        return NO;
+    
+    // Message was actively selected by the user? PGP process message.
+    if([[self getIvar:@"UserSelectedMessage"] boolValue])
+        return YES;
+    
+    // If NeverCreatePreviewSnippets is set, return NO.
+    if([[GPGOptions sharedOptions] boolForKey:@"NeverCreatePreviewSnippets"])
+        return NO;
+    
+    // Message was not actively select and snippets should not be created?
+    // Don't process the message and let's get on with it.
+    return YES;
+}
+
+- (BOOL)shouldCreateSnippetWithData:(NSData *)data {
+    // CreatePreviewSnippets is set? Always return true.
+    NSLog(@"Create Preview snippets: %@", [[GPGOptions sharedOptions] boolForKey:@"CreatePreviewSnippets"] ? @"YES" : @"NO");
+    NSLog(@"User Selected Message: %@", [[self getIvar:@"UserSelectedMessage"] boolValue] ? @"YES" : @"NO");
+    
+    if([[GPGOptions sharedOptions] boolForKey:@"CreatePreviewSnippets"] ||
+       [[self getIvar:@"UserSelectedMessage"] boolValue])
+        return YES;
+    
+    // Otherwise check if the passphrase is already cached. If it is
+    // return true, 'cause the user want be asked for the passphrase again.
+    
+    // The message could be encrypted to multiple subkeys.
+    // At least one of the keys has to be in cache.
+    NSMutableArray *keyIDs = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    NSArray *packets = [GPGPacket packetsWithData:data];
+	
+	for (GPGPacket *packet in packets) {
+		if (packet.type == GPGPublicKeyEncryptedSessionKeyPacket)
+            [keyIDs addObject:packet.keyID];
+    }
+    
+    NSAssert([keyIDs count] != 0, @"No keyIDs found: %@", keyIDs);
+    
+    BOOL passphraseInCache = NO;
+    GPGController *gpgc = [[GPGController alloc] init];
+    
+    for(NSString *keyID in keyIDs) {
+        GPGKey *key = [[[GPGMailBundle sharedInstance] publicGPGKeysByID] valueForKey:keyID];
+        NSAssert(key != nil, @"No key found for keyID: %@", keyID);
+        if([gpgc isPassphraseForKeyInCache:key]) {
+            passphraseInCache = YES;
+            NSLog(@"Passphrase found in cache!");
+            break;
+        }
+    }
+    [keyIDs release];
+    
+    NSLog(@"Passphrase in cache? %@", passphraseInCache ? @"YES" : @"NO");
+    
+    return passphraseInCache;
 }
 
 @end

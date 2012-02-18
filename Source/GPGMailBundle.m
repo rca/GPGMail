@@ -67,8 +67,8 @@ static BOOL gpgMailWorks = NO;
 
 @implementation GPGMailBundle
 
-@synthesize publicGPGKeys, secretGPGKeys, allGPGKeys, updater, accountExistsForSigning,
-secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGKeysByEmail, gpgc;
+@synthesize publicGPGKeys, secretGPGKeys, allGPGKeys, updater, accountExistsForSigning, secretGPGKeysByEmail = _secretGPGKeysByEmail, 
+            publicGPGKeysByEmail = _publicGPGKeysByEmail, gpgc, publicGPGKeysByID = _publicGPGKeysByID;
 
 + (void)load {
 	GPGMailLoggingLevel = 1; //[[GPGOptions sharedOptions] integerForKey:@"GPGMailDebug"];
@@ -138,6 +138,12 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
                              @"backEndDidLoadInitialContent:",
                              @"dealloc",
                              @"windowForMailFullScreen", nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"MessageContentController", @"class",
+                            @"MessageContentController_GPGMail", @"gpgMailClass",
+                            [NSArray arrayWithObjects:
+                             @"setMessageToDisplay:",
+                              nil], @"selectors", nil],
                            // Messages.framework classes. Messages.framework classes can be extended using
                            // categories. No need for a special GPGMail class.
                            [NSDictionary dictionaryWithObjectsAndKeys:
@@ -606,7 +612,6 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
         }
     }
     return keyEmailMap;
-    
 }
 
 
@@ -665,6 +670,19 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
         self.publicGPGKeysByEmail = [self emailMapForGPGKeys:self.publicGPGKeys];
     }
     return _publicGPGKeysByEmail;
+}
+
+- (NSDictionary *)publicGPGKeysByID {
+    if(!_publicGPGKeysByID) {
+        NSMutableDictionary *idMap = [[NSMutableDictionary alloc] initWithCapacity:0];
+        for(GPGKey *key in self.publicGPGKeys) {
+            [idMap setValue:key forKey:key.keyID];
+            for(GPGKey *subkey in key.subkeys)
+                [idMap setValue:subkey forKey:subkey.keyID];
+        }
+        self.publicGPGKeysByID = idMap;
+    }
+    return _publicGPGKeysByID;
 }
 
 

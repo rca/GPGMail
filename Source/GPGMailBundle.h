@@ -68,6 +68,9 @@ extern NSString *GPGMailKeyringUpdatedNotification;
     NSDictionary *_secretGPGKeysByEmail;
     // Map which uses the email address to lookup a public key.
     NSDictionary *_publicGPGKeysByEmail;
+    // Map which uses the key id to lookup a public key.
+    NSDictionary *_publicGPGKeysByID;
+    
     
     
 	GPGController *gpgc;
@@ -97,6 +100,7 @@ extern NSString *GPGMailKeyringUpdatedNotification;
 @property (nonatomic, retain) NSDictionary *secretGPGKeysByEmail;
 @property (nonatomic, retain) NSSet *publicGPGKeys;
 @property (nonatomic, retain) NSDictionary *publicGPGKeysByEmail;
+@property (nonatomic, retain) NSDictionary *publicGPGKeysByID;
 @property (readonly, retain) NSSet *allGPGKeys;
 @property (readonly) GPGController *gpgc;
 

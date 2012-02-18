@@ -58,6 +58,27 @@
 - (void)collectPGPInformationStartingWithMimePart:(MimePart *)topPart decryptedBody:(MimeBody *)decryptedBody;
 - (void)clearPGPInformation;
 
+/**
+ Determines whetehr or not the message should be processed with PGP operations.
+ 
+ Always returns false if OpenPGP for reading is disabled in Preferences.
+ Returns true if the user actively selected the message.
+ Returns false if the user didn't select the message and NeverCreatePreviewSnippet is set.
+ 
+ This allows GPGMail to avoid processing every message on startup which leads to
+ many annoying pinentry password entry dialogs, if the user didn't choose to store
+ passwords in the keychain.
+ */
+- (BOOL)shouldBePGPProcessed;
+
+/**
+ Determines whether or not the preview snippet for the message should be created.
+ Always returns true if the Create List Preview preference is set.
+ Also returns true if the Create List Preview preference is NOT set, BUT the
+ passphrase for the message is already in cache.
+ */
+- (BOOL)shouldCreateSnippetWithData:(NSData *)data;
+
 @property (assign) BOOL PGPInfoCollected;
 @property (assign) BOOL PGPEncrypted;
 @property (assign) BOOL PGPPartlyEncrypted;

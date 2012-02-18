@@ -122,9 +122,6 @@
 }
 
 - (id)MA_attributedStringForSecurityHeader {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
-        return [self MA_attributedStringForSecurityHeader];
-    
     // This is also called if the message is neither signed nor encrypted.
     // In that case the empty string is returned.
     // Internally this method checks the message's messageFlags
@@ -134,6 +131,11 @@
     MessageViewingState *viewingState = [((MessageHeaderDisplay *)self) viewingState];
     MimeBody *mimeBody = [viewingState mimeBody];
     Message *message = [viewingState message];
+    
+    // Check if message should be processed (-[Message shouldBePGPProcessed] - Snippet generation check)
+    // otherwise out of here!
+    if(![message shouldBePGPProcessed])
+        return [self MA_attributedStringForSecurityHeader];
     
     // Check if the securityHeader is already set.
     // If so, out of here!

@@ -41,4 +41,9 @@
     [((MessageContentController *)self) reloadCurrentMessageShouldReparseBody:YES];
 }
 
+- (void)MASetMessageToDisplay:(id)message {
+    [message setIvar:@"UserSelectedMessage" value:[NSNumber numberWithBool:YES]];
+    [self MASetMessageToDisplay:message];
+}
+
 @end

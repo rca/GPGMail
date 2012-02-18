@@ -42,7 +42,10 @@
 @implementation MimeBody (GPGMail)
 
 - (BOOL)MAIsSignedByMe {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+    
+    // Check if message should be processed (-[Message shouldBePGPProcessed] - Snippet generation check)
+    // otherwise out of here!
+    if(![[self message] shouldBePGPProcessed])
         return [self MAIsSignedByMe];
     
     // This method tries to check the
@@ -71,7 +74,9 @@
  
  */
 - (BOOL)MA_isPossiblySignedOrEncrypted {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+    // Check if message should be processed (-[Message shouldBePGPProcessed] - Snippet generation check)
+    // otherwise out of here!
+    if(![[self message] shouldBePGPProcessed])
         return [self MA_isPossiblySignedOrEncrypted];
     
     return [self containsPGPData] || [self MA_isPossiblySignedOrEncrypted];
