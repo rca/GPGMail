@@ -161,12 +161,11 @@
         
 //    NSLog(@"Only decode text parts: %@", ((MFMimeDecodeContext *)ctx).decodeTextPartsOnly ? @"YES" : @"NO");
     
-    // Check if PGP is enabled in Mail.app settings for decoding messages,
-    // otherwise leave.
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"]) {
+    // Check if message should be processed (-[Message shouldBePGPProcessed])
+    // otherwise out of here!
+    if(![currentMessage shouldBePGPProcessed])
         return [self MADecodeWithContext:ctx];
-    }
-
+    
     id ret = nil;
     if([self isPGPMimeEncrypted]) {
         MimeBody *decryptedBody = [self decodeMultipartEncryptedWithContext:ctx];
@@ -240,6 +239,11 @@
 }
 
 - (id)MADecodeTextPlainWithContext:(MFMimeDecodeContext *)ctx {
+    // Check if message should be processed (-[Message shouldBePGPProcessed] - Snippet generation check)
+    // otherwise out of here!
+    if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
+        return [self MADecodeTextPlainWithContext:ctx];
+    
     // 1. Step, check if the message was already decrypted.
     if(self.PGPEncrypted && self.PGPDecryptedData)
         return self.PGPDecryptedData ? self.PGPDecryptedContent : [self MADecodeTextPlainWithContext:ctx];
@@ -282,7 +286,10 @@
 }
 
 - (id)MADecodeTextHtmlWithContext:(MFMimeDecodeContext *)ctx {
-    /* If no snippets should be generated, call Mail's method. */
+    // Check if message should be processed (-[Message shouldBePGPProcessed] - Snippet generation check)
+    // otherwise out of here!
+    if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
+        return [self MADecodeTextHtmlWithContext:ctx];
     
     if([[self bodyData] mightContainPGPEncryptedData] || [[self bodyData] rangeOfPGPSignatures].location != NSNotFound) {
         // HTML is a bit hard to decrypt, so check if the parent part, if exists is a
@@ -307,6 +314,11 @@
 }
 
 - (id)MADecodeApplicationOctet_streamWithContext:(MFMimeDecodeContext *)ctx {
+    // Check if message should be processed (-[Message shouldBePGPProcessed] - Snippet generation check)
+    // otherwise out of here!
+    if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
+        return [self MADecodeApplicationOctet_streamWithContext:ctx];
+    
     BOOL mightBeEncrypted = [self attachmentMightBePGPEncrypted];
     BOOL mightBeSignature = [self attachmentMightBePGPSignature];
     if(!mightBeEncrypted && !mightBeSignature)
@@ -497,6 +509,12 @@
 }
 
 - (id)decryptData:(NSData *)encryptedData {
+    // Decrypt data should not run if Mail.app is generating snippets
+    // and NeverCreateSnippetPreviews is set or the passphrase is not in cache
+    // and CreatePreviewSnippets is not set.
+    if(![[(MimeBody *)[self mimeBody] message] shouldCreateSnippetWithData:encryptedData])    
+        return nil;
+    
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.verbose = NO;
     //gpgc.verbose = (GPGMailLoggingLevel > 0);
@@ -842,7 +860,9 @@
 }
 
 - (void)MAVerifySignature {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+    // Check if message should be processed (-[Message shouldBePGPProcessed])
+    // otherwise out of here!
+    if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
         return [self MAVerifySignature];
     
     // If this is a non GPG signed message, let's call the original method
@@ -948,7 +968,9 @@
 }
 
 - (BOOL)MAUsesKnownSignatureProtocol {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+    // Check if message should be processed (-[Message shouldBePGPProcessed])
+    // otherwise out of here!
+    if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
         return [self MAUsesKnownSignatureProtocol];
     
     if([[self bodyParameterForKey:@"protocol"] isEqualToString:@"application/pgp-signature"])
@@ -1104,7 +1126,9 @@
 #pragma mark other stuff to test Xcode code folding.
 
 - (BOOL)MAIsSigned {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+    // Check if message should be processed (-[Message shouldBePGPProcessed])
+    // otherwise out of here!
+    if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
         return [self MAIsSigned];
     
     BOOL ret = [self MAIsSigned];
@@ -1170,7 +1194,9 @@
 }
 
 - (BOOL)MAIsEncrypted {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+    // Check if message should be processed (-[Message shouldBePGPProcessed])
+    // otherwise out of here!
+    if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
         return [self MAIsEncrypted];
     
     if(self.PGPEncrypted)
@@ -1230,7 +1256,9 @@
 }
 
 - (void)MAClearCachedDecryptedMessageBody {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+    // Check if message should be processed (-[Message shouldBePGPProcessed])
+    // otherwise out of here!
+    if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
         return [self MAClearCachedDecryptedMessageBody];
     
     /* The original method is called to clear PGP/MIME messages. */
