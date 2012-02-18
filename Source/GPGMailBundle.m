@@ -55,6 +55,7 @@ static BOOL gpgMailWorks = YES;
 
 @interface GPGMailBundle ()
 @property (nonatomic, retain) SUUpdater *updater;
+- (void)updateGPGKeys:(NSObject <EnumerationList> *)keys;
 @end
 
 // Remove registerBundle warning.
@@ -364,20 +365,17 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
 }
 
 - (void)finishInitialization {
-    // Init GPGController.
-    [self gpgc];
-    
-    if([self.secretGPGKeys count]) {
-        self.accountExistsForSigning = YES;
-        NSLog(@"* GPGMail: Enabled - Account for signing found.");
-    }
-    else
-        NSLog(@"* GPGMail: Disabled - No Account for signing found.");
-    
     // Create the decryption queue.
     decryptionQueue = dispatch_queue_create("org.gpgmail.decryption", NULL);
     verificationQueue = dispatch_queue_create("org.gpgmail.verification", NULL);
     collectingQueue = dispatch_queue_create("org.gpgmail.collection", NULL);
+    keysUpdateQueue = dispatch_queue_create("org.gpgmail.update", DISPATCH_QUEUE_CONCURRENT);
+    
+    // Init GPGController.
+    [self gpgc];
+    
+    self.accountExistsForSigning = YES;
+    
 }
 
 - (id)init {
@@ -512,9 +510,11 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
 - (NSSet *)allGPGKeys {
     if (!gpgMailWorks) return nil;
     
-    //Lock and unlock  to give "updateGPGKeys:" a chance to fill allGPGKeys.
-    [updateLock lock];
-    [updateLock unlock];
+    static dispatch_once_t onceQueue;
+    
+    dispatch_once(&onceQueue, ^{
+        [self updateGPGKeys:nil];
+    });
     
     return allGPGKeys;
 }
@@ -527,17 +527,16 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
         gpgc = [[GPGController alloc] init];
         gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
         gpgc.delegate = self;
-        [self performSelectorInBackground:@selector(updateGPGKeys:) withObject:nil];
+        
+        [self allGPGKeys];
     }
     return gpgc;
 }
 
 - (void)gpgController:(GPGController *)gpgc keysDidChanged:(NSObject<EnumerationList> *)keys external:(BOOL)external {
-    if ([NSThread isMainThread]) {
-        [self performSelectorInBackground:@selector(updateGPGKeys:) withObject:keys];
-    } else {
+    dispatch_async(keysUpdateQueue, ^(void) {
         [self updateGPGKeys:keys];
-    }
+    });
 }
 
 - (void)updateGPGKeys:(NSObject <EnumerationList> *)keys {
@@ -553,7 +552,7 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
 	@try {
 		NSMutableSet *realKeys = [NSMutableSet setWithCapacity:[keys count]];
 		
-		//Fingerabdrcke wenn mglich durch die entsprechenden Schlssel ersetzen.
+		//Fingerabdrücke wenn möglich durch die entsprechenden Schlüssel ersetzen.
 		Class keyClass = [GPGKey class];
 		for (GPGKey *key in keys) {
 			if (![key isKindOfClass:keyClass]) {
@@ -576,7 +575,7 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
 			updatedKeys = [self.gpgc updateKeys:keys withSigs:NO];
 		}
         
-		if (gpgc.error) {
+        if (gpgc.error) {
 			@throw gpgc.error;
 		}
 		
@@ -611,7 +610,6 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
 	[allGPGKeys minusSet:keysToRemove];
 	[allGPGKeys unionSet:keysToAdd];
 	
-    
     //Flush caches.
     self.secretGPGKeys = nil;
     self.publicGPGKeys = nil;

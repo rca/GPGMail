@@ -48,16 +48,17 @@ typedef void (^gpgmail_verification_task_t)(void);
 	NSArray *cachedPersonalKeys;
 	NSArray *cachedPublicKeys;
 	NSDictionary *locale;
-
+    
     NSSet *secretGPGKeys;
     NSSet *publicGPGKeys;
     NSMutableSet *allGPGKeys;
-
+    
     // A serial queue which makes sure that only one pinentry
     // password request is run at once.
     dispatch_queue_t decryptionQueue;
     dispatch_queue_t verificationQueue;
     dispatch_queue_t collectingQueue;
+    dispatch_queue_t keysUpdateQueue;
     
     BOOL accountExistsForSigning;
     
@@ -97,7 +98,6 @@ typedef void (^gpgmail_verification_task_t)(void);
 @property (nonatomic, retain) NSDictionary *publicGPGKeysByEmail;
 @property (readonly, retain) NSSet *allGPGKeys;
 @property (readonly) GPGController *gpgc;
-@property (nonatomic, retain) NSSet *GPGKeys;
 
 @property (nonatomic, readonly, retain) SUUpdater *updater;
 
@@ -109,7 +109,6 @@ typedef void (^gpgmail_verification_task_t)(void);
 + (BOOL)gpgMailWorks;
 - (BOOL)gpgMailWorks;
 
-- (NSSet *)loadGPGKeys;
 - (BOOL)canKeyBeUsedForEncryption:(GPGKey *)key;
 - (BOOL)canKeyBeUsedForSigning:(GPGKey *)key;
 - (BOOL)canUserIDBeUsed:(GPGUserID *)userID;
