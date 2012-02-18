@@ -49,7 +49,7 @@
 	
 	id preferences = [self MASharedPreferences];
     
-    if(preferences == nil || ![GPGMailBundle gpgMailWorks])
+    if(preferences == nil)
         return nil;
     
     if(added)

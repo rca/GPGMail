@@ -52,7 +52,7 @@ NSString *GPGMailAgent = @"GPGMail %@";
 
 int GPGMailLoggingLevel = 1;
 
-static BOOL gpgMailWorks = YES;
+static BOOL gpgMailWorks = NO;
 
 @interface GPGMailBundle ()
 @property (nonatomic, retain) SUUpdater *updater;
@@ -66,7 +66,7 @@ static BOOL gpgMailWorks = YES;
 
 @implementation GPGMailBundle
 
-@synthesize publicGPGKeys, secretGPGKeys, allGPGKeys, updater, accountExistsForSigning, componentsMissing = _componentsMissing,
+@synthesize publicGPGKeys, secretGPGKeys, allGPGKeys, updater, accountExistsForSigning,
 secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGKeysByEmail, gpgc;
 
 + (void)load {
@@ -282,7 +282,7 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
 }
 
 + (BOOL)hasPreferencesPanel {
-	return gpgMailWorks;             // LEOPARD Invoked on +initialize. Else, invoked from +registerBundle
+	return YES;             // LEOPARD Invoked on +initialize. Else, invoked from +registerBundle
 }
 
 + (NSString *)preferencesOwnerClassName {
@@ -312,9 +312,6 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
     return [GPGVersionComparator sharedVersionComparator];
 }
 
-+ (BOOL)gpgMailWorks {
-	return gpgMailWorks;
-}
 
 /**
  Allows to run one decryption task at a time.
@@ -333,6 +330,10 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
     dispatch_sync(verificationQueue, task);
 }
 
+
++ (BOOL)gpgMailWorks {
+	return gpgMailWorks;
+}
 - (BOOL)gpgMailWorks {
 	return gpgMailWorks;
 }
@@ -346,22 +347,15 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
             NSRunCriticalAlertPanel(NSLocalizedStringFromTableInBundle(@"GPG_NOT_FOUND_TITLE", @"GPGMail", myBundle, ""), NSLocalizedStringFromTableInBundle(@"GPG_NOT_FOUND_MESSAGE", @"GPGMail", myBundle, ""), nil, nil, nil);
             break;
         case GPGErrorConfigurationError:
-            NSRunCriticalAlertPanel(NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_TITLE", @"GPGMail", myBundle, ""), NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_MESSAGE", @"GPGMail", myBundle, ""), nil, nil, nil);
-            break;
-        case GPGErrorNoError: {
-            NSString *pinentryPath = [GPGTask pinentryPath];
-            BOOL pinentryAvailable = [pinentryPath length] > 0;
-            self.componentsMissing = !pinentryAvailable;
-            if(!pinentryAvailable) {
-                NSRunCriticalAlertPanel(NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_NO_PINENTRY_TITLE", @"GPGMail", myBundle, ""), NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_NO_PINENTRY_MESSAGE", @"GPGMail", myBundle, ""), nil, nil, nil);
-            }
+            NSLog(@"DEBUG: checkGPG - GPGErrorConfigurationError");
             
+            //NSRunCriticalAlertPanel(NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_TITLE", @"GPGMail", myBundle, ""), NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_MESSAGE", @"GPGMail", myBundle, ""), nil, nil, nil);
+            //break;
+        case GPGErrorNoError:
             return YES;
-        }
         default:
             break;
     }
-    self.componentsMissing = YES;
     return NO;
 }
 
@@ -389,20 +383,20 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
 			[[GPGOptions sharedOptions] registerDefaults:defaultsDictionary];
 		}
         
-		if (gpgMailWorks) {
-			gpgMailWorks = [self checkGPG];
-		}
-		if (gpgMailWorks) {
-			[self finishInitialization];
-		}
+        gpgMailWorks = [self checkGPG];
+        [self finishInitialization];
+
 	}
     
 	return self;
 }
 
 - (void)dealloc {
-    // Release the decryption queue.
+    // Release the dispatch queues.
     dispatch_release(decryptionQueue);
+    dispatch_release(verificationQueue);
+    dispatch_release(collectingQueue);
+    dispatch_release(keysUpdateQueue);
     
     self.secretGPGKeys = nil;
     self.publicGPGKeys = nil;
@@ -416,9 +410,7 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
     [allGPGKeys release];
     allGPGKeys = nil;
     
-	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:nil];
-	[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self name:nil object:nil];
-	[locale release];
+	//[locale release];
     
 	struct objc_super s = { self, [self superclass] };
     objc_msgSendSuper(&s, @selector(dealloc));
@@ -504,18 +496,6 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
 }
 
 
-- (NSSet *)allGPGKeys {
-    if (!gpgMailWorks) return nil;
-    
-    static dispatch_once_t onceQueue;
-    
-    dispatch_once(&onceQueue, ^{
-        allGPGKeys = [[NSMutableSet alloc] init];
-        [self updateGPGKeys:nil];
-    });
-    
-    return allGPGKeys;
-}
 
 - (GPGController *)gpgc {
     if (!gpgMailWorks) return nil;
@@ -626,14 +606,26 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
     
 }
 
-- (NSSet *)secretGPGKeys {
-    NSSet *allKeys;
+
+- (NSSet *)allGPGKeys {
+    if (!gpgMailWorks) return nil;
     
+    static dispatch_once_t onceQueue;
+    
+    dispatch_once(&onceQueue, ^{
+        allGPGKeys = [[NSMutableSet alloc] init];
+        [self updateGPGKeys:nil];
+    });
+    
+    return allGPGKeys;
+}
+
+- (NSSet *)secretGPGKeys {
     if(!gpgMailWorks)
         return nil;
+    
     if(!secretGPGKeys) {
-        allKeys = [self allGPGKeys];
-        self.secretGPGKeys = [allKeys filter:^(id obj) {
+        self.secretGPGKeys = [[self allGPGKeys] filter:^(id obj) {
             return ((GPGKey *)obj).secret && [self canKeyBeUsedForSigning:obj] ? obj : nil;
         }];
         
@@ -643,6 +635,19 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
     }
     
     return secretGPGKeys;
+}
+
+- (NSSet *)publicGPGKeys {
+    if(!gpgMailWorks)
+        return nil;
+    
+    if(!publicGPGKeys) {
+        self.publicGPGKeys = [[self allGPGKeys] filter:^(id obj) {
+            return [self canKeyBeUsedForEncryption:obj] ? obj : nil;
+        }];
+    }
+    
+    return publicGPGKeys;
 }
 
 - (NSDictionary *)secretGPGKeysByEmail {
@@ -660,21 +665,7 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
 }
 
 
-- (NSSet *)publicGPGKeys {
-    NSSet *allKeys;
-    
-    if(!gpgMailWorks)
-        return nil;
-    
-    if(!publicGPGKeys) {
-        allKeys = [self allGPGKeys];
-        self.publicGPGKeys = [allKeys filter:^(id obj) {
-            return [self canKeyBeUsedForEncryption:obj] ? obj : nil;
-        }];
-    }
-    
-    return publicGPGKeys;
-}
+
 
 - (BOOL)canKeyBeUsedForEncryption:(GPGKey *)key {
 	// Only either the key or one of the subkeys has to be valid,

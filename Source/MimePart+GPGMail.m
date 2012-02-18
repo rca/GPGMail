@@ -163,8 +163,7 @@
     
     // Check if PGP is enabled in Mail.app settings for decoding messages,
     // otherwise leave.
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"] ||
-       [[GPGMailBundle sharedInstance] componentsMissing]) {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"]) {
         return [self MADecodeWithContext:ctx];
     }
 

@@ -19,7 +19,6 @@
 		1B32AFF713AF827B0072079B /* CCLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B32AFF613AF827B0072079B /* CCLog.m */; };
 		1B34341A107AC4A200F590EF /* MimeBody+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80780838E9B10052F47C /* MimeBody+GPGMail.m */; };
 		1B34341B107AC4A400F590EF /* MimePart+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80790838E9B10052F47C /* MimePart+GPGMail.m */; };
-		1B369242147C9952003059AF /* DataDetectors.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B369241147C9952003059AF /* DataDetectors.framework */; };
 		1B3F2F9013E58B70006A8333 /* ComposeHeaderView+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3F2F8F13E58B70006A8333 /* ComposeHeaderView+GPGMail.m */; };
 		1B3F2F9213E58D3D006A8333 /* NSObject+LPDynamicIvars.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3F2F9113E58D3D006A8333 /* NSObject+LPDynamicIvars.m */; };
 		1B3F2F9613E58F1D006A8333 /* GPGTextAttachmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3F2F9513E58F1D006A8333 /* GPGTextAttachmentCell.m */; };
@@ -1288,7 +1287,6 @@
 		1B36923E147C9829003059AF /* WebTextIterator-DDExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WebTextIterator-DDExtensions.h"; sourceTree = "<group>"; };
 		1B36923F147C9829003059AF /* WebTextIterator-DDExtensions_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WebTextIterator-DDExtensions_Private.h"; sourceTree = "<group>"; };
 		1B369240147C9829003059AF /* WebView-DDExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WebView-DDExtensions.h"; sourceTree = "<group>"; };
-		1B369241147C9952003059AF /* DataDetectors.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DataDetectors.framework; path = ../../../../../System/Library/PrivateFrameworks/DataDetectors.framework; sourceTree = "<group>"; };
 		1B394FA7139EFDC600A1E836 /* NSPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSPreferences.h; path = LionHeaders/NSPreferences.h; sourceTree = "<group>"; };
 		1B394FA8139EFDC700A1E836 /* NSPreferencesModule-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSPreferencesModule-Protocol.h"; path = "LionHeaders/NSPreferencesModule-Protocol.h"; sourceTree = "<group>"; };
 		1B394FA9139EFDC700A1E836 /* NSPreferencesModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSPreferencesModule.h; path = LionHeaders/NSPreferencesModule.h; sourceTree = "<group>"; };
@@ -1494,7 +1492,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B369242147C9952003059AF /* DataDetectors.framework in Frameworks */,
 				1B165C6913D78E3C00CA5D61 /* Libmacgpg.framework in Frameworks */,
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
 				559A81300838EEFD0052F47C /* AddressBook.framework in Frameworks */,
@@ -1514,7 +1511,6 @@
 		089C166AFE841209C02AAC07 /* GPGMail */ = {
 			isa = PBXGroup;
 			children = (
-				1B369241147C9952003059AF /* DataDetectors.framework */,
 				1B1949D011CC52090092B810 /* Dependencies */,
 				08FB77AFFE84173DC02AAC07 /* GPG */,
 				559A7FB30838E4200052F47C /* Documentation */,

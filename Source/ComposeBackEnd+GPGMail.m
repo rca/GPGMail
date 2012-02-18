@@ -71,8 +71,7 @@
 }
 
 - (id)MA_makeMessageWithContents:(WebComposeMessageContents *)contents isDraft:(BOOL)isDraft shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt shouldSkipSignature:(BOOL)shouldSkipSignature shouldBePlainText:(BOOL)shouldBePlainText {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"] ||
-       [[GPGMailBundle sharedInstance] componentsMissing]) {
+    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
         id ret = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldSign shouldEncrypt:shouldEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
         return ret;
     }
