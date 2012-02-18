@@ -49,6 +49,7 @@
 
 NSString *GPGMailSwizzledMethodPrefix = @"MA";
 NSString *GPGMailAgent = @"GPGMail %@";
+NSString *GPGMailKeyringUpdatedNotification = @"GPGMailKeyringUpdatedNotification";
 
 int GPGMailLoggingLevel = 1;
 
@@ -580,6 +581,8 @@ secretGPGKeysByEmail = _secretGPGKeysByEmail, publicGPGKeysByEmail = _publicGPGK
 		[updateLock unlock];
 	}
 	
+    [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] postNotificationName:GPGMailKeyringUpdatedNotification object:self];
+    
 	NSLog(@"updateGPGKeys: end");
 }
 

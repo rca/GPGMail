@@ -35,6 +35,7 @@
 #import <MailNotificationCenter.h>
 #import "GPGTitlebarAccessoryView.h"
 #import "MailDocumentEditor+GPGMail.h"
+#import "GPGMailBundle.h"
 
 @implementation MailDocumentEditor_GPGMail
 
@@ -64,11 +65,18 @@
     
     [[GPGOptions sharedOptions] addObserver:self forKeyPath:@"UseOpenPGPToSend" options:NSKeyValueObservingOptionNew context:nil];
     [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] addObserver:self selector:@selector(securityButtonsDidUpdate:) name:@"SecurityButtonsDidChange" object:nil];
-    
+	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyringUpdated:) name:GPGMailKeyringUpdatedNotification object:nil];
+
+	
     [self drawEncryptionMethodHint];
     
     [self MABackEndDidLoadInitialContent:content];
 }
+
+- (void)keyringUpdated:(id)notification {
+	[[(MailDocumentEditor *)self headersEditor] updateSecurityControls];
+}
+
 
 - (void)removeEncryptionHint {
     GPGTitlebarAccessoryView *accessoryView = (GPGTitlebarAccessoryView *)[self getIvar:@"AccessoryView"];
@@ -146,6 +154,7 @@
     // Sometimes this fails, so simply ignore it.
     @try {
         [[GPGOptions sharedOptions] removeObserver:self forKeyPath:@"UseOpenPGPToSend"];
+		[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] removeObserver:self];
         [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] removeObserver:self name:@"SecurityButtonsDidChange" object:nil];
     }
     @catch(NSException *e) {
