@@ -38,11 +38,13 @@
 }
 
 /* Open FAQ page. */
-- (IBAction)openFAQ:(id)pId;
+- (IBAction)openFAQ:(id)sender;
 /* Open donation page. */
-- (IBAction)openDonation:(id)pId;
+- (IBAction)openDonation:(id)sender;
 /* Open contact page. */
-- (IBAction)openContact:(id)pId;
+- (IBAction)openContact:(id)sender;
+
+- (IBAction)openGPGStatusHelp:(id)sender;
 
 
 @property (readonly) NSString *copyright;
@@ -50,6 +52,10 @@
 @property (readonly) NSAttributedString *websiteLink;
 @property (readonly) GPGMailBundle *bundle;
 @property (readonly) SUUpdater *updater;
+@property (readonly) NSImage *gpgStatusImage;
+@property (readonly) NSString *gpgStatusToolTip;
+
+
 
 @end
 

@@ -43,6 +43,12 @@
       <PathRunnable
          FilePath = "/Applications/Mail.app">
       </PathRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-AppleLanguages (&quot;en&quot;)"
+            isEnabled = "NO">
+         </CommandLineArgument>
+      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
