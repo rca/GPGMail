@@ -31,6 +31,9 @@
 #import <Sparkle/Sparkle.h>
 #import "GPGMailBundle.h"
 
+#define localized(key) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:(key) table:nil]
+
+
 @implementation GPGMailPreferences
 
 - (GPGMailBundle *)bundle {
@@ -85,5 +88,59 @@
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://gpgtools.org/about.html"]];
 }
 
-@end
+- (IBAction)openGPGStatusHelp:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://support.gpgtools.org/kb/how-to/gpg-status"]];
+}
 
+- (void)willBeDisplayed {
+	[[GPGMailBundle sharedInstance] checkGPG];
+}
+
+- (NSImage *)gpgStatusImage {
+	switch ([[GPGMailBundle sharedInstance] gpgStatus]) {
+		case GPGErrorNotFound:
+			return [NSImage imageNamed:@"RedDot"];
+		case GPGErrorNoError:
+			return [NSImage imageNamed:@"GreenDot"];
+		default:
+			return [NSImage imageNamed:@"YellowDot"];
+	}
+}
+- (NSString *)gpgStatusToolTip {
+	switch ([[GPGMailBundle sharedInstance] gpgStatus]) {
+		case GPGErrorNotFound:
+			return localized(@"GPG_STATUS_NOT_FOUND_MESSAGE");
+		case GPGErrorNoError:
+			return localized(@"GPG_STATUS_NO_ERROR_MESSAGE");
+		default:
+			return localized(@"GPG_STATUS_OTHER_ERROR_MESSAGE");
+	}
+}
+
+- (NSString *)gpgStatusTitle {
+    NSString *statusTitle = nil;
+    switch ([[GPGMailBundle sharedInstance] gpgStatus]) {
+		case GPGErrorNotFound:
+			statusTitle = localized(@"GPG_STATUS_NOT_FOUND_TITLE");
+            break;
+		case GPGErrorNoError:
+			statusTitle = localized(@"GPG_STATUS_NO_ERROR_TITLE");
+            break;
+        default:
+			statusTitle = localized(@"GPG_STATUS_OTHER_ERROR_TITLE");
+	}
+    return statusTitle;
+}
+
++ (NSSet*)keyPathsForValuesAffectingGpgStatusImage {
+	return [NSSet setWithObject:@"bundle.gpgStatus"];
+}
++ (NSSet*)keyPathsForValuesAffectingGpgStatusToolTip {
+	return [NSSet setWithObject:@"bundle.gpgStatus"];
+}
++ (NSSet*)keyPathsForValuesAffectingGpgStatusTitle {
+	return [NSSet setWithObject:@"bundle.gpgStatus"];
+}
+
+
+@end

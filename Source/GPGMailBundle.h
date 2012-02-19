@@ -76,6 +76,8 @@ extern NSString *GPGMailKeyringUpdatedNotification;
     // Contains all user mapped keys which can't be used for encryption.
     NSArray *_disabledUserMappedKeys;
     
+    GPGErrorCode gpgStatus;
+    
 	GPGController *gpgc;
 	NSLock *updateLock;
     
@@ -101,6 +103,7 @@ extern NSString *GPGMailKeyringUpdatedNotification;
 
 @property (nonatomic, retain) NSArray *disabledGroups;
 @property (nonatomic, retain) NSArray *disabledUserMappedKeys;
+@property (readonly) GPGErrorCode gpgStatus;
 @property (nonatomic, retain) NSSet *secretGPGKeys;
 @property (nonatomic, retain) NSDictionary *secretGPGKeysByEmail;
 @property (nonatomic, retain) NSSet *publicGPGKeys;
@@ -117,6 +120,7 @@ extern NSString *GPGMailKeyringUpdatedNotification;
 - (NSString *)versionDescription;
 + (BOOL)gpgMailWorks;
 - (BOOL)gpgMailWorks;
+- (BOOL)checkGPG;
 
 - (BOOL)canKeyBeUsedForEncryption:(GPGKey *)key;
 - (BOOL)canKeyBeUsedForSigning:(GPGKey *)key;

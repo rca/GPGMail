@@ -57,6 +57,7 @@ static BOOL gpgMailWorks = NO;
 
 @interface GPGMailBundle ()
 @property (nonatomic, retain) SUUpdater *updater;
+@property GPGErrorCode gpgStatus;
 - (void)updateGPGKeys:(NSObject <EnumerationList> *)keys;
 @end
 
@@ -69,7 +70,7 @@ static BOOL gpgMailWorks = NO;
 
 @synthesize publicGPGKeys, secretGPGKeys, allGPGKeys, updater, accountExistsForSigning, secretGPGKeysByEmail = _secretGPGKeysByEmail, 
             publicGPGKeysByEmail = _publicGPGKeysByEmail, gpgc, publicGPGKeysByID = _publicGPGKeysByID, disabledGroups = _disabledGroups,
-            disabledUserMappedKeys = _disabledUserMappedKeys;
+            disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus;
 
 + (void)load {
 	GPGMailLoggingLevel = 1; //[[GPGOptions sharedOptions] integerForKey:@"GPGMailDebug"];
@@ -287,6 +288,10 @@ static BOOL gpgMailWorks = NO;
     
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"invalid-signature-icon-overlay"]] setName:@"invalid-signature-icon-overlay"];
     
+
+    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GreenDot"]] setName:@"GreenDot"];
+    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"YellowDot"]] setName:@"YellowDot"];
+    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"RedDot"]] setName:@"RedDot"];
 }
 
 + (BOOL)hasPreferencesPanel {
@@ -346,22 +351,19 @@ static BOOL gpgMailWorks = NO;
 	return gpgMailWorks;
 }
 
-// TODO: Fix me for libmacgpg
+
 - (BOOL)checkGPG {
-    GPGErrorCode errorCode = (GPGErrorCode)[GPGController testGPG];
-    NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
-    switch (errorCode) {
+    self.gpgStatus = (GPGErrorCode)[GPGController testGPG];
+    switch (gpgStatus) {
         case GPGErrorNotFound:
-            NSRunCriticalAlertPanel(NSLocalizedStringFromTableInBundle(@"GPG_NOT_FOUND_TITLE", @"GPGMail", myBundle, ""), NSLocalizedStringFromTableInBundle(@"GPG_NOT_FOUND_MESSAGE", @"GPGMail", myBundle, ""), nil, nil, nil);
+            NSLog(@"DEBUG: checkGPG - GPGErrorNotFound");
             break;
         case GPGErrorConfigurationError:
             NSLog(@"DEBUG: checkGPG - GPGErrorConfigurationError");
-            
-            //NSRunCriticalAlertPanel(NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_TITLE", @"GPGMail", myBundle, ""), NSLocalizedStringFromTableInBundle(@"GPG_CONFIG_ERROR_MESSAGE", @"GPGMail", myBundle, ""), nil, nil, nil);
-            //break;
         case GPGErrorNoError:
             return YES;
         default:
+            NSLog(@"DEBUG: checkGPG - %i", gpgStatus);
             break;
     }
     return NO;
