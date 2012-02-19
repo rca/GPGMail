@@ -496,16 +496,8 @@ static BOOL gpgMailWorks = NO;
     return keyList;
 }
 
-- (NSMutableSet *)signingKeyListForAddresses:(NSArray *)senders {
-    NSMutableSet *keyList = [NSMutableSet setWithCapacity:[senders count]];
-    id tmpKey;
-    for(NSString *sender in senders) {
-        sender = [sender gpgNormalizedEmail];
-        tmpKey = [self.secretGPGKeysByEmail objectForKey:sender];
-        if (tmpKey)
-            [keyList addObject:tmpKey];
-    }
-    return keyList;
+- (NSSet *)signingKeyListForAddress:(NSString *)sender {
+    return [self.secretGPGKeysByEmail objectForKey:[sender gpgNormalizedEmail]];
 }
 
 - (GPGController *)gpgc {

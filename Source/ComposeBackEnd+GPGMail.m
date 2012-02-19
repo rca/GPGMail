@@ -197,7 +197,7 @@
     // the message, different headers have to be flagged.
     //
     // For signing:
-    // * flag the "from" value
+    // * flag the "from" value and set the GPGKey to use.
     //
     // For encrypting:
     // * temporarily add the flagged sender ("from") to the bcc recipients list,
@@ -205,7 +205,12 @@
     //   (the "from" value is not inlucded in the recipients list passed to the encryption
     //    method)
     if(forSigning) {
-        [headers setObject:[[headers valueForKey:@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"] forKey:@"from"];
+		GPGFlaggedString *flaggedString = [[headers valueForKey:@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"];
+		GPGKey *key = [self getIvar:@"gpgKeyForSigning"];
+		if (key) {
+			[flaggedString setValue:key forFlag:@"gpgKey"];
+		}
+        [headers setObject:flaggedString forKey:@"from"];
     }
     if(forEncrypting) {
         // Save the original bcc recipients, to restore later.

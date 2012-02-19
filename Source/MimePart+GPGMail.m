@@ -1389,14 +1389,20 @@
 //        partData = [[dataString stringByReplacingCharactersInRange:beginOfData withString:@""] dataUsingEncoding:NSUTF8StringEncoding];
 //    NSLog(@"[DEBUG] part data: %@", [partData stringByGuessingEncoding]);
 
-    NSSet *normalKeyList = [[GPGMailBundle sharedInstance] signingKeyListForAddresses:[NSArray arrayWithObject:sender]];
-    NSSet *flattenedNormalKeyList = [self flattenedKeyList:normalKeyList];
-    // Should not happen, but if no valid signing keys are found
-    // raise an error. Returning nil tells Mail that an error occured.
-    if(![normalKeyList count]) {
-        [self failedToSignForSender:sender];
-        return nil;
-    }
+	
+	GPGKey *keyForSigning = [sender valueForFlag:@"gpgKey"];
+	
+	if (!keyForSigning) {
+		//Should not happen!
+		keyForSigning = [[[GPGMailBundle sharedInstance] signingKeyListForAddress:sender] anyObject];
+		// Should also not happen, but if no valid signing keys are found
+		// raise an error. Returning nil tells Mail that an error occured.
+		if (!keyForSigning) {
+			[self failedToSignForSender:sender];
+			return nil;
+		}
+	}	
+	
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
     gpgc.useArmor = YES;
@@ -1406,9 +1412,8 @@
     // Eventually add warning for this.
     gpgc.trustAllKeys = YES;
     gpgc.printVersion = YES;
-    // Recipients are not needed for signing. Use addSignerKey instead.
-    for(GPGKey *key in flattenedNormalKeyList)
-        [gpgc addSignerKey:key.fingerprint];
+	[gpgc setSignerKey:keyForSigning];
+	
     @try {
         *signatureData = [gpgc processData:data withEncryptSignMode:GPGDetachedSign recipients:nil hiddenRecipients:nil];
 		//*signatureData = [gpgc processData:partData withEncryptSignMode:GPGClearSign recipients:nil hiddenRecipients:nil];
@@ -1466,14 +1471,21 @@
 //    DebugLog(@"[DEBUG] %s data: [%@] %@", __PRETTY_FUNCTION__, [data class], data);
 //    DebugLog(@"[DEBUG] %s sender: [%@] %@", __PRETTY_FUNCTION__, [sender class], sender);
     
-    NSSet *normalKeyList = [[GPGMailBundle sharedInstance] signingKeyListForAddresses:[NSArray arrayWithObject:sender]];
-    NSSet *flattenedNormalKeyList = [self flattenedKeyList:normalKeyList];
-    // Should not happen, but if no valid signing keys are found
-    // raise an error. Returning nil tells Mail that an error occured.
-    if(![normalKeyList count]) {
-        [self failedToSignForSender:sender];
-        return nil;
-    }
+	
+	GPGKey *keyForSigning = [sender valueForFlag:@"gpgKey"];
+	
+	if (!keyForSigning) {
+		//Should not happen!
+		keyForSigning = [[[GPGMailBundle sharedInstance] signingKeyListForAddress:sender] anyObject];
+		// Should also not happen, but if no valid signing keys are found
+		// raise an error. Returning nil tells Mail that an error occured.
+		if (!keyForSigning) {
+			[self failedToSignForSender:sender];
+			return nil;
+		}
+	}
+	
+	
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
     gpgc.useArmor = YES;
@@ -1483,10 +1495,10 @@
     // Eventually add warning for this.
     gpgc.trustAllKeys = YES;
     gpgc.printVersion = YES;
-    // Recipients are not needed for signing. Use addSignerKey instead.
+	[gpgc setSignerKey:keyForSigning];
     NSData *signedData = nil;
-    for(GPGKey *key in normalKeyList)
-        [gpgc addSignerKey:key.fingerprint];
+	
+	
     @try {
         signedData = [gpgc processData:data withEncryptSignMode:GPGClearSign recipients:nil hiddenRecipients:nil];
         if (gpgc.error) {

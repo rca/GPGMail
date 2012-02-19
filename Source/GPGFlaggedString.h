@@ -84,7 +84,7 @@
 /**
  Return the value saved for flag.
  */
-- (NSString *)valueForFlag:(NSString *)flag;
+- (id)valueForFlag:(NSString *)flag;
 
 /**
  Returns true for [NSString class] so Mail.app doesn't discard it.
@@ -120,6 +120,6 @@
  Return always nil, but is necessary so NSStrings and GPGFlaggedStrings
  can be used interchangeably.
  */
-- (NSString *)valueForFlag:(NSString *)flag;
+- (id)valueForFlag:(NSString *)flag;
 
 @end

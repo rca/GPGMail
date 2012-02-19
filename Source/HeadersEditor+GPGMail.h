@@ -38,4 +38,15 @@
  */
 - (void)MASecurityControlChanged:(id)securityControl;
 
+
+/**
+ TODO!
+ */
+- (void)MA_updateFromAndSignatureControls:(id)arg1;
+
+/**
+ Is called whenever the user select a account in the PopUp.
+ */
+- (void)MAChangeFromHeader:(NSPopUpButton *)sender;
+
 @end

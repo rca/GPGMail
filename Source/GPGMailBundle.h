@@ -130,7 +130,7 @@ extern NSString *GPGMailKeyringUpdatedNotification;
 - (NSMutableSet *)publicKeyListForAddresses:(NSArray *)recipients;
 - (BOOL)canEncryptMessagesToAddress:(NSString *)address;
 - (BOOL)canSignMessagesFromAddress:(NSString *)address;
-- (NSMutableSet *)signingKeyListForAddresses:(NSArray *)senders;
+- (NSSet *)signingKeyListForAddress:(NSString *)sender;
 - (GPGKey *)bestKeyOfUserIDs:(NSSet *)userIDs;
 
 

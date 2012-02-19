@@ -158,7 +158,7 @@
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		1B02D70713F1E9D80032CFD1 /* GPGFlaggedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GPGFlaggedString.m; path = Source/GPGFlaggedString.m; sourceTree = "<group>"; };
 		1B02D70913F1E9F00032CFD1 /* NSArray+Functional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+Functional.m"; path = "Source/NSArray+Functional.m"; sourceTree = "<group>"; };
-		1B02D70B13F1EA1D0032CFD1 /* GPGFlaggedString.h */ = {isa = PBXFileReference; fileEncoding = 4; name = GPGFlaggedString.h; path = Source/GPGFlaggedString.h; sourceTree = "<group>"; };
+		1B02D70B13F1EA1D0032CFD1 /* GPGFlaggedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPGFlaggedString.h; path = Source/GPGFlaggedString.h; sourceTree = "<group>"; };
 		1B02D70C13F1EA290032CFD1 /* NSArray+Functional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+Functional.h"; path = "Source/NSArray+Functional.h"; sourceTree = "<group>"; };
 		1B08633F13FF9976001AF6E7 /* encryption_unlocked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = encryption_unlocked.png; path = Resources/Images/encryption_unlocked.png; sourceTree = "<group>"; };
 		1B194B5A11CC55A80092B810 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = Resources/English.lproj/GPGMail.strings; sourceTree = "<group>"; };

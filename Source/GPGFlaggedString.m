@@ -75,7 +75,7 @@
     return YES;
 }
 
-- (NSString *)valueForFlag:(NSString *)flag {
+- (id)valueForFlag:(NSString *)flag {
 	return [flags objectForKey:flag];
 }
 
@@ -110,7 +110,7 @@
     return NO;
 }
 
-- (NSString *)valueForFlag:(NSString *)flag {
+- (id)valueForFlag:(NSString *)flag {
 	return nil;
 }
 
