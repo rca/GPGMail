@@ -767,8 +767,9 @@ static BOOL gpgMailWorks = NO;
     for(id email in mappedKeys) {
         
         NSString *fingerprint = [mappedKeys objectForKey:email];
-        if([self findPublicKeyByKeyHint:fingerprint])
-            [cleanMappedKeys setObject:fingerprint forKey:[email gpgNormalizedEmail]];
+        GPGKey *key = [self findPublicKeyByKeyHint:fingerprint];
+        if(key)
+            [cleanMappedKeys setObject:key forKey:[email gpgNormalizedEmail]];
         else
             [disabledUserMappedKeys addObject:[email gpgNormalizedEmail]];
     }   
@@ -785,14 +786,17 @@ static BOOL gpgMailWorks = NO;
     for(id email in groups) {
         NSArray *keyHints = [groups objectForKey:email];
         BOOL allKeysValid = YES;
+        NSMutableSet *keys = [NSMutableSet set];
         for(NSString *keyHint in keyHints) {
-            if(![self findPublicKeyByKeyHint:keyHint]) {
+            GPGKey *key = [self findPublicKeyByKeyHint:keyHint];
+            if(!key) {
                 allKeysValid = NO;
                 break;
             }
+            [keys addObject:key];
         }
         if(allKeysValid)
-            [cleanGroups setObject:keyHints forKey:[email gpgNormalizedEmail]];
+            [cleanGroups setObject:keys forKey:[email gpgNormalizedEmail]];
         else
             [disabledGroups addObject:[email gpgNormalizedEmail]];
     }
