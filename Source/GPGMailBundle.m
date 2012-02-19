@@ -68,7 +68,8 @@ static BOOL gpgMailWorks = NO;
 @implementation GPGMailBundle
 
 @synthesize publicGPGKeys, secretGPGKeys, allGPGKeys, updater, accountExistsForSigning, secretGPGKeysByEmail = _secretGPGKeysByEmail, 
-            publicGPGKeysByEmail = _publicGPGKeysByEmail, gpgc, publicGPGKeysByID = _publicGPGKeysByID;
+            publicGPGKeysByEmail = _publicGPGKeysByEmail, gpgc, publicGPGKeysByID = _publicGPGKeysByID, disabledGroups = _disabledGroups,
+            disabledUserMappedKeys = _disabledUserMappedKeys;
 
 + (void)load {
 	GPGMailLoggingLevel = 1; //[[GPGOptions sharedOptions] integerForKey:@"GPGMailDebug"];
@@ -502,8 +503,6 @@ static BOOL gpgMailWorks = NO;
     return keyList;
 }
 
-
-
 - (GPGController *)gpgc {
     if (!gpgMailWorks) return nil;
     if (!gpgc) {
@@ -650,9 +649,11 @@ static BOOL gpgMailWorks = NO;
         return nil;
     
     if(!publicGPGKeys) {
-        self.publicGPGKeys = [[self allGPGKeys] filter:^(id obj) {
+        NSSet *publicKeys = [[self allGPGKeys] filter:^(id obj) {
             return [self canKeyBeUsedForEncryption:obj] ? obj : nil;
         }];
+        NSSet *cleanPublicKeys = [self sanitizedPublicGPGKeys:publicKeys];
+        self.publicGPGKeys = cleanPublicKeys;
     }
     
     return publicGPGKeys;
@@ -665,9 +666,76 @@ static BOOL gpgMailWorks = NO;
     return _secretGPGKeysByEmail;
 }
 
+- (NSSet *)sanitizedPublicGPGKeys:(NSSet *)publicKeys {
+    // 1.) Create a dictionary with all user ids mapped by email address.
+    NSMutableDictionary *userIDEmailMap = [[NSMutableDictionary alloc] init];
+    for(GPGKey *key in publicKeys) {
+        // PrimaryUserID.
+        NSString *email;
+        for(GPGUserID *userID in [key userIDs]) {
+            email = [[userID email] gpgNormalizedEmail];
+            if(!email)
+                continue;
+            
+            if(![userIDEmailMap objectForKey:email]) {
+                NSMutableSet *set = [[NSMutableSet alloc] initWithCapacity:0];
+                [userIDEmailMap setObject:set forKey:email];
+                [set release];
+            }
+            [[userIDEmailMap objectForKey:email] addObject:userID];
+        }
+    }
+    NSMutableSet *cleanKeys = [NSMutableSet setWithCapacity:0]; 
+    // 2.) Loop through the whole map, skip any entry which doesn't have multiple entries.
+    
+    for(id email in userIDEmailMap) {
+        if([(NSMutableSet *)[userIDEmailMap objectForKey:email] count] == 1) {
+            GPGKey *key = ((GPGKey *)[(NSMutableSet *)[userIDEmailMap objectForKey:email] anyObject]).primaryKey;
+            [cleanKeys addObject:key];
+            continue;
+        }
+        GPGKey *bestKey = [self bestKeyOfUserIDs:[userIDEmailMap objectForKey:email]];
+        [cleanKeys addObject:bestKey];
+    }
+    
+    [userIDEmailMap release];
+    
+    return cleanKeys;
+}
+
+- (GPGKey *)bestKeyOfUserIDs:(NSSet *)userIDs {
+    // First check if any trusted keys are in there, if so, sort them by date.
+    NSMutableArray *trustedUserIDs = [[NSMutableArray alloc] init];
+    NSMutableArray *untrustedUserIDs = [[NSMutableArray alloc] init];
+    for(GPGUserID *userID in userIDs) {
+        if(userID.validity >= 3)
+            [trustedUserIDs addObject:userID];
+        else
+            [untrustedUserIDs addObject:userID];
+    }
+    
+    NSSortDescriptor *dateSorter = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO comparator:^NSComparisonResult(id obj1, id obj2) {
+        return [(NSDate *)obj1 compare:obj2];
+    }];
+    
+    NSArray *sortedUserIDs = nil;
+    if([trustedUserIDs count])
+        sortedUserIDs = [trustedUserIDs sortedArrayUsingDescriptors:[NSArray arrayWithObjects:dateSorter, nil]];
+    else
+        sortedUserIDs = [untrustedUserIDs sortedArrayUsingDescriptors:[NSArray arrayWithObjects:dateSorter, nil]];
+    
+    [trustedUserIDs release];
+    [untrustedUserIDs release];
+    
+    return ((GPGUserID *)[sortedUserIDs objectAtIndex:0]).primaryKey;
+}
+
 - (NSDictionary *)publicGPGKeysByEmail {
     if(!_publicGPGKeysByEmail) {
-        self.publicGPGKeysByEmail = [self emailMapForGPGKeys:self.publicGPGKeys];
+        NSMutableDictionary *keysByEmail = [self emailMapForGPGKeys:self.publicGPGKeys];
+        [keysByEmail addEntriesFromDictionary:[self userMappedKeys]];
+        [keysByEmail addEntriesFromDictionary:[self groups]];
+        self.publicGPGKeysByEmail = keysByEmail;
     }
     return _publicGPGKeysByEmail;
 }
@@ -685,9 +753,58 @@ static BOOL gpgMailWorks = NO;
     return _publicGPGKeysByID;
 }
 
+- (NSDictionary *)userMappedKeys {
+    NSDictionary *mappedKeys = [[GPGOptions sharedOptions] valueInCommonDefaultsForKey:@"PublicKeyUserMap"];
+    NSMutableDictionary *cleanMappedKeys = [NSMutableDictionary dictionary]; 
+    NSMutableArray *disabledUserMappedKeys = [NSMutableArray array];
+    for(id email in mappedKeys) {
+        NSString *fingerprint = [mappedKeys objectForKey:email];
+        if([self findPublicKeyByKeyHint:fingerprint])
+            [cleanMappedKeys setObject:fingerprint forKey:email];
+        else
+            [disabledUserMappedKeys addObject:email];
+    }
+    
+    self.disabledUserMappedKeys = disabledUserMappedKeys;
+    
+    return cleanMappedKeys;
+}
 
+- (NSDictionary *)groups {
+    NSDictionary *groups = [[GPGOptions sharedOptions] valueForKey:@"group"];
+    NSMutableDictionary *cleanGroups = [NSMutableDictionary dictionary]; 
+    NSMutableArray *disabledGroups = [NSMutableArray array];
+    for(id email in groups) {
+        NSArray *keyHints = [groups objectForKey:email];
+        BOOL allKeysValid = YES;
+        for(NSString *keyHint in keyHints) {
+            if(![self findPublicKeyByKeyHint:keyHint]) {
+                allKeysValid = NO;
+                break;
+            }
+        }
+        if(allKeysValid)
+            [cleanGroups setObject:keyHints forKey:email];
+        else
+            [disabledGroups addObject:email];
+    }
+    
+    self.disabledGroups = disabledGroups;
+    
+    return cleanGroups;
+}
 
-
+- (GPGKey *)findPublicKeyByKeyHint:(NSString *)hint {
+    GPGKey *foundKey = nil;
+    for(GPGKey *key in self.publicGPGKeys) {
+        if([key.textForFilter rangeOfString:hint].location != NSNotFound) {
+            foundKey = key;
+            break;
+        }
+    }
+    return foundKey;
+}
+                                 
 - (BOOL)canKeyBeUsedForEncryption:(GPGKey *)key {
 	// Only either the key or one of the subkeys has to be valid,
     // non-expired, non-disabled, non-revoked and be used for encryption.

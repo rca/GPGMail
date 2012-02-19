@@ -70,8 +70,11 @@ extern NSString *GPGMailKeyringUpdatedNotification;
     NSDictionary *_publicGPGKeysByEmail;
     // Map which uses the key id to lookup a public key.
     NSDictionary *_publicGPGKeysByID;
-    
-    
+    // Contains all groups which were disabled because they contained keys
+    // which can not be used for encryption.
+    NSArray *_disabledGroups;
+    // Contains all user mapped keys which can't be used for encryption.
+    NSArray *_disabledUserMappedKeys;
     
 	GPGController *gpgc;
 	NSLock *updateLock;
@@ -96,6 +99,8 @@ extern NSString *GPGMailKeyringUpdatedNotification;
 
 @property BOOL warnedAboutMissingPrivateKeys;
 
+@property (nonatomic, retain) NSArray *disabledGroups;
+@property (nonatomic, retain) NSArray *disabledUserMappedKeys;
 @property (nonatomic, retain) NSSet *secretGPGKeys;
 @property (nonatomic, retain) NSDictionary *secretGPGKeysByEmail;
 @property (nonatomic, retain) NSSet *publicGPGKeys;
@@ -140,6 +145,35 @@ extern NSString *GPGMailKeyringUpdatedNotification;
  block the main thread.
  */
 - (void)addCollectionTask:(gpgmail_verification_task_t)task;
+
+/**
+ Checks for public keys which share the same email address and returns
+ a list only including the most trusted and newest key with the email address.
+ */
+- (NSSet *)sanitizedPublicGPGKeys:(NSSet *)publicKeys;
+
+/**
+ Checks a list of keys and returns the newest and most trusted key.
+ */
+- (GPGKey *)bestKeyOfPublicKeys:(NSSet *)keys;
+
+/**
+ Returns all keys which were mapped by the user (email -> fingerprint).
+ First removes all keys which can't be used for encryption and adds them to disabledUserMappedKeys.
+ */
+- (NSDictionary *)userMappedKeys;
+
+/**
+ Returns all groups defined in gpg.conf.
+ First removes any groups where not all keys can't be used for encryption and adds them to disabledGroups.
+*/
+- (NSDictionary *)groups;
+
+/**
+ Finds a key by matching one of its properties. (internally uses textForFilter which contains information for the
+ key and all subkeys)
+ */
+- (GPGKey *)findPublicKeyByKeyHint:(NSString *)hint;
 
 @end
 

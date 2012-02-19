@@ -1273,6 +1273,18 @@
 
 #pragma mark Methods for creating a new message.
 
+- (NSMutableSet *)flattenedKeyList:(NSSet *)keyList {
+    NSMutableSet *flattenedList = [NSMutableSet setWithCapacity:0];
+    for(id item in keyList) {
+        if([item isKindOfClass:[NSArray class]] || [item isKindOfClass:[NSSet class]])
+            [flattenedList addObjectsFromArray:item];
+        else
+            [flattenedList addObject:item];
+    }
+    return flattenedList;
+}
+
+
 - (id)MANewEncryptedPartWithData:(id)data recipients:(id)recipients encryptedData:(id *)encryptedData {
 //    DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
     // First thing todo, check if an address with the gpg-mail prefix is found.
@@ -1292,18 +1304,15 @@
         else
             [normalRecipients addObject:recipient];
     }
-//    DebugLog(@"Recipients: %@", recipients);
-//    DebugLog(@"BCC Recipients: %@", bccRecipients);
-//    DebugLog(@"Recipients: %@", normalRecipients);
-    // TODO: unfortunately we don't know the hidden recipients in here...
-    //       gotta find a workaround.
+    
     // Ask the mail bundle for the GPGKeys matching the email address.
     NSSet *normalKeyList = [[GPGMailBundle sharedInstance] publicKeyListForAddresses:normalRecipients];
     NSMutableSet *bccKeyList = [[GPGMailBundle sharedInstance] publicKeyListForAddresses:bccRecipients];
 	[bccKeyList minusSet:normalKeyList];
-
-//    DebugLog(@"BCC Recipients: %@", bccKeyList);
-
+    
+    NSMutableSet *flattenedNormalKeyList = [self flattenedKeyList:normalKeyList];
+    NSMutableSet *flattenedBCCKeyList = [self flattenedKeyList:bccKeyList];
+    
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
     gpgc.useArmor = YES;
@@ -1314,7 +1323,7 @@
     gpgc.trustAllKeys = YES;
     gpgc.printVersion = YES;
     @try {
-        *encryptedData = [gpgc processData:data withEncryptSignMode:GPGPublicKeyEncrypt recipients:normalKeyList hiddenRecipients:bccKeyList];
+        *encryptedData = [gpgc processData:data withEncryptSignMode:GPGPublicKeyEncrypt recipients:flattenedNormalKeyList hiddenRecipients:flattenedBCCKeyList];
 		if (gpgc.error) {
 			@throw gpgc.error;
 		}
