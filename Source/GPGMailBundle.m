@@ -117,7 +117,8 @@ static BOOL gpgMailWorks = NO;
                             @"ComposeHeaderView_GPGMail", @"gpgMailClass",
                             [NSArray arrayWithObjects:
                              @"_calculateSecurityFrame:",
-                             @"awakeFromNib", nil], @"selectors", nil],
+                             @"awakeFromNib",
+                             nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"HeadersEditor", @"class",
                             @"HeadersEditor_GPGMail", @"gpgMailClass",
@@ -142,7 +143,8 @@ static BOOL gpgMailWorks = NO;
                             [NSArray arrayWithObjects:
                              @"backEndDidLoadInitialContent:",
                              @"dealloc",
-                             @"windowForMailFullScreen", nil], @"selectors", nil],
+                             @"windowForMailFullScreen",
+                             @"finishLoadingEditor", nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MessageContentController", @"class",
                             @"MessageContentController_GPGMail", @"gpgMailClass",
