@@ -131,6 +131,8 @@ extern NSString *GPGMailKeyringUpdatedNotification;
 - (BOOL)canEncryptMessagesToAddress:(NSString *)address;
 - (BOOL)canSignMessagesFromAddress:(NSString *)address;
 - (NSMutableSet *)signingKeyListForAddresses:(NSArray *)senders;
+- (GPGKey *)bestKeyOfUserIDs:(NSSet *)userIDs;
+
 
 // Allows to schedule decryption tasks which will block as
 // long as a second decryption task is running, but shouldn't
