@@ -38,4 +38,3 @@ clean: clean-libmacgpg clean-gpgmail
 test-compile:
 	@./Utilities/testCompile.sh
 
-
