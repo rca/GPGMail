@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1B02D70813F1E9D80032CFD1 /* GPGFlaggedHeaderValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D70713F1E9D80032CFD1 /* GPGFlaggedHeaderValue.m */; };
+		1B02D70813F1E9D80032CFD1 /* GPGFlaggedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D70713F1E9D80032CFD1 /* GPGFlaggedString.m */; };
 		1B02D70A13F1E9F00032CFD1 /* NSArray+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D70913F1E9F00032CFD1 /* NSArray+Functional.m */; };
 		1B08634013FF9976001AF6E7 /* encryption_unlocked.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B08633F13FF9976001AF6E7 /* encryption_unlocked.png */; };
 		1B141AA410800EA8007BE344 /* GPGProgressIndicatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A7FAE0838E4170052F47C /* GPGProgressIndicatorController.m */; };
@@ -156,9 +156,9 @@
 
 /* Begin PBXFileReference section */
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		1B02D70713F1E9D80032CFD1 /* GPGFlaggedHeaderValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GPGFlaggedHeaderValue.m; path = Source/GPGFlaggedHeaderValue.m; sourceTree = "<group>"; };
+		1B02D70713F1E9D80032CFD1 /* GPGFlaggedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GPGFlaggedString.m; path = Source/GPGFlaggedString.m; sourceTree = "<group>"; };
 		1B02D70913F1E9F00032CFD1 /* NSArray+Functional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+Functional.m"; path = "Source/NSArray+Functional.m"; sourceTree = "<group>"; };
-		1B02D70B13F1EA1D0032CFD1 /* GPGFlaggedHeaderValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPGFlaggedHeaderValue.h; path = Source/GPGFlaggedHeaderValue.h; sourceTree = "<group>"; };
+		1B02D70B13F1EA1D0032CFD1 /* GPGFlaggedString.h */ = {isa = PBXFileReference; fileEncoding = 4; name = GPGFlaggedString.h; path = Source/GPGFlaggedString.h; sourceTree = "<group>"; };
 		1B02D70C13F1EA290032CFD1 /* NSArray+Functional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+Functional.h"; path = "Source/NSArray+Functional.h"; sourceTree = "<group>"; };
 		1B08633F13FF9976001AF6E7 /* encryption_unlocked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = encryption_unlocked.png; path = Resources/Images/encryption_unlocked.png; sourceTree = "<group>"; };
 		1B194B5A11CC55A80092B810 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = Resources/English.lproj/GPGMail.strings; sourceTree = "<group>"; };
@@ -2763,7 +2763,7 @@
 			isa = PBXGroup;
 			children = (
 				1B7E4DB614EEEAD90069E69C /* JRLPSwizzle.m */,
-				1B02D70713F1E9D80032CFD1 /* GPGFlaggedHeaderValue.m */,
+				1B02D70713F1E9D80032CFD1 /* GPGFlaggedString.m */,
 				1B32AFF613AF827B0072079B /* CCLog.m */,
 				1B02D70913F1E9F00032CFD1 /* NSArray+Functional.m */,
 				1B8437651404AB9C00968293 /* NSData+GPGMail.m */,
@@ -2854,7 +2854,7 @@
 			isa = PBXGroup;
 			children = (
 				1B7E4DB514EEEACE0069E69C /* JRLPSwizzle.h */,
-				1B02D70B13F1EA1D0032CFD1 /* GPGFlaggedHeaderValue.h */,
+				1B02D70B13F1EA1D0032CFD1 /* GPGFlaggedString.h */,
 				1B32AFF513AF827B0072079B /* CCLog.h */,
 				1B02D70C13F1EA290032CFD1 /* NSArray+Functional.h */,
 				1B8437641404AB9C00968293 /* NSData+GPGMail.h */,
@@ -3209,7 +3209,7 @@
 				1B3F2F9E13E59639006A8333 /* ComposeBackEnd+GPGMail.m in Sources */,
 				1B3F2FA113E59EE3006A8333 /* OptionalView+GPGMail.m in Sources */,
 				1BAEF64413E9F57700A59CED /* MailAccount+GPGMail.m in Sources */,
-				1B02D70813F1E9D80032CFD1 /* GPGFlaggedHeaderValue.m in Sources */,
+				1B02D70813F1E9D80032CFD1 /* GPGFlaggedString.m in Sources */,
 				1B02D70A13F1E9F00032CFD1 /* NSArray+Functional.m in Sources */,
 				1B8289FB13FD62880007E6A2 /* Message+GPGMail.m in Sources */,
 				30E6857B13FFAC0800563BA5 /* GPGVersionComparator.m in Sources */,

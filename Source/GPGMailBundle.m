@@ -122,7 +122,10 @@ static BOOL gpgMailWorks = NO;
                             @"HeadersEditor", @"class",
                             @"HeadersEditor_GPGMail", @"gpgMailClass",
                             [NSArray arrayWithObjects:
-                             @"securityControlChanged:", nil], @"selectors", nil],
+                             @"securityControlChanged:", 
+                             @"_updateFromAndSignatureControls:", 
+                             @"changeFromHeader:", 
+                             nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MessageAttachment", @"class",
                             @"MessageAttachment_GPGMail", @"gpgMailClass",

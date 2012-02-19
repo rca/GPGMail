@@ -23,7 +23,7 @@
 #import "NSString+GPGMail.h"
 #import "NSData+GPGMail.h"
 #import "MimePart+GPGMail.h"
-#import "GPGFlaggedHeaderValue.h"
+#import "GPGFlaggedString.h"
 #import "GPGMailBundle.h"
 #import "ComposeBackEnd+GPGMail.h"
 
@@ -128,7 +128,7 @@
         [copiedCleanHeaders release];
     }
     // Inject the headers needed in newEncryptedPart and newSignedPart.
-    [self _addGPGFlaggedHeaderValuesToHeaders:[(ComposeBackEnd *)self cleanHeaders] forEncrypting:shouldPGPEncrypt forSigning:shouldPGPSign];
+    [self _addGPGFlaggedStringsToHeaders:[(ComposeBackEnd *)self cleanHeaders] forEncrypting:shouldPGPEncrypt forSigning:shouldPGPSign];
 
     // If the message is supposed to be encrypted or signed inline,
     // GPGMail does that directly in the Compose back end, and not use
@@ -192,7 +192,7 @@
     return outgoingMessage;
 }
 
-- (void)_addGPGFlaggedHeaderValuesToHeaders:(NSMutableDictionary *)headers forEncrypting:(BOOL)forEncrypting forSigning:(BOOL)forSigning {
+- (void)_addGPGFlaggedStringsToHeaders:(NSMutableDictionary *)headers forEncrypting:(BOOL)forEncrypting forSigning:(BOOL)forSigning {
     // To decide whether S/MIME or PGP operations should be performed on
     // the message, different headers have to be flagged.
     //
@@ -205,7 +205,7 @@
     //   (the "from" value is not inlucded in the recipients list passed to the encryption
     //    method)
     if(forSigning) {
-        [headers setObject:[[headers valueForKey:@"from"] flaggedValueWithKey:@"from"] forKey:@"from"];
+        [headers setObject:[[headers valueForKey:@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"] forKey:@"from"];
     }
     if(forEncrypting) {
         // Save the original bcc recipients, to restore later.
@@ -214,9 +214,9 @@
         // Flag BCCs as bcc, so we can use hidden-recipient.
         NSArray *bccRecipients = [headers valueForKey:@"bcc"];
         for(NSString *bcc in bccRecipients)
-            [newBCCList addObject:[bcc flaggedValueWithKey:@"bcc"]];
+            [newBCCList addObject:[bcc flaggedStringWithFlag:@"recipientType" value:@"bcc"]];
 
-        [newBCCList addObject:[[headers valueForKey:@"from"] flaggedValueWithKey:@"from"]];
+        [newBCCList addObject:[[headers valueForKey:@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"]];
         [headers setValue:newBCCList forKey:@"bcc"];
     }
 }

@@ -31,6 +31,7 @@
 #import <NSObject+LPDynamicIvars.h>
 #import <MailDocumentEditor.h>
 #import "HeadersEditor+GPGMail.h"
+#import "GPGMailBundle.h"
 
 @implementation HeadersEditor_GPGMail
 
@@ -40,4 +41,61 @@
     [self MASecurityControlChanged:securityControl];
 }
 
+- (void)MA_updateFromAndSignatureControls:(id)arg1 {
+	[self MA_updateFromAndSignatureControls:arg1];
+	NSPopUpButton *popUp = [[self valueForKey:@"_composeHeaderView"] valueForKey:@"_accountPopUp"];
+	NSMenu *menu = [popUp menu];
+	NSArray *menuItems = [menu itemArray];
+	GPGMailBundle *bundle = [GPGMailBundle sharedInstance];
+	
+	
+	for (NSMenuItem *item in menuItems) {
+		if ([item getIvar:@"parentItem"]) {
+			[menu removeItem:item];
+		} else {
+			NSSet *keys = [bundle signingKeyListForAddresses:[NSArray arrayWithObject:item.title]];
+			switch ([keys count]) {
+				case 0:
+					[item removeIvar:@"gpgKey"];
+					break;
+				case 1:
+					[item setIvar:@"gpgKey" value:[keys anyObject]];
+					break;
+				default:
+					for (GPGKey *key in keys) {
+						NSString *title = [NSString stringWithFormat:@"%@ (%@)", key.name, key.shortKeyID];
+						NSMenuItem *newItem = [[NSMenuItem alloc] initWithTitle:title action:nil/*@selector(_popUpItemAction:)*/ keyEquivalent:@""];
+						[newItem setIvar:@"gpgKey" value:key];
+						[newItem setIvar:@"parentItem" value:item];
+					}
+					[item setEnabled:NO];
+					break;
+			}
+		}
+	}
+	
+}
+
+- (void)MAChangeFromHeader:(NSPopUpButton *)sender {
+	NSRunAlertPanel(@"ok", @"ok", nil, nil, nil);
+	
+	NSPopUpButton *button = [[NSPopUpButton alloc] init];
+	NSMenu *menu = [[NSMenu alloc] init];
+	GPGKey *key;
+	ComposeBackEnd *backEnd = [[[self valueForKey:@"_delegate"] valueForKey:@"_documentEditor"] backEnd];
+	
+	NSMenuItem *item = [sender selectedItem];
+	NSMenuItem *parentItem = [item getIvar:@"parentItem"];
+	[menu addItem:parentItem ? parentItem : item];
+	key = [item getIvar:@"gpgKey"];
+	
+	NSLog(@"Key: %@", key);
+	
+	[button setMenu:menu];
+	[self MAChangeFromHeader:button];
+}
+
+
 @end
+
+

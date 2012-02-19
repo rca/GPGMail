@@ -106,7 +106,7 @@
  different info is added to the original headers.
  forEncrypting and forSigning decide which headers are added.
  */
-- (void)_addGPGFlaggedHeaderValuesToHeaders:(NSMutableDictionary *)headers forEncrypting:(BOOL)forEncrypting forSigning:(BOOL)forSigning;
+- (void)_addGPGFlaggedStringGPGFlaggedStringsToHeaders:(NSMutableDictionary *)headers forEncrypting:(BOOL)forEncrypting forSigning:(BOOL)forSigning;
 
 /**
  Is called whenever a recipient is added to the message and decides

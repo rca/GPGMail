@@ -33,7 +33,7 @@
 #import "NSData+GPGMail.h"
 #import "NSArray+Functional.h"
 #import "NSObject+LPDynamicIvars.h"
-#import "GPGFlaggedHeaderValue.h"
+#import "GPGFlaggedString.h"
 #import "MimePart+GPGMail.h"
 #import "MimeBody+GPGMail.h"
 #import "NSString+GPGMail.h"
@@ -1299,7 +1299,8 @@
     NSMutableArray *normalRecipients = [[NSMutableArray alloc] initWithCapacity:1];
     NSMutableArray *bccRecipients = [[NSMutableArray alloc] initWithCapacity:1];
     for(NSString *recipient in recipients) {
-        if([recipient isFlaggedValueWithKey:@"bcc"])
+		
+        if([@"bcc" isEqualTo:[recipient valueForFlag:@"recipientType"]])
             [bccRecipients addObject:recipient];
         else
             [normalRecipients addObject:recipient];
@@ -1367,7 +1368,7 @@
 //    DebugLog(@"[DEBUG] %s sender: [%@] %@", __PRETTY_FUNCTION__, [sender class], sender);
     // If sender doesn't show any injected header values, S/MIME is wanted,
     // hence the original method called.
-    if(![sender isFlaggedValueWithKey:@"from"]) {
+    if(![@"from" isEqualTo:[sender valueForFlag:@"recipientType"]]) {
         id newPart = [self MANewSignedPartWithData:data sender:sender signatureData:signatureData];
         return newPart;
     }
