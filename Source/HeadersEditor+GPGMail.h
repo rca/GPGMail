@@ -45,6 +45,12 @@
  */
 - (void)MA_updateFromAndSignatureControls:(id)arg1;
 
+
+/**
+ Adds or removes the secret keys to the From NSPopUpButton.
+ */
+- (void)fromHeaderDisplaySecretKeys:(BOOL)display;
+
 /**
  Is called whenever the user select a account in the PopUp.
  Is used to set the GPGKey in the back-end.

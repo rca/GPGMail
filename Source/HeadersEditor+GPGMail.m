@@ -49,6 +49,12 @@
 
 - (void)MA_updateFromAndSignatureControls:(id)arg1 {
 	[self MA_updateFromAndSignatureControls:arg1];
+	if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
+		[self fromHeaderDisplaySecretKeys:YES];
+	}
+}
+
+- (void)fromHeaderDisplaySecretKeys:(BOOL)display {
 	NSPopUpButton *popUp = [[self valueForKey:@"_composeHeaderView"] valueForKey:@"_accountPopUp"];
 	NSMenu *menu = [popUp menu];
 	NSArray *menuItems = [menu itemArray];
@@ -62,7 +68,7 @@
 	for (NSMenuItem *item in menuItems) {
 		if ([item getIvar:@"parentItem"]) {
 			[menu removeItem:item];
-		} else {
+		} else if (display) {
 			NSSet *keys = [bundle signingKeyListForAddress:item.title];
 			switch ([keys count]) {
 				case 0:
@@ -76,15 +82,13 @@
 					
 					BOOL firstSubitem = YES;
 					for (GPGKey *key in keys) {
-						
 						NSString *title = [NSString stringWithFormat:@"– %@ (%@)", key.name, key.shortKeyID];
 						NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attributes];
-
+						
 						NSMenuItem *newItem = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@""];
 						[newItem setAttributedTitle:attributedTitle];
 						[newItem setIvar:@"gpgKey" value:key];
 						[newItem setIvar:@"parentItem" value:item];
-						
 						
 						[menu insertItem:newItem atIndex:++index];
 						
@@ -96,7 +100,13 @@
 					item.enabled = NO;
 					break; }
 			}
+		} else {
+			[item removeIvar:@"gpgKey"];
+			item.enabled = YES;
 		}
+	}
+	if (!display && ![popUp selectedItem]) {
+		itemToSelect = [menu itemAtIndex:0];
 	}
 	if (itemToSelect) {
 		[popUp selectItem:itemToSelect];
@@ -116,6 +126,23 @@
 	
 	[self MAChangeFromHeader:button];
 }
+
+- (void)securityMethodDidChange:(NSNotification *)notification {
+	NSInteger securityMethod = [[[notification userInfo] objectForKey:@"SecurityMethod"] integerValue];
+	[self fromHeaderDisplaySecretKeys:securityMethod == 1];
+}
+
+- (id)MAInit {
+	[self MAInit];
+	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(securityMethodDidChange:) name:@"SecurityMethodDidChangeNotification" object:nil];
+	return self;
+}
+
+- (void)MADealloc {
+	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self MADealloc];
+}
+
 
 @end
 

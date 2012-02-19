@@ -126,7 +126,8 @@ static BOOL gpgMailWorks = NO;
                              @"securityControlChanged:", 
                              @"_updateFromAndSignatureControls:", 
                              @"changeFromHeader:", 
-                             nil], @"selectors", nil],
+                             @"init", 
+                             @"dealloc", nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MessageAttachment", @"class",
                             @"MessageAttachment_GPGMail", @"gpgMailClass",
