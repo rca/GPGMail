@@ -3620,7 +3620,7 @@
 					"-undefined",
 					dynamic_lookup,
 				);
-				SDKROOT = "";
+				SDKROOT = "macosx10.7";
 				SYMROOT = build;
 				VALID_ARCHS = "x86_64 i386";
 			};
@@ -3662,7 +3662,7 @@
 					"-undefined",
 					dynamic_lookup,
 				);
-				SDKROOT = "";
+				SDKROOT = "macosx10.7";
 				SYMROOT = build;
 				VALID_ARCHS = "x86_64 i386";
 			};
