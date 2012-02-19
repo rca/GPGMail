@@ -472,18 +472,18 @@ static BOOL gpgMailWorks = NO;
 }
 
 - (BOOL)canSignMessagesFromAddress:(NSString *)address {
-    NSString *fingerprint = [self.secretGPGKeysByEmail valueForKey:[address gpgNormalizedEmail]];
-    return (fingerprint != nil);
+    GPGKey *key = [self.secretGPGKeysByEmail valueForKey:[address gpgNormalizedEmail]];
+    return (key != nil);
 }
 
 - (BOOL)canEncryptMessagesToAddress:(NSString *)address {
-    NSString *fingerprint = [self.publicGPGKeysByEmail objectForKey:[address gpgNormalizedEmail]];
-    return (fingerprint != nil);
+    GPGKey *key = [self.publicGPGKeysByEmail objectForKey:[address gpgNormalizedEmail]];
+    return (key != nil);
 }
 
 - (NSMutableSet *)publicKeyListForAddresses:(NSArray *)recipients {
     NSMutableSet *keyList = [NSMutableSet setWithCapacity:[recipients count]];
-    GPGKey *tmpKey;
+    id tmpKey;
     for(NSString *recipient in recipients) {
         recipient = [recipient gpgNormalizedEmail];
         tmpKey = [self.publicGPGKeysByEmail objectForKey:recipient];
@@ -495,7 +495,7 @@ static BOOL gpgMailWorks = NO;
 
 - (NSMutableSet *)signingKeyListForAddresses:(NSArray *)senders {
     NSMutableSet *keyList = [NSMutableSet setWithCapacity:[senders count]];
-    GPGKey *tmpKey;
+    id tmpKey;
     for(NSString *sender in senders) {
         sender = [sender gpgNormalizedEmail];
         tmpKey = [self.secretGPGKeysByEmail objectForKey:sender];
@@ -599,17 +599,27 @@ static BOOL gpgMailWorks = NO;
  an email address.
  All email addresses of user ids are taking into consideration.
  */
-- (NSMutableDictionary *)emailMapForGPGKeys:(NSSet *)keys {
+- (NSMutableDictionary *)emailMapForGPGKeys:(NSSet *)keys allowDuplicates:(BOOL)allowDuplicates {
     NSMutableDictionary *keyEmailMap = [NSMutableDictionary dictionary];
     for(GPGKey *key in keys) {
         // TODO:
-        NSMutableArray *userIDs = [NSMutableArray arrayWithObject:[key primaryUserID]];
-        [userIDs addObjectsFromArray:[key userIDs]];
         NSString *email;
-        for(GPGUserID *userID in userIDs) {
+        for(GPGUserID *userID in [key userIDs]) {
             email = [[userID email] gpgNormalizedEmail];
-            if(email && ![keyEmailMap objectForKey:email])
-                [keyEmailMap setObject:[key fingerprint] forKey:email];
+            if(!email)
+                continue;
+            if(allowDuplicates) {
+                if(![keyEmailMap objectForKey:email]) {
+                    NSMutableSet *set = [[NSMutableSet alloc] init];
+                    [keyEmailMap setObject:set forKey:email];
+                    [set release];
+                }
+                [[keyEmailMap valueForKey:email] addObject:key];
+            }
+            else {
+                if(![keyEmailMap objectForKey:email])
+                    [keyEmailMap setObject:key forKey:email];
+            }
         }
     }
     return keyEmailMap;
@@ -663,7 +673,7 @@ static BOOL gpgMailWorks = NO;
 
 - (NSDictionary *)secretGPGKeysByEmail {
     if(!_secretGPGKeysByEmail) {
-        self.secretGPGKeysByEmail = [self emailMapForGPGKeys:self.secretGPGKeys];
+        self.secretGPGKeysByEmail = [self emailMapForGPGKeys:self.secretGPGKeys allowDuplicates:YES];
     }
     return _secretGPGKeysByEmail;
 }
@@ -734,7 +744,7 @@ static BOOL gpgMailWorks = NO;
 
 - (NSDictionary *)publicGPGKeysByEmail {
     if(!_publicGPGKeysByEmail) {
-        NSMutableDictionary *keysByEmail = [self emailMapForGPGKeys:self.publicGPGKeys];
+        NSMutableDictionary *keysByEmail = [self emailMapForGPGKeys:self.publicGPGKeys allowDuplicates:NO];
         [keysByEmail addEntriesFromDictionary:[self userMappedKeys]];
         [keysByEmail addEntriesFromDictionary:[self groups]];
         self.publicGPGKeysByEmail = keysByEmail;

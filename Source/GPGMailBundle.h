@@ -179,6 +179,15 @@ extern NSString *GPGMailKeyringUpdatedNotification;
  */
 - (GPGKey *)findPublicKeyByKeyHint:(NSString *)hint;
 
+/**
+ Create a map for the gpg keys which can be accessed by using
+ an email address.
+ All email addresses of user ids are taking into consideration.
+ If duplicate emails are found, allow duplicates decides whether to discard them
+ or keep them.
+ */
+- (NSMutableDictionary *)emailMapForGPGKeys:(NSSet *)keys allowDuplicates:(BOOL)allowDuplicates;
+
 @end
 
 @interface GPGMailBundle (NoImplementation)
