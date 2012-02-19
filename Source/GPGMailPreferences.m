@@ -69,7 +69,7 @@
 								nil];
 
 	return [[[NSAttributedString alloc] initWithString:@"http://www.gpgtools.org" attributes:attributes] autorelease];
-}
+}	
 
 - (NSImage *)imageForPreferenceNamed:(NSString *)aName {
 	return [NSImage imageNamed:@"GPGMailPreferences"];
@@ -109,11 +109,11 @@
 - (NSString *)gpgStatusToolTip {
 	switch ([[GPGMailBundle sharedInstance] gpgStatus]) {
 		case GPGErrorNotFound:
-			return localized(@"GPG_STATUS_NOT_FOUND_MESSAGE");
+			return localized(@"GPG_STATUS_NOT_FOUND_TOOLTIP");
 		case GPGErrorNoError:
-			return localized(@"GPG_STATUS_NO_ERROR_MESSAGE");
+			return localized(@"GPG_STATUS_NO_ERROR_TOOLTIP");
 		default:
-			return localized(@"GPG_STATUS_OTHER_ERROR_MESSAGE");
+			return localized(@"GPG_STATUS_OTHER_ERROR_TOOLTIP");
 	}
 }
 
