@@ -765,12 +765,13 @@ static BOOL gpgMailWorks = NO;
     NSMutableDictionary *cleanMappedKeys = [NSMutableDictionary dictionary]; 
     NSMutableArray *disabledUserMappedKeys = [NSMutableArray array];
     for(id email in mappedKeys) {
+        
         NSString *fingerprint = [mappedKeys objectForKey:email];
         if([self findPublicKeyByKeyHint:fingerprint])
-            [cleanMappedKeys setObject:fingerprint forKey:email];
+            [cleanMappedKeys setObject:fingerprint forKey:[email gpgNormalizedEmail]];
         else
-            [disabledUserMappedKeys addObject:email];
-    }
+            [disabledUserMappedKeys addObject:[email gpgNormalizedEmail]];
+    }   
     
     self.disabledUserMappedKeys = disabledUserMappedKeys;
     
@@ -791,9 +792,9 @@ static BOOL gpgMailWorks = NO;
             }
         }
         if(allKeysValid)
-            [cleanGroups setObject:keyHints forKey:email];
+            [cleanGroups setObject:keyHints forKey:[email gpgNormalizedEmail]];
         else
-            [disabledGroups addObject:email];
+            [disabledGroups addObject:[email gpgNormalizedEmail]];
     }
     
     self.disabledGroups = disabledGroups;
