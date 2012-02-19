@@ -40,12 +40,14 @@
 
 
 /**
- TODO!
+ Is called whenever the From NSPopUpButton is filled.
+ We need it to add the different secret keys.
  */
 - (void)MA_updateFromAndSignatureControls:(id)arg1;
 
 /**
  Is called whenever the user select a account in the PopUp.
+ Is used to set the GPGKey in the back-end.
  */
 - (void)MAChangeFromHeader:(NSPopUpButton *)sender;
 

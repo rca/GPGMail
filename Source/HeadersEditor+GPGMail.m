@@ -57,6 +57,8 @@
 	
 	menu.autoenablesItems = NO;
 	
+	NSDictionary *attributes = [[[menuItems objectAtIndex:0] attributedTitle] fontAttributesInRange:NSMakeRange(0, 1)];
+	
 	for (NSMenuItem *item in menuItems) {
 		if ([item getIvar:@"parentItem"]) {
 			[menu removeItem:item];
@@ -71,20 +73,23 @@
 					break;
 				default: {
 					NSInteger index = [menu indexOfItem:item];
+					
 					BOOL firstSubitem = YES;
 					for (GPGKey *key in keys) {
-						NSString *title = [NSString stringWithFormat:@"%@ (%@)", key.name, key.shortKeyID];
+						
+						NSString *title = [NSString stringWithFormat:@"– %@ (%@)", key.name, key.shortKeyID];
+						NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attributes];
+
 						NSMenuItem *newItem = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@""];
+						[newItem setAttributedTitle:attributedTitle];
 						[newItem setIvar:@"gpgKey" value:key];
 						[newItem setIvar:@"parentItem" value:item];
+						
 						
 						[menu insertItem:newItem atIndex:++index];
 						
 						if (firstSubitem && item.state) {
-							//newItem.state = YES;
 							itemToSelect = newItem;
-							//item.state = NO;
-							//updateNeeded = YES;
 						}
 						firstSubitem = NO;
 					}
