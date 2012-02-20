@@ -73,7 +73,7 @@
     [self MABackEndDidLoadInitialContent:content];
 }
 
-- (void)keyringUpdated:(id)notification {
+- (void)keyringUpdated:(NSNotification *)notification {
 	[[(MailDocumentEditor *)self headersEditor] updateSecurityControls];
 }
 

@@ -57,4 +57,10 @@
  */
 - (void)MAChangeFromHeader:(NSPopUpButton *)sender;
 
+/**
+  Norification handling.
+ */
+- (void)securityMethodDidChange:(NSNotification *)notification;
+- (void)keyringUpdated:(NSNotification *)notification;
+
 @end

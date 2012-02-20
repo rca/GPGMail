@@ -59,61 +59,81 @@
 	NSMenu *menu = [popUp menu];
 	NSArray *menuItems = [menu itemArray];
 	GPGMailBundle *bundle = [GPGMailBundle sharedInstance];
-	NSMenuItem *itemToSelect = nil;
+	NSDictionary *attributes = [[[menuItems objectAtIndex:0] attributedTitle] fontAttributesInRange:NSMakeRange(0, 1)];
+	NSMenuItem *item, *parentItem, *selectedItem = [popUp selectedItem];
+	
+	if ((parentItem = [selectedItem getIvar:@"parentItem"])) {
+		selectedItem = parentItem;
+	}
+	if (!selectedItem) {
+		NSRunAlertPanel(@"ERORO", @"KACKE", nil, nil, nil);
+	}
 	
 	menu.autoenablesItems = NO;
 	
-	NSDictionary *attributes = [[[menuItems objectAtIndex:0] attributedTitle] fontAttributesInRange:NSMakeRange(0, 1)];
 	
-	for (NSMenuItem *item in menuItems) {
-		if ([item getIvar:@"parentItem"]) {
-			[menu removeItem:item];
+	NSUInteger count = [menuItems count], i = 0;
+	for (; i < count; i++) {
+		item = [menuItems objectAtIndex:i];
+		parentItem = [item getIvar:@"parentItem"];
+		if (parentItem) {
+			[menu removeItem:item]; // We remove all elements that represent a key.
 		} else if (display) {
 			NSSet *keys = [bundle signingKeyListForAddress:item.title];
 			switch ([keys count]) {
 				case 0:
+					// We have no key for this account.
 					[item removeIvar:@"gpgKey"];
+					item.hidden = NO;
 					break;
 				case 1:
+					// We have only one key for this account: Set it.
 					[item setIvar:@"gpgKey" value:[keys anyObject]];
+					item.hidden = NO;
 					break;
 				default: {
+					// We have more than one key for this account:
+					// Add menu items to let the user choose.
 					NSInteger index = [menu indexOfItem:item];
 					
-					BOOL firstSubitem = YES;
 					for (GPGKey *key in keys) {
-						NSString *title = [NSString stringWithFormat:@"%@ (%@)", item.title, key.shortKeyID];
-						NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attributes];
-						
-						NSMenuItem *newItem = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@""];
-						[newItem setAttributedTitle:attributedTitle];
-						[newItem setIvar:@"gpgKey" value:key];
-						[newItem setIvar:@"parentItem" value:item];
-						
-						[menu insertItem:newItem atIndex:++index];
-						
-						if (firstSubitem && item.state) {
-							itemToSelect = newItem;
+						NSMenuItem *nextMenuItem = [menuItems objectAtIndex:i + 1];
+						if (i + 1 < count && [nextMenuItem getIvar:@"parentItem"] && [nextMenuItem getIvar:@"gpgKey"] == key) {
+							// The next item is the item we want to create: Jump over.
+							i++;
+							index++;
+						} else {
+							NSString *title = [NSString stringWithFormat:@"%@ (%@)", item.title, key.shortKeyID]; // Compose the title "Name <E-Mail> (KeyID)".
+							NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attributes];
+
+							// Create the menu item with the given title...
+							NSMenuItem *newItem = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@""];
+							[newItem setAttributedTitle:attributedTitle];
+							[newItem setIvar:@"gpgKey" value:key]; // GPGKey...
+							[newItem setIvar:@"parentItem" value:item]; // and set the parentItem.
+							
+							[menu insertItem:newItem atIndex:++index]; // Insert it in the "From:" menu.
 						}
-						firstSubitem = NO;
 					}
-					item.enabled = NO;
 					item.hidden = YES;
 					break; }
 			}
-		} else {
+		} else { // display == NO
+			// Restore all original items.
 			[item removeIvar:@"gpgKey"];
 			item.hidden = NO;
-			item.enabled = YES;
 		}
 	}
-	if (!display && ![popUp selectedItem]) {
-		itemToSelect = [menu itemAtIndex:0];
-	}
-	if (itemToSelect) {
-		[popUp selectItem:itemToSelect];
+	
+	
+	// Select a valid item if needed.
+	if (selectedItem.isHidden) {
+		[popUp selectItemAtIndex:[menu indexOfItem:selectedItem] + 1];
 		[self changeFromHeader:popUp];
-	}
+	} else if ([popUp selectedItem] != selectedItem) {
+		[popUp selectItem:selectedItem];
+		[self changeFromHeader:popUp];
+	}	
 }
 
 - (void)MAChangeFromHeader:(NSPopUpButton *)sender {
@@ -126,6 +146,7 @@
 	// Set the selected key in the back-end.
 	[[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd] setIvar:@"gpgKeyForSigning" value:[item getIvar:@"gpgKey"]];
 	
+	
 	[self MAChangeFromHeader:button];
 }
 
@@ -134,9 +155,16 @@
 	[self fromHeaderDisplaySecretKeys:securityMethod == 1];
 }
 
+- (void)keyringUpdated:(NSNotification *)notification {
+	if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
+		[self performSelectorOnMainThread:@selector(fromHeaderDisplaySecretKeys:) withObject:(id)kCFBooleanTrue waitUntilDone:NO];
+	}
+}
+
 - (id)MAInit {
 	[self MAInit];
 	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(securityMethodDidChange:) name:@"SecurityMethodDidChangeNotification" object:nil];
+	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyringUpdated:) name:GPGMailKeyringUpdatedNotification object:nil];
 	return self;
 }
 

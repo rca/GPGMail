@@ -43,4 +43,6 @@
 - (void)drawEncryptionMethodHint;
 
 - (void)removeEncryptionHint;
+
+- (void)keyringUpdated:(NSNotification *)notification;
 @end
