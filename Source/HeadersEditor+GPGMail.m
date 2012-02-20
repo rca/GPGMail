@@ -65,9 +65,6 @@
 	if ((parentItem = [selectedItem getIvar:@"parentItem"])) {
 		selectedItem = parentItem;
 	}
-	if (!selectedItem) {
-		NSRunAlertPanel(@"ERORO", @"KACKE", nil, nil, nil);
-	}
 	
 	menu.autoenablesItems = NO;
 	
