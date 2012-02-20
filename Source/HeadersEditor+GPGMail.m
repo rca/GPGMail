@@ -82,7 +82,7 @@
 					
 					BOOL firstSubitem = YES;
 					for (GPGKey *key in keys) {
-						NSString *title = [NSString stringWithFormat:@"– %@ (%@)", key.name, key.shortKeyID];
+						NSString *title = [NSString stringWithFormat:@"%@ (%@)", item.title, key.shortKeyID];
 						NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attributes];
 						
 						NSMenuItem *newItem = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@""];
@@ -98,10 +98,12 @@
 						firstSubitem = NO;
 					}
 					item.enabled = NO;
+					item.hidden = YES;
 					break; }
 			}
 		} else {
 			[item removeIvar:@"gpgKey"];
+			item.hidden = NO;
 			item.enabled = YES;
 		}
 	}
