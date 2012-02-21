@@ -842,6 +842,7 @@
 						// Convert the data to UTF-8.
 						NSString *decryptedString = [[NSString alloc] initWithData:partDecryptedData encoding:encoding];
 						partDecryptedData = [decryptedString dataUsingEncoding:NSUTF8StringEncoding];
+						[decryptedString release];
 					}
 				}
 			}
