@@ -754,7 +754,7 @@
     [partData appendData:[originalData subdataWithRange:NSMakeRange(0, encryptedRange.location)]];
     NSData *restData = [originalData subdataWithRange:NSMakeRange(encryptedRange.location + encryptedRange.length, 
                                                                   [originalData length] - encryptedRange.length - encryptedRange.location)];
-    if([decryptedData length]) {
+    if(decryptedData) {
         // If there was data before or after the encrypted data, signal this
         // with a banner.
         BOOL hasOtherData = (encryptedRange.location != 0) || otherDataFound(restData);
