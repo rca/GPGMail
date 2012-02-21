@@ -36,6 +36,7 @@
 #import "MimePart+GPGMail.h"
 #import "Message+GPGMail.h"
 #import "GPGMailBundle.h"
+#import "NSString+GPGMail.h"
 
 @implementation Message (GPGMail)
 
@@ -125,18 +126,44 @@
 }
 
 - (NSArray *)PGPSignatureLabels {
+	NSString *senderEmail = [[self valueForKey:@"_sender"] gpgNormalizedEmail];
+	
     // Check if the signature in the message signers is a GPGSignature, if
     // so, copy the email addresses and return them.
     NSMutableArray *signerLabels = [NSMutableArray array];
     NSArray *messageSigners = [self PGPSignatures];
     for(GPGSignature *signature in messageSigners) {
-        // For some reason a signature might not have an email set.
-        // This happens if the public key is not available (not downloaded or imported
-        // from the signature server yet). In that case, display the user id.
-        // Also, add an appropriate warning.
         NSString *email = [signature email];
-        if(!email)
-            email = [NSString stringWithFormat:@"0x%@", [[signature fingerprint] shortKeyID]];
+        if(email) {
+			// If the sender E-Mail != signature E-Mail, we display the sender E-Mail if possible.
+			if (![[email gpgNormalizedEmail] isEqualToString:senderEmail]) {
+				NSString *fingerprint = signature.primaryFingerprint ? signature.primaryFingerprint : signature.fingerprint;
+				if (fingerprint) {
+					NSSet *keys = [[GPGMailBundle sharedInstance] allGPGKeys];
+					GPGKey *key = [keys member:fingerprint];
+					if (!key) {
+						for (key in keys) {
+							NSUInteger index = [key.subkeys indexOfObject:fingerprint];
+							if (index != NSNotFound) {
+								break;
+							}
+						}
+					}
+					for (GPGUserID *userID in key.userIDs) {
+						if ([[userID.email gpgNormalizedEmail] isEqualToString:senderEmail]) {
+							email = userID.email;
+							break;
+						}
+					}
+				}
+			}
+		} else {
+			// For some reason a signature might not have an email set.
+			// This happens if the public key is not available (not downloaded or imported
+			// from the signature server yet). In that case, display the user id.
+			// Also, add an appropriate warning.
+			email = [NSString stringWithFormat:@"0x%@", [[signature fingerprint] shortKeyID]];
+		}
         [signerLabels addObject:email];
     }
     
