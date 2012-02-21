@@ -754,10 +754,10 @@
     [partData appendData:[originalData subdataWithRange:NSMakeRange(0, encryptedRange.location)]];
     NSData *restData = [originalData subdataWithRange:NSMakeRange(encryptedRange.location + encryptedRange.length, 
                                                                   [originalData length] - encryptedRange.length - encryptedRange.location)];
-    if(decryptedData && [decryptedData length] != 0) {
+    if([decryptedData length]) {
         // If there was data before or after the encrypted data, signal this
         // with a banner.
-        BOOL hasOtherData = (encryptedRange.location != 0) | otherDataFound(restData);
+        BOOL hasOtherData = (encryptedRange.location != 0) || otherDataFound(restData);
             
         if(hasOtherData)
             [self addPGPPartMarkerToData:partData partData:decryptedData];
@@ -823,11 +823,33 @@
     // Otherwise it could block the decryption queue for new jobs if the decrypted message contains
     // PGP inline encrypted data which GPGMail tries to decrypt but can't since the old job didn't finish
     // yet.
-    if(inlineEncryptedData)
+    if(inlineEncryptedData) {
+		
+		// This part serachs for a "Charset" header and if it's found and it's not UTF-8 convert the data to UTF-8.
+		NSString *pgpMessage = [NSString stringWithData:inlineEncryptedData encoding:NSISOLatin1StringEncoding];
+		NSRange range = [pgpMessage rangeOfString:@"Charset: "];
+		if (range.length > 0) {
+			range = [pgpMessage lineRangeForRange:range];
+			range.location += 9;
+			range.length -= 10;
+			if (range.length > 0) {
+				NSString *charset = [pgpMessage substringWithRange:range];
+				CFStringEncoding stringEncoding= CFStringConvertIANACharSetNameToEncoding((CFStringRef)charset);
+				if (stringEncoding != kCFStringEncodingInvalidId) {
+					unsigned long encoding = CFStringConvertEncodingToNSStringEncoding(stringEncoding);
+					
+					if (encoding != NSUTF8StringEncoding) {
+						// Convert the data to UTF-8.
+						NSString *decryptedString = [[NSString alloc] initWithData:partDecryptedData encoding:encoding];
+						partDecryptedData = [decryptedString dataUsingEncoding:NSUTF8StringEncoding];
+					}
+				}
+			}
+		}
+		
         decryptedData = [self partDataByReplacingEncryptedData:encryptedData decryptedData:partDecryptedData encryptedRange:encryptedRange];
-    else
+    } else
         decryptedMimeBody = [self decryptedMessageBodyFromDecryptedData:partDecryptedData];
-    
     
     if(inlineEncrypted)
         return decryptedData;
