@@ -36,6 +36,7 @@
 #import "GPGTitlebarAccessoryView.h"
 #import "MailDocumentEditor+GPGMail.h"
 #import "GPGMailBundle.h"
+#import <MFError.h>
 
 @implementation MailDocumentEditor_GPGMail
 
@@ -162,5 +163,13 @@
     }
     [self MADealloc];
 }
+
+- (void)MABackEnd:(id)arg1 didCancelMessageDeliveryForEncryptionError:(MFError *)error {
+	if ([[(NSDictionary *)error.userInfo objectForKey:@"GPGErrorCode"] integerValue] == GPGErrorCancelled) {
+		return;
+	}
+	[self MABackEnd:arg1 didCancelMessageDeliveryForEncryptionError:error];
+}
+
 
 @end

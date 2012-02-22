@@ -27,7 +27,9 @@
 #import "GPGMailBundle.h"
 #import "ComposeBackEnd+GPGMail.h"
 
+#import <MailDocumentEditor.h>
 #import "ActivityMonitor.h"
+#import <MFError.h>
 
 @implementation ComposeBackEnd_GPGMail
 
@@ -149,11 +151,58 @@
     // to disable the isDraft parameter, Mail.app will take care of the rest.
     OutgoingMessage *outgoingMessage = [self MA_makeMessageWithContents:contents isDraft:NO shouldSign:shouldPGPSign shouldEncrypt:shouldPGPEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
 
+	
     // If there was an error creating the outgoing message it's gonna be nil
     // and the error is stored away for later display.
-    if(!outgoingMessage)
-        return outgoingMessage;
-    
+    if(!outgoingMessage) {
+		if (isDraft) {
+			// Cancel saving to prevent the default error message.
+			[self setIvar:@"cancelSaving" value:(id)kCFBooleanTrue];
+			[(MailDocumentEditor *)[(ComposeBackEnd *)self delegate] setUserSavedMessage:NO];
+			
+			
+			// Display "our" error message.
+			NSBundle *messagesFramework = [NSBundle bundleWithIdentifier:@"com.apple.MessageFramework"];
+			NSString *localizedDescription = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"SMIME_CANT_SIGN_MESSAGE", @"Delayed", messagesFramework, @""), [@"sender" gpgNormalizedEmail]];
+			NSString *titleDescription = NSLocalizedStringFromTableInBundle(@"SMIME_CANT_SIGN_TITLE", @"Delayed", messagesFramework, @"");
+			MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:nil title:titleDescription
+											  helpTag:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:localizedDescription,
+																	@"NSLocalizedDescription", titleDescription, @"_MFShortDescription", nil]];
+
+			[(MailDocumentEditor *)[(ComposeBackEnd *)self delegate] backEnd:self didCancelMessageDeliveryForEncryptionError:error];
+			
+		}
+        return nil;
+	}
+
+    // Fetch the encrypted data from the body data.
+    NSData *encryptedData = [((_OutgoingMessageBody *)[outgoingMessage messageBody]) rawData];
+	
+
+	// Search for an errorCode in encryptedData:
+	NSRange range = [encryptedData rangeOfData:[gpgErrorIdentifier dataUsingEncoding:NSUTF8StringEncoding] options:0 range:NSMakeRange(0, [encryptedData length])];
+	if (range.length > 0) {
+		GPGErrorCode errorCode = 0;
+		char *readPos = (char *)[encryptedData bytes];
+		char *endPos = readPos + [encryptedData length];
+		
+		// Extract the errorCode.
+		readPos += range.location + range.length;
+		for (; readPos < endPos && *readPos <= '9' && *readPos >= '0'; readPos++) {
+			errorCode = errorCode * 10 + *readPos - '0';
+		}
+		
+		if (errorCode == GPGErrorCancelled) {
+			if (isDraft) {
+				// If the user cancel the signing, we cancel the saving and mark the message as unsaved.
+				[self setIvar:@"cancelSaving" value:(id)kCFBooleanTrue];
+				[(MailDocumentEditor *)[(ComposeBackEnd *)self delegate] setUserSavedMessage:NO];
+			}
+		}
+		return nil;
+	}
+
+	
     // And restore the original headers.
     [(ComposeBackEnd *)self setValue:[self getIvar:@"originalCleanHeaders"] forKey:@"_cleanHeaders"];
 
@@ -166,8 +215,6 @@
         return outgoingMessage;
     }
 
-    // Fetch the encrypted data from the body data.
-    NSData *encryptedData = [((_OutgoingMessageBody *)[outgoingMessage messageBody]) rawData];
 
     Subdata *newBodyData = nil;
     
@@ -458,4 +505,20 @@
     return nonEligibleRecipients;
 }
 
+
+- (BOOL)MA_saveThreadShouldCancel {
+	if ([[self getIvar:@"cancelSaving"] boolValue]) {
+		[self setIvar:@"cancelSaving" value:(id)kCFBooleanFalse];
+		return YES;
+	}
+	return [self MA_saveThreadShouldCancel];
+}
+
+
 @end
+
+/*
+ Flags abfragen
+ struct ComposeBackEndFlags flags;
+ object_getInstanceVariable(self, "_flags", (void **)&flags);
+*/
