@@ -1,8 +1,8 @@
 #define MAJOR_VERSION 2
 #define MINOR_VERSION 0
-/*#define MAINTENANCE_VERSION 0		/**/
+/*#define MAINTENANCE_VERSION 0		*/
 #define PRERELEASE_VERSION a31		/**/
-
+#define SPARKLE_URL "http://www.gpgtools.org/gpgmail/appcast.xml"
 
 
 /* DON'T CHANGE ANYTHING BELOW THIS LINE! */
