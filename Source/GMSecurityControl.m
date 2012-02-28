@@ -118,11 +118,13 @@
 }
 
 - (void)dealloc {
-    [super dealloc];
-    
-    [_control release];
-    [_forcedImageName release];
+    if(_control)
+        [_control release];
+    if(_forcedImageName)
+        [_forcedImageName release];
     _securityTag = 0;
+    
+    [super dealloc];
 }
 
 @end
