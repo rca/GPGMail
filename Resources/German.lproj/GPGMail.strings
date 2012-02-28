@@ -256,4 +256,9 @@
 "MESSAGE_IS_PGP_SIGNED" = "Signiert";
 "MESSAGE_IS_PGP_SIGNED_INVALID" = "Ungültige Signatur";
 
+/* GPGMail Preferences strings. */
+"GPG_STATUS_NO_ERROR_TITLE" = "GPGMail läuft korrekt.";
+"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 wurde nicht gefunden.";
+"GPG_STATUS_OTHER_ERROR_TITLE" = "Bitte überprüfen Sie ihre Schlüssel und Installation.";
+    
 }

@@ -256,4 +256,9 @@
 "MESSAGE_IS_PGP_SIGNED" = "Signed";
 "MESSAGE_IS_PGP_SIGNED_INVALID" = "Invalid Signature";
 
+/* GPGMail Preferences strings. */
+"GPG_STATUS_NO_ERROR_TITLE" = "GPGMail is ready.";
+"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 is not installed. Check your installation.";
+"GPG_STATUS_OTHER_ERROR_TITLE" = "Please check your keys and installation.";
+
 }

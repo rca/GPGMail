@@ -31,7 +31,7 @@
 #import <Sparkle/Sparkle.h>
 #import "GPGMailBundle.h"
 
-#define localized(key) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:(key) table:nil]
+#define localized(key) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:(key) table:@"GPGMail"]
 
 
 @implementation GPGMailPreferences
