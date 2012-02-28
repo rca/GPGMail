@@ -274,9 +274,9 @@
 #warning Uncomment once number of attachments is implemented.
     // Fix the number of attachments, this time for real!
     // Uncomment once completely implemented.
-    [[self messageStore] setNumberOfAttachments:0 isSigned:isSigned isEncrypted:isEncrypted forMessage:self];
-    if(decryptedMessage)
-        [[decryptedMessage messageStore] setNumberOfAttachments:0 isSigned:isSigned isEncrypted:isEncrypted forMessage:decryptedMessage];
+    //[[self messageStore] setNumberOfAttachments:0 isSigned:isSigned isEncrypted:isEncrypted forMessage:self];
+    //if(decryptedMessage)
+    //    [[decryptedMessage messageStore] setNumberOfAttachments:0 isSigned:isSigned isEncrypted:isEncrypted forMessage:decryptedMessage];
     // Set PGP Info collected so this information is not overwritten.
     self.PGPInfoCollected = YES;
 }

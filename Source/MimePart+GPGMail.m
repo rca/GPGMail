@@ -159,8 +159,6 @@
         ((MFMimeDecodeContext *)ctx).decodeTextPartsOnly = NO;
     }
         
-//    NSLog(@"Only decode text parts: %@", ((MFMimeDecodeContext *)ctx).decodeTextPartsOnly ? @"YES" : @"NO");
-    
     // Check if message should be processed (-[Message shouldBePGPProcessed])
     // otherwise out of here!
     if(![currentMessage shouldBePGPProcessed])
@@ -333,6 +331,9 @@
     
     if(mightBeSignature)
         return [self decodePGPSignatureAttachment];
+    
+    // Should not come here, but if it does... well.
+    return [self MADecodeApplicationOctet_streamWithContext:ctx];
 } 
 
 - (id)decodePGPEncryptedAttachment {
@@ -462,9 +463,7 @@
 
     Message *newMessage = [Message messageWithRFC822Data:data];
     ctx.shouldSkipUpdatingMessageFlags = YES;
-#warning verify that not skipping causes an endless loop. FIX IT!
     // Skip PGP Processing, otherwise this ends up in an endless loop.
-    [newMessage setIvar:@"skipPGPProcessing" value:[NSNumber numberWithBool:YES]];
     // Process the message like a really encrypted message.
     // Otherwise the decoding is creates a loop which is really slow!
     [newMessage setMessageInfoFromMessage:[(MimeBody *)[self mimeBody] message]];
@@ -637,12 +636,7 @@
         errorFound = YES;
     }
     else {
-//        if(
-//        
-//        
-//        // Check the signatures for missing public keys.
         GPGErrorCode errorCode = GPGErrorNoError;
-//        NSLog(@"Signatures: %@", gpgc.signatures);
         for(GPGSignature *signature in gpgc.signatures) {
             if(signature.status != GPGErrorNoError) {
                 errorCode = signature.status;
@@ -650,8 +644,6 @@
             }
         }
         errorFound = errorCode != GPGErrorNoError ? YES : NO;
-        
-//        NSLog(@"Error Code: %d", errorCode);
         
         switch (errorCode) {
             case GPGErrorNoPublicKey:
@@ -728,10 +720,7 @@
     MimePart *topPart = [self topPart];
     // Set the decrypted message here, otherwise we run into a memory problem.
     [topPart setDecryptedMessageBody:decryptedMimeBody isEncrypted:self.PGPEncrypted isSigned:self.PGPSigned error:self.PGPError];
-//    NSLog(@"Part isEncrypted: %@ - isSigned: %@, error: %@", self.PGPEncrypted ? @"YES" : @"NO", self.PGPSigned ? @"YES" : @"NO", self.PGPError);
-//    NSLog(@"Decrypted message body in mime part: %@ - %@", [self valueForKey:@"_decryptedMessageBody"], decryptedMimeBody);
     self.PGPDecryptedBody = self.decryptedMessageBody;
-//    NSLog(@"Decrypted message body: %p %@", self, self.PGPDecryptedBody);
           
     return decryptedMimeBody;
 }
@@ -1245,16 +1234,6 @@
     return message;
 }
 
-- (void)MASetDecryptedMessageBody:(id)arg1 isEncrypted:(BOOL)arg2 isSigned:(BOOL)arg3 error:(id)arg4 {
-//    NSLog(@"%@: Decrypted message body: %@", [[[self mimeBody] message] subject], arg1);
-//    NSLog(@"%@: isEncrypted: %@", [[[self mimeBody] message] subject], arg2 ? @"YES" : @"NO");
-//    NSLog(@"%@: isSigned: %@", [[[self mimeBody] message] subject], arg3 ? @"YES" : @"NO");
-//    NSLog(@"%@: error: %@", [[[self mimeBody] message] subject], arg4);
-//    NSLog(@"Decrypted message body before: %@ %@ %@ encrypted: %@ signed: %@", self.decryptedMessageBody, self.decryptedMessage, self.decryptedMessageStore, self.isMimeEncrypted ? @"YES" : @"NO", self.isMimeSigned ? @"YES" : @"NO");
-    [self MASetDecryptedMessageBody:arg1 isEncrypted:arg2 isSigned:arg3 error:arg4];
-//    NSLog(@"Decrypted message body after: %@ %@ %@ encrypted: %@ signed: %@", self.decryptedMessageBody, self.decryptedMessage, self.decryptedMessageStore, self.isMimeEncrypted ? @"YES" : @"NO", self.isMimeSigned ? @"YES" : @"NO");
-}
-
 - (void)MAClearCachedDecryptedMessageBody {
     // Check if message should be processed (-[Message shouldBePGPProcessed])
     // otherwise out of here!
@@ -1276,8 +1255,6 @@
 - (NSMutableSet *)flattenedKeyList:(NSSet *)keyList {
     NSMutableSet *flattenedList = [NSMutableSet setWithCapacity:0];
     for(id item in keyList) {
-        NSLog(@"Item class: %@", NSStringFromClass([item class]));
-        NSLog(@"Is valid item: %@", [item isKindOfClass:[NSArray class]] || [item isKindOfClass:[NSSet class]] ? @"YES" : @"NO");
         if([item isKindOfClass:[NSArray class]]) {
             [flattenedList addObjectsFromArray:item];
         }
@@ -1369,26 +1346,12 @@
 // TODO: Translate the error message if creating the signature fails.
 //       At the moment the standard S/MIME message is used.
 - (id)MANewSignedPartWithData:(id)data sender:(id)sender signatureData:(id *)signatureData {
-//    DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
-//    DebugLog(@"[DEBUG] %s data: [%@] %@", __PRETTY_FUNCTION__, [data class], data);
-//    DebugLog(@"[DEBUG] %s sender: [%@] %@", __PRETTY_FUNCTION__, [sender class], sender);
     // If sender doesn't show any injected header values, S/MIME is wanted,
     // hence the original method called.
     if(![@"from" isEqualTo:[sender valueForFlag:@"recipientType"]]) {
         id newPart = [self MANewSignedPartWithData:data sender:sender signatureData:signatureData];
         return newPart;
     }
-//    
-//    // For pgp inline messages, replace the headers in data.
-//    NSString *dataString = [data stringByGuessingEncoding];
-//    NSRange beginOfData = [dataString rangeOfString:@"\n\n"];
-//    beginOfData.length = beginOfData.location + beginOfData.length;
-//    beginOfData.location = 0;
-//    NSData *partData = nil;
-//    if(beginOfData.location != NSNotFound)
-//        partData = [[dataString stringByReplacingCharactersInRange:beginOfData withString:@""] dataUsingEncoding:NSUTF8StringEncoding];
-//    NSLog(@"[DEBUG] part data: %@", [partData stringByGuessingEncoding]);
-
 	
 	GPGKey *keyForSigning = [sender valueForFlag:@"gpgKey"];
 	

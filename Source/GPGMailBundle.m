@@ -155,7 +155,6 @@ static BOOL gpgMailWorks = NO;
                              @"isMimeEncrypted",
                              @"usesKnownSignatureProtocol",
                              @"clearCachedDecryptedMessageBody",
-                             @"setDecryptedMessageBody:isEncrypted:isSigned:error:",
                              nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MimeBody", @"class",
