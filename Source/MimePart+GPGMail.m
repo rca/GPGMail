@@ -746,10 +746,10 @@
     [partData appendData:[originalData subdataWithRange:NSMakeRange(0, encryptedRange.location)]];
     NSData *restData = [originalData subdataWithRange:NSMakeRange(encryptedRange.location + encryptedRange.length, 
                                                                   [originalData length] - encryptedRange.length - encryptedRange.location)];
-    if(decryptedData && [decryptedData length] != 0) {
+    if(decryptedData) {
         // If there was data before or after the encrypted data, signal this
         // with a banner.
-        BOOL hasOtherData = (encryptedRange.location != 0) | otherDataFound(restData);
+        BOOL hasOtherData = (encryptedRange.location != 0) || otherDataFound(restData);
             
         if(hasOtherData)
             [self addPGPPartMarkerToData:partData partData:decryptedData];
@@ -815,11 +815,34 @@
     // Otherwise it could block the decryption queue for new jobs if the decrypted message contains
     // PGP inline encrypted data which GPGMail tries to decrypt but can't since the old job didn't finish
     // yet.
-    if(inlineEncryptedData)
+    if(inlineEncryptedData) {
+		
+		// This part serachs for a "Charset" header and if it's found and it's not UTF-8 convert the data to UTF-8.
+		NSString *pgpMessage = [NSString stringWithData:inlineEncryptedData encoding:NSISOLatin1StringEncoding];
+		NSRange range = [pgpMessage rangeOfString:@"Charset: "];
+		if (range.length > 0) {
+			range = [pgpMessage lineRangeForRange:range];
+			range.location += 9;
+			range.length -= 10;
+			if (range.length > 0) {
+				NSString *charset = [pgpMessage substringWithRange:range];
+				CFStringEncoding stringEncoding= CFStringConvertIANACharSetNameToEncoding((CFStringRef)charset);
+				if (stringEncoding != kCFStringEncodingInvalidId) {
+					unsigned long encoding = CFStringConvertEncodingToNSStringEncoding(stringEncoding);
+					
+					if (encoding != NSUTF8StringEncoding) {
+						// Convert the data to UTF-8.
+						NSString *decryptedString = [[NSString alloc] initWithData:partDecryptedData encoding:encoding];
+						partDecryptedData = [decryptedString dataUsingEncoding:NSUTF8StringEncoding];
+						[decryptedString release];
+					}
+				}
+			}
+		}
+		
         decryptedData = [self partDataByReplacingEncryptedData:encryptedData decryptedData:partDecryptedData encryptedRange:encryptedRange];
-    else
+    } else
         decryptedMimeBody = [self decryptedMessageBodyFromDecryptedData:partDecryptedData];
-    
     
     if(inlineEncrypted)
         return decryptedData;
@@ -1271,7 +1294,7 @@
 }
 
 
-- (id)MANewEncryptedPartWithData:(id)data recipients:(id)recipients encryptedData:(id *)encryptedData {
+- (id)MANewEncryptedPartWithData:(NSData *)data recipients:(id)recipients encryptedData:(NSData **)encryptedData {
 //    DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
     // First thing todo, check if an address with the gpg-mail prefix is found.
     // If not, S/MIME is wanted.
@@ -1281,7 +1304,17 @@
     if(![prefixedAddresses count])
         return [self MANewEncryptedPartWithData:data recipients:recipients encryptedData:encryptedData];
 
-    // Split the recipients in normal and bcc recipients.
+	
+	// Search for gpgErrorIdentifier in data.
+	NSRange range = [data rangeOfData:[gpgErrorIdentifier dataUsingEncoding:NSUTF8StringEncoding] options:0 range:NSMakeRange(0, [data length])];
+	if (range.length > 0) {
+		// Simply set data as encryptedData to preserve the errorCode.
+		*encryptedData = data;
+		MimePart *dataPart = [[MimePart alloc] init];
+		return dataPart;
+	}
+
+	// Split the recipients in normal and bcc recipients.
     NSMutableArray *normalRecipients = [[NSMutableArray alloc] initWithCapacity:1];
     NSMutableArray *bccRecipients = [[NSMutableArray alloc] initWithCapacity:1];
     for(NSString *recipient in recipients) {
@@ -1364,7 +1397,7 @@
 		// Should also not happen, but if no valid signing keys are found
 		// raise an error. Returning nil tells Mail that an error occured.
 		if (!keyForSigning) {
-			[self failedToSignForSender:sender];
+			[self failedToSignForSender:sender gpgErrorCode:1];
 			return nil;
 		}
 	}	
@@ -1382,20 +1415,26 @@
 	
     @try {
         *signatureData = [gpgc processData:data withEncryptSignMode:GPGDetachedSign recipients:nil hiddenRecipients:nil];
-		//*signatureData = [gpgc processData:partData withEncryptSignMode:GPGClearSign recipients:nil hiddenRecipients:nil];
-        if (gpgc.error) {
+       
+		if (gpgc.error) {
 			@throw gpgc.error;
 		}
     }
+	@catch (GPGException *e) {
+		if (e.errorCode == GPGErrorCancelled) {
+			// Write the errorCode in signatureData, so the back-end can cancel the operation.
+			*signatureData = [[gpgErrorIdentifier stringByAppendingFormat:@"%i:", GPGErrorCancelled] dataUsingEncoding:NSUTF8StringEncoding];
+			
+			[self failedToSignForSender:sender gpgErrorCode:GPGErrorCancelled];
+		} else {
+			[self failedToSignForSender:sender gpgErrorCode:e.errorCode];
+			return nil;
+		}
+	}
     @catch(NSException *e) {
-		[self failedToSignForSender:sender];
+		[self failedToSignForSender:sender gpgErrorCode:1];
         return nil;
-//        
-//        if ([e isKindOfClass:[GPGException class]] && [(GPGException *)e errorCode] == GPGErrorCancelled) {
-//			[self failedToSignForSender:sender];
-//            return nil;
-//		}
-//        DebugLog(@"[DEBUG] %s sign error: %@", __PRETTY_FUNCTION__, e);
+//      DebugLog(@"[DEBUG] %s sign error: %@", __PRETTY_FUNCTION__, e);
 //		@throw e;
     }
     @finally {
@@ -1446,7 +1485,7 @@
 		// Should also not happen, but if no valid signing keys are found
 		// raise an error. Returning nil tells Mail that an error occured.
 		if (!keyForSigning) {
-			[self failedToSignForSender:sender];
+			[self failedToSignForSender:sender gpgErrorCode:1];
 			return nil;
 		}
 	}
@@ -1471,11 +1510,14 @@
 			@throw gpgc.error;
 		}
     }
-    @catch(NSException *e) {
-		if ([e isMemberOfClass:[GPGException class]] && [(GPGException *)e errorCode] == GPGErrorCancelled) {
-			[self failedToSignForSender:sender];
+	@catch (GPGException *e) {
+		if (e.errorCode == GPGErrorCancelled) {
+			[self failedToSignForSender:sender gpgErrorCode:GPGErrorCancelled];
             return nil;
 		}
+		@throw e;
+	}
+    @catch(NSException *e) {
 //        DebugLog(@"[DEBUG] %s sign error: %@", __PRETTY_FUNCTION__, e);
 		@throw e;
     }
@@ -1486,14 +1528,14 @@
     return signedData;
 }
 
-- (void)failedToSignForSender:(NSString *)sender {
+- (void)failedToSignForSender:(NSString *)sender gpgErrorCode:(GPGErrorCode)errorCode{
     NSBundle *messagesFramework = [NSBundle bundleForClass:[MimePart class]];
     NSString *localizedDescription = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"SMIME_CANT_SIGN_MESSAGE", @"Delayed", messagesFramework, @""),
                                       [sender gpgNormalizedEmail]];
     NSString *titleDescription = NSLocalizedStringFromTableInBundle(@"SMIME_CANT_SIGN_TITLE", @"Delayed", messagesFramework, @"");
     MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:nil title:titleDescription
                                       helpTag:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:localizedDescription,
-                                                            @"NSLocalizedDescription", titleDescription, @"_MFShortDescription", nil]];
+                                                            @"NSLocalizedDescription", titleDescription, @"_MFShortDescription", [NSNumber numberWithInt:errorCode], @"GPGErrorCode", nil]];
     // Puh, this was all but easy, to find out where the error is used.
     // Overreleasing allows to track it's path as an NSZombie in Instruments!
     [[ActivityMonitor currentMonitor] setError:error];

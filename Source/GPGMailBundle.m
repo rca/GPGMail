@@ -50,6 +50,8 @@
 NSString *GPGMailSwizzledMethodPrefix = @"MA";
 NSString *GPGMailAgent = @"GPGMail %@";
 NSString *GPGMailKeyringUpdatedNotification = @"GPGMailKeyringUpdatedNotification";
+NSString *gpgErrorIdentifier = @"^~::gpgmail-error-code::~^";
+
 
 int GPGMailLoggingLevel = 1;
 
@@ -104,7 +106,8 @@ static BOOL gpgMailWorks = NO;
                              @"canSignFromAddress:",
                              @"recipientsThatHaveNoKeyForEncryption",
                              @"setEncryptIfPossible:",
-                             @"setSignIfPossible:",
+                             @"setSignIfPossible:", 
+                             @"_saveThreadShouldCancel", 
                              nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"HeadersEditor", @"class",
@@ -128,7 +131,9 @@ static BOOL gpgMailWorks = NO;
                             [NSArray arrayWithObjects:
                              @"backEndDidLoadInitialContent:",
                              @"dealloc",
-                             @"windowForMailFullScreen", nil], @"selectors", nil],
+                             @"windowForMailFullScreen",
+                             @"backEnd:didCancelMessageDeliveryForEncryptionError:",
+                             nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MessageContentController", @"class",
                             @"MessageContentController_GPGMail", @"gpgMailClass",

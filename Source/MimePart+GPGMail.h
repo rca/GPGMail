@@ -297,7 +297,7 @@ typedef enum {
  
  The actual encrypted data is stored in the pointer *encryptedData.
  */
-- (id)MANewEncryptedPartWithData:(id)data recipients:(id)recipients encryptedData:(id *)encryptedData;
+- (id)MANewEncryptedPartWithData:(NSData *)data recipients:(id)recipients encryptedData:(NSData **)encryptedData;
 
 /**
  Like newEncryptedPartWithData (see above), this method is called from MessageWriter
@@ -321,7 +321,7 @@ typedef enum {
  Uses the ActivityMonitor to display an error message if the signing process failed.
  Analog to what S/MIME uses.
  */
-- (void)failedToSignForSender:(NSString *)sender;
+- (void)failedToSignForSender:(NSString *)sender gpgErrorCode:(GPGErrorCode)errorCode;
 
 @end
 

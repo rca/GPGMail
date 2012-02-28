@@ -45,6 +45,8 @@ typedef void (^gpgmail_decryption_task_t)(void);
 typedef void (^gpgmail_verification_task_t)(void);
 
 extern NSString *GPGMailKeyringUpdatedNotification;
+extern NSString *gpgErrorIdentifier; // This identifier is used to set and find GPGErrorCodes in NSData.
+
 
 @interface GPGMailBundle : NSObject <NSToolbarDelegate, GPGControllerDelegate> {
 	NSArray *cachedPersonalKeys;
