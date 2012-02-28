@@ -1349,7 +1349,7 @@
 		}
     }
     @catch(NSException *e) {
-        [self failedToSignForSender:@"t@t.com"];
+        [self failedToSignForSender:@"t@t.com" gpgErrorCode:1];
 //        DebugLog(@"[DEBUG] %s encryption error: %@", __PRETTY_FUNCTION__, e);
         // TODO: Add encryption error handling. (Re-use the dialogs shown for S/MIME
         //       encryption errors?
