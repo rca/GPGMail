@@ -69,8 +69,6 @@
 		30675D2214F047F000914186 /* RedDot.png in Resources */ = {isa = PBXBuildFile; fileRef = 30675D1F14F047F000914186 /* RedDot.png */; };
 		30675D2314F047F000914186 /* YellowDot.png in Resources */ = {isa = PBXBuildFile; fileRef = 30675D2014F047F000914186 /* YellowDot.png */; };
 		30744AB512B9733800CC3EC5 /* MessageContentController+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A808C0838EA1C0052F47C /* MessageContentController+GPGMail.m */; };
-		308B8F8512A6AE2D00C99BD2 /* GPGKeyDownload.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8F7B12A6AE2D00C99BD2 /* GPGKeyDownload.xib */; };
-		308B8F8812A6AE2D00C99BD2 /* GPGMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8F8112A6AE2D00C99BD2 /* GPGMenu.xib */; };
 		308B8FD712A6AE5F00C99BD2 /* GPGMailPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8FA812A6AE5F00C99BD2 /* GPGMailPreferences.xib */; };
 		308B8FD912A6AE5F00C99BD2 /* GPGProgressIndicatorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308B8FCB12A6AE5F00C99BD2 /* GPGProgressIndicatorController.xib */; };
 		30913B4612B19B3B00327FDF /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 30913B4512B19B3B00327FDF /* Credits.rtf */; };
@@ -1371,9 +1369,7 @@
 		24ABFEBD1376FECB003FA660 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = Resources/French.lproj/GPGMailPreferences.xib; sourceTree = "<group>"; };
 		24D1A4401378127A0044FC01 /* French */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = French; path = Resources/French.lproj/Credits.rtf; sourceTree = "<group>"; };
 		301A10B8131E6C0700F27446 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = sv; path = Resources/sv.lproj/Credits.rtf; sourceTree = "<group>"; };
-		301A10BC131E6C1500F27446 /* sv */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sv; path = Resources/sv.lproj/GPGKeyDownload.xib; sourceTree = "<group>"; };
 		301A10BF131E6C1500F27446 /* sv */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sv; path = Resources/sv.lproj/GPGMailPreferences.xib; sourceTree = "<group>"; };
-		301A10C0131E6C1500F27446 /* sv */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sv; path = Resources/sv.lproj/GPGMenu.xib; sourceTree = "<group>"; };
 		301A10C3131E6C3F00F27446 /* sv */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = sv; path = Resources/sv.lproj/GPGKeyDownload.xib.strings; sourceTree = "<group>"; };
 		301A10C4131E6C3F00F27446 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = Resources/sv.lproj/GPGMail.strings; sourceTree = "<group>"; };
 		301A10C9131E6C3F00F27446 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = Resources/sv.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
@@ -1420,28 +1416,8 @@
 		30675D1F14F047F000914186 /* RedDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RedDot.png; path = Resources/Images/RedDot.png; sourceTree = "<group>"; };
 		30675D2014F047F000914186 /* YellowDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = YellowDot.png; path = Resources/Images/YellowDot.png; sourceTree = "<group>"; };
 		307E1C6612B17CFF0012F3DF /* GPGMailBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPGMailBundle.h; path = Source/GPGMailBundle.h; sourceTree = "<group>"; };
-		308B8F7C12A6AE2D00C99BD2 /* Danish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Danish; path = Resources/Danish.lproj/GPGKeyDownload.xib; sourceTree = "<group>"; };
-		308B8F8212A6AE2D00C99BD2 /* Danish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Danish; path = Resources/Danish.lproj/GPGMenu.xib; sourceTree = "<group>"; };
-		308B8F8A12A6AE5F00C99BD2 /* German */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = German; path = Resources/German.lproj/GPGKeyDownload.xib; sourceTree = "<group>"; };
-		308B8F8B12A6AE5F00C99BD2 /* Spanish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Spanish; path = Resources/Spanish.lproj/GPGKeyDownload.xib; sourceTree = "<group>"; };
-		308B8F8C12A6AE5F00C99BD2 /* Dutch */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Dutch; path = Resources/Dutch.lproj/GPGKeyDownload.xib; sourceTree = "<group>"; };
-		308B8F8D12A6AE5F00C99BD2 /* fi */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fi; path = Resources/fi.lproj/GPGKeyDownload.xib; sourceTree = "<group>"; };
-		308B8F8F12A6AE5F00C99BD2 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Japanese; path = Resources/Japanese.lproj/GPGKeyDownload.xib; sourceTree = "<group>"; };
-		308B8F9012A6AE5F00C99BD2 /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ko; path = Resources/ko.lproj/GPGKeyDownload.xib; sourceTree = "<group>"; };
-		308B8F9112A6AE5F00C99BD2 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = Resources/French.lproj/GPGKeyDownload.xib; sourceTree = "<group>"; };
-		308B8F9212A6AE5F00C99BD2 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Resources/English.lproj/GPGKeyDownload.xib; sourceTree = "<group>"; };
-		308B8F9312A6AE5F00C99BD2 /* Italian */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Italian; path = Resources/Italian.lproj/GPGKeyDownload.xib; sourceTree = "<group>"; };
 		308B8FA912A6AE5F00C99BD2 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Resources/English.lproj/GPGMailPreferences.xib; sourceTree = "<group>"; };
 		308B8FAA12A6AE5F00C99BD2 /* German */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = German; path = Resources/German.lproj/GPGMailPreferences.xib; sourceTree = "<group>"; };
-		308B8FAB12A6AE5F00C99BD2 /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ko; path = Resources/ko.lproj/GPGMenu.xib; sourceTree = "<group>"; };
-		308B8FAC12A6AE5F00C99BD2 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Resources/English.lproj/GPGMenu.xib; sourceTree = "<group>"; };
-		308B8FAE12A6AE5F00C99BD2 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = Resources/French.lproj/GPGMenu.xib; sourceTree = "<group>"; };
-		308B8FAF12A6AE5F00C99BD2 /* German */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = German; path = Resources/German.lproj/GPGMenu.xib; sourceTree = "<group>"; };
-		308B8FB012A6AE5F00C99BD2 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Japanese; path = Resources/Japanese.lproj/GPGMenu.xib; sourceTree = "<group>"; };
-		308B8FB112A6AE5F00C99BD2 /* fi */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fi; path = Resources/fi.lproj/GPGMenu.xib; sourceTree = "<group>"; };
-		308B8FB212A6AE5F00C99BD2 /* Italian */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Italian; path = Resources/Italian.lproj/GPGMenu.xib; sourceTree = "<group>"; };
-		308B8FB312A6AE5F00C99BD2 /* Spanish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Spanish; path = Resources/Spanish.lproj/GPGMenu.xib; sourceTree = "<group>"; };
-		308B8FB412A6AE5F00C99BD2 /* Dutch */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Dutch; path = Resources/Dutch.lproj/GPGMenu.xib; sourceTree = "<group>"; };
 		308B8FCC12A6AE5F00C99BD2 /* Dutch */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Dutch; path = Resources/GPG.subproj/Dutch.lproj/GPGProgressIndicatorController.xib; sourceTree = "<group>"; };
 		308B8FCD12A6AE5F00C99BD2 /* French */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = French; path = Resources/GPG.subproj/French.lproj/GPGProgressIndicatorController.xib; sourceTree = "<group>"; };
 		308B8FCE12A6AE5F00C99BD2 /* Spanish */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Spanish; path = Resources/GPG.subproj/Spanish.lproj/GPGProgressIndicatorController.xib; sourceTree = "<group>"; };
@@ -1479,7 +1455,6 @@
 		32DBCF630370AF2F00C91783 /* GPGMail_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPGMail_Prefix.pch; sourceTree = "<group>"; };
 		559A7FAB0838E4040052F47C /* GPGProgressIndicatorController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GPGProgressIndicatorController.h; path = Source/GPG.subproj/GPGProgressIndicatorController.h; sourceTree = "<group>"; };
 		559A7FAE0838E4170052F47C /* GPGProgressIndicatorController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GPGProgressIndicatorController.m; path = Source/GPG.subproj/GPGProgressIndicatorController.m; sourceTree = "<group>"; };
-		559A80510838E8300052F47C /* GPGKeyDownload.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GPGKeyDownload.h; path = Source/GPGKeyDownload.h; sourceTree = "<group>"; };
 		559A80550838E8300052F47C /* GPGMailPreferences.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GPGMailPreferences.h; path = Source/GPGMailPreferences.h; sourceTree = "<group>"; };
 		559A805D0838E8300052F47C /* MimeBody+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = "MimeBody+GPGMail.h"; path = "Source/MimeBody+GPGMail.h"; sourceTree = "<group>"; };
 		559A805E0838E8300052F47C /* MimePart+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = "MimePart+GPGMail.h"; path = "Source/MimePart+GPGMail.h"; sourceTree = "<group>"; };
@@ -1487,7 +1462,6 @@
 		559A80620838E8890052F47C /* ComposeBackEnd+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = "ComposeBackEnd+GPGMail.h"; path = "Source/ComposeBackEnd+GPGMail.h"; sourceTree = "<group>"; };
 		559A80640838E8890052F47C /* MessageContentController+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = "MessageContentController+GPGMail.h"; path = "Source/MessageContentController+GPGMail.h"; sourceTree = "<group>"; };
 		559A80680838E8890052F47C /* NSPreferences+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = "NSPreferences+GPGMail.h"; path = "Source/NSPreferences+GPGMail.h"; sourceTree = "<group>"; };
-		559A806D0838E9B10052F47C /* GPGKeyDownload.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GPGKeyDownload.m; path = Source/GPGKeyDownload.m; sourceTree = "<group>"; };
 		559A806E0838E9B10052F47C /* GPGMailBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; name = GPGMailBundle.m; path = Source/GPGMailBundle.m; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; };
 		559A80710838E9B10052F47C /* GPGMailPreferences.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GPGMailPreferences.m; path = Source/GPGMailPreferences.m; sourceTree = "<group>"; };
 		559A80780838E9B10052F47C /* MimeBody+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = "MimeBody+GPGMail.m"; path = "Source/MimeBody+GPGMail.m"; sourceTree = "<group>"; };
@@ -2792,7 +2766,6 @@
 			isa = PBXGroup;
 			children = (
 				1B51232214093750004D0818 /* NSBezierPathAdditions */,
-				559A806D0838E9B10052F47C /* GPGKeyDownload.m */,
 				1B8C01D413E4F12D00DB9FA4 /* GPGSignatureView.m */,
 				559A80710838E9B10052F47C /* GPGMailPreferences.m */,
 				1B3F2F9D13E59639006A8333 /* ComposeBackEnd+GPGMail.m */,
@@ -2847,7 +2820,6 @@
 			children = (
 				1B512327140937A7004D0818 /* NSBezierPathAdditions */,
 				1BC4778B1468AA4E0061120C /* GPGAttachmentController.h */,
-				559A80510838E8300052F47C /* GPGKeyDownload.h */,
 				1B8C01D313E4F11D00DB9FA4 /* GPGSignatureView.h */,
 				559A80550838E8300052F47C /* GPGMailPreferences.h */,
 				559A80620838E8890052F47C /* ComposeBackEnd+GPGMail.h */,
@@ -2909,9 +2881,7 @@
 			isa = PBXGroup;
 			children = (
 				1B8C01D613E4F25900DB9FA4 /* GPGSignatureView.xib */,
-				308B8F7B12A6AE2D00C99BD2 /* GPGKeyDownload.xib */,
 				308B8FA812A6AE5F00C99BD2 /* GPGMailPreferences.xib */,
-				308B8F8112A6AE2D00C99BD2 /* GPGMenu.xib */,
 				1BC477831468A1770061120C /* GPGAttachments.xib */,
 			);
 			name = XIBs;
@@ -3101,8 +3071,6 @@
 				1B194B6811CC56520092B810 /* GPG.strings in Resources */,
 				1B194B8F11CC57250092B810 /* InfoPlist.strings in Resources */,
 				1BECA61613E372AC00C622B0 /* SignatureView.strings in Resources */,
-				308B8F8512A6AE2D00C99BD2 /* GPGKeyDownload.xib in Resources */,
-				308B8F8812A6AE2D00C99BD2 /* GPGMenu.xib in Resources */,
 				308B8FD712A6AE5F00C99BD2 /* GPGMailPreferences.xib in Resources */,
 				308B8FD912A6AE5F00C99BD2 /* GPGProgressIndicatorController.xib in Resources */,
 				1B5EDFF414FC721200E0DEA7 /* GPGSignatureView.xib in Resources */,
@@ -3422,42 +3390,6 @@
 				303174A013F1E0D400279CFB /* English */,
 			);
 			name = GPGSignatureView.xib.strings;
-			sourceTree = "<group>";
-		};
-		308B8F7B12A6AE2D00C99BD2 /* GPGKeyDownload.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				308B8F9212A6AE5F00C99BD2 /* English */,
-				308B8F7C12A6AE2D00C99BD2 /* Danish */,
-				308B8F8A12A6AE5F00C99BD2 /* German */,
-				308B8F8B12A6AE5F00C99BD2 /* Spanish */,
-				308B8F8C12A6AE5F00C99BD2 /* Dutch */,
-				308B8F8D12A6AE5F00C99BD2 /* fi */,
-				308B8F8F12A6AE5F00C99BD2 /* Japanese */,
-				308B8F9012A6AE5F00C99BD2 /* ko */,
-				308B8F9112A6AE5F00C99BD2 /* French */,
-				308B8F9312A6AE5F00C99BD2 /* Italian */,
-				301A10BC131E6C1500F27446 /* sv */,
-			);
-			name = GPGKeyDownload.xib;
-			sourceTree = "<group>";
-		};
-		308B8F8112A6AE2D00C99BD2 /* GPGMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				308B8FAC12A6AE5F00C99BD2 /* English */,
-				308B8F8212A6AE2D00C99BD2 /* Danish */,
-				308B8FAB12A6AE5F00C99BD2 /* ko */,
-				308B8FAE12A6AE5F00C99BD2 /* French */,
-				308B8FAF12A6AE5F00C99BD2 /* German */,
-				308B8FB012A6AE5F00C99BD2 /* Japanese */,
-				308B8FB112A6AE5F00C99BD2 /* fi */,
-				308B8FB212A6AE5F00C99BD2 /* Italian */,
-				308B8FB312A6AE5F00C99BD2 /* Spanish */,
-				308B8FB412A6AE5F00C99BD2 /* Dutch */,
-				301A10C0131E6C1500F27446 /* sv */,
-			);
-			name = GPGMenu.xib;
 			sourceTree = "<group>";
 		};
 		308B8FA812A6AE5F00C99BD2 /* GPGMailPreferences.xib */ = {
