@@ -72,12 +72,6 @@ static BOOL gpgMailWorks = NO;
             publicGPGKeysByEmail = _publicGPGKeysByEmail, gpgc, publicGPGKeysByID = _publicGPGKeysByID, disabledGroups = _disabledGroups,
             disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus;
 
-+ (void)load {
-	GPGMailLoggingLevel = 1; //[[GPGOptions sharedOptions] integerForKey:@"GPGMailDebug"];
-    NSLog(@"Logging Level: %d", GPGMailLoggingLevel);
-	[[NSExceptionHandler defaultExceptionHandler] setExceptionHandlingMask:NSLogOtherExceptionMask | NSLogTopLevelExceptionMask];
-}
-
 /**
  This method replaces all of Mail's methods which are necessary for GPGMail
  to work correctly.
@@ -190,16 +184,16 @@ static BOOL gpgMailWorks = NO;
         if([swizzleInfo objectForKey:@"gpgMailClass"]) {
             Class gpgMailClass = NSClassFromString([swizzleInfo objectForKey:@"gpgMailClass"]);
             if(!mailClass) {
-                NSLog(@"WARNING: Class %@ doesn't exist. GPGMail might behave weirdly!", [swizzleInfo objectForKey:@"class"]);
+                DebugLog(@"WARNING: Class %@ doesn't exist. GPGMail might behave weirdly!", [swizzleInfo objectForKey:@"class"]);
                 continue;
             }
             if(!gpgMailClass) {
-                NSLog(@"WARNING: Class %@ doesn't exist. GPGMail might behave weirdly!", [swizzleInfo objectForKey:@"gpgMailClass"]);
+                DebugLog(@"WARNING: Class %@ doesn't exist. GPGMail might behave weirdly!", [swizzleInfo objectForKey:@"gpgMailClass"]);
                 continue;
             }
             [mailClass jrlp_addMethodsFromClass:gpgMailClass error:&error];
             if(error)
-                NSLog(@"[DEBUG] %s Error: %@", __PRETTY_FUNCTION__, error);
+                DebugLog(@"[DEBUG] %s Error: %@", __PRETTY_FUNCTION__, error);
             error = nil;
         }
         for(NSString *method in [swizzleInfo objectForKey:@"selectors"]) {
@@ -211,7 +205,7 @@ static BOOL gpgMailWorks = NO;
                 // Try swizzling as class method on error.
                 [mailClass jrlp_swizzleClassMethod:NSSelectorFromString(method) withClassMethod:NSSelectorFromString(gpgMethod) error:&error];
                 if(error)
-                    NSLog(@"[DEBUG] %s Class Error: %@", __PRETTY_FUNCTION__, error);
+                    DebugLog(@"[DEBUG] %s Class Error: %@", __PRETTY_FUNCTION__, error);
             }
         }
     }
@@ -346,14 +340,14 @@ static BOOL gpgMailWorks = NO;
     self.gpgStatus = (GPGErrorCode)[GPGController testGPG];
     switch (gpgStatus) {
         case GPGErrorNotFound:
-            NSLog(@"DEBUG: checkGPG - GPGErrorNotFound");
+            DebugLog(@"DEBUG: checkGPG - GPGErrorNotFound");
             break;
         case GPGErrorConfigurationError:
-            NSLog(@"DEBUG: checkGPG - GPGErrorConfigurationError");
+            DebugLog(@"DEBUG: checkGPG - GPGErrorConfigurationError");
         case GPGErrorNoError:
             return YES;
         default:
-            NSLog(@"DEBUG: checkGPG - %i", gpgStatus);
+            DebugLog(@"DEBUG: checkGPG - %i", gpgStatus);
             break;
     }
     return NO;
@@ -382,6 +376,10 @@ static BOOL gpgMailWorks = NO;
 		if (defaultsDictionary) {
 			[[GPGOptions sharedOptions] registerDefaults:defaultsDictionary];
 		}
+        
+        GPGMailLoggingLevel = [[GPGOptions sharedOptions] integerForKey:@"DebugLog"];
+        NSLog(@"Debug Log enabled: %@", [[GPGOptions sharedOptions] integerForKey:@"DebugLog"] > 0 ? @"YES" : @"NO");
+        [[NSExceptionHandler defaultExceptionHandler] setExceptionHandlingMask:NSLogOtherExceptionMask | NSLogTopLevelExceptionMask];
         
         gpgMailWorks = [self checkGPG];
         [self finishInitialization];
@@ -509,11 +507,9 @@ static BOOL gpgMailWorks = NO;
 - (void)updateGPGKeys:(NSObject <EnumerationList> *)keys {
     if (!gpgMailWorks) return;
     
-	NSLog(@"updateGPGKeys: start");
-	if (![updateLock tryLock]) {
-		NSLog(@"updateGPGKeys: tryLock return");
+	if (![updateLock tryLock])
 		return;
-	}
+	
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	@try {
@@ -562,17 +558,15 @@ static BOOL gpgMailWorks = NO;
         self.publicGPGKeysByEmail = nil;
         
 	} @catch (GPGException *e) {
-		NSLog(@"updateGPGKeys: failed - %@ (ErrorText: %@)", e, e.gpgTask.errText);
+		DebugLog(@"updateGPGKeys: failed - %@ (ErrorText: %@)", e, e.gpgTask.errText);
 	} @catch (NSException *e) {
-		NSLog(@"updateGPGKeys: failed - %@", e);
+		DebugLog(@"updateGPGKeys: failed - %@", e);
 	} @finally {
 		[pool drain];
 		[updateLock unlock];
 	}
 	
     [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] postNotificationName:GPGMailKeyringUpdatedNotification object:self];
-    
-	NSLog(@"updateGPGKeys: end");
 }
 
 
