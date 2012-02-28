@@ -103,6 +103,8 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 
 @property BOOL warnedAboutMissingPrivateKeys;
 
+- (NSString *)buildNumberDescription;
+
 @property (nonatomic, retain) NSArray *disabledGroups;
 @property (nonatomic, retain) NSArray *disabledUserMappedKeys;
 @property (readonly) GPGErrorCode gpgStatus;

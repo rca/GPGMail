@@ -419,6 +419,17 @@ static BOOL gpgMailWorks = NO;
 	return [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"VERSION: %@", @"GPGMail", [NSBundle bundleForClass:[self class]], "Description of version prefixed with <Version: >"), [self version]];
 }
 
+- (NSString *)buildNumberDescription {
+    NSString *buildNumber = nil;
+    @try {
+        buildNumber = [[[[self class] bundleVersion] componentsSeparatedByString:@" "] objectAtIndex:0];
+    }
+    @catch (NSException *exception) {
+        buildNumber = @"";
+    }
+    return [NSString stringWithFormat:@"Build: %@", buildNumber];
+}
+
 - (NSString *)version {
 	return [[[NSBundle bundleForClass:[self class]] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 }
