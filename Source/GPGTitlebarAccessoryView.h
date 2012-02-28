@@ -30,9 +30,9 @@
 #import <Cocoa/Cocoa.h>
 
 @interface GPGTitlebarAccessoryView : NSView {
-    BOOL _color;
+    NSUInteger _color;
 }
 
-@property (nonatomic, assign) BOOL color;
+@property (nonatomic, assign) NSUInteger color;
 
 @end

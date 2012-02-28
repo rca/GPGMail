@@ -58,14 +58,15 @@
     BOOL shouldEncrypt = [[backEnd getIvar:@"shouldEncrypt"] boolValue];
     BOOL shouldSign = [[backEnd getIvar:@"shouldSign"] boolValue];
     
-    if(shouldEncrypt || shouldSign)
-        accessoryView.color = YES;
-    else
-        accessoryView.color = NO;
-    
     GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
     if(((ComposeBackEnd_GPGMail *)backEnd).securityMethod)
         securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).securityMethod;
+    
+    if(shouldEncrypt || shouldSign)
+        accessoryView.color = securityMethod;
+    else
+        accessoryView.color = 0;
+    
     [self updateSecurityMethodHint:securityMethod];
     [[((MailDocumentEditor *)self) headersEditor] fromHeaderDisplaySecretKeys:(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? YES : NO)];
 }
@@ -118,7 +119,7 @@
     NSWindow *window = [self valueForKey:@"_window"];
     [window addAccessoryView:accessoryView];
     // Hide the accessory view per default.
-    accessoryView.color = NO;
+    accessoryView.color = 0;
     
     [accessoryView release];
 }

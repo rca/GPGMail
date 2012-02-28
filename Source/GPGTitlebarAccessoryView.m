@@ -39,7 +39,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _color = NO;
+        _color = 0;
         [self setAutoresizingMask:NSViewMinXMargin | NSViewMinYMargin];
     }
     
@@ -58,12 +58,27 @@
     NSUInteger greenStep = 18.0f;
     NSUInteger greyStep = 18.0f;
     
-    if(self.color) {
+    NSUInteger redStart = 20.0f;
+    NSUInteger greenStart = 80.0f;
+    NSUInteger blueStart = 240.0f;
+    NSUInteger redStep = 18.0f;
+    
+    // Color 0 = grey (No security method),
+    //       1 = green (PGP security method), 
+    //       2 = blue (S/MIME security method).
+    if(self.color == 1) {        
         gradient = [[NSGradient alloc] initWithColorsAndLocations:[NSColor colorWithDeviceRed:0/255.0f green:greenStartColor/255.0f blue:0/255.0f alpha:1.0], 0.0f,
                                 [NSColor colorWithDeviceRed:0/255.0f green:(greenStartColor + (greenStep * 1))/255.0f blue:0/255.0f alpha:1.0], 0.13f,
                                 [NSColor colorWithDeviceRed:0/255.0f green:(greenStartColor + (greenStep * 1))/255.0f blue:0/255.0f alpha:1.0], 0.27f,
                                 [NSColor colorWithDeviceRed:0/255.0f green:(greenStartColor + (greenStep * 2))/255.0f blue:0/255.0f alpha:1.0], 0.61f,
                                 [NSColor colorWithDeviceRed:0/255.0f green:(greenStartColor + (greenStep * 3))/255.0f blue:0/255.0f alpha:1.0], 1.0f, nil];
+    }
+    else if(self.color == 2) {
+        gradient = [[NSGradient alloc] initWithColorsAndLocations:[NSColor colorWithDeviceRed:redStart/255.0f green:greenStart/255.0f blue:blueStart/255.0f alpha:1.0], 0.0f,
+                    [NSColor colorWithDeviceRed:(redStart + (redStep * 1))/255.0f green:(greenStart + (greenStep * 1))/255.0f blue:blueStart/255.0f alpha:1.0], 0.13f,
+                    [NSColor colorWithDeviceRed:(redStart + (redStep * 1))/255.0f green:(greenStart + (greenStep * 1))/255.0f blue:blueStart/255.0f alpha:1.0], 0.27f,
+                    [NSColor colorWithDeviceRed:(redStart + (redStep * 2))/255.0f green:(greenStart + (greenStep * 2))/255.0f blue:blueStart/255.0f alpha:1.0], 0.61f,
+                    [NSColor colorWithDeviceRed:(redStart + (redStep * 3))/255.0f green:(greenStart + (greenStep * 3))/255.0f blue:blueStart/255.0f alpha:1.0], 1.0f, nil];
     }
     else {
         gradient = [[NSGradient alloc] initWithColorsAndLocations:[NSColor colorWithDeviceRed:greyStartColor/255.0f green:128.0f/255.0f blue:128.0f/255.0f alpha:1.0], 0.0f,
@@ -74,18 +89,18 @@
                     nil];
     }
     [gradient drawInBezierPath:path angle:90.0f];
-    if(self.color) {
+    if(self.color == 1)
         [[NSColor colorWithDeviceRed:0/255.0f green:greenStartColor/255.0f blue:0/255.0f alpha:1.0] setStroke];
-    }
-    else {
+    else if(self.color == 2)
+        [[NSColor colorWithDeviceRed:redStart/255.0f green:greenStart/255.0f blue:blueStart/255.0f alpha:1.0] setStroke];
+    else
         [[NSColor colorWithDeviceRed:greyStartColor/255.0f green:greyStartColor/255.0f blue:greyStartColor/255.0f alpha:1.0] setStroke];
-    }
     
     [path strokeInside];
     [gradient release];
 }
 
-- (void)setColor:(BOOL)color {
+- (void)setColor:(NSUInteger)color {
     _color = color;
     // Update the color of the menu.
 //    NSMenu *menu = [[[self subviews] objectAtIndex:0] menu];
