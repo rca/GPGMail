@@ -195,6 +195,9 @@
 }
 
 - (NSAttributedString *)coloredTitle:(NSString *)title monochrome:(BOOL)monochrome {
+    // Title must never be nil!
+    if(!title)
+        title = @"";
     // Create the white shadow that sits behind the text
     NSShadow *shadow = [[NSShadow alloc] init];
     if(monochrome)
