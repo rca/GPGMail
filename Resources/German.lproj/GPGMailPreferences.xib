@@ -150,6 +150,7 @@
 											<string key="NSFrame">{{161, 29}, {115, 32}}</string>
 											<reference key="NSSuperview" ref="782958523"/>
 											<reference key="NSWindow"/>
+											<reference key="NSNextKeyView"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSButtonCell" key="NSCell" id="491452844">
 												<int key="NSCellFlags">67239424</int>
@@ -198,7 +199,7 @@
 											<object class="NSButtonCell" key="NSCell" id="492364953">
 												<int key="NSCellFlags">67239424</int>
 												<int key="NSCellFlags2">134217728</int>
-												<string key="NSContents">Donate</string>
+												<string key="NSContents">Spenden</string>
 												<reference key="NSSupport" ref="706304668"/>
 												<reference key="NSControlView" ref="263402944"/>
 												<int key="NSButtonFlags">-2038284033</int>
@@ -220,7 +221,7 @@
 											<object class="NSButtonCell" key="NSCell" id="543110680">
 												<int key="NSCellFlags">67239424</int>
 												<int key="NSCellFlags2">134217728</int>
-												<string key="NSContents">Contact</string>
+												<string key="NSContents">Kontakt</string>
 												<reference key="NSSupport" ref="706304668"/>
 												<reference key="NSControlView" ref="607240547"/>
 												<int key="NSButtonFlags">-2038284033</int>
@@ -296,7 +297,7 @@
 										<object class="NSTextField" id="443272866">
 											<reference key="NSNextResponder" ref="782958523"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{164, 272}, {80, 17}}</string>
+											<string key="NSFrame">{{164, 272}, {63, 17}}</string>
 											<reference key="NSSuperview" ref="782958523"/>
 											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="572428511"/>
@@ -304,7 +305,7 @@
 											<object class="NSTextFieldCell" key="NSCell" id="608485733">
 												<int key="NSCellFlags">68288064</int>
 												<int key="NSCellFlags2">272630784</int>
-												<string key="NSContents">Composing</string>
+												<string key="NSContents">Erstellen</string>
 												<reference key="NSSupport" ref="901188269"/>
 												<reference key="NSControlView" ref="443272866"/>
 												<reference key="NSBackgroundColor" ref="693655191"/>
@@ -370,7 +371,7 @@
 											<object class="NSTextFieldCell" key="NSCell" id="1023351749">
 												<int key="NSCellFlags">68288064</int>
 												<int key="NSCellFlags2">272630784</int>
-												<string key="NSContents">Reading</string>
+												<string key="NSContents">Lesen</string>
 												<reference key="NSSupport" ref="901188269"/>
 												<reference key="NSControlView" ref="696331322"/>
 												<reference key="NSBackgroundColor" ref="693655191"/>
