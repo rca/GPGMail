@@ -33,6 +33,13 @@
 
 @implementation GMSecurityHistory
 
++ (GPGMAIL_SECURITY_METHOD)defaultSecurityMethod {
+    GPGMAIL_SECURITY_METHOD securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
+    if([[GPGOptions sharedOptions] integerForKey:@"DefaultSecurityMethod"])
+        securityMethod = [[GPGOptions sharedOptions] integerForKey:@"DefaultSecurityMethod"];
+    return securityMethod;
+}
+
 - (GMSecurityOptions *)bestSecurityOptionsForSender:(NSString *)sender recipients:(NSArray *)recipients signFlags:(GPGMAIL_SIGN_FLAG)signFlags 
                                           encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags {
     GPGMAIL_SECURITY_METHOD securityMethod = 0;
@@ -52,7 +59,7 @@
     // If not, no security method is set.
     if(!signFlags && !encryptFlags) {
         // No security method is not an option. Set to OpenPGP by default.
-        return [GMSecurityOptions securityOptionsWithSecurityMethod:GPGMAIL_SECURITY_METHOD_OPENPGP shouldSign:NO shouldEncrypt:NO];
+        return [GMSecurityOptions securityOptionsWithSecurityMethod:[[self class] defaultSecurityMethod] shouldSign:NO shouldEncrypt:NO];
     }
     
     // We have both, PGP key and S/MIME key. This is a bit tough. 
@@ -130,7 +137,7 @@
         return [self _getSignAndEncryptOptionsForSender:sender recipients:uniqueRecipients securityMethod:securityMethod canSign:canSign canEncrypt:canEncrypt];
     }
     
-    return [GMSecurityOptions securityOptionsWithSecurityMethod:0 shouldSign:NO shouldEncrypt:NO];
+    return [GMSecurityOptions securityOptionsWithSecurityMethod:[[self class] defaultSecurityMethod] shouldSign:NO shouldEncrypt:NO];
 }
 
 - (GMSecurityOptions *)bestSecurityOptionsForSender:(NSString *)sender recipients:(NSArray *)recipients securityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod 

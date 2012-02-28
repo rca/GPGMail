@@ -35,6 +35,8 @@
 
 @interface GMSecurityHistory : NSObject
 
++ (GPGMAIL_SECURITY_METHOD)defaultSecurityMethod;
+
 - (GMSecurityOptions *)bestSecurityOptionsForSender:(NSString *)sender recipients:(NSArray *)recipients signFlags:(GPGMAIL_SIGN_FLAG)signFlags 
                                      encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags;
 - (GMSecurityOptions *)bestSecurityOptionsForReplyToMessage:(Message *)message signFlags:(GPGMAIL_SIGN_FLAG)signFlags 
