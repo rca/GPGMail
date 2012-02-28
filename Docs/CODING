@@ -19,6 +19,8 @@ DON'T EVER DELETE THIS FOLDER!
 
 - Mail internally seems to use firstChildPart to determine the charset of the message.
 
+- Log all messages -> instrumentObjcMessageSends(YES) writes to  /tmp/msgSends-
+
 _getSomeCharsetFromPartTree -> exists only internally
 
 - -[Message setNumberOfAttachments:isSigned:isEncrypted:] is only called for
@@ -66,5 +68,44 @@ _getSomeCharsetFromPartTree -> exists only internally
   - Check Framework dependencies.
   - Update Header files for Mountain Lion
 
+* OpenPGP | S/MIME co-existence
 
+1.) A new message (not reply) is created check if the there's a key for signing
+    for the address in either OpenPGP or S/MIME. Choose the method to enable accordingly.
+    
+    If there are keys for either method, check the entries which method was last used
+    to sign with this key.
+    
+    If again both methods are found check which was used more often.
+    
+    Once a user changes the method manually, NEVER automatically manipulate that
+    choice again.
+
+    [ComposeBackEnd type] defines whether the message is replied|forwared|replied-to-all|new
+        - 5 -> New message
+        - 1 -> Reply
+        - 2 -> Reply to all
+        - 3 -> Forward
+        - 4 -> Reply to already open mesage? (Mail.app was closed with this reply open and it's restored.)
+    
+    once a user enters addresses a dictionary is checked to see if the last time
+    the user sent to these addresses decided to encrypt or not and sets that status. 
+    If no message was sent yet to that user, don't encrypt.
+    
+    If there's one key for signing for each method but the recipients can only be found for one encryption method
+    automatically select that encryption method.
+    
+    If a user replies to a message, check if the message was signed and set signed.
+    If a user replies to a message, check if the message was encrypted and set encrypted.
+    Don't set something which the old message was not.
+
+    User defaults should look like this
+    [address][sign][SMIME][addresses][did-sign] = counter
+    [address][sign][PGP][addresses][did-not-sign] = counter
+    [address][sign][addresses][last-used-method] = 'SMIME' | 'PGP'
+    [address][sign][addresses][last-status] = 'did sign' | 'did not sign'
+    [address][encrypt][SMIME][addresses][did-encrypt] = counter
+    [address][encrypt][PGP][addresses][did-not-encrypt] = counter
+    [address][encrypt][addresses][last-used-method] = 'SMIME' | 'PGP'
+    [address][encrypt][addresses][last-status] = 'did encrypt' | 'did not encrypt'
 
