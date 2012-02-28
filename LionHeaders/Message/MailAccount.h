@@ -4,7 +4,6 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2010 by Steve Nygard.
  */
 
-#import "NSFileManagerDelegate-Protocol.h"
 #import <Account.h>
 
 @class MFError, MailboxUid, NSString, NSTimer;

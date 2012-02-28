@@ -124,7 +124,6 @@ extern NSString *GPGMailKeyringUpdatedNotification;
 
 - (BOOL)canKeyBeUsedForEncryption:(GPGKey *)key;
 - (BOOL)canKeyBeUsedForSigning:(GPGKey *)key;
-- (BOOL)canUserIDBeUsed:(GPGUserID *)userID;
 - (id)locale;
 
 - (NSMutableSet *)publicKeyListForAddresses:(NSArray *)recipients;
@@ -161,7 +160,7 @@ extern NSString *GPGMailKeyringUpdatedNotification;
 /**
  Checks a list of keys and returns the newest and most trusted key.
  */
-- (GPGKey *)bestKeyOfPublicKeys:(NSSet *)keys;
+- (GPGKey *)bestKeyOfUserIDs:(NSSet *)userIDs;
 
 /**
  Returns all keys which were mapped by the user (email -> fingerprint).

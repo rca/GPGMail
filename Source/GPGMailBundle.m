@@ -112,13 +112,6 @@ static BOOL gpgMailWorks = NO;
                              @"setEncryptIfPossible:",
                              @"setSignIfPossible:",
                              nil], @"selectors", nil],
-//                           [NSDictionary dictionaryWithObjectsAndKeys:
-//                            @"ComposeHeaderView", @"class",
-//                            @"ComposeHeaderView_GPGMail", @"gpgMailClass",
-//                            [NSArray arrayWithObjects:
-//                             @"_calculateSecurityFrame:",
-//                             @"awakeFromNib",
-//                             nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"HeadersEditor", @"class",
                             @"HeadersEditor_GPGMail", @"gpgMailClass",
@@ -135,11 +128,6 @@ static BOOL gpgMailWorks = NO;
                             @"MessageAttachment_GPGMail", @"gpgMailClass",
                             [NSArray arrayWithObjects:
                              @"filename", nil], @"selectors", nil],
-//                           [NSDictionary dictionaryWithObjectsAndKeys:
-//                            @"OptionalView", @"class",
-//                            @"OptionalView_GPGMail", @"gpgMailClass",
-//                            [NSArray arrayWithObjects:
-//                             @"widthIncludingOptionSwitch:", nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MailDocumentEditor", @"class",
                             @"MailDocumentEditor_GPGMail", @"gpgMailClass",
@@ -181,17 +169,9 @@ static BOOL gpgMailWorks = NO;
                              @"isSignedByMe",
                              @"_isPossiblySignedOrEncrypted", nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
-                            @"Message", @"class",
-                            [NSArray arrayWithObjects:
-                             @"messageBodyUpdatingFlags:", nil], @"selectors", nil],
-                           [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MailAccount", @"class",
                             [NSArray arrayWithObjects:
                              @"accountExistsForSigning", nil], @"selectors", nil],
-                           //                           [NSDictionary dictionaryWithObjectsAndKeys:
-                           //                            @"Message", @"class",
-                           //                            [NSArray arrayWithObjects:
-                           //                             @"messageBodyUpdatingFlags:", nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"NSPreferences", @"class",
                             [NSArray arrayWithObjects:
@@ -837,13 +817,6 @@ static BOOL gpgMailWorks = NO;
     // non-expired, non-disabled, non-revoked and be used for encryption.
     // We don't care about ownerTrust, validity
 	return key.canAnySign && key.status < GPGKeyStatus_Invalid;
-}
-
-- (BOOL)canUserIDBeUsed:(GPGUserID *)userID {
-	// We suppose that key is OK
-	// We don't care about validity
-#warning FIXME: Secret keys are never marked as revoked! Check expired/disabled/invalid
-	return (!userID.revoked && !userID.invalid);
 }
 
 - (id)locale {

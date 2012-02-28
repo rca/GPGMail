@@ -399,11 +399,8 @@
     return YES;
 }
 
-- (NSIndexSet *)tableView:(NSTableView *)tableView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes {
-    
-}
-
 - (void)dealloc {
+    [super dealloc];
     [attachments release];
 }
 
