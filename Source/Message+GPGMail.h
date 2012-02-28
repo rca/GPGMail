@@ -27,6 +27,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import "MimePart.h"
+#import "MimeBody.h"
 #import <Message.h>
 
 @interface Message (GPGMail)
@@ -91,6 +93,20 @@
 @property (retain) NSArray *PGPErrors;
 @property (assign) NSUInteger numberOfPGPAttachments;
 @property (retain) NSArray *PGPAttachments; 
+
+/**
+ Check if the message is genereally signed or encrypted, either S/MIME or PGP/MIME
+ by checking the flags.
+ */
+@property (assign, readonly) BOOL isSigned;
+@property (assign, readonly) BOOL isEncrypted;
+
+/**
+ Check if the message is S/MIME signed or encrypted. In case the message is not PGP/MIME
+ but still encrypted or signed.
+*/
+@property (assign, readonly) BOOL isSMIMEEncrypted;
+@property (assign, readonly) BOOL isSMIMESigned;
 
 @end
 

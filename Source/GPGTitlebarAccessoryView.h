@@ -30,13 +30,9 @@
 #import <Cocoa/Cocoa.h>
 
 @interface GPGTitlebarAccessoryView : NSView {
-    NSString *_title;
-    NSTextField *_titleView;
-    BOOL _monochrome;
+    BOOL _color;
 }
 
-@property (nonatomic, retain) NSString *title;
-@property (nonatomic, retain) NSTextField *titleView;
-@property (nonatomic, assign) BOOL monochrome;
+@property (nonatomic, assign) BOOL color;
 
 @end

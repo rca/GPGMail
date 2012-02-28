@@ -112,13 +112,13 @@ static BOOL gpgMailWorks = NO;
                              @"setEncryptIfPossible:",
                              @"setSignIfPossible:",
                              nil], @"selectors", nil],
-                           [NSDictionary dictionaryWithObjectsAndKeys:
-                            @"ComposeHeaderView", @"class",
-                            @"ComposeHeaderView_GPGMail", @"gpgMailClass",
-                            [NSArray arrayWithObjects:
-                             @"_calculateSecurityFrame:",
-                             @"awakeFromNib",
-                             nil], @"selectors", nil],
+//                           [NSDictionary dictionaryWithObjectsAndKeys:
+//                            @"ComposeHeaderView", @"class",
+//                            @"ComposeHeaderView_GPGMail", @"gpgMailClass",
+//                            [NSArray arrayWithObjects:
+//                             @"_calculateSecurityFrame:",
+//                             @"awakeFromNib",
+//                             nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"HeadersEditor", @"class",
                             @"HeadersEditor_GPGMail", @"gpgMailClass",
@@ -127,25 +127,26 @@ static BOOL gpgMailWorks = NO;
                              @"_updateFromAndSignatureControls:", 
                              @"changeFromHeader:", 
                              @"init", 
-                             @"dealloc", nil], @"selectors", nil],
+                             @"dealloc",
+                             @"_updateSecurityStateInBackgroundForRecipients:sender:", 
+                             @"awakeFromNib", nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MessageAttachment", @"class",
                             @"MessageAttachment_GPGMail", @"gpgMailClass",
                             [NSArray arrayWithObjects:
                              @"filename", nil], @"selectors", nil],
-                           [NSDictionary dictionaryWithObjectsAndKeys:
-                            @"OptionalView", @"class",
-                            @"OptionalView_GPGMail", @"gpgMailClass",
-                            [NSArray arrayWithObjects:
-                             @"widthIncludingOptionSwitch:", nil], @"selectors", nil],
+//                           [NSDictionary dictionaryWithObjectsAndKeys:
+//                            @"OptionalView", @"class",
+//                            @"OptionalView_GPGMail", @"gpgMailClass",
+//                            [NSArray arrayWithObjects:
+//                             @"widthIncludingOptionSwitch:", nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MailDocumentEditor", @"class",
                             @"MailDocumentEditor_GPGMail", @"gpgMailClass",
                             [NSArray arrayWithObjects:
                              @"backEndDidLoadInitialContent:",
                              @"dealloc",
-                             @"windowForMailFullScreen",
-                             @"finishLoadingEditor", nil], @"selectors", nil],
+                             @"windowForMailFullScreen", nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MessageContentController", @"class",
                             @"MessageContentController_GPGMail", @"gpgMailClass",
@@ -298,6 +299,9 @@ static BOOL gpgMailWorks = NO;
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GreenDot"]] setName:@"GreenDot"];
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"YellowDot"]] setName:@"YellowDot"];
     [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"RedDot"]] setName:@"RedDot"];
+    
+    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"menu-arrow"]] setName:@"MenuArrow"];
+    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"menu-arrow-white"]] setName:@"MenuArrowWhite"];
 }
 
 + (BOOL)hasPreferencesPanel {

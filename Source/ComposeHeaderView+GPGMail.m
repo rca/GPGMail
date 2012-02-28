@@ -39,22 +39,22 @@
 
 @implementation ComposeHeaderView_GPGMail
 
-- (void)MAAwakeFromNib {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"])
-        return [self MAAwakeFromNib];
-    ComposeBackEnd *backEnd = [(DocumentEditor *)[[((ComposeHeaderView *)self) delegate] valueForKey:@"_documentEditor"] backEnd];
-    [backEnd setIvar:@"PGPEnabled" value:[NSNumber numberWithBool:YES]];
-
-    [self MAAwakeFromNib];
-}
-
-- (CGRect)MA_calculateSecurityFrame:(CGRect)frame {
-    if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
-        if([[self valueForKey:@"_securityOptionalView"] ivarExists:@"securityViewWidth"])
-            frame.size.width = [[[self valueForKey:@"_securityOptionalView"] getIvar:@"securityViewWidth"] floatValue];
-    }
-    CGRect newRect = [self MA_calculateSecurityFrame:frame];
-    return newRect;
-}
+//- (void)MAAwakeFromNib {
+//    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"])
+//        return [self MAAwakeFromNib];
+//    ComposeBackEnd *backEnd = [(DocumentEditor *)[[((ComposeHeaderView *)self) delegate] valueForKey:@"_documentEditor"] backEnd];
+//    [backEnd setIvar:@"PGPEnabled" value:[NSNumber numberWithBool:YES]];
+//
+//    [self MAAwakeFromNib];
+//}
+//
+//- (CGRect)MA_calculateSecurityFrame:(CGRect)frame {
+//    if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
+//        if([[self valueForKey:@"_securityOptionalView"] ivarExists:@"securityViewWidth"])
+//            frame.size.width = [[[self valueForKey:@"_securityOptionalView"] getIvar:@"securityViewWidth"] floatValue];
+//    }
+//    CGRect newRect = [self MA_calculateSecurityFrame:frame];
+//    return newRect;
+//}
 
 @end

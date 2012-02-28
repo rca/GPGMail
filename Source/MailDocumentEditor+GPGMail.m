@@ -31,131 +31,245 @@
 #import "NSObject+LPDynamicIvars.h"
 #import <MailAccount.h>
 #import <HeadersEditor.h>
+#import "ComposeBackEnd.h"
 #import <MailDocumentEditor.h>
 #import <MailNotificationCenter.h>
 #import "GPGTitlebarAccessoryView.h"
+#import "NSWindow+GPGMail.h"
+#import "Message+GPGMail.h"
+#import "HeadersEditor+GPGMail.h"
 #import "MailDocumentEditor+GPGMail.h"
+#import "ComposeBackEnd+GPGMail.h"
 #import "GPGMailBundle.h"
 
 @implementation MailDocumentEditor_GPGMail
 
 
 - (id)MAWindowForMailFullScreen {
-    if([self ivarExists:@"AccessoryView"]) {
-        [self removeEncryptionHint];
-    }
+    [self hideSecurityMethodHintAccessoryView];
     return [self MAWindowForMailFullScreen];
 }
 
-- (void)securityButtonsDidUpdate:(id)notification {
-    id object = [[(NSNotification *)notification userInfo] valueForKey:@"backEnd"];
-    if(![[object getIvar:@"shouldSign"] boolValue] && ![[object getIvar:@"shouldEncrypt"] boolValue])
-        [self removeEncryptionHint];
-    else {
-        if(![self ivarExists:@"AccessoryView"])
-            [self drawEncryptionMethodHint];
-    }
-        
+- (void)updateSecurityMethodHighlight {
+    GPGTitlebarAccessoryView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
+    ComposeBackEnd *backEnd = ((MailDocumentEditor *)self).backEnd;
+    
+    BOOL shouldEncrypt = [[backEnd getIvar:@"shouldEncrypt"] boolValue];
+    BOOL shouldSign = [[backEnd getIvar:@"shouldSign"] boolValue];
+    
+    if(shouldEncrypt || shouldSign)
+        accessoryView.color = YES;
+    else
+        accessoryView.color = NO;
+    
+    GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
+    if(((ComposeBackEnd_GPGMail *)backEnd).securityMethod)
+        securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).securityMethod;
+    [self updateSecurityMethodHint:securityMethod];
+    [[((MailDocumentEditor *)self) headersEditor] fromHeaderDisplaySecretKeys:(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? YES : NO)];
+}
+
+- (void)updateSecurityHintFromNotification:(NSNotification *)notification {
+    NSNumber *securityMethod = [[notification userInfo] valueForKey:@"SecurityMethod"];
+    [self updateSecurityHint:[securityMethod unsignedIntValue]];
+}
+
+- (void)updateSecurityHint:(GPGMAIL_SECURITY_METHOD)securityMethod {
+    [self updateSecurityMethodHint:securityMethod];
 }
 
 - (void)MABackEndDidLoadInitialContent:(id)content {
-    // If no account exists for signing, don't draw anything.
-    if(![MailAccount accountExistsForSigning])
-        return [self MABackEndDidLoadInitialContent:content];
+    [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyringUpdated:) name:GPGMailKeyringUpdatedNotification object:nil];
+    [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] addObserver:self selector:@selector(updateSecurityHintFromNotification:) name:@"SecurityMethodDidChangeNotification" object:nil];
     
-    [[GPGOptions sharedOptions] addObserver:self forKeyPath:@"UseOpenPGPToSend" options:NSKeyValueObservingOptionNew context:nil];
-    [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] addObserver:self selector:@selector(securityButtonsDidUpdate:) name:@"SecurityButtonsDidChange" object:nil];
-	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyringUpdated:) name:GPGMailKeyringUpdatedNotification object:nil];
-
-	
-    [self drawEncryptionMethodHint];
-    
+    // Setup security method hint accessory view in top right corner of the window.
+    [self setupSecurityMethodHintAccessoryView];
+    //[((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd) postSecurityMethodDidChangeNotification];
+    GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).guessedSecurityMethod;
+    if(((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).securityMethod)
+        securityMethod = ((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).securityMethod;
+    [self updateSecurityHint:securityMethod];
     [self MABackEndDidLoadInitialContent:content];
+    // Set backend was initialized, so securityMethod changes will start to send notifications.
+    ((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).wasInitialized = YES;
 }
 
-- (void)keyringUpdated:(NSNotification *)notification {
-	[[(MailDocumentEditor *)self headersEditor] updateSecurityControls];
-}
-
-
-- (void)removeEncryptionHint {
-    GPGTitlebarAccessoryView *accessoryView = (GPGTitlebarAccessoryView *)[self getIvar:@"AccessoryView"];
-    [accessoryView removeFromSuperview];
-    [self removeIvar:@"AccessoryView"];
-}
-
-- (void)drawEncryptionMethodTitle {
-    NSRect textFrame;
-    NSString *encryptionMethod = nil;
-    BOOL monochrome = ![[GPGOptions sharedOptions] boolForKey:@"UseNonMonochromeEncryptionMethodHint"];
-    
-    if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
-        encryptionMethod = @"OpenPGP";
-        if(monochrome)
-            textFrame = NSMakeRect(15.0, -2.0, 80.0f, 17.0f);
-        else
-            textFrame = NSMakeRect(14.0, -2.0, 80.0f, 17.0f);
-    }
-    else {
-        encryptionMethod = @"S/MIME";
-        if(monochrome)
-            textFrame = NSMakeRect(25.0, -2.0, 80.0f, 17.0f);
-        else
-            textFrame = NSMakeRect(17.0, -2.0, 80.0f, 17.0f);
-    }
-    GPGTitlebarAccessoryView *accessoryView = (GPGTitlebarAccessoryView *)[self getIvar:@"AccessoryView"];
-    accessoryView.title = encryptionMethod;
-    accessoryView.titleView.frame = textFrame;
-    
-    [accessoryView setNeedsDisplay:YES];
-}
-
-- (void)drawEncryptionMethodHint {
-    BOOL monochrome = ![[GPGOptions sharedOptions] boolForKey:@"UseNonMonochromeEncryptionMethodHint"];
+- (void)setupSecurityMethodHintAccessoryView {
     GPGTitlebarAccessoryView *accessoryView = [[GPGTitlebarAccessoryView alloc] initWithFrame:NSMakeRect(0.0, 0.0, 80.0f, 17.0f)];
-    [self setIvar:@"AccessoryView" value:accessoryView];
-    accessoryView.monochrome = monochrome;
     
-    [self drawEncryptionMethodTitle];
+    // Save accessoryView to hide and display it on demand.
+    [self setIvar:@"SecurityMethodHintAccessoryView" value:accessoryView];
+    NSPopUpButton *securityMethodHintPopUp = [self securityMethodHintPopUp];
+    // Save the menu to change the selection later.
+    [self setIvar:@"SecurityMethodHintPopUp" value:securityMethodHintPopUp];
     
+    [accessoryView addSubview:securityMethodHintPopUp];
+    
+    NSImage *arrow = [NSImage imageNamed:@"MenuArrowWhite"];
+    NSImageView *imageView = [[NSImageView alloc] initWithFrame:NSMakeRect(60.0f, 4.0f, arrow.size.width, arrow.size.height)];
+    imageView.image = arrow;
+    [accessoryView addSubview:imageView];
+    
+    // Center the menu item.
+    [self centerMenuWithItem:securityMethodHintPopUp.selectedItem];
+    
+    // Add the accessory view to the to the window.
     NSWindow *window = [self valueForKey:@"_window"];
-    NSView *themeFrame = [[window contentView] superview];
-    NSRect c = [themeFrame frame];	// c for "container"
-    NSRect aV = [accessoryView frame];	// aV for "accessory view"
-    // 4 point from the top, 6.0px from the very right.
-    //NSPoint offset = NSMakePoint(6.0f, 4.0f);
-    NSPoint offset = NSMakePoint(0.0f, 0.0f);
-    
-    NSRect newFrame = NSMakeRect(
-                                 c.size.width - aV.size.width - offset.x,	// x position
-                                 c.size.height - aV.size.height - offset.y,	// y position
-                                 aV.size.width,	// width
-                                 aV.size.height);	// height
-    
-    [accessoryView setFrame:newFrame];
-    [themeFrame addSubview:accessoryView];
+    [window addAccessoryView:accessoryView];
+    // Hide the accessory view per default.
+    accessoryView.color = NO;
     
     [accessoryView release];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context {
-    if(![keyPath isEqualToString:@"UseOpenPGPToSend"])
-        return;
+- (void)centerMenuWithItem:(NSMenuItem *)item {
+    NSView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
+    NSPopUpButton *securityMethodHintPopUp = [self getIvar:@"SecurityMethodHintPopUp"];
+    item = item != nil ? item : securityMethodHintPopUp.selectedItem;
     
-    // Also, update the security controls.
-    [[(MailDocumentEditor *)self headersEditor] updateSecurityControls];
-    [self drawEncryptionMethodTitle];
+    NSRect extFrame = accessoryView.frame;
+    NSRect frame = securityMethodHintPopUp.frame;
+    NSAttributedString *title = [self coloredTitle:item.attributedTitle.string monochrome:NO];
+    float titleWithArrowWidth = title.size.width + 3.0f + 7.0f;
+    float diff = roundf((extFrame.size.width - roundf(titleWithArrowWidth))/2);
+    // x = 0 is 9px into the accessory view. so subtract 9 from x and you
+    // get the value to center the text.
+    float x = diff - 9;
+    frame.origin.x = x;
+    
+    NSImageView *imageView = [[accessoryView subviews] objectAtIndex:1];
+    NSRect arrowFrame = imageView.frame;
+    arrowFrame.origin.x = diff + roundf(title.size.width) + 3;
+    
+    imageView.frame = arrowFrame;
+    securityMethodHintPopUp.frame = frame;
 }
+
+- (void)hideSecurityMethodHintAccessoryView {
+    NSView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
+    [accessoryView setHidden:YES];
+}
+
+- (void)updateSecurityMethodHint:(GPGMAIL_SECURITY_METHOD)securityMethod {
+    NSPopUpButton *securityMethodHintPopUp = [self getIvar:@"SecurityMethodHintPopUp"];
+    if(securityMethod)
+        [securityMethodHintPopUp selectItemAtIndex:securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? 0 : 1];
+    [self centerMenuWithItem:nil];
+}
+
+- (NSPopUpButton *)securityMethodHintPopUp {
+    NSPopUpButton *securityMethodPopup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(0.0f, 0.0f, 62, 17) pullsDown:NO];
+    [[securityMethodPopup cell] setArrowPosition:NSPopUpNoArrow];
+    [securityMethodPopup setAutoresizingMask:NSViewMinYMargin];
+    
+    securityMethodPopup.font = [NSFont systemFontOfSize:10.0f];
+    [securityMethodPopup setBordered:NO]; 
+    
+    NSMenu *menu = securityMethodPopup.menu;
+    menu.autoenablesItems = NO;
+    menu.delegate = self;
+    
+    NSArray *titles = [[NSArray alloc] initWithObjects:@"OpenPGP", @"S/MIME", nil];
+    
+    for(NSString *title in titles) {
+        NSMenuItem *item = [menu addItemWithTitle:title action:@selector(changeSecurityMethod:) keyEquivalent:@""];
+        item.target = self;
+        item.enabled = YES;
+        item.tag = [titles indexOfObject:title] == 0 ? GPGMAIL_SECURITY_METHOD_OPENPGP : GPGMAIL_SECURITY_METHOD_SMIME;
+        item.keyEquivalent = [titles indexOfObject:title] == 0 ? @"p" : @"s";
+        item.keyEquivalentModifierMask = NSCommandKeyMask | NSAlternateKeyMask;
+        item.attributedTitle = [self coloredTitle:title monochrome:NO];
+    }
+    
+    [titles release];
+    
+    return [securityMethodPopup autorelease];
+}
+
+- (void)keyringUpdated:(NSNotification *)notification {
+    // Reset the security method, since it might change due to the updated keyring.
+    ((ComposeBackEnd_GPGMail *)[((MailDocumentEditor *)self) backEnd]).securityMethod = 0;
+	[[(MailDocumentEditor *)self headersEditor] updateSecurityControls];
+}
+
+- (NSAttributedString *)coloredTitle:(NSString *)title monochrome:(BOOL)monochrome {
+    // Create the white shadow that sits behind the text
+    NSShadow *shadow = [[NSShadow alloc] init];
+    if(monochrome)
+        [shadow setShadowColor:[NSColor colorWithDeviceWhite:1.0 alpha:0.5]];
+    else
+        [shadow setShadowColor:[NSColor colorWithDeviceRed:0.0/255.0f green:0.0f/255.0f blue:0.0f/255.0f alpha:0.5]];
+    [shadow setShadowOffset:NSMakeSize(1.0, -1.1)];
+    // Create the attributes dictionary, you can change the font size
+    // to whatever is useful to you
+    NSFont *font = nil;
+    NSColor *color = nil;
+    if(monochrome) {
+        font = [NSFont systemFontOfSize:10.0f];
+        color = [NSColor colorWithDeviceRed:51.0f/255.0f green:51.0f/255.0f blue:51.0f/255.0f alpha:1.0];
+    }
+    else {
+        font = [NSFont fontWithName:@"LucidaGrande-Bold" size:10.0f];
+        color = [NSColor colorWithDeviceRed:255.0f/255.0f green:255.0f/255.0f blue:255.0f/255.0f alpha:1.0];
+    }
+    
+    NSMutableParagraphStyle *mutParaStyle=[[NSMutableParagraphStyle alloc] init];
+    [mutParaStyle setAlignment:NSLeftTextAlignment];
+    
+    NSMutableDictionary *attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                      font ,NSFontAttributeName,
+                                      shadow, NSShadowAttributeName, color,
+                                        NSForegroundColorAttributeName, mutParaStyle, NSParagraphStyleAttributeName,
+                                      nil] autorelease];
+    [mutParaStyle release];
+    // The shadow object has been assigned to the dictionary, so release
+    [shadow release];
+    // Create a new attributed string with your attributes dictionary attached
+    NSAttributedString *coloredTitle = [[NSAttributedString alloc] initWithString:title
+                                                            attributes:attributes];
+    return [coloredTitle autorelease];
+}
+
+- (void)menuWillOpen:(NSMenu *)menu {
+    for(NSMenuItem *item in menu.itemArray) {
+        item.attributedTitle = [self coloredTitle:item.title monochrome:YES];
+    }
+}
+
+- (void)menuDidClose:(NSMenu *)menu {
+    for(NSMenuItem *item in menu.itemArray) {
+        item.attributedTitle = [self coloredTitle:item.title monochrome:NO];
+    }
+}
+
+- (void)menu:(NSMenu *)menu willHighlightItem:(NSMenuItem *)item {
+    for(NSMenuItem *citem in menu.itemArray) {
+        if(item != citem)
+            citem.attributedTitle = [self coloredTitle:citem.title monochrome:YES];
+        else
+            citem.attributedTitle = [self coloredTitle:citem.title monochrome:NO];
+    }
+    [self centerMenuWithItem:item];
+    
+}
+
+- (void)changeSecurityMethod:(id)sender {
+    ((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).securityMethod = [sender tag];
+    ((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).userDidChooseSecurityMethod = YES;
+    [[(MailDocumentEditor *)self headersEditor] updateSecurityControls];
+}
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
+    return YES;
+}
+
+
 
 - (void)MADealloc {
     // Sometimes this fails, so simply ignore it.
     @try {
-        [[GPGOptions sharedOptions] removeObserver:self forKeyPath:@"UseOpenPGPToSend"];
 		[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] removeObserver:self];
-        [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] removeObserver:self name:@"SecurityButtonsDidChange" object:nil];
+        [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] removeObserver:self];
     }
     @catch(NSException *e) {
         

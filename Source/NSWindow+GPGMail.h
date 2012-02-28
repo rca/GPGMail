@@ -1,4 +1,4 @@
-/* MailDocumentEditor+GPGMail.h re-created by Lukas Pitschl (@lukele) on Sat 27-Aug-2011 */
+/* NSWindow+GPGMail.h created by Lukas Pitschl (@lukele) on Mon 27-Feb-2012 */
 
 /*
  * Copyright (c) 2000-2011, GPGTools Project Team <gpgtools-devel@lists.gpgtools.org>
@@ -27,30 +27,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "ComposeBackEnd+GPGMail.h"
+#import <Foundation/Foundation.h>
 
-@interface MailDocumentEditor_GPGMail : NSObject <NSMenuDelegate>
-
-- (void)updateSecurityMethodHighlight;
+@interface NSWindow (GPGMail)
 
 /**
- Entry point to add the title bar accessory view.
+ Allows to add an accessory view to a NSWindow which will be
+ added to the top right.
  */
-- (void)MABackEndDidLoadInitialContent:(id)content;
-
-- (void)keyringUpdated:(NSNotification *)notification;
-- (void)changeSecurityMethod:(id)sender;
-
-/**
- Is called when a SecurityMethodDidChangeNotification is posted.
- Extracts the securityMethod from the notification and calls updateSecurityHint:.
- */
-- (void)updateSecurityHintFromNotification:(NSNotification *)notification;
-
-/**
- Is called whenever the security method is updated to update
- the hide or display the security hint.
- */
-- (void)updateSecurityHint:(GPGMAIL_SECURITY_METHOD)securityMethod;
+- (void)addAccessoryView:(NSView *)accessoryView;
 
 @end

@@ -50,6 +50,12 @@
  Adds or removes the secret keys to the From NSPopUpButton.
  */
 - (void)fromHeaderDisplaySecretKeys:(BOOL)display;
+/**
+ Helper method to run fromHeaderDisplaySecretKeys: on main thread,
+ since the param can only be an object. Unpacks the NSNumber boolean
+ and calls fromHeaderDisplaySecretKeys:.
+ */
+- (void)_fromHeaderDisplaySecretKeys:(NSNumber *)display;
 
 /**
  Is called whenever the user select a account in the PopUp.

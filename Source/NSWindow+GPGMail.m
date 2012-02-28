@@ -1,4 +1,4 @@
-/* MailDocumentEditor+GPGMail.h re-created by Lukas Pitschl (@lukele) on Sat 27-Aug-2011 */
+/* NSWindow+GPGMail.m created by Lukas Pitschl (@lukele) on Mon 27-Feb-2012 */
 
 /*
  * Copyright (c) 2000-2011, GPGTools Project Team <gpgtools-devel@lists.gpgtools.org>
@@ -27,30 +27,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "ComposeBackEnd+GPGMail.h"
+#import "NSWindow+GPGMail.h"
 
-@interface MailDocumentEditor_GPGMail : NSObject <NSMenuDelegate>
+@implementation NSWindow (GPGMail)
 
-- (void)updateSecurityMethodHighlight;
-
-/**
- Entry point to add the title bar accessory view.
- */
-- (void)MABackEndDidLoadInitialContent:(id)content;
-
-- (void)keyringUpdated:(NSNotification *)notification;
-- (void)changeSecurityMethod:(id)sender;
-
-/**
- Is called when a SecurityMethodDidChangeNotification is posted.
- Extracts the securityMethod from the notification and calls updateSecurityHint:.
- */
-- (void)updateSecurityHintFromNotification:(NSNotification *)notification;
-
-/**
- Is called whenever the security method is updated to update
- the hide or display the security hint.
- */
-- (void)updateSecurityHint:(GPGMAIL_SECURITY_METHOD)securityMethod;
+- (void)addAccessoryView:(NSView *)accessoryView {
+    NSView *themeFrame = [[self contentView] superview];
+    NSRect c = [themeFrame frame];	// c for "container"
+    NSRect aV = [accessoryView frame];	// aV for "accessory view"
+    // 4 point from the top, 6.0px from the very right.
+    //NSPoint offset = NSMakePoint(6.0f, 4.0f);
+    NSPoint offset = NSMakePoint(-0.0f, -0.0f);
+    
+    NSRect newFrame = NSMakeRect(
+                                 c.size.width - aV.size.width - offset.x,	// x position
+                                 c.size.height - aV.size.height - offset.y,	// y position
+                                 aV.size.width,	// width
+                                 aV.size.height);	// height
+    
+    [accessoryView setFrame:newFrame];
+    [themeFrame addSubview:accessoryView];
+}
 
 @end

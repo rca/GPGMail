@@ -46,11 +46,20 @@
         _messageFlags |= 0x00800000;
 }
 
-- (id)MAMessageBodyUpdatingFlags:(BOOL)arg1 {
-//    NSLog(@"[%@] message body updating flags: %@", [self subject], arg1 ? @"YES" : @"NO");
-    id ret = [self MAMessageBodyUpdatingFlags:arg1];
-//    NSLog(@"Message Body: %@", ret);
-    return ret;
+- (BOOL)isSigned {
+    return (_messageFlags & 0x00800000) || self.PGPSigned;
+}
+
+- (BOOL)isEncrypted {
+    return (_messageFlags & 0x00000008) || self.PGPEncrypted;
+}
+
+- (BOOL)isSMIMESigned {
+    return (_messageFlags & 0x00800000) && !self.PGPSigned;
+}
+
+- (BOOL)isSMIMEEncrypted {
+    return (_messageFlags & 0x00000008) && !self.PGPEncrypted;
 }
 
 - (void)setPGPEncrypted:(BOOL)isPGPEncrypted {

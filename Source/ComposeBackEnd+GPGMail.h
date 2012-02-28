@@ -31,6 +31,7 @@
 #import <Subdata.h>
 #import <MutableMessageHeaders.h>
 #import <WebComposeMessageContents.h>
+#import "GPGConstants.h"
 
 @interface ComposeBackEnd_GPGMail : NSObject
 
@@ -145,5 +146,38 @@
 - (id)MARecipientsThatHaveNoKeyForEncryption;
 
 - (Subdata *)_newPGPInlineBodyDataWithData:(NSData *)data headers:(MutableMessageHeaders *)headers shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt;
+
+/**
+ Determines whether or not the -[MailDocumentEditor backEndDidLoadInitialContent:] method was already called.
+ When a new security method is set, this flag is first checked, so that no notification
+ of a security method change is sent, before the editor was fully initialized.
+ */
+@property (nonatomic, assign) BOOL wasInitialized;
+
+/**
+ Holds and sets the security method to be used.
+ If the security method is changed, it sents a SecurityMethodDidChangeNotification,
+ so the Account list and the security method hint accessory view can be updated
+ appropiately.
+ */
+@property (nonatomic, assign) GPGMAIL_SECURITY_METHOD securityMethod;
+@property (nonatomic, assign) GPGMAIL_SECURITY_METHOD guessedSecurityMethod;
+
+/**
+ Sets the flag that the user has chosen a security method.
+ From this point on GPGMail will no longer automatically select
+ the best method.
+ */
+@property (nonatomic, assign) BOOL userDidChooseSecurityMethod;
+
+/**
+ Returns if the user writing a reply to a message.
+ */
+- (BOOL)messageIsBeingReplied;
+
+/**
+ Posts the SecurityMethodDidChange notification.
+ */
+- (void)postSecurityMethodDidChangeNotification:(GPGMAIL_SECURITY_METHOD)securityMethod;
 
 @end

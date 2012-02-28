@@ -23,18 +23,17 @@
 #import "NSString+GPGMail.h"
 #import "NSData+GPGMail.h"
 #import "MimePart+GPGMail.h"
+#import "Message+GPGMail.h"
 #import "GPGFlaggedString.h"
+#import "GMSecurityHistory.h"
 #import "GPGMailBundle.h"
+#import "HeadersEditor+GPGMail.h"
+#import "MailDocumentEditor.h"
+#import "MailDocumentEditor+GPGMail.h"
 #import "ComposeBackEnd+GPGMail.h"
-
 #import "ActivityMonitor.h"
 
 @implementation ComposeBackEnd_GPGMail
-
-- (void)postSecurityUpdateNotification {
-    NSNotification *notification = [NSNotification notificationWithName:@"SecurityButtonsDidChange" object:nil userInfo:[NSDictionary dictionaryWithObject:self forKey:@"backEnd"]];
-    [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] postNotification:notification];
-}
 
 - (void)MASetEncryptIfPossible:(BOOL)encryptIfPossible {
     // This method is not only called, when the user clicks the encrypt button,
@@ -46,33 +45,48 @@
     // In that entry point a variable is set on the backend, shouldUpdateHasChanges.
     // Only if that variable is found, the has changes property of the backEnd is actually
     // updated.
-    if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
-        if([self ivarExists:@"shouldUpdateHasChanges"] && ![(ComposeBackEnd *)self hasChanges]) {
-            [(ComposeBackEnd *)self setHasChanges:YES];
-            [self removeIvar:@"shouldUpdateHasChanges"];
-        }
-        [self setIvar:@"shouldEncrypt" value:[NSNumber numberWithBool:encryptIfPossible]];
-        [self postSecurityUpdateNotification];
+    
+//    if(self.securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
+//        if([self ivarExists:@"shouldUpdateHasChanges"] && ![(ComposeBackEnd *)self hasChanges]) {
+//            [(ComposeBackEnd *)self setHasChanges:YES];
+//            [self removeIvar:@"shouldUpdateHasChanges"];
+//        }
+//        [self setIvar:@"shouldEncrypt" value:[NSNumber numberWithBool:encryptIfPossible]];
+//    }
+    if([self ivarExists:@"SetEncrypt"]) {
+        encryptIfPossible = [[self getIvar:@"SetEncrypt"] boolValue];
     }
+    if([self ivarExists:@"ForceEncrypt"])
+        encryptIfPossible = [[self getIvar:@"ForceEncrypt"] boolValue];
+    
+    //if([[self getIvar:@"ForceSetEncrypt"] boolValue])
+    [self setIvar:@"shouldEncrypt" value:[NSNumber numberWithBool:encryptIfPossible]];
     [self MASetEncryptIfPossible:encryptIfPossible];
+    [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
 }
 
 - (void)MASetSignIfPossible:(BOOL)signIfPossible {
-    // See MASetEncryptIfPossible: why shouldUpdateHasChanges is checked.
-    if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
-        if([self ivarExists:@"shouldUpdateHasChanges"] && ![(ComposeBackEnd *)self hasChanges]) {
-            [(ComposeBackEnd *)self setHasChanges:YES];
-            [self removeIvar:@"shouldUpdateHasChanges"];
-        }
-        [self setIvar:@"shouldSign" value:[NSNumber numberWithBool:signIfPossible]];
-        [self postSecurityUpdateNotification];
+    if([self ivarExists:@"SetSign"]) {
+        signIfPossible = [[self getIvar:@"SetSign"] boolValue];
     }
+
+    if([self ivarExists:@"ForceSign"])
+        signIfPossible = [[self getIvar:@"ForceSign"] boolValue];
+    [self setIvar:@"shouldSign" value:[NSNumber numberWithBool:signIfPossible]];
     [self MASetSignIfPossible:signIfPossible];
+    [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
 }
 
 - (id)MA_makeMessageWithContents:(WebComposeMessageContents *)contents isDraft:(BOOL)isDraft shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt shouldSkipSignature:(BOOL)shouldSkipSignature shouldBePlainText:(BOOL)shouldBePlainText {
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
+    GPGMAIL_SECURITY_METHOD securityMethod = self.guessedSecurityMethod;
+    if(self.securityMethod)
+        securityMethod = self.securityMethod;
+    if(securityMethod == GPGMAIL_SECURITY_METHOD_SMIME) {
         id ret = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldSign shouldEncrypt:shouldEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
+        // If a message has been successfully created, add an entry to the security options history.
+        if(ret && !isDraft) {
+            [GMSecurityHistory addEntryForSender:((ComposeBackEnd *)self).sender recipients:[((ComposeBackEnd *)self) allRecipients] securityMethod:GPGMAIL_SECURITY_METHOD_SMIME didSign:shouldSign didEncrypt:shouldEncrypt];
+        }
         return ret;
     }
 
@@ -87,7 +101,7 @@
     // It might not be possible to inline encrypt drafts, since contents.text is nil.
     // Maybe it's not problem, and simply html should be used. (TODO: Figure that out.)
     BOOL shouldCreatePGPInlineMessage = [[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPInlineToSend"] && !isDraft;
-    if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
+    if(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
         shouldPGPEncrypt = shouldEncrypt;
         shouldPGPSign = shouldSign;
     }
@@ -161,8 +175,8 @@
     // out exactly as created by Mail.app. No need to further modify.
     // Only encrypted messages have to be adjusted.
     if(shouldPGPSign && !shouldPGPEncrypt && !shouldCreatePGPInlineMessage) {
-//        NSLog(@"[DEBUG] Outgoing message: %@", [[outgoingMessage valueForKey:@"_rawData"] stringByGuessingEncoding]);
-//        NSLog(@"[DEBUG] Outgoing message: %@", [[((_OutgoingMessageBody *)[outgoingMessage messageBody]) rawData] stringByGuessingEncoding]);
+        if(!isDraft)
+            [GMSecurityHistory addEntryForSender:((ComposeBackEnd *)self).sender recipients:[((ComposeBackEnd *)self) allRecipients] securityMethod:GPGMAIL_SECURITY_METHOD_OPENPGP didSign:shouldPGPSign didEncrypt:shouldPGPEncrypt];
         return outgoingMessage;
     }
 
@@ -188,7 +202,10 @@
     // Not sure why it's done this way, but HECK it works!
     [outgoingMessage setValue:[newBodyData valueForKey:@"_parentData"] forKey:@"_rawData"];
     [newBodyData release];
-
+    
+    if(!isDraft)
+        [GMSecurityHistory addEntryForSender:((ComposeBackEnd *)self).sender recipients:[((ComposeBackEnd *)self) allRecipients] securityMethod:GPGMAIL_SECURITY_METHOD_OPENPGP didSign:shouldPGPSign didEncrypt:shouldPGPEncrypt];
+    
     return outgoingMessage;
 }
 
@@ -413,15 +430,20 @@
 }
 
 - (BOOL)MACanEncryptForRecipients:(NSArray *)recipients sender:(NSString *)sender {
-    // If gpg is not enabled, call the original method.
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"])
-        return [self MACanEncryptForRecipients:recipients sender:sender];
     // Otherwise check the gpg keys.
     // Loop through all the addresses and check if we can encrypt for them.
     // If no recipients are set, encrypt is false.
-    if(![recipients count])
-        return NO;
-    NSMutableArray *mutableRecipients = [recipients mutableCopy];
+    // For some reason, we're running into zombies if we don't do
+    // this.
+    [self retain];
+    DebugLog(@"Recipients: %@", recipients);
+    
+    sender = [sender gpgNormalizedEmail];
+    BOOL canSMIMEEncrypt = [self MACanEncryptForRecipients:recipients sender:sender];
+    
+    DebugLog(@"Can S/MIME encrypt to recipients: %@? %@", recipients, canSMIMEEncrypt ? @"YES" : @"NO");
+    
+    NSMutableArray *mutableRecipients = [[NSMutableArray alloc] initWithArray:recipients];
     NSMutableArray *nonEligibleRecipients = [NSMutableArray array];
     [mutableRecipients addObject:[sender gpgNormalizedEmail]];
 
@@ -429,24 +451,119 @@
         if(![[GPGMailBundle sharedInstance] canEncryptMessagesToAddress:[address gpgNormalizedEmail]])
             [nonEligibleRecipients addObject:address];
     }
-    BOOL canEncrypt = [nonEligibleRecipients count] == 0;
+    BOOL canPGPEncrypt = [nonEligibleRecipients count] == 0 && [recipients count];
+    
+    DebugLog(@"Can PGP encrypt to recipients: %@? %@", mutableRecipients, canPGPEncrypt ? @"YES" : @"NO");
+    
+    BOOL canSMIMESign = [[self getIvar:@"CanSMIMESign"] boolValue];
+    BOOL canPGPSign = [[self getIvar:@"CanPGPSign"] boolValue];
+    
+    GPGMAIL_SIGN_FLAG signFlags = 0;
+    if(canPGPSign)
+        signFlags |= GPGMAIL_SIGN_FLAG_OPENPGP;
+    if(canSMIMESign)
+        signFlags |= GPGMAIL_SIGN_FLAG_SMIME;
+    
+    GPGMAIL_ENCRYPT_FLAG encryptFlags = 0;
+    if(canPGPEncrypt)
+        encryptFlags |= GPGMAIL_ENCRYPT_FLAG_OPENPGP;
+    if(canSMIMEEncrypt)
+        encryptFlags |= GPGMAIL_ENCRYPT_FLAG_SMIME;
+    
+    // If a message is replied to which is S/MIME or PGP/MIME signed,
+    // automatically set the appropriate security method.
+    BOOL canEncrypt = NO;
+    BOOL canSign = NO;
+    
+    GMSecurityHistory *securityHistory = [[GMSecurityHistory alloc] init];
+    GMSecurityOptions *securityOptions = nil;
+    
+    if(!self.securityMethod) {
+        if(self.messageIsBeingReplied) {
+            Message *originalMessage = [((ComposeBackEnd *)self) originalMessage];
+            securityOptions = [securityHistory bestSecurityOptionsForReplyToMessage:originalMessage signFlags:signFlags encryptFlags:encryptFlags];
+        }
+        else {
+            securityOptions = [securityHistory bestSecurityOptionsForSender:sender recipients:recipients signFlags:signFlags encryptFlags:encryptFlags];
+        }
+        self.guessedSecurityMethod = securityOptions.securityMethod;
+        
+        if(self.guessedSecurityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
+            canEncrypt = canPGPEncrypt;
+            canSign = canPGPSign;
+        }
+        else {
+            canEncrypt = canSMIMEEncrypt;
+            canSign = canSMIMESign;
+        }
+        if(self.guessedSecurityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
+            DebugLog(@"Security Method is OpenPGP");
+            DebugLog(@"Can OpenPGP Encrypt: %@", canPGPEncrypt ? @"YES" : @"NO");
+            DebugLog(@"Can OpenPGP Sign: %@", canPGPSign ? @"YES" : @"NO");
+        }
+        else if(self.guessedSecurityMethod == GPGMAIL_SECURITY_METHOD_SMIME) {
+            DebugLog(@"Security Method is S/MIME");
+            DebugLog(@"Can S/MIME Encrypt: %@", canSMIMEEncrypt ? @"YES" : @"NO");
+            DebugLog(@"Can S/MIME Sign: %@", canSMIMESign ? @"YES" : @"NO");
+        }
+    }
+    else {
+        canEncrypt = self.securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? canPGPEncrypt : canSMIMEEncrypt;
+        canSign = self.securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? canPGPSign : canSMIMESign;
+        if(self.messageIsBeingReplied) {
+            Message *originalMessage = [((ComposeBackEnd *)self) originalMessage];
+            securityOptions = [securityHistory bestSecurityOptionsForReplyToMessage:originalMessage signFlags:signFlags encryptFlags:encryptFlags];
+        }
+        else {
+            securityOptions = [securityHistory bestSecurityOptionsForSender:sender recipients:recipients securityMethod:self.securityMethod canSign:canSign canEncrypt:canEncrypt];
+        }
+    }
+    
+    [self setIvar:@"SetEncrypt" value:[NSNumber numberWithBool:securityOptions.shouldEncrypt]];
+    [self setIvar:@"SetSign" value:[NSNumber numberWithBool:securityOptions.shouldSign]];
+    [self setIvar:@"EncryptIsPossible" value:[NSNumber numberWithBool:canEncrypt]];
+    [self setIvar:@"SignIsPossible" value:[NSNumber numberWithBool:canSign]];
+    
+    [securityHistory release];
     [mutableRecipients release];
-
+    
+    [self release];
+    
     return canEncrypt;
 }
 
 - (BOOL)MACanSignFromAddress:(NSString *)address {
-    // If gpg is not enabled, call the original method.
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"])
-        return [self MACanSignFromAddress:address];
-    // Otherwise check the gpg keys.
-    BOOL canSign = [[GPGMailBundle sharedInstance] canSignMessagesFromAddress:[address uncommentedAddress]];
-    return canSign;
+    // If the security method is not yet set and the back end was not yet initialized,
+    // check S/MIME and PGP keychains to see if either method has a key
+    // for signing.
+    // For some reason, we're running into zombies if we don't do
+    // this.
+    [self retain];
+    BOOL canSMIMESign = [self MACanSignFromAddress:address];
+    
+    DebugLog(@"Can sign S/MIME from address: %@? %@", address, canSMIMESign ? @"YES" : @"NO");
+    
+    BOOL canPGPSign = [[GPGMailBundle sharedInstance] canSignMessagesFromAddress:[address uncommentedAddress]];
+    
+    DebugLog(@"Can sign PGP from address: %@? %@", address, canPGPSign ? @"YES" : @"NO");
+    
+    // Now, here's a problem. If canSign returns NO, canEncrypt is no longer
+    // checked, since for some reason S/MIME works like that, or maybe it's
+    // only Apple's implementation.
+    // So to avoid this, always return YES here if the security method is not already set.
+    // The correct status is stored for later lookup in canEncrypt.
+    [self setIvar:@"CanPGPSign" value:[NSNumber numberWithBool:canPGPSign]];
+    [self setIvar:@"CanSMIMESign" value:[NSNumber numberWithBool:canSMIMESign]];
+    [self release];
+    return YES;
 }
 
 - (id)MARecipientsThatHaveNoKeyForEncryption {
-    // If gpg is not enabled, call the original method.
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"])
+    GPGMAIL_SECURITY_METHOD securityMethod = self.guessedSecurityMethod;
+    if(self.securityMethod)
+        securityMethod = self.guessedSecurityMethod;
+    
+    if(securityMethod == GPGMAIL_SECURITY_METHOD_SMIME)
         return [self MARecipientsThatHaveNoKeyForEncryption];
 
     NSMutableArray *nonEligibleRecipients = [NSMutableArray array];
@@ -456,6 +573,80 @@
     }
 
     return nonEligibleRecipients;
+}
+
+- (BOOL)wasInitialized {
+    return [[self getIvar:@"WasInitialized"] boolValue];
+}
+
+- (void)setWasInitialized:(BOOL)wasInitialized {
+    [self setIvar:@"WasInitialized" value:[NSNumber numberWithBool:wasInitialized]];
+}
+
+- (GPGMAIL_SECURITY_METHOD)securityMethod {
+    return [[self getIvar:@"SecurityMethod"] unsignedIntValue];
+}
+
+- (void)setSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
+    [self setIvar:@"SecurityMethod" value:[NSNumber numberWithUnsignedInt:securityMethod]];
+    // Reset SetSign, SetEncrypt, SignIsPossible, EncryptIsPossible, shouldSign, shouldEncrypt.
+    [self removeIvar:@"SetSign"];
+    [self removeIvar:@"SetEncrypt"];
+    [self removeIvar:@"SignIsPossible"];
+    [self removeIvar:@"EncryptIsPossible"];
+    [self removeIvar:@"shouldSign"];
+    [self removeIvar:@"shouldEncrypt"];
+    [self removeIvar:@"ForceEncrypt"];
+    [self removeIvar:@"ForceSign"];
+    
+    // NEVER! automatically change the security method once the user selected it.
+    // Only send the notification if security method is not reset to 0.
+    // otherwise some serious shit happens.
+    // Also only begin posting if the back end was initialized.
+    if(securityMethod && self.wasInitialized/* && !self.userDidChooseSecurityMethod*/) {
+        [(ComposeBackEnd *)self setHasChanges:YES];
+        [self postSecurityMethodDidChangeNotification:(GPGMAIL_SECURITY_METHOD)securityMethod];
+    }
+}
+
+- (void)setGuessedSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
+    [self setIvar:@"GuessedSecurityMethod" value:[NSNumber numberWithUnsignedInteger:securityMethod]];
+    [self removeIvar:@"SetSign"];
+    [self removeIvar:@"SetEncrypt"];
+    [self removeIvar:@"SignIsPossible"];
+    [self removeIvar:@"EncryptIsPossible"];
+    [self removeIvar:@"shouldSign"];
+    [self removeIvar:@"shouldEncrypt"];
+    [self removeIvar:@"ForceEncrypt"];
+    [self removeIvar:@"ForceSign"];
+}
+
+- (GPGMAIL_SECURITY_METHOD)guessedSecurityMethod {
+    return [[self getIvar:@"GuessedSecurityMethod"] unsignedIntegerValue];
+}
+
+- (BOOL)userDidChooseSecurityMethod {
+    return [[self getIvar:@"UserDidChooseSecurityMethod"] boolValue];
+}
+
+- (void)setUserDidChooseSecurityMethod:(BOOL)userDidChoose {
+    [self setIvar:@"UserDidChooseSecurityMethod" value:[NSNumber numberWithBool:userDidChoose]];
+}
+
+- (BOOL)messageIsBeingReplied {
+    // 1 = Reply
+    // 2 = Reply to all.
+    // 4 = Restored Reply window.
+    NSInteger type = [(ComposeBackEnd *)self type];
+    return type == 1 || type == 2 || type == 4;
+}
+
+- (void)postSecurityMethodDidChangeNotification:(GPGMAIL_SECURITY_METHOD)securityMethod {
+    if(!securityMethod)
+        return;
+    /* Post notification that the security method has changed. */
+    NSNotification *notification = [NSNotification notificationWithName:@"SecurityMethodDidChangeNotification" object:nil userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithUnsignedInt:securityMethod] forKey:@"SecurityMethod"]];
+    [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] postNotification:notification];
 }
 
 @end
