@@ -714,6 +714,9 @@
     // We'll save the message body for later, since it will be used to do a last
     // decodeWithContext and the output returned.
     // Fake the message flags on the decrypted message.
+    // messageBodyUpdatingFlags: calls isMimeEncrypted. Set MimeEncrypted on the message,
+    // so the correct info is returned.
+    [decryptedMessage setIvar:@"MimeEncrypted" value:[NSNumber numberWithBool:YES]];
     decryptedMimeBody = [decryptedMessage messageBodyUpdatingFlags:YES];
     
     // Top Level part reparses the message. This method doesn't.
@@ -861,8 +864,11 @@
         return;
     }
     
-    if(self.PGPVerified || self.PGPError || self.PGPVerifiedData)
+    if(self.PGPVerified || self.PGPError || self.PGPVerifiedData) {
+        // Save the status for isMimeSigned call.
+        [[self topPart] setIvar:@"MimeSigned" value:[NSNumber numberWithBool:self.PGPSigned]];
         return;
+    }
     
     // Set the signed status, otherwise we wouldn't be in here.
     self.PGPSigned = YES;
@@ -896,6 +902,7 @@
 //    [[GPGMailBundle sharedInstance] addVerificationTask:^{
     [self verifyData:signedData signatureData:signatureData];
 //    }];
+    [[self topPart] setIvar:@"MimeSigned" value:[NSNumber numberWithBool:self.PGPSigned]];
 	
     return;
 }
@@ -1198,18 +1205,14 @@
 
 - (BOOL)MAIsMimeEncrypted {
     BOOL ret = [self MAIsMimeEncrypted];
-//    NSLog(@"%@: isMimeEncrypted: %@", 
-//          [[[self mimeBody] message] subject],
-//          ret ? @"YES" : @"NO");
-    return ret;
+    BOOL isPGPMimeEncrypted = [[[[self mimeBody] message] getIvar:@"MimeEncrypted"] boolValue];
+    return ret || isPGPMimeEncrypted;
 }
 
 - (BOOL)MAIsMimeSigned {
     BOOL ret = [self MAIsMimeSigned];
-//    NSLog(@"%@: isMimeSigned: %@", 
-//          [[[self mimeBody] message] subject],
-//          ret ? @"YES" : @"NO");
-    return ret;
+    BOOL isPGPMimeSigned = [[[self topPart] getIvar:@"MimeSigned"] boolValue];
+    return ret || isPGPMimeSigned;
 }
 
 - (Message *)messageWithMessageData:(NSData *)messageData {

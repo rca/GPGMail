@@ -148,8 +148,6 @@ static BOOL gpgMailWorks = NO;
                              @"decodeTextPlainWithContext:",
                              @"decodeTextHtmlWithContext:",
                              @"decodeApplicationOctet_streamWithContext:",
-                             //                @"copySignerLabels",
-                             //                @"copyMessageSigners",
                              @"isSigned",
                              @"isMimeSigned",
                              @"isMimeEncrypted",
