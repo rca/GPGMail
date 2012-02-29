@@ -41,7 +41,6 @@
 #import "NSString+GPGMail.h"
 //#import "GPGDefaults.h"
 #import "GPGMailPreferences.h"
-#import "GPGProgressIndicatorController.h"
 #import "GPGMailBundle.h"
 #import "GPGVersionComparator.h"
 

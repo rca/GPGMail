@@ -73,7 +73,7 @@
 											<object class="NSButtonCell" key="NSCell" id="487618144">
 												<int key="NSCellFlags">-2080244224</int>
 												<int key="NSCellFlags2">0</int>
-												<string key="NSContents">Automatically check for updates</string>
+												<string key="NSContents">Rechercher automatiquement les Mises à jours</string>
 												<object class="NSFont" key="NSSupport" id="706304668">
 													<string key="NSName">LucidaGrande</string>
 													<double key="NSSize">13</double>
@@ -128,7 +128,7 @@
 											<object class="NSButtonCell" key="NSCell" id="283249516">
 												<int key="NSCellFlags">-2080244224</int>
 												<int key="NSCellFlags2">0</int>
-												<string key="NSContents">Download updates automatically</string>
+												<string key="NSContents">Télécharger les Mises à jour automatiquement</string>
 												<reference key="NSSupport" ref="706304668"/>
 												<reference key="NSControlView" ref="63115413"/>
 												<int key="NSButtonFlags">1211912703</int>
@@ -150,12 +150,12 @@
 											<object class="NSButtonCell" key="NSCell" id="491452844">
 												<int key="NSCellFlags">67239424</int>
 												<int key="NSCellFlags2">134217728</int>
-												<string key="NSContents">Check Now</string>
+												<string key="NSContents">Vérifier Maintenant</string>
 												<reference key="NSSupport" ref="706304668"/>
 												<reference key="NSControlView" ref="163650447"/>
 												<int key="NSButtonFlags">-2038284033</int>
 												<int key="NSButtonFlags2">129</int>
-												<string key="NSAlternateContents">Check for updates now (currently disabled)</string>
+												<string key="NSAlternateContents">Rechercher les mises à jours maintenant(Désactivé pour l’instant)</string>
 												<string key="NSKeyEquivalent"/>
 												<int key="NSPeriodicDelay">200</int>
 												<int key="NSPeriodicInterval">25</int>
@@ -529,7 +529,7 @@
 							<object class="NSTextFieldCell" key="NSTitleCell">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Ruta</string>
+								<string key="NSContents">Box</string>
 								<object class="NSFont" key="NSSupport">
 									<string key="NSName">LucidaGrande</string>
 									<double key="NSSize">12</double>

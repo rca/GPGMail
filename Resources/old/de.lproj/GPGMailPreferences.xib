@@ -66,14 +66,14 @@
 										<object class="NSButton" id="997375455">
 											<reference key="NSNextResponder" ref="782958523"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{165, 121}, {225, 18}}</string>
+											<string key="NSFrame">{{165, 121}, {240, 18}}</string>
 											<reference key="NSSuperview" ref="782958523"/>
 											<reference key="NSNextKeyView" ref="63115413"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSButtonCell" key="NSCell" id="487618144">
 												<int key="NSCellFlags">-2080244224</int>
 												<int key="NSCellFlags2">0</int>
-												<string key="NSContents">Automatically check for updates</string>
+												<string key="NSContents">Automatisch nach Updates suchen</string>
 												<object class="NSFont" key="NSSupport" id="706304668">
 													<string key="NSName">LucidaGrande</string>
 													<double key="NSSize">13</double>
@@ -98,7 +98,7 @@
 										<object class="NSButton" id="667904677">
 											<reference key="NSNextResponder" ref="782958523"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{165, 141}, {173, 18}}</string>
+											<string key="NSFrame">{{165, 141}, {209, 18}}</string>
 											<reference key="NSSuperview" ref="782958523"/>
 											<reference key="NSNextKeyView" ref="263402944"/>
 											<bool key="NSEnabled">YES</bool>
@@ -121,14 +121,14 @@
 										<object class="NSButton" id="63115413">
 											<reference key="NSNextResponder" ref="782958523"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{165, 101}, {228, 18}}</string>
+											<string key="NSFrame">{{165, 101}, {248, 18}}</string>
 											<reference key="NSSuperview" ref="782958523"/>
 											<reference key="NSNextKeyView" ref="607240547"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSButtonCell" key="NSCell" id="283249516">
 												<int key="NSCellFlags">-2080244224</int>
 												<int key="NSCellFlags2">0</int>
-												<string key="NSContents">Download updates automatically</string>
+												<string key="NSContents">Updates automatisch herunterladen</string>
 												<reference key="NSSupport" ref="706304668"/>
 												<reference key="NSControlView" ref="63115413"/>
 												<int key="NSButtonFlags">1211912703</int>
@@ -150,12 +150,12 @@
 											<object class="NSButtonCell" key="NSCell" id="491452844">
 												<int key="NSCellFlags">67239424</int>
 												<int key="NSCellFlags2">134217728</int>
-												<string key="NSContents">Check Now</string>
+												<string key="NSContents">Jetzt prüfen</string>
 												<reference key="NSSupport" ref="706304668"/>
 												<reference key="NSControlView" ref="163650447"/>
 												<int key="NSButtonFlags">-2038284033</int>
 												<int key="NSButtonFlags2">129</int>
-												<string key="NSAlternateContents">Check for updates now (currently disabled)</string>
+												<string key="NSAlternateContents">Nach Updates suchen (z.Z. deaktiviert)</string>
 												<string key="NSKeyEquivalent"/>
 												<int key="NSPeriodicDelay">200</int>
 												<int key="NSPeriodicInterval">25</int>
@@ -264,7 +264,7 @@
 										<object class="NSTextField" id="443272866">
 											<reference key="NSNextResponder" ref="782958523"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{164, 271}, {80, 17}}</string>
+											<string key="NSFrame">{{164, 271}, {87, 17}}</string>
 											<reference key="NSSuperview" ref="782958523"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="608485733">
@@ -280,7 +280,7 @@
 										<object class="NSButton" id="113600817">
 											<reference key="NSNextResponder" ref="782958523"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{165, 194}, {141, 18}}</string>
+											<string key="NSFrame">{{165, 194}, {256, 18}}</string>
 											<reference key="NSSuperview" ref="782958523"/>
 											<reference key="NSNextKeyView" ref="244718305"/>
 											<bool key="NSEnabled">YES</bool>
@@ -303,7 +303,7 @@
 										<object class="NSTextField" id="696331322">
 											<reference key="NSNextResponder" ref="782958523"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{164, 218}, {59, 17}}</string>
+											<string key="NSFrame">{{164, 218}, {69, 17}}</string>
 											<reference key="NSSuperview" ref="782958523"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="1023351749">
@@ -422,7 +422,7 @@
 										<object class="NSButton" id="915859109">
 											<reference key="NSNextResponder" ref="782958523"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{165, 247}, {212, 18}}</string>
+											<string key="NSFrame">{{165, 247}, {232, 18}}</string>
 											<reference key="NSSuperview" ref="782958523"/>
 											<reference key="NSNextKeyView" ref="696331322"/>
 											<string key="NSReuseIdentifierKey">_NS:717</string>
@@ -529,7 +529,7 @@
 							<object class="NSTextFieldCell" key="NSTitleCell">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Ruta</string>
+								<string key="NSContents">Box</string>
 								<object class="NSFont" key="NSSupport">
 									<string key="NSName">LucidaGrande</string>
 									<double key="NSSize">12</double>
