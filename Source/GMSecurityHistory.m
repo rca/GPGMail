@@ -79,7 +79,7 @@
         // because for any account that has either an S/MIME or PGP key we record
         // the status of any email.
         if(!encryptPGPHistory && !encryptSMIMEHistory)
-            securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
+            securityMethod = [[self class] defaultSecurityMethod];
         else if(encryptPGPHistory && !encryptSMIMEHistory)
             securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
         else if(encryptSMIMEHistory && !encryptPGPHistory)
@@ -111,6 +111,9 @@
             canSign = canPGPSign;
             canEncrypt = canPGPEncrypt;
         }
+        
+        if(!securityMethod)
+            securityMethod = [[self class] defaultSecurityMethod];
         
         // Now we've got the security method, and it's up to find out whether to
         // enable signing and encrypting for the key.
@@ -149,7 +152,7 @@
 - (GMSecurityOptions *)_getSignAndEncryptOptionsForSender:(NSString *)sender recipients:(NSSet *)recipients securityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod 
                                                                              canSign:(BOOL)canSign canEncrypt:(BOOL)canEncrypt {
     NSDictionary *usedSecurityMethods = [GMSecurityHistoryStore sharedInstance].securityOptionsHistory;
-    NSString *securityMethodName = (securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP || securityMethod == 0) ? @"PGP" : @"SMIME"; 
+    NSString *securityMethodName = (securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) ? @"PGP" : @"SMIME"; 
     // First check if the method was already used to encrypt to these recipients. EncryptCount should be > 0 if
     // so. If the DidEncryptCount is equal to the DidNotEncrypt count check which was last used.
     // If only the last one would always be considered, this could make a wrong assumption if
@@ -234,6 +237,9 @@
         securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
         canEncrypt = canPGPEncrypt;
     }
+    if(securityMethod)
+        securityMethod = [[self class] defaultSecurityMethod];
+    
     return [GMSecurityOptions securityOptionsWithSecurityMethod:securityMethod shouldSign:canSign shouldEncrypt:canEncrypt];
 }
 
