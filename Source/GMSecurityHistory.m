@@ -237,7 +237,7 @@
         securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
         canEncrypt = canPGPEncrypt;
     }
-    if(securityMethod)
+    if(!securityMethod)
         securityMethod = [[self class] defaultSecurityMethod];
     
     return [GMSecurityOptions securityOptionsWithSecurityMethod:securityMethod shouldSign:canSign shouldEncrypt:canEncrypt];
