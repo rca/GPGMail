@@ -27,11 +27,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import "MailDocumentEditor.h"
+#import "MailDocumentEditor+GPGMail.h"
 #import "NSWindow+GPGMail.h"
 
 @implementation NSWindow (GPGMail)
 
 - (void)addAccessoryView:(NSView *)accessoryView {
+    NSView *themeFrame = [[self contentView] superview];
+    [self positionAccessoryView:accessoryView];
+    [themeFrame addSubview:accessoryView];
+}
+
+- (void)positionAccessoryView:(NSView *)accessoryView {
     NSView *themeFrame = [[self contentView] superview];
     NSRect c = [themeFrame frame];	// c for "container"
     NSRect aV = [accessoryView frame];	// aV for "accessory view"
@@ -46,7 +54,17 @@
                                  aV.size.height);	// height
     
     [accessoryView setFrame:newFrame];
-    [themeFrame addSubview:accessoryView];
+}
+
+- (void)MAToggleFullScreen:(id)sender {
+    NSLog(@"Sender: %@", sender);
+    // Loop through all document editors and remove the security method
+    // accessory view, so there's no animation glitch.
+    for(MailDocumentEditor *editor in [NSClassFromString(@"MailDocumentEditor") documentEditors]) {
+        if(editor.isModal)
+            [((MailDocumentEditor_GPGMail *)editor) removeSecurityMethodAccessoryView];
+    }
+    [self MAToggleFullScreen:sender];
 }
 
 @end

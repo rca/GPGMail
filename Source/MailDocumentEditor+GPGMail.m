@@ -45,10 +45,42 @@
 
 @implementation MailDocumentEditor_GPGMail
 
+- (void)_repositionSecurityMethodAccessoryViewForFullscreen:(NSNumber *)fullscreen {
+    [self repositionSecurityMethodAccessoryViewForFullscreen:[fullscreen boolValue]];
+}
+- (void)repositionSecurityMethodAccessoryViewForFullscreen:(BOOL)fullscreen {
+    // If backEndDidLoadInitialContent was not called yet, accessory view
+    // is not yet available.
+    // In that case, exit since we're gonna be called again.
+    GPGTitlebarAccessoryView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
+    if(!accessoryView)
+        return;
+    NSRect frame = accessoryView.frame;
+    float originalY = [[self getIvar:@"AccessoryViewOriginalY"] floatValue];
+    if(fullscreen) {
+        frame.origin.y = originalY - 51.0f;
+        frame.origin.x -= 14.0f;
+        accessoryView.frame = frame;
+    }
+    else {
+        NSWindow *window = [self valueForKey:@"_window"];
+        [accessoryView retain];
+        [accessoryView removeFromSuperview];
+        [accessoryView release];
+        [window addAccessoryView:accessoryView];
+        accessoryView.hidden = NO;
+    }
+    accessoryView.fullscreen = fullscreen;
+}
 
-- (id)MAWindowForMailFullScreen {
-    [self hideSecurityMethodHintAccessoryView];
-    return [self MAWindowForMailFullScreen];
+- (void)didExitFullScreen:(NSNotification *)notification {
+    [self performSelectorOnMainThread:@selector(_repositionSecurityMethodAccessoryViewForFullscreen:) withObject:[NSNumber numberWithBool:NO] waitUntilDone:NO];
+}
+
+- (void)removeSecurityMethodAccessoryView {
+    GPGTitlebarAccessoryView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
+    accessoryView.hidden = YES;
+    [accessoryView setNeedsDisplay:YES];
 }
 
 - (void)updateSecurityMethodHighlight {
@@ -83,6 +115,7 @@
 - (void)MABackEndDidLoadInitialContent:(id)content {
     [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyringUpdated:) name:GPGMailKeyringUpdatedNotification object:nil];
     [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] addObserver:self selector:@selector(updateSecurityHintFromNotification:) name:@"SecurityMethodDidChangeNotification" object:nil];
+    [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didExitFullScreen:) name:@"NSWindowDidExitFullScreenNotification" object:nil];
     
     // Setup security method hint accessory view in top right corner of the window.
     [self setupSecurityMethodHintAccessoryView];
@@ -98,7 +131,7 @@
 
 - (void)setupSecurityMethodHintAccessoryView {
     GPGTitlebarAccessoryView *accessoryView = [[GPGTitlebarAccessoryView alloc] initWithFrame:NSMakeRect(0.0, 0.0, 80.0f, 17.0f)];
-    
+    accessoryView.autoresizingMask = NSViewMinYMargin | NSViewMinXMargin;
     // Save accessoryView to hide and display it on demand.
     [self setIvar:@"SecurityMethodHintAccessoryView" value:accessoryView];
     NSPopUpButton *securityMethodHintPopUp = [self securityMethodHintPopUp];
@@ -120,6 +153,13 @@
     [window addAccessoryView:accessoryView];
     // Hide the accessory view per default.
     accessoryView.color = 0;
+    
+    // Store original accessory view frame y position, to restore after exiting
+    // full screen.
+    [self setIvar:@"AccessoryViewOriginalY" value:[NSNumber numberWithFloat:accessoryView.frame.origin.y]];
+    
+    if([window isModal])
+        [self repositionSecurityMethodAccessoryViewForFullscreen:YES];
     
     [accessoryView release];
 }
@@ -145,11 +185,6 @@
     
     imageView.frame = arrowFrame;
     securityMethodHintPopUp.frame = frame;
-}
-
-- (void)hideSecurityMethodHintAccessoryView {
-    NSView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
-    [accessoryView setHidden:YES];
 }
 
 - (void)updateSecurityMethodHint:(GPGMAIL_SECURITY_METHOD)securityMethod {

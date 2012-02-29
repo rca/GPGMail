@@ -33,7 +33,7 @@
 
 @implementation GPGTitlebarAccessoryView
 
-@synthesize color = _color;
+@synthesize color = _color, fullscreen = _fullscreen;
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -50,7 +50,8 @@
     NSRect rect = [self bounds];
     rect.origin = NSMakePoint(0, 0);  
     float cornerRadius = 4.0f;
-    NSBezierPath* path = [NSBezierPath bezierPathWithRoundedRect:rect inCorners:KBTopRightCorner | KBBottomLeftCorner cornerRadius:cornerRadius flipped:NO];
+    KBCornerType corners = self.fullscreen ? (KBTopLeftCorner | KBBottomLeftCorner | KBTopRightCorner | KBBottomRightCorner) : (KBTopRightCorner | KBBottomLeftCorner);
+    NSBezierPath* path = [NSBezierPath bezierPathWithRoundedRect:rect inCorners:corners cornerRadius:cornerRadius flipped:NO];
     
     NSGradient *gradient = nil;
     NSUInteger greenStartColor = 128.0f;
@@ -102,11 +103,11 @@
 
 - (void)setColor:(NSUInteger)color {
     _color = color;
-    // Update the color of the menu.
-//    NSMenu *menu = [[[self subviews] objectAtIndex:0] menu];
-//    for(NSMenuItem *item in menu.itemArray) {
-//        item.attributedTitle = [self coloredTitle:item.title monochrome:!color];
-//    }
+    [self setNeedsDisplay:YES];
+}
+
+- (void)setFullscreen:(BOOL)fullscreen {
+    _fullscreen = fullscreen;
     [self setNeedsDisplay:YES];
 }
 

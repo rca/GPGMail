@@ -31,8 +31,10 @@
 
 @interface GPGTitlebarAccessoryView : NSView {
     NSUInteger _color;
+    BOOL _fullscreen;
 }
 
 @property (nonatomic, assign) NSUInteger color;
+@property (nonatomic, assign) BOOL fullscreen;
 
 @end
