@@ -82,11 +82,18 @@
     NSString *imageName = nil;
     
     if(self.securityTag == SECURITY_BUTTON_SIGN_TAG) {
-        BOOL setSign = [[backEnd getIvar:@"SetSign"] boolValue];
+        BOOL setSign = [backEnd ivarExists:@"ForceSign"] ? [[backEnd getIvar:@"ForceSign"] boolValue] : [[backEnd getIvar:@"SetSign"] boolValue];
+        if(setSign && ![[backEnd getIvar:@"SignIsPossible"] boolValue])
+            setSign = NO;
+        
         imageName = setSign ? SIGN_ON_IMAGE : SIGN_OFF_IMAGE;
     }
     else if(self.securityTag == SECURITY_BUTTON_ENCRYPT_TAG) {
-        BOOL setEncrypt = [[backEnd getIvar:@"SetEncrypt"] boolValue];
+        BOOL setEncrypt = [backEnd ivarExists:@"ForceEncrypt"] ? [[backEnd getIvar:@"ForceEncrypt"] boolValue] : [[backEnd getIvar:@"SetEncrypt"] boolValue];
+        
+        if(setEncrypt && ![[backEnd getIvar:@"EncryptIsPossible"] boolValue])
+            setEncrypt = NO;
+        
         imageName = setEncrypt ? ENCRYPT_LOCK_LOCKED_IMAGE : ENCRYPT_LOCK_UNLOCKED_IMAGE;
     }
     [self.control setImage:[NSImage imageNamed:imageName] forSegment:0];

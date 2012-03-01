@@ -133,6 +133,11 @@ static BOOL gpgMailWorks = NO;
                              @"backEnd:didCancelMessageDeliveryForEncryptionError:",
                              nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"NSWindow", @"class",
+                            [NSArray arrayWithObjects:
+                             @"toggleFullScreen:",
+                             nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MessageContentController", @"class",
                             @"MessageContentController_GPGMail", @"gpgMailClass",
                             [NSArray arrayWithObjects:

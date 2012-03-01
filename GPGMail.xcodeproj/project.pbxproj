@@ -11,6 +11,7 @@
 		1B02D70A13F1E9F00032CFD1 /* NSArray+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D70913F1E9F00032CFD1 /* NSArray+Functional.m */; };
 		1B165C6913D78E3C00CA5D61 /* Libmacgpg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 222C442813C91A330035BEDE /* Libmacgpg.framework */; };
 		1B165C6A13D78E4400CA5D61 /* Libmacgpg.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 222C442813C91A330035BEDE /* Libmacgpg.framework */; };
+		1B2341DE14FEEC8C0007EB64 /* GMSecurityMethodAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2341DD14FEEC8C0007EB64 /* GMSecurityMethodAccessoryView.m */; };
 		1B32AFF713AF827B0072079B /* CCLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B32AFF613AF827B0072079B /* CCLog.m */; };
 		1B34341A107AC4A200F590EF /* MimeBody+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80780838E9B10052F47C /* MimeBody+GPGMail.m */; };
 		1B34341B107AC4A400F590EF /* MimePart+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80790838E9B10052F47C /* MimePart+GPGMail.m */; };
@@ -24,7 +25,6 @@
 		1B45481A14F7D0F0000F1646 /* GMSecurityHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B45481914F7D0F0000F1646 /* GMSecurityHistory.m */; };
 		1B4741D014F550B800F36C54 /* GMSecurityControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4741CF14F550B800F36C54 /* GMSecurityControl.m */; };
 		1B51231E1409345C004D0818 /* MailDocumentEditor+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B51231D1409345C004D0818 /* MailDocumentEditor+GPGMail.m */; };
-		1B512321140935EE004D0818 /* GPGTitlebarAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B512320140935EE004D0818 /* GPGTitlebarAccessoryView.m */; };
 		1B51232514093795004D0818 /* NSBezierPath_KBAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B51232314093795004D0818 /* NSBezierPath_KBAdditions.m */; };
 		1B51232614093795004D0818 /* NSBezierPath+StrokeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B51232414093795004D0818 /* NSBezierPath+StrokeExtensions.m */; };
 		1B6B7DF411CD1C600055F528 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6B7DF311CD1C600055F528 /* Sparkle.framework */; };
@@ -146,6 +146,8 @@
 		1B19E83F13A2AEA4002E59ED /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		1B19E84013A2AEA4002E59ED /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		1B19E84113A2AEA4002E59ED /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1B2341DC14FEEC8C0007EB64 /* GMSecurityMethodAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSecurityMethodAccessoryView.h; sourceTree = "<group>"; };
+		1B2341DD14FEEC8C0007EB64 /* GMSecurityMethodAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSecurityMethodAccessoryView.m; sourceTree = "<group>"; };
 		1B278416139ED89500413F74 /* _AccountDisplayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _AccountDisplayCell.h; sourceTree = "<group>"; };
 		1B278417139ED89500413F74 /* _AddressRectangleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _AddressRectangleView.h; sourceTree = "<group>"; };
 		1B278418139ED89500413F74 /* _AllSignaturesAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _AllSignaturesAccount.h; sourceTree = "<group>"; };
@@ -1264,8 +1266,6 @@
 		1B4741CF14F550B800F36C54 /* GMSecurityControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSecurityControl.m; sourceTree = "<group>"; };
 		1B51231C1409345C004D0818 /* MailDocumentEditor+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MailDocumentEditor+GPGMail.h"; sourceTree = "<group>"; };
 		1B51231D1409345C004D0818 /* MailDocumentEditor+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MailDocumentEditor+GPGMail.m"; sourceTree = "<group>"; };
-		1B51231F140935EE004D0818 /* GPGTitlebarAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPGTitlebarAccessoryView.h; sourceTree = "<group>"; };
-		1B512320140935EE004D0818 /* GPGTitlebarAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPGTitlebarAccessoryView.m; sourceTree = "<group>"; };
 		1B51232314093795004D0818 /* NSBezierPath_KBAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBezierPath_KBAdditions.m; sourceTree = "<group>"; };
 		1B51232414093795004D0818 /* NSBezierPath+StrokeExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBezierPath+StrokeExtensions.m"; sourceTree = "<group>"; };
 		1B512328140937C1004D0818 /* NSBezierPath_KBAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSBezierPath_KBAdditions.h; sourceTree = "<group>"; };
@@ -2654,6 +2654,8 @@
 			isa = PBXGroup;
 			children = (
 				1B51232214093750004D0818 /* NSBezierPathAdditions */,
+				1B4741CF14F550B800F36C54 /* GMSecurityControl.m */,
+				1B2341DD14FEEC8C0007EB64 /* GMSecurityMethodAccessoryView.m */,
 				1B8C01D413E4F12D00DB9FA4 /* GPGSignatureView.m */,
 				559A80710838E9B10052F47C /* GPGMailPreferences.m */,
 				1B3F2F9D13E59639006A8333 /* ComposeBackEnd+GPGMail.m */,
@@ -2667,10 +2669,8 @@
 				559A80900838EA1C0052F47C /* NSPreferences+GPGMail.m */,
 				1B89E21514FC40F00012D4AD /* NSWindow+GPGMail.m */,
 				1B3F2F9513E58F1D006A8333 /* GPGTextAttachmentCell.m */,
-				1B512320140935EE004D0818 /* GPGTitlebarAccessoryView.m */,
 				1B3F2F9813E58FD3006A8333 /* NSAttributedString+GPGMail.m */,
 				1BC4778C1468AA4F0061120C /* GPGAttachmentController.m */,
-				1B4741CF14F550B800F36C54 /* GMSecurityControl.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -2707,6 +2707,8 @@
 			isa = PBXGroup;
 			children = (
 				1B512327140937A7004D0818 /* NSBezierPathAdditions */,
+				1B4741CE14F550B700F36C54 /* GMSecurityControl.h */,
+				1B2341DC14FEEC8C0007EB64 /* GMSecurityMethodAccessoryView.h */,
 				1BC4778B1468AA4E0061120C /* GPGAttachmentController.h */,
 				1B8C01D313E4F11D00DB9FA4 /* GPGSignatureView.h */,
 				559A80550838E8300052F47C /* GPGMailPreferences.h */,
@@ -2721,7 +2723,6 @@
 				559A80680838E8890052F47C /* NSPreferences+GPGMail.h */,
 				1B89E21414FC40F00012D4AD /* NSWindow+GPGMail.h */,
 				1B3F2F9413E58F1C006A8333 /* GPGTextAttachmentCell.h */,
-				1B51231F140935EE004D0818 /* GPGTitlebarAccessoryView.h */,
 				1B3F2F9713E58FD2006A8333 /* NSAttributedString+GPGMail.h */,
 			);
 			name = UI;
@@ -2738,7 +2739,6 @@
 				1BBEF49A13A9115E0037E53D /* NSSet+Functional.h */,
 				559A80600838E8300052F47C /* NSString+GPGMail.h */,
 				1B3F2F9313E58D66006A8333 /* NSObject+LPDynamicIvars.h */,
-				1B4741CE14F550B700F36C54 /* GMSecurityControl.h */,
 				1B45481814F7D0F0000F1646 /* GMSecurityHistory.h */,
 				1BF69D801405DDCD008B07F5 /* GPGConstants.h */,
 			);
@@ -3085,7 +3085,6 @@
 				1BF69D7F1405C04E008B07F5 /* HeadersEditor+GPGMail.m in Sources */,
 				1BB3DCCE1407F1CA00870DEB /* LibraryStore+GPGMail.m in Sources */,
 				1B51231E1409345C004D0818 /* MailDocumentEditor+GPGMail.m in Sources */,
-				1B512321140935EE004D0818 /* GPGTitlebarAccessoryView.m in Sources */,
 				1B51232514093795004D0818 /* NSBezierPath_KBAdditions.m in Sources */,
 				1B51232614093795004D0818 /* NSBezierPath+StrokeExtensions.m in Sources */,
 				1BC4778D1468AA4F0061120C /* GPGAttachmentController.m in Sources */,
@@ -3094,6 +3093,7 @@
 				1B4741D014F550B800F36C54 /* GMSecurityControl.m in Sources */,
 				1B45481A14F7D0F0000F1646 /* GMSecurityHistory.m in Sources */,
 				1B89E21614FC40F00012D4AD /* NSWindow+GPGMail.m in Sources */,
+				1B2341DE14FEEC8C0007EB64 /* GMSecurityMethodAccessoryView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

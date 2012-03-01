@@ -37,30 +37,24 @@
 @implementation ComposeBackEnd_GPGMail
 
 - (void)MASetEncryptIfPossible:(BOOL)encryptIfPossible {
-    // This method is not only called, when the user clicks the encrypt button,
-    // but also when a new message is loaded.
-    // This causes the message to always be in a "has changed" state and sometimes
-    // keeps existing as a draft, even after sending the message.
-    // To prevent this GPGMail uses the entry point -[HeadersEditor securityControlChanged:]
-    // which is triggered whenever the user clicks the encrypt button.
-    // In that entry point a variable is set on the backend, shouldUpdateHasChanges.
-    // Only if that variable is found, the has changes property of the backEnd is actually
-    // updated.
-    
-//    if(self.securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
-//        if([self ivarExists:@"shouldUpdateHasChanges"] && ![(ComposeBackEnd *)self hasChanges]) {
-//            [(ComposeBackEnd *)self setHasChanges:YES];
-//            [self removeIvar:@"shouldUpdateHasChanges"];
-//        }
-//        [self setIvar:@"shouldEncrypt" value:[NSNumber numberWithBool:encryptIfPossible]];
-//    }
     if([self ivarExists:@"SetEncrypt"]) {
         encryptIfPossible = [[self getIvar:@"SetEncrypt"] boolValue];
     }
-    if([self ivarExists:@"ForceEncrypt"])
-        encryptIfPossible = [[self getIvar:@"ForceEncrypt"] boolValue];
     
-    //if([[self getIvar:@"ForceSetEncrypt"] boolValue])
+    // Force Encrypt contains the user choice.
+    // It overrides SetEncrypt, which is checked when
+    // displaying the correct image, so it has to
+    // be reset, if ForceSign is set, otherwise the wrong
+    // image could be shown.
+    if([self ivarExists:@"ForceEncrypt"]) {
+        encryptIfPossible = [[self getIvar:@"ForceEncrypt"] boolValue];
+        [self setIvar:@"SetEncrypt" value:[NSNumber numberWithBool:encryptIfPossible]];
+    }
+    // If SetEncrypt and CanEncrypt don't match, use CanEncrypt,
+    // since that's more important.
+    if(![[self getIvar:@"EncryptIsPossible"] boolValue])
+        encryptIfPossible = NO;
+    
     [self setIvar:@"shouldEncrypt" value:[NSNumber numberWithBool:encryptIfPossible]];
     [self MASetEncryptIfPossible:encryptIfPossible];
     [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
@@ -71,8 +65,21 @@
         signIfPossible = [[self getIvar:@"SetSign"] boolValue];
     }
 
-    if([self ivarExists:@"ForceSign"])
+    // Force Sign contains the user choice.
+    // It overrides SetSign, which is checked when
+    // displaying the correct image, so it has to
+    // be reset, if ForceSign is set, otherwise the wrong
+    // image could be shown.
+    if([self ivarExists:@"ForceSign"]) {
         signIfPossible = [[self getIvar:@"ForceSign"] boolValue];
+        [self setIvar:@"SetSign" value:[NSNumber numberWithBool:signIfPossible]];
+    }
+    
+    // If SetSign and CanSign don't match, use CanSign,
+    // since that's more important.
+    if(![[self getIvar:@"SignIsPossible"] boolValue])
+        signIfPossible = NO;
+    
     [self setIvar:@"shouldSign" value:[NSNumber numberWithBool:signIfPossible]];
     [self MASetSignIfPossible:signIfPossible];
     [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
@@ -182,8 +189,7 @@
 											  helpTag:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:localizedDescription,
 																	@"NSLocalizedDescription", titleDescription, @"_MFShortDescription", nil]];
 
-			[(MailDocumentEditor *)[(ComposeBackEnd *)self delegate] backEnd:self didCancelMessageDeliveryForEncryptionError:error];
-			
+			[self performSelectorOnMainThread:@selector(didCancelMessageDeliveryForError:) withObject:error waitUntilDone:NO];
 		}
         return nil;
 	}
@@ -253,6 +259,11 @@
         [GMSecurityHistory addEntryForSender:((ComposeBackEnd *)self).sender recipients:[((ComposeBackEnd *)self) allRecipients] securityMethod:GPGMAIL_SECURITY_METHOD_OPENPGP didSign:shouldPGPSign didEncrypt:shouldPGPEncrypt];
     
     return outgoingMessage;
+}
+
+
+- (void)didCancelMessageDeliveryForError:(NSError *)error {
+    [(MailDocumentEditor *)[(ComposeBackEnd *)self delegate] backEnd:self didCancelMessageDeliveryForEncryptionError:error];
 }
 
 - (void)_addGPGFlaggedStringsToHeaders:(NSMutableDictionary *)headers forEncrypting:(BOOL)forEncrypting forSigning:(BOOL)forSigning {
@@ -607,7 +618,7 @@
 - (id)MARecipientsThatHaveNoKeyForEncryption {
     GPGMAIL_SECURITY_METHOD securityMethod = self.guessedSecurityMethod;
     if(self.securityMethod)
-        securityMethod = self.guessedSecurityMethod;
+        securityMethod = self.securityMethod;
     
     if(securityMethod == GPGMAIL_SECURITY_METHOD_SMIME)
         return [self MARecipientsThatHaveNoKeyForEncryption];

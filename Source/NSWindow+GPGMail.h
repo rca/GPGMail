@@ -37,4 +37,21 @@
  */
 - (void)addAccessoryView:(NSView *)accessoryView;
 
+/**
+ Positions the accessory view at the top right of the theme frame.
+ */
+- (void)positionAccessoryView:(NSView *)accessoryView;
+
+/**
+ Centers an accessory view horizontally in the theme frame.
+ */
+- (void)centerAccessoryView:(NSView *)accessoryView;
+
+/**
+ Is called by Mail.app whenever the user clicks the fullscreen toggle button.
+ This method is injected for immediately hiding any accessory views in any document
+ editors, so there's no glitch in the fullscreen to normal window animation.
+ */
+- (void)MAToggleFullScreen:(id)sender;
+
 @end

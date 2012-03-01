@@ -27,11 +27,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import "CCLog.h"
+#import "MailDocumentEditor.h"
+#import "MailDocumentEditor+GPGMail.h"
 #import "NSWindow+GPGMail.h"
 
 @implementation NSWindow (GPGMail)
 
 - (void)addAccessoryView:(NSView *)accessoryView {
+    NSView *themeFrame = [[self contentView] superview];
+    [self positionAccessoryView:accessoryView];
+    [themeFrame addSubview:accessoryView];
+}
+
+- (void)positionAccessoryView:(NSView *)accessoryView {
     NSView *themeFrame = [[self contentView] superview];
     NSRect c = [themeFrame frame];	// c for "container"
     NSRect aV = [accessoryView frame];	// aV for "accessory view"
@@ -46,7 +55,28 @@
                                  aV.size.height);	// height
     
     [accessoryView setFrame:newFrame];
-    [themeFrame addSubview:accessoryView];
+}
+
+- (void)centerAccessoryView:(NSView *)accessoryView {
+    NSView *themeFrame = [[self contentView] superview];
+    NSRect c = [themeFrame frame];	// c for "container"
+    NSRect aV = [accessoryView frame];	// aV for "accessory view"
+    // 4 point from the top, 6.0px from the very right.
+    //NSPoint offset = NSMakePoint(6.0f, 4.0f);
+    NSPoint offset = NSMakePoint(-0.0f, -0.0f);
+    aV.origin.x = floorf((c.size.width - aV.size.width) / 2.0f);
+    [accessoryView setFrame:aV];
+}
+
+- (void)MAToggleFullScreen:(id)sender {
+    // Loop through all document editors and remove the security method
+    // accessory view, so there's no animation glitch.
+    DebugLog(@"Toggle fullscreen: remove security method accessory view");
+    for(MailDocumentEditor *editor in [NSClassFromString(@"MailDocumentEditor") documentEditors]) {
+        if(editor.isModal)
+            [((MailDocumentEditor_GPGMail *)editor) hideSecurityMethodAccessoryView];
+    }
+    [self MAToggleFullScreen:sender];
 }
 
 @end

@@ -27,11 +27,74 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import "GMSecurityMethodAccessoryView.h"
 #import "ComposeBackEnd+GPGMail.h"
 
-@interface MailDocumentEditor_GPGMail : NSObject <NSMenuDelegate>
+@interface MailDocumentEditor_GPGMail : NSObject <NSMenuDelegate, GMSecurityMethodAccessoryViewDelegate>
 
+/**
+ Is called if the user exits fullscreen.
+ Calls the method to re-configure the security method accessory view for normal mode.
+ */
+- (void)didExitFullScreen:(NSNotification *)notification;
+
+/**
+ Re-configures the security method accessory view for normal mode.
+ */
+- (void)configureSecurityMethodAccessoryViewForNormalMode;
+
+/**
+ The backend calls this method from setSignIfPossible and setEncryptIfPossible
+ to reflect the chosen security method and sign and encrypt status.
+ 
+ Updates the security method accessory view, the sender selector to add
+ additional keys for OpenPGP if necessary. 
+ */
 - (void)updateSecurityMethodHighlight;
+
+/**
+ Is called when the MailDocumentEditor receives a SecurityMethodDidChangeNotification
+ which is posted by the back end once a user sets the security method.
+ */
+- (void)updateSecurityMethodFromNotification:(NSNotification *)notification;
+
+/**
+ Updates the security method accessory view to show the new security method.
+ YEAH, this doesn't make sense. Let's investigate!
+ */
+- (void)updateSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod;
+
+/**
+ Is injected to setup notifications and security method accessory view
+ once the document editor almost finished loading.
+ */
+- (void)MABackEndDidLoadInitialContent:(id)content;
+
+/**
+ Setup the security method accessory view and add it to the theme frame.
+ */
+- (void)setupSecurityMethodHintAccessoryView;
+
+/**
+ Called from NSWindow toggleFullScreen: to hide the accessory view.
+ */
+- (void)hideSecurityMethodAccessoryView;
+
+/**
+ Forces an update of the security controls if new keys arrive.
+ */
+- (void)keyringUpdated:(NSNotification *)notification;
+
+/**
+ Delegate method which is used by the security method accessory view to inform
+ the delegate that the user changed the security method.
+ */
+- (void)securityMethodAccessoryView:(GMSecurityMethodAccessoryView *)accessoryView didChangeSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod;
+
+/**
+ Inject to un-observe any notifications.
+ */
+- (void)MADealloc;
 
 /**
  Entry point to add the title bar accessory view.
@@ -39,7 +102,6 @@
 - (void)MABackEndDidLoadInitialContent:(id)content;
 
 - (void)keyringUpdated:(NSNotification *)notification;
-- (void)changeSecurityMethod:(id)sender;
 
 /**
  Is called when a SecurityMethodDidChangeNotification is posted.
