@@ -35,8 +35,10 @@
 
 + (GPGMAIL_SECURITY_METHOD)defaultSecurityMethod {
     GPGMAIL_SECURITY_METHOD securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
-    if([[GPGOptions sharedOptions] integerForKey:@"DefaultSecurityMethod"])
+    if([[GPGOptions sharedOptions] integerForKey:@"DefaultSecurityMethod"]) {
         securityMethod = [[GPGOptions sharedOptions] integerForKey:@"DefaultSecurityMethod"];
+        DebugLog(@"Default Security Method is: %@", securityMethod != 0 && securityMethod == GPGMAIL_SECURITY_METHOD_SMIME ? @"S/MIME" : @"OpenPGP");
+    }
     return securityMethod;
 }
 
