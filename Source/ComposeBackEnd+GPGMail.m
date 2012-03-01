@@ -614,7 +614,7 @@
 - (id)MARecipientsThatHaveNoKeyForEncryption {
     GPGMAIL_SECURITY_METHOD securityMethod = self.guessedSecurityMethod;
     if(self.securityMethod)
-        securityMethod = self.guessedSecurityMethod;
+        securityMethod = self.securityMethod;
     
     if(securityMethod == GPGMAIL_SECURITY_METHOD_SMIME)
         return [self MARecipientsThatHaveNoKeyForEncryption];
