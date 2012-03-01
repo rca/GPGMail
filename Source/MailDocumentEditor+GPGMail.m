@@ -75,11 +75,6 @@
     [[((MailDocumentEditor *)self) headersEditor] fromHeaderDisplaySecretKeys:(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? YES : NO)];
 }
 
-- (void)updateSecurityMethodFromNotification:(NSNotification *)notification {
-    NSNumber *securityMethod = [[notification userInfo] valueForKey:@"SecurityMethod"];
-    [self updateSecurityMethod:[securityMethod unsignedIntValue]];
-}
-
 - (void)updateSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
     GMSecurityMethodAccessoryView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
     accessoryView.securityMethod = securityMethod;
@@ -87,7 +82,6 @@
 
 - (void)MABackEndDidLoadInitialContent:(id)content {
     [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyringUpdated:) name:GPGMailKeyringUpdatedNotification object:nil];
-    [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] addObserver:self selector:@selector(updateSecurityMethodFromNotification:) name:@"SecurityMethodDidChangeNotification" object:nil];
     [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didExitFullScreen:) name:@"NSWindowDidExitFullScreenNotification" object:nil];
     
     // Setup security method hint accessory view in top right corner of the window.

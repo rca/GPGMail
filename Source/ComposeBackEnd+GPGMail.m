@@ -37,30 +37,17 @@
 @implementation ComposeBackEnd_GPGMail
 
 - (void)MASetEncryptIfPossible:(BOOL)encryptIfPossible {
-    // This method is not only called, when the user clicks the encrypt button,
-    // but also when a new message is loaded.
-    // This causes the message to always be in a "has changed" state and sometimes
-    // keeps existing as a draft, even after sending the message.
-    // To prevent this GPGMail uses the entry point -[HeadersEditor securityControlChanged:]
-    // which is triggered whenever the user clicks the encrypt button.
-    // In that entry point a variable is set on the backend, shouldUpdateHasChanges.
-    // Only if that variable is found, the has changes property of the backEnd is actually
-    // updated.
-    
-//    if(self.securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
-//        if([self ivarExists:@"shouldUpdateHasChanges"] && ![(ComposeBackEnd *)self hasChanges]) {
-//            [(ComposeBackEnd *)self setHasChanges:YES];
-//            [self removeIvar:@"shouldUpdateHasChanges"];
-//        }
-//        [self setIvar:@"shouldEncrypt" value:[NSNumber numberWithBool:encryptIfPossible]];
-//    }
     if([self ivarExists:@"SetEncrypt"]) {
         encryptIfPossible = [[self getIvar:@"SetEncrypt"] boolValue];
     }
     if([self ivarExists:@"ForceEncrypt"])
         encryptIfPossible = [[self getIvar:@"ForceEncrypt"] boolValue];
     
-    //if([[self getIvar:@"ForceSetEncrypt"] boolValue])
+    // If SetEncrypt and CanEncrypt don't match, use CanEncrypt,
+    // since that's more important.
+    if(![[self getIvar:@"EncryptIsPossible"] boolValue])
+        encryptIfPossible = NO;
+    
     [self setIvar:@"shouldEncrypt" value:[NSNumber numberWithBool:encryptIfPossible]];
     [self MASetEncryptIfPossible:encryptIfPossible];
     [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
@@ -73,6 +60,12 @@
 
     if([self ivarExists:@"ForceSign"])
         signIfPossible = [[self getIvar:@"ForceSign"] boolValue];
+    
+    // If SetSign and CanSign don't match, use CanSign,
+    // since that's more important.
+    if(![[self getIvar:@"SignIsPossible"] boolValue])
+        signIfPossible = NO;
+    
     [self setIvar:@"shouldSign" value:[NSNumber numberWithBool:signIfPossible]];
     [self MASetSignIfPossible:signIfPossible];
     [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];

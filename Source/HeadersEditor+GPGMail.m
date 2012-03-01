@@ -236,17 +236,12 @@
 }
 
 - (void)securityMethodDidChange:(NSNotification *)notification {
-	NSInteger securityMethod = [[[notification userInfo] objectForKey:@"SecurityMethod"] integerValue];
-    NSNumber *display = [NSNumber numberWithBool:securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? YES : NO];
-    
     GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
     GMSecurityControl *encryptControl = [self valueForKey:@"_encryptButton"];
     
     // Reset the controls if the security method changes.
     signControl.forcedImageName = nil;
     encryptControl.forcedImageName = nil;
-    
-    [self performSelectorOnMainThread:@selector(_fromHeaderDisplaySecretKeys:) withObject:display waitUntilDone:NO];
 }
 
 - (void)keyringUpdated:(NSNotification *)notification {
