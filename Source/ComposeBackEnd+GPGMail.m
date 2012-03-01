@@ -40,9 +40,16 @@
     if([self ivarExists:@"SetEncrypt"]) {
         encryptIfPossible = [[self getIvar:@"SetEncrypt"] boolValue];
     }
-    if([self ivarExists:@"ForceEncrypt"])
-        encryptIfPossible = [[self getIvar:@"ForceEncrypt"] boolValue];
     
+    // Force Encrypt contains the user choice.
+    // It overrides SetEncrypt, which is checked when
+    // displaying the correct image, so it has to
+    // be reset, if ForceSign is set, otherwise the wrong
+    // image could be shown.
+    if([self ivarExists:@"ForceEncrypt"]) {
+        encryptIfPossible = [[self getIvar:@"ForceEncrypt"] boolValue];
+        [self setIvar:@"SetEncrypt" value:[NSNumber numberWithBool:encryptIfPossible]];
+    }
     // If SetEncrypt and CanEncrypt don't match, use CanEncrypt,
     // since that's more important.
     if(![[self getIvar:@"EncryptIsPossible"] boolValue])
@@ -58,8 +65,15 @@
         signIfPossible = [[self getIvar:@"SetSign"] boolValue];
     }
 
-    if([self ivarExists:@"ForceSign"])
+    // Force Sign contains the user choice.
+    // It overrides SetSign, which is checked when
+    // displaying the correct image, so it has to
+    // be reset, if ForceSign is set, otherwise the wrong
+    // image could be shown.
+    if([self ivarExists:@"ForceSign"]) {
         signIfPossible = [[self getIvar:@"ForceSign"] boolValue];
+        [self setIvar:@"SetSign" value:[NSNumber numberWithBool:signIfPossible]];
+    }
     
     // If SetSign and CanSign don't match, use CanSign,
     // since that's more important.
