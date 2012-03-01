@@ -8,8 +8,6 @@
 	<array/>
 	<key>CFBundleExecutable</key>
 	<string>GPGMail</string>
-	<key>CFBundleGetInfoString</key>
-	<string>GPGMail version BUNDLE_VERSION, Copyright 2000-2011, GPGTools Project Team.</string>
 	<key>CFBundleIconFile</key>
 	<string>GPGMail.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -21,17 +19,19 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>BUNDLE_VERSION</string>
+	<string>AUTOFILL</string>
 	<key>CFBundleVersion</key>
-	<string>BUILD_NUMBER</string>
+	<string>AUTOFILL</string>
+	<key>GMCommitHash</key>
+	<string>AUTOFILL</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright 2000-2011, GPGTools Project Team</string>
+	<string>Copyright © GPGTools Project Team, 2012</string>
 	<key>NSPrincipalClass</key>
 	<string>GPGMailBundle</string>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>SPARKLE_URL</string>
+	<string>http://www.gpgtools.org/gpgmail/appcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 	<key>SUScheduledCheckInterval</key>

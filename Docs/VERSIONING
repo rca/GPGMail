@@ -1,0 +1,13 @@
+
+CFBundleShortVersionString contains the human readable version in the form of "MAJOR.MINOR[PRERELEASE]"
+Samples: 2.0a30, 2.1, 2.1.2b3
+
+CFBundleVersion contains the build time in hours since 2000 and the PRERELEASE suffix. "HOURS[ (PRERELEASE)]"
+HOURS="$(($(date +"%s") / 3600 - 262968))"
+Samples: 106645, 106750 (b15)
+
+GMCommitHash contains the first 7 characters from the git commit hash. 
+GMCommitHash="$(git rev-parse --short HEAD)"
+Sample: e9021cb
+
+These values are filled by a post-build-action.
