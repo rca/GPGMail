@@ -215,14 +215,17 @@
     // Only reset the status if this method is called from a user generated event.
     // Otherwise there's a notification loop, because the security method is set and reset again 
     // and again.
-    // Also don't reset it, if the user chose the security method beforehand or the message is a 
-    // reply, since in that case, the security method is set by the way it was signed or encrypted!
-    if(!calledFromGPGMail && !((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).userDidChooseSecurityMethod && !((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).messageIsBeingReplied) {
+    // Also don't reset it, if the user chose the security method beforehand.
+    if(!calledFromGPGMail && !((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).userDidChooseSecurityMethod) {
         ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod = 0;
-
+    }
+    
+    // Reset the sign and encrypt control if the sender
+    // is by the user.
+    if(!calledFromGPGMail) {
         GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
         GMSecurityControl *encryptControl = [self valueForKey:@"_encryptButton"];
-
+        
         // Reset the controls if the security method changes.
         signControl.forcedImageName = nil;
         encryptControl.forcedImageName = nil;
