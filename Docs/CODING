@@ -109,3 +109,11 @@ _getSomeCharsetFromPartTree -> exists only internally
     [address][encrypt][addresses][last-used-method] = 'SMIME' | 'PGP'
     [address][encrypt][addresses][last-status] = 'did encrypt' | 'did not encrypt'
 
+* Indexing encrypted messages
+
+Message.h
+
+- (id)stringForIndexing;
+- (id)stringForIndexingUpdatingBodyFlags:(BOOL)arg1;
+
+might be relevant.
