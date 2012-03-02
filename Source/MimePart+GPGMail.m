@@ -1423,11 +1423,16 @@
     // Eventually add warning for this.
     gpgc.trustAllKeys = YES;
     gpgc.printVersion = YES;
+    
 	[gpgc setSignerKey:keyForSigning];
-	
+    
+    GPGHashAlgorithm hashAlgorithm = 0;
+	NSString *hashAlgorithmName = nil;
+    
     @try {
         *signatureData = [gpgc processData:data withEncryptSignMode:GPGDetachedSign recipients:nil hiddenRecipients:nil];
-       
+        hashAlgorithm = gpgc.hashAlgorithm;
+        
 		if (gpgc.error) {
 			@throw gpgc.error;
 		}
@@ -1446,13 +1451,18 @@
     @catch(NSException *e) {
 		[self failedToSignForSender:sender gpgErrorCode:1];
         return nil;
-//      DebugLog(@"[DEBUG] %s sign error: %@", __PRETTY_FUNCTION__, e);
-//		@throw e;
     }
     @finally {
         [gpgc release];
     }
 
+    if(hashAlgorithm) {
+        hashAlgorithmName = [GPGController nameForHashAlgorithm:hashAlgorithm];
+    }
+    else {
+        hashAlgorithmName = @"sha1";
+    }
+    
     // This doesn't work for PGP Inline,
     // But actually the signature could be created inline
     // Just the same way the pgp/signature is created and later
@@ -1461,7 +1471,7 @@
     [topPart setType:@"multipart"];
     [topPart setSubtype:@"signed"];
     // TODO: sha1 the right algorithm?
-    [topPart setBodyParameter:@"pgp-sha1" forKey:@"micalg"];
+    [topPart setBodyParameter:[NSString stringWithFormat:@"pgp-%@", hashAlgorithmName] forKey:@"micalg"];
     [topPart setBodyParameter:@"application/pgp-signature" forKey:@"protocol"];
 
     MimePart *signaturePart = [[MimePart alloc] init];
