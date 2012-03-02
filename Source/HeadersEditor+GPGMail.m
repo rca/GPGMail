@@ -88,6 +88,7 @@
     // update the state 'cause we're right in the middle of that.
     @try {
         [[self getIvar:@"SecurityStateLock"] lock];
+        [self resetSecurityButtons];
         [self MA_updateSecurityStateInBackgroundForRecipients:recipients sender:sender];
     }
     @catch (id e) {
@@ -223,25 +224,25 @@
     // Reset the sign and encrypt control if the sender
     // is by the user.
     if(!calledFromGPGMail) {
-        GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
-        GMSecurityControl *encryptControl = [self valueForKey:@"_encryptButton"];
-        
-        // Reset the controls if the security method changes.
-        signControl.forcedImageName = nil;
-        encryptControl.forcedImageName = nil;
+        [self resetSecurityButtons];
     }
     
     [self MAChangeFromHeader:button/*sender*/];
     [button release];
 }
 
-- (void)securityMethodDidChange:(NSNotification *)notification {
+- (void)resetSecurityButtons {
     GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
     GMSecurityControl *encryptControl = [self valueForKey:@"_encryptButton"];
     
     // Reset the controls if the security method changes.
     signControl.forcedImageName = nil;
     encryptControl.forcedImageName = nil;
+}
+
+- (void)securityMethodDidChange:(NSNotification *)notification {
+    // Reset the controls if the security method changes.
+    [self resetSecurityButtons];
 }
 
 - (void)keyringUpdated:(NSNotification *)notification {

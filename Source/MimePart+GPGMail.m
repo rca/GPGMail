@@ -637,9 +637,11 @@
     }
     else {
         GPGErrorCode errorCode = GPGErrorNoError;
+        GPGSignature *signatureWithError = nil;
         for(GPGSignature *signature in gpgc.signatures) {
             if(signature.status != GPGErrorNoError) {
                 errorCode = signature.status;
+                signatureWithError = signature;
                 break;
             }
         }
@@ -647,15 +649,21 @@
         
         switch (errorCode) {
             case GPGErrorNoPublicKey:
-                title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_PUBKEY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
-                message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_PUBKEY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+                title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+                message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+                message = [NSString stringWithFormat:message, signatureWithError.fingerprint];
                 break;
             
             case GPGErrorUnknownAlgorithm:
                 title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
                 message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
                 break;
-
+            
+            case GPGErrorCertificateRevoked:
+                title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+                message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+                message = [NSString stringWithFormat:message, signatureWithError.fingerprint];
+                break;
 #warning SignatureExpired, KeyExpired, Certificate revoked are only warnings (Should be displayed in the Security header, not as an actual error.
             
             case GPGErrorBadSignature:
@@ -664,6 +672,9 @@
                 break;
             
             default:
+                // Set errorFound to 0 for Key expired and signature expired.
+                // Those are warnings, not actually errors. Should only be displayed in the signature view.
+                errorFound = 0;
                 break;
         }
     }
@@ -1349,6 +1360,7 @@
 		}
     }
     @catch(NSException *e) {
+#warning TODO - use correct error mesage.
         [self failedToSignForSender:@"t@t.com" gpgErrorCode:1];
 //        DebugLog(@"[DEBUG] %s encryption error: %@", __PRETTY_FUNCTION__, e);
         // TODO: Add encryption error handling. (Re-use the dialogs shown for S/MIME

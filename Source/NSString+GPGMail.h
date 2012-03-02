@@ -43,4 +43,9 @@
  */
 - (NSString *)gpgNormalizedEmail;
 
+/**
+ Removes any known pgp extension if any is found.
+ */
+- (NSString *)stringByDeletingPGPExtension;
+
 @end

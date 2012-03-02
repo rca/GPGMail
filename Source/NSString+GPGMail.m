@@ -40,4 +40,13 @@
 	return [[self lowercaseString] uncommentedAddress];
 }
 
+- (NSString *)stringByDeletingPGPExtension {
+    NSArray *PGPExtensions = [NSArray arrayWithObjects:@"pgp", @"gpg", @"asc", nil];
+    NSString *extension = [self pathExtension];
+    if([PGPExtensions containsObject:extension])
+        return [self stringByDeletingPathExtension];
+    
+    return [NSString stringWithString:self];
+}
+
 @end

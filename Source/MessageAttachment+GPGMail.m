@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#import "NSString+GPGMail.h"
 #import "MessageAttachment+GPGMail.h"
 
 @implementation MessageAttachment_GPGMail
@@ -14,7 +15,7 @@
     id filename = [self MAFilename];
     MimePart *part = [((MessageAttachment *)self) mimePart];
     if(part.PGPAttachment && part.PGPDecrypted)
-        return [[filename lastPathComponent] stringByDeletingPathExtension];
+        return [[filename lastPathComponent] stringByDeletingPGPExtension];
     
     return filename;
 }
