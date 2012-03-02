@@ -120,7 +120,9 @@
     [attributes addEntriesFromDictionary:[[[menuItems objectAtIndex:0] attributedTitle] fontAttributesInRange:NSMakeRange(0, [[[menuItems objectAtIndex:0] attributedTitle] length])]];
 	[attributes setObject:truncateStyle forKey:NSParagraphStyleAttributeName];
 	[truncateStyle release];
-    NSMenuItem *item, *parentItem, *selectedItem = [popUp selectedItem];
+    NSMenuItem *item, *parentItem, *selectedItem = [popUp selectedItem], *subItemToSelect = nil;
+	GPGKey *defaultKey = [bundle findSecretKeyByKeyHint:[[GPGOptions sharedOptions] valueInGPGConfForKey:@"default-key"]];
+	BOOL useTitleFromAccount = [[GPGOptions sharedOptions] boolForKey:@"ShowAccountNameForKeysOfSameAddress"];
 	
     // If menu items are not yet set, simply exit.
     // This might happen if securityMethodDidChange notification
@@ -138,7 +140,24 @@
 		if (parentItem) {
 			[menu removeItem:item]; // We remove all elements that represent a key.
 		} else if (display) {
-			NSSet *keys = [bundle signingKeyListForAddress:item.title];
+			NSString *itemTitle = item.title;
+			
+			NSString *email = nil;
+			if (useTitleFromAccount == NO) {
+				// Get the E-Mail from the item title.
+				NSRange range = [itemTitle rangeOfString:@"<"];
+				if (range.length > 0) {
+					range.location++;
+					range.length = itemTitle.length - range.location;
+					NSRange range2 = [itemTitle rangeOfString:@">" options:NSLiteralSearch range:range];
+					if (range2.length > 0) {
+						range.length = range2.location - range.location;
+						email = [itemTitle substringWithRange:range];
+					}
+				}
+			}
+				
+			NSSet *keys = [bundle signingKeyListForAddress:itemTitle];
 			switch ([keys count]) {
 				case 0:
 					// We have no key for this account.
@@ -156,25 +175,37 @@
 					NSInteger index = [menu indexOfItem:item];
 					
 					for (GPGKey *key in keys) {
-						NSMenuItem *nextMenuItem = [menuItems objectAtIndex:i + 1];
-						if (i + 1 < count && [nextMenuItem getIvar:@"parentItem"] && [nextMenuItem getIvar:@"gpgKey"] == key) {
+						NSMenuItem *subItem = [menuItems objectAtIndex:i + 1];
+						if (i + 1 < count && [subItem getIvar:@"parentItem"] && [subItem getIvar:@"gpgKey"] == key) {
 							// The next item is the item we want to create: Jump over.
 							i++;
 							index++;
 						} else {
-							NSString *title = [NSString stringWithFormat:@"%@ (%@)", item.title, key.shortKeyID]; // Compose the title "Name <E-Mail> (KeyID)".
+							NSString *title;
+							if (useTitleFromAccount) {
+								title = [NSString stringWithFormat:@"%@ (%@)", itemTitle, key.shortKeyID]; // Compose the title "Name <E-Mail> (KeyID)".
+							} else {
+								title = [NSString stringWithFormat:@"%@ <%@> (%@)", key.name, email, key.shortKeyID]; // Compose the title "key.Name <E-Mail> (KeyID)".
+							}
+							
 							NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attributes];
 
 							// Create the menu item with the given title...
-							NSMenuItem *newItem = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@""];
-							[newItem setAttributedTitle:attributedTitle];
+							subItem = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@""];
+							[subItem setAttributedTitle:attributedTitle];
                             [attributedTitle release];
-							[newItem setIvar:@"gpgKey" value:key]; // GPGKey...
-							[newItem setIvar:@"parentItem" value:item]; // and set the parentItem.
+							[subItem setIvar:@"gpgKey" value:key]; // GPGKey...
+							[subItem setIvar:@"parentItem" value:item]; // and set the parentItem.
 							
-							[menu insertItem:newItem atIndex:++index]; // Insert it in the "From:" menu.
-                            [newItem release];
+							[menu insertItem:subItem atIndex:++index]; // Insert it in the "From:" menu.
+                            [subItem release];
                         }
+						if (item == selectedItem) {
+							if (key == defaultKey) {
+								subItemToSelect = subItem;
+							}
+						}
+						
 					}
 					item.hidden = YES;
 					break; }
@@ -189,7 +220,13 @@
     // Select a valid item if needed.
     if (selectedItem.isHidden) {
         [popUp setIvar:@"CalledFromGPGMail" value:[NSNumber numberWithBool:YES]];
-        [popUp selectItemAtIndex:[menu indexOfItem:selectedItem] + 1];
+		NSUInteger index;
+		if (subItemToSelect) {
+			index = [menu indexOfItem:subItemToSelect];
+		} else {
+			index = [menu indexOfItem:selectedItem] + 1;
+		}
+        [popUp selectItemAtIndex:index];
         [self changeFromHeader:popUp];
     }
     else if ([popUp selectedItem] != selectedItem) {

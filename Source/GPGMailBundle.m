@@ -812,7 +812,19 @@ static BOOL gpgMailWorks = NO;
     }
     return foundKey;
 }
-                                 
+
+- (GPGKey *)findSecretKeyByKeyHint:(NSString *)hint {
+    GPGKey *foundKey = nil;
+    for(GPGKey *key in self.secretGPGKeys) {
+        if([key.textForFilter rangeOfString:hint].location != NSNotFound) {
+            foundKey = key;
+            break;
+        }
+    }
+    return foundKey;
+}
+
+
 - (BOOL)canKeyBeUsedForEncryption:(GPGKey *)key {
 	// Only either the key or one of the subkeys has to be valid,
     // non-expired, non-disabled, non-revoked and be used for encryption.

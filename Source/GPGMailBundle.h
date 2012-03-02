@@ -183,6 +183,8 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
  key and all subkeys)
  */
 - (GPGKey *)findPublicKeyByKeyHint:(NSString *)hint;
+- (GPGKey *)findSecretKeyByKeyHint:(NSString *)hint;
+
 
 /**
  Create a map for the gpg keys which can be accessed by using
