@@ -261,14 +261,13 @@
         case GPGErrorCertificateRevoked:
             titlePart = NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE", @"GPGMail", gpgMailBundle, @"");
             break;
-#warning SignatureExpired, KeyExpired, Certificate revoked are only warnings (Should be displayed in the Security header, not as an actual error.
             
         case GPGErrorBadSignature:
             titlePart = NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE", @"GPGMail", gpgMailBundle, @"");
             break;
             
         default:
-            NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE", @"GPGMail", gpgMailBundle, @"");
+            titlePart = NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE", @"GPGMail", gpgMailBundle, @"");
             break;
     }
     

@@ -1,0 +1,31 @@
+* Use PGP inline instead of PGP/MIME (EXPERIMENTAL) *
+
+defaults write org.gpgtools.gpgmail UseOpenPGPInlineToSend -bool YES|NO
+
+* Completely disable creating snippets. *
+
+The default behaviour is to generate the preview if the passphrase is in cache
+even if snippet generation is disabled in GPGMail preferences.
+
+This option completely disables it.
+
+defaults write org.gpgtools.gpgmail NeverCreatePreviewSnippets -bool YES|NO
+
+* Set a default security method to prefer. *
+
+By default OpenPGP is preferred if no better option is found.
+Set this option to 2 to force S/MIME. 1 = OpenPGP.
+
+defaults write org.gpgtools.gpgmail DefaultSecurityMethod -int 1|2
+
+* Add a mapping for a missing UID to a public key. *
+
+defaults write org.gpgtools.common PublicKeyUserMap -dict-add email fingerprint
+
+* Enable debug logging. This spills out a LOT of messages. *
+
+defaults write org.gpgtools.gpgmail DebugLog -int 1|0
+
+* Disable OpenPGP for reading messages. *
+
+defaults write org.gpgtools.gpgmail DisableOpenPGPForReading -bool YES|NO
