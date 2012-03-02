@@ -79,7 +79,7 @@
     if(![[self message] shouldBePGPProcessed])
         return [self MA_isPossiblySignedOrEncrypted];
     
-    return [self containsPGPData] || [self MA_isPossiblySignedOrEncrypted];
+    return [self MA_isPossiblySignedOrEncrypted];
 }
 
 - (BOOL)containsPGPEncryptedData {
