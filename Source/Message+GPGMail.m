@@ -231,7 +231,6 @@
         // plain messages with encrypted/signed attachments.
         // Otherwise those would display as signed/encrypted as well.
         if([currentPart isAttachment]) {
-            numberOfAttachments++;
             if(currentPart.PGPAttachment)
                 [pgpAttachments addObject:currentPart];
         }
@@ -248,6 +247,18 @@
             // encrypted & signed & no error = verified.
             // not encrypted & signed & no error = verified.
             isVerified |= currentPart.PGPSigned;
+        }
+        
+        // Count the number of attachments, but ignore signature.asc
+        // and encrypted.asc files, since those are only PGP/MIME attachments
+        // and not actual attachments.
+        // We'll only see those attachments if the 
+        if([currentPart isAttachment]) {
+            if([currentPart isPGPMimeEncryptedAttachment] || [currentPart isPGPMimeSignatureAttachment])
+                return;
+            else {
+                numberOfAttachments++;
+            }
         }
     }];
     
@@ -298,9 +309,9 @@
 #warning Uncomment once number of attachments is implemented.
     // Fix the number of attachments, this time for real!
     // Uncomment once completely implemented.
-    //[[self messageStore] setNumberOfAttachments:0 isSigned:isSigned isEncrypted:isEncrypted forMessage:self];
-    //if(decryptedMessage)
-    //    [[decryptedMessage messageStore] setNumberOfAttachments:0 isSigned:isSigned isEncrypted:isEncrypted forMessage:decryptedMessage];
+    [[self messageStore] setNumberOfAttachments:numberOfAttachments isSigned:isSigned isEncrypted:isEncrypted forMessage:self];
+    if(decryptedMessage)
+        [[decryptedMessage messageStore] setNumberOfAttachments:numberOfAttachments isSigned:isSigned isEncrypted:isEncrypted forMessage:decryptedMessage];
     // Set PGP Info collected so this information is not overwritten.
     self.PGPInfoCollected = YES;
 }

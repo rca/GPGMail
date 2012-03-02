@@ -336,6 +336,23 @@
     return [self MADecodeApplicationOctet_streamWithContext:ctx];
 } 
 
+- (BOOL)isPGPMimeEncryptedAttachment {
+    // application/pgp-encrypted is also considered to be an attachment.
+    if([[self dispositionParameterForKey:@"filename"] isEqualToString:@"encrypted.asc"] || 
+       [self isType:@"application" subtype:@"pgp-encrypted"])
+        return YES;
+    
+    return NO;
+}
+
+- (BOOL)isPGPMimeSignatureAttachment {
+    if([self isType:@"application" subtype:@"pgp-signature"])
+        return YES;
+    
+    return NO;
+}
+
+
 - (id)decodePGPEncryptedAttachment {
     if(self.PGPDecryptedData)
         return [self.PGPDecryptedData length] != 0 ? self.PGPDecryptedData : [self MADecodeApplicationOctet_streamWithContext:nil];

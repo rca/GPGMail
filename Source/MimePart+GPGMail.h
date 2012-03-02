@@ -125,6 +125,18 @@ typedef enum {
  */
 - (id)MADecodeApplicationOctet_streamWithContext:(MFMimeDecodeContext *)ctx;
 
+/**
+ Detects if the attachment is the PGP/MIME encrypted attachment.
+ Important to exclude from the attachment count.
+ */
+- (BOOL)isPGPMimeEncryptedAttachment;
+
+/**
+ Detects if the attachment is the PGP/MIME signature attachment.
+ Important to exclude from the attachment count.
+ */
+- (BOOL)isPGPMimeSignatureAttachment;
+
 - (id)decodePGPEncryptedAttachment;
 - (id)decodePGPSignatureAttachment;
 

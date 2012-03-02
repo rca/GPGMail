@@ -293,6 +293,14 @@
 "MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE" = "Signed with revoked key";
 "MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE" = "Invalid signature";
 "MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE" = "Signed";
+
+    /* Security header attachments related. */
+    "MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE" = "encrypted/signed attachment";
+    "MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_ENCRYPTED_TITLE" = "encrypted/signed attachments";
+    "MESSAGE_SECURITY_HEADER_ATTACHMENT_ENCRYPTED_TITLE" = "encrypted attachment";
+    "MESSAGE_SECURITY_HEADER_ATTACHMENTS_ENCRYPTED_TITLE" = "encrypted attachments";
+    "MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_TITLE" = "signed attachment";
+    "MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "signed attachments";
     
 /* GPGMail Preferences strings. */
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail is ready.";

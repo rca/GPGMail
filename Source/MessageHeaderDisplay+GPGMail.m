@@ -178,18 +178,58 @@
 
         [securityHeader appendAttributedString:securityHeaderSignaturePart];
     }
-    NSUInteger numberOfEncryptedAttachments = message.numberOfPGPAttachments;
+    NSUInteger numberOfPGPAttachments = message.numberOfPGPAttachments;
     // And last but not least, add a new line.
-    if(numberOfEncryptedAttachments) {
+    if(numberOfPGPAttachments) {
+        NSAttributedString *securityHeaderAttachmentsPart = [self securityHeaderAttachmentsPartForMessage:message];
+        
         if(message.PGPSigned || message.PGPEncrypted)
             [securityHeader appendAttributedString:[NSAttributedString attributedStringWithString:@", "]];
-        [securityHeader appendAttributedString:[NSAttributedString attributedStringWithAttachment:[[[NSTextAttachment alloc] init] autorelease] image:[NSImage imageNamed:@"attachment_header"] link:@"gpgmail://show-attachments"]];
-        [securityHeader appendAttributedString:[NSAttributedString attributedStringWithString:[NSString stringWithFormat:@"%d verschlüsselte Anhaenge", numberOfEncryptedAttachments]]];
+        [securityHeader appendAttributedString:securityHeaderAttachmentsPart];
     }
     [securityHeader appendAttributedString:[NSAttributedString attributedStringWithString:@"\n"]];
     viewingState.headerSecurityString = securityHeader;
     
     return [securityHeader autorelease];
+}
+
+- (NSAttributedString *)securityHeaderAttachmentsPartForMessage:(Message *)message {
+    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+    
+    BOOL hasEncryptedAttachments = NO;
+    BOOL hasSignedAttachments = NO;
+    BOOL singular = message.numberOfPGPAttachments > 1 ? NO : YES;
+    
+    NSMutableAttributedString *securityHeaderAttachmentsPart = [[NSMutableAttributedString alloc] init];
+    [securityHeaderAttachmentsPart appendAttributedString:[NSAttributedString attributedStringWithAttachment:[[[NSTextAttachment alloc] init] autorelease] image:[NSImage imageNamed:@"attachment_header"] link:@"gpgmail://show-attachments"]];
+    
+    
+    for(MimePart *attachment in message.PGPAttachments) {
+        hasEncryptedAttachments |= attachment.PGPEncrypted;
+        hasSignedAttachments |= attachment.PGPSigned;
+    }
+    
+    NSString *attachmentPart = nil;
+    
+    if(hasEncryptedAttachments && hasSignedAttachments) {
+        attachmentPart = (singular ? 
+            NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE", @"GPGMail", gpgMailBundle, @"") : 
+            NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_ENCRYPTED_TITLE", @"GPGMail", gpgMailBundle, @""));
+    }
+    else if(hasEncryptedAttachments) {
+        attachmentPart = (singular ? 
+            NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_ATTACHMENT_ENCRYPTED_TITLE", @"GPGMail", gpgMailBundle, @"") : 
+            NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_ATTACHMENTS_ENCRYPTED_TITLE", @"GPGMail", gpgMailBundle, @""));
+    }
+    else if(hasSignedAttachments) {
+        attachmentPart = (singular ? 
+            NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_TITLE", @"GPGMail", gpgMailBundle, @"") : 
+            NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE", @"GPGMail", gpgMailBundle, @""));
+    }
+    
+    [securityHeaderAttachmentsPart appendAttributedString:[NSAttributedString attributedStringWithString:[NSString stringWithFormat:@"%d %@", message.numberOfPGPAttachments, attachmentPart]]];
+    
+    return [securityHeaderAttachmentsPart autorelease];
 }
 
 - (NSAttributedString *)securityHeaderSignaturePartForMessage:(Message *)message {
