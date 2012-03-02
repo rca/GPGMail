@@ -3039,7 +3039,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT\"\nsource \"Makefile.config\"\n\nCFBundleShortVersionString=\"${version}\"\nCFBundleVersion=\"$(($(date +\"%s\") / 3600 - 262968))${PRERELEASE_VERSION:+ ($PRERELEASE_VERSION)}\"\nGMCommitHash=\"$(git rev-parse --short HEAD)\"\n\ncd \"$BUILT_PRODUCTS_DIR\"\nPLIST=\"$PWD/$INFOPLIST_PATH\"\n\ndefaults write \"$PLIST\" CFBundleShortVersionString \"\\\"$CFBundleShortVersionString\\\"\"\ndefaults write \"$PLIST\" CFBundleVersion \"\\\"$CFBundleVersion\\\"\"\ndefaults write \"$PLIST\" GMCommitHash \"\\\"$GMCommitHash\\\"\"\n";
+			shellScript = "cd \"$SRCROOT\"\nsource \"Makefile.config\"\n\nCFBundleShortVersionString=\"${version}\"\nCFBundleVersion=\"$(($(date +\"%s\") / 3600 - 262968))${PRERELEASE_VERSION:+ ($PRERELEASE_VERSION)}\"\nGMCommitHash=\"$(git rev-parse --short HEAD)\"\n\ncd \"$BUILT_PRODUCTS_DIR\"\nPLIST=\"$PWD/${INFOPLIST_PATH%.plist}\"\n\ndefaults write \"$PLIST\" CFBundleShortVersionString \"\\\"$CFBundleShortVersionString\\\"\"\ndefaults write \"$PLIST\" CFBundleVersion \"\\\"$CFBundleVersion\\\"\"\ndefaults write \"$PLIST\" GMCommitHash \"\\\"$GMCommitHash\\\"\"\n";
 		};
 		30F151E21500BE8D00980642 /* Install GPGMail */ = {
 			isa = PBXShellScriptBuildPhase;
