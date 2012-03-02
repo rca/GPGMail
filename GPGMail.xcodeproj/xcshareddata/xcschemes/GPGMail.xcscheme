@@ -5,25 +5,6 @@
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
-      <PostActions>
-         <ExecutionAction
-            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent
-               title = "Fill Info.plist"
-               scriptText = "cd &quot;$SRCROOT&quot;&#10;source &quot;Makefile.config&quot;&#10;&#10;exec &gt;&gt;~/Desktop/x.txt 2&gt;&amp;1&#10;&#10;CFBundleShortVersionString=&quot;${version}&quot;&#10;CFBundleVersion=&quot;$(($(date +&quot;%s&quot;) / 3600 - 262968))${PRERELEASE_VERSION:+ ($PRERELEASE_VERSION)}&quot;&#10;GMCommitHash=&quot;$(git rev-parse --short HEAD)&quot;&#10;&#10;cd &quot;$BUILT_PRODUCTS_DIR&quot;&#10;PLIST=&quot;$PWD/$INFOPLIST_PATH&quot;&#10;&#10;defaults write &quot;$PLIST&quot; CFBundleShortVersionString &quot;\&quot;$CFBundleShortVersionString\&quot;&quot;&#10;defaults write &quot;$PLIST&quot; CFBundleVersion &quot;\&quot;$CFBundleVersion\&quot;&quot;&#10;defaults write &quot;$PLIST&quot; GMCommitHash &quot;\&quot;$GMCommitHash\&quot;&quot;&#10;"
-               shellToInvoke = "/bin/sh">
-               <EnvironmentBuildable>
-                  <BuildableReference
-                     BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "8D5B49AC048680CD000E48DA"
-                     BuildableName = "GPGMail.mailbundle"
-                     BlueprintName = "GPGMail"
-                     ReferencedContainer = "container:GPGMail.xcodeproj">
-                  </BuildableReference>
-               </EnvironmentBuildable>
-            </ActionContent>
-         </ExecutionAction>
-      </PostActions>
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"

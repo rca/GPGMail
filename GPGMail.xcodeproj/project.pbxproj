@@ -2876,9 +2876,10 @@
 				8D5B49AF048680CD000E48DA /* Resources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
 				1B45A52111CC977700ED4663 /* Copy Frameworks */,
-				30F40BC012B76FAE002E2374 /* Run Script */,
-				30D2E1BF140302E100062793 /* ShellScript */,
+				30F40BC012B76FAE002E2374 /* Make bundle */,
 				1B9EAAAD14352F0A0063F2F1 /* Fix RegEx loader path */,
+				30F151C51500BD4500980642 /* Fill Info.plist */,
+				30F151E21500BE8D00980642 /* Install GPGMail */,
 			);
 			buildRules = (
 			);
@@ -3012,19 +3013,6 @@
 			shellPath = /bin/sh;
 			shellScript = "install_name_tool -change \\\n\"@executable_path/../Frameworks/RegexKit.framework/Versions/A/RegexKit\" \\\n\"@loader_path/../Frameworks/RegexKit.framework/Versions/A/RegexKit\" \\\n\"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME/Contents/MacOS/GPGMail\"\n";
 		};
-		30D2E1BF140302E100062793 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [[ \"$CONFIGURATION\" = \"Debug-\" ]] ;then\n    BUILD_NUMBER=$(sed -En '/^#define INCREMENTAL_BUILD_NUMBER ([0-9]+).*$/{s//\\1/;p;q;}' \"$PROJECT_DIR/version.h\")\n    ((BUILD_NUMBER++))\n    sed -i '' -E '/^(#define INCREMENTAL_BUILD_NUMBER )([0-9]+)(.*)$/s//\\1'\"$BUILD_NUMBER\"'\\3/' \"$PROJECT_DIR/version.h\"\n    rm -f \"$TEMP_DIR/Preprocessed-Info.plist\" \nfi";
-		};
 		30DA468812B2D5E800E20039 /* Localize XIBs */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3039,19 +3027,47 @@
 			shellPath = /bin/sh;
 			shellScript = "pushd $SRCROOT > /dev/null\n\nalias localizeXIB=Dependencies/GPGTools_Core/bin/localizeXIB\n\necho \"Localize GPGMailPreferences.xib\"\nlocalizeXIB Resources/en.lproj/GPGMailPreferences.xib de sv fr\n\necho \"Localize GPGMenu.xib\"\nlocalizeXIB Resources/en.lproj/GPGMenu.xib da nl fr de it ja es sv fi ko\n\necho \"Localize GPGKeyDownload.xib\"\nlocalizeXIB Resources/en.lproj/GPGKeyDownload.xib da nl fr de it ja es sv fi ko\n\necho \"Localize GPGMailCompose.xib\"\nlocalizeXIB Resources/en.lproj/GPGMailCompose.xib da nl fr de it ja es sv fi ko\n\necho \"Localize GPGMessageViewerAccessoryView.xib\"\nlocalizeXIB Resources/en.lproj/GPGMessageViewerAccessoryView.xib da nl fr de it ja es sv fi ko\n\necho \"Localize GPGSignatureView.xib\"\nlocalizeXIB Resources/en.lproj/GPGSignatureView.xib de\n\n\npopd > /dev/null\n";
 		};
-		30F40BC012B76FAE002E2374 /* Run Script */ = {
+		30F151C51500BD4500980642 /* Fill Info.plist */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Run Script";
+			name = "Fill Info.plist";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"$SRCROOT\"\nsource \"Makefile.config\"\n\nCFBundleShortVersionString=\"${version}\"\nCFBundleVersion=\"$(($(date +\"%s\") / 3600 - 262968))${PRERELEASE_VERSION:+ ($PRERELEASE_VERSION)}\"\nGMCommitHash=\"$(git rev-parse --short HEAD)\"\n\ncd \"$BUILT_PRODUCTS_DIR\"\nPLIST=\"$PWD/${INFOPLIST_PATH%.plist}\"\n\ndefaults write \"$PLIST\" CFBundleShortVersionString \"\\\"$CFBundleShortVersionString\\\"\"\ndefaults write \"$PLIST\" CFBundleVersion \"\\\"$CFBundleVersion\\\"\"\ndefaults write \"$PLIST\" GMCommitHash \"\\\"$GMCommitHash\\\"\"\n";
+		};
+		30F151E21500BE8D00980642 /* Install GPGMail */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Install GPGMail";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\n################################################\n# Install the bundle in ~/Library/Mail/bundles #\n################################################\n\nDEST_PATH=~/Library/Mail/Bundles/\"$FULL_PRODUCT_NAME\"\nif [ \\( ! -L \"$DEST_PATH\" \\) -a -d \"$DEST_PATH\" ] ;then\n    rm -r \"$DEST_PATH\"\nelif [ -e \"$DEST_PATH\" ] ;then\n    rm \"$DEST_PATH\"\nfi\n\nif [ \"0$INSTALL_GPGMAIL\" -eq 1 ] ;then\n    # Copy the Bundle \n    mkdir -p ~/Library/Mail/Bundles/\n    cp -RH \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\nelif [ \"0$SYMLINK_GPGMAIL\" -eq 1 ] ;then\n    # Create a symbolic link\n    mkdir -p ~/Library/Mail/Bundles/\n    ln -Ffs \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\nfi\n";
+		};
+		30F40BC012B76FAE002E2374 /* Make bundle */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Make bundle";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "# Set bundle bit\nSetFile -a B \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"\n\n# Set icon\n\"./Dependencies/GPGTools_Core/bin/setfileicon\" \"./Resources/Images/GPGMail.icns\" \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"\n\n################################################\n# Install the bundle in ~/Library/Mail/bundles #\n################################################\n\nDEST_PATH=~/Library/Mail/Bundles/\"$FULL_PRODUCT_NAME\"\nif [ \\( ! -L \"$DEST_PATH\" \\) -a -d \"$DEST_PATH\" ] ;then\n\trm -r \"$DEST_PATH\"\nelif [ -e \"$DEST_PATH\" ] ;then\n\trm \"$DEST_PATH\"\nfi\n\nif [ \"0$INSTALL_GPGMAIL\" -eq 1 ] ;then\n\t# Copy the Bundle \n    mkdir -p ~/Library/Mail/Bundles/\n\tcp -RH \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\nelif [ \"0$SYMLINK_GPGMAIL\" -eq 1 ] ;then\n\t# Create a symbolic link\n    mkdir -p ~/Library/Mail/Bundles/\n\tln -Ffs \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\nfi\n";
+			shellScript = "# Set bundle bit\nSetFile -a B \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"\n\n# Set icon\n\"./Dependencies/GPGTools_Core/bin/setfileicon\" \"./Resources/Images/GPGMail.icns\" \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
