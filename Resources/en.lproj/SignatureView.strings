@@ -10,4 +10,12 @@
 {
     "VALIDITY_NO_TRUST" = "This signature is not to be trusted.";
     "VALIDITY_OK" = "This signature can be trusted";
+    /* Signature view key status. */
+    "VALIDITY_KEY_REVOKED" = "The key of this signature was revoked.";
+    "VALIDITY_SIGNATURE_EXPIRED" = "This signature is expired.";
+    "VALIDITY_KEY_EXPIRED" = "The key of this signature is expired.";
+    "VALIDITY_KEY_REVOKED" = "The key of this signature was revoked.";
+    "VALIDITY_UNKNOWN_ALGORITHM" = "Signature was created with unknown algorithm.";
+    "VALIDITY_NO_PUBLIC_KEY" = "The key of this signature is not in your keychain.";
+    "VALIDITY_UNKNOWN_ERROR" = "Unknown signature error.";
 }

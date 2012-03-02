@@ -1328,6 +1328,7 @@
 		1B8C01D713E4F25900DB9FA4 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/GPGSignatureView.xib; sourceTree = "<group>"; };
 		1B8C01D913E4F26500DB9FA4 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GPGSignatureView.xib; sourceTree = "<group>"; };
 		1B9EAAAA14352C270063F2F1 /* Frameworks/RegexKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Frameworks/RegexKit.framework; sourceTree = "<group>"; };
+		1BA12C2714FF578B00729B28 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/GPGAttachments.xib; sourceTree = "<group>"; };
 		1BA46CFA14EEF14300EBE49A /* MessageAttachment+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MessageAttachment+GPGMail.h"; sourceTree = "<group>"; };
 		1BA46CFB14EEF14300EBE49A /* MessageAttachment+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MessageAttachment+GPGMail.m"; sourceTree = "<group>"; };
 		1BACB2EA13EBF66300C750AA /* GPGCertLargeNotTrusted.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GPGCertLargeNotTrusted.tif; sourceTree = "<group>"; };
@@ -3215,6 +3216,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				1BC477841468A1770061120C /* en */,
+				1BA12C2714FF578B00729B28 /* de */,
 			);
 			name = GPGAttachments.xib;
 			path = Resources;

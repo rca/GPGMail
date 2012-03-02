@@ -63,4 +63,9 @@
  */
 - (id)MA_attributedStringForSecurityHeader;
 
+/**
+ Create the signature part based on the found signatures and errors.
+ */
+- (NSAttributedString *)securityHeaderSignaturePartForMessage:(Message *)message;
+
 @end

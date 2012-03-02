@@ -384,7 +384,6 @@ static BOOL gpgMailWorks = NO;
         
         GPGMailLoggingLevel = [[GPGOptions sharedOptions] integerForKey:@"DebugLog"];
         NSLog(@"Debug Log enabled: %@", [[GPGOptions sharedOptions] integerForKey:@"DebugLog"] > 0 ? @"YES" : @"NO");
-        [[NSExceptionHandler defaultExceptionHandler] setExceptionHandlingMask:NSLogOtherExceptionMask | NSLogTopLevelExceptionMask];
         
         gpgMailWorks = [self checkGPG];
         [self finishInitialization];
