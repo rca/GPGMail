@@ -1,4 +1,0 @@
-/* Localized versions of Info.plist keys */
-
-CFBundleGetInfoString = "GPGMail 버전 ${BUNDLE_VERSION}, 저작권 2000-2011, GPGTools Project Team.";
-NSHumanReadableCopyright = "© GPGTools Project Team, 2000-2011";
