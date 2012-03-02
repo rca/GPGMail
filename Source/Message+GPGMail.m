@@ -278,9 +278,6 @@
     self.PGPDecrypted = isDecrypted;
     self.PGPVerified = isVerified;
     
-    /* Mark a special message. */
-    [self setIvar:@"PGPEarlyAlphaFuckedUpEncrypted" value:[decryptedMessage getIvar:@"PGPEarlyAlphaFuckedUpEncrypted"]];
-    
     [self fakeMessageFlagsIsEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];
     if(decryptedMessage)
         [decryptedMessage fakeMessageFlagsIsEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];

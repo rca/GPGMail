@@ -486,7 +486,7 @@
     MFError *error = [[(MimeBody *)decryptedMimeBody topLevelPart] valueForKey:@"_smimeError"];
     if(error)
         [[ActivityMonitor currentMonitor] setError:error];
-    [newMessage setIvar:@"PGPEarlyAlphaFuckedUpEncrypted" value:[NSNumber numberWithBool:YES]];
+    [decryptedMimeBody setIvar:@"PGPEarlyAlphaFuckedUpEncrypted" value:[NSNumber numberWithBool:YES]];
     self.PGPEncrypted = YES;
     self.PGPSigned = isSigned;
     self.PGPError = error;
@@ -501,8 +501,6 @@
     // For the security header to correctly show the signatures,
     // the message has to be flagged as specially encrypted.
     [[self mimeBody] setIvar:@"PGPEarlyAlphaFuckedUpEncrypted" value:[NSNumber numberWithBool:YES]];
-    // For some reason, these messages are super complicated, so we store the messageBody ourselves.
-    [[(MimeBody *)[self mimeBody] message] setIvar:@"PGPEarlyAlphaFuckedUpEncryptedMessageBody" value:decryptedMimeBody];
 
     return decryptedMimeBody;
 }

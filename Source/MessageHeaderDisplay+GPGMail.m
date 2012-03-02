@@ -144,7 +144,7 @@
     
     // Check the mime body, is more reliable.
     BOOL isPGPSigned = message.PGPSigned;
-    BOOL isPGPEncrypted = message.PGPEncrypted || [mimeBody ivarExists:@"PGPEarlyAlphaFuckedUpEncrypted"];
+    BOOL isPGPEncrypted = message.PGPEncrypted && ![mimeBody ivarExists:@"PGPEarlyAlphaFuckedUpEncrypted"];
     BOOL hasPGPAttachments = message.numberOfPGPAttachments > 0 ? YES : NO;
     
     if(!isPGPSigned && !isPGPEncrypted && !hasPGPAttachments)
