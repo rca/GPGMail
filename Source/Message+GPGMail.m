@@ -326,7 +326,7 @@
 //        return NO;
     
     // OpenPGP is disabled for reading? Return false.
-    if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"])
+    if([[GPGOptions sharedOptions] boolForKey:@"DisableOpenPGPForReading"])
         return NO;
     
     // Message was actively selected by the user? PGP process message.
