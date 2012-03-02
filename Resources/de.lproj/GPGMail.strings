@@ -279,6 +279,12 @@
 
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Signatur Daten Fehler!";
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Diese Nachricht konnte nicht verifiziert werden, da die keine gültigen Signatur Daten gefunden wurden.\n\nBitte kontaktieren Sie uns unter support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Schlüssel der Signatur ist abgelaufen.";
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ACHTUNG: Der Schlüssel, welcher verwendet wurde diese Nachricht zu unterzeichnen, ist abgelaufen.\n\nSie können versuchen den Schlüssel %@ mit GPG Schlüsselbund zu aktualisieren und informieren Sie sich beim Absender warum der Schlüssel abgelaufen ist.";
+
+"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Die Signatur der Nachricht ist abgelaufen.";
+"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Die Signatur der Nachricht konnte nicht verifiziert werden, da die Signatur abgelaufen ist.\n\nErkundigen Sie sich beim Absender, warum die Signatur abgelaufen ist.";
     
 "GPG_CONFIG_ERROR_NO_PINENTRY_TITLE" = "Pinentry-mac ist nicht installiert.";
 "GPG_CONFIG_ERROR_NO_PINENTRY_MESSAGE" = "Die Komponente Pinentry-mac konnte nicht gefunden werden. Bitte installieren Sie die aktuellsten GPGTools (http://www.gpgtools.org/installer/index.html)";

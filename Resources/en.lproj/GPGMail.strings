@@ -279,6 +279,12 @@
     "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Signature data error!";
     "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This message could not be verified, since the signature data is invalid.\n\nPlease contact us at support.gpgtools.org";
     
+    "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "The key of the signature is expired.";
+    "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATTENTION: The key which was used to sign this message is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain Access and ask the sender why the key is expired.";
+    
+    "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "The signature of the message is expired.";
+    "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "The signature could not be verified, since the signature is expired.\n\nAsk the sender why the signature is expired.";
+    
 "GPG_CONFIG_ERROR_NO_PINENTRY_TITLE" = "Pinentry-mac is not installed.";
 "GPG_CONFIG_ERROR_NO_PINENTRY_MESSAGE" = "Pinentry-mac, an important component used by GPGMail couldn't be found. Please make sure to install the latest GPGTools (http://www.gpgtools.org/installer/index.html)";
 

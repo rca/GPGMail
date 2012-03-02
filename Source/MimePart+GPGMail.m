@@ -681,6 +681,17 @@
                 break;
 #warning SignatureExpired, KeyExpired, Certificate revoked are only warnings (Should be displayed in the Security header, not as an actual error.
             
+            case GPGErrorKeyExpired:
+                title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+                message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+                message = [NSString stringWithFormat:message, signatureWithError.fingerprint];
+                break;
+            
+            case GPGErrorSignatureExpired:
+                title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+                message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+                break;
+                
             case GPGErrorBadSignature:
                 title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
                 message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
