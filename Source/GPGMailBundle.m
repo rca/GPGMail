@@ -804,6 +804,8 @@ static BOOL gpgMailWorks = NO;
 
 - (GPGKey *)findPublicKeyByKeyHint:(NSString *)hint {
     GPGKey *foundKey = nil;
+    if(!hint)
+        return nil;
     for(GPGKey *key in self.publicGPGKeys) {
         if([key.textForFilter rangeOfString:hint].location != NSNotFound) {
             foundKey = key;
@@ -815,6 +817,8 @@ static BOOL gpgMailWorks = NO;
 
 - (GPGKey *)findSecretKeyByKeyHint:(NSString *)hint {
     GPGKey *foundKey = nil;
+    if(!hint)
+        return nil;
     for(GPGKey *key in self.secretGPGKeys) {
         if([key.textForFilter rangeOfString:hint].location != NSNotFound) {
             foundKey = key;
