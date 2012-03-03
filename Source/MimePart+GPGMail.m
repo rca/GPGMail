@@ -905,10 +905,18 @@
     self.PGPSigned = YES;
     self.PGPVerified = self.PGPError ? NO : YES;
     self.PGPSignatures = signatures;
-    self.PGPVerifiedContent = [self stripSignatureFromContent:[[signedData stringByGuessingEncoding] markupString]];
+    if([self hasPGPInlineSignature:signedData])
+        self.PGPVerifiedContent = [self stripSignatureFromContent:[[signedData stringByGuessingEncoding] markupString]];
     self.PGPVerifiedData = signedData;
     
     [gpgc release];
+}
+
+- (BOOL)hasPGPInlineSignature:(NSData *)data {
+    NSData *inlineSignatureMarkerHead = [PGP_SIGNED_MESSAGE_BEGIN dataUsingEncoding:NSUTF8StringEncoding];
+    if([data rangeOfData:inlineSignatureMarkerHead options:0 range:NSMakeRange(0, [data length])].location != NSNotFound)
+        return YES;
+    return NO;
 }
 
 - (void)MAVerifySignature {

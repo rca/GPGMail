@@ -135,20 +135,16 @@
     // Since the isDraft flag is removed, Mail.app assumes it creates a normal message
     // to send out and therefore wants NSMutableDictionary clean headers.
     id copiedCleanHeaders = nil;
-    if(isDraft)
-        copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
-    else
-        copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] copy];
+    copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
 
     [self setIvar:@"originalCleanHeaders" value:copiedCleanHeaders];
     [copiedCleanHeaders release];
     // If isDraft is set the cleanHeaders are an NSDictionary instead of an NSMutableDictionary.
     // Using mutableCopy they are converted into an NSMutableDictionary.
-    if(isDraft) {
-        copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
-        [self setValue:copiedCleanHeaders forKey:@"_cleanHeaders"];
-        [copiedCleanHeaders release];
-    }
+    copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
+    [self setValue:copiedCleanHeaders forKey:@"_cleanHeaders"];
+    [copiedCleanHeaders release];
+    
     // Inject the headers needed in newEncryptedPart and newSignedPart.
     [self _addGPGFlaggedStringsToHeaders:[(ComposeBackEnd *)self cleanHeaders] forEncrypting:shouldPGPEncrypt forSigning:shouldPGPSign];
 
