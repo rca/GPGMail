@@ -143,19 +143,8 @@
 			NSString *itemTitle = item.title;
 			
 			NSString *email = nil;
-			if (useTitleFromAccount == NO) {
-				// Get the E-Mail from the item title.
-				NSRange range = [itemTitle rangeOfString:@"<"];
-				if (range.length > 0) {
-					range.location++;
-					range.length = itemTitle.length - range.location;
-					NSRange range2 = [itemTitle rangeOfString:@">" options:NSLiteralSearch range:range];
-					if (range2.length > 0) {
-						range.length = range2.location - range.location;
-						email = [itemTitle substringWithRange:range];
-					}
-				}
-			}
+			if (useTitleFromAccount == NO)
+				email = [itemTitle gpgNormalizedEmail];
 				
 			NSSet *keys = [bundle signingKeyListForAddress:itemTitle];
 			switch ([keys count]) {
