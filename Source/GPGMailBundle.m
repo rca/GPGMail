@@ -423,14 +423,7 @@ static BOOL gpgMailWorks = NO;
 }
 
 - (NSString *)buildNumberDescription {
-    NSString *buildNumber = nil;
-    @try {
-        buildNumber = [[[[self class] bundleVersion] componentsSeparatedByString:@" "] objectAtIndex:0];
-    }
-    @catch (NSException *exception) {
-        buildNumber = @"";
-    }
-    return [NSString stringWithFormat:@"Build: %@", buildNumber];
+    return [NSString stringWithFormat:@"Build: %@", [[self class] bundleBuildNumber]];
 }
 
 - (NSString *)version {
@@ -858,7 +851,7 @@ static BOOL gpgMailWorks = NO;
 }
 
 + (NSNumber *)bundleBuildNumber {
-    return [[[NSBundle bundleForClass:self] infoDictionary] valueForKey:@"CFBuildNumber"];
+    return [[[NSBundle bundleForClass:self] infoDictionary] valueForKey:@"BuildNumber"];
 }
 
 + (NSString *)agentHeader {

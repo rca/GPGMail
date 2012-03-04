@@ -42,6 +42,7 @@
 #import "NSString+GPGMail.h"
 #import "GMSecurityControl.h"
 #import "NSObject+LPDynamicIvars.h"
+#import <NSString-EmailAddressString.h>
 
 @interface HeadersEditor_GPGMail (NoImplementation)
 - (void)changeFromHeader:(NSPopUpButton *)sender;
@@ -144,7 +145,7 @@
 			
 			NSString *email = nil;
 			if (useTitleFromAccount == NO)
-				email = [itemTitle gpgNormalizedEmail];
+				email = [itemTitle uncommentedAddress];
 				
 			NSSet *keys = [bundle signingKeyListForAddress:itemTitle];
 			switch ([keys count]) {
