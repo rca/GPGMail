@@ -100,7 +100,7 @@
     accessoryView.delegate = self;
     NSWindow *window = [self valueForKey:@"_window"];
     
-    if([((MailDocumentEditor *)self) isModal])
+    if(((MailDocumentEditor *)self).isModal || ((MailDocumentEditor *)self).possibleFullScreenViewerParent)
        [accessoryView configureForFullScreenWindow:window];
     else
         [accessoryView configureForWindow:window];
