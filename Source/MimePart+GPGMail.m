@@ -288,8 +288,8 @@
     // otherwise out of here!
     if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
         return [self MADecodeTextHtmlWithContext:ctx];
-    
-    if([[self bodyData] mightContainPGPEncryptedData] || [[self bodyData] rangeOfPGPSignatures].location != NSNotFound) {
+
+    if([[self bodyData] mightContainPGPEncryptedDataOrSignatures]) {
         // HTML is a bit hard to decrypt, so check if the parent part, if exists is a
         // multipart/alternative.
         // If that's the case, look for a text/plain part
@@ -317,8 +317,9 @@
     if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
         return [self MADecodeApplicationOctet_streamWithContext:ctx];
     
-    BOOL mightBeEncrypted = [self attachmentMightBePGPEncrypted];
-    BOOL mightBeSignature = [self attachmentMightBePGPSignature];
+    BOOL mightBeEncrypted;
+    BOOL mightBeSignature;
+    [self attachmentMightBePGPEncrypted:&mightBeEncrypted orSigned:&mightBeSignature];
     if(!mightBeEncrypted && !mightBeSignature)
         return [self MADecodeApplicationOctet_streamWithContext:ctx];
     
@@ -381,18 +382,9 @@
     return [self MADecodeApplicationOctet_streamWithContext:nil];
 }
 
-
-- (BOOL)attachmentMightBePGPEncrypted {
-    NSArray *PGPExtensions = [NSArray arrayWithObjects:@"pgp", @"gpg", @"asc", nil];
-    return [self attachmentMightBePGPProcessed:PGPExtensions];
-}
-
-- (BOOL)attachmentMightBePGPSignature {
-    NSArray *PGPExtensions = [NSArray arrayWithObjects:@"sig", nil];
-    return [self attachmentMightBePGPProcessed:PGPExtensions];
-}
-
-- (BOOL)attachmentMightBePGPProcessed:(NSArray *)extensions {
+- (void)attachmentMightBePGPEncrypted:(BOOL *)mightEnc orSigned:(BOOL *)mightSig {
+    *mightEnc = NO;
+    *mightSig = NO;
     NSString *nameExt = [[self bodyParameterForKey:@"name"] pathExtension];
     NSString *filenameExt = [[self dispositionParameterForKey:@"filename"] pathExtension];
     
@@ -401,23 +393,22 @@
     // This is necessary since decodeMultipartWithContext checks the attachments
     // first and after that runs decodeWithContext apparently.
     if([[[self mimeBody] topLevelPart] isType:@"multipart" subtype:@"encrypted"])
-        return NO;
-    
-    BOOL PGPExtensionFound = NO;
-    for(NSString *extension in extensions) {
-        if([nameExt isEqualToString:extension] || [filenameExt isEqualToString:extension]) {
-            PGPExtensionFound = YES;
-            break;
-        }
-    }
+        return;
+
+    NSArray *encExtensions = [NSArray arrayWithObjects:@"pgp", @"gpg", @"asc", nil];
+    *mightEnc = ([encExtensions containsObject:nameExt] || [encExtensions containsObject:filenameExt]);
+    NSArray *sigExtensions = [NSArray arrayWithObjects:@"sig", nil];
+    *mightSig = ([sigExtensions containsObject:nameExt] || [sigExtensions containsObject:filenameExt]);
     
     // .asc attachments might contain a public key. See #123.
     // So to avoid decrypting such attachments, check if the attachment
     // contains a public key.
-    if([[self bodyData] rangeOfPGPPublicKey].location != NSNotFound)
-        return NO;
-    
-    return PGPExtensionFound;
+    if((*mightEnc || *mightSig) 
+       && [[self bodyData] rangeOfPGPPublicKey].location != NSNotFound) {
+        *mightEnc = NO;
+        *mightSig = NO;
+        return;
+    }
 }
 
 - (id)decodeMultipartEncryptedWithContext:(id)ctx {

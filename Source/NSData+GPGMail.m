@@ -145,34 +145,68 @@
     return gpgRange;
 }
 
-- (BOOL)mightContainPGPEncryptedData {
+- (BOOL)mightContainPGPEncryptedDataOrSignatures {
     NSString *body = [self stringByGuessingEncoding];
+    NSRange nextRange;
+    nextRange.location = 0;
+    nextRange.length = [body length];
     // If the encoding can't be guessed, the body will probably be empty,
     // so let's get out of here.!
-    if(![body length])
+    if(!nextRange.length) 
         return NO;
+
+    while (true) {
+        NSRange matchRange = [body rangeOfString:PGP_BEGIN_PGP_PREFIX
+                                         options:NSLiteralSearch range:nextRange];
+        if(matchRange.location == NSNotFound)
+            return NO;
+        
+        nextRange.location = matchRange.location + [PGP_BEGIN_PGP_PREFIX length];
+        nextRange.length = [body length] - nextRange.location;
+        NSString *footerMatch;
+        
+        // Detect "MESSAGE" or "SIGNATURE" in prefix and set suffix
+        matchRange = [body rangeOfString:PGP_MESSAGE_PREFIX_TAIL 
+                                 options:NSAnchoredSearch range:nextRange];
+        if (matchRange.location != NSNotFound) {
+            footerMatch = PGP_MESSAGE_END;
+            nextRange.location += [PGP_MESSAGE_PREFIX_TAIL length];
+            nextRange.length = [body length] - nextRange.location;
+        }
+        else if ((matchRange = [body rangeOfString:PGP_SIGNATURE_PREFIX_TAIL 
+                                           options:NSAnchoredSearch 
+                                             range:nextRange]).location != NSNotFound) {
+            footerMatch = PGP_MESSAGE_SIGNATURE_END;
+            nextRange.location += [PGP_SIGNATURE_PREFIX_TAIL length];
+            nextRange.length = [body length] - nextRange.location;
+        }
+        else {
+            continue;
+        }
+
+        matchRange = [body rangeOfString:footerMatch options:NSLiteralSearch range:nextRange];
+        if (matchRange.location != NSNotFound)
+            return YES;
+    }
     
-    NSRange startRange = [body rangeOfString:PGP_MESSAGE_BEGIN];
-    // For some reason (OS X Bug? Code bug?) comparing to NSNotFound doesn't
-    // (always?) work.
-    //if(startRange.location == NSNotFound)
-    if(startRange.location == NSNotFound)
-        return NO;
-    NSRange endRange = [body rangeOfString:PGP_MESSAGE_END];
-    if(endRange.location == NSNotFound)
-        return NO;
-    
-    return YES;
+    return NO;
 }
 
 - (NSRange)rangeOfPGPPublicKey {
     NSString *body = [self stringByGuessingEncoding];
     if(![body length])
         return NSMakeRange(NSNotFound, 0);
+
     NSRange startRange = [body rangeOfString:PGP_MESSAGE_PUBLIC_KEY_BEGIN];
     if(startRange.location == NSNotFound)
         return startRange;
-    NSRange endRange = [body rangeOfString:PGP_MESSAGE_PUBLIC_KEY_END];
+
+    NSRange nextRange;
+    nextRange.location = startRange.location + [PGP_MESSAGE_PUBLIC_KEY_BEGIN length];
+    nextRange.length = [body length] - nextRange.location;
+    NSRange endRange = [body rangeOfString:PGP_MESSAGE_PUBLIC_KEY_END 
+                                   options:NSLiteralSearch 
+                                     range:nextRange];
     if(endRange.location == NSNotFound)
         return endRange;
     
