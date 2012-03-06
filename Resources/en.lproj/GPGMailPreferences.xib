@@ -337,7 +337,7 @@
 											<reference key="NSNextKeyView" ref="667904677"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="819934735">
-												<int key="NSCellFlags">68288064</int>
+												<int key="NSCellFlags">70385217</int>
 												<int key="NSCellFlags2">4326400</int>
 												<string key="NSContents">Version: xxx</string>
 												<object class="NSFont" key="NSSupport" id="26">
@@ -499,7 +499,7 @@
 											<string key="NSReuseIdentifierKey">_NS:1505</string>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="592006417">
-												<int key="NSCellFlags">68288064</int>
+												<int key="NSCellFlags">70385217</int>
 												<int key="NSCellFlags2">272630784</int>
 												<string key="NSContents">Build: </string>
 												<reference key="NSSupport" ref="26"/>

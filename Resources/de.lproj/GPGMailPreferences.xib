@@ -299,7 +299,7 @@
 											<object class="NSButtonCell" key="NSCell" id="377024234">
 												<int key="NSCellFlags">-2080244224</int>
 												<int key="NSCellFlags2">0</int>
-												<string key="NSContents">Vorschau in Listenansicht anzeigen</string>
+												<string key="NSContents">Vorschau in der Listenansicht erstellen</string>
 												<reference key="NSSupport" ref="706304668"/>
 												<reference key="NSControlView" ref="113600817"/>
 												<int key="NSButtonFlags">1211912703</int>
@@ -339,7 +339,7 @@
 											<reference key="NSNextKeyView" ref="667904677"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="819934735">
-												<int key="NSCellFlags">68288064</int>
+												<int key="NSCellFlags">70385217</int>
 												<int key="NSCellFlags2">4326400</int>
 												<string key="NSContents">Version: xxx</string>
 												<object class="NSFont" key="NSSupport" id="26">
@@ -501,7 +501,7 @@
 											<string key="NSReuseIdentifierKey">_NS:1505</string>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="592006417">
-												<int key="NSCellFlags">68288064</int>
+												<int key="NSCellFlags">70385217</int>
 												<int key="NSCellFlags2">272630784</int>
 												<string key="NSContents">Build: </string>
 												<reference key="NSSupport" ref="26"/>
