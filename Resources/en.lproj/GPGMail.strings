@@ -308,6 +308,11 @@
     "MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_TITLE" = "signed attachment";
     "MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "signed attachments";
     
+    /* Compose Window encrypt/sign button tooltips. */
+    "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "This message can't be signed, since there's no private key for %@.\n\nPlease make sure that a private key for this address exists in GPG Keychain Access. Add a new UID to an existing key for this address if necessary or create a new key for this address.\n\nIf a key for the address exists, make sure that the address in Mail Preferences is correct and exactly matches the address of your key.";
+    "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "This message can't be encrypted, since there are no public keys available for the following addresses: %@.\n\nPlease use GPG Keychain Access to search and import the keys for those addresses.";
+    "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "This message can't be encrypted. You have to enter at least one recipient first.";
+
 /* GPGMail Preferences strings. */
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail is ready.";
 "GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 is not installed. Check your installation.";

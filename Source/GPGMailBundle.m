@@ -117,7 +117,10 @@ static BOOL gpgMailWorks = NO;
                              @"init", 
                              @"dealloc",
                              @"_updateSecurityStateInBackgroundForRecipients:sender:", 
-                             @"awakeFromNib", nil], @"selectors", nil],
+                             @"awakeFromNib",
+                             @"_updateSignButtonTooltip",
+                             @"_updateEncryptButtonTooltip",
+                             nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MessageAttachment", @"class",
                             @"MessageAttachment_GPGMail", @"gpgMailClass",

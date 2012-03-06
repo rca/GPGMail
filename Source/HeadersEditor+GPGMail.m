@@ -280,6 +280,47 @@
         [self performSelectorOnMainThread:@selector(_fromHeaderDisplaySecretKeys:) withObject:(id)kCFBooleanTrue waitUntilDone:NO];
 }
 
+- (void)MA_updateSignButtonTooltip {
+    ComposeBackEnd_GPGMail *backEnd = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]);
+    
+    if(![[backEnd getIvar:@"SignIsPossible"] boolValue]) {
+        NSBundle *bundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+        NSPopUpButton *button = [self valueForKey:@"_fromPopup"];
+        NSString *sender = [button.selectedItem.title uncommentedAddress];
+        
+        GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
+        [((NSSegmentedControl *)signControl) setToolTip:[NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN", @"GPGMail", bundle, @""), sender]];
+    }
+    else {
+        [self MA_updateSignButtonTooltip];
+    }
+}
+
+- (void)MA_updateEncryptButtonTooltip {
+    ComposeBackEnd_GPGMail *backEnd = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]);
+    
+    GPGMAIL_SECURITY_METHOD securityMethod = backEnd.guessedSecurityMethod;
+    if(backEnd.securityMethod)
+        securityMethod = backEnd.securityMethod;
+    
+    if(![[backEnd getIvar:@"EncryptIsPossible"] boolValue] && securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
+        NSBundle *bundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+        NSArray *nonEligibleRecipients = [(ComposeBackEnd *)backEnd recipientsThatHaveNoKeyForEncryption];
+        GMSecurityControl *encryptControl = [self valueForKey:@"_encryptButton"];
+        NSString *toolTip = nil;
+        if(![nonEligibleRecipients count])
+            toolTip = NSLocalizedStringFromTableInBundle(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS", @"GPGMail", bundle, @"");
+        else {
+            NSString *recipients = [nonEligibleRecipients componentsJoinedByString:@", "];
+            toolTip = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT", @"GPGMail", bundle, @""), recipients];
+        }
+        [((NSSegmentedControl *)encryptControl) setToolTip:toolTip];
+    }
+    else {
+        [self MA_updateEncryptButtonTooltip];
+    }
+}
+
 - (id)MAInit {
 	self = [self MAInit];
     // This lock is used to prevent a SecurityMethodDidChange notification to

@@ -309,6 +309,11 @@
 "MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_TITLE" = "signierter Anhang";
 "MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "signierte Anhänge";
     
+/* Compose Window encrypt/sign button tooltips. */
+    "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "Diese E-Mail kann nicht signiert werden, da kein privater Schlüssel für %@ vorhanden ist.\n\nBitte verifizieren Sie, dass sich in GPG Schlüsselbund ein privater Schlüssel für diese E-Mail Adresse befindet. Fügen Sie falls notwendig eine UID mit dieser E-Mail Adresse zu einem bestehenden Schlüssel hinzu oder, erstellen Sie einen neuen Schlüssel für diese E-Mail Adresse.\n\nIst ein Schlüssel vorhanden, kontrollieren Sie bitte in den Mail Einstellungen ob Sie die zum Schlüssel passende E-Mail Adresse korrekt angegeben haben.";
+    "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "Diese E-Mail kann nicht verschlüsselt werden, da für die folgenden Adressen kein öffentlicher Schlüssel vorhanden ist: %@.\n\nBitte suchen und importieren Sie die Schlüssel für diese Adressen mit GPG Schlüsselbund.";
+    "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "Diese E-Mail kann erst verschlüsselt werden, wenn Sie mindestens einen Empfänger angegeben haben.";
+    
 /* GPGMail Preferences strings. */
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail läuft korrekt.";
 "GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 wurde nicht gefunden.";
