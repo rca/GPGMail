@@ -443,7 +443,6 @@
     if([encryptedData rangeOfData:[@"Content-Type" dataUsingEncoding:NSUTF8StringEncoding] options:0 range:NSMakeRange(0, [encryptedData length])].location != NSNotFound)
         return [self decodeFuckedUpEarlyAlphaData:encryptedData context:ctx];
 
-#warning verify that it's still needed to check for quoted-printable. Also, it might be necessary to use decodeBase64 here.
     if([[dataPart.contentTransferEncoding lowercaseString] isEqualToString:@"base64"] && 
        [encryptedData isValidBase64Data])
         encryptedData = [encryptedData decodeBase64];
@@ -457,7 +456,6 @@
     return decryptedMessageBody;
 }
 
-#warning verify that the decoding of such messages still works, otherwise fix it!
 - (id)decodeFuckedUpEarlyAlphaData:(NSData *)data context:(MFMimeDecodeContext *)ctx {
     // This data might contain a signature part.
     // In that case it's a little bit more complicated since it's necessary to add a
@@ -679,7 +677,6 @@
                 message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
                 message = [NSString stringWithFormat:message, signatureWithError.fingerprint];
                 break;
-#warning SignatureExpired, KeyExpired, Certificate revoked are only warnings (Should be displayed in the Security header, not as an actual error.
             
             case GPGErrorKeyExpired:
                 title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
@@ -952,7 +949,6 @@
         }
     }
     
-#warning Should this trigger an error too?
     if(![signedData length] || !signaturePart) {
         self.PGPSigned = NO;
         return;
@@ -965,11 +961,7 @@
         return;
 	}
     
-#warning Properly test if verification still requires a serial queue.
-    
-//    [[GPGMailBundle sharedInstance] addVerificationTask:^{
     [self verifyData:signedData signatureData:signatureData];
-//    }];
     [[self topPart] setIvar:@"MimeSigned" value:[NSNumber numberWithBool:self.PGPSigned]];
 	
     return;
@@ -981,11 +973,7 @@
     
     NSData *signedData = [data subdataWithRange:signedRange];
 
-#warning Properly test if verification still requires a serial queue.
-    
-//    [[GPGMailBundle sharedInstance] addVerificationTask:^{
-        [self verifyData:signedData signatureData:nil];
-//    }];
+    [self verifyData:signedData signatureData:nil];
 }
 
 - (id)stripSignatureFromContent:(id)content {
@@ -1273,7 +1261,7 @@
 
 - (BOOL)MAIsMimeEncrypted {
     BOOL ret = [self MAIsMimeEncrypted];
-    BOOL isPGPMimeEncrypted = [[[[self mimeBody] message] getIvar:@"MimeEncrypted"] boolValue];
+    BOOL isPGPMimeEncrypted = [[[(MimeBody *)[self mimeBody] message] getIvar:@"MimeEncrypted"] boolValue];
     return ret || isPGPMimeEncrypted;
 }
 

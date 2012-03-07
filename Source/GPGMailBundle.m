@@ -233,9 +233,12 @@ static BOOL gpgMailWorks = NO;
     // never happens!
     if(!mvMailBundleClass)
         return;
-    
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated"
     class_setSuperclass([self class], mvMailBundleClass);
-	// Automatically performs the check, since the check is performed in init.
+#pragma GCC diagnostic pop
+	// Initialize the bundle by swizzling methods, loading keys, ...
     GPGMailBundle *instance = [GPGMailBundle sharedInstance];
     [instance description];
     // Last step necessary to completely setup our bundle is
@@ -419,6 +422,11 @@ static BOOL gpgMailWorks = NO;
     
 	struct objc_super s = { self, [self superclass] };
     objc_msgSendSuper(&s, @selector(dealloc));
+
+    // Suppress the missing dealloc warning, since the real super dealloc
+    // call uses the objc runtime calls directly.
+    if(0)
+        [super dealloc];
 }
 
 - (NSString *)versionDescription {

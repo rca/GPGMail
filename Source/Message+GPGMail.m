@@ -205,7 +205,6 @@
 }
 
 - (void)collectPGPInformationStartingWithMimePart:(MimePart *)topPart decryptedBody:(MimeBody *)decryptedBody {
-    __block NSInteger numberOfEncryptedAttachments = 0;
     __block BOOL isEncrypted = NO;
     __block BOOL isSigned = NO;
     __block BOOL isPartlyEncrypted = NO;
@@ -306,7 +305,6 @@
           self, [self subject], isEncrypted ? @"YES" : @"NO", isSigned ? @"YES" : @"NO",
           isPartlyEncrypted ? @"YES" : @"NO", isPartlySigned ? @"YES" : @"NO", signatures, errors, pgpAttachments);
     
-#warning Uncomment once number of attachments is implemented.
     // Fix the number of attachments, this time for real!
     // Uncomment once completely implemented.
     [[self messageStore] setNumberOfAttachments:numberOfAttachments isSigned:isSigned isEncrypted:isEncrypted forMessage:self];
