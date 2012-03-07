@@ -575,63 +575,63 @@
 															<int key="NSViewLayerContentsRedrawPolicy">2</int>
 															<string key="NSClassName">NSView</string>
 														</object>
-														<object class="NSCustomView" id="44245670">
+														<object class="NSCustomView" id="111360906">
 															<reference key="NSNextResponder" ref="408514640"/>
 															<int key="NSvFlags">290</int>
 															<object class="NSMutableArray" key="NSSubviews">
 																<bool key="EncodedWithXMLCoder">YES</bool>
-																<object class="NSTextField" id="138322284">
-																	<reference key="NSNextResponder" ref="44245670"/>
+																<object class="NSTextField" id="344556492">
+																	<reference key="NSNextResponder" ref="111360906"/>
 																	<int key="NSvFlags">284</int>
 																	<string key="NSFrame">{{50, -155}, {350, 238}}</string>
-																	<reference key="NSSuperview" ref="44245670"/>
+																	<reference key="NSSuperview" ref="111360906"/>
 																	<reference key="NSNextKeyView" ref="937110649"/>
 																	<string key="NSReuseIdentifierKey">_NS:360</string>
 																	<string key="NSAntiCompressionPriority">{250, 750}</string>
 																	<bool key="NSEnabled">YES</bool>
-																	<object class="NSTextFieldCell" key="NSCell" id="737784608">
+																	<object class="NSTextFieldCell" key="NSCell" id="892213091">
 																		<int key="NSCellFlags">69336577</int>
 																		<int key="NSCellFlags2">272629760</int>
 																		<string type="base64-UTF8" key="NSContents">RGllIFNpZ25hdHVyIGRpZXNlcyBBbmhhbmdzIGtvbm50ZSBuaWNodCDDvGJlcnByw7xmdCB3ZXJkZW4s
 IGRhIGRlciDDtmZmZW50bGljaGUgU2NobMO8c3NlbCBzaWNoIG5pY2h0IGltIFNjaGzDvHNzZWxidW5k
 IGJlZmluZGV0LgoKQml0dGUgbGFkZW4gU2llIGRlbiDDtmZmZW50bGljaGVuIFNjaGzDvHNzZWwgbWl0
 IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
-																		<object class="NSFont" key="NSSupport" id="179384628">
+																		<object class="NSFont" key="NSSupport" id="719560353">
 																			<string key="NSName">LucidaGrande</string>
 																			<double key="NSSize">11</double>
 																			<int key="NSfFlags">16</int>
 																		</object>
 																		<string key="NSCellIdentifier">_NS:360</string>
-																		<reference key="NSControlView" ref="138322284"/>
+																		<reference key="NSControlView" ref="344556492"/>
 																		<reference key="NSBackgroundColor" ref="317639729"/>
 																		<reference key="NSTextColor" ref="853214339"/>
 																	</object>
 																</object>
-																<object class="NSTextField" id="463642861">
-																	<reference key="NSNextResponder" ref="44245670"/>
+																<object class="NSTextField" id="876049002">
+																	<reference key="NSNextResponder" ref="111360906"/>
 																	<int key="NSvFlags">284</int>
 																	<string key="NSFrame">{{50, 91}, {370, 17}}</string>
-																	<reference key="NSSuperview" ref="44245670"/>
-																	<reference key="NSNextKeyView" ref="138322284"/>
+																	<reference key="NSSuperview" ref="111360906"/>
+																	<reference key="NSNextKeyView" ref="344556492"/>
 																	<string key="NSReuseIdentifierKey">_NS:3944</string>
 																	<bool key="NSEnabled">YES</bool>
-																	<object class="NSTextFieldCell" key="NSCell" id="233414006">
+																	<object class="NSTextFieldCell" key="NSCell" id="932405793">
 																		<int key="NSCellFlags">67239424</int>
 																		<int key="NSCellFlags2">272629760</int>
 																		<string key="NSContents">Die Signatur konnte nicht verizifiert werden.</string>
-																		<object class="NSFont" key="NSSupport" id="501760921">
+																		<object class="NSFont" key="NSSupport" id="434941522">
 																			<string key="NSName">LucidaGrande-Bold</string>
 																			<double key="NSSize">13</double>
 																			<int key="NSfFlags">2072</int>
 																		</object>
 																		<string key="NSCellIdentifier">_NS:3944</string>
-																		<reference key="NSControlView" ref="463642861"/>
+																		<reference key="NSControlView" ref="876049002"/>
 																		<reference key="NSBackgroundColor" ref="317639729"/>
 																		<reference key="NSTextColor" ref="853214339"/>
 																	</object>
 																</object>
-																<object class="NSImageView" id="515549890">
-																	<reference key="NSNextResponder" ref="44245670"/>
+																<object class="NSImageView" id="811451565">
+																	<reference key="NSNextResponder" ref="111360906"/>
 																	<int key="NSvFlags">268</int>
 																	<object class="NSMutableSet" key="NSDragTypes">
 																		<bool key="EncodedWithXMLCoder">YES</bool>
@@ -646,14 +646,14 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 																		</object>
 																	</object>
 																	<string key="NSFrame">{{6, 82}, {32, 32}}</string>
-																	<reference key="NSSuperview" ref="44245670"/>
-																	<reference key="NSNextKeyView" ref="463642861"/>
+																	<reference key="NSSuperview" ref="111360906"/>
+																	<reference key="NSNextKeyView" ref="876049002"/>
 																	<string key="NSReuseIdentifierKey">_NS:2141</string>
 																	<bool key="NSEnabled">YES</bool>
-																	<object class="NSImageCell" key="NSCell" id="800216610">
+																	<object class="NSImageCell" key="NSCell" id="919056335">
 																		<int key="NSCellFlags">130560</int>
 																		<int key="NSCellFlags2">33554432</int>
-																		<object class="NSCustomResource" key="NSContents" id="540719809">
+																		<object class="NSCustomResource" key="NSContents" id="964899397">
 																			<string key="NSClassName">NSImage</string>
 																			<string key="NSResourceName">InvalidBadge</string>
 																		</object>
@@ -668,7 +668,7 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 															</object>
 															<string key="NSFrameSize">{444, 120}</string>
 															<reference key="NSSuperview" ref="408514640"/>
-															<reference key="NSNextKeyView" ref="515549890"/>
+															<reference key="NSNextKeyView" ref="811451565"/>
 															<string key="NSReuseIdentifierKey">_NS:1192</string>
 															<string key="NSClassName">NSView</string>
 														</object>
@@ -682,7 +682,7 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 																	<int key="NSvFlags">284</int>
 																	<string key="NSFrame">{{50, -155}, {350, 238}}</string>
 																	<reference key="NSSuperview" ref="210185846"/>
-																	<reference key="NSNextKeyView" ref="44245670"/>
+																	<reference key="NSNextKeyView" ref="111360906"/>
 																	<string key="NSReuseIdentifierKey">_NS:360</string>
 																	<string key="NSAntiCompressionPriority">{250, 750}</string>
 																	<bool key="NSEnabled">YES</bool>
@@ -693,7 +693,7 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 IGRhIGRlciDDtmZmZW50bGljaGUgU2NobMO8c3NlbCBzaWNoIG5pY2h0IGltIFNjaGzDvHNzZWxidW5k
 IGJlZmluZGV0LgoKQml0dGUgbGFkZW4gU2llIGRlbiDDtmZmZW50bGljaGVuIFNjaGzDvHNzZWwgbWl0
 IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
-																		<reference key="NSSupport" ref="179384628"/>
+																		<reference key="NSSupport" ref="719560353"/>
 																		<string key="NSCellIdentifier">_NS:360</string>
 																		<reference key="NSControlView" ref="1051878768"/>
 																		<reference key="NSBackgroundColor" ref="317639729"/>
@@ -712,7 +712,7 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 																		<int key="NSCellFlags">67239424</int>
 																		<int key="NSCellFlags2">272629760</int>
 																		<string key="NSContents">Die Signatur konnte nicht verizifiert werden.</string>
-																		<reference key="NSSupport" ref="501760921"/>
+																		<reference key="NSSupport" ref="434941522"/>
 																		<string key="NSCellIdentifier">_NS:3944</string>
 																		<reference key="NSControlView" ref="834668756"/>
 																		<reference key="NSBackgroundColor" ref="317639729"/>
@@ -742,7 +742,7 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 																	<object class="NSImageCell" key="NSCell" id="643047161">
 																		<int key="NSCellFlags">130560</int>
 																		<int key="NSCellFlags2">33554432</int>
-																		<reference key="NSContents" ref="540719809"/>
+																		<reference key="NSContents" ref="964899397"/>
 																		<string key="NSCellIdentifier">_NS:2141</string>
 																		<int key="NSAlign">0</int>
 																		<int key="NSScale">0</int>
@@ -1425,35 +1425,35 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: arrangedObjects.firstIcon</string>
+						<string key="label">value: arrangedObjects.encryptedIcon</string>
 						<reference key="source" ref="420911521"/>
 						<reference key="destination" ref="841605363"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="420911521"/>
 							<reference key="NSDestination" ref="841605363"/>
-							<string key="NSLabel">value: arrangedObjects.firstIcon</string>
+							<string key="NSLabel">value: arrangedObjects.encryptedIcon</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">arrangedObjects.firstIcon</string>
+							<string key="NSKeyPath">arrangedObjects.encryptedIcon</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">393</int>
+					<int key="connectionID">272</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: arrangedObjects.secondIcon</string>
+						<string key="label">value: arrangedObjects.signedIcon</string>
 						<reference key="source" ref="827854899"/>
 						<reference key="destination" ref="841605363"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="827854899"/>
 							<reference key="NSDestination" ref="841605363"/>
-							<string key="NSLabel">value: arrangedObjects.secondIcon</string>
+							<string key="NSLabel">value: arrangedObjects.signedIcon</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">arrangedObjects.secondIcon</string>
+							<string key="NSKeyPath">arrangedObjects.signedIcon</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">394</int>
+					<int key="connectionID">273</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1894,10 +1894,10 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">hidden: selection.showDecryptedNoSignatureView</string>
-						<reference key="source" ref="44245670"/>
+						<reference key="source" ref="111360906"/>
 						<reference key="destination" ref="841605363"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="44245670"/>
+							<reference key="NSSource" ref="111360906"/>
 							<reference key="NSDestination" ref="841605363"/>
 							<string key="NSLabel">hidden: selection.showDecryptedNoSignatureView</string>
 							<string key="NSBinding">hidden</string>
@@ -1910,10 +1910,10 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: selection.decryptionSuccessMessage</string>
-						<reference key="source" ref="138322284"/>
+						<reference key="source" ref="344556492"/>
 						<reference key="destination" ref="841605363"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="138322284"/>
+							<reference key="NSSource" ref="344556492"/>
 							<reference key="NSDestination" ref="841605363"/>
 							<string key="NSLabel">value: selection.decryptionSuccessMessage</string>
 							<string key="NSBinding">value</string>
@@ -1926,10 +1926,10 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: selection.decryptionSuccessTitle</string>
-						<reference key="source" ref="463642861"/>
+						<reference key="source" ref="876049002"/>
 						<reference key="destination" ref="841605363"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="463642861"/>
+							<reference key="NSSource" ref="876049002"/>
 							<reference key="NSDestination" ref="841605363"/>
 							<string key="NSLabel">value: selection.decryptionSuccessTitle</string>
 							<string key="NSBinding">value</string>
@@ -1942,10 +1942,10 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: selection.successBadgeImage</string>
-						<reference key="source" ref="515549890"/>
+						<reference key="source" ref="811451565"/>
 						<reference key="destination" ref="841605363"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="515549890"/>
+							<reference key="NSSource" ref="811451565"/>
 							<reference key="NSDestination" ref="841605363"/>
 							<string key="NSLabel">value: selection.successBadgeImage</string>
 							<string key="NSBinding">value</string>
@@ -2132,7 +2132,7 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="210185846"/>
 							<reference ref="937110649"/>
-							<reference ref="44245670"/>
+							<reference ref="111360906"/>
 						</object>
 						<reference key="parent" ref="185690033"/>
 						<string key="objectName">ScrollContentView</string>
@@ -2726,57 +2726,57 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">377</int>
-						<reference key="object" ref="44245670"/>
+						<reference key="object" ref="111360906"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="138322284"/>
-							<reference ref="463642861"/>
-							<reference ref="515549890"/>
+							<reference ref="344556492"/>
+							<reference ref="876049002"/>
+							<reference ref="811451565"/>
 						</object>
 						<reference key="parent" ref="408514640"/>
 						<string key="objectName">Decrypt OK View</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">378</int>
-						<reference key="object" ref="138322284"/>
+						<reference key="object" ref="344556492"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="737784608"/>
+							<reference ref="892213091"/>
 						</object>
-						<reference key="parent" ref="44245670"/>
+						<reference key="parent" ref="111360906"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">379</int>
-						<reference key="object" ref="463642861"/>
+						<reference key="object" ref="876049002"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="233414006"/>
+							<reference ref="932405793"/>
 						</object>
-						<reference key="parent" ref="44245670"/>
+						<reference key="parent" ref="111360906"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">380</int>
-						<reference key="object" ref="515549890"/>
+						<reference key="object" ref="811451565"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="800216610"/>
+							<reference ref="919056335"/>
 						</object>
-						<reference key="parent" ref="44245670"/>
+						<reference key="parent" ref="111360906"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">381</int>
-						<reference key="object" ref="800216610"/>
-						<reference key="parent" ref="515549890"/>
+						<reference key="object" ref="919056335"/>
+						<reference key="parent" ref="811451565"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">382</int>
-						<reference key="object" ref="233414006"/>
-						<reference key="parent" ref="463642861"/>
+						<reference key="object" ref="932405793"/>
+						<reference key="parent" ref="876049002"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">383</int>
-						<reference key="object" ref="737784608"/>
-						<reference key="parent" ref="138322284"/>
+						<reference key="object" ref="892213091"/>
+						<reference key="parent" ref="344556492"/>
 					</object>
 				</object>
 			</object>
@@ -3023,7 +3023,7 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 				<reference key="dict.values" ref="1002"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">394</int>
+			<int key="maxID">392</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

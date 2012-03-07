@@ -141,6 +141,16 @@ typedef enum {
 - (id)decodePGPSignatureAttachment;
 
 /**
+ Adds the filename of a signature attachment which should not be displayed.
+ */
+- (void)scheduleSignatureAttachmentForRemoval:(NSString *)attachment;
+
+/**
+ Returns a list of all filenames of attachments scheduled for removal.
+ */
+- (NSArray *)signatureAttachmentScheduledForRemoval;
+
+/**
  Internally calls attachmentMightBePGPProcessed: passing the extensions to be checked.
  */
 - (BOOL)attachmentMightBePGPEncrypted;

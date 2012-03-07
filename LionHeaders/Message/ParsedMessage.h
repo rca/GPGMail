@@ -6,8 +6,6 @@
 
 
 
-#import "NSXMLParserDelegate-Protocol.h"
-
 @class NSArray, NSDictionary, NSString, NSURL;
 
 @interface ParsedMessage : NSObject <NSXMLParserDelegate>

@@ -34,6 +34,7 @@
 #import <MimeBody.h>
 #import <MessageStore.h>
 #import <ActivityMonitor.h>
+#import "MFError.h"
 #import "MimePart+GPGMail.h"
 #import "Message+GPGMail.h"
 #import "GPGMailBundle.h"
@@ -293,9 +294,13 @@
         [decryptedMessage fakeMessageFlagsIsEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];
     
     // Only for test purpose, after the correct error to be displayed should be constructed.
+    MFError *error = nil;
     if([errors count])
-        [[ActivityMonitor currentMonitor] setError:[errors objectAtIndex:0]];
+        error = [errors objectAtIndex:0];
+    else if([self.PGPAttachments count])
+        error = [self errorSummaryForPGPAttachments:self.PGPAttachments];
     
+    [[ActivityMonitor currentMonitor] setError:error];
     
     DebugLog(@"%@ Decrypted Message [%@]:\n\tisEncrypted: %@, isSigned: %@,\n\tisPartlyEncrypted: %@, isPartlySigned: %@\n\tsignatures: %@\n\terrors: %@",
           decryptedMessage, [decryptedMessage subject], decryptedMessage.PGPEncrypted ? @"YES" : @"NO", decryptedMessage.PGPSigned ? @"YES" : @"NO",
@@ -312,6 +317,76 @@
         [[decryptedMessage messageStore] setNumberOfAttachments:numberOfAttachments isSigned:isSigned isEncrypted:isEncrypted forMessage:decryptedMessage];
     // Set PGP Info collected so this information is not overwritten.
     self.PGPInfoCollected = YES;
+}
+
+- (MFError *)errorSummaryForPGPAttachments:(NSArray *)attachments {
+    NSUInteger verificationErrors = 0;
+    NSUInteger decryptionErrors = 0;
+    
+    for(MimePart *part in attachments) {
+        if(!part.PGPError)
+            continue;
+        
+        if([[(MFError *)part.PGPError userInfo] valueForKey:@"VerificationError"])
+            verificationErrors++;
+        else if([[(MFError *)part.PGPError userInfo] valueForKey:@"DecryptionError"])
+            decryptionErrors++;
+    }
+    
+    if(!verificationErrors && !decryptionErrors)
+        return nil;
+    
+    NSUInteger totalErrors = verificationErrors + decryptionErrors;
+    
+    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+    NSString *title = nil;
+    NSString *message = nil;
+    // 1035 says decryption error, 1036 says verification error.
+    // If both, use 1035.
+    NSUInteger errorCode = 0;
+    
+    if(verificationErrors && decryptionErrors) {
+        // @"%d Anhänge konnten nicht entschlüsselt oder verifiziert werden."
+        title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+        message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+        errorCode = 1035;
+    }
+    else if(verificationErrors) {
+        if(verificationErrors == 1) {
+            title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+            message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+        }
+        else {
+            title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+            message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+        }
+        errorCode = 1036;
+    }
+    else if(decryptionErrors) {
+        if(decryptionErrors == 1) {
+            title = title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+            message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+        }
+        else {
+            title = title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+            message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+        }
+        errorCode = 1035;
+    }
+    
+    title = [NSString stringWithFormat:title, totalErrors];
+    
+    MFError *error = nil;
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    
+    [userInfo setValue:title forKey:@"_MFShortDescription"];
+    [userInfo setValue:message forKey:@"NSLocalizedDescription"];
+    [userInfo setValue:[NSNumber numberWithBool:YES] forKey:@"DecryptionError"];
+    
+    error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:errorCode localizedDescription:nil title:title helpTag:nil 
+                            userInfo:userInfo];
+    
+    return error;
 }
 
 - (void)clearPGPInformation {
