@@ -165,8 +165,8 @@
 					NSInteger index = [menu indexOfItem:item];
 					
 					for (GPGKey *key in keys) {
-						NSMenuItem *subItem = [menuItems objectAtIndex:i + 1];
-						if (i + 1 < count && [subItem getIvar:@"parentItem"] && [subItem getIvar:@"gpgKey"] == key) {
+						NSMenuItem *subItem = nil;
+						if (i + 1 < count && (subItem = [menuItems objectAtIndex:i + 1]) && [subItem getIvar:@"parentItem"] && [subItem getIvar:@"gpgKey"] == key) {
 							// The next item is the item we want to create: Jump over.
 							i++;
 							index++;
