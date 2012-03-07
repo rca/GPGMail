@@ -142,5 +142,9 @@
 	return [NSSet setWithObject:@"bundle.gpgStatus"];
 }
 
+- (GPGOptions *)options {
+    return [GPGOptions sharedOptions];
+}
+
 
 @end

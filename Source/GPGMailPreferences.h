@@ -33,6 +33,7 @@
 
 @class GPGMailBundle;
 @class SUUpdater;
+@class GPGOptions;
 
 @interface GPGMailPreferences : NSPreferencesModule {
 }
@@ -55,6 +56,7 @@
 @property (readonly) NSImage *gpgStatusImage;
 @property (readonly) NSString *gpgStatusToolTip;
 @property (readonly) NSString *gpgStatusTitle;
+@property (readonly) GPGOptions *options;
 
 @end
 
