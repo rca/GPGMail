@@ -47,7 +47,7 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-AppleLanguages (&quot;en&quot;)"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>

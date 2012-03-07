@@ -34,9 +34,14 @@
 @class GPGMailBundle;
 @class SUUpdater;
 @class GPGOptions;
+@class GMSpecialBox;
 
-@interface GPGMailPreferences : NSPreferencesModule {
-}
+@protocol GMSpecialBoxDelegate <NSObject>
+- (void)box:(GMSpecialBox *)box keyDown:(NSEvent *)event;
+@end
+
+
+@interface GPGMailPreferences : NSPreferencesModule <GMSpecialBoxDelegate> {}
 
 /* Open FAQ page. */
 - (IBAction)openFAQ:(id)sender;
@@ -60,3 +65,12 @@
 
 @end
 
+
+@interface NSButton_LinkCursor : NSButton
+@end
+
+@interface GMSpecialBox : NSBox {
+	id <GMSpecialBoxDelegate> delegate;
+}
+@property (assign) id <GMSpecialBoxDelegate> delegate;
+@end
