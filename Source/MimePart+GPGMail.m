@@ -909,6 +909,8 @@
     // the fact that the password dialog blocks just fine.
     partDecryptedData = [self decryptData:inlineEncrypted ? inlineEncryptedData : encryptedData];
     
+    BOOL error = partDecryptedData == nil;
+    
     // Creating a new message from the PGP decrypted data for PGP/MIME encrypted messages
     // is not supposed to happen within the decryption task.
     // Otherwise it could block the decryption queue for new jobs if the decrypted message contains
@@ -938,6 +940,14 @@
 				}
 			}
 		}
+        
+        // Part decrypted data is always an NSData object,
+        // due to the charset finding attempt above.
+        // So if there was an error reset it to nil, otherwise
+        // the original encrypted data is replaced with an empty
+        // NSData object.
+        if(error)
+            partDecryptedData = nil;
 		
         decryptedData = [self partDataByReplacingEncryptedData:encryptedData decryptedData:partDecryptedData encryptedRange:encryptedRange];
     } else
