@@ -568,10 +568,14 @@ static BOOL gpgMailWorks = NO;
 		NSSet *updatedKeys;
 		if ([keys count] == 0) {
             //Update all keys.
-			updatedKeys = [self.gpgc updateKeys:allGPGKeys searchFor:nil withSigs:NO];
+            // Don't use self.gpgc here, since that calls allKeys which stalls
+            // if it didn't complete once.
+			updatedKeys = [gpgc updateKeys:allGPGKeys searchFor:nil withSigs:NO];
 		} else {
             //Update only the keys in 'keys'.
-			updatedKeys = [self.gpgc updateKeys:keys withSigs:NO];
+			// Don't use self.gpgc here, since that calls allKeys which stalls
+            // if it didn't complete once.
+            updatedKeys = [gpgc updateKeys:keys withSigs:NO];
 		}
         
         if (gpgc.error) {
