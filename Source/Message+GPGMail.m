@@ -438,14 +438,13 @@
             [keyIDs addObject:packet.keyID];
     }
     
-    NSAssert([keyIDs count] != 0, @"No keyIDs found: %@", keyIDs);
-    
     BOOL passphraseInCache = NO;
     GPGController *gpgc = [[GPGController alloc] init];
     
     for(NSString *keyID in keyIDs) {
         GPGKey *key = [[[GPGMailBundle sharedInstance] publicGPGKeysByID] valueForKey:keyID];
-        NSAssert(key != nil, @"No key found for keyID: %@", keyID);
+        if(!key)
+            continue;
         if([gpgc isPassphraseForKeyInCache:key]) {
             passphraseInCache = YES;
             DebugLog(@"Passphrase found in cache!");
