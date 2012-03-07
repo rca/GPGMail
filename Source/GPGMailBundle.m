@@ -70,7 +70,7 @@ static BOOL gpgMailWorks = NO;
 
 @synthesize publicGPGKeys, secretGPGKeys, allGPGKeys, updater, accountExistsForSigning, secretGPGKeysByEmail = _secretGPGKeysByEmail, 
             publicGPGKeysByEmail = _publicGPGKeysByEmail, gpgc, publicGPGKeysByID = _publicGPGKeysByID, disabledGroups = _disabledGroups,
-            disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus;
+            disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus, bundleImages = _bundleImages;
 
 /**
  This method replaces all of Mail's methods which are necessary for GPGMail
@@ -85,7 +85,7 @@ static BOOL gpgMailWorks = NO;
  
  swizzleMap contains all classes and methods which need to be swizzled.
  */
-+ (void)_installGPGMail {
+- (void)_installGPGMail {
     //	DebugLog(@"Adding GPGMail methods");
     NSArray *swizzleMap = [NSArray arrayWithObjects:
                            // Mail internal classes.
@@ -240,15 +240,7 @@ static BOOL gpgMailWorks = NO;
 #pragma GCC diagnostic pop
 	// Initialize the bundle by swizzling methods, loading keys, ...
     GPGMailBundle *instance = [GPGMailBundle sharedInstance];
-    [instance description];
-    // Last step necessary to completely setup our bundle is
-    // swizzling the Mail classes.
-    [self _installGPGMail];
-    // Load all necessary images.
-    [self _loadImages];
-    // Install the Sparkle Updater.
-    [self _installSparkleUpdater];
-    NSLog(@"Loaded GPGMail %@", [(GPGMailBundle *)[self sharedInstance] version]);
+    NSLog(@"Loaded GPGMail %@", [instance version]);
     
     [((MVMailBundle *)[self class]) registerBundle];             // To force registering composeAccessoryView and preferences
 }
@@ -256,37 +248,53 @@ static BOOL gpgMailWorks = NO;
 /**
  * Loads all images which are used in the GPGMail User interface.
  */
-+ (void)_loadImages {
+- (void)_loadImages {
     // We need to load images and name them, because all images are searched by their name; as they are not located in the main bundle,
 	// +[NSImage imageNamed:] does not find them.
-	NSBundle *myBundle = [NSBundle bundleForClass:self];
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"encrypted"]] setName:@"gpgEncrypted"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"clear"]] setName:@"gpgClear"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"signed"]] setName:@"gpgSigned"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"unsigned"]] setName:@"gpgUnsigned"];
+	NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
     
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GPGMail"]] setName:@"GPGMail"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"MacGPG"]] setName:@"MacGPG"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GPGMail32"]] setName:@"GPGMail32"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GPGMailPreferences"]] setName:@"GPGMailPreferences"];
+    // Use something else then NSArray which only retains value. CFArray for example.
+    NSMutableArray *bundleImages = [[NSMutableArray alloc] init];
+    NSDictionary *bundleImageMap = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    @"encrypted", @"gpgEncrypted",
+                                    @"clear", @"gpgClear",
+                                    @"signed", @"gpgSigned",
+                                    @"unsigned", @"gpgUnsigned",
+                                    @"GPGMail", @"GPGMail",
+                                    @"MacGPG", @"MacGPG",
+                                    @"GPGMail32", @"GPGMail32",
+                                    @"GPGMailPreferences", @"GPGMailPreferences",
+                                    @"questionMark", @"gpgQuestionMark",
+                                    @"SmallAlert12", @"gpgSmallAlert12",
+                                    @"SmallAlert16", @"gpgSmallAlert16",
+                                    @"EmptyImage", @"gpgEmptyImage",
+                                    @"ValidBadge", @"gpgValidBadge",
+                                    @"InvalidBadge", @"gpgInvalidBadge",
+                                    @"encryption_unlocked", @"decryptedBadge",
+                                    @"invalid-signature-icon-overlay", @"invalid-signature-icon-overlay",
+                                    @"GreenDot", @"GreenDot",
+                                    @"YellowDot", @"YellowDot",
+                                    @"RedDot", @"RedDot",
+                                    @"menu-arrow", @"MenuArrow",
+                                    @"menu-arrow-white", @"MenuArrowWhite", nil];
     
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"questionMark"]] setName:@"gpgQuestionMark"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"SmallAlert12"]] setName:@"gpgSmallAlert12"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"SmallAlert16"]] setName:@"gpgSmallAlert16"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"EmptyImage"]] setName:@"gpgEmptyImage"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"ValidBadge"]] setName:@"gpgValidBadge"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"InvalidBadge"]] setName:@"gpgInvalidBadge"];
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"encryption_unlocked"]] setName:@"decryptedBadge"];
+    for(NSString *name in bundleImageMap) {
+        NSString *imageName = [bundleImageMap valueForKey:name];
+        NSImage *image = [[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:imageName]];
+        // Shoud an image not exist, log a warning, but don't crash because of inserting
+        // nil!
+        if(!image) {
+            NSLog(@"GPGMail: Image %@ not found in bundle resources.", imageName);
+            continue;
+        }
+        [image setName:name];
+        [bundleImages addObject:image];
+        [image release];
+    }
     
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"invalid-signature-icon-overlay"]] setName:@"invalid-signature-icon-overlay"];
+    self.bundleImages = bundleImages;
     
-
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GreenDot"]] setName:@"GreenDot"];
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"YellowDot"]] setName:@"YellowDot"];
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"RedDot"]] setName:@"RedDot"];
-    
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"menu-arrow"]] setName:@"MenuArrow"];
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"menu-arrow-white"]] setName:@"MenuArrowWhite"];
+    [bundleImages release];
 }
 
 + (BOOL)hasPreferencesPanel {
@@ -305,11 +313,11 @@ static BOOL gpgMailWorks = NO;
  Installs the sparkle updater.
  TODO: Sparkle should automatically start to check, but sometimes it doesn't work.
  */
-+ (void)_installSparkleUpdater {
-    SUUpdater *updater = [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
-	updater.delegate = [self sharedInstance];
-	[updater resetUpdateCycle];
-    [[self sharedInstance] setUpdater:updater];
+- (void)_installSparkleUpdater {
+    SUUpdater *sparkleUpdater = [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
+	sparkleUpdater.delegate = self;
+	[sparkleUpdater resetUpdateCycle];
+    self.updater = sparkleUpdater;
 }
 
 - (NSString *)pathToRelaunchForUpdater:(SUUpdater *)updater {
@@ -374,8 +382,14 @@ static BOOL gpgMailWorks = NO;
     // Init GPGController.
     [self gpgc];
     
-    self.accountExistsForSigning = YES;
+    // Swizzling the Mail classes.
+    [self _installGPGMail];
+    // Load all necessary images.
+    [self _loadImages];
+    // Install the Sparkle Updater.
+    [self _installSparkleUpdater];
     
+    self.accountExistsForSigning = YES;
 }
 
 - (id)init {
@@ -383,7 +397,7 @@ static BOOL gpgMailWorks = NO;
 		NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
 		NSDictionary *defaultsDictionary = [NSDictionary dictionaryWithContentsOfFile:[myBundle pathForResource:@"GPGMailBundle" ofType:@"defaults"]];
         
-		[[GPGOptions sharedOptions] setStandardDomain:[[NSBundle bundleForClass:[self class]] bundleIdentifier]];
+        [[GPGOptions sharedOptions] setStandardDomain:[[NSBundle bundleForClass:[self class]] bundleIdentifier]];
 		if (defaultsDictionary) {
 			[[GPGOptions sharedOptions] registerDefaults:defaultsDictionary];
 		}
@@ -406,6 +420,7 @@ static BOOL gpgMailWorks = NO;
     dispatch_release(collectingQueue);
     dispatch_release(keysUpdateQueue);
     
+    self.bundleImages = nil;
     self.secretGPGKeys = nil;
     self.publicGPGKeys = nil;
     self.secretGPGKeysByEmail = nil;
@@ -417,9 +432,11 @@ static BOOL gpgMailWorks = NO;
     updateLock = nil;
     [allGPGKeys release];
     allGPGKeys = nil;
+    [_bundleImages release];
+    _bundleImages = nil;
     
 	//[locale release];
-    
+
 	struct objc_super s = { self, [self superclass] };
     objc_msgSendSuper(&s, @selector(dealloc));
 
