@@ -102,6 +102,7 @@
 		4523EBD61505451700497E39 /* BundleTestRunner.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4523EBD51505451700497E39 /* BundleTestRunner.1 */; };
 		4523EC0415056F6100497E39 /* PGPMessageBlockGood2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4523EC0315056F6100497E39 /* PGPMessageBlockGood2.txt */; };
 		4523EC4115057E9000497E39 /* PGPPublicKey.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4523EC4015057E9000497E39 /* PGPPublicKey.txt */; };
+		4555EADF15094E0500723E1F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4523EB9D150515CD00497E39 /* SenTestingKit.framework */; };
 		559A81300838EEFD0052F47C /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559A812B0838EEFD0052F47C /* AddressBook.framework */; };
 		559A81310838EEFD0052F47C /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559A812C0838EEFD0052F47C /* Carbon.framework */; };
 		559A81320838EEFD0052F47C /* Message.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559A812D0838EEFD0052F47C /* Message.framework */; };
@@ -1457,6 +1458,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4523EBCF1505451700497E39 /* Foundation.framework in Frameworks */,
+				4555EADF15094E0500723E1F /* SenTestingKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
