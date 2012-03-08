@@ -84,14 +84,16 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 	NSLock *updateLock;
     
 	SUUpdater *updater;
+    
+    NSMutableArray *_bundleImages;
 }
 
 // Install all methods used by GPGMail.
-+ (void)_installGPGMail;
+- (void)_installGPGMail;
 // Load all necessary images.
-+ (void)_loadImages;
+- (void)_loadImages;
 // Install the Sparkle Updater.
-+ (void)_installSparkleUpdater;
+- (void)_installSparkleUpdater;
 // Returns the bundle version.
 + (NSString *)bundleVersion;
 // Returns the string used for the x-pgp-agent message header.
@@ -119,6 +121,8 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 @property (nonatomic, readonly, retain) SUUpdater *updater;
 
 @property (nonatomic, assign) BOOL accountExistsForSigning;
+
+@property (nonatomic, retain) NSMutableArray *bundleImages;
 
 - (NSString *)version;
 - (NSString *)versionDescription;

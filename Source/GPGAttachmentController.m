@@ -34,12 +34,25 @@
             [attachment setValue:[[[part dispositionParameterForKey:@"filename"] lastPathComponent] stringByDeletingPathExtension] forKey:@"decrypted-name"];
             if(part.PGPSignatures)
                 [attachment setValue:[part.PGPSignatures objectAtIndex:0] forKey:@"signature"];
-            [attachment setValue:[self encryptedImageForPart:part] forKey:@"encryptedIcon"];
-            [attachment setValue:[self signedImageForPart:part] forKey:@"signedIcon"];
             BOOL decrypted = part.PGPDecrypted;
             [attachment setValue:[NSNumber numberWithBool:decrypted] forKey:@"decrypted"];
-            if(!part.PGPError)
+            if(!part.PGPError) {
                 [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showErrorView"];
+                if(decrypted && part.PGPVerified) {
+                    [attachment setValue:[NSNumber numberWithBool:NO] forKey:@"showSignatureView"];
+                    [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showDecryptedNoSignatureView"];
+                }
+                else if(part.PGPVerified) {
+                    [attachment setValue:[NSNumber numberWithBool:NO] forKey:@"showSignatureView"];
+                    [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showDecryptedNoSignatureView"];
+                }
+                else if(decrypted) {
+                    [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showSignatureView"];
+                    [attachment setValue:[NSNumber numberWithBool:NO] forKey:@"showDecryptedNoSignatureView"];
+                    [attachment setValue:@"Der Anhang wurde erfolgreich entschlüsselt" forKey:@"decryptionSuccessTitle"];
+                    [attachment setValue:@"Doppelklicken Sie im Nachrichtenfenster auf eine Datei um diese zu öffnen." forKey:@"decryptionSuccessMessage"];
+                }
+            }
             else {
                 [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showSignatureView"];
                 if(part.PGPSigned) {
@@ -54,6 +67,24 @@
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"NSLocalizedDescription"] forKey:@"errorMessage"];
                 }                
             }
+            
+            // Set the correct images at their correct positions.
+            // 1.) signed && encrypted -> first icon = encrypted, second icon = signed
+            // 2.) only signed -> first icon = signed, second icon = nil
+            // 3.) only encrypted -> first icon = encrypted, second icon = nil
+            
+            if(part.PGPSigned && part.PGPEncrypted) {
+                [attachment setValue:[self encryptedImageForPart:part] forKey:@"firstIcon"];
+                [attachment setValue:[self signedImageForPart:part] forKey:@"secondIcon"];
+            }
+            else if(part.PGPSigned) {
+                [attachment setValue:[self signedImageForPart:part] forKey:@"firstIcon"];
+            }
+            else if(part.PGPEncrypted) {
+                [attachment setValue:[self encryptedImageForPart:part] forKey:@"firstIcon"];
+            }
+            
+            
             
             [attachments addObject:attachment];
             [attachment release];
