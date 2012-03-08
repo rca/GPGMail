@@ -147,4 +147,80 @@
 }
 
 
+- (void)box:(GMSpecialBox *)box keyDown:(NSEvent *)event {
+	unsigned short keySequence[] = {124, 125, 123, 123, 124, 124, 0};
+	static int index = 0;
+	
+	if (event.isARepeat || event.keyCode != keySequence[index] || keySequence[++index]) {
+		return;
+	}
+
+	NSSize size = box.bounds.size;
+	srandom(time(NULL));
+	
+	[NSAnimationContext beginGrouping];
+	[[NSAnimationContext currentContext] setDuration:2.0f];
+	for (NSView *view in [box.contentView subviews]) {
+		NSRect frame = view.frame;
+		
+		long angle = (random() % 360);	
+		
+		double x = (size.width + frame.size.width) / 2 * sin(angle * M_PI / 180) * 1.5;
+		double y = (size.height + frame.size.height) / 2 * cos(angle * M_PI / 180) * 1.5;
+		
+		x += (size.width - frame.size.width) / 2;
+		y += (size.height - frame.size.height) / 2;
+
+		frame.origin.x = x;
+		frame.origin.y = y;
+		
+		[(NSView *)[view animator] setFrame:frame];
+	}
+	
+	WebView *webView = [[WebView alloc] initWithFrame:NSMakeRect(0, 0, size.width, size.height)];
+	[webView setDrawsBackground:NO];
+	[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"Special" withExtension:@"html"]]];
+	
+	
+	[webView setAlphaValue:0];
+	[box addSubview:webView];
+	[[webView animator] setAlphaValue:1];
+	
+	[NSAnimationContext endGrouping];
+}
+
+
+
+
+
+
+- (void)setPreferencesView:(id)box {
+	[(GMSpecialBox *)box setDelegate:self];
+	[super setPreferencesView:box];
+}
+- (BOOL)isResizable {
+	return NO;
+}
+
+
+
 @end
+
+
+@implementation NSButton_LinkCursor
+- (void)resetCursorRects {
+	[self addCursorRect:[self bounds] cursor:[NSCursor pointingHandCursor]];
+}
+@end
+
+@implementation GMSpecialBox
+@synthesize delegate;
+- (void)keyDown:(NSEvent *)event {
+	[delegate box:self keyDown:event];
+	[super keyDown:event];
+}
+- (BOOL)acceptsFirstResponder {
+    return YES;
+}
+@end
+
