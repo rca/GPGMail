@@ -75,10 +75,11 @@
 
     NSData *signature = [data subdataWithRange:match];
     // This first does a UTF8 guess, so it's good
-    NSString *decoded = [signature stringByGuessingEncoding];
+    NSString *decoded = [[NSString alloc] initWithData:signature encoding:NSUTF8StringEncoding];
     // existing implementation should pass, but was broken before RegexKit
     STAssertTrue([decoded hasPrefix:PGP_SIGNED_MESSAGE_BEGIN], decoded);
     STAssertTrue([decoded hasSuffix:PGP_MESSAGE_SIGNATURE_END], decoded);
+    [decoded release];
 }
 
 - (void)testRangeOfPGPInlineSignaturesASCIIGood {
@@ -88,10 +89,10 @@
     STAssertTrue(match.location != NSNotFound, @"Did not find signature as expected!");
     
     NSData *signature = [data subdataWithRange:match];
-    // This first does a UTF8 guess, which will work for ASCII
-    NSString *decoded = [signature stringByGuessingEncoding];
+    NSString *decoded = [[NSString alloc] initWithData:signature encoding:NSASCIIStringEncoding];
     STAssertTrue([decoded hasPrefix:PGP_SIGNED_MESSAGE_BEGIN], decoded);
     STAssertTrue([decoded hasSuffix:PGP_MESSAGE_SIGNATURE_END], decoded);
+    [decoded release];
 }
 
 - (void)testRangeOfPGPInlineSignaturesUTF8quoted {
@@ -115,11 +116,11 @@
     STAssertTrue(match.location != NSNotFound, @"Did not find signature as expected!");
     
     NSData *signature = [data subdataWithRange:match];
-    // This first does a UTF8 guess, which will work for ASCII
-    NSString *decoded = [signature stringByGuessingEncoding];
+    NSString *decoded = [[NSString alloc] initWithData:signature encoding:NSUTF8StringEncoding];
     // existing implementation should pass, but was broken before RegexKit
     STAssertTrue([decoded hasPrefix:PGP_MESSAGE_SIGNATURE_BEGIN], decoded);
     STAssertTrue([decoded hasSuffix:PGP_MESSAGE_SIGNATURE_END], decoded);
+    [decoded release];
 }
 
 - (void)testRangeOfPGPSignaturesASCIIGood {
@@ -129,10 +130,10 @@
     STAssertTrue(match.location != NSNotFound, @"Did not find signature as expected!");
     
     NSData *signature = [data subdataWithRange:match];
-    // This first does a UTF8 guess, which will work for ASCII
-    NSString *decoded = [signature stringByGuessingEncoding];
+    NSString *decoded = [[NSString alloc] initWithData:signature encoding:NSASCIIStringEncoding];
     STAssertTrue([decoded hasPrefix:PGP_MESSAGE_SIGNATURE_BEGIN], decoded);
     STAssertTrue([decoded hasSuffix:PGP_MESSAGE_SIGNATURE_END], decoded);
+    [decoded release];
 }
 
 - (void)testRangeOfPGPInlineEncryptedDataUTF8Good {
@@ -142,8 +143,7 @@
     STAssertTrue(match.location != NSNotFound, @"Did not find data as expected!");
     
     NSData *pgpBlock = [data subdataWithRange:match];
-    // This first does a UTF8 guess, so it's good
-    NSString *decoded = [pgpBlock stringByGuessingEncoding];
+    NSString *decoded = [[NSString alloc] initWithData:pgpBlock encoding:NSUTF8StringEncoding];
     // existing implementation should pass, but was broken before RegexKit
     STAssertTrue([decoded hasPrefix:PGP_MESSAGE_BEGIN], decoded);
     STAssertTrue([decoded hasSuffix:PGP_MESSAGE_END], decoded);
@@ -156,8 +156,7 @@
     STAssertTrue(match.location != NSNotFound, @"Did not find data as expected!");
     
     NSData *pgpBlock = [data subdataWithRange:match];
-    // This first does a UTF8 guess, so it's good for ASCII too
-    NSString *decoded = [pgpBlock stringByGuessingEncoding];
+    NSString *decoded = [[NSString alloc] initWithData:pgpBlock encoding:NSASCIIStringEncoding];
     // existing implementation should pass, but was broken before RegexKit
     STAssertTrue([decoded hasPrefix:PGP_MESSAGE_BEGIN], decoded);
     STAssertTrue([decoded hasSuffix:PGP_MESSAGE_END], decoded);
@@ -175,6 +174,20 @@
     STAssertNotNil(data, @"Did not read Resource!");
     NSRange match = [data rangeOfPGPInlineEncryptedData];
     STAssertTrue(match.location == NSNotFound, @"Found unexpected data!");
+}
+
+- (void)testPGPVersionMarker {
+    NSString *case1 = @"éúêø version: 1 Å";
+    NSData *encoded = [case1 dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:FALSE];
+    STAssertNotNil(encoded, @"Failed to UTF8 encode!");
+    STAssertTrue([encoded containsPGPVersionMarker:1], @"version match failed!");
+    STAssertFalse([encoded containsPGPVersionMarker:2], @"version match passed unexpectedly!");
+
+    case1 = @"éúêø version : 1 Å";
+    encoded = [case1 dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:TRUE];
+    STAssertNotNil(encoded, @"Failed to ASCII-lossy encode!");
+    STAssertTrue([encoded containsPGPVersionMarker:1], @"version match failed!");
+    STAssertFalse([encoded containsPGPVersionMarker:2], @"version match passed unexpectedly!");
 }
 
 @end

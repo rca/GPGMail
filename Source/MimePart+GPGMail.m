@@ -1297,16 +1297,7 @@
     if([[[versionPart type] lowercaseString] isEqualToString:@"application"] && [[[versionPart subtype] lowercaseString] isEqualToString:@"pgp-encrypted"] &&
        [[[dataPart type] lowercaseString] isEqualToString:@"application"] && ([[[dataPart subtype] lowercaseString] isEqualToString:@"octet-stream"] ||
                                                                               [[[dataPart subtype] lowercaseString] isEqualToString:@"pgp-signature"])) {
-           // For some strange reason version is NSUTF8 encoded, not ascii... hmm...
-           NSString *version = [[versionPart bodyData] stringByGuessingEncoding];
-           // All conditions matched.
-           if([[version lowercaseString] rangeOfString:@"version: 1"].location != NSNotFound || 
-              [[version lowercaseString] rangeOfString:@"version : 1"].location != NSNotFound) {
-               return YES;
-           }
-           else {
-               return NO;
-           }
+           return [[versionPart bodyData] containsPGPVersionMarker:1];
        }
     
     return NO;

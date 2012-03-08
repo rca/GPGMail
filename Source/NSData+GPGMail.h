@@ -81,4 +81,9 @@
  */
 - (NSRange)rangeOfPGPPublicKey;
 
+/**
+ Finds "version ?: \d"
+ */
+- (BOOL)containsPGPVersionMarker:(int)version;
+
 @end
