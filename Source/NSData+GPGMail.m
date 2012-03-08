@@ -65,84 +65,27 @@
 }
 
 - (NSRange)rangeOfPGPInlineSignatures  {
-    NSRange range = NSMakeRange(NSNotFound, 0);
     // Use the regular expression to ignore all signatures contained in a reply.
-    NSString *signatureRegex = [NSString stringWithFormat:@"(?sm)(^%@\r?\n(.*)\r?\n%@)", PGP_SIGNED_MESSAGE_BEGIN, PGP_MESSAGE_SIGNATURE_END];
-    
-    NSString *signedContent = [self stringByGuessingEncoding];
-    if([signedContent length] == 0)
-        return range;
-    
-    NSRange signedRange = NSMakeRange(NSNotFound, 0);
-    @try {
-         signedRange = [signedContent rangeOfRegex:signatureRegex inRange:NSMakeRange(0, [signedContent length]) capture:0];
-    }
-    @catch(id e) {
-        // Fail gracefully, if for example binary data is detected.
-    }
-    
-    if(signedRange.location == NSNotFound)
-        return range;
-    
-    return signedRange;
+    NSString *signatureRegex = [NSString stringWithFormat:@"(?sm)(^%@\r?\n(.*)\r?\n%@)", 
+                                PGP_SIGNED_MESSAGE_BEGIN, PGP_MESSAGE_SIGNATURE_END];
+    RKRegex *sigRKRegex = [RKRegex regexWithRegexString:signatureRegex options:RKCompileNoOptions];
+    return [self rangeOfRegex:sigRKRegex];
 }
 
 - (NSRange)rangeOfPGPSignatures  {
-    NSRange range = NSMakeRange(NSNotFound, 0);
-    
-    NSString *signedContent = [self stringByGuessingEncoding];
-    if([signedContent length] == 0)
-        return range;
-    NSRange startRange = [signedContent rangeOfString:PGP_MESSAGE_SIGNATURE_BEGIN];
-    if(startRange.location == NSNotFound)
-        return range;
-    NSRange endRange = [signedContent rangeOfString:PGP_MESSAGE_SIGNATURE_END];
-    if(endRange.location == NSNotFound)
-        return range;
-    
-    return NSUnionRange(startRange, endRange);
+    // Use the regular expression to ignore all signatures contained in a reply.
+    NSString *signatureRegex = [NSString stringWithFormat:@"(?sm)(%@.*%@)", 
+                                PGP_MESSAGE_SIGNATURE_BEGIN, PGP_MESSAGE_SIGNATURE_END];
+    RKRegex *sigRKRegex = [RKRegex regexWithRegexString:signatureRegex options:RKCompileNoOptions];
+    return [self rangeOfRegex:sigRKRegex];
 }
 
 - (NSRange)rangeOfPGPInlineEncryptedData {
-    // Fetch part body to look for the leading GPG string.
-    // For some reason textEncoding doesn't really work... and is actually never called
-    // by Mail.app itself it seems.
-    NSString *body = [self stringByGuessingEncoding];
-    // If the encoding can't be guessed, the body will probably be empty,
-    // so let's get out of here.!
-    if(![body length])
-        return NSMakeRange(NSNotFound, 0);
-    
-    NSRange range = NSMakeRange(NSNotFound, 0);
     // Use the regular expression to ignore all signatures contained in a reply.
-    NSString *encryptedRegex = [NSString stringWithFormat:@"(?sm)(^%@\r?\n(.*)\r?\n%@)", PGP_MESSAGE_BEGIN, PGP_MESSAGE_END];
-    
-    NSRange encryptedRange = NSMakeRange(NSNotFound, 0);
-    @try {
-        encryptedRange = [body rangeOfRegex:encryptedRegex inRange:NSMakeRange(0, [body length]) capture:0];
-    }
-    @catch(id e) {
-        // Fail gracefully, if for example binary data is detected.
-    }
-    
-    if(encryptedRange.location == NSNotFound)
-        return range;
-    
-    return encryptedRange;
-    
-    
-    NSRange startRange = [body rangeOfString:PGP_MESSAGE_BEGIN];
-    // For some reason (OS X Bug? Code bug?) comparing to NSNotFound doesn't
-    // (always?) work.
-    //if(startRange.location == NSNotFound)
-    if(startRange.location == NSNotFound)
-        return NSMakeRange(NSNotFound, 0);
-    NSRange endRange = [body rangeOfString:PGP_MESSAGE_END];
-    if(endRange.location == NSNotFound)
-        return NSMakeRange(NSNotFound, 0);
-    
-    NSRange gpgRange = NSUnionRange(startRange, endRange);
-    return gpgRange;
+    NSString *signatureRegex = [NSString stringWithFormat:@"(?sm)(^%@\r?\n(.*)\r?\n%@)", 
+                                PGP_MESSAGE_BEGIN, PGP_MESSAGE_END];
+    RKRegex *sigRKRegex = [RKRegex regexWithRegexString:signatureRegex options:RKCompileNoOptions];
+    return [self rangeOfRegex:sigRKRegex];
 }
 
 - (BOOL)mightContainPGPEncryptedDataOrSignatures {
