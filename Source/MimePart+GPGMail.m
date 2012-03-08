@@ -401,7 +401,7 @@
     // In that case, don't try to inline decrypt it.
     // This is necessary since decodeMultipartWithContext checks the attachments
     // first and after that runs decodeWithContext apparently.
-    if([[[self mimeBody] topLevelPart] isType:@"multipart" subtype:@"encrypted"])
+    if([[[self mimeBody] topPart] isType:@"multipart" subtype:@"encrypted"])
         return;
 
     NSArray *encExtensions = [NSArray arrayWithObjects:@"pgp", @"gpg", @"asc", nil];

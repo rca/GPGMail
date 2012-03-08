@@ -183,7 +183,7 @@
     STAssertTrue([encoded containsPGPVersionMarker:1], @"version match failed!");
     STAssertFalse([encoded containsPGPVersionMarker:2], @"version match passed unexpectedly!");
 
-    case1 = @"éúêø version : 1 Å";
+    case1 = @"éúêø VERSION : 1 Å";
     encoded = [case1 dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:TRUE];
     STAssertNotNil(encoded, @"Failed to ASCII-lossy encode!");
     STAssertTrue([encoded containsPGPVersionMarker:1], @"version match failed!");

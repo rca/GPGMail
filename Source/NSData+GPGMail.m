@@ -102,7 +102,7 @@
 }
 
 - (BOOL)containsPGPVersionMarker:(int)version {
-    NSString *versionRegex = [NSString stringWithFormat:@"(?sm)(version[ ]?: %d)", version];
+    NSString *versionRegex = [NSString stringWithFormat:@"(?smi)(version[ ]?: %d)", version];
     RKRegex *versionRKRegex = [RKRegex regexWithRegexString:versionRegex options:RKCompileNoOptions];
     return [self isMatchedByRegex:versionRKRegex];
 }
