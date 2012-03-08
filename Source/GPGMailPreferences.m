@@ -146,63 +146,9 @@
     return [GPGOptions sharedOptions];
 }
 
-
-- (void)box:(GMSpecialBox *)box keyDown:(NSEvent *)event {
-	unsigned short keySequence[] = {124, 125, 123, 123, 124, 124, 0};
-	static int index = 0;
-	
-	if (event.isARepeat || event.keyCode != keySequence[index] || keySequence[++index]) {
-		return;
-	}
-
-	NSSize size = box.bounds.size;
-	srandom(time(NULL));
-	
-	[NSAnimationContext beginGrouping];
-	[[NSAnimationContext currentContext] setDuration:2.0f];
-	for (NSView *view in [box.contentView subviews]) {
-		NSRect frame = view.frame;
-		
-		long angle = (random() % 360);	
-		
-		double x = (size.width + frame.size.width) / 2 * sin(angle * M_PI / 180) * 1.5;
-		double y = (size.height + frame.size.height) / 2 * cos(angle * M_PI / 180) * 1.5;
-		
-		x += (size.width - frame.size.width) / 2;
-		y += (size.height - frame.size.height) / 2;
-
-		frame.origin.x = x;
-		frame.origin.y = y;
-		
-		[(NSView *)[view animator] setFrame:frame];
-	}
-	
-	WebView *webView = [[WebView alloc] initWithFrame:NSMakeRect(0, 0, size.width, size.height)];
-	[webView setDrawsBackground:NO];
-	[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"Special" withExtension:@"html"]]];
-	
-	
-	[webView setAlphaValue:0];
-	[box addSubview:webView];
-	[[webView animator] setAlphaValue:1];
-	
-	[NSAnimationContext endGrouping];
-}
-
-
-
-
-
-
-- (void)setPreferencesView:(id)box {
-	[(GMSpecialBox *)box setDelegate:self];
-	[super setPreferencesView:box];
-}
 - (BOOL)isResizable {
 	return NO;
 }
-
-
 
 @end
 
@@ -214,10 +160,53 @@
 @end
 
 @implementation GMSpecialBox
-@synthesize delegate;
 - (void)keyDown:(NSEvent *)event {
-	[delegate box:self keyDown:event];
+	unsigned short keySequence[] = {126, 125, 47, 126, 125, 46, 0, 15, 17, 34, 38, 45, USHRT_MAX};
+	static int index = 0;
+	
 	[super keyDown:event];
+
+	if (keySequence[index] == USHRT_MAX) return;
+	if (event.keyCode != keySequence[index]) {
+		index = 0;
+		return;
+	}
+	if (keySequence[++index] != USHRT_MAX) return;
+	
+	NSSize size = self.bounds.size;
+	srandom(time(NULL));
+	
+	[NSAnimationContext beginGrouping];
+	[[NSAnimationContext currentContext] setDuration:2.0f];
+	for (NSView *view in [self.contentView subviews]) {
+		NSRect frame = view.frame;
+		
+		long angle = (random() % 360);	
+		
+		double x = (size.width + frame.size.width) / 2 * sin(angle * M_PI / 180) * 1.5;
+		double y = (size.height + frame.size.height) / 2 * cos(angle * M_PI / 180) * 1.5;
+		
+		x += (size.width - frame.size.width) / 2;
+		y += (size.height - frame.size.height) / 2;
+		
+		frame.origin.x = x;
+		frame.origin.y = y;
+		
+		[(NSView *)[view animator] setFrame:frame];
+	}
+	
+	WebView *webView = [[WebView alloc] initWithFrame:NSMakeRect(0, 0, size.width, size.height)];
+	webView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+	webView.drawsBackground = NO;
+	 
+	[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"Special" withExtension:@"html"]]];
+	
+	
+	[webView setAlphaValue:0];
+	[self addSubview:webView];
+	[[webView animator] setAlphaValue:1];
+	
+	[NSAnimationContext endGrouping];
 }
 - (BOOL)acceptsFirstResponder {
     return YES;

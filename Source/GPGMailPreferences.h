@@ -36,12 +36,8 @@
 @class GPGOptions;
 @class GMSpecialBox;
 
-@protocol GMSpecialBoxDelegate <NSObject>
-- (void)box:(GMSpecialBox *)box keyDown:(NSEvent *)event;
-@end
 
-
-@interface GPGMailPreferences : NSPreferencesModule <GMSpecialBoxDelegate> {}
+@interface GPGMailPreferences : NSPreferencesModule {}
 
 /* Open FAQ page. */
 - (IBAction)openFAQ:(id)sender;
@@ -69,8 +65,5 @@
 @interface NSButton_LinkCursor : NSButton
 @end
 
-@interface GMSpecialBox : NSBox {
-	id <GMSpecialBoxDelegate> delegate;
-}
-@property (assign) id <GMSpecialBoxDelegate> delegate;
+@interface GMSpecialBox : NSBox
 @end

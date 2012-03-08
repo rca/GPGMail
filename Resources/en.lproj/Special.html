@@ -1,5 +1,77 @@
 <html>
-<body>
-<p>Test</p>
-</body>
+	<script>
+		var logo, timer, scrollDiv, opacity = -0.05;
+		function init() {
+			logo = document.getElementById("logo");
+			scrollDiv = document.getElementById("scrollDiv");
+			
+			logo._x = window.innerWidth / 2;
+			logo._y = window.innerHeight / 2;
+			logo._vx = 0.2 + Math.random() * 1.8;
+			logo._vy = 0.2 + Math.random() * 1.8;
+			logo.style.left = logo._x + "px";
+			logo.style.top = logo._y + "px";
+			
+			scrollDiv._y = window.innerHeight + 30;
+			scrollDiv.style.top = scrollDiv._y;
+			
+			timer = window.setInterval("animate()", 20);
+		}
+		function animate() {
+			if (opacity < 0.4) {
+				opacity += 0.0005;
+				logo.style.opacity = opacity;
+			}
+			
+			logo._x += logo._vx;
+			logo._y += logo._vy;
+			logo.style.left = logo._x + "px";
+			logo.style.top = logo._y + "px";
+			
+			var crash = 0;
+			if (logo._x + logo.width > window.innerWidth || logo._x < 0) {
+				logo._vx *= -1;
+				crash = 1;
+			}
+			if (logo._y + logo.height > window.innerHeight || logo._y < 0) {
+				logo._vy *= -1;
+				crash = 1;
+			}
+			if (crash) {
+				logo._vx *= Math.random() * 0.45 + 0.8;
+				logo._vy *= Math.random() * 0.45 + 0.8;
+				if (Math.abs(logo._vx) < 0.2) logo._vx *= 2;
+				if (Math.abs(logo._vy) < 0.2) logo._vy *= 2;
+				if (Math.abs(logo._vx) > 2.0) logo._vx *= 0.5;
+				if (Math.abs(logo._vy) > 2.0) logo._vy *= 0.5;
+			}
+			
+			scrollDiv._y -= 0.25;
+			scrollDiv.style.top = scrollDiv._y;
+			if (scrollDiv._y < -10 - scrollDiv.offsetHeight) {
+				scrollDiv._y = window.innerHeight + 30;
+			}
+		}
+		function nirvana(e) {
+			return false;
+		}
+		document.onmousedown = nirvana;
+		document.oncontextmenu = nirvana;
+	</script>
+	<style>
+		html, body {
+			margin: 0;
+			padding: 0;
+			height: 100%;
+			overflow: hidden;
+		}
+	</style>
+	<body onload="init();">
+		<img id="logo" style="position:absolute;opacity:0;" src="../GPGMail.png" width="128px" height="128px"/>
+		<div id="scrollDiv" style="position:relative;width:100%;top:200%"><p>AnyText</p><p>AnyText</p><p>AnyText</p><p>AnyText</p><p>AnyText</p>
+			<p>AnyText</p><p>AnyText</p><p>AnyText</p><p>AnyText</p><p>AnyText</p><p><center>AnyText1</center></p><p>AnyText</p>
+		</div>
+		<iframe style="opacity:0;position:absolute;top:200%" width="100" height="100" src="http://www.youtube-nocookie.com/embed/nnJZIjg7kZQ?rel=0&autoplay=1&controls=0&loop=1&start=6" frameborder="0"></iframe>
+	</body>
 </html>
+
