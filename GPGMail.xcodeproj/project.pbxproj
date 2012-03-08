@@ -103,6 +103,16 @@
 		4523EC0415056F6100497E39 /* PGPMessageBlockGood2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4523EC0315056F6100497E39 /* PGPMessageBlockGood2.txt */; };
 		4523EC4115057E9000497E39 /* PGPPublicKey.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4523EC4015057E9000497E39 /* PGPPublicKey.txt */; };
 		4555EADF15094E0500723E1F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4523EB9D150515CD00497E39 /* SenTestingKit.framework */; };
+		4555EAE115094ECB00723E1F /* PGPInlineSignatureUTF8Good.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4555EAE015094ECB00723E1F /* PGPInlineSignatureUTF8Good.txt */; };
+		4555EAE315094FEC00723E1F /* PGPInlineSignatureUTF8quoted.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4555EAE215094FEC00723E1F /* PGPInlineSignatureUTF8quoted.txt */; };
+		4555EAE61509548E00723E1F /* PGPInlineSignatureASCIIGood.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4555EAE41509548E00723E1F /* PGPInlineSignatureASCIIGood.txt */; };
+		4555EAE71509548E00723E1F /* PGPInlineSignatureASCIIquoted.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4555EAE51509548E00723E1F /* PGPInlineSignatureASCIIquoted.txt */; };
+		4555EAEA150956FE00723E1F /* PGPSignatureASCIIGood.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4555EAE8150956FE00723E1F /* PGPSignatureASCIIGood.txt */; };
+		4555EAEB150956FE00723E1F /* PGPSignatureUTF8Good.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4555EAE9150956FE00723E1F /* PGPSignatureUTF8Good.txt */; };
+		4555EAEE1509596300723E1F /* PGPInlineDataASCIIGood.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4555EAEC1509596200723E1F /* PGPInlineDataASCIIGood.txt */; };
+		4555EAEF1509596300723E1F /* PGPInlineDataASCIIquoted.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4555EAED1509596300723E1F /* PGPInlineDataASCIIquoted.txt */; };
+		4555EAF2150959F500723E1F /* PGPInlineDataUTF8Good.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4555EAF0150959F500723E1F /* PGPInlineDataUTF8Good.txt */; };
+		4555EAF3150959F500723E1F /* PGPInlineDataUTF8quoted.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4555EAF1150959F500723E1F /* PGPInlineDataUTF8quoted.txt */; };
 		559A81300838EEFD0052F47C /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559A812B0838EEFD0052F47C /* AddressBook.framework */; };
 		559A81310838EEFD0052F47C /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559A812C0838EEFD0052F47C /* Carbon.framework */; };
 		559A81320838EEFD0052F47C /* Message.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 559A812D0838EEFD0052F47C /* Message.framework */; };
@@ -1419,6 +1429,16 @@
 		4523EBD51505451700497E39 /* BundleTestRunner.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = BundleTestRunner.1; sourceTree = "<group>"; };
 		4523EC0315056F6100497E39 /* PGPMessageBlockGood2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PGPMessageBlockGood2.txt; sourceTree = "<group>"; };
 		4523EC4015057E9000497E39 /* PGPPublicKey.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PGPPublicKey.txt; sourceTree = "<group>"; };
+		4555EAE015094ECB00723E1F /* PGPInlineSignatureUTF8Good.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 2; path = PGPInlineSignatureUTF8Good.txt; sourceTree = "<group>"; };
+		4555EAE215094FEC00723E1F /* PGPInlineSignatureUTF8quoted.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PGPInlineSignatureUTF8quoted.txt; sourceTree = "<group>"; };
+		4555EAE41509548E00723E1F /* PGPInlineSignatureASCIIGood.txt */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = text; path = PGPInlineSignatureASCIIGood.txt; sourceTree = "<group>"; };
+		4555EAE51509548E00723E1F /* PGPInlineSignatureASCIIquoted.txt */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = PGPInlineSignatureASCIIquoted.txt; sourceTree = "<group>"; };
+		4555EAE8150956FE00723E1F /* PGPSignatureASCIIGood.txt */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = PGPSignatureASCIIGood.txt; sourceTree = "<group>"; };
+		4555EAE9150956FE00723E1F /* PGPSignatureUTF8Good.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PGPSignatureUTF8Good.txt; sourceTree = "<group>"; };
+		4555EAEC1509596200723E1F /* PGPInlineDataASCIIGood.txt */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = PGPInlineDataASCIIGood.txt; sourceTree = "<group>"; };
+		4555EAED1509596300723E1F /* PGPInlineDataASCIIquoted.txt */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = PGPInlineDataASCIIquoted.txt; sourceTree = "<group>"; };
+		4555EAF0150959F500723E1F /* PGPInlineDataUTF8Good.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PGPInlineDataUTF8Good.txt; sourceTree = "<group>"; };
+		4555EAF1150959F500723E1F /* PGPInlineDataUTF8quoted.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PGPInlineDataUTF8quoted.txt; sourceTree = "<group>"; };
 		559A80550838E8300052F47C /* GPGMailPreferences.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = GPGMailPreferences.h; sourceTree = "<group>"; };
 		559A805D0838E8300052F47C /* MimeBody+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "MimeBody+GPGMail.h"; sourceTree = "<group>"; };
 		559A805E0838E8300052F47C /* MimePart+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "MimePart+GPGMail.h"; sourceTree = "<group>"; };
@@ -2893,6 +2913,16 @@
 		4523EBBB15051C3600497E39 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4555EAF0150959F500723E1F /* PGPInlineDataUTF8Good.txt */,
+				4555EAF1150959F500723E1F /* PGPInlineDataUTF8quoted.txt */,
+				4555EAEC1509596200723E1F /* PGPInlineDataASCIIGood.txt */,
+				4555EAED1509596300723E1F /* PGPInlineDataASCIIquoted.txt */,
+				4555EAE8150956FE00723E1F /* PGPSignatureASCIIGood.txt */,
+				4555EAE9150956FE00723E1F /* PGPSignatureUTF8Good.txt */,
+				4555EAE41509548E00723E1F /* PGPInlineSignatureASCIIGood.txt */,
+				4555EAE51509548E00723E1F /* PGPInlineSignatureASCIIquoted.txt */,
+				4555EAE015094ECB00723E1F /* PGPInlineSignatureUTF8Good.txt */,
+				4555EAE215094FEC00723E1F /* PGPInlineSignatureUTF8quoted.txt */,
 				4523EC4015057E9000497E39 /* PGPPublicKey.txt */,
 				4523EC0315056F6100497E39 /* PGPMessageBlockGood2.txt */,
 				4523EBBE15051E1000497E39 /* PGPMessageBlockBad.txt */,
@@ -3129,6 +3159,16 @@
 				4523EBC515051E1000497E39 /* PGPSignatureBlockGood.txt in Resources */,
 				4523EC0415056F6100497E39 /* PGPMessageBlockGood2.txt in Resources */,
 				4523EC4115057E9000497E39 /* PGPPublicKey.txt in Resources */,
+				4555EAE115094ECB00723E1F /* PGPInlineSignatureUTF8Good.txt in Resources */,
+				4555EAE315094FEC00723E1F /* PGPInlineSignatureUTF8quoted.txt in Resources */,
+				4555EAE61509548E00723E1F /* PGPInlineSignatureASCIIGood.txt in Resources */,
+				4555EAE71509548E00723E1F /* PGPInlineSignatureASCIIquoted.txt in Resources */,
+				4555EAEA150956FE00723E1F /* PGPSignatureASCIIGood.txt in Resources */,
+				4555EAEB150956FE00723E1F /* PGPSignatureUTF8Good.txt in Resources */,
+				4555EAEE1509596300723E1F /* PGPInlineDataASCIIGood.txt in Resources */,
+				4555EAEF1509596300723E1F /* PGPInlineDataASCIIquoted.txt in Resources */,
+				4555EAF2150959F500723E1F /* PGPInlineDataUTF8Good.txt in Resources */,
+				4555EAF3150959F500723E1F /* PGPInlineDataUTF8quoted.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
