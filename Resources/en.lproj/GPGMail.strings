@@ -1,241 +1,9 @@
 {
-/* Passphrase panel titles */
-"MESSAGE_AUTHENTICATION_TITLE" = "Message Authentication";
-"MESSAGE_DECRYPTION_PASSPHRASE_TITLE" = "Message Decryption";
-
-/**/
-"DECRYPTING" = "Decrypting...";
-"ENCRYPTING" = "Encrypting...";
-
-/* <PGP> submenu title */
-"PGP_MENU" = "OpenPGP";
-/* <PGP Keys> submenu title */
-"PGP_KEYS_MENU" = "OpenPGP Keys";
-
-/* <PGP> submenu items */
-"DECRYPT_MENU" = "Decrypt";
-"AUTHENTICATE_MENU" = "Authenticate";
-"ENCRYPT_MENU" = "Encrypt New Message";
-"SIGN_MENU" = "Sign New Message";
-
 /* Description of version prefixed with <Version:> */
 "VERSION: %@" = "Version: %@";
 
 /* PGP preferences panel name */
 "PGP_PREFERENCES" = "GPGMail";
-
-/* Alert title and message */
-"MSG_DECRYPTION_ALERT_TITLE_NOT_SIGNED" = "Message Decryption";
-"DECRYPTED_MSG_NOT_SIGNED" = "Message has been encrypted but not signed. Its authenticity cannot be proved.";
-"MSG_ENCRYPTION_ALERT_TITLE" = "OpenPGP Encryption Failed";
-"MSG_DECRYPTION_ALERT_TITLE" = "OpenPGP Decryption Failed";
-"MSG_SIGNING_ALERT_TITLE" = "OpenPGP Signing Failed";
-"UNSUPPORTED_ENCRYPTION_FORMAT" = "GPGMail is unable to decrypt this kind of encrypted message.";
-"DATA_NOT_AVAILABLE" = "The message content is temporarily unavailable.";
-
-/* Informational alert title and message */
-"AUTHENTICATION_TITLE_OK" = "OpenPGP Authentication";
-
-/**/
-"AUTHENTICATION_TITLE_FAILED" = "OpenPGP Authentication Failed";
-"TRY_AGAIN" = "Try again";
-"CANCEL_DELIVERY" = "Cancel";
-"CANCEL_DECRYPTION" = "Cancel";
-
-/**/
-"AUTHENTICATION_TITLE_UNSIGNED" = "OpenPGP Authentication";
-"UNSIGNED_PGP_MESSAGE" = "This message is not OpenPGP-signed.";
-
-/* Toolbar item titles */
-"DECRYPT_ITEM" = "Decrypt";
-"AUTHENTICATE_ITEM" = "Authenticate";
-"MAKE_ENCRYPTED_ITEM" = "Make Encrypted";
-"MAKE_CLEAR_ITEM" = "Make Clear";
-"MAKE_UNSIGNED_ITEM" = "Make Unsigned";
-"MAKE_SIGNED_ITEM" = "Make Signed";
-"ENCRYPTED_ITEM" = "Encrypted";
-"CLEAR_ITEM" = "In Clear";
-"SIGNED_ITEM" = "Signed";
-"UNSIGNED_ITEM" = "Unsigned";
-
-/* Toolbar item tooltips  */
-"DECRYPT_ITEM_TOOLTIP" = "Decrypt OpenPGP-encrypted message";
-"AUTHENTICATE_ITEM_TOOLTIP" = "Authenticate OpenPGP-signed message";
-"MAKE_CLEAR_ITEM_TOOLTIP" = "Click to send a message in clear";
-"MAKE_ENCRYPTED_ITEM_TOOLTIP" = "Click to use OpenPGP encryption";
-"MAKE_UNSIGNED_ITEM_TOOLTIP" = "Click to send a message without OpenPGP authentication";
-"MAKE_SIGNED_ITEM_TOOLTIP" = "Click to use OpenPGP authentication";
-"ENCRYPTED_ITEM_TOOLTIP" = "Message will be encrypted; click to send a message in clear";
-"CLEAR_ITEM_TOOLTIP" = "Message will be in clear; click to use OpenPGP encryption";
-"SIGNED_ITEM_TOOLTIP" = "Message will be OpenPGP-signed; click to send a message without OpenPGP authentication";
-"UNSIGNED_ITEM_TOOLTIP" = "Message will not have a OpenPGP signature; click to use OpenPGP authentication";
-
-/* Signature information */
-"Bad policy!"  = "Bad policy! "; // Followed by a list of policy URLs
-"Policy: " = "Policy: "; // Followed by a list of policy URLs
-"Signed on %@" = "Signed on %@"; // Param is a date, whose format is set by SIGNATURE_CREATION_DATE_FORMAT
-"SIGNATURE_CREATION_DATE_FORMAT" = "%c"; // See NSCalendarDate documentation for format
-"No signature creation date available" = "No signature creation date available";
-"Key fingerprint: %@" = "Key fingerprint: %@";
-"Key ID: 0x%@" = "Key ID: 0x%@";
-"No key fingerprint/ID available" = "No key fingerprint/ID available";
-"Validity: %@" = "Validity: %@"; // Param is the validity status string
-"Signature expires on %@" = "Signature expires on %@"; // Param is a date, whose format is set by SIGNATURE_EXPIRATION_DATE_FORMAT
-"SIGNATURE_EXPIRATION_DATE_FORMAT" = "%x"; // See NSCalendarDate documentation for format
-"Key expired on %@" = "Key expired on %@"; // Param is a date, whose format is set by KEY_EXPIRATION_DATE_FORMAT
-"KEY_EXPIRATION_DATE_FORMAT" = "%x"; // See NSCalendarDate documentation for format
-"Signed by %@." = "Signed by %@."; // Param is a userID
-"Signature from %@ is bad!" = "Bad signature from %@!"; // Param is a userID
-"Signature is bad!" = "Bad signature!";
-"Signature status error." = "Signature status error.";
-"MISSING KEY %@." = "Missing key %@."; // Param is a key ID in hexadecimal
-"Signature summary 0x%04x - Signature status %u." = "Unknown error: signature summary 0x%04x - signature status %u."; // Generic error message; first param is a hex status flag value, second is a decimal status value
-"EXCEPTION: %@" = "Internal error: %@"; // Generic error message; param is a string (exception reason, maybe not localized)
-"AUTHENTICATING" = "Verifying OpenPGP signature...";
-"UNTRUSTED RECIPIENTS" = "At least one of the keys is not trusted";
-
-/* Title */
-/* Error messages */
-"GPGMAIL_CANNOT_WORK" = "GPGMail is not active because its companion application could not be started. Restart Mail, and if the error persists, send a message to gpgtools-devel@lists.gpgtools.org";
-"GPGMAIL_CANNOT_WORK_HAS_GPG_%@_VERSION_%@_NEEDS_%@" = "GPGMail is not active with GnuPG (%@) version %@. Please quit Mail, install GnuPG version %@ or higher (for example from GPGTools Project, http://gpgtools.org/), then restart Mail."; // First arg is path to gpg, second and third are version strings
-"GPGMAIL_CANNOT_WORK_MISSING_GPG_%@_VERSION_%@" = "GPGMail is not active without GnuPG (%@) version %@ or higher. Please quit Mail, install an updated GnuPG version (for example from GPGTools Project, http://gpgtools.org/), then restart Mail."; // First arg is path to gpg, second is version string
-"INVALID_GPGMAIL_VERSION" = "Your version of GPGMail is not compatible with your version of Mail."; /* Title of alert sheet */
-"NEEDS_COMPATIBLE_BUNDLE_VERSION" = "You need to download and install the GPGMail version matching your OS version. Go to http://www.gpgtools.org/ to get it.";
-
-/* Validity */
-"VALIDITY: " = "validity: ";
-"Validity=0" = "unknown";
-"Validity=1" = "undefined";
-"Validity=2" = "never";
-"Validity=3" = "marginal";
-"Validity=4" = "full";
-"Validity=5" = "ultimate";
-
-/* Generic MacGPGME error messages */
-"GPGErrorCode=1" = "General error";
-"GPGErrorCode=8" = "Bad signature";
-"GPGErrorCode=9" = "No public key";
-"GPGErrorCode=10" = "Checksum error";
-"GPGErrorCode=11" = "Bad passphrase";
-"GPGErrorCode=15" = "Invalid armor";
-"GPGErrorCode=17" = "No secret key";
-"GPGErrorCode=31" = "Invalid passphrase";
-"GPGErrorCode=40" = "Key server error";
-"GPGErrorCode=53" = "Unusable public key";
-"GPGErrorCode=54" = "Unusable secret key";
-"GPGErrorCode=55" = "Invalid value";
-"GPGErrorCode=58" = "No data";
-"GPGErrorCode=69" = "Not implemented";
-"GPGErrorCode=84" = "Unsupported algorithm";
-"GPGErrorCode=94" = "Key revoked";
-"GPGErrorCode=99" = "Cancelled";
-"GPGErrorCode=107" = "Ambiguous name";
-"GPGErrorCode=116" = "No policy match";
-"GPGErrorCode=125" = "Wrong key usage";
-"GPGErrorCode=150" = "Invalid engine";
-"GPGErrorCode=151" = "Public key not trusted";
-"GPGErrorCode=152" = "Decryption failed";
-"GPGErrorCode=153" = "Key expired";
-"GPGErrorCode=154" = "Signature expired";
-"GPGErrorCode=16383" = "EOF";
-
-/* Signature attachment filename (suffixed automatically by .sig) */
-"PGP_SIGNATURE_FILENAME" = "PGP";
-
-/* Signature attachment content-description */
-"This is a digitally signed message part" = "This is a digitally signed message part";
-
-/* Version MIME part content description header */
-"CONTENT_DESCRIPTION_HEADER" = "PGP/MIME version identification";
-
-/* Encrypted attachment filename (suffixed automatically by .asc) */
-"PGP_ENCRYPTED_FILENAME" = "PGP";
-
-/* Encrypted attachment content-description */
-"This is an encrypted message part" = "OpenPGP encrypted message";
-
-/* Multiple-part description */
-"MULTIPART_ENCRYPTED_DESCRIPTION" = "This is an OpenPGP/MIME encrypted message (RFC 2440 and 3156)";
-"MULTIPART_SIGNED_DESCRIPTION" = "This is an OpenPGP/MIME signed message (RFC 2440 and 3156)";
-
-/* Tooltip for banner icons */
-"SIGNATURE_IS_GOOD" = "Signature is verified; message has not been modified";
-"SIGNATURE_IS_NOT_GOOD" = "Signature is invalid; message has been modified";
-
-/* PGP Key Download panel */
-"PGP_SEARCH_KEYS_MENUITEM" = "OpenPGP Key Search";
-"SEARCH" = "Search";
-"CANCEL_SEARCH" = "Cancel";
-"SEARCHING" = "Searching...";
-"NO_MATCHING_KEYS" = "No matching key";
-"FOUND_%d_KEYS" = "Found %d matching key(s)";
-"DOWNLOAD" = "Download";
-"DOWNLOADING" = "Downloading...";
-"DOWNLOADED" = "Downloaded and imported key(s)";
-"SEARCH_KEYS_ON_SERVER" = "Search OpenPGP keys on key server";
-"DOWNLOAD_KEYS_FROM_SERVER" = "Download OpenPGP keys from key server";
-"SEARCH_ERROR" = "An error occurred during search";
-"DOWNLOAD_ERROR" = "An error occurred during download";
-" (%u bits)" = " (%u bits)";
-", created on %@" = ", created on %@";
-", expires on %@" = ", expires on %@";
-", expired on %@" = ", expired on %@";
-"REVOKED_KEY - " = "Revoked - "; // Prefixes found key description, when necessary; followed by keyID, userID, etc.
-
-/* Unmatched PGP keys for receipts - sheet */
-"MISSING_KEYS: DOWNLOAD" = "Some addresses match no OpenPGP key. Search for keys?"; // Title
-"UNMATCHED_ADDRESSES: %@" = "The following email addresses have no matching OpenPGP key:\n%@"; // Message
-"SEARCH_MATCHING_KEYS" = "Search"; // Default button
-"SEND_IN_CLEAR" = "Send in Clear"; // Other button
-
-"INVALID_HASH_%@" = "The hash algorithm '%@' is not allowed by RFC3156.";
-"GPGMAIL_VS_PGPMAIL" = "GPGMail cannot work when PGPmail is installed";
-"GPGMAIL_%@_VS_PGPMAIL_%@" = "Both bundles provide the same functionalities but with different engines, and only one of them should be installed. You need to remove either '%@' or '%@'.";
-"QUIT" = "Quit";
-"CONTINUE_ANYWAY" = "Try to continue";
-
-/* Composer accessory view header, under To:, CC:, Subject: */
-"PGP:" = "OpenPGP:";
-
-/* Key description in popups; prefixes key (actually, primary userID), when necessary; followed by keyID, userID, etc.*/
-"REVOKED_KEY:" = "Revoked:";
-"EXPIRED_KEY:" = "Expired:";
-"DISABLED_KEY:" = "Disabled:";
-"INVALID_KEY:" = "Invalid:";
-
-/* UserID description in popups; prefixes userID, when necessary; followed by name, email, etc.*/
-"REVOKED_USER_ID:" = "Revoked:";
-"INVALID_USER_ID:" = "Invalid:";
-
-/* GPGMail exception reasons */
-"NO_VALID_PUBLIC_KEY" = "No valid public key has been found. They are all either expired, disabled or revoked."; // Could be displayed after encryption
-"NO_VALID_PRIVATE_KEY" = "No valid personal key has been found. Either none was selected, or the selected key is revoked, disabled or has expired."; // Could be displayed after encryption
-
-/* Alert when user has no PGP key */
-"NO PGP PRIVATE KEY - TITLE" = "Without an OpenPGP key, you cannot use GPGMail to encrypt or sign messages.";
-"NO PGP PRIVATE KEY - MESSAGE" = "If you want to be able to encrypt or sign messages with OpenPGP, you need a personal OpenPGP key. To create one, download and install GPG Keychain Access from http://gpgtools.org/";
-
-/* Conflict resolution panel*/
-"<ME>" = "Me";
-"<YES>" = "Yes";
-"<NO>" = "No";
-"<ALWAYS>" = "Always";
-"<NEVER>" = "Never";
-"<ACCEPTS>" = "Accepts";
-
-/* Additional info describing key */
-"DISABLED_KEY_QUALIFIER" = "disabled";
-"INVALID_KEY_QUALIFIER" = "invalid";
-"REVOKED_KEY_QUALIFIER" = "revoked";
-"EXPIRED_KEY_QUALIFIER" = "expired";
-"CANNOT_ENCRYPT_KEY_QUALIFIER" = "cannot encrypt";
-"CANNOT_SIGN_KEY_QUALIFIER" = "cannot sign";
-
-/* Additional info describing userID */
-"INVALID_USER_ID_QUALIFIER" = "invalid";
-"REVOKED_USER_ID_QUALIFIER" = "revoked";
-
-"COPY_MSG_URL_MENUITEM" = "Copy Message URL";
 
 /* Message Error Banner messages. */
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "Unable to decrypt PGP message.";
@@ -340,9 +108,6 @@
     "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "The signature of the attachment is expired.";
     "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "The attachment signature is expired and could not be verified.\n\nAsk the sender why the signature is expired.";
     
-"GPG_CONFIG_ERROR_NO_PINENTRY_TITLE" = "Pinentry-mac is not installed.";
-"GPG_CONFIG_ERROR_NO_PINENTRY_MESSAGE" = "Pinentry-mac, an important component used by GPGMail, couldn't be found. Please make sure to install the latest GPGTools (http://www.gpgtools.org/installer/index.html)";
-
 "MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Partly Encrypted";
 "MESSAGE_IS_PGP_PARTLY_SIGNED" = "Partly Signed";
 "MESSAGE_IS_PGP_ENCRYPTED" = "Encrypted";
@@ -375,10 +140,10 @@
     
 /* GPGMail Preferences strings. */
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail is ready.";
+"GPG_STATUS_NO_ERROR_TOOLTIP" = "Your MacGPG installation is working with no errors."; 
 "GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 is not installed. Check your installation.";
-"GPG_STATUS_OTHER_ERROR_TITLE" = "Please check your keys and installation.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Please download the GPGTools installer from http://www.gpgtools.org to install all GPGTools.";
+"GPG_STATUS_OTHER_ERROR_TITLE" = "Please check your installation and configuration.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Your MacGPG installation is not working properly. Please contact us, including your GPG configuration file found in your home directory at ~/.gnupg/gpg.conf, at http://support.gpgtools.org";
 
-/* Signature view key status. */
-    "VALIDITY_KEY_REVOKED" = "This key was revoked.";
-    
 }
