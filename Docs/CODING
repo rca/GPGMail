@@ -117,3 +117,14 @@ Message.h
 - (id)stringForIndexingUpdatingBodyFlags:(BOOL)arg1;
 
 might be relevant.
+
+* Access struct instance variables of Mail Classes *
+
+Copy the struct definition you want to use into your header file
+using a typedef. After that you can access the struct data using the following
+code.
+
+StructType structVar; 
+object_getInstanceVariable(self, "<instance-variable-name>", (void **)&structVar);
+
+Very nice!
