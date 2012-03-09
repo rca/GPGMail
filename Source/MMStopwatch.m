@@ -31,7 +31,7 @@
     [super dealloc];
 }
 + (void) start:(NSString *)name {
-	[[MMStopwatch sharedInstance] add:name];
+	[(MMStopwatch *)[MMStopwatch sharedInstance] add:name];
 }
 + (void) stop:(NSString *)name {
 	MMStopwatchItem *item = [[MMStopwatch sharedInstance] get:name];
