@@ -103,6 +103,7 @@
 		4523EBD61505451700497E39 /* BundleTestRunner.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4523EBD51505451700497E39 /* BundleTestRunner.1 */; };
 		4523EC0415056F6100497E39 /* PGPMessageBlockGood2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4523EC0315056F6100497E39 /* PGPMessageBlockGood2.txt */; };
 		4523EC4115057E9000497E39 /* PGPPublicKey.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4523EC4015057E9000497E39 /* PGPPublicKey.txt */; };
+		4555EA4B150922DF00723E1F /* GPGException+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 4555EA4A150922DF00723E1F /* GPGException+GPGMail.m */; };
 		4555EADF15094E0500723E1F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4523EB9D150515CD00497E39 /* SenTestingKit.framework */; };
 		4555EAE115094ECB00723E1F /* PGPInlineSignatureUTF8Good.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4555EAE015094ECB00723E1F /* PGPInlineSignatureUTF8Good.txt */; };
 		4555EAE315094FEC00723E1F /* PGPInlineSignatureUTF8quoted.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4555EAE215094FEC00723E1F /* PGPInlineSignatureUTF8quoted.txt */; };
@@ -1432,6 +1433,8 @@
 		4523EBD51505451700497E39 /* BundleTestRunner.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = BundleTestRunner.1; sourceTree = "<group>"; };
 		4523EC0315056F6100497E39 /* PGPMessageBlockGood2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PGPMessageBlockGood2.txt; sourceTree = "<group>"; };
 		4523EC4015057E9000497E39 /* PGPPublicKey.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PGPPublicKey.txt; sourceTree = "<group>"; };
+		4555EA49150922DF00723E1F /* GPGException+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GPGException+GPGMail.h"; sourceTree = "<group>"; };
+		4555EA4A150922DF00723E1F /* GPGException+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GPGException+GPGMail.m"; sourceTree = "<group>"; };
 		4555EAE015094ECB00723E1F /* PGPInlineSignatureUTF8Good.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 2; path = PGPInlineSignatureUTF8Good.txt; sourceTree = "<group>"; };
 		4555EAE215094FEC00723E1F /* PGPInlineSignatureUTF8quoted.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PGPInlineSignatureUTF8quoted.txt; sourceTree = "<group>"; };
 		4555EAE41509548E00723E1F /* PGPInlineSignatureASCIIGood.txt */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = text; path = PGPInlineSignatureASCIIGood.txt; sourceTree = "<group>"; };
@@ -2781,6 +2784,7 @@
 			children = (
 				559A806E0838E9B10052F47C /* GPGMailBundle.m */,
 				30E6857A13FFAC0800563BA5 /* GPGVersionComparator.m */,
+				4555EA4A150922DF00723E1F /* GPGException+GPGMail.m */,
 				1BB3DCCD1407F1CA00870DEB /* LibraryStore+GPGMail.m */,
 				1BAEF64313E9F57700A59CED /* MailAccount+GPGMail.m */,
 				1B8289FA13FD62880007E6A2 /* Message+GPGMail.m */,
@@ -2795,6 +2799,7 @@
 			children = (
 				307E1C6612B17CFF0012F3DF /* GPGMailBundle.h */,
 				30E6857913FFAC0800563BA5 /* GPGVersionComparator.h */,
+				4555EA49150922DF00723E1F /* GPGException+GPGMail.h */,
 				1BB3DCCC1407F1CA00870DEB /* LibraryStore+GPGMail.h */,
 				1BAEF64213E9F57700A59CED /* MailAccount+GPGMail.h */,
 				1B8289F913FD62880007E6A2 /* Message+GPGMail.h */,
@@ -3369,6 +3374,7 @@
 				1B89E21614FC40F00012D4AD /* NSWindow+GPGMail.m in Sources */,
 				1B2341DE14FEEC8C0007EB64 /* GMSecurityMethodAccessoryView.m in Sources */,
 				1B97AE3815096FA700A4F0F2 /* MMStopwatch.m in Sources */,
+				4555EA4B150922DF00723E1F /* GPGException+GPGMail.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
