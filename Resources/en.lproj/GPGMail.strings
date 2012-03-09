@@ -190,7 +190,7 @@
 
 "INVALID_HASH_%@" = "The hash algorithm '%@' is not allowed by RFC3156.";
 "GPGMAIL_VS_PGPMAIL" = "GPGMail cannot work when PGPmail is installed";
-"GPGMAIL_%@_VS_PGPMAIL_%@" = "Both bundles provide the same functionalities but with different engines, and only one of them should be installed. You need to remove '%@' or '%@'.";
+"GPGMAIL_%@_VS_PGPMAIL_%@" = "Both bundles provide the same functionalities but with different engines, and only one of them should be installed. You need to remove either '%@' or '%@'.";
 "QUIT" = "Quit";
 "CONTINUE_ANYWAY" = "Try to continue";
 
@@ -243,7 +243,7 @@
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Unable to verify PGP message signature.";
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "There was a problem reading the PGP signature for this message.";
 "MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "PGP key for this message is not in your keychain.";
-"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "The message has a valid PGP signature, but the PGP key is not in your keychain. Please use GPG Keychain to add it.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "The message has a valid PGP signature, but the PGP key is not in your keychain. Please use GPG Keychain Access to add it.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "No information is available for this PGP key.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "No additional information is known about this PGP key, because it's not in your keychain.";
 
@@ -320,9 +320,9 @@
     "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "ATTENTION: The key which was used to sign this attachment was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain Access to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";    
     
     "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "The signature key is not in your GPG Keychain.";
-    "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "The attachment could not be verified, since the key which was used to sign this attachment is not in your GPG Keychain.\n\nSearch for the key with ID %@ in GPG Keychain Access and import it to verify the attachment.";
+    "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "The attachment signature could not be verified, since the key which was used to sign is not in your GPG Keychain.\n\nSearch for the key with ID %@ in GPG Keychain Access and import it to verify the attachment.";
     
-    "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "The signature key was created with an algorithm which is not supported.";
+    "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "The attachment signature was created with an algorithm which is not supported.";
     "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This attachment could not be verified, since the key to the signature was created with an algorithm which is not supported.\n\nPlease contact us at support.gpgtools.org";
     
     "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATTENTION: The attachment signature is invalid!";
