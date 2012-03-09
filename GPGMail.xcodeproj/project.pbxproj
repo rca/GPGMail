@@ -3032,7 +3032,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "pushd $SRCROOT > /dev/null\n\nalias localizeXIB=Dependencies/GPGTools_Core/bin/localizeXIB\n\necho \"Localize GPGMailPreferences.xib\"\nlocalizeXIB Resources/en.lproj/GPGMailPreferences.xib de sv fr\n\necho \"Localize GPGSignatureView.xib\"\nlocalizeXIB Resources/en.lproj/GPGSignatureView.xib de\n\necho \"Localize GPGAttachments.xib\"\nlocalizeXIB Resources/en.lproj/GPGAttachments.xib de\n\n\npopd > /dev/null\n";
+			shellScript = "pushd \"$SRCROOT\" > /dev/null\n\nalias localizeXIB=Dependencies/GPGTools_Core/bin/localizeXIB\n\necho \"Localize GPGMailPreferences.xib\"\nlocalizeXIB Resources/en.lproj/GPGMailPreferences.xib de sv fr\n\necho \"Localize GPGSignatureView.xib\"\nlocalizeXIB Resources/en.lproj/GPGSignatureView.xib de\n\necho \"Localize GPGAttachments.xib\"\nlocalizeXIB Resources/en.lproj/GPGAttachments.xib de\n\n\npopd > /dev/null\n";
 		};
 		30F151C51500BD4500980642 /* Fill Info.plist */ = {
 			isa = PBXShellScriptBuildPhase;
