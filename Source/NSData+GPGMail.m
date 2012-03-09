@@ -55,11 +55,6 @@
 	}
 	
     int items = 10;
-//    int encodings[10] = {NSUTF8StringEncoding, 
-//                            NSWindowsCP1251StringEncoding, NSWindowsCP1252StringEncoding, NSWindowsCP1253StringEncoding,
-//                            NSWindowsCP1254StringEncoding, NSWindowsCP1250StringEncoding, NSISO2022JPStringEncoding,
-//                            NSISOLatin1StringEncoding, NSISOLatin2StringEncoding,                    
-//                            NSASCIIStringEncoding};
     int encodings[10] = {NSUTF8StringEncoding, 
         NSISOLatin1StringEncoding, NSISOLatin2StringEncoding,
         NSWindowsCP1251StringEncoding, NSWindowsCP1252StringEncoding, NSWindowsCP1253StringEncoding,
