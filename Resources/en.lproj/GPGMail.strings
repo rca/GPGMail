@@ -1,19 +1,19 @@
 {
-/* Description of version prefixed with <Version:> */
-"VERSION: %@" = "Version: %@";
+    /* Description of version prefixed with <Version:> */
+    "VERSION: %@" = "Version: %@";
 
-/* PGP preferences panel name */
-"PGP_PREFERENCES" = "GPGMail";
+    /* PGP preferences panel name */
+    "PGP_PREFERENCES" = "GPGMail";
 
-/* Message Error Banner messages. */
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "Unable to decrypt PGP message.";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "There was a problem decrypting this message. Verify that you have a valid key in your GPG Keychain.";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Unable to verify PGP message signature.";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "There was a problem reading the PGP signature for this message.";
-"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "PGP key for this message is not in your keychain.";
-"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "The message has a valid PGP signature, but the PGP key is not in your keychain. Please use GPG Keychain Access to add it.";
-"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "No information is available for this PGP key.";
-"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "No additional information is known about this PGP key, because it's not in your keychain.";
+    /* Message Error Banner messages. */
+    "MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "Unable to decrypt PGP message.";
+    "MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "There was a problem decrypting this message. Verify that you have a valid key in your GPG Keychain.";
+    "MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Unable to verify PGP message signature.";
+    "MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "There was a problem reading the PGP signature for this message.";
+    "MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "PGP key for this message is not in your keychain.";
+    "MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "The message has a valid PGP signature, but the PGP key is not in your keychain. Please use GPG Keychain Access to add it.";
+    "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "No information is available for this PGP key.";
+    "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "No additional information is known about this PGP key, because it's not in your keychain.";
 
     "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Secret key to decrypt the message is missing.";
     "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "The secret key to decrypt this message is not in your keychain.\n\nCheck with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
@@ -108,17 +108,17 @@
     "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "The signature of the attachment is expired.";
     "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "The attachment signature is expired and could not be verified.\n\nAsk the sender why the signature is expired.";
     
-"MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Partly Encrypted";
-"MESSAGE_IS_PGP_PARTLY_SIGNED" = "Partly Signed";
-"MESSAGE_IS_PGP_ENCRYPTED" = "Encrypted";
-"MESSAGE_IS_PGP_SIGNED" = "Signed";
-"MESSAGE_IS_PGP_SIGNED_INVALID" = "Invalid Signature";
+    "MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Partly Encrypted";
+    "MESSAGE_IS_PGP_PARTLY_SIGNED" = "Partly Signed";
+    "MESSAGE_IS_PGP_ENCRYPTED" = "Encrypted";
+    "MESSAGE_IS_PGP_SIGNED" = "Signed";
+    "MESSAGE_IS_PGP_SIGNED_INVALID" = "Invalid Signature";
 
-/* Security Header signature related. */
-"MESSAGE_SECURITY_HEADER_SIGNATURE_NO_PUBLIC_KEY_TITLE" = "Signed with unknown key";
-"MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE" = "Signed with revoked key";
-"MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE" = "Invalid signature";
-"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE" = "Signed";
+    /* Security Header signature related. */
+    "MESSAGE_SECURITY_HEADER_SIGNATURE_NO_PUBLIC_KEY_TITLE" = "Signed with unknown key";
+    "MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE" = "Signed with revoked key";
+    "MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE" = "Invalid signature";
+    "MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE" = "Signed";
 
     /* Security header attachments related. */
     "MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE" = "encrypted/signed attachment";
@@ -133,17 +133,17 @@
     "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "This message can't be encrypted, since there are no public keys available for the following addresses: %@.\n\nPlease use GPG Keychain Access to search and import the keys for those addresses.";
     "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "This message can't be encrypted. You have to enter at least one recipient first.";
 
-/* Message view pgp part. */
+    /* Message view pgp part. */
     "MESSAGE_VIEW_PGP_PART_ENCRYPTED" = "Encrypted";
     "MESSAGE_VIEW_PGP_PART_SIGNED" = "Signed";    
     "MESSAGE_VIEW_PGP_PART" = "PGP part";
     
-/* GPGMail Preferences strings. */
-"GPG_STATUS_NO_ERROR_TITLE" = "GPGMail is ready.";
-"GPG_STATUS_NO_ERROR_TOOLTIP" = "Your MacGPG installation is working with no errors."; 
-"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 is not installed. Check your installation.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Please download the GPGTools installer from http://www.gpgtools.org to install all GPGTools.";
-"GPG_STATUS_OTHER_ERROR_TITLE" = "Please check your installation and configuration.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Your MacGPG installation is not working properly. Please contact us, including your GPG configuration file found in your home directory at ~/.gnupg/gpg.conf, at http://support.gpgtools.org";
+    /* GPGMail Preferences strings. */
+    "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail is ready.";
+    "GPG_STATUS_NO_ERROR_TOOLTIP" = "Your MacGPG installation is working with no errors."; 
+    "GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 is not installed. Check your installation.";
+    "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Please download the GPGTools installer from http://www.gpgtools.org to install all GPGTools.";
+    "GPG_STATUS_OTHER_ERROR_TITLE" = "Please check your installation and configuration.";
+    "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Your MacGPG installation is not working properly. Please contact us, including your GPG configuration file found in your home directory at ~/.gnupg/gpg.conf, at http://support.gpgtools.org";
 
 }
