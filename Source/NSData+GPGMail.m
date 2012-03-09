@@ -55,11 +55,6 @@
 	}
 	
     int items = 10;
-//    int encodings[10] = {NSUTF8StringEncoding, 
-//                            NSWindowsCP1251StringEncoding, NSWindowsCP1252StringEncoding, NSWindowsCP1253StringEncoding,
-//                            NSWindowsCP1254StringEncoding, NSWindowsCP1250StringEncoding, NSISO2022JPStringEncoding,
-//                            NSISOLatin1StringEncoding, NSISOLatin2StringEncoding,                    
-//                            NSASCIIStringEncoding};
     int encodings[10] = {NSUTF8StringEncoding, 
         NSISOLatin1StringEncoding, NSISOLatin2StringEncoding,
         NSWindowsCP1251StringEncoding, NSWindowsCP1252StringEncoding, NSWindowsCP1253StringEncoding,
@@ -82,14 +77,30 @@
     NSString *signatureRegex = [NSString stringWithFormat:@"(?sm)(^%@\\r?\\n(.*)\\r?\n%@)", 
                                 PGP_SIGNED_MESSAGE_BEGIN, PGP_MESSAGE_SIGNATURE_END];
     RKRegex *sigRKRegex = [RKRegex regexWithRegexString:signatureRegex options:RKCompileNoOptions];
-    return [self rangeOfRegex:sigRKRegex];
+    NSRange match = NSMakeRange(NSNotFound, 0);
+    @try {
+        match = [self rangeOfRegex:sigRKRegex];
+    }
+    @catch (NSException *exception) {
+        // Ignore...
+    }
+    
+    return match;
 }
 
 - (NSRange)rangeOfPGPSignatures  {
     NSString *signatureRegex = [NSString stringWithFormat:@"(?sm)(%@.*%@)", 
                                 PGP_MESSAGE_SIGNATURE_BEGIN, PGP_MESSAGE_SIGNATURE_END];
     RKRegex *sigRKRegex = [RKRegex regexWithRegexString:signatureRegex options:RKCompileNoOptions];
-    return [self rangeOfRegex:sigRKRegex];
+    NSRange match = NSMakeRange(NSNotFound, 0);
+    @try {
+        match = [self rangeOfRegex:sigRKRegex];
+    }
+    @catch (NSException *exception) {
+        // Ignore...
+    }
+    
+    return match;
 }
 
 - (NSRange)rangeOfPGPInlineEncryptedData {
@@ -97,27 +108,59 @@
     NSString *messageRegex = [NSString stringWithFormat:@"(?sm)(^%@\\r?\\n(.*)\\r?\\n%@)", 
                                 PGP_MESSAGE_BEGIN, PGP_MESSAGE_END];
     RKRegex *sigRKRegex = [RKRegex regexWithRegexString:messageRegex options:RKCompileNoOptions];
-    return [self rangeOfRegex:sigRKRegex];
+    NSRange match = NSMakeRange(NSNotFound, 0);
+    @try {
+        match = [self rangeOfRegex:sigRKRegex];
+    }
+    @catch (NSException *exception) {
+        // Ignore...
+    }
+    
+    return match;
 }
 
 - (BOOL)mightContainPGPEncryptedDataOrSignatures {
     NSString *signatureRegex = [NSString stringWithFormat:@"(?sm)(-----BEGIN PGP (?<prefix>MESSAGE|SIGNATURE)-----"
                                 ".*-----END PGP \\k<prefix>-----)"];
     RKRegex *sigRKRegex = [RKRegex regexWithRegexString:signatureRegex options:RKCompileNoOptions];
-    return [self isMatchedByRegex:sigRKRegex];
+    BOOL isMatched = NO;
+    @try {
+        isMatched = [self isMatchedByRegex:sigRKRegex];
+    }
+    @catch (NSException *exception) {
+        // Ignore...
+    }
+    
+    return isMatched;
 }
 
 - (NSRange)rangeOfPGPPublicKey {
     NSString *signatureRegex = [NSString stringWithFormat:@"(?sm)(%@.*%@)", 
                                 PGP_MESSAGE_PUBLIC_KEY_BEGIN, PGP_MESSAGE_PUBLIC_KEY_END];
     RKRegex *sigRKRegex = [RKRegex regexWithRegexString:signatureRegex options:RKCompileNoOptions];
-    return [self rangeOfRegex:sigRKRegex];
+    NSRange match = NSMakeRange(NSNotFound, 0);
+    @try {
+        match = [self rangeOfRegex:sigRKRegex];
+    }
+    @catch (NSException *exception) {
+        // Ignore...
+    }
+    
+    return match;
 }
 
 - (BOOL)containsPGPVersionMarker:(int)version {
     NSString *versionRegex = [NSString stringWithFormat:@"(?smi)(version[ ]?: %d)", version];
     RKRegex *versionRKRegex = [RKRegex regexWithRegexString:versionRegex options:RKCompileNoOptions];
-    return [self isMatchedByRegex:versionRKRegex];
+    BOOL isMatched = NO;
+    @try {
+        isMatched = [self isMatchedByRegex:versionRKRegex];
+    }
+    @catch (NSException *exception) {
+        // Ignore...
+    }
+    
+    return isMatched;
 }
 
 - (BOOL)hasSignaturePacketsWithSignaturePacketsExpected:(BOOL)signaturePacketsExpected {
