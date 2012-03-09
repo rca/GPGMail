@@ -132,7 +132,7 @@ static BOOL gpgMailWorks = NO;
                             [NSArray arrayWithObjects:
                              @"backEndDidLoadInitialContent:",
                              @"dealloc",
-                             @"windowForMailFullScreen",
+//                             @"windowForMailFullScreen",
                              @"backEnd:didCancelMessageDeliveryForEncryptionError:",
                              nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
