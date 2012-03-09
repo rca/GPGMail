@@ -504,7 +504,7 @@
     // to unset the attachment flag.
     BOOL isSigned = [(MimeBody *)decryptedMimeBody containsPGPSignedData];
     // Fixes the problem where an attachment icon is shown, when a message is either encrypted or signed.
-    unsigned int numberOfAttachments = [(MimePart *)[[self mimeBody] topLevelPart] numberOfAttachments];
+    unsigned int numberOfAttachments = [(MimePart *)[self topPart] numberOfAttachments];
     if(numberOfAttachments > 0)
         numberOfAttachments -= 2;
     // Set the new number of attachments.
