@@ -150,7 +150,9 @@
     
 /* GPGMail Preferences strings. */
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail läuft korrekt.";
+"GPG_STATUS_NO_ERROR_TOOLTIP" = "Ihre MacGPG Installation weist keine Fehler auf."; 
 "GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 wurde nicht gefunden.";
-"GPG_STATUS_OTHER_ERROR_TITLE" = "Bitte überprüfen Sie ihre Schlüssel und Installation.";
-
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Bitte laden Sie sich den GPGTools-Installer von http://www.gpgtools.org herunter und installieren Sie die gesamten GPGTools.";
+"GPG_STATUS_OTHER_ERROR_TITLE" = "Bitte überprüfen Sie ihre Installation und Konfiguration.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Ihre MacGPG Installation weist Fehler auf. Bitte kontaktieren Sie uns mit Ihrer GPG Konfigurationsdatei, welche Sie in Ihrem Benutzerverzeichnis unter .gnupg finden auf http://support.gpgtools.org";
 }
