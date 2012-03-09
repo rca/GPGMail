@@ -29,6 +29,9 @@
 
 #import <Libmacgpg/Libmacgpg.h>
 #import <Libmacgpg/GPGKey.h>
+#define restrict
+#import <RegexKit/RegexKit.h>
+#undef restrict
 #import "CCLog.h"
 #import "NSData+GPGMail.h"
 #import "NSArray+Functional.h"
@@ -262,6 +265,7 @@
     
     if(signatureRange.location != NSNotFound) {
         [self _verifyPGPInlineSignatureInData:partData range:signatureRange];
+        return self.PGPVerifiedContent;
     }
     
     id ret = [self MADecodeTextPlainWithContext:ctx];
@@ -927,29 +931,15 @@
     // yet.
     if(inlineEncryptedData) {
 		
-		// This part serachs for a "Charset" header and if it's found and it's not UTF-8 convert the data to UTF-8.
-		NSString *pgpMessage = [NSString stringWithData:inlineEncryptedData encoding:NSISOLatin1StringEncoding];
-		NSRange range = [pgpMessage rangeOfString:@"Charset: "];
-		if (range.length > 0) {
-			range = [pgpMessage lineRangeForRange:range];
-			range.location += 9;
-			range.length -= 10;
-			if (range.length > 0) {
-				NSString *charset = [pgpMessage substringWithRange:range];
-				CFStringEncoding stringEncoding= CFStringConvertIANACharSetNameToEncoding((CFStringRef)charset);
-				if (stringEncoding != kCFStringEncodingInvalidId) {
-					unsigned long encoding = CFStringConvertEncodingToNSStringEncoding(stringEncoding);
-					
-					if (encoding != NSUTF8StringEncoding) {
-						// Convert the data to UTF-8.
-						NSString *decryptedString = [[NSString alloc] initWithData:partDecryptedData encoding:encoding];
-						partDecryptedData = [decryptedString dataUsingEncoding:NSUTF8StringEncoding];
-						[decryptedString release];
-					}
-				}
-			}
-		}
-        
+        // This part serachs for a "Charset" header and if it's found and it's not UTF-8 convert the data to UTF-8.
+        NSStringEncoding encoding = [self stringEncodingFromPGPData:inlineEncryptedData];
+        if (encoding != NSUTF8StringEncoding) {
+            // Convert the data to UTF-8.
+            NSString *decryptedString = [[NSString alloc] initWithData:partDecryptedData encoding:encoding];
+            partDecryptedData = [decryptedString dataUsingEncoding:NSUTF8StringEncoding];
+            [decryptedString release];
+        }
+		
         // Part decrypted data is always an NSData object,
         // due to the charset finding attempt above.
         // So if there was an error reset it to nil, otherwise
@@ -966,6 +956,22 @@
         return decryptedData;
     
     return decryptedMimeBody;    
+}
+
+- (NSStringEncoding)stringEncodingFromPGPData:(NSData *)PGPData {
+    NSString *asciiData = [NSString stringWithData:PGPData encoding:NSASCIIStringEncoding];
+    NSString *charsetName = nil;
+    [asciiData getCapturesWithRegexAndReferences:@"Charset:\\s*(?<charset>.+)\r?\n", @"${charset}", &charsetName, nil];
+    
+    if(![charsetName length])
+        return NSUTF8StringEncoding;
+    
+    CFStringEncoding stringEncoding= CFStringConvertIANACharSetNameToEncoding((CFStringRef)charsetName);
+    if (stringEncoding != kCFStringEncodingInvalidId) {
+        stringEncoding = CFStringConvertEncodingToNSStringEncoding(stringEncoding);
+    }
+    
+    return stringEncoding;
 }
 
 #pragma mark Methods for verification
@@ -986,18 +992,87 @@
     self.PGPSigned = YES;
     self.PGPVerified = self.PGPError ? NO : YES;
     self.PGPSignatures = signatures;
-    if([self hasPGPInlineSignature:signedData])
-        self.PGPVerifiedContent = [self stripSignatureFromContent:[[signedData stringByGuessingEncoding] markupString]];
+    
+    
+    if([self hasPGPInlineSignature:signedData]) {
+        NSData *signedDataWithMarkers = [self signedDataWithAddedPGPPartMarkersIfNecessaryForData:signedData];
+        NSString *verifiedContent = [[signedDataWithMarkers stringByGuessingEncodingWithHint:[self bestStringEncoding]] markupString];
+        verifiedContent = [self contentWithReplacedPGPMarker:verifiedContent isEncrypted:NO isSigned:YES];
+        self.PGPVerifiedContent = [self stripSignatureFromContent:verifiedContent];
+        signedData = signedDataWithMarkers;
+    }
     self.PGPVerifiedData = signedData;
     
     [gpgc release];
 }
 
+- (NSStringEncoding)bestStringEncoding {
+    NSString *charsetName = [self bodyParameterForKey:@"charset"];
+    // No charset name available on current part? Test top part.
+    if(![charsetName length]) {
+        charsetName = [[self topPart] bodyParameterForKey:@"charset"];
+        if(![charsetName length])
+            return NSUTF8StringEncoding;
+    }
+    CFStringEncoding stringEncoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)charsetName);
+    
+    if (stringEncoding != kCFStringEncodingInvalidId)
+        stringEncoding = CFStringConvertEncodingToNSStringEncoding(stringEncoding);
+    
+    return stringEncoding;
+}
+
 - (BOOL)hasPGPInlineSignature:(NSData *)data {
-    NSData *inlineSignatureMarkerHead = [PGP_SIGNED_MESSAGE_BEGIN dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *inlineSignatureMarkerHead = [PGP_SIGNED_MESSAGE_BEGIN dataUsingEncoding:NSASCIIStringEncoding];
     if([data rangeOfData:inlineSignatureMarkerHead options:0 range:NSMakeRange(0, [data length])].location != NSNotFound)
         return YES;
     return NO;
+}
+
+- (NSData *)signedDataWithAddedPGPPartMarkersIfNecessaryForData:(NSData *)signedData {
+    NSRange signedRange = NSMakeRange(NSNotFound, 0);
+    if([signedData length] != 0)
+        signedRange = [signedData rangeOfPGPInlineSignatures];
+    
+    // Should never happen!
+    if(signedRange.location == NSNotFound)
+        return signedData;
+    
+    
+    NSMutableData *partData = [[NSMutableData alloc] init];
+    
+    // Use a regular expression to find data before and after the signed part.
+    NSString *regex = [NSString stringWithFormat:@"(?sm)^(?<whitespace_before>(\r?\n)*)(?<before>.*)%@\r?\n.*\r?\n\r?\n(?<signed_text>.*)%@.*%@(?<whitespace_after>(\r?\n)*)(?<after>.*)$",PGP_SIGNED_MESSAGE_BEGIN, PGP_MESSAGE_SIGNATURE_BEGIN, PGP_MESSAGE_SIGNATURE_END];
+    
+    NSStringEncoding bestEncoding = [self bestStringEncoding];
+    RKEnumerator *matches = [[signedData stringByGuessingEncodingWithHint:bestEncoding] matchEnumeratorWithRegex:regex];
+    
+    NSMutableData *markedPart = [NSMutableData data];
+    NSString *before = nil, *signedText = nil, *after = nil, *whitespaceBefore = nil,
+             *whitespaceAfter = nil;
+    
+    while([matches nextRanges] != NULL) {
+        [matches getCapturesWithReferences:@"${before}", &before, nil];
+        [matches getCapturesWithReferences:@"${signed_text}", &signedText, nil];
+        [matches getCapturesWithReferences:@"${after}", &after, nil];
+        [matches getCapturesWithReferences:@"${whitespace_before}", &whitespaceBefore, nil];
+        [matches getCapturesWithReferences:@"${whitespace_after}", &whitespaceAfter, nil];
+        
+        [self addPGPPartMarkerToData:markedPart partData:[signedText dataUsingEncoding:bestEncoding]];
+    }
+    
+    if(![before length] && ![after length]) {
+        [partData release];
+        return signedData;
+    }
+    
+    [partData appendData:[whitespaceBefore dataUsingEncoding:bestEncoding]];
+    [partData appendData:[before dataUsingEncoding:bestEncoding]];
+    [partData appendData:markedPart];
+    [partData appendData:[whitespaceAfter dataUsingEncoding:bestEncoding]];
+    [partData appendData:[after dataUsingEncoding:bestEncoding]];
+    
+    return [partData autorelease];
 }
 
 - (void)MAVerifySignature {
@@ -1055,9 +1130,8 @@
     if(![data length] || signedRange.location == NSNotFound)
         return;
     
-    NSData *signedData = [data subdataWithRange:signedRange];
-
-    [self verifyData:signedData signatureData:nil];
+    // Pass in the entire NSData to detect part-signed messages.
+    [self verifyData:data signatureData:nil];
 }
 
 - (id)stripSignatureFromContent:(id)content {

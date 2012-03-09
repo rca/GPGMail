@@ -35,6 +35,18 @@
 
 @implementation NSData (GPGMail)
 
+- (NSString *)stringByGuessingEncodingWithHint:(NSStringEncoding)encoding {
+    if([self length] == 0)
+        return @"";
+    
+    // Attempt to convert with hint encoding.
+    NSString *string = [NSString stringWithData:self encoding:encoding];
+    if(![string length])
+        return [self stringByGuessingEncoding];
+    
+    return string;
+}
+
 - (NSString *)stringByGuessingEncoding {
     NSString *retString;
     

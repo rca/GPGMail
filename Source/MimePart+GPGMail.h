@@ -211,6 +211,28 @@ typedef enum {
 - (BOOL)hasError:(NSString *)errorName noDataErrors:(NSArray *)noDataErrors;
 
 /**
+ Reads the charset of a PGP message from the armor headers.
+ No charset is found return UTF8.
+ */
+- (NSStringEncoding)stringEncodingFromPGPData:(NSData *)PGPData;
+
+/**
+ Return the charset found in the current mime part or top part.
+ */
+- (NSStringEncoding)bestStringEncoding;
+
+/**
+ Checks for a signed message begin marker.
+ */
+- (BOOL)hasPGPInlineSignature:(NSData *)data;
+
+/**
+ Returns the signed data with PGP part markers, if the message is part signed.
+ Otherwise the input data is the output data.
+ */
+- (NSData *)signedDataWithAddedPGPPartMarkersIfNecessaryForData:(NSData *)signedData;
+
+/**
  Creates a new message similar the way S/MIME does it, from the decryptedData.
  */
 - (MimeBody *)decryptedMessageBodyFromDecryptedData:(NSData *)decryptedData;
