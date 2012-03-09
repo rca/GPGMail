@@ -534,15 +534,24 @@
     MFError *error = [self errorFromGPGOperation:GPG_OPERATION_DECRYPTION controller:gpgc];
     NSArray *signatures = gpgc.signatures;
     BOOL success = gpgc.decryptionOkay;
+    // Check if this is a non-clear-signed message.
+    // Conditions: decryptionOkay == false and encrypted data has signature packets.
+    // If decryptedData length != 0 && !decryptionOkay signature packets are expected.
+    BOOL nonClearSigned = !success && [encryptedData hasSignaturePacketsWithSignaturePacketsExpected:[decryptedData length] != 0 && !success];
+    
+    // Let's reset the error if the message is non-clear-signed,
+    // since error will be general error.
+    if(nonClearSigned)
+        error = nil;
     
     // Part is encrypted, otherwise we wouldn't come here, so
     // set that status.
-    self.PGPEncrypted = YES;
+    self.PGPEncrypted = nonClearSigned ? NO : YES;
     
     // No error for decryption? Check the signatures for errors.
     if(!error) {
         // Decryption succeed, so set that status.
-        self.PGPDecrypted = YES;
+        self.PGPDecrypted = nonClearSigned ? NO : YES;
         error = [self errorFromGPGOperation:GPG_OPERATION_VERIFICATION controller:gpgc];
     }
     
@@ -563,7 +572,7 @@
     
     [gpgc release];
     
-    if(!success)
+    if(!success && !nonClearSigned)
         return nil;
     
     return decryptedData;
@@ -1104,10 +1113,17 @@
 }
 
 - (NSString *)contentWithReplacedPGPMarker:(NSString *)content isEncrypted:(BOOL)isEncrypted isSigned:(BOOL)isSigned {
-    NSMutableString *partString = [NSMutableString stringWithString:@"Encrypted "];
+    NSBundle *bundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+    
+    NSMutableString *partString = [NSMutableString string];
+    if(isEncrypted)
+        [partString appendString:NSLocalizedStringFromTableInBundle(@"MESSAGE_VIEW_PGP_PART_ENCRYPTED", @"GPGMail", bundle, @"")];
+    if(isEncrypted && isSigned)
+        [partString appendString:@" & "];
     if(isSigned)
-        [partString appendString:@"& Signed "];
-    [partString appendString:@"PGP Part"];
+        [partString appendString:NSLocalizedStringFromTableInBundle(@"MESSAGE_VIEW_PGP_PART_SIGNED", @"GPGMail", bundle, @"")];
+    
+    [partString appendFormat:@" %@", NSLocalizedStringFromTableInBundle(@"MESSAGE_VIEW_PGP_PART", @"GPGMail", bundle, @"")];
     
     content = [content stringByReplacingString:PGP_PART_MARKER_START withString:[NSString stringWithFormat:@"<fieldset style=\"padding-top:10px; border:0px; border: 3px solid #CCC; padding-left: 20px;\"><legend style=\"font-weight:bold\">%@</legend><div style=\"padding-left:3px;\">", partString]];
     content = [content stringByReplacingString:PGP_PART_MARKER_END withString:@"</div></fieldset>"];

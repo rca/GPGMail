@@ -86,4 +86,13 @@
  */
 - (BOOL)containsPGPVersionMarker:(int)version;
 
+/**
+ Checks the pgp packets for a signature packet.
+ Use for recognizing non-clear-signed messages in decrypt.
+ In some rare cases if packets are found which are not yet supported
+ by libmacgpg, no packets are returned. In that case return
+ signaturePacketsExpected.
+ */
+- (BOOL)hasSignaturePacketsWithSignaturePacketsExpected:(BOOL)signaturePacketsExpected;
+
 @end

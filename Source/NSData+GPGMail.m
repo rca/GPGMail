@@ -29,6 +29,7 @@
 
 #define restrict
 #import <RegexKit/RegexKit.h>
+#import <Libmacgpg/Libmacgpg.h>
 #import <NSString-NSStringUtils.h>
 #import "NSData+GPGMail.h"
 
@@ -105,6 +106,28 @@
     NSString *versionRegex = [NSString stringWithFormat:@"(?smi)(version[ ]?: %d)", version];
     RKRegex *versionRKRegex = [RKRegex regexWithRegexString:versionRegex options:RKCompileNoOptions];
     return [self isMatchedByRegex:versionRKRegex];
+}
+
+- (BOOL)hasSignaturePacketsWithSignaturePacketsExpected:(BOOL)signaturePacketsExpected {
+    NSData *packetData = [self copy];
+    
+    NSArray *packets = [GPGPacket packetsWithData:packetData];
+    
+    // Parsing packets failed due to unsupported packets.
+    if(![packets count])
+        return signaturePacketsExpected;
+    
+    BOOL hasSignature = NO;
+    
+    for(GPGPacket *packet in packets) {
+        if(packet.type == GPGSignaturePacket) {
+            hasSignature = YES;
+            break;
+        }
+    }
+    [packetData release];
+    
+    return hasSignature;
 }
 
 @end
