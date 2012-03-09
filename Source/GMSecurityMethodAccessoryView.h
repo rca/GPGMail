@@ -52,6 +52,9 @@
     NSRect _nonFullScreenFrame;
     NSPopUpButton *_popup;
     NSImageView *_arrow;
+    NSTextField *_label;
+    
+    NSMapTable *_attributedTitlesCache;
 }
 
 @property (nonatomic, assign) GPGMAIL_SECURITY_METHOD securityMethod;
@@ -101,11 +104,6 @@
 - (NSAttributedString *)attributedTitle:(NSString *)title highlight:(BOOL)highlight;
 
 /**
- Horizontally center the popup menu.
- */
-- (void)centerMenuWithItem:(NSMenuItem *)item;
-
-/**
  Return the different gradients and strokes based on method
  and fullscreen mode.
  */
@@ -123,7 +121,7 @@
  Center the menu item within the accessory view, taking the arrow into
  consideration.
  */
-- (void)centerMenuWithItem:(NSMenuItem *)item;
+- (void)updateAndCenterLabelForItem:(NSMenuItem *)item;
 - (void)configureForFullScreenWindow:(NSWindow *)window;
 - (void)configureForWindow:(NSWindow *)window;
 
