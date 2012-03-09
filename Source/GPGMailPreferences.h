@@ -65,5 +65,11 @@
 @interface NSButton_LinkCursor : NSButton
 @end
 
-@interface GMSpecialBox : NSBox
+@interface GMSpecialBox : NSBox {
+	NSMapTable *viewPositions;
+	BOOL working;
+	BOOL positionsFilled;
+	BOOL displayed;
+	WebView *webView;
+}
 @end
