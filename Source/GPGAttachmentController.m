@@ -6,6 +6,7 @@
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 #define localized(key) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:(key) table:@"SignatureView"]
+#define localizedAttachmentMessage(key) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:(key) table:@"GPGAttachment"]
 
 #import "MimePart.h"
 #import "NSObject+LPDynamicIvars.h"
@@ -49,8 +50,8 @@
                 else if(decrypted) {
                     [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showSignatureView"];
                     [attachment setValue:[NSNumber numberWithBool:NO] forKey:@"showDecryptedNoSignatureView"];
-                    [attachment setValue:@"Der Anhang wurde erfolgreich entschlüsselt" forKey:@"decryptionSuccessTitle"];
-                    [attachment setValue:@"Doppelklicken Sie im Nachrichtenfenster auf eine Datei um diese zu öffnen." forKey:@"decryptionSuccessMessage"];
+                    [attachment setValue:localizedAttachmentMessage(@"ATTACHMENT_DECRYPTED_SUCCESSFULLY_TITLE") forKey:@"decryptionSuccessTitle"];
+                    [attachment setValue:localizedAttachmentMessage(@"ATTACHMENT_DECRYPTED_SUCCESSFULLY_MESSAGE") forKey:@"decryptionSuccessMessage"];
                 }
             }
             else {
