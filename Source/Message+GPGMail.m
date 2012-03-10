@@ -431,8 +431,15 @@
     // At least one of the keys has to be in cache.
     NSMutableArray *keyIDs = [[NSMutableArray alloc] initWithCapacity:0];
     
-    NSArray *packets = [GPGPacket packetsWithData:data];
-	
+    NSArray *packets = nil;
+    @try {
+        packets = [GPGPacket packetsWithData:data];
+    }
+    @catch (NSException *exception) {
+        [keyIDs release];
+        return NO;
+    }
+    
 	for (GPGPacket *packet in packets) {
 		if (packet.type == GPGPublicKeyEncryptedSessionKeyPacket)
             [keyIDs addObject:packet.keyID];

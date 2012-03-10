@@ -166,7 +166,13 @@
 - (BOOL)hasSignaturePacketsWithSignaturePacketsExpected:(BOOL)signaturePacketsExpected {
     NSData *packetData = [self copy];
     
-    NSArray *packets = [GPGPacket packetsWithData:packetData];
+    NSArray *packets = nil;
+    @try {
+        packets = [GPGPacket packetsWithData:packetData];
+    }
+    @catch (NSException *exception) {
+        return NO;
+    }
     
     // Parsing packets failed due to unsupported packets.
     if(![packets count]) {

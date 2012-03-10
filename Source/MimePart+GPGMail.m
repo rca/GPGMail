@@ -534,9 +534,26 @@
     
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.verbose = NO;
-    //gpgc.verbose = (GPGMailLoggingLevel > 0);
-    NSData *decryptedData = [gpgc decryptData:encryptedData];
-    MFError *error = [self errorFromGPGOperation:GPG_OPERATION_DECRYPTION controller:gpgc];
+    
+    NSData *deArmoredEncryptedData = nil;
+    NSException *crcError = nil;
+    // De-armor the message and catch any CRC-Errors.
+    @try {
+        deArmoredEncryptedData = [GPGPacket unArmor:encryptedData];
+    }
+    @catch (NSException *exception) {
+        crcError = exception;
+    }
+    
+    NSData *decryptedData = nil;
+    MFError *error = nil;
+    if(!crcError) {
+        decryptedData = [gpgc decryptData:deArmoredEncryptedData];
+        error = [self errorFromGPGOperation:GPG_OPERATION_DECRYPTION controller:gpgc];
+    }
+    else
+        error = [self errorForDecryptionError:crcError status:nil errorText:nil];
+    
     NSArray *signatures = gpgc.signatures;
     BOOL success = gpgc.decryptionOkay;
     // Check if this is a non-clear-signed message.
@@ -592,15 +609,12 @@
     return nil;
 }
 
-- (MFError *)errorFromDecryptionOperation:(GPGController *)gpgc {
-    // No error? OUT OF HEEEEEAAAR!
-    if(gpgc.decryptionOkay)
-        return nil;
+- (MFError *)errorForDecryptionError:(NSException *)operationError status:(NSDictionary *)status 
+                          errorText:(NSString *)errorText {
     
     // Might be an NSException or a GPGException
-    NSException *operationError = gpgc.error;
     MFError *error = nil;
-    NSArray *noDataErrors = [gpgc.statusDict valueForKey:@"NODATA"];
+    NSArray *noDataErrors = [status valueForKey:@"NODATA"];
     
     NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
     NSString *title = nil, *message = nil;
@@ -648,7 +662,7 @@
         
         title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
         message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
-        message = [NSString stringWithFormat:message, gpgc.gpgTask.errText];
+        message = [NSString stringWithFormat:message, errorText];
     }
     
     [userInfo setValue:title forKey:@"_MFShortDescription"];
@@ -663,10 +677,18 @@
     return error;
 }
 
-- (MFError *)errorFromVerificationOperation:(GPGController *)gpgc {
-    NSException *operationError = gpgc.error;
-    NSArray *noDataErrors = [gpgc.statusDict valueForKey:@"NODATA"];
+- (MFError *)errorFromDecryptionOperation:(GPGController *)gpgc {
+    // No error? OUT OF HEEEEEAAAR!
+    if(gpgc.decryptionOkay)
+        return nil;
+    
+    return [self errorForDecryptionError:gpgc.error status:gpgc.statusDict errorText:gpgc.gpgTask.errText];
+}
+
+- (MFError *)errorForVerificationError:(NSException *)operationError status:(NSDictionary *)status signatures:(NSArray *)signatures {
     MFError *error = nil;
+    
+    NSArray *noDataErrors = [status valueForKey:@"NODATA"];
     
     NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
     NSString *title = nil, *message = nil;
@@ -693,7 +715,8 @@
         message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
         errorFound = YES;
     }
-    else if([self hasError:@"EXPECTED_SIGNATURE_NOT_FOUND" noDataErrors:noDataErrors]) {
+    else if([self hasError:@"EXPECTED_SIGNATURE_NOT_FOUND" noDataErrors:noDataErrors] ||
+            [(GPGException *)operationError isCorruptedInputError]) {
         titleKey = [NSString stringWithFormat:@"%@_VERIFY_CORRUPTED_DATA_ERROR_TITLE", prefix];
         messageKey = [NSString stringWithFormat:@"%@_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE", prefix];
         
@@ -704,7 +727,7 @@
     else {
         GPGErrorCode errorCode = GPGErrorNoError;
         GPGSignature *signatureWithError = nil;
-        for(GPGSignature *signature in gpgc.signatures) {
+        for(GPGSignature *signature in signatures) {
             if(signature.status != GPGErrorNoError) {
                 errorCode = signature.status;
                 signatureWithError = signature;
@@ -722,7 +745,7 @@
                 message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
                 message = [NSString stringWithFormat:message, signatureWithError.fingerprint];
                 break;
-            
+                
             case GPGErrorUnknownAlgorithm:
                 titleKey = [NSString stringWithFormat:@"%@_VERIFY_ALGORITHM_ERROR_TITLE", prefix];
                 messageKey = [NSString stringWithFormat:@"%@_VERIFY_ALGORITHM_ERROR_MESSAGE", prefix];
@@ -730,7 +753,7 @@
                 title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
                 message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
                 break;
-            
+                
             case GPGErrorCertificateRevoked:
                 titleKey = [NSString stringWithFormat:@"%@_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE", prefix];
                 messageKey = [NSString stringWithFormat:@"%@_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE", prefix];
@@ -739,7 +762,7 @@
                 message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
                 message = [NSString stringWithFormat:message, signatureWithError.fingerprint];
                 break;
-            
+                
             case GPGErrorKeyExpired:
                 titleKey = [NSString stringWithFormat:@"%@_VERIFY_KEY_EXPIRED_ERROR_TITLE", prefix];
                 messageKey = [NSString stringWithFormat:@"%@_VERIFY_KEY_EXPIRED_ERROR_MESSAGE", prefix];
@@ -748,7 +771,7 @@
                 message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
                 message = [NSString stringWithFormat:message, signatureWithError.fingerprint];
                 break;
-            
+                
             case GPGErrorSignatureExpired:
                 titleKey = [NSString stringWithFormat:@"%@_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE", prefix];
                 messageKey = [NSString stringWithFormat:@"%@_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE", prefix];
@@ -764,7 +787,7 @@
                 title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
                 message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
                 break;
-            
+                
             default:
                 // Set errorFound to 0 for Key expired and signature expired.
                 // Those are warnings, not actually errors. Should only be displayed in the signature view.
@@ -783,6 +806,10 @@
     [userInfo release];
     
     return error;
+}
+
+- (MFError *)errorFromVerificationOperation:(GPGController *)gpgc {
+    return [self errorForVerificationError:gpgc.error status:gpgc.statusDict signatures:gpgc.signatures];
 }
 
 - (BOOL)hasError:(NSString *)errorName noDataErrors:(NSArray *)noDataErrors {
