@@ -81,11 +81,14 @@
 
 - (void)_showAttachmentsPanel {
     NSArray *pgpAttachments = ((Message *)[(MessageViewingState *)[((MessageHeaderDisplay *)self) viewingState] message]).PGPAttachments;
+    
     GPGAttachmentController *attachmentController = [[GPGAttachmentController alloc] initWithAttachmentParts:pgpAttachments];
     attachmentController.keyList = [[GPGMailBundle sharedInstance] allGPGKeys];
     [attachmentController beginSheetModalForWindow:[NSApp mainWindow] completionHandler:^(NSInteger result) {
-//        DebugLog(@"Attachment panel was closed: %d", result);
     }];
+    // Set is an an ivar of MessageHeaderDisplay so it's released, once
+    // the Message Header Display is closed.
+    [self setIvar:@"AttachmentController" value:attachmentController];
     [attachmentController release];
 }
 

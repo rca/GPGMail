@@ -431,8 +431,21 @@
 }
 
 - (void)dealloc {
-    [super dealloc];
     [attachments release];
+    attachments = nil;
+    [attachmentIndexes release];
+    attachmentIndexes = nil;
+    [currentAttachment release];
+    currentAttachment = nil;
+    [signature release];
+    signature = nil;
+    [keyList release];
+    keyList = nil;
+    [gpgKey release];
+    gpgKey = nil;
+    
+    
+    [super dealloc];
 }
 
 @end
