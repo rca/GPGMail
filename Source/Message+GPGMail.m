@@ -300,6 +300,8 @@
     else if([self.PGPAttachments count])
         error = [self errorSummaryForPGPAttachments:self.PGPAttachments];
     
+    NSLog(@"Activity monitor: %@", [ActivityMonitor currentMonitor]);
+    NSLog(@"St error %@ on monitor: %@", error, [ActivityMonitor currentMonitor]); 
     [[ActivityMonitor currentMonitor] setError:error];
     
     DebugLog(@"%@ Decrypted Message [%@]:\n\tisEncrypted: %@, isSigned: %@,\n\tisPartlyEncrypted: %@, isPartlySigned: %@\n\tsignatures: %@\n\terrors: %@",
