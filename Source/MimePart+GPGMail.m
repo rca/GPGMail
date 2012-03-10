@@ -555,7 +555,8 @@
         error = [self errorForDecryptionError:crcError status:nil errorText:nil];
     
     NSArray *signatures = gpgc.signatures;
-    BOOL success = gpgc.decryptionOkay;
+    // Sometimes decryption okay is issued even though a NODATA error occured.
+    BOOL success = gpgc.decryptionOkay && !error;
     // Check if this is a non-clear-signed message.
     // Conditions: decryptionOkay == false and encrypted data has signature packets.
     // If decryptedData length != 0 && !decryptionOkay signature packets are expected.
@@ -679,7 +680,9 @@
 
 - (MFError *)errorFromDecryptionOperation:(GPGController *)gpgc {
     // No error? OUT OF HEEEEEAAAR!
-    if(gpgc.decryptionOkay)
+    // Decryption Okay is sometimes issued even if NODATA
+    // came up. In that case the file is damaged.
+    if(gpgc.decryptionOkay && ![(NSArray *)[gpgc.statusDict objectForKey:@"NODATA"] count])
         return nil;
     
     return [self errorForDecryptionError:gpgc.error status:gpgc.statusDict errorText:gpgc.gpgTask.errText];
