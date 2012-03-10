@@ -538,17 +538,17 @@
     NSData *deArmoredEncryptedData = nil;
     NSException *crcError = nil;
     // De-armor the message and catch any CRC-Errors.
-    @try {
-        deArmoredEncryptedData = [GPGPacket unArmor:encryptedData];
-    }
-    @catch (NSException *exception) {
-        crcError = exception;
-    }
+//    @try {
+//        deArmoredEncryptedData = [GPGPacket unArmor:encryptedData];
+//    }
+//    @catch (NSException *exception) {
+//        crcError = exception;
+//    }
     
     NSData *decryptedData = nil;
     MFError *error = nil;
     if(!crcError) {
-        decryptedData = [gpgc decryptData:deArmoredEncryptedData];
+        decryptedData = [gpgc decryptData:encryptedData];
         error = [self errorFromGPGOperation:GPG_OPERATION_DECRYPTION controller:gpgc];
     }
     else
