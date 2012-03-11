@@ -560,7 +560,7 @@
     // Check if this is a non-clear-signed message.
     // Conditions: decryptionOkay == false and encrypted data has signature packets.
     // If decryptedData length != 0 && !decryptionOkay signature packets are expected.
-    BOOL nonClearSigned = !success && [encryptedData hasSignaturePacketsWithSignaturePacketsExpected:[decryptedData length] != 0 && !success];
+    BOOL nonClearSigned = !gpgc.decryptionOkay && [encryptedData hasSignaturePacketsWithSignaturePacketsExpected:[decryptedData length] != 0 && !success];
     
     // Let's reset the error if the message is non-clear-signed,
     // since error will be general error.
@@ -817,13 +817,15 @@
 
 - (BOOL)hasError:(NSString *)errorName noDataErrors:(NSArray *)noDataErrors {
     const NSDictionary *errorCodes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [NSNumber numberWithInt:1], @"NO_ARMORED_DATA",
-                                [NSNumber numberWithInt:2], @"EXPECTED_PACKAGE_NOT_FOUND",
-                                [NSNumber numberWithInt:3], @"INVALID_PACKET",
-                                [NSNumber numberWithInt:4], @"EXPECTED_SIGNATURE_NOT_FOUND", nil];
+                                [NSString stringWithString:@"1"], @"NO_ARMORED_DATA",
+                                [NSString stringWithString:@"2"], @"EXPECTED_PACKAGE_NOT_FOUND",
+                                [NSString stringWithString:@"3"], @"INVALID_PACKET",
+                                [NSString stringWithString:@"4"], @"EXPECTED_SIGNATURE_NOT_FOUND", nil];
     
-    if([noDataErrors containsObject:[errorCodes valueForKey:errorName]])
-        return YES;
+    for(id parts in noDataErrors) {
+        if([[parts objectAtIndex:0] isEqualTo:[errorCodes valueForKey:errorName]])
+            return YES;
+    }
     
     return NO;
 }                           
