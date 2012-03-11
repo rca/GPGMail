@@ -523,23 +523,6 @@ static BOOL gpgMailWorks = NO;
 	return [[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"];
 }
 
-- (void)setWarnedAboutMissingPrivateKeys:(BOOL)flag {
-    [[GPGOptions sharedOptions] setBool:flag forKey:@"WarnAboutMissingPrivateKeys"];
-}
-
-- (BOOL)warnedAboutMissingPrivateKeys {
-    return [[GPGOptions sharedOptions] boolForKey:@"WarnAboutMissingPrivateKeys"];
-}
-
-- (void)warnUserForMissingPrivateKeys:(id)sender {
-	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
-	NSString *aTitle = NSLocalizedStringFromTableInBundle(@"NO PGP PRIVATE KEY - TITLE", @"GPGMail", aBundle, "");
-	NSString *aMessage = NSLocalizedStringFromTableInBundle(@"NO PGP PRIVATE KEY - MESSAGE", @"GPGMail", aBundle, "");
-    
-	(void)NSRunAlertPanel(aTitle, @"%@", nil, nil, nil, aMessage);
-	[self setWarnedAboutMissingPrivateKeys:YES];
-}
-
 - (BOOL)canSignMessagesFromAddress:(NSString *)address {
     GPGKey *key = [self.secretGPGKeysByEmail valueForKey:[address gpgNormalizedEmail]];
     return (key != nil);
@@ -711,10 +694,6 @@ static BOOL gpgMailWorks = NO;
         self.secretGPGKeys = [[self allGPGKeys] filter:^(id obj) {
             return ((GPGKey *)obj).secret && [self canKeyBeUsedForSigning:obj] ? obj : nil;
         }];
-        
-        if ([secretGPGKeys count] == 0 && ![self warnedAboutMissingPrivateKeys]) {
-			[self performSelector:@selector(warnUserForMissingPrivateKeys:) withObject:nil afterDelay:0];
-		}
     }
     
     return secretGPGKeys;
