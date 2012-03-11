@@ -288,6 +288,9 @@
         NSPopUpButton *button = [self valueForKey:@"_fromPopup"];
         NSString *sender = [button.selectedItem.title uncommentedAddress];
         
+        if([sender length] == 0 && [button.itemArray count])
+            sender = [[[button.itemArray objectAtIndex:0] title] uncommentedAddress];
+        
         GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
         [((NSSegmentedControl *)signControl) setToolTip:[NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN", @"GPGMail", bundle, @""), sender]];
     }
