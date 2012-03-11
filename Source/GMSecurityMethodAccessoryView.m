@@ -129,6 +129,10 @@
 }
 
 - (void)changeSecurityMethod:(id)sender {
+    // Only tell the delegate if the current method is not the new method.
+    if(self.securityMethod == [sender tag])
+        return;
+    
     [self.delegate securityMethodAccessoryView:self didChangeSecurityMethod:[sender tag]];
 }
 
@@ -198,6 +202,9 @@
 }
 
 - (void)setSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
+    if(securityMethod == self.securityMethod)
+        return;
+    
     _securityMethod = securityMethod;
     // Update the selection and center the menu title again.
     [self.popup selectItemAtIndex:securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? 0 : 1];
