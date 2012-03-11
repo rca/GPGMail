@@ -205,6 +205,14 @@
     [self setIvar:@"PGPVerified" value:[NSNumber numberWithBool:isVerified]];
 }
 
+- (void)setShouldShowErrorBanner:(BOOL)shouldShow {
+    [self setIvar:@"ShouldShowErrorBanner" value:[NSNumber numberWithBool:shouldShow]];
+}
+
+- (BOOL)shouldShowErrorBanner {
+    return [[self getIvar:@"ShouldShowErrorBanner"] boolValue];
+}
+
 - (void)collectPGPInformationStartingWithMimePart:(MimePart *)topPart decryptedBody:(MimeBody *)decryptedBody {
     __block BOOL isEncrypted = NO;
     __block BOOL isSigned = NO;
@@ -300,8 +308,10 @@
     else if([self.PGPAttachments count])
         error = [self errorSummaryForPGPAttachments:self.PGPAttachments];
     
-    [[ActivityMonitor currentMonitor] setError:error];
-    
+    if(error) {
+        self.shouldShowErrorBanner = YES;
+        [(ActivityMonitor *)[ActivityMonitor currentMonitor] setError:error];
+    }
     DebugLog(@"%@ Decrypted Message [%@]:\n\tisEncrypted: %@, isSigned: %@,\n\tisPartlyEncrypted: %@, isPartlySigned: %@\n\tsignatures: %@\n\terrors: %@",
           decryptedMessage, [decryptedMessage subject], decryptedMessage.PGPEncrypted ? @"YES" : @"NO", decryptedMessage.PGPSigned ? @"YES" : @"NO",
           decryptedMessage.PGPPartlyEncrypted ? @"YES" : @"NO", decryptedMessage.PGPPartlySigned ? @"YES" : @"NO", decryptedMessage.PGPSignatures, decryptedMessage.PGPErrors);

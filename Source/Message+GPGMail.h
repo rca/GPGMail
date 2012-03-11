@@ -108,5 +108,14 @@
 @property (assign, readonly) BOOL isSMIMEEncrypted;
 @property (assign, readonly) BOOL isSMIMESigned;
 
+/**
+ If should show error banner is set, the message content controller
+ will show the banner.
+ 
+ This is necessary as in some occasions Mail refuses to show the banner
+ even though an error occured.
+ */
+@property (nonatomic, assign) BOOL shouldShowErrorBanner;
+
 @end
 
