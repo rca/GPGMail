@@ -26,6 +26,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+#include <CommonCrypto/CommonDigest.h>
 #define restrict
 #import <RegexKit/RegexKit.h>
 #import <Foundation/Foundation.h>
@@ -73,6 +75,22 @@
     }
     
     return [withoutAttachments autorelease];
+}
+
+- (NSString *)SHA1 {
+    unsigned char digest[CC_SHA1_DIGEST_LENGTH];
+    NSData *stringBytes = [self dataUsingEncoding: NSUTF8StringEncoding];
+    if (!CC_SHA1([stringBytes bytes], [stringBytes length], digest))
+        return nil;
+    
+    NSMutableString *sha1 = [NSMutableString string];
+    
+    for(unsigned int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++) {
+        NSLog(@"%02x", digest[i]);
+        [sha1 appendFormat:@"%02x", digest[i]];
+    }
+    
+    return (NSString *)sha1;
 }
 
 @end

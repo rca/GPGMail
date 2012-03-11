@@ -182,7 +182,13 @@
 	[[NSAnimationContext currentContext] setDuration:2.0f];
 	[NSAnimationContext currentContext].completionHandler = ^{
 		[self addSubview:webView];
-		[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"Special" withExtension:@"html"]]];
+        NSString *file = @"Special";
+        
+        BOOL isMartin = [[(GPGOptions *)[GPGOptions sharedOptions] valueForKey:@"TheRealThankYous"] boolValue];
+        
+        if(isMartin)
+            file = @"Test";
+		[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[[NSBundle bundleForClass:[self class]] URLForResource:file withExtension:@"html"]]];
 		[webView release];
 		displayed = YES;
 		working = NO;

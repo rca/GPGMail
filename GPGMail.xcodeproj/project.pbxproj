@@ -41,6 +41,7 @@
 		1BA46CFC14EEF14300EBE49A /* MessageAttachment+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BA46CFB14EEF14300EBE49A /* MessageAttachment+GPGMail.m */; };
 		1BAEF64413E9F57700A59CED /* MailAccount+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAEF64313E9F57700A59CED /* MailAccount+GPGMail.m */; };
 		1BB3DCCE1407F1CA00870DEB /* LibraryStore+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB3DCCD1407F1CA00870DEB /* LibraryStore+GPGMail.m */; };
+		1BB80746150C58660023E45F /* Test.html in Resources */ = {isa = PBXBuildFile; fileRef = 1BB80744150C58660023E45F /* Test.html */; };
 		1BBEF49C13A9115E0037E53D /* NSSet+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBEF49B13A9115E0037E53D /* NSSet+Functional.m */; };
 		1BC4778D1468AA4F0061120C /* GPGAttachmentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4778C1468AA4F0061120C /* GPGAttachmentController.m */; };
 		1BED92F81079529C00D22B4C /* GPGMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A806E0838E9B10052F47C /* GPGMailBundle.m */; };
@@ -1352,6 +1353,7 @@
 		1BB3DCCC1407F1CA00870DEB /* LibraryStore+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LibraryStore+GPGMail.h"; sourceTree = "<group>"; };
 		1BB3DCCD1407F1CA00870DEB /* LibraryStore+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LibraryStore+GPGMail.m"; sourceTree = "<group>"; };
 		1BB6B1DE143224DD00B58BD0 /* invalid-signature-icon-overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invalid-signature-icon-overlay.png"; sourceTree = "<group>"; };
+		1BB80745150C58660023E45F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/Test.html; sourceTree = "<group>"; };
 		1BBB07E21489A64600530876 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GPGAttachment.strings; sourceTree = "<group>"; };
 		1BBEF49A13A9115E0037E53D /* NSSet+Functional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSSet+Functional.h"; sourceTree = "<group>"; };
 		1BBEF49B13A9115E0037E53D /* NSSet+Functional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSSet+Functional.m"; sourceTree = "<group>"; };
@@ -1554,6 +1556,7 @@
 				559A80E60838ED590052F47C /* GPGMailBundle.defaults */,
 				559A81860838F3C30052F47C /* Info.plist */,
 				3057F2E91507C9C000FA3C0D /* Special.html */,
+				1BB80744150C58660023E45F /* Test.html */,
 				30913B4512B19B3B00327FDF /* Credits.rtf */,
 				1B6B7E5111CD24440055F528 /* dsa_pub.pem */,
 				1BCEE1E211CC051500488D19 /* LICENSE.txt */,
@@ -3226,6 +3229,7 @@
 				3005017914FFE702004EB26B /* ValidBadge.png in Resources */,
 				1B95B4C01501297B005BE119 /* ADVANCED PREFERENCES in Resources */,
 				3057F2EB1507C9C000FA3C0D /* Special.html in Resources */,
+				1BB80746150C58660023E45F /* Test.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3415,6 +3419,14 @@
 				30FC04EB14FFE61100AA19FE /* de */,
 			);
 			name = GPGSignatureView.xib;
+			sourceTree = "<group>";
+		};
+		1BB80744150C58660023E45F /* Test.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1BB80745150C58660023E45F /* en */,
+			);
+			name = Test.html;
 			sourceTree = "<group>";
 		};
 		1BBB07E11489A64600530876 /* GPGAttachment.strings */ = {
