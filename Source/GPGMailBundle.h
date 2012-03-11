@@ -88,6 +88,18 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
     NSMutableArray *_bundleImages;
 }
 
+/**
+ Checks for multiple installations of GPGMail.mailbundle in
+ all Library folders.
+ */
++ (NSArray *)multipleInstallations;
+
+/**
+ Warn the user that multiple installations were found and 
+ bail out.
+ */
++ (void)showMultipleInstallationsErrorAndExit:(NSArray *)installations;
+
 // Install all methods used by GPGMail.
 - (void)_installGPGMail;
 // Load all necessary images.

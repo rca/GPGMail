@@ -146,4 +146,8 @@
     "GPG_STATUS_OTHER_ERROR_TITLE" = "Please check your installation and configuration.";
     "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Your MacGPG installation is not working properly. Please contact us, including your GPG configuration file found in your home directory at ~/.gnupg/gpg.conf, at http://support.gpgtools.org";
 
+    /* Multiple GPGMail installations. */
+    "GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Found multiple installations of GPGMail!";
+    "GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "GPGMail detected multiple installations in the following locations which will lead to an immediate crash:\n\n%@\n\nPlease remove the GPGMail.mailbundle in one of the locations and restart Mail.\n";
+    "GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Quit Mail";
 }

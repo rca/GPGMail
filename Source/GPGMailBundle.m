@@ -145,7 +145,7 @@ static BOOL gpgMailWorks = NO;
                             @"MessageContentController_GPGMail", @"gpgMailClass",
                             [NSArray arrayWithObjects:
                              @"setMessageToDisplay:",
-                              nil], @"selectors", nil],
+                             @"_backgroundLoadFinished:", nil], @"selectors", nil],
                            // Messages.framework classes. Messages.framework classes can be extended using
                            // categories. No need for a special GPGMail class.
                            [NSDictionary dictionaryWithObjectsAndKeys:
@@ -220,8 +220,52 @@ static BOOL gpgMailWorks = NO;
     
 }
 
++ (NSArray *)multipleInstallations {
+    NSArray *libraryPaths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSAllDomainsMask, YES);
+    NSString *bundlesPath = [@"Mail" stringByAppendingPathComponent:@"Bundles"];
+    NSString *bundleName = @"GPGMail.mailbundle";
+    
+    NSMutableArray *installations = [NSMutableArray array];
+    
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    
+    for(NSString *libraryPath in libraryPaths) {
+        NSString *bundlePath = [libraryPath stringByAppendingPathComponent:[bundlesPath stringByAppendingPathComponent:bundleName]]; 
+        if([fileManager fileExistsAtPath:bundlePath])
+            [installations addObject:bundlePath];
+    }
+    [fileManager release];
+    
+    return (NSArray *)installations;
+}
+
++ (void)showMultipleInstallationsErrorAndExit:(NSArray *)installations {
+    NSAlert *errorModal = [[NSAlert alloc] init];
+    
+    errorModal.messageText = NSLocalizedStringFromTableInBundle(@"GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE", @"GPGMail", [NSBundle bundleForClass:self], @"");
+    errorModal.informativeText = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE", @"GPGMail", [NSBundle bundleForClass:self], @""), [installations componentsJoinedByString:@"\n"]];
+    [errorModal addButtonWithTitle:NSLocalizedStringFromTableInBundle(@"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON", @"GPGMail", [NSBundle bundleForClass:self], @"")];
+    [errorModal runModal];
+    
+    [errorModal release];
+    
+    // It's not at all a good idea to use exit and kill the app,
+    // but in this case it's alright because otherwise the user would experience a
+    // crash anyway.
+    exit(0);
+}
+
 + (void)initialize {
-	// Make sure the initializer is only run once.
+	// If one happens to have for any reason (like for example installed GPGMail
+    // from the installer, which will reside in /Library and compiled with XCode
+    // which will reside in ~/Library) two GPGMail.mailbundle's, 
+    // display an error message to the user and shutdown Mail.app.
+    NSArray *installations = [self multipleInstallations];
+    if([installations count] > 1) {
+        [self showMultipleInstallationsErrorAndExit:installations];
+        return;
+    }
+    // Make sure the initializer is only run once.
     // Usually is run, for every class inheriting from
     // GPGMailBundle.
     if(self != [GPGMailBundle class])
@@ -238,7 +282,8 @@ static BOOL gpgMailWorks = NO;
 #pragma GCC diagnostic ignored "-Wdeprecated"
     class_setSuperclass([self class], mvMailBundleClass);
 #pragma GCC diagnostic pop
-	// Initialize the bundle by swizzling methods, loading keys, ...
+    
+    // Initialize the bundle by swizzling methods, loading keys, ...
     GPGMailBundle *instance = [GPGMailBundle sharedInstance];
     NSLog(@"Loaded GPGMail %@", [instance version]);
     

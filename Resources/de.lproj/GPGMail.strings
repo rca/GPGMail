@@ -156,4 +156,8 @@
     "GPG_STATUS_OTHER_ERROR_TITLE" = "Bitte überprüfen Sie ihre Installation und Konfiguration.";
     "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Ihre MacGPG Installation weist Fehler auf. Bitte kontaktieren Sie uns mit Ihrer GPG Konfigurationsdatei, welche Sie in Ihrem Benutzerverzeichnis unter .gnupg finden auf http://support.gpgtools.org";
 
+    /* Multiple GPGMail installations. */
+    "GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Es wurden mehrere GPGMail Installationen gefunden!";
+    "GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "GPGMail hat Installationen in folgenden Verzeichnissen gefunden, was einen soforting Absturz zur Folge hat:\n\n%@\n\nBitte löschen Sie GPGMail.mailbundle aus einem der Verzeichnisse und starten Sie Mail erneut.\n";
+    "GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Mail beenden";
 }
