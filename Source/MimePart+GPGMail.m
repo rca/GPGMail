@@ -505,7 +505,7 @@
     // After that set the decryptedMessage body with encrypted to yes!
     MFError *error = [[(MimeBody *)decryptedMimeBody topLevelPart] valueForKey:@"_smimeError"];
     if(error)
-        [[ActivityMonitor currentMonitor] setError:error];
+        [(ActivityMonitor *)[ActivityMonitor currentMonitor] setError:error];
     [decryptedMimeBody setIvar:@"PGPEarlyAlphaFuckedUpEncrypted" value:[NSNumber numberWithBool:YES]];
     self.PGPEncrypted = YES;
     self.PGPSigned = isSigned;
@@ -535,7 +535,7 @@
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.verbose = NO;
     
-    NSData *deArmoredEncryptedData = nil;
+//    NSData *deArmoredEncryptedData = nil;
     NSException *crcError = nil;
     // De-armor the message and catch any CRC-Errors.
 //    @try {
@@ -1762,7 +1762,7 @@
                                                             @"NSLocalizedDescription", titleDescription, @"_MFShortDescription", [NSNumber numberWithInt:errorCode], @"GPGErrorCode", nil]];
     // Puh, this was all but easy, to find out where the error is used.
     // Overreleasing allows to track it's path as an NSZombie in Instruments!
-    [[ActivityMonitor currentMonitor] setError:error];
+    [(ActivityMonitor *)[ActivityMonitor currentMonitor] setError:error];
 }
 
 @end
