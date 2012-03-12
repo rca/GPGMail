@@ -169,11 +169,15 @@
 				}
 			}
 		} else {
-			// For some reason a signature might not have an email set.
-			// This happens if the public key is not available (not downloaded or imported
-			// from the signature server yet). In that case, display the user id.
-			// Also, add an appropriate warning.
-			email = [NSString stringWithFormat:@"0x%@", [[signature fingerprint] shortKeyID]];
+            // Check if name is available and use that.
+            if([[signature name] length])
+                email = [signature name];
+            else
+                // For some reason a signature might not have an email set.
+                // This happens if the public key is not available (not downloaded or imported
+                // from the signature server yet). In that case, display the user id.
+                // Also, add an appropriate warning.
+                email = [NSString stringWithFormat:@"0x%@", [[signature fingerprint] shortKeyID]];
 		}
         [signerLabels addObject:email];
     }

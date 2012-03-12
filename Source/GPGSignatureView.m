@@ -64,12 +64,20 @@ GPGSignatureView *_sharedInstance;
 
 - (NSString *)emailAndID {
 
-    NSString *value = [NSString stringWithFormat:@"%@", gpgKey.email];
+    NSMutableString *value = [[NSMutableString alloc] init];
+    if(gpgKey.email)
+        [value appendFormat:@"%@", gpgKey.email];
+    
     NSString *keyID = [self keyID];
     if(keyID) {
-        value = [value stringByAppendingFormat:@" (%@)", keyID];
+        if(gpgKey.email)
+            [value appendString:@" ("];
+        [value appendFormat:@"%@", keyID];
+        if(gpgKey.email)
+            [value appendString:@")"];
     }
-    return value;
+    
+    return [value autorelease];
 }
 
 - (NSString *)validityDescription {
