@@ -535,20 +535,20 @@
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.verbose = NO;
     
-//    NSData *deArmoredEncryptedData = nil;
+    NSData *deArmoredEncryptedData = nil;
     NSException *crcError = nil;
     // De-armor the message and catch any CRC-Errors.
-//    @try {
-//        deArmoredEncryptedData = [GPGPacket unArmor:encryptedData];
-//    }
-//    @catch (NSException *exception) {
-//        crcError = exception;
-//    }
+    @try {
+        deArmoredEncryptedData = [GPGPacket unArmor:encryptedData];
+    }
+    @catch (NSException *exception) {
+        crcError = exception;
+    }
     
     NSData *decryptedData = nil;
     MFError *error = nil;
     if(!crcError) {
-        decryptedData = [gpgc decryptData:encryptedData];
+        decryptedData = [gpgc decryptData:deArmoredEncryptedData];
         error = [self errorFromGPGOperation:GPG_OPERATION_DECRYPTION controller:gpgc];
     }
     else
@@ -560,7 +560,7 @@
     // Check if this is a non-clear-signed message.
     // Conditions: decryptionOkay == false and encrypted data has signature packets.
     // If decryptedData length != 0 && !decryptionOkay signature packets are expected.
-    BOOL nonClearSigned = !gpgc.decryptionOkay && [encryptedData hasSignaturePacketsWithSignaturePacketsExpected:[decryptedData length] != 0 && !success];
+    BOOL nonClearSigned = !gpgc.decryptionOkay && [decryptedData hasSignaturePacketsWithSignaturePacketsExpected:[decryptedData length] != 0 && !gpgc.decryptionOkay];
     
     // Let's reset the error if the message is non-clear-signed,
     // since error will be general error.
