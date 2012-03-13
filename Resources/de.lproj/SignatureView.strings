@@ -18,4 +18,5 @@
     "VALIDITY_UNKNOWN_ALGORITHM" = "Signatur wurde mit unbekanntem Algorithmus erstellt.";
     "VALIDITY_NO_PUBLIC_KEY" = "Schlüssel dieser Signatur befindet sich nicht im Schlüsselbund.";
     "VALIDITY_UNKNOWN_ERROR" = "Unbekannter Signatur Fehler.";
+    "VALIDITY_BAD_SIGNATURE" = "Diese Signatur ist ungültig.";
 }

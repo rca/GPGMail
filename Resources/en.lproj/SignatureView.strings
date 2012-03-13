@@ -18,4 +18,5 @@
     "VALIDITY_UNKNOWN_ALGORITHM" = "Signature was created with unknown algorithm.";
     "VALIDITY_NO_PUBLIC_KEY" = "The key of this signature is not in your keychain.";
     "VALIDITY_UNKNOWN_ERROR" = "Unknown signature error.";
+    "VALIDITY_BAD_SIGNATURE" = "This signature is invalid.";
 }
