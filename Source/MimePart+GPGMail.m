@@ -1068,14 +1068,14 @@
     NSMutableData *partData = [[NSMutableData alloc] init];
     
     // Use a regular expression to find data before and after the signed part.
-    NSString *regex = [NSString stringWithFormat:@"(?sm)^(?<whitespace_before>(\r?\n)*)(?<before>.*)%@\r?\n.*\r?\n\r?\n(?<signed_text>.*)%@.*%@(?<whitespace_after>(\r?\n)*)(?<after>.*)$",PGP_SIGNED_MESSAGE_BEGIN, PGP_MESSAGE_SIGNATURE_BEGIN, PGP_MESSAGE_SIGNATURE_END];
+    NSString *regex = [NSString stringWithFormat:@"(?sm)^(?<whitespace_before>(\r?\n)*)(?<before>.*)%@\r?\n(?<headers>[\\w\\s:]*)\r?\n\r?\n(?<signed_text>.*)%@.*%@(?<whitespace_after>(\r?\n)*)(?<after>.*)$",PGP_SIGNED_MESSAGE_BEGIN, PGP_MESSAGE_SIGNATURE_BEGIN, PGP_MESSAGE_SIGNATURE_END];
     
     NSStringEncoding bestEncoding = [self bestStringEncoding];
     RKEnumerator *matches = [[signedData stringByGuessingEncodingWithHint:bestEncoding] matchEnumeratorWithRegex:regex];
     
     NSMutableData *markedPart = [NSMutableData data];
     NSString *before = nil, *signedText = nil, *after = nil, *whitespaceBefore = nil,
-             *whitespaceAfter = nil;
+             *whitespaceAfter = nil, *headers = nil;
     
     while([matches nextRanges] != NULL) {
         [matches getCapturesWithReferences:@"${before}", &before, nil];
@@ -1083,6 +1083,7 @@
         [matches getCapturesWithReferences:@"${after}", &after, nil];
         [matches getCapturesWithReferences:@"${whitespace_before}", &whitespaceBefore, nil];
         [matches getCapturesWithReferences:@"${whitespace_after}", &whitespaceAfter, nil];
+        [matches getCapturesWithReferences:@"${headers}", &headers, nil];
         
         [self addPGPPartMarkerToData:markedPart partData:[signedText dataUsingEncoding:bestEncoding]];
     }
