@@ -234,11 +234,12 @@
     [sender setIvar:@"CalledFromGPGMail" value:[NSNumber numberWithBool:NO]];
     // If the newly selected item is the currently select item,
     // just bail out.
-    if(!calledFromGPGMail) {
-        NSPopUpButton *accountPopUp = [[self valueForKey:@"_composeHeaderView"] valueForKey:@"_accountPopUp"];
-        if(sender.selectedItem == accountPopUp.selectedItem)
-            return;
-    }
+    // Update: this doesn't work, since the selected item of _accountPopup is of course already updated.
+//    if(!calledFromGPGMail) {
+//        NSPopUpButton *accountPopUp = [[self valueForKey:@"_composeHeaderView"] valueForKey:@"_accountPopUp"];
+//        if(sender.selectedItem == accountPopUp.selectedItem)
+//            return;
+//    }
     
     // Create a new NSPopUpButton with only one item and the correct title.
 	NSPopUpButton *button = [[NSPopUpButton alloc] init];
