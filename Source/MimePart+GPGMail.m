@@ -254,9 +254,9 @@
     if(encryptedRange.location != NSNotFound) {
         decryptedData = [self decryptedMessageBodyOrDataForEncryptedData:partData encryptedInlineRange:encryptedRange];
         // Fetch the decrypted content, since that is already been processed, with markers and stuff.
-        // In case of an error, simply return the decrypted data.
+        // In case of a decryption failure, simply return the decrypted data.
         NSString *content = nil;
-        if(self.PGPError)
+        if(!self.PGPDecrypted)
             content = [[decryptedData stringByGuessingEncoding] markupString];
         else
             content = self.PGPDecryptedContent;
