@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">11D50b</string>
+		<string key="IBDocument.SystemVersion">11D50</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2177</string>
 		<string key="IBDocument.AppKitVersion">1138.32</string>
 		<string key="IBDocument.HIToolboxVersion">568.00</string>
@@ -523,7 +523,7 @@
 																<object class="NSTextField" id="131683211">
 																	<reference key="NSNextResponder" ref="937110649"/>
 																	<int key="NSvFlags">266</int>
-																	<string key="NSFrame">{{106, 37}, {321, 14}}</string>
+																	<string key="NSFrame">{{106, 37}, {306, 14}}</string>
 																	<reference key="NSSuperview" ref="937110649"/>
 																	<reference key="NSNextKeyView" ref="316976119"/>
 																	<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -549,7 +549,7 @@
 																<object class="NSTextField" id="601680586">
 																	<reference key="NSNextResponder" ref="937110649"/>
 																	<int key="NSvFlags">266</int>
-																	<string key="NSFrame">{{90, 93}, {337, 17}}</string>
+																	<string key="NSFrame">{{90, 93}, {322, 17}}</string>
 																	<reference key="NSSuperview" ref="937110649"/>
 																	<reference key="NSNextKeyView" ref="516004392"/>
 																	<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -569,7 +569,7 @@
 																	</object>
 																</object>
 															</object>
-															<string key="NSFrameSize">{444, 120}</string>
+															<string key="NSFrameSize">{429, 120}</string>
 															<reference key="NSSuperview" ref="408514640"/>
 															<reference key="NSNextKeyView" ref="72931960"/>
 															<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -583,7 +583,7 @@
 																<object class="NSTextField" id="138322284">
 																	<reference key="NSNextResponder" ref="44245670"/>
 																	<int key="NSvFlags">284</int>
-																	<string key="NSFrame">{{50, -155}, {350, 238}}</string>
+																	<string key="NSFrame">{{50, 0}, {350, 238}}</string>
 																	<reference key="NSSuperview" ref="44245670"/>
 																	<reference key="NSNextKeyView" ref="937110649"/>
 																	<string key="NSReuseIdentifierKey">_NS:360</string>
@@ -592,10 +592,7 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="737784608">
 																		<int key="NSCellFlags">69336577</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string type="base64-UTF8" key="NSContents">RGllIFNpZ25hdHVyIGRpZXNlcyBBbmhhbmdzIGtvbm50ZSBuaWNodCDDvGJlcnByw7xmdCB3ZXJkZW4s
-IGRhIGRlciDDtmZmZW50bGljaGUgU2NobMO8c3NlbCBzaWNoIG5pY2h0IGltIFNjaGzDvHNzZWxidW5k
-IGJlZmluZGV0LgoKQml0dGUgbGFkZW4gU2llIGRlbiDDtmZmZW50bGljaGVuIFNjaGzDvHNzZWwgbWl0
-IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
+																		<string key="NSContents">Die Signatur dieses Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet. Bitte laden Sie den öffentlichen Schlüssel mit GPG Schlüsselbund herunter.</string>
 																		<object class="NSFont" key="NSSupport" id="179384628">
 																			<string key="NSName">LucidaGrande</string>
 																			<double key="NSSize">11</double>
@@ -666,7 +663,7 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 																	<bool key="NSEditable">YES</bool>
 																</object>
 															</object>
-															<string key="NSFrameSize">{444, 120}</string>
+															<string key="NSFrameSize">{429, 120}</string>
 															<reference key="NSSuperview" ref="408514640"/>
 															<reference key="NSNextKeyView" ref="515549890"/>
 															<string key="NSReuseIdentifierKey">_NS:1192</string>
@@ -680,7 +677,7 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 																<object class="NSTextField" id="1051878768">
 																	<reference key="NSNextResponder" ref="210185846"/>
 																	<int key="NSvFlags">284</int>
-																	<string key="NSFrame">{{50, -155}, {350, 238}}</string>
+																	<string key="NSFrame">{{50, 0}, {350, 238}}</string>
 																	<reference key="NSSuperview" ref="210185846"/>
 																	<reference key="NSNextKeyView" ref="44245670"/>
 																	<string key="NSReuseIdentifierKey">_NS:360</string>
@@ -689,10 +686,7 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 																	<object class="NSTextFieldCell" key="NSCell" id="376725465">
 																		<int key="NSCellFlags">69336577</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string type="base64-UTF8" key="NSContents">RGllIFNpZ25hdHVyIGRpZXNlcyBBbmhhbmdzIGtvbm50ZSBuaWNodCDDvGJlcnByw7xmdCB3ZXJkZW4s
-IGRhIGRlciDDtmZmZW50bGljaGUgU2NobMO8c3NlbCBzaWNoIG5pY2h0IGltIFNjaGzDvHNzZWxidW5k
-IGJlZmluZGV0LgoKQml0dGUgbGFkZW4gU2llIGRlbiDDtmZmZW50bGljaGVuIFNjaGzDvHNzZWwgbWl0
-IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
+																		<string key="NSContents">Die Signatur dieses Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet. Bitte laden Sie den öffentlichen Schlüssel mit GPG Schlüsselbund herunter.</string>
 																		<reference key="NSSupport" ref="179384628"/>
 																		<string key="NSCellIdentifier">_NS:360</string>
 																		<reference key="NSControlView" ref="1051878768"/>
@@ -752,21 +746,21 @@ IEdQRyBTY2hsw7xzc2VsYnVuZCBoZXJ1bnRlci4</string>
 																	<bool key="NSEditable">YES</bool>
 																</object>
 															</object>
-															<string key="NSFrameSize">{444, 120}</string>
+															<string key="NSFrameSize">{429, 120}</string>
 															<reference key="NSSuperview" ref="408514640"/>
 															<reference key="NSNextKeyView" ref="797989878"/>
 															<string key="NSReuseIdentifierKey">_NS:1192</string>
 															<string key="NSClassName">NSView</string>
 														</object>
 													</object>
-													<string key="NSFrameSize">{444, 120}</string>
+													<string key="NSFrameSize">{429, 120}</string>
 													<reference key="NSSuperview" ref="811410862"/>
 													<reference key="NSNextKeyView" ref="904803809"/>
 													<int key="NSViewLayerContentsRedrawPolicy">2</int>
 													<string key="NSClassName">FlippedView</string>
 												</object>
 											</object>
-											<string key="NSFrame">{{1, 1}, {444, 120}}</string>
+											<string key="NSFrame">{{1, 1}, {429, 120}}</string>
 											<reference key="NSSuperview" ref="185690033"/>
 											<reference key="NSNextKeyView" ref="408514640"/>
 											<reference key="NSDocView" ref="408514640"/>
