@@ -479,7 +479,7 @@
 								<key>IC_REQUIREMENT_SCRIPT_ARGUMENT_STATE</key>
 								<true/>
 								<key>IC_REQUIREMENT_SCRIPT_ARGUMENT_VALUE</key>
-								<string>7</string>
+								<string>8</string>
 							</dict>
 						</array>
 						<key>IC_REQUIREMENT_SCRIPT_COMPARATOR</key>
@@ -506,7 +506,7 @@
 							<key>LANGUAGE</key>
 							<string>English</string>
 							<key>SECONDARY_VALUE</key>
-							<string>This version is for OS X 10.7 (Lion) only.
+							<string>This version is for OS X 10.8 (Mountain Lion) only.
 Please visit http://www.gpgtools.org for more downloads.</string>
 							<key>VALUE</key>
 							<string>Wrong OS</string>
