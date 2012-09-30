@@ -160,7 +160,7 @@
     // If the message is already selected when Mail.app is opened, the message doesn't seem
     // to be reparsed, but the info from _calculateSnippetForMessages is somehow reused. 
     if(![self parentPart]) {
-        ((Message *)[(MimeBody *)[self mimeBody] message]).PGPInfoCollected = NO;  
+        ((Message *)[(MimeBody *)[self mimeBody] message]).PGPInfoCollected = NO;
         ((MFMimeDecodeContext *)ctx).decodeTextPartsOnly = NO;
     }
         
@@ -220,11 +220,13 @@
     MimePart *currentPart = parentPart;
     if(parentPart == nil)
         return self;
-    // Call parentPart till we are on top.
-    while((currentPart = [currentPart parentPart])) {
+    
+    do {
         if([currentPart parentPart] == nil)
             return currentPart;
     }
+    while((currentPart = [currentPart parentPart]));
+    
     return nil;
 }
 
@@ -310,6 +312,11 @@
     if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
         return [self MADecodeApplicationOctet_streamWithContext:ctx];
     
+    // Check if the message is PGP/MIME encrypted and the PGP info was already collected.
+    // In that case, this is no encrypted attachment.
+    if([[self topPart] isPGPMimeEncrypted] && ((Message *)[(MimeBody *)[self mimeBody] message]).PGPInfoCollected)
+        return [self MADecodeApplicationOctet_streamWithContext:ctx];
+    
     BOOL mightBeEncrypted;
     BOOL mightBeSignature;
     [self attachmentMightBePGPEncrypted:&mightBeEncrypted orSigned:&mightBeSignature];
@@ -370,6 +377,9 @@
         }
     }
     
+	if(!signedPart)
+		return [self MADecodeApplicationOctet_streamWithContext:nil];
+	
     // Now try to verify.
     [self verifyData:[signedPart bodyData] signatureData:[self bodyData]];
     
@@ -414,6 +424,12 @@
     NSArray *sigExtensions = [NSArray arrayWithObjects:@"sig", nil];
     *mightSig = ([sigExtensions containsObject:nameExt] || [sigExtensions containsObject:filenameExt]);
     
+    // Sometimes attachments with .asc extension might contain either encrypted data
+    // or signed data, so it's best to test the actual data as well.
+    if(*mightSig || [[self bodyData] hasSignaturePacketsWithSignaturePacketsExpected:NO]) {
+        *mightEnc = NO;
+        *mightSig = YES; 
+    }
     // .asc attachments might contain a public key. See #123.
     // So to avoid decrypting such attachments, check if the attachment
     // contains a public key.
