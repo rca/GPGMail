@@ -81,6 +81,12 @@
  */
 - (BOOL)shouldCreateSnippetWithData:(NSData *)data;
 
+/**
+ Checks whether dataSource (10.8) or messageStore (10.7) is available
+ and calls the correct method.
+ */
+- (id)dataSourceProxy;
+
 @property (assign) BOOL PGPInfoCollected;
 @property (assign) BOOL PGPEncrypted;
 @property (assign) BOOL PGPPartlyEncrypted;
