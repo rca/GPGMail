@@ -241,8 +241,8 @@
 	static NSArray *images = nil;
 	if (!images) {
 		images = [[NSArray alloc] initWithObjects:
-				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/ValidBadge.tif"] autorelease],
-				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/InvalidBadge.tif"] autorelease],
+				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/ValidBadge.png"] autorelease],
+				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/InvalidBadge.png"] autorelease],
 				  nil];	
 	}
 	if (signature.status != 0 || signature.trust <= 1) {
@@ -305,7 +305,7 @@
 	static NSArray *images = nil;
 	if (!images) {
 		images = [[NSArray alloc] initWithObjects: 
-				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertLargeStd.tif"] autorelease],
+				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertLargeStd.png"] autorelease],
 				  [[[NSImage alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForImageResource:@"GPGCertLargeNotTrusted"]] autorelease],
 				  nil];		
 	}
