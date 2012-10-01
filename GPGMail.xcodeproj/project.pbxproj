@@ -133,6 +133,13 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = Libmacgpg;
 		};
+		1B56EC93161749D3004A3ABE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1B46CFCC161555DF00CF9C5F;
+			remoteInfo = jailfree;
+		};
 		222C442713C91A330035BEDE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */;
@@ -2862,6 +2869,7 @@
 			children = (
 				222C442813C91A330035BEDE /* Libmacgpg.framework */,
 				222C442A13C91A330035BEDE /* UnitTest.octest */,
+				1B56EC94161749D3004A3ABE /* jailfree */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3147,6 +3155,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		1B56EC94161749D3004A3ABE /* jailfree */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = jailfree;
+			remoteRef = 1B56EC93161749D3004A3ABE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		222C442813C91A330035BEDE /* Libmacgpg.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
