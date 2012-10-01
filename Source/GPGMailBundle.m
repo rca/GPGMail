@@ -811,7 +811,7 @@ static BOOL gpgMailWorks = NO;
 }
 
 - (NSDictionary *)userMappedKeys {
-    NSDictionary *mappedKeys = [[GPGOptions sharedOptions] valueInCommonDefaultsForKey:@"PublicKeyUserMap"];
+    NSDictionary *mappedKeys = [[GPGOptions sharedOptions] valueForKey:@"PublicKeyUserMap"];
     NSMutableDictionary *cleanMappedKeys = [NSMutableDictionary dictionary]; 
     NSMutableArray *disabledUserMappedKeys = [NSMutableArray array];
     for(id email in mappedKeys) {
