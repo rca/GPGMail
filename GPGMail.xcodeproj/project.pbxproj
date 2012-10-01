@@ -27,6 +27,7 @@
 		1B51231E1409345C004D0818 /* MailDocumentEditor+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B51231D1409345C004D0818 /* MailDocumentEditor+GPGMail.m */; };
 		1B51232514093795004D0818 /* NSBezierPath_KBAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B51232314093795004D0818 /* NSBezierPath_KBAdditions.m */; };
 		1B51232614093795004D0818 /* NSBezierPath+StrokeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B51232414093795004D0818 /* NSBezierPath+StrokeExtensions.m */; };
+		1B56ECA916175AA8004A3ABE /* GPGMail-Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1B56ECA816175AA8004A3ABE /* GPGMail-Entitlements.plist */; };
 		1B6B7DF411CD1C600055F528 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6B7DF311CD1C600055F528 /* Sparkle.framework */; };
 		1B6B7E2C11CD1C810055F528 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6B7DF311CD1C600055F528 /* Sparkle.framework */; };
 		1B7E4DB714EEEAD90069E69C /* JRLPSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7E4DB614EEEAD90069E69C /* JRLPSwizzle.m */; };
@@ -1323,6 +1324,7 @@
 		1B51232414093795004D0818 /* NSBezierPath+StrokeExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBezierPath+StrokeExtensions.m"; sourceTree = "<group>"; };
 		1B512328140937C1004D0818 /* NSBezierPath_KBAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSBezierPath_KBAdditions.h; sourceTree = "<group>"; };
 		1B512329140937C1004D0818 /* NSBezierPath+StrokeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBezierPath+StrokeExtensions.h"; sourceTree = "<group>"; };
+		1B56ECA816175AA8004A3ABE /* GPGMail-Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GPGMail-Entitlements.plist"; sourceTree = "<group>"; };
 		1B637BC313E39FDF00196286 /* GPGMail TODOs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "GPGMail TODOs"; sourceTree = "<group>"; };
 		1B64F62013E38E9200C5B4C9 /* GPG related notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "GPG related notes"; sourceTree = "<group>"; };
 		1B680FF814FAD6C600A43462 /* menu-arrow.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "menu-arrow.tiff"; sourceTree = "<group>"; };
@@ -1560,6 +1562,7 @@
 				30913B4512B19B3B00327FDF /* Credits.rtf */,
 				1B6B7E5111CD24440055F528 /* dsa_pub.pem */,
 				1BCEE1E211CC051500488D19 /* LICENSE.txt */,
+				1B56ECA816175AA8004A3ABE /* GPGMail-Entitlements.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -3230,6 +3233,7 @@
 				1B95B4C01501297B005BE119 /* ADVANCED PREFERENCES in Resources */,
 				3057F2EB1507C9C000FA3C0D /* Special.html in Resources */,
 				1BB80746150C58660023E45F /* Test.html in Resources */,
+				1B56ECA916175AA8004A3ABE /* GPGMail-Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3655,6 +3659,8 @@
 					i386,
 				);
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
+				CODE_SIGN_ENTITLEMENTS = "Resources/GPGMail-Entitlements.plist";
+				CODE_SIGN_IDENTITY = "Developer ID Application: Lukas Pitschl";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
@@ -3690,6 +3696,7 @@
 					suppress,
 				);
 				PRODUCT_NAME = GPGMail;
+				PROVISIONING_PROFILE = "";
 				SYMLINK_GPGMAIL = 1;
 				VALID_ARCHS = "x86_64 i386";
 				WRAPPER_EXTENSION = mailbundle;
@@ -3704,6 +3711,8 @@
 					i386,
 				);
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
+				CODE_SIGN_ENTITLEMENTS = "Resources/GPGMail-Entitlements.plist";
+				CODE_SIGN_IDENTITY = "Developer ID Application: Lukas Pitschl";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3736,6 +3745,7 @@
 					suppress,
 				);
 				PRODUCT_NAME = GPGMail;
+				PROVISIONING_PROFILE = "";
 				SYMLINK_GPGMAIL = 1;
 				VALID_ARCHS = "x86_64 i386";
 				WRAPPER_EXTENSION = mailbundle;
