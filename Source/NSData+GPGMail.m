@@ -109,7 +109,10 @@
                                 PGP_MESSAGE_BEGIN, PGP_MESSAGE_END];
     RKRegex *sigRKRegex = [RKRegex regexWithRegexString:messageRegex options:RKCompileNoOptions];
     NSRange match = NSMakeRange(NSNotFound, 0);
-    @try {
+    if([self length] == 0)
+		return match;
+	
+	@try {
         match = [self rangeOfRegex:sigRKRegex];
     }
     @catch (NSException *exception) {
