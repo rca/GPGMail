@@ -43,7 +43,7 @@
 #import "GPGMailPreferences.h"
 #import "GPGMailBundle.h"
 #import "GPGVersionComparator.h"
-
+#import "Message.h"
 
 NSString *GPGMailSwizzledMethodPrefix = @"MA";
 NSString *GPGMailAgent = @"GPGMail %@";
@@ -917,6 +917,10 @@ static BOOL gpgMailWorks = NO;
 
 + (NSString *)agentHeader {
     return [NSString stringWithFormat:GPGMailAgent, [self bundleVersion]];
+}
+
++ (BOOL)isMountainLion {
+    return [Message instancesRespondToSelector:@selector(dataSource)];
 }
 
 @end

@@ -211,6 +211,11 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
  */
 - (NSMutableDictionary *)emailMapForGPGKeys:(NSSet *)keys allowDuplicates:(BOOL)allowDuplicates;
 
+/**
+ Return if we're running on Mountain Lion or not.
+ */
++ (BOOL)isMountainLion;
+
 @end
 
 @interface GPGMailBundle (NoImplementation)
