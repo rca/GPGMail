@@ -154,8 +154,12 @@
     if(!isPGPSigned && !isPGPEncrypted && !hasPGPAttachments)
         return [self MA_attributedStringForSecurityHeader];
     
-    NSMutableAttributedString *securityHeader = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\t%@\t", NSLocalizedStringFromTableInBundle(@"SECURITY_HEADER", @"Encryption", [NSBundle mainBundle], @"")]];
-    [securityHeader addAttributes:[NSAttributedString boldGrayHeaderAttributes] range:NSMakeRange(0, [securityHeader length])];
+    NSMutableAttributedString *securityHeader = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", [GPGMailBundle isMountainLion] ? @"      " : @"\t",
+									NSLocalizedStringFromTableInBundle(@"SECURITY_HEADER", @"Encryption", [NSBundle mainBundle], @"")]];
+    if(![GPGMailBundle isMountainLion]) {
+		[securityHeader addAttributes:[NSAttributedString boldGrayHeaderAttributes] range:NSMakeRange(0, [securityHeader length])];
+	}
+	
     
     NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
     // Add the encrypted part to the security header.
