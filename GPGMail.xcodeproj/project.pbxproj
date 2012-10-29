@@ -2869,7 +2869,7 @@
 			children = (
 				222C442813C91A330035BEDE /* Libmacgpg.framework */,
 				222C442A13C91A330035BEDE /* UnitTest.octest */,
-				1B56EC94161749D3004A3ABE /* jailfree */,
+				1B56EC94161749D3004A3ABE /* org.gpgtools.Libmacgpg.xpc */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3155,10 +3155,10 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		1B56EC94161749D3004A3ABE /* jailfree */ = {
+		1B56EC94161749D3004A3ABE /* org.gpgtools.Libmacgpg.xpc */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
-			path = jailfree;
+			path = org.gpgtools.Libmacgpg.xpc;
 			remoteRef = 1B56EC93161749D3004A3ABE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
