@@ -3674,8 +3674,8 @@
 					i386,
 				);
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
-				CODE_SIGN_ENTITLEMENTS = "Resources/GPGMail-Entitlements.plist";
-				CODE_SIGN_IDENTITY = "Developer ID Application: Lukas Pitschl";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
@@ -3712,7 +3712,6 @@
 					suppress,
 				);
 				PRODUCT_NAME = GPGMail;
-				PROVISIONING_PROFILE = "";
 				SYMLINK_GPGMAIL = 1;
 				VALID_ARCHS = "x86_64 i386";
 				WRAPPER_EXTENSION = mailbundle;
@@ -3727,8 +3726,8 @@
 					i386,
 				);
 				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
-				CODE_SIGN_ENTITLEMENTS = "Resources/GPGMail-Entitlements.plist";
-				CODE_SIGN_IDENTITY = "Developer ID Application: Lukas Pitschl";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3762,7 +3761,6 @@
 					suppress,
 				);
 				PRODUCT_NAME = GPGMail;
-				PROVISIONING_PROFILE = "";
 				SYMLINK_GPGMAIL = 1;
 				VALID_ARCHS = "x86_64 i386";
 				WRAPPER_EXTENSION = mailbundle;
