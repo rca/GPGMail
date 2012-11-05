@@ -2,6 +2,11 @@ PROJECT = GPGMail
 TARGET = GPGMail
 CONFIG = Release
 
+XCCONFIG = ""
+ifeq ("$(CODE_SIGN)","1")
+    XCCONFIG=-xcconfig Dependencies/GPGTools_Core/make/code-signing.xcconfig
+endif
+
 include Dependencies/GPGTools_Core/make/default
 
 all: compile
@@ -16,7 +21,7 @@ update-me:
 update: update-core update-libmac update-me
 
 compile:
-	@INSTALL_GPGMAIL=0 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release build
+	@INSTALL_GPGMAIL=0 xcodebuild -project GPGMail.xcodeproj -target GPGMail $(XCCONFIG) -configuration Release build
 
 install:
 	@killall Mail||/usr/bin/true
