@@ -22,7 +22,9 @@
 	<string>AUTOFILL</string>
 	<key>CFBundleVersion</key>
 	<string>AUTOFILL</string>
-	<key>GMCommitHash</key>
+	<key>CommitHash</key>
+	<string>AUTOFILL</string>
+	<key>BuildNumber</key>
 	<string>AUTOFILL</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © GPGTools Project Team, 2012</string>
