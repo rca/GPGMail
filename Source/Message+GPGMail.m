@@ -358,21 +358,27 @@
     // At least one of the keys has to be in cache.
     NSMutableArray *keyIDs = [[NSMutableArray alloc] initWithCapacity:0];
     
-    NSArray *packets = [GPGPacket packetsWithData:data];
+    NSArray *packets = nil;
+    @try {
+        packets = [GPGPacket packetsWithData:data];
+    }
+    @catch (NSException *exception) {
+        [keyIDs release];
+        return NO;
+    }
 	
 	for (GPGPacket *packet in packets) {
 		if (packet.type == GPGPublicKeyEncryptedSessionKeyPacket)
             [keyIDs addObject:packet.keyID];
     }
     
-    NSAssert([keyIDs count] != 0, @"No keyIDs found: %@", keyIDs);
-    
     BOOL passphraseInCache = NO;
     GPGController *gpgc = [[GPGController alloc] init];
     
     for(NSString *keyID in keyIDs) {
         GPGKey *key = [[[GPGMailBundle sharedInstance] publicGPGKeysByID] valueForKey:keyID];
-        NSAssert(key != nil, @"No key found for keyID: %@", keyID);
+        if(!key)
+            continue;
         if([gpgc isPassphraseForKeyInCache:key]) {
             passphraseInCache = YES;
             DebugLog(@"Passphrase found in cache!");
