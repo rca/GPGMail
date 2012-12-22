@@ -377,14 +377,19 @@
     
     for(NSString *keyID in keyIDs) {
         GPGKey *key = [[[GPGMailBundle sharedInstance] publicGPGKeysByID] valueForKey:keyID];
-        if(!key)
+		if(!key)
             continue;
+		[key retain];
         if([gpgc isPassphraseForKeyInCache:key]) {
             passphraseInCache = YES;
             DebugLog(@"Passphrase found in cache!");
-            break;
+            [key release];
+			break;
         }
-    }
+		else {
+			[key release];
+		}
+	}
     [keyIDs release];
     [gpgc release];
     DebugLog(@"Passphrase in cache? %@", passphraseInCache ? @"YES" : @"NO");
