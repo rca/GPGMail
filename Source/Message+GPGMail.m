@@ -368,7 +368,7 @@
     }
 	
 	for (GPGPacket *packet in packets) {
-		if (packet.type == GPGPublicKeyEncryptedSessionKeyPacket)
+		if (packet.type == GPGPublicKeyEncryptedSessionKeyPacket && ![keyIDs containsObject:packet.keyID])
             [keyIDs addObject:packet.keyID];
     }
     
@@ -380,8 +380,11 @@
         GPGKey *key = [[[GPGMailBundle sharedInstance] publicGPGKeysByID] valueForKey:keyID];
 		if(key == nil)
             continue;
-		DebugLog(@"GPG Key for keyID: %@ -> %@", keyID, key);
-        if([gpgc isPassphraseForKeyInCache:key]) {
+		[key retain];
+		DebugLog(@"GPG Key for keyID: %p %@ -> %@", key, keyID, key);
+        if(![key description])
+			DebugLog(@"No description available for key ID: %@", keyID);
+		if([gpgc isPassphraseForKeyInCache:key]) {
             passphraseInCache = YES;
             DebugLog(@"Passphrase found in cache!");
             [key release];
