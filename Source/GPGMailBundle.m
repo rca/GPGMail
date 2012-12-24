@@ -382,8 +382,11 @@ static BOOL gpgMailWorks = NO;
 			[[GPGOptions sharedOptions] registerDefaults:defaultsDictionary];
 		}
         
-        GPGMailLoggingLevel = [[GPGOptions sharedOptions] integerForKey:@"DebugLog"];
-        NSLog(@"Debug Log enabled: %@", [[GPGOptions sharedOptions] integerForKey:@"DebugLog"] > 0 ? @"YES" : @"NO");
+        id debugLog = [[GPGOptions sharedOptions] valueInStandardDefaultsForKey:@"DebugLog"];
+        if(!debugLog)
+            debugLog = [[GPGOptions sharedOptions] valueInCommonDefaultsForKey:@"DebugLog"];
+        GPGMailLoggingLevel = [debugLog integerValue];
+        NSLog(@"Debug Log enabled: %@", GPGMailLoggingLevel > 0 ? @"YES" : @"NO");
         
         gpgMailWorks = [self checkGPG];
         [self finishInitialization];

@@ -375,11 +375,12 @@
     BOOL passphraseInCache = NO;
     GPGController *gpgc = [[GPGController alloc] init];
     
+	DebugLog(@"Key IDs found in message: %@", keyIDs);
     for(NSString *keyID in keyIDs) {
         GPGKey *key = [[[GPGMailBundle sharedInstance] publicGPGKeysByID] valueForKey:keyID];
-		if(!key)
+		if(key == nil)
             continue;
-		[key retain];
+		DebugLog(@"GPG Key for keyID: %@ -> %@", keyID, key);
         if([gpgc isPassphraseForKeyInCache:key]) {
             passphraseInCache = YES;
             DebugLog(@"Passphrase found in cache!");
