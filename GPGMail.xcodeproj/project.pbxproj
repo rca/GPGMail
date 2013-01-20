@@ -119,6 +119,13 @@
 			remoteGlobalIDString = 30C8B38E139503A800F49AA1;
 			remoteInfo = UnitTest;
 		};
+		302E818D16AC81BB00F130F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1B46CFCC161555DF00CF9C5F;
+			remoteInfo = org.gpgtools.Libmacgpg.xpc;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -2751,6 +2758,7 @@
 			children = (
 				222C442813C91A330035BEDE /* Libmacgpg.framework */,
 				222C442A13C91A330035BEDE /* UnitTest.octest */,
+				302E818E16AC81BB00F130F1 /* org.gpgtools.Libmacgpg.xpc */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2950,6 +2958,13 @@
 			remoteRef = 222C442913C91A330035BEDE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		302E818E16AC81BB00F130F1 /* org.gpgtools.Libmacgpg.xpc */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = org.gpgtools.Libmacgpg.xpc;
+			remoteRef = 302E818D16AC81BB00F130F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -3042,7 +3057,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT\"\nsource \"Makefile.config\"\n\nBuildNumber=\"$(($(date +\"%s\") / 3600 - 262968))\"\nCommitHash=\"$(git rev-parse --short HEAD)\"\nCFBundleVersion=\"$BuildNumber${PRERELEASE_VERSION:+ ($PRERELEASE_VERSION)}\"\nCFBundleShortVersionString=\"${version}\"\n\ncd \"$BUILT_PRODUCTS_DIR\"\nPLIST=\"$PWD/${INFOPLIST_PATH%.plist}\"\n\ndefaults write \"$PLIST\" CommitHash \"\\\"$CommitHash\\\"\"\ndefaults write \"$PLIST\" BuildNumber \"\\\"$BuildNumber\\\"\"\ndefaults write \"$PLIST\" CFBundleVersion \"\\\"$CFBundleVersion\\\"\"\ndefaults write \"$PLIST\" CFBundleShortVersionString \"\\\"$CFBundleShortVersionString\\\"\"\n\n";
+			shellScript = "source \"$SRCROOT/Makefile.config\" || exit 1\n\nPLIST=\"$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH\"\n\n/usr/libexec/PlistBuddy -c \"Set CommitHash \\\"$commitHash\\\"\" -c \"Set BuildNumber \\\"$buildNumber\\\"\" -c \"Set CFBundleVersion \\\"$build_version\\\"\" -c \"Set CFBundleShortVersionString \\\"$version\\\"\" \"$PLIST\" || exit 2\n";
 		};
 		30F151E21500BE8D00980642 /* Install GPGMail */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3056,7 +3071,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\n################################################\n# Install the bundle in ~/Library/Mail/bundles #\n################################################\n\nDEST_PATH=~/Library/Mail/Bundles/\"$FULL_PRODUCT_NAME\"\nif [ \\( ! -L \"$DEST_PATH\" \\) -a -d \"$DEST_PATH\" ] ;then\n    rm -r \"$DEST_PATH\"\nelif [ -e \"$DEST_PATH\" ] ;then\n    rm \"$DEST_PATH\"\nfi\n\nif [ \"0$INSTALL_GPGMAIL\" -eq 1 ] ;then\n    # Copy the Bundle \n    mkdir -p ~/Library/Mail/Bundles/\n    cp -RH \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\nelif [ \"0$SYMLINK_GPGMAIL\" -eq 1 ] ;then\n    # Create a symbolic link\n    mkdir -p ~/Library/Mail/Bundles/\n    ln -Ffs \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\nfi\n";
+			shellScript = "################################################\n# Install the bundle in ~/Library/Mail/bundles #\n################################################\n\n[[ \"0$INSTALL_GPGMAIL\" -eq 1 || \"0$SYMLINK_GPGMAIL\" -eq 1 ]] || exit 0\n\nDEST_PATH=~/Library/Mail/Bundles/\"$FULL_PRODUCT_NAME\"\nif [ \\( ! -L \"$DEST_PATH\" \\) -a -d \"$DEST_PATH\" ] ;then\n    rm -r \"$DEST_PATH\"\nelif [ -e \"$DEST_PATH\" ] ;then\n    rm \"$DEST_PATH\"\nfi\n\nif [ \"0$INSTALL_GPGMAIL\" -eq 1 ] ;then\n    # Copy the Bundle \n    mkdir -p ~/Library/Mail/Bundles/\n    cp -RH \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\nelif [ \"0$SYMLINK_GPGMAIL\" -eq 1 ] ;then\n    # Create a symbolic link\n    mkdir -p ~/Library/Mail/Bundles/\n    ln -Ffs \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\nfi\n";
 		};
 		30F40BC012B76FAE002E2374 /* Make bundle */ = {
 			isa = PBXShellScriptBuildPhase;
