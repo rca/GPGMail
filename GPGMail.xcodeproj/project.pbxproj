@@ -3295,7 +3295,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT\"\nsource \"Makefile.config\"\n\nBuildNumber=\"$(($(date +\"%s\") / 3600 - 262968))\"\nCommitHash=\"$(git rev-parse --short HEAD)\"\nCFBundleVersion=\"$BuildNumber${PRERELEASE_VERSION:+ ($PRERELEASE_VERSION)}\"\nCFBundleShortVersionString=\"${version}\"\n\ncd \"$BUILT_PRODUCTS_DIR\"\nPLIST=\"$PWD/$INFOPLIST_PATH\"\nalias PlistBuddy\n\nalias PlistBuddy=/usr/libexec/PlistBuddy\n\nPlistBuddy -c \"Set CommitHash \\\"$CommitHash\\\"\" \"$PLIST\"\nPlistBuddy -c \"Set BuildNumber \\\"$BuildNumber\\\"\" \"$PLIST\"\nPlistBuddy -c \"Set CFBundleVersion \\\"$CFBundleVersion\\\"\" \"$PLIST\"\nPlistBuddy -c \"Set CFBundleShortVersionString \\\"$CFBundleShortVersionString\\\"\" \"$PLIST\"\n";
+			shellScript = "source \"$SRCROOT/Makefile.config\" || exit 1\n\nPLIST=\"$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH\"\n\n/usr/libexec/PlistBuddy -c \"Set CommitHash \\\"$commitHash\\\"\" -c \"Set BuildNumber \\\"$buildNumber\\\"\" -c \"Set CFBundleVersion \\\"$build_version\\\"\" -c \"Set CFBundleShortVersionString \\\"$version\\\"\" \"$PLIST\" || exit 2\n";
 		};
 		30F151E21500BE8D00980642 /* Install GPGMail */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3309,7 +3309,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\n################################################\n# Install the bundle in ~/Library/Mail/bundles #\n################################################\n\nfunction stopMail {\n    osascript -e 'if application \"Mail\" is running then ' \\\n    -e 'tell application \"Mail\" to quit saving yes ' \\\n    -e 'end if'\n    sleep 2\n}\n\nfunction launchMail {\n    osascript -e 'tell application \"Mail\" to launch' \n}\n\nDEST_PATH=~/Library/Mail/Bundles/\"$FULL_PRODUCT_NAME\"\nif [ \\( ! -L \"$DEST_PATH\" \\) -a -d \"$DEST_PATH\" ] ;then\n    rm -r \"$DEST_PATH\"\nelif [ -e \"$DEST_PATH\" ] ;then\n    rm \"$DEST_PATH\"\nfi\n\nif [ \"0$INSTALL_GPGMAIL\" -eq 1 ] ;then\n    stopMail\n    # Copy the Bundle \n    mkdir -p ~/Library/Mail/Bundles/\n    cp -RH \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\n#    launchMail\nelif [ \"0$SYMLINK_GPGMAIL\" -eq 1 ] ;then\n    stopMail\n    # Create a symbolic link\n    mkdir -p ~/Library/Mail/Bundles/\n    ln -Ffs \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\n#    launchMail\nfi\n";
+			shellScript = "################################################\n# Install the bundle in ~/Library/Mail/bundles #\n################################################\n\n[[ \"0$INSTALL_GPGMAIL\" -eq 1 || \"0$SYMLINK_GPGMAIL\" -eq 1 ]] || exit 0\n\nDEST_PATH=~/Library/Mail/Bundles/\"$FULL_PRODUCT_NAME\"\nif [ \\( ! -L \"$DEST_PATH\" \\) -a -d \"$DEST_PATH\" ] ;then\nrm -r \"$DEST_PATH\"\nelif [ -e \"$DEST_PATH\" ] ;then\nrm \"$DEST_PATH\"\nfi\n\nif [ \"0$INSTALL_GPGMAIL\" -eq 1 ] ;then\n# Copy the Bundle\nmkdir -p ~/Library/Mail/Bundles/\ncp -RH \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\nelif [ \"0$SYMLINK_GPGMAIL\" -eq 1 ] ;then\n# Create a symbolic link\nmkdir -p ~/Library/Mail/Bundles/\nln -Ffs \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" ~/Library/Mail/Bundles/\nfi\n";
 		};
 		30F40BC012B76FAE002E2374 /* Make bundle */ = {
 			isa = PBXShellScriptBuildPhase;
