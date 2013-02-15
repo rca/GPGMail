@@ -559,7 +559,7 @@
 			<key>CONCLUSION_ACTION</key>
 			<integer>0</integer>
 			<key>IDENTIFIER</key>
-			<string>org.gpgtools.gpgmail.pkg</string>
+			<string>org.gpgtools.gpgmail_107.pkg</string>
 			<key>OVERWRITE_PERMISSIONS</key>
 			<false/>
 			<key>VERSION</key>
