@@ -8,27 +8,34 @@ netdir="/Network/Library/Mail/Bundles"
 homedir="$HOME/Library/Mail/Bundles"
 bundle="GPGMail.mailbundle"
 USER=${USER:-$(id -un)}
+temporarydir="$2"
 ################################################################################
 
 
 # Find real target #############################################################
-dir="$PWD"
-cd "$(readlink "$2")"
-target="$(pwd -P)"
+existingInstallationAt=""
 
-if cd "$netdir" && [[ "$target" == "$(pwd -P)" ]] ;then
+if [[ -e "$netdir/$bundle" ]]; then
+	existingInstallationAt="$netdir"
 	target="$netdir"
-elif cd "$homedir" && [[ "$target" == "$(pwd -P)" ]] ;then
+elif [[ -e "$homedir/$bundle" ]]; then
+	existingInstallationAt="$homedir"
 	target="$homedir"
+elif [[ -e "$sysdir/$bundle" ]]; then
+	existingInstallationAt="$sysdir"
+	target="$sysdir"
 else
 	target="$sysdir"
 fi
 ################################################################################
 
+echo "Temporary dir: $temporarydir"
+echo "existing installation at: $existingInstallationAt"
+echo "installation target: $target"
 
-# Check if GPGMail is correct installed ########################################
-if [[ ! -e "$target/$bundle" ]] ;then
-	echo "[gpgmail] Can't find '$bundle'.  Aborting." >&2
+# Check if GPGMail is correct installed in the temporary directory.
+if [[ ! -e "$temporarydir/$bundle" ]] ;then
+	echo "[gpgmail] Couldn't install '$bundle' in temporary directory $temporarydir.  Aborting." >&2
 	exit 1
 fi
 ################################################################################
@@ -41,10 +48,18 @@ osascript -e "quit app \"Mail\""
 
 
 # Cleanup ######################################################################
-echo "[gpgmail] Removing duplicates of the bundle..."
-[[ "$target" != "$netdir" ]] && rm -rf "$netdir/$bundle"
-[[ "$target" != "$sysdir" ]] && rm -rf "$sysdir/$bundle"
-[[ "$target" != "$homedir" ]] && rm -rf "$homedir/$bundle"
+if [[ "$existingInstallationAt" != "" ]]; then
+	echo "[gpgmail] Removing existing installation of the bundle..."
+	rm -rf "$existingInstallationAt/$bundle" || exit 1
+fi
+################################################################################
+
+# Proper installation ##########################################################
+echo "[gpgmail] Moving bundle to final destination: $target"
+if [[ ! -d "$target" ]]; then
+	mkdir -p "$target" || exit 1
+fi
+mv "$temporarydir/$bundle" "$target/" || exit 1
 ################################################################################
 
 
