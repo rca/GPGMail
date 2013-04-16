@@ -3,3 +3,4 @@
 *.pbxuser
 build/
 *xcuserdata/
+Dependencies/GPGTools_Core
