@@ -68,7 +68,11 @@
     NSSegmentedControl *originalSecurityControl = securityControl;
     
     securityControl = signControl.control == securityControl ? signControl : encryptControl;
-    [securityControl updateStatusFromImage:[originalSecurityControl imageForSegment:0]];
+    // The securityControl passed to this method is an NSSegmentControl.
+	// So the only chance to find out what the new status of the control is,
+	// is to check its current image. (I really thought I was crazy writing this code,
+	// now it all makes sense again. WHAT A RELIEF)
+	[securityControl updateStatusFromImage:[originalSecurityControl imageForSegment:0]];
     
     [self MASecurityControlChanged:securityControl];
 }
@@ -89,7 +93,6 @@
     // update the state 'cause we're right in the middle of that.
     @try {
         [[self getIvar:@"SecurityStateLock"] lock];
-        [self resetSecurityButtons];
         [self MA_updateSecurityStateInBackgroundForRecipients:recipients sender:sender];
     }
     @catch (id e) {
@@ -256,14 +259,8 @@
     if(!calledFromGPGMail && !((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).userDidChooseSecurityMethod) {
         ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod = 0;
     }
-    
-    // Reset the sign and encrypt control if the sender
-    // is by the user.
-    if(!calledFromGPGMail) {
-        [self resetSecurityButtons];
-    }
-    
-    [self MAChangeFromHeader:button/*sender*/];
+
+	[self MAChangeFromHeader:button/*sender*/];
     [button release];
 }
 
@@ -278,7 +275,7 @@
 
 - (void)securityMethodDidChange:(NSNotification *)notification {
     // Reset the controls if the security method changes.
-    [self resetSecurityButtons];
+//    [self resetSecurityButtons];
 }
 
 - (void)keyringUpdated:(NSNotification *)notification {
