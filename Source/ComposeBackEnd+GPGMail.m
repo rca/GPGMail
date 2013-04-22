@@ -661,8 +661,7 @@
     [self removeIvar:@"EncryptIsPossible"];
     [self removeIvar:@"shouldSign"];
     [self removeIvar:@"shouldEncrypt"];
-    [self removeIvar:@"ForceEncrypt"];
-    [self removeIvar:@"ForceSign"];
+	// Don't reset ForceEncrypt and ForceSign. User preference has to stick. ALWAYS!
     
     // NEVER! automatically change the security method once the user selected it.
     // Only send the notification if security method is not reset to 0.
@@ -682,8 +681,8 @@
     [self removeIvar:@"EncryptIsPossible"];
     [self removeIvar:@"shouldSign"];
     [self removeIvar:@"shouldEncrypt"];
-    [self removeIvar:@"ForceEncrypt"];
-    [self removeIvar:@"ForceSign"];
+	
+	// Don't reset ForceEncrypt and ForceSign. User preference has to stick. ALWAYS!
 }
 
 - (GPGMAIL_SECURITY_METHOD)guessedSecurityMethod {

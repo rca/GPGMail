@@ -91,7 +91,7 @@
 - (void)MA_updateSecurityStateInBackgroundForRecipients:(NSArray *)recipients sender:(NSString *)sender {
     // Check for NoUpdateSecurityState. If that is set, do not again
     // update the state 'cause we're right in the middle of that.
-    @try {
+	@try {
         [[self getIvar:@"SecurityStateLock"] lock];
         [self MA_updateSecurityStateInBackgroundForRecipients:recipients sender:sender];
     }
@@ -335,7 +335,7 @@
     // This lock is used to prevent a SecurityMethodDidChange notification to
     // mess with an ongoing _updateSecurityStateInBackgroundForRecipients:recipients:
     // call.
-    NSLock *updateSecurityStateLock = [[NSLock alloc] init];
+	NSLock *updateSecurityStateLock = [[NSLock alloc] init];
     [self setIvar:@"SecurityStateLock" value:updateSecurityStateLock];
     [updateSecurityStateLock release];
 	[(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] addObserver:self selector:@selector(securityMethodDidChange:) name:@"SecurityMethodDidChangeNotification" object:nil];
