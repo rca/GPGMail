@@ -12,7 +12,7 @@
 #import "SUVersionComparisonProtocol.h"
 #import "SUVersionDisplayProtocol.h"
 
-@class SUUpdateDriver, SUAppcastItem, SUHost, SUAppcast;
+@class SUUpdateDriver, SUAppcastItem, SUHost, SUAppcast, SUUpdateAlert;
 
 @interface SUUpdater : NSObject
 {
@@ -27,12 +27,12 @@
 
 + (SUUpdater *)sharedUpdater;
 + (SUUpdater *)updaterForBundle:(NSBundle *)bundle;
-- initForBundle:(NSBundle *)bundle;
+- (id)initForBundle:(NSBundle *)bundle;
 
 - (NSBundle *)hostBundle;
 
 - (void)setDelegate:(id)delegate;
-- delegate;
+- (id)delegate;
 
 - (void)setAutomaticallyChecksForUpdates:(BOOL)automaticallyChecks;
 - (BOOL)automaticallyChecksForUpdates;
@@ -138,6 +138,20 @@
 -(void)	updaterWillShowModalAlert:(SUUpdater *)updater;
 -(void)	updaterDidShowModalAlert:(SUUpdater *)updater;
 
+// To resize the release notes view.
+- (void)updateAlert:(SUUpdateAlert *)updateAlert willShowReleaseNotesWithSize:(NSSize*)size;
+
+@end
+
+@protocol SUUserDefaults <NSObject>
+- (id)objectForKey:(NSString *)key;
+- (void)setObject:(id)value forKey:(NSString *)key;
+- (BOOL)boolForKey:(NSString *)key;
+- (void)setBool:(BOOL)value forKey:(NSString *)key;
+@end
+
+@interface NSObject (SUUserDefaults)
+@property (readonly) id <SUUserDefaults> userDefaults;
 @end
 
 
