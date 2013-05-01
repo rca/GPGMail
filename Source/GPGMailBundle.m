@@ -42,7 +42,6 @@
 //#import "GPGDefaults.h"
 #import "GPGMailPreferences.h"
 #import "GPGMailBundle.h"
-#import "GPGVersionComparator.h"
 #import "Message.h"
 
 NSString *GPGMailSwizzledMethodPrefix = @"MA";
@@ -369,9 +368,6 @@ static BOOL gpgMailWorks = NO;
 	return @"/Applications/Mail.app";
 }
 
-- (id <SUVersionComparison>)versionComparatorForUpdater:(SUUpdater *)updater {
-    return [GPGVersionComparator sharedVersionComparator];
-}
 
 
 /**

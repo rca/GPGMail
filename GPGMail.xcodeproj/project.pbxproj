@@ -87,7 +87,6 @@
 		3005018514FFE719004EB26B /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BCEE1E211CC051500488D19 /* LICENSE.txt */; };
 		3057F2EB1507C9C000FA3C0D /* Special.html in Resources */ = {isa = PBXBuildFile; fileRef = 3057F2E91507C9C000FA3C0D /* Special.html */; };
 		30744AB512B9733800CC3EC5 /* MessageContentController+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A808C0838EA1C0052F47C /* MessageContentController+GPGMail.m */; };
-		30E6857B13FFAC0800563BA5 /* GPGVersionComparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E6857A13FFAC0800563BA5 /* GPGVersionComparator.m */; };
 		30E75A671731A7F900C9E391 /* Libmacgpg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E75A661731A7F900C9E391 /* Libmacgpg.framework */; };
 		30F9646D164E89910017E253 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30F9646C164E89910017E253 /* Sparkle.framework */; };
 		30F9646E164E89960017E253 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 30F9646C164E89910017E253 /* Sparkle.framework */; };
@@ -1385,8 +1384,6 @@
 		30E4F6BB12B3B1350093608D /* triangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle.png; sourceTree = "<group>"; };
 		30E4F6BD12B3B1350093608D /* unsigned.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unsigned.png; sourceTree = "<group>"; };
 		30E4F6BE12B3B1350093608D /* ValidBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ValidBadge.png; sourceTree = "<group>"; };
-		30E6857913FFAC0800563BA5 /* GPGVersionComparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPGVersionComparator.h; sourceTree = "<group>"; };
-		30E6857A13FFAC0800563BA5 /* GPGVersionComparator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPGVersionComparator.m; sourceTree = "<group>"; };
 		30E75A661731A7F900C9E391 /* Libmacgpg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Libmacgpg.framework; path = /Library/Frameworks/Libmacgpg.framework; sourceTree = "<absolute>"; };
 		30F9646C164E89910017E253 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
 		30FC04E614FFE61100AA19FE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = de; path = de.lproj/Credits.rtf; sourceTree = "<group>"; };
@@ -2758,7 +2755,6 @@
 			isa = PBXGroup;
 			children = (
 				559A806E0838E9B10052F47C /* GPGMailBundle.m */,
-				30E6857A13FFAC0800563BA5 /* GPGVersionComparator.m */,
 				4555EA4A150922DF00723E1F /* GPGException+GPGMail.m */,
 				1BB3DCCD1407F1CA00870DEB /* LibraryStore+GPGMail.m */,
 				1BAEF64313E9F57700A59CED /* MailAccount+GPGMail.m */,
@@ -2773,7 +2769,6 @@
 			isa = PBXGroup;
 			children = (
 				307E1C6612B17CFF0012F3DF /* GPGMailBundle.h */,
-				30E6857913FFAC0800563BA5 /* GPGVersionComparator.h */,
 				4555EA49150922DF00723E1F /* GPGException+GPGMail.h */,
 				1BB3DCCC1407F1CA00870DEB /* LibraryStore+GPGMail.h */,
 				1BAEF64213E9F57700A59CED /* MailAccount+GPGMail.h */,
@@ -3303,7 +3298,6 @@
 				1B02D70813F1E9D80032CFD1 /* GPGFlaggedString.m in Sources */,
 				1B02D70A13F1E9F00032CFD1 /* NSArray+Functional.m in Sources */,
 				1B8289FB13FD62880007E6A2 /* Message+GPGMail.m in Sources */,
-				30E6857B13FFAC0800563BA5 /* GPGVersionComparator.m in Sources */,
 				1B8437661404AB9C00968293 /* NSData+GPGMail.m in Sources */,
 				1BF69D7F1405C04E008B07F5 /* HeadersEditor+GPGMail.m in Sources */,
 				1BB3DCCE1407F1CA00870DEB /* LibraryStore+GPGMail.m in Sources */,
