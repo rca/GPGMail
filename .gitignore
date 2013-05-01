@@ -4,3 +4,4 @@
 build/
 *xcuserdata/
 Dependencies/GPGTools_Core
+Dependencies/Libmacgpg
