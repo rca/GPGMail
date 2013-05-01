@@ -340,6 +340,11 @@ static BOOL gpgMailWorks = NO;
     return [GPGVersionComparator sharedVersionComparator];
 }
 
+- (id <SUUserDefaults>)userDefaults {
+    return [GPGOptions sharedOptions];
+}
+
+
 
 /**
  Allows to run one decryption task at a time.
@@ -527,7 +532,6 @@ static BOOL gpgMailWorks = NO;
     if (!gpgc) {
         updateLock = [NSLock new];
         gpgc = [[GPGController alloc] init];
-        gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
         gpgc.delegate = self;
         
         [self allGPGKeys];
@@ -692,9 +696,12 @@ static BOOL gpgMailWorks = NO;
 }
 
 - (NSSet *)sanitizedPublicGPGKeys:(NSSet *)publicKeys {
+    NSMutableSet *cleanKeys = [NSMutableSet set];
+
     // 1.) Create a dictionary with all user ids mapped by email address.
     NSMutableDictionary *userIDEmailMap = [[NSMutableDictionary alloc] init];
     for(GPGKey *key in publicKeys) {
+        BOOL hasEmail = NO;
         // PrimaryUserID.
         NSString *email;
         for(GPGUserID *userID in [key userIDs]) {
@@ -702,6 +709,7 @@ static BOOL gpgMailWorks = NO;
             if(!email)
                 continue;
             
+            hasEmail = YES;
             if(![userIDEmailMap objectForKey:email]) {
                 NSMutableSet *set = [[NSMutableSet alloc] initWithCapacity:0];
                 [userIDEmailMap setObject:set forKey:email];
@@ -709,8 +717,14 @@ static BOOL gpgMailWorks = NO;
             }
             [[userIDEmailMap objectForKey:email] addObject:userID];
         }
+        
+        if (!hasEmail) {
+            // Add keys without E-Mail address.
+            // This is necessary for "PublicKeyUserMap".
+            /* TODO: Müssen wir eventuell noch etwas gründlicher vorgehen. Wenn z.B. mehrere Schlüssel mit einer Adresse existieren und wenn man, mit PublicKeyUserMap, einen wählen will? */
+            [cleanKeys addObject:key];
+        }
     }
-    NSMutableSet *cleanKeys = [NSMutableSet setWithCapacity:0]; 
     // 2.) Loop through the whole map, skip any entry which doesn't have multiple entries.
     
     for(id email in userIDEmailMap) {
@@ -779,7 +793,16 @@ static BOOL gpgMailWorks = NO;
 }
 
 - (NSDictionary *)userMappedKeys {
-    NSDictionary *mappedKeys = [[GPGOptions sharedOptions] valueInCommonDefaultsForKey:@"PublicKeyUserMap"];
+    NSMutableDictionary *mappedKeys = [NSMutableDictionary dictionary];
+    NSDictionary *temp = [[GPGOptions sharedOptions] valueInCommonDefaultsForKey:@"PublicKeyUserMap"]; //Standard location...
+    if ([temp isKindOfClass:[NSDictionary class]]) {
+        [mappedKeys addEntriesFromDictionary:temp];
+    }
+    temp = [[GPGOptions sharedOptions] valueInStandardDefaultsForKey:@"PublicKeyUserMap"]; // ...but in some cases, PublicKeyUserMap is in org.gpgtools.gpgmail
+    if ([temp isKindOfClass:[NSDictionary class]]) {
+        [mappedKeys addEntriesFromDictionary:temp];
+    }
+    
     NSMutableDictionary *cleanMappedKeys = [NSMutableDictionary dictionary]; 
     NSMutableArray *disabledUserMappedKeys = [NSMutableArray array];
     for(id email in mappedKeys) {

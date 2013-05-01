@@ -126,6 +126,20 @@
 			remoteGlobalIDString = 1B46CFCC161555DF00CF9C5F;
 			remoteInfo = org.gpgtools.Libmacgpg.xpc;
 		};
+		30E75A5D1731508800C9E391 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30DF7CB816D39EAA00C8225C;
+			remoteInfo = installerHelper;
+		};
+		30E75A5F1731508800C9E391 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1BD78B9F1726B2820005F251;
+			remoteInfo = LeakFinder;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -2759,6 +2773,8 @@
 				222C442813C91A330035BEDE /* Libmacgpg.framework */,
 				222C442A13C91A330035BEDE /* UnitTest.octest */,
 				302E818E16AC81BB00F130F1 /* org.gpgtools.Libmacgpg.xpc */,
+				30E75A5E1731508800C9E391 /* installerHelper */,
+				30E75A601731508800C9E391 /* LeakFinder.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2963,6 +2979,20 @@
 			fileType = "compiled.mach-o.executable";
 			path = org.gpgtools.Libmacgpg.xpc;
 			remoteRef = 302E818D16AC81BB00F130F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30E75A5E1731508800C9E391 /* installerHelper */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = installerHelper;
+			remoteRef = 30E75A5D1731508800C9E391 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30E75A601731508800C9E391 /* LeakFinder.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = LeakFinder.app;
+			remoteRef = 30E75A5F1731508800C9E391 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -3278,7 +3308,7 @@
 				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_GPGMAIL = 1;
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks /Library/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS)";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -3324,7 +3354,7 @@
 				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_GPGMAIL = 1;
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks /Library/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS)";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (

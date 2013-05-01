@@ -530,8 +530,6 @@
         return nil;
     
     GPGController *gpgc = [[GPGController alloc] init];
-    gpgc.verbose = NO;
-    //gpgc.verbose = (GPGMailLoggingLevel > 0);
     NSData *decryptedData = [gpgc decryptData:encryptedData];
     MFError *error = [self errorFromGPGOperation:GPG_OPERATION_DECRYPTION controller:gpgc];
     NSArray *signatures = gpgc.signatures;
@@ -891,7 +889,6 @@
 
 - (void)verifyData:(NSData *)signedData signatureData:(NSData *)signatureData {
     GPGController *gpgc = [[GPGController alloc] init];
-    gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
     
     // If signature data is set, the signature is detached, otherwise it's inline.
     NSArray *signatures = nil;
@@ -1379,7 +1376,6 @@
     NSMutableSet *flattenedBCCKeyList = [self flattenedKeyList:bccKeyList];
     
     GPGController *gpgc = [[GPGController alloc] init];
-    gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
     gpgc.useArmor = YES;
     gpgc.useTextMode = YES;
     // Automatically trust keys, even though they are not specifically
@@ -1449,7 +1445,6 @@
 	}	
 	
     GPGController *gpgc = [[GPGController alloc] init];
-    gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
     gpgc.useArmor = YES;
     gpgc.useTextMode = YES;
     // Automatically trust keys, even though they are not specifically
@@ -1548,7 +1543,6 @@
 	
 	
     GPGController *gpgc = [[GPGController alloc] init];
-    gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
     gpgc.useArmor = YES;
     gpgc.useTextMode = YES;
     // Automatically trust keys, even though they are not specifically
