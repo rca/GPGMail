@@ -50,7 +50,7 @@
 							<object class="NSButton" id="997375455">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{165, 137}, {240, 18}}</string>
+								<string key="NSFrame">{{175, 137}, {240, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="78210421"/>
 								<bool key="NSEnabled">YES</bool>
@@ -83,7 +83,7 @@
 							<object class="NSButton" id="63115413">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{165, 117}, {248, 18}}</string>
+								<string key="NSFrame">{{175, 117}, {248, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="758835818"/>
 								<bool key="NSEnabled">YES</bool>
@@ -107,7 +107,7 @@
 							<object class="NSButton" id="163650447">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{161, 76}, {115, 32}}</string>
+								<string key="NSFrame">{{171, 76}, {115, 32}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="607240547"/>
 								<bool key="NSEnabled">YES</bool>
@@ -194,7 +194,7 @@
 							<object class="NSTextField" id="97310430">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{164, 161}, {59, 17}}</string>
+								<string key="NSFrame">{{174, 161}, {59, 17}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="244718305"/>
 								<bool key="NSEnabled">YES</bool>
@@ -232,7 +232,7 @@
 							<object class="NSTextField" id="443272866">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{164, 271}, {87, 17}}</string>
+								<string key="NSFrame">{{174, 271}, {87, 17}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="915859109"/>
 								<bool key="NSEnabled">YES</bool>
@@ -250,7 +250,7 @@
 							<object class="NSButton" id="113600817">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{165, 192}, {270, 18}}</string>
+								<string key="NSFrame">{{175, 192}, {270, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="25399615"/>
 								<bool key="NSEnabled">YES</bool>
@@ -274,7 +274,7 @@
 							<object class="NSTextField" id="696331322">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{164, 216}, {69, 17}}</string>
+								<string key="NSFrame">{{174, 216}, {69, 17}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="113600817"/>
 								<bool key="NSEnabled">YES</bool>
@@ -292,7 +292,7 @@
 							<object class="NSTextField" id="244718305">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{13, 137}, {128, 14}}</string>
+								<string key="NSFrame">{{13, 137}, {138, 14}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="997375455"/>
 								<bool key="NSEnabled">YES</bool>
@@ -314,7 +314,7 @@
 							<object class="NSTextField" id="25399615">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{13, 152}, {128, 18}}</string>
+								<string key="NSFrame">{{13, 152}, {138, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="97310430"/>
 								<bool key="NSEnabled">YES</bool>
@@ -366,7 +366,7 @@
 							<object class="NSBox" id="631925366">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">20</int>
-								<string key="NSFrame">{{144, 16}, {5, 303}}</string>
+								<string key="NSFrame">{{154, 16}, {5, 303}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="263145191"/>
 								<string key="NSReuseIdentifierKey">_NS:1557</string>
@@ -398,7 +398,7 @@
 							<object class="NSButton" id="915859109">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{165, 247}, {300, 18}}</string>
+								<string key="NSFrame">{{175, 247}, {300, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="696331322"/>
 								<string key="NSReuseIdentifierKey">_NS:717</string>
@@ -424,7 +424,7 @@
 							<object class="NSButton" id="263145191">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{164, 299}, {368, 17}}</string>
+								<string key="NSFrame">{{174, 299}, {368, 17}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="443272866"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -452,7 +452,7 @@
 							<object class="NSTextField" id="78210421">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{13, 119}, {114, 17}}</string>
+								<string key="NSFrame">{{13, 119}, {138, 17}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="63115413"/>
 								<string key="NSReuseIdentifierKey">_NS:1505</string>
@@ -879,15 +879,8 @@
 						<int key="objectID">9</int>
 						<reference key="object" ref="85714290"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="263145191"/>
-							<reference ref="915859109"/>
-							<reference ref="696331322"/>
-							<reference ref="113600817"/>
-							<reference ref="443272866"/>
-							<reference ref="97310430"/>
 							<reference ref="78210421"/>
 							<reference ref="546540187"/>
-							<reference ref="631925366"/>
 							<reference ref="263402944"/>
 							<reference ref="607240547"/>
 							<reference ref="758835818"/>
@@ -896,6 +889,13 @@
 							<reference ref="997375455"/>
 							<reference ref="63115413"/>
 							<reference ref="163650447"/>
+							<reference ref="97310430"/>
+							<reference ref="443272866"/>
+							<reference ref="113600817"/>
+							<reference ref="696331322"/>
+							<reference ref="631925366"/>
+							<reference ref="915859109"/>
+							<reference ref="263145191"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Preferences Box</string>

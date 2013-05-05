@@ -15,12 +15,10 @@
 "736.ibShadowedToolTip" = "Contribute if you like what we're doing.";
 "737.alternateTitle" = "Contribute if you like what we're doing";
 "737.title" = "Donate";
-"739.ibShadowedToolTip" = "If you have any other question.";
-"740.alternateTitle" = "If you have any other question";
+"739.ibShadowedToolTip" = "If you've any other question.";
+"740.alternateTitle" = "If you've any other question";
 "740.title" = "Contact";
 "744.title" = "Reading";
-"753.ibShadowedToolTip" = "Automatically check for the versions of GPGMail.";
-"754.title" = "Download beta versions";
 "781.title" = "Optionally encrypt/sign drafts";
 "786.ibShadowedToolTip" = "See Preferences -> Viewing -> List Preview.";
 "787.title" = "Create List Preview";
