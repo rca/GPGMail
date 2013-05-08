@@ -368,6 +368,11 @@ static BOOL gpgMailWorks = NO;
 	return @"/Applications/Mail.app";
 }
 
+- (BOOL)updater:(SUUpdater *)updater relaunchUsingPath:(NSString *)path arguments:(NSArray *)arguments {
+    [GPGTask launchGeneralTask:path withArguments:arguments];
+    return YES;
+}
+
 
 
 /**

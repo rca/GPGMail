@@ -122,6 +122,9 @@
 // Called immediately before relaunching.
 - (void)updaterWillRelaunchApplication:(SUUpdater *)updater;
 
+// Let the delegate relaunch the app. Return NO if Sparkle should launch "path".
+- (BOOL)updater:(SUUpdater *)updater relaunchUsingPath:(NSString *)path arguments:(NSArray *)arguments;
+
 // This method allows you to provide a custom version comparator.
 // If you don't implement this method or return nil, the standard version comparator will be used.
 - (id <SUVersionComparison>)versionComparatorForUpdater:(SUUpdater *)updater;
