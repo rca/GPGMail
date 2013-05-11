@@ -771,13 +771,17 @@ static BOOL gpgMailWorks = NO;
 
 - (GPGKey *)bestKeyOfUserIDs:(NSSet *)userIDs {
     // First check if any trusted keys are in there, if so, sort them by date.
+    NSMutableArray *secretUserIDs = [[NSMutableArray alloc] init];
     NSMutableArray *trustedUserIDs = [[NSMutableArray alloc] init];
     NSMutableArray *untrustedUserIDs = [[NSMutableArray alloc] init];
     for(GPGUserID *userID in userIDs) {
-        if(userID.validity >= 3)
+        if (userID.primaryKey.secret) {
+            [secretUserIDs addObject:userID];
+        } else if(userID.validity >= 3) {
             [trustedUserIDs addObject:userID];
-        else
+        } else {
             [untrustedUserIDs addObject:userID];
+        }
     }
     
     NSSortDescriptor *dateSorter = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO comparator:^NSComparisonResult(id obj1, id obj2) {
@@ -785,12 +789,18 @@ static BOOL gpgMailWorks = NO;
     }];
     
     NSArray *sortedUserIDs = nil;
-    if([trustedUserIDs count])
-        sortedUserIDs = [trustedUserIDs sortedArrayUsingDescriptors:[NSArray arrayWithObjects:dateSorter, nil]];
-    else
-        sortedUserIDs = [untrustedUserIDs sortedArrayUsingDescriptors:[NSArray arrayWithObjects:dateSorter, nil]];
+    if (secretUserIDs.count) {
+        sortedUserIDs = secretUserIDs;
+    } else if (trustedUserIDs.count) {
+        sortedUserIDs = trustedUserIDs;
+    } else {
+        sortedUserIDs = untrustedUserIDs;
+    }
+    
+    sortedUserIDs = [sortedUserIDs sortedArrayUsingDescriptors:[NSArray arrayWithObjects:dateSorter, nil]];
 
     [dateSorter release];
+    [secretUserIDs release];
     [trustedUserIDs release];
     [untrustedUserIDs release];
     
