@@ -2,6 +2,7 @@ PROJECT = GPGMail
 TARGET = GPGMail
 PRODUCT = GPGMail.mailbundle
 MAKE_DEFAULT = Dependencies/GPGTools_Core/newBuildSystem/Makefile.default
+NEED_LIBMACGPG = 1
 
 -include $(MAKE_DEFAULT)
 
