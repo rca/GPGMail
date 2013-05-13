@@ -774,9 +774,25 @@ static BOOL gpgMailWorks = NO;
                 [idMap setValue:subkey forKey:subkey.keyID];
         }
         self.publicGPGKeysByID = idMap;
+        [idMap release];
     }
     return _publicGPGKeysByID;
 }
+
+- (NSDictionary *)secretGPGKeysByID {
+    if(!_secretGPGKeysByID) {
+        NSMutableDictionary *idMap = [[NSMutableDictionary alloc] initWithCapacity:0];
+        for(GPGKey *key in self.secretGPGKeys) {
+            [idMap setValue:key forKey:key.keyID];
+            for(GPGKey *subkey in key.subkeys)
+                [idMap setValue:subkey forKey:subkey.keyID];
+        }
+        self.secretGPGKeysByID = idMap;
+        [idMap release];
+    }
+    return _secretGPGKeysByID;
+}
+
 
 - (NSDictionary *)userMappedKeys {
     NSDictionary *mappedKeys = [[GPGOptions sharedOptions] valueInCommonDefaultsForKey:@"PublicKeyUserMap"];

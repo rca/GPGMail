@@ -68,6 +68,8 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
     
     // Map which uses the email address to lookup a personal key.
     NSDictionary *_secretGPGKeysByEmail;
+	// Map which uses the key id to lookup a private key.
+	NSDictionary *_secretGPGKeysByID;
     // Map which uses the email address to lookup a public key.
     NSDictionary *_publicGPGKeysByEmail;
     // Map which uses the key id to lookup a public key.
@@ -113,6 +115,7 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 @property (nonatomic, retain) NSSet *publicGPGKeys;
 @property (nonatomic, retain) NSDictionary *publicGPGKeysByEmail;
 @property (nonatomic, retain) NSDictionary *publicGPGKeysByID;
+@property (nonatomic, retain) NSDictionary *secretGPGKeysByID;
 @property (readonly, retain) NSSet *allGPGKeys;
 @property (readonly) GPGController *gpgc;
 
