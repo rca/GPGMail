@@ -444,7 +444,7 @@
     
     // The message could be encrypted to multiple subkeys.
     // At least one of the keys has to be in cache.
-    NSMutableArray *keyIDs = [[NSMutableArray alloc] initWithCapacity:0];
+    NSMutableSet *keyIDs = [[NSMutableSet alloc] initWithCapacity:0];
     
     NSArray *packets = nil;
     @try {
@@ -464,7 +464,7 @@
     GPGController *gpgc = [[GPGController alloc] init];
     
     for(NSString *keyID in keyIDs) {
-        GPGKey *key = [[[GPGMailBundle sharedInstance] publicGPGKeysByID] valueForKey:keyID];
+        GPGKey *key = [[[GPGMailBundle sharedInstance] secretGPGKeysByID] valueForKey:keyID];
         if(!key)
             continue;
         if([gpgc isPassphraseForKeyInCache:key]) {
