@@ -42,8 +42,21 @@
     return securityMethod;
 }
 
+- (GMSecurityOptions *)securityOptionsFromDefaults {
+	GPGOptions *options = [GPGOptions sharedOptions];
+	id signValue = [options valueForKey:@"SignNewEmailsByDefault"];
+	id encryptValue = [options valueForKey:@"EncryptNewEmailsByDefault"];
+	BOOL sign = signValue ? [signValue boolValue] : YES;
+	BOOL encrypt = encryptValue ? [encryptValue boolValue] : YES;	
+	return [GMSecurityOptions securityOptionsWithSecurityMethod:GPGMAIL_SECURITY_METHOD_OPENPGP shouldSign:sign shouldEncrypt:encrypt];
+}
+
 - (GMSecurityOptions *)bestSecurityOptionsForSender:(NSString *)sender recipients:(NSArray *)recipients signFlags:(GPGMAIL_SIGN_FLAG)signFlags 
                                           encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags {
+	
+	return [self securityOptionsFromDefaults];
+	
+	/*
     GPGMAIL_SECURITY_METHOD securityMethod = 0;
     NSDictionary *usedSecurityMethods = [GMSecurityHistoryStore sharedInstance].securityOptionsHistory;
     NSSet *uniqueRecipients = [[self class] _uniqueRecipients:recipients];
@@ -140,6 +153,7 @@
     }
     
     return [GMSecurityOptions securityOptionsWithSecurityMethod:[[self class] defaultSecurityMethod] shouldSign:NO shouldEncrypt:NO];
+	 */
 }
 
 - (GMSecurityOptions *)bestSecurityOptionsForSender:(NSString *)sender recipients:(NSArray *)recipients securityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod 
@@ -150,6 +164,9 @@
 
 - (GMSecurityOptions *)_getSignAndEncryptOptionsForSender:(NSString *)sender recipients:(NSSet *)recipients securityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod 
                                                                              canSign:(BOOL)canSign canEncrypt:(BOOL)canEncrypt {
+	return [self securityOptionsFromDefaults];
+
+	/*
     NSDictionary *usedSecurityMethods = [GMSecurityHistoryStore sharedInstance].securityOptionsHistory;
     NSString *securityMethodName = (securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) ? @"PGP" : @"SMIME"; 
     // First check if the method was already used to encrypt to these recipients. EncryptCount should be > 0 if
@@ -206,10 +223,15 @@
     }
     
     return [GMSecurityOptions securityOptionsWithSecurityMethod:securityMethod shouldSign:sign shouldEncrypt:encrypt];
+	 */
 }
 
 - (GMSecurityOptions *)bestSecurityOptionsForReplyToMessage:(Message *)message signFlags:(GPGMAIL_SIGN_FLAG)signFlags 
                                                encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags {
+	
+	return [self securityOptionsFromDefaults];
+	
+	/*
     GPGMAIL_SECURITY_METHOD securityMethod = 0;
     BOOL canPGPSign = (signFlags & GPGMAIL_SIGN_FLAG_OPENPGP);
     BOOL canPGPEncrypt = (encryptFlags & GPGMAIL_ENCRYPT_FLAG_OPENPGP);
@@ -239,6 +261,7 @@
         securityMethod = [[self class] defaultSecurityMethod];
     
     return [GMSecurityOptions securityOptionsWithSecurityMethod:securityMethod shouldSign:canSign shouldEncrypt:canEncrypt];
+	 */
 }
 
 + (NSSet *)_uniqueRecipients:(NSArray *)recipients {
