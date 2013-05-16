@@ -86,7 +86,6 @@ static BOOL gpgMailWorks = NO;
  swizzleMap contains all classes and methods which need to be swizzled.
  */
 - (void)_installGPGMail {
-    //	DebugLog(@"Adding GPGMail methods");
     NSArray *swizzleMap = [NSArray arrayWithObjects:
                            // Mail internal classes.
                            [NSDictionary dictionaryWithObjectsAndKeys:
@@ -388,9 +387,10 @@ static BOOL gpgMailWorks = NO;
 }
 
 - (void)addCollectionTask:(gpgmail_verification_task_t)task {
-    dispatch_sync(verificationQueue, task);
+    gpgmail_verification_task_t taskCopy = Block_copy(task);
+    dispatch_async(collectingQueue, task);
+    Block_release(taskCopy);
 }
-
 
 + (BOOL)gpgMailWorks {
 	return gpgMailWorks;
