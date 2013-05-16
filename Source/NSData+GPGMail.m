@@ -32,6 +32,7 @@
 #import <Libmacgpg/Libmacgpg.h>
 #import <NSString-NSStringUtils.h>
 #import "NSData+GPGMail.h"
+#import "NSData-MessageAdditions.h"
 
 @implementation NSData (GPGMail)
 
@@ -194,6 +195,10 @@
     [packetData release];
     
     return hasSignature;
+}
+
+- (NSData *)dataPreparedForVerification {
+	return [[[NSData alloc] initWithDataConvertingLineEndingsFromUnixToNetwork:self] autorelease];
 }
 
 @end
