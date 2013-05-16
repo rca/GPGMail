@@ -48,7 +48,7 @@
 	id encryptValue = [options valueForKey:@"EncryptNewEmailsByDefault"];
 	BOOL sign = signValue ? [signValue boolValue] : YES;
 	BOOL encrypt = encryptValue ? [encryptValue boolValue] : YES;	
-	return [GMSecurityOptions securityOptionsWithSecurityMethod:GPGMAIL_SECURITY_METHOD_OPENPGP shouldSign:sign shouldEncrypt:encrypt];
+	return [GMSecurityOptions securityOptionsWithSecurityMethod:[[self class] defaultSecurityMethod] shouldSign:sign shouldEncrypt:encrypt];
 }
 
 - (GMSecurityOptions *)bestSecurityOptionsForSender:(NSString *)sender recipients:(NSArray *)recipients signFlags:(GPGMAIL_SIGN_FLAG)signFlags 
@@ -229,9 +229,8 @@
 - (GMSecurityOptions *)bestSecurityOptionsForReplyToMessage:(Message *)message signFlags:(GPGMAIL_SIGN_FLAG)signFlags 
                                                encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags {
 	
-	return [self securityOptionsFromDefaults];
+//	return [self securityOptionsFromDefaults];
 	
-	/*
     GPGMAIL_SECURITY_METHOD securityMethod = 0;
     BOOL canPGPSign = (signFlags & GPGMAIL_SIGN_FLAG_OPENPGP);
     BOOL canPGPEncrypt = (encryptFlags & GPGMAIL_ENCRYPT_FLAG_OPENPGP);
@@ -261,7 +260,6 @@
         securityMethod = [[self class] defaultSecurityMethod];
     
     return [GMSecurityOptions securityOptionsWithSecurityMethod:securityMethod shouldSign:canSign shouldEncrypt:canEncrypt];
-	 */
 }
 
 + (NSSet *)_uniqueRecipients:(NSArray *)recipients {
@@ -277,7 +275,11 @@
 
 + (void)addEntryForSender:(NSString *)sender recipients:(NSArray *)recipients securityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod
                   didSign:(BOOL)didSign didEncrypt:(BOOL)didEncrypt {
-    NSDictionary *securityMethodHistory = [[GMSecurityHistoryStore sharedInstance].securityOptionsHistory mutableCopy];
+    
+	// Disable history logging for the time being.
+	return;
+	
+	NSDictionary *securityMethodHistory = [[GMSecurityHistoryStore sharedInstance].securityOptionsHistory mutableCopy];
     NSString *securityMethodKey = securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? @"PGP" : @"SMIME";
     NSSet *uniqueRecipients = [[self class] _uniqueRecipients:recipients];
     sender = [sender gpgNormalizedEmail];
