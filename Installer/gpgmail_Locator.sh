@@ -1,5 +1,5 @@
 #!/bin/bash
-# This is a bundle pre-install script for GPGMail.
+# This is the bundle pre-install script for GPGMail.
 
 
 # config #######################################################################
@@ -18,9 +18,12 @@ elif [[ -e "$homedir/$bundle" ]]; then
 else
     target="$sysdir"
 fi
+echo "Install to: $target"
+mkdir -p "$target" || exit 1
 ################################################################################
 
 # make a symlink to the install location  ######################################
+echo "Link path: $linkPath"
 rm -rf "$linkPath"
 mkdir -p "${linkPath%/*}"
 ln -s "$target" "$linkPath" || exit 1
