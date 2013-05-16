@@ -363,7 +363,7 @@ NSArray *images;
 
 
 
-@implementation FlippedView
+@implementation GPGFlippedView
 - (BOOL)isFlipped {
 	return YES;
 }

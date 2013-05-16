@@ -41,5 +41,5 @@
 
 
 @interface GPGSignatureCertImageTransformer : NSValueTransformer {} @end
-@interface FlippedView : NSView {} @end
+@interface GPGFlippedView : NSView {} @end
 @interface TopScrollView : NSScrollView {} @end
