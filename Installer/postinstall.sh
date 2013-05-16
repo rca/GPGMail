@@ -1,5 +1,5 @@
 #!/bin/bash
-# This is a package post-install script for GPGMail.
+# This is the package post-install script for GPGMail.
 
 
 # config #######################################################################

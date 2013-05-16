@@ -42,7 +42,6 @@
 //#import "GPGDefaults.h"
 #import "GPGMailPreferences.h"
 #import "GPGMailBundle.h"
-#import "GPGVersionComparator.h"
 #import "Message.h"
 
 NSString *GPGMailSwizzledMethodPrefix = @"MA";
@@ -368,9 +367,11 @@ static BOOL gpgMailWorks = NO;
 	return @"/Applications/Mail.app";
 }
 
-- (id <SUVersionComparison>)versionComparatorForUpdater:(SUUpdater *)updater {
-    return [GPGVersionComparator sharedVersionComparator];
+- (BOOL)updater:(SUUpdater *)updater relaunchUsingPath:(NSString *)path arguments:(NSArray *)arguments {
+    [GPGTask launchGeneralTask:path withArguments:arguments];
+    return YES;
 }
+
 
 
 /**
@@ -722,9 +723,12 @@ static BOOL gpgMailWorks = NO;
 }
 
 - (NSSet *)sanitizedPublicGPGKeys:(NSSet *)publicKeys {
+    NSMutableSet *cleanKeys = [NSMutableSet set];
+
     // 1.) Create a dictionary with all user ids mapped by email address.
     NSMutableDictionary *userIDEmailMap = [[NSMutableDictionary alloc] init];
     for(GPGKey *key in publicKeys) {
+        BOOL hasEmail = NO;
         // PrimaryUserID.
         NSString *email;
         for(GPGUserID *userID in [key userIDs]) {
@@ -732,6 +736,7 @@ static BOOL gpgMailWorks = NO;
             if(!email)
                 continue;
             
+            hasEmail = YES;
             if(![userIDEmailMap objectForKey:email]) {
                 NSMutableSet *set = [[NSMutableSet alloc] initWithCapacity:0];
                 [userIDEmailMap setObject:set forKey:email];
@@ -739,10 +744,16 @@ static BOOL gpgMailWorks = NO;
             }
             [[userIDEmailMap objectForKey:email] addObject:userID];
         }
+        
+        if (!hasEmail) {
+            // Add keys without E-Mail address.
+            // This is necessary for "PublicKeyUserMap".
+            /* TODO: Müssen wir eventuell noch etwas gründlicher vorgehen. Wenn z.B. mehrere Schlüssel mit einer Adresse existieren und wenn man, mit PublicKeyUserMap, einen wählen will? */
+            [cleanKeys addObject:key];
+        }
     }
-    NSMutableSet *cleanKeys = [NSMutableSet setWithCapacity:0]; 
-    // 2.) Loop through the whole map, skip any entry which doesn't have multiple entries.
     
+    // 2.) Loop through the whole map, skip any entry which doesn't have multiple entries.
     for(id email in userIDEmailMap) {
         if([(NSMutableSet *)[userIDEmailMap objectForKey:email] count] == 1) {
             GPGKey *key = ((GPGKey *)[(NSMutableSet *)[userIDEmailMap objectForKey:email] anyObject]).primaryKey;
@@ -760,13 +771,17 @@ static BOOL gpgMailWorks = NO;
 
 - (GPGKey *)bestKeyOfUserIDs:(NSSet *)userIDs {
     // First check if any trusted keys are in there, if so, sort them by date.
+    NSMutableArray *secretUserIDs = [[NSMutableArray alloc] init];
     NSMutableArray *trustedUserIDs = [[NSMutableArray alloc] init];
     NSMutableArray *untrustedUserIDs = [[NSMutableArray alloc] init];
     for(GPGUserID *userID in userIDs) {
-        if(userID.validity >= 3)
+        if (userID.primaryKey.secret) {
+            [secretUserIDs addObject:userID];
+        } else if(userID.validity >= 3) {
             [trustedUserIDs addObject:userID];
-        else
+        } else {
             [untrustedUserIDs addObject:userID];
+        }
     }
     
     NSSortDescriptor *dateSorter = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO comparator:^NSComparisonResult(id obj1, id obj2) {
@@ -774,12 +789,18 @@ static BOOL gpgMailWorks = NO;
     }];
     
     NSArray *sortedUserIDs = nil;
-    if([trustedUserIDs count])
-        sortedUserIDs = [trustedUserIDs sortedArrayUsingDescriptors:[NSArray arrayWithObjects:dateSorter, nil]];
-    else
-        sortedUserIDs = [untrustedUserIDs sortedArrayUsingDescriptors:[NSArray arrayWithObjects:dateSorter, nil]];
+    if (secretUserIDs.count) {
+        sortedUserIDs = secretUserIDs;
+    } else if (trustedUserIDs.count) {
+        sortedUserIDs = trustedUserIDs;
+    } else {
+        sortedUserIDs = untrustedUserIDs;
+    }
+    
+    sortedUserIDs = [sortedUserIDs sortedArrayUsingDescriptors:[NSArray arrayWithObjects:dateSorter, nil]];
 
     [dateSorter release];
+    [secretUserIDs release];
     [trustedUserIDs release];
     [untrustedUserIDs release];
     
@@ -826,8 +847,17 @@ static BOOL gpgMailWorks = NO;
 
 
 - (NSDictionary *)userMappedKeys {
-    NSDictionary *mappedKeys = [[GPGOptions sharedOptions] valueForKey:@"PublicKeyUserMap"];
-    NSMutableDictionary *cleanMappedKeys = [NSMutableDictionary dictionary]; 
+    NSMutableDictionary *mappedKeys = [NSMutableDictionary dictionary];
+    NSDictionary *temp = [[GPGOptions sharedOptions] valueInCommonDefaultsForKey:@"PublicKeyUserMap"]; //Standard location...
+    if ([temp isKindOfClass:[NSDictionary class]]) {
+        [mappedKeys addEntriesFromDictionary:temp];
+    }
+    temp = [[GPGOptions sharedOptions] valueInStandardDefaultsForKey:@"PublicKeyUserMap"]; // ...but in some cases, PublicKeyUserMap is in org.gpgtools.gpgmail
+    if ([temp isKindOfClass:[NSDictionary class]]) {
+        [mappedKeys addEntriesFromDictionary:temp];
+    }
+
+    NSMutableDictionary *cleanMappedKeys = [NSMutableDictionary dictionary];
     NSMutableArray *disabledUserMappedKeys = [NSMutableArray array];
     for(id email in mappedKeys) {
         

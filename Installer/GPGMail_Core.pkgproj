@@ -555,7 +555,12 @@
 				<integer>1</integer>
 			</dict>
 			<key>PREINSTALL_PATH</key>
-			<dict/>
+			<dict>
+				<key>PATH</key>
+				<string>../Installer/preinstall.sh</string>
+				<key>PATH_TYPE</key>
+				<integer>1</integer>
+			</dict>
 			<key>RESOURCES</key>
 			<array/>
 		</dict>
@@ -565,6 +570,8 @@
 			<integer>1</integer>
 			<key>CONCLUSION_ACTION</key>
 			<integer>0</integer>
+			<key>FOLLOW_SYMBOLIC_LINKS</key>
+			<true/>
 			<key>IDENTIFIER</key>
 			<string>org.gpgtools.gpgmail.pkg</string>
 			<key>OVERWRITE_PERMISSIONS</key>
