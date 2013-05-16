@@ -1,9 +1,9 @@
 "21.title" = "Signaturen";
 "25.title" = "OK";
-"236.title" = "Ablaufdatum:";
+"236.title" = "Erstellt:";
 "237.title" = "name";
 "251.title" = "Details";
-"252.ibShadowedNoSelectionPlaceholder" = "No signature";
+"252.ibShadowedNoSelectionPlaceholder" = "Keine Signatur";
 "365.title" = "Name:";
 "367.title" = "Schlüssel";
 "369.title" = "E-Mail:";
@@ -18,4 +18,3 @@
 "437.title" = "Signatur";
 "531.ibShadowedIsNilPlaceholder" = "Diese Signatur hat kein Verfallsdatum";
 "532.ibShadowedIsNilPlaceholder" = "Dieser Schlüssel hat kein Verfallsdatum";
-"536.ibShadowedIsNilPlaceholder" = "Diese Signatur hat kein Verfallsdatum";
