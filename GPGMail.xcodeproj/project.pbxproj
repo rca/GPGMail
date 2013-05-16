@@ -133,6 +133,13 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = Libmacgpg;
 		};
+		1B5E462E165A1E7600DABDBA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1B46CFCC161555DF00CF9C5F;
+			remoteInfo = org.gpgtools.Libmacgpg.xpc;
+		};
 		222C442713C91A330035BEDE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */;
@@ -146,13 +153,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 30C8B38E139503A800F49AA1;
 			remoteInfo = UnitTest;
-		};
-		3049D9D2164E95F5000F5298 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 222C440A13C919E90035BEDE /* Libmacgpg.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1B306AD1157AC50C009AECCF;
-			remoteInfo = GPGTaskHelper;
 		};
 		4523EBDA150545A100497E39 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2869,7 +2869,7 @@
 			children = (
 				222C442813C91A330035BEDE /* Libmacgpg.framework */,
 				222C442A13C91A330035BEDE /* UnitTest.octest */,
-				3049D9D3164E95F5000F5298 /* org.gpgtools.Libmacgpg.GPGTaskHelper.xpc */,
+				1B5E462F165A1E7600DABDBA /* org.gpgtools.Libmacgpg.xpc */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3155,6 +3155,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		1B5E462F165A1E7600DABDBA /* org.gpgtools.Libmacgpg.xpc */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = org.gpgtools.Libmacgpg.xpc;
+			remoteRef = 1B5E462E165A1E7600DABDBA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		222C442813C91A330035BEDE /* Libmacgpg.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -3167,13 +3174,6 @@
 			fileType = wrapper.cfbundle;
 			path = UnitTest.octest;
 			remoteRef = 222C442913C91A330035BEDE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		3049D9D3164E95F5000F5298 /* org.gpgtools.Libmacgpg.GPGTaskHelper.xpc */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = org.gpgtools.Libmacgpg.GPGTaskHelper.xpc;
-			remoteRef = 3049D9D2164E95F5000F5298 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -3805,7 +3805,7 @@
 					"-undefined",
 					dynamic_lookup,
 				);
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				TEST_AFTER_BUILD = YES;
 				TEST_LOAD_BUNDLE = "${BUILT_PRODUCTS_DIR}/GPGMail.mailbundle";
 				TEST_RIG = "${BUILT_PRODUCTS_DIR}/BundleTestRunner";
@@ -3849,7 +3849,7 @@
 					"-undefined",
 					dynamic_lookup,
 				);
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				TEST_AFTER_BUILD = YES;
 				TEST_LOAD_BUNDLE = "${BUILT_PRODUCTS_DIR}/GPGMail.mailbundle";
 				TEST_RIG = "${BUILT_PRODUCTS_DIR}/BundleTestRunner";
