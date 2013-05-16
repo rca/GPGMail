@@ -1321,13 +1321,7 @@
 }
 
 - (void)setPGPSignatures:(NSArray *)PGPSignatures {
-    NSMutableArray *signatures = nil;
-    if(![self getIvar:@"PGPSignatures"]) {
-        signatures = [[NSMutableArray alloc] initWithCapacity:0];
-        [self setIvar:@"PGPSignatures" value:signatures];
-    }
-    [[self getIvar:@"PGPSignatures"] addObjectsFromArray:PGPSignatures];
-    [signatures release];
+    [self setIvar:@"PGPSignatures" value:PGPSignatures];
 }
 
 - (NSArray *)PGPSignatures {
