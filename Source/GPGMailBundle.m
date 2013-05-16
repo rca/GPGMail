@@ -85,7 +85,6 @@ static BOOL gpgMailWorks = NO;
  swizzleMap contains all classes and methods which need to be swizzled.
  */
 - (void)_installGPGMail {
-    //	DebugLog(@"Adding GPGMail methods");
     NSArray *swizzleMap = [NSArray arrayWithObjects:
                            // Mail internal classes.
                            [NSDictionary dictionaryWithObjectsAndKeys:
@@ -389,9 +388,10 @@ static BOOL gpgMailWorks = NO;
 }
 
 - (void)addCollectionTask:(gpgmail_verification_task_t)task {
-    dispatch_sync(verificationQueue, task);
+    gpgmail_verification_task_t taskCopy = Block_copy(task);
+    dispatch_async(collectingQueue, task);
+    Block_release(taskCopy);
 }
-
 
 + (BOOL)gpgMailWorks {
 	return gpgMailWorks;
@@ -830,6 +830,21 @@ static BOOL gpgMailWorks = NO;
     }
     return _publicGPGKeysByID;
 }
+
+- (NSDictionary *)secretGPGKeysByID {
+    if(!_secretGPGKeysByID) {
+        NSMutableDictionary *idMap = [[NSMutableDictionary alloc] initWithCapacity:0];
+        for(GPGKey *key in self.secretGPGKeys) {
+            [idMap setValue:key forKey:key.keyID];
+            for(GPGKey *subkey in key.subkeys)
+                [idMap setValue:subkey forKey:subkey.keyID];
+        }
+        self.secretGPGKeysByID = idMap;
+        [idMap release];
+    }
+    return _secretGPGKeysByID;
+}
+
 
 - (NSDictionary *)userMappedKeys {
     NSMutableDictionary *mappedKeys = [NSMutableDictionary dictionary];

@@ -1,0 +1,28 @@
+Message-ID: <4F595380.5090709@me.com>
+Date: Fri, 09 Mar 2012 01:49:04 +0100
+From: Lukas Pitschl <lukas.pitschl@me.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:10.0.2) Gecko/20120216 Thunderbird/10.0.2
+MIME-Version: 1.0
+To: lukas@dressyvagabonds.com
+Subject: Kyrillisch signiert
+X-Enigmail-Version: 1.3.5
+Content-Type: text/plain; charset=windows-1251
+Content-Transfer-Encoding: 8bit
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Криптография GPGTools, днем и ночью всегда редактирования билетов. Как
+это происходит здесь.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG/MacGPG2 v2.0.18 (Darwin)
+Comment: There is no spoon...
+Comment: GPGTools - http://gpgtools.org
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+
+iF4EAREIAAYFAk9ZU4AACgkQ5YJxMm+fSTfZZAEAg3oN5zBgWlyfyIlVukSwMDQx
+ujO79rhhuqHyDvFI/eMA/A4zZGh16rkD6O8wmr0d90cSrGy4dRr17teOPCGR/TZ3
+=gwc9
+-----END PGP SIGNATURE-----
+

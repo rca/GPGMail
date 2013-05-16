@@ -191,6 +191,9 @@
 
 - (void)setPGPInfoCollected:(BOOL)infoCollected {
     [self setIvar:@"PGPInfoCollected" value:[NSNumber numberWithBool:infoCollected]];
+	// If infoCollected is set to NO, clear all associated info.
+	if(!infoCollected)
+		[self clearPGPInformation];
 }
 
 - (BOOL)PGPDecrypted {
@@ -222,9 +225,9 @@
     __block BOOL isSigned = NO;
     __block BOOL isPartlyEncrypted = NO;
     __block BOOL isPartlySigned = NO;
-    __block NSMutableArray *errors = [NSMutableArray array];
-    __block NSMutableArray *signatures = [NSMutableArray array];
-    __block NSMutableArray *pgpAttachments = [NSMutableArray array];
+    NSMutableArray *errors = [NSMutableArray array];
+    NSMutableArray *signatures = [NSMutableArray array];
+    NSMutableArray *pgpAttachments = [NSMutableArray array];
     __block BOOL isDecrypted = NO;
     __block BOOL isVerified = NO;
     __block NSUInteger numberOfAttachments = 0;
@@ -405,7 +408,16 @@
 }
 
 - (void)clearPGPInformation {
-    [self removeIvars];
+    self.PGPSignatures = nil;
+	self.PGPEncrypted = NO;
+	self.PGPPartlyEncrypted = NO;
+	self.PGPSigned = NO;
+	self.PGPPartlySigned = NO;
+	self.PGPDecrypted = NO;
+	self.PGPVerified = NO;
+	self.PGPErrors = nil;
+	self.PGPAttachments = nil;
+	self.numberOfPGPAttachments = 0;
 }
 
 - (BOOL)shouldBePGPProcessed {
@@ -444,7 +456,7 @@
     
     // The message could be encrypted to multiple subkeys.
     // At least one of the keys has to be in cache.
-    NSMutableArray *keyIDs = [[NSMutableArray alloc] initWithCapacity:0];
+    NSMutableSet *keyIDs = [[NSMutableSet alloc] initWithCapacity:0];
     
     NSArray *packets = nil;
     @try {
@@ -464,7 +476,7 @@
     GPGController *gpgc = [[GPGController alloc] init];
     
     for(NSString *keyID in keyIDs) {
-        GPGKey *key = [[[GPGMailBundle sharedInstance] publicGPGKeysByID] valueForKey:keyID];
+        GPGKey *key = [[[GPGMailBundle sharedInstance] secretGPGKeysByID] valueForKey:keyID];
         if(!key)
             continue;
         if([gpgc isPassphraseForKeyInCache:key]) {
