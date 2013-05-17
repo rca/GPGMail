@@ -159,3 +159,21 @@
 "GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Es wurden mehrere GPGMail Installationen gefunden!";
 "GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "GPGMail hat Installationen in folgenden Verzeichnissen gefunden, was einen soforting Absturz zur Folge hat:\n\n%@\n\nBitte löschen Sie GPGMail.mailbundle aus einem der Verzeichnisse und starten Sie Mail erneut.\n";
 "GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Mail beenden";
+
+/* Errors while trying to sign a message. */
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Das Signieren der E-Mail ist fehlgeschlagen, da der PIN-Entry Helfer nicht funktioniert.";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "Der PIN-Entry Helfer, der dafür zuständig Ihr Passwort abzufragen, funktioniert nicht.\n\nInstallieren Sie GPGTools erneut um das das Problem zu lösen.";
+
+"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Das Signieren der E-Mail ist fehlgeschlagen, da der GPG-Agent nicht verfügbar ist!";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "Der GPG-Agent, welcher ist ein sehr wichtiger Teil von GPG ist, ist nicht verfügbar.\n\nInstallieren Sie GPGTools erneut um das das Problem zu lösen.";
+
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "Das Signieren der E-Mail ist fehlgeschlagen.";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "Der GPG-Agent konnte nicht aufgerufen werden um Ihr Passwort abzufragen.\n\nInstallieren Sie GPGTools erneut um das das Problem zu lösen.";
+
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "Das Signieren der E-Mail ist fehlgeschlagen, da ein unbekannter Fehler aufgetreten ist.";
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Leider ist GPGMail zur Zeit nicht in der Lage, diesen Fehler zu behandeln.";
+
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Das Verschlüsseln der Nachricht ist aufgrund eines unbekannten Fehlers fehlgeschlagen.";
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Leider ist GPGMail zur Zeit nicht in der Lage, diesen Fehler zu behandeln.";
+
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nSollte der Fehler weiterhin auftreten, kontaktieren Sie uns bitte unter support.gpgtools.org mit der folgenden Fehlerbeschreibung:\n\n%@";

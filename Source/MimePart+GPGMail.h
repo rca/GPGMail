@@ -354,7 +354,13 @@ typedef enum {
  Uses the ActivityMonitor to display an error message if the signing process failed.
  Analog to what S/MIME uses.
  */
-- (void)failedToSignForSender:(NSString *)sender gpgErrorCode:(GPGErrorCode)errorCode;
+- (void)failedToSignForSender:(NSString *)sender gpgErrorCode:(GPGErrorCode)errorCode error:(NSException *)error;
+
+/**
+ Uses the ActivityMonitor to display an error message if the encryption process failed.
+ Analog to what S/MIME uses.
+ */
+- (void)failedToEncryptForRecipients:(NSArray *)recipients gpgErrorCode:(GPGErrorCode)errorCode error:(NSException *)error;
 
 @end
 

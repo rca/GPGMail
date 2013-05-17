@@ -176,15 +176,9 @@
 			[self setIvar:@"cancelSaving" value:(id)kCFBooleanTrue];
 			[(MailDocumentEditor *)[(ComposeBackEnd *)self delegate] setUserSavedMessage:NO];
 			
-			
-			// Display "our" error message.
-			NSBundle *messagesFramework = [NSBundle bundleWithIdentifier:@"com.apple.MessageFramework"];
-			NSString *localizedDescription = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"SMIME_CANT_SIGN_MESSAGE", @"Delayed", messagesFramework, @""), [((ComposeBackEnd *)self).sender gpgNormalizedEmail]];
-			NSString *titleDescription = NSLocalizedStringFromTableInBundle(@"SMIME_CANT_SIGN_TITLE", @"Delayed", messagesFramework, @"");
-			MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:nil title:titleDescription
-											  helpTag:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:localizedDescription,
-																	@"NSLocalizedDescription", titleDescription, @"_MFShortDescription", nil]];
-
+			// The error message should be set on the current activity monitor, so we
+			// simply have to fetch it.
+			MFError *error = (MFError *)[(ActivityMonitor *)[ActivityMonitor currentMonitor] error];
 			[self performSelectorOnMainThread:@selector(didCancelMessageDeliveryForError:) withObject:error waitUntilDone:NO];
 		}
         return nil;
