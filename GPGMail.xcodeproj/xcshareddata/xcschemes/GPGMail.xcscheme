@@ -10,6 +10,20 @@
             buildForTesting = "YES"
             buildForRunning = "YES"
             buildForProfiling = "YES"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8DC2EF4F0486A6940098B216"
+               BuildableName = "Libmacgpg.framework"
+               BlueprintName = "Libmacgpg"
+               ReferencedContainer = "container:Dependencies/Libmacgpg/Libmacgpg.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
             buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
