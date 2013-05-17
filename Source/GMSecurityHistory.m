@@ -46,8 +46,11 @@
 	GPGOptions *options = [GPGOptions sharedOptions];
 	id signValue = [options valueForKey:@"SignNewEmailsByDefault"];
 	id encryptValue = [options valueForKey:@"EncryptNewEmailsByDefault"];
-	BOOL sign = signValue ? [signValue boolValue] : YES;
-	BOOL encrypt = encryptValue ? [encryptValue boolValue] : YES;	
+	// If the values are not configured, default to not sign.
+	BOOL signDefault = NO;
+	BOOL encrpytDefault = NO;
+	BOOL sign = signValue ? [signValue boolValue] : signDefault;
+	BOOL encrypt = encryptValue ? [encryptValue boolValue] : encrpytDefault;
 	return [GMSecurityOptions securityOptionsWithSecurityMethod:[[self class] defaultSecurityMethod] shouldSign:sign shouldEncrypt:encrypt];
 }
 
