@@ -1,6 +1,6 @@
 "21.title" = "Signatures";
 "25.title" = "OK";
-"236.title" = "Expires on:";
+"236.title" = "Created:";
 "237.title" = "name";
 "251.title" = "Details";
 "252.ibShadowedNoSelectionPlaceholder" = "No signature";
@@ -18,4 +18,3 @@
 "437.title" = "Signature";
 "531.ibShadowedIsNilPlaceholder" = "No expiration is set on this signature";
 "532.ibShadowedIsNilPlaceholder" = "No expiration is set on this key";
-"536.ibShadowedIsNilPlaceholder" = "No expiration is set on this signature";

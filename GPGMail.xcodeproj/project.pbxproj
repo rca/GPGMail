@@ -1363,8 +1363,6 @@
 		30C37B6714FFE65400649F0B /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/GPGMailPreferences.xib; sourceTree = "<group>"; };
 		30C37B6814FFE65400649F0B /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
 		30C37C0014FFE67300649F0B /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = sv; path = sv.lproj/Credits.rtf; sourceTree = "<group>"; };
-		30C37C0214FFE67300649F0B /* sv */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sv; path = sv.lproj/GPGMailPreferences.xib; sourceTree = "<group>"; };
-		30C37C0314FFE67300649F0B /* sv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
 		30E4F6A712B3B1350093608D /* CheckMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CheckMark.png; sourceTree = "<group>"; };
 		30E4F6A912B3B1350093608D /* clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clear.png; sourceTree = "<group>"; };
 		30E4F6AA12B3B1350093608D /* EmptyImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EmptyImage.png; sourceTree = "<group>"; };
@@ -3197,7 +3195,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT\"\nalias localizeXIB=Dependencies/GPGTools_Core/bin/localizeXIB\nignore=Dependencies/GPGTools_Core/resources/l10n_ignored_strings.txt\n\n\nlocalizeXIB -i \"$ignore\" Resources/en.lproj/GPGMailPreferences.xib de sv fr\nlocalizeXIB -i \"$ignore\" Resources/en.lproj/GPGSignatureView.xib de\nlocalizeXIB -i \"$ignore\" Resources/en.lproj/GPGAttachments.xib de\n\n";
+			shellScript = "cd \"$SRCROOT\"\nalias localizeXIB=Dependencies/GPGTools_Core/bin/localizeXIB\nignore=Dependencies/GPGTools_Core/resources/l10n_ignored_strings.txt\n\n\nlocalizeXIB -i \"$ignore\" Resources/en.lproj/GPGMailPreferences.xib de fr\nlocalizeXIB -i \"$ignore\" Resources/en.lproj/GPGSignatureView.xib de\nlocalizeXIB -i \"$ignore\" Resources/en.lproj/GPGAttachments.xib de\n\n";
 		};
 		30F151C51500BD4500980642 /* Fill Info.plist */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3392,7 +3390,6 @@
 				302ED23B12B2FD350094DECD /* en */,
 				30FC04EA14FFE61100AA19FE /* de */,
 				30C37B6814FFE65400649F0B /* fr */,
-				30C37C0314FFE67300649F0B /* sv */,
 			);
 			name = GPGMailPreferences.xib.strings;
 			sourceTree = "<group>";
@@ -3429,7 +3426,6 @@
 				308B8FA912A6AE5F00C99BD2 /* en */,
 				30FC04E914FFE61100AA19FE /* de */,
 				30C37B6714FFE65400649F0B /* fr */,
-				30C37C0214FFE67300649F0B /* sv */,
 			);
 			name = GPGMailPreferences.xib;
 			sourceTree = "<group>";
