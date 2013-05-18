@@ -7,7 +7,7 @@
 		<key>PACKAGE_FILES</key>
 		<dict>
 			<key>DEFAULT_INSTALL_LOCATION</key>
-			<string>/private/tmp/org.gpgtools/gpgmail_install</string>
+			<string>/private/tmp/org.gpgtools/gpgmail_lml_install</string>
 			<key>HIERARCHY</key>
 			<dict>
 				<key>CHILDREN</key>
@@ -384,7 +384,7 @@
 												<key>GID</key>
 												<integer>0</integer>
 												<key>PATH</key>
-												<string>gpgmail_install</string>
+												<string>gpgmail_lml_install</string>
 												<key>PATH_TYPE</key>
 												<integer>0</integer>
 												<key>PERMISSIONS</key>
@@ -564,9 +564,9 @@
 			<key>CONCLUSION_ACTION</key>
 			<integer>0</integer>
 			<key>FOLLOW_SYMBOLIC_LINKS</key>
-			<true/>
+			<false/>
 			<key>IDENTIFIER</key>
-			<string>org.gpgtools.gpgmail.pkg</string>
+			<string>org.gpgtools.gpgmail_lml.pkg</string>
 			<key>OVERWRITE_PERMISSIONS</key>
 			<false/>
 			<key>VERSION</key>
