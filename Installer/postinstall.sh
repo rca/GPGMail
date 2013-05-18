@@ -75,7 +75,7 @@ echo "[gpgmail] Enabling bundle..."
 ######
 
 case "$(sw_vers -productVersion | cut -d . -f 2)" in
-	8) bundleCompVer=6
+	8) bundleCompVer=6 ;;
 	7) bundleCompVer=5 ;;
 	6) bundleCompVer=4 ;;
 	*) bundleCompVer=3 ;;
