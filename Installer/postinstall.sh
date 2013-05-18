@@ -15,14 +15,14 @@ temporarydir="$2"
 # Find real target #############################################################
 existingInstallationAt=""
 
-if [[ -e "$homedir/$bundle" ]]; then
+if [[ -e "$netdir/$bundle" ]]; then
+    existingInstallationAt="$netdir"
+    target="$netdir"
+elif [[ -e "$homedir/$bundle" ]]; then
     existingInstallationAt="$homedir"
     target="$homedir"
 elif [[ -e "$sysdir/$bundle" ]]; then
     existingInstallationAt="$sysdir"
-    target="$sysdir"
-elif [[ -e "$netdir/$bundle" ]]; then
-    existingInstallationAt="$netdir"
     target="$sysdir"
 else
     target="$sysdir"
@@ -46,9 +46,15 @@ if [[ "$existingInstallationAt" != "" ]]; then
     echo "[gpgmail] Removing existing installation of the bundle..."
     rm -rf "$existingInstallationAt/$bundle" || exit 1
 fi
-mv "$temporarydir/$bundle" "$target/" || exit 1
 ################################################################################
 
+# Proper installation ##########################################################
+echo "[gpgmail] Moving bundle to final destination: $target"
+if [[ ! -d "$target" ]]; then
+	mkdir -p "$target" || exit 1
+fi
+mv "$temporarydir/$bundle" "$target/" || exit 1
+################################################################################
 
 # Permissions ##################################################################
 # see http://gpgtools.lighthouseapp.com/projects/65764-gpgmail/tickets/134
