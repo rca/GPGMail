@@ -1,7 +1,7 @@
 GPGMail
 =======
 
-GPGMail is a plugin for OS X's Mail.app, which let's you send
+GPGMail is a plugin for OS X's Mail.app, which let's you <br>send
 and receive secure, OpenPGP encrypted and signed messages.
 
 Updates
