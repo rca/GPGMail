@@ -1,40 +1,28 @@
 PROJECT = GPGMail
 TARGET = GPGMail
-CONFIG = Release
+PRODUCT = GPGMail.mailbundle
+MAKE_DEFAULT = Dependencies/GPGTools_Core/newBuildSystem/Makefile.default
+NEED_LIBMACGPG = 1
 
-include Dependencies/GPGTools_Core/make/default
+-include $(MAKE_DEFAULT)
 
-all: compile
+.PRECIOUS: $(MAKE_DEFAULT)
+$(MAKE_DEFAULT):
+	@bash -c "$$(curl -fsSL https://raw.github.com/GPGTools/GPGTools_Core/master/newBuildSystem/prepare-core.sh)"
 
-update-core:
-	@cd Dependencies/GPGTools_Core; git pull origin master; cd -
-update-libmac:
-	@cd Dependencies/Libmacgpg; git pull origin master; cd -
-update-me:
-	@git pull
+init: $(MAKE_DEFAULT)
 
-update: update-core update-libmac update-me
+update: update-libmacgpg
 
-compile:
-	@INSTALL_GPGMAIL=0 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release build
+pkg: pkg-libmacgpg
 
-install:
-	@killall Mail||/usr/bin/true
-	@INSTALL_GPGMAIL=1 xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release build
+clean-all: clean-libmacgpg
 
-test: compile
-	@./Dependencies/GPGTools_Core/scripts/create_dmg.sh auto
-
-clean-libmacgpg:
-	xcodebuild -project Dependencies/Libmacgpg/Libmacgpg.xcodeproj -target Libmacgpg -configuration Release clean > /dev/null
-	xcodebuild -project Dependencies/Libmacgpg/Libmacgpg.xcodeproj -target Libmacgpg -configuration Debug clean > /dev/null
-
-clean-gpgmail:
-	xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Release clean > /dev/null
-	xcodebuild -project GPGMail.xcodeproj -target GPGMail -configuration Debug clean > /dev/null
-
-clean: clean-libmacgpg clean-gpgmail
-
-test-compile:
-	@./Utilities/testCompile.sh
-
+$(PRODUCT): Source/* Resources/* Resources/*/* GPGMail.xcodeproj
+ifeq ($(CONFIG),Debug)
+	# When using Scheme, Libmacgpg is built.
+	@xcodebuild -project $(PROJECT).xcodeproj -configuration $(CONFIG) -scheme $(PROJECT) build $(XCCONFIG)
+else
+	# For release builds, do not build Libmacgpg by specifying the target to build.
+	@xcodebuild -project $(PROJECT).xcodeproj -configuration $(CONFIG) -target $(TARGET) build $(XCCONFIG)
+endif
