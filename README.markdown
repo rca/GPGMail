@@ -15,9 +15,16 @@ Build
 -----
 
 Building is as easy a make command.
-Clone the repository and run
+
+### Clone the repository
+
+    git clone --recursive https://github.com/GPGTools/GPGMail.git -b dev
+    cd GPGMail
+
+### Aaaand build
 
     make update-libmacgpg && CONFIG=Debug make
-    
+
+
 Enjoy your custom GPGMail.
 
