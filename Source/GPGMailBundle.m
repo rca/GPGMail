@@ -382,7 +382,7 @@ static BOOL gpgMailWorks = NO;
 		feedURLKey = @"SUFeedURL_nightly";
 	} else if ([appcastSource isEqualToString:@"prerelease"]) {
 		feedURLKey = @"SUFeedURL_prerelease";
-	} else {
+	} else if (![appcastSource isEqualToString:@"stable"]) {
 		NSString *version = [bundle objectForInfoDictionaryKey:@"CFBundleVersion"];
 		if ([version rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"nN"]].length > 0) {
 			feedURLKey = @"SUFeedURL_nightly";
@@ -398,7 +398,9 @@ static BOOL gpgMailWorks = NO;
 	return appcastURL;
 }
 
-
+- (id<SUUserDefaults>)userDefaults {
+    return [GPGOptions sharedOptions];
+}
 
 /**
  Allows to run one decryption task at a time.
