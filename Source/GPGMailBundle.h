@@ -86,14 +86,28 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 	NSLock *updateLock;
     
 	SUUpdater *updater;
+    
+    NSMutableArray *_bundleImages;
 }
 
+/**
+ Checks for multiple installations of GPGMail.mailbundle in
+ all Library folders.
+ */
++ (NSArray *)multipleInstallations;
+
+/**
+ Warn the user that multiple installations were found and 
+ bail out.
+ */
++ (void)showMultipleInstallationsErrorAndExit:(NSArray *)installations;
+
 // Install all methods used by GPGMail.
-+ (void)_installGPGMail;
+- (void)_installGPGMail;
 // Load all necessary images.
-+ (void)_loadImages;
+- (void)_loadImages;
 // Install the Sparkle Updater.
-+ (void)_installSparkleUpdater;
+- (void)_installSparkleUpdater;
 // Returns the bundle version.
 + (NSString *)bundleVersion;
 // Returns the string used for the x-pgp-agent message header.
@@ -122,6 +136,8 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 @property (nonatomic, readonly, retain) SUUpdater *updater;
 
 @property (nonatomic, assign) BOOL accountExistsForSigning;
+
+@property (nonatomic, retain) NSMutableArray *bundleImages;
 
 - (NSString *)version;
 - (NSString *)versionDescription;
@@ -197,6 +213,11 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
  or keep them.
  */
 - (NSMutableDictionary *)emailMapForGPGKeys:(NSSet *)keys allowDuplicates:(BOOL)allowDuplicates;
+
+/**
+ Return if we're running on Mountain Lion or not.
+ */
++ (BOOL)isMountainLion;
 
 @end
 

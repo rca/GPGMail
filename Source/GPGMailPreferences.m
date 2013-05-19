@@ -142,5 +142,139 @@
 	return [NSSet setWithObject:@"bundle.gpgStatus"];
 }
 
+- (GPGOptions *)options {
+    return [GPGOptions sharedOptions];
+}
+
+- (BOOL)isResizable {
+	return NO;
+}
 
 @end
+
+
+@implementation NSButton_LinkCursor
+- (void)resetCursorRects {
+	[self addCursorRect:[self bounds] cursor:[NSCursor pointingHandCursor]];
+}
+@end
+
+@implementation GMSpecialBox
+- (void)showSpecial {
+	if (displayed || working) return;	
+	working = YES;
+
+	if (!viewPositions) {
+		viewPositions = [[NSMapTable alloc] initWithKeyOptions:NSMapTableZeroingWeakMemory valueOptions:NSMapTableStrongMemory capacity:10];
+	}
+	
+	NSSize size = self.bounds.size;
+	srandom(time(NULL));
+
+	webView = [[WebView alloc] initWithFrame:NSMakeRect(0, 0, size.width, size.height)];
+	webView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+	webView.drawsBackground = NO;
+	webView.UIDelegate = self;
+	webView.editingDelegate = self;
+
+	
+	[NSAnimationContext beginGrouping];
+	[[NSAnimationContext currentContext] setDuration:2.0f];
+	[NSAnimationContext currentContext].completionHandler = ^{
+		[self addSubview:webView];
+        NSString *file = @"Special";
+        
+        BOOL isMartin = [[(GPGOptions *)[GPGOptions sharedOptions] valueForKey:@"TheRealThankYous"] boolValue];
+        
+        if(isMartin)
+            file = @"Test";
+		[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[[NSBundle bundleForClass:[self class]] URLForResource:file withExtension:@"html"]]];
+		[webView release];
+		displayed = YES;
+		working = NO;
+	};
+	
+	for (NSView *view in [self.contentView subviews]) {
+		NSRect frame = view.frame;
+		
+		if (!positionsFilled) {
+			[viewPositions setObject:[NSValue valueWithRect:frame] forKey:view];
+		}
+		
+		long angle = (random() % 360);	
+		
+		double x = (size.width + frame.size.width) / 2 * sin(angle * M_PI / 180) * 1.5;
+		double y = (size.height + frame.size.height) / 2 * cos(angle * M_PI / 180) * 1.5;
+		
+		x += (size.width - frame.size.width) / 2;
+		y += (size.height - frame.size.height) / 2;
+		
+		frame.origin.x = x;
+		frame.origin.y = y;
+		
+		[(NSView *)[view animator] setFrame:frame];
+	}
+	positionsFilled = YES;
+	[NSAnimationContext endGrouping];
+}
+- (void)hideSpecial {
+	if (!displayed || working) return;
+	working = YES;
+
+	for (NSView *view in viewPositions) {
+		[view setFrame:[[viewPositions objectForKey:view] rectValue]];
+	}
+	[webView removeFromSuperview];
+
+	displayed = NO;
+	working = NO;
+}
+- (void)keyDown:(NSEvent *)event {
+	unsigned short keySequence[] = {126, 125, 47, 126, 125, 46, 0, 15, 17, 34, 38, 45, USHRT_MAX};
+	static int index = 0;
+	
+	if (!displayed) {
+		if (keySequence[index] == USHRT_MAX) {
+			[super keyDown:event];
+			return;
+		}
+		if (event.keyCode != keySequence[index]) {
+			if (event.keyCode == keySequence[0]) {
+				index = 1;
+			} else {
+				[super keyDown:event];
+				index = 0;
+			}
+			return;
+		}
+		if (keySequence[++index] != USHRT_MAX) return;
+		
+		index = 0;
+		[self showSpecial];
+	} else {
+		[self hideSpecial];
+	}
+}
+- (void)viewWillMoveToWindow:(NSWindow *)newWindow {
+	if (newWindow == nil) {
+		[self hideSpecial];
+	}
+}
+
+- (NSArray *)webView:(WebView *)sender contextMenuItemsForElement:(NSDictionary *)element defaultMenuItems:(NSArray *)defaultMenuItems {
+    return nil;
+}
+- (BOOL)webView:(WebView *)sender shouldChangeSelectedDOMRange:(DOMRange *)currentRange toDOMRange:(DOMRange *)proposedRange affinity:(NSSelectionAffinity)selectionAffinity stillSelecting:(BOOL)flag {
+    return NO;
+}
+
+
+- (BOOL)acceptsFirstResponder {
+    return YES;
+}
+- (void)dealloc {
+	[viewPositions release];
+	[super dealloc];
+}
+@end
+

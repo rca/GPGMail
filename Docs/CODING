@@ -117,3 +117,33 @@ Message.h
 - (id)stringForIndexingUpdatingBodyFlags:(BOOL)arg1;
 
 might be relevant.
+
+* Access struct instance variables of Mail Classes *
+
+Copy the struct definition you want to use into your header file
+using a typedef. After that you can access the struct data using the following
+code.
+
+StructType structVar; 
+object_getInstanceVariable(self, "<instance-variable-name>", (void **)&structVar);
+
+Very nice!
+
+* XPC Services for sandboxed Mail.app >= 10.8 *
+
+Bad Apple which really doesn't like plugins for Mail.app has disabled mach lookup names
+for Mail.app
+Our XPC Service has to use a mach name since it's running as a launchd item instead
+as part of an app (otherwise it would have to live inside Mail.app and we certainly
+don't want to mess with that!).
+BUT fortunately for us, Apple has introduced an two exceptions for mach lookup names.
+One can be found in the file /System/Library/Sandbox/Profiles/application.sb (which contains
+the rules which are evaluated for each available entitlement) and one can be found
+in the entitlements Mail.app is signed with directly.
+Use "codesign --display --entitlements - /Applications/Mail.app" to display the available
+entitlements and check for "mach-lookup" to find interesting ones.
+In the application.sb file there's a mach-lookup allow rule, which allows every app to lookup
+mach services which end in _OpenStep.
+Mail.app's entitlements allow every mach service which only has numbers as its name.
+So as long as Apple doesn't remove these rules and our xpc service has a matching name
+we're mighty mighty fine :)!

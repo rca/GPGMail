@@ -59,4 +59,13 @@
  */
 - (void)MASetMessageToDisplay:(id)message;
 
+/**
+ Not sure when this is invoked, but it happens at the right time
+ to force Mail to display an error banner, even though it normally
+ wouldn't. This happens for some message but with no apparent reason.
+ 
+ Checks [Message shouldDisplayErrorBanner].
+ */
+- (void)MA_backgroundLoadFinished:(MessageViewingState *)messageViewingState;
+
 @end

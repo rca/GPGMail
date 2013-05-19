@@ -4,8 +4,6 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2010 by Steve Nygard.
  */
 
-#import "NSData.h"
-
 @interface NSData (MessageAdditions)
 - (id)initWithDataConvertingLineEndingsFromUnixToNetwork:(id)arg1;
 - (id)initWithDataConvertingLineEndingsFromNetworkToUnix:(id)arg1;

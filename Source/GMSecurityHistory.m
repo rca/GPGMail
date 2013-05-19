@@ -42,8 +42,24 @@
     return securityMethod;
 }
 
+- (GMSecurityOptions *)securityOptionsFromDefaults {
+	GPGOptions *options = [GPGOptions sharedOptions];
+	id signValue = [options valueForKey:@"SignNewEmailsByDefault"];
+	id encryptValue = [options valueForKey:@"EncryptNewEmailsByDefault"];
+	// If the values are not configured, default to not sign.
+	BOOL signDefault = NO;
+	BOOL encrpytDefault = NO;
+	BOOL sign = signValue ? [signValue boolValue] : signDefault;
+	BOOL encrypt = encryptValue ? [encryptValue boolValue] : encrpytDefault;
+	return [GMSecurityOptions securityOptionsWithSecurityMethod:[[self class] defaultSecurityMethod] shouldSign:sign shouldEncrypt:encrypt];
+}
+
 - (GMSecurityOptions *)bestSecurityOptionsForSender:(NSString *)sender recipients:(NSArray *)recipients signFlags:(GPGMAIL_SIGN_FLAG)signFlags 
                                           encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags {
+	
+	return [self securityOptionsFromDefaults];
+	
+	/*
     GPGMAIL_SECURITY_METHOD securityMethod = 0;
     NSDictionary *usedSecurityMethods = [GMSecurityHistoryStore sharedInstance].securityOptionsHistory;
     NSSet *uniqueRecipients = [[self class] _uniqueRecipients:recipients];
@@ -124,18 +140,15 @@
     // Next, check if signing from S/MIME is not possible. That automatically means
     // S/MIME can't encrypt either, due to implementation details of Apple's S/MIME.
     else {
-        NSString *securityMethodName = nil; 
         BOOL canEncrypt = NO;
         BOOL canSign = NO;
         if(!canSMIMESign && PGPKeyAvailable) {
             securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
-            securityMethodName = @"PGP";
             canEncrypt = canPGPEncrypt;
             canSign = canPGPSign;
         }
         else {
             securityMethod = GPGMAIL_SECURITY_METHOD_SMIME;
-            securityMethodName = @"SMIME";
             canEncrypt = canSMIMEEncrypt;
             canSign = canSMIMESign;
         }
@@ -143,6 +156,7 @@
     }
     
     return [GMSecurityOptions securityOptionsWithSecurityMethod:[[self class] defaultSecurityMethod] shouldSign:NO shouldEncrypt:NO];
+	 */
 }
 
 - (GMSecurityOptions *)bestSecurityOptionsForSender:(NSString *)sender recipients:(NSArray *)recipients securityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod 
@@ -153,6 +167,9 @@
 
 - (GMSecurityOptions *)_getSignAndEncryptOptionsForSender:(NSString *)sender recipients:(NSSet *)recipients securityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod 
                                                                              canSign:(BOOL)canSign canEncrypt:(BOOL)canEncrypt {
+	return [self securityOptionsFromDefaults];
+
+	/*
     NSDictionary *usedSecurityMethods = [GMSecurityHistoryStore sharedInstance].securityOptionsHistory;
     NSString *securityMethodName = (securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) ? @"PGP" : @"SMIME"; 
     // First check if the method was already used to encrypt to these recipients. EncryptCount should be > 0 if
@@ -165,7 +182,6 @@
         NSUInteger didEncryptCount =  [[encryptHistory objectForKey:@"DidEncryptCount"] unsignedIntValue];
         NSUInteger didNotEncryptCount = [[encryptHistory objectForKey:@"DidNotEncryptCount"] unsignedIntValue];
         BOOL didLastEncrypt = [[encryptHistory objectForKey:@"DidLastEncrypt"] boolValue];
-        encrypt = NO;
         if(didEncryptCount == didNotEncryptCount)
             encrypt = didLastEncrypt;
         else if(didEncryptCount > didNotEncryptCount)
@@ -210,10 +226,14 @@
     }
     
     return [GMSecurityOptions securityOptionsWithSecurityMethod:securityMethod shouldSign:sign shouldEncrypt:encrypt];
+	 */
 }
 
 - (GMSecurityOptions *)bestSecurityOptionsForReplyToMessage:(Message *)message signFlags:(GPGMAIL_SIGN_FLAG)signFlags 
                                                encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags {
+	
+//	return [self securityOptionsFromDefaults];
+	
     GPGMAIL_SECURITY_METHOD securityMethod = 0;
     BOOL canPGPSign = (signFlags & GPGMAIL_SIGN_FLAG_OPENPGP);
     BOOL canPGPEncrypt = (encryptFlags & GPGMAIL_ENCRYPT_FLAG_OPENPGP);
@@ -258,7 +278,11 @@
 
 + (void)addEntryForSender:(NSString *)sender recipients:(NSArray *)recipients securityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod
                   didSign:(BOOL)didSign didEncrypt:(BOOL)didEncrypt {
-    NSDictionary *securityMethodHistory = [[GMSecurityHistoryStore sharedInstance].securityOptionsHistory mutableCopy];
+    
+	// Disable history logging for the time being.
+	return;
+	
+	NSDictionary *securityMethodHistory = [[GMSecurityHistoryStore sharedInstance].securityOptionsHistory mutableCopy];
     NSString *securityMethodKey = securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? @"PGP" : @"SMIME";
     NSSet *uniqueRecipients = [[self class] _uniqueRecipients:recipients];
     sender = [sender gpgNormalizedEmail];

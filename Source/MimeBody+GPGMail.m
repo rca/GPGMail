@@ -88,7 +88,7 @@
         // The problem is, for messages with large attachments Mail.app doesn't return the complete
         // body data for -[MimeBody bodyData].
         // To get the complete data, the message store has to be asked directly.
-        NSRange encryptedDataRange = [[[[self message] messageStore] fullBodyDataForMessage:[self message]] rangeOfPGPInlineEncryptedData];
+        NSRange encryptedDataRange = [[[[self message] dataSourceProxy] fullBodyDataForMessage:[self message]] rangeOfPGPInlineEncryptedData];
         if(encryptedDataRange.location != NSNotFound)
             [[self message] setIvar:@"containsPGPEncryptedData" value:[NSNumber numberWithBool:YES]];
         else

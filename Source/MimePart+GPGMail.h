@@ -141,20 +141,19 @@ typedef enum {
 - (id)decodePGPSignatureAttachment;
 
 /**
- Internally calls attachmentMightBePGPProcessed: passing the extensions to be checked.
+ Adds the filename of a signature attachment which should not be displayed.
  */
-- (BOOL)attachmentMightBePGPEncrypted;
+- (void)scheduleSignatureAttachmentForRemoval:(NSString *)attachment;
 
 /**
- Internally calls attachmentMightBePGPProcessed: passing the extensions to be checked.
+ Returns a list of all filenames of attachments scheduled for removal.
  */
-- (BOOL)attachmentMightBePGPSignature;
+- (NSArray *)signatureAttachmentScheduledForRemoval;
 
 /**
- Checks the extension for known PGP Data extensions and only if this returns true,
- the mime part is tried to process.
+ Checks the extension for known PGP Data extensions and sets the values
  */
-- (BOOL)attachmentMightBePGPProcessed:(NSArray *)extensions;
+- (void)attachmentMightBePGPEncrypted:(BOOL *)mightEnc orSigned:(BOOL *)mightSig;
 
 /**
  Is called by GPGDecodeWithContext if a multipart/encrypted mime part
@@ -199,6 +198,28 @@ typedef enum {
  Helper method to process GPGController NODATA errors.
  */
 - (BOOL)hasError:(NSString *)errorName noDataErrors:(NSArray *)noDataErrors;
+
+/**
+ Reads the charset of a PGP message from the armor headers.
+ No charset is found return UTF8.
+ */
+- (NSStringEncoding)stringEncodingFromPGPData:(NSData *)PGPData;
+
+/**
+ Return the charset found in the current mime part or top part.
+ */
+- (NSStringEncoding)bestStringEncoding;
+
+/**
+ Checks for a signed message begin marker.
+ */
+- (BOOL)hasPGPInlineSignature:(NSData *)data;
+
+/**
+ Returns the signed data with PGP part markers, if the message is part signed.
+ Otherwise the input data is the output data.
+ */
+- (NSData *)signedDataWithAddedPGPPartMarkersIfNecessaryForData:(NSData *)signedData;
 
 /**
  Creates a new message similar the way S/MIME does it, from the decryptedData.
@@ -324,16 +345,22 @@ typedef enum {
 - (id)MANewSignedPartWithData:(id)data sender:(id)sender signatureData:(id *)signatureData;
 
 /**
- Create the data for a new PGP/Inline signed message.
+ Get the (autoreleased) data for a new PGP/Inline signed message.
  EXPERIMENTAL!
  */
-- (NSData *)newInlineSignedDataForData:(id)data sender:(id)sender;
+- (NSData *)inlineSignedDataForData:(id)data sender:(id)sender;
 
 /**
  Uses the ActivityMonitor to display an error message if the signing process failed.
  Analog to what S/MIME uses.
  */
-- (void)failedToSignForSender:(NSString *)sender gpgErrorCode:(GPGErrorCode)errorCode;
+- (void)failedToSignForSender:(NSString *)sender gpgErrorCode:(GPGErrorCode)errorCode error:(NSException *)error;
+
+/**
+ Uses the ActivityMonitor to display an error message if the encryption process failed.
+ Analog to what S/MIME uses.
+ */
+- (void)failedToEncryptForRecipients:(NSArray *)recipients gpgErrorCode:(GPGErrorCode)errorCode error:(NSException *)error;
 
 @end
 

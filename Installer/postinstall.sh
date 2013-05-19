@@ -1,5 +1,5 @@
 #!/bin/bash
-# This is a package post-install script for GPGMail.
+# This is the package post-install script for GPGMail.
 
 
 # config #######################################################################
@@ -16,41 +16,35 @@ temporarydir="$2"
 existingInstallationAt=""
 
 if [[ -e "$netdir/$bundle" ]]; then
-	existingInstallationAt="$netdir"
-	target="$netdir"
+    existingInstallationAt="$netdir"
+    target="$netdir"
 elif [[ -e "$homedir/$bundle" ]]; then
-	existingInstallationAt="$homedir"
-	target="$homedir"
+    existingInstallationAt="$homedir"
+    target="$homedir"
 elif [[ -e "$sysdir/$bundle" ]]; then
-	existingInstallationAt="$sysdir"
-	target="$sysdir"
+    existingInstallationAt="$sysdir"
+    target="$sysdir"
 else
-	target="$sysdir"
+    target="$sysdir"
 fi
+
 ################################################################################
 
 echo "Temporary dir: $temporarydir"
 echo "existing installation at: $existingInstallationAt"
 echo "installation target: $target"
 
-# Check if GPGMail is correct installed in the temporary directory.
-if [[ ! -e "$temporarydir/$bundle" ]] ;then
+# Check if GPGMail is correct installed ########################################
+if [[ ! -e "$temporarydir/$bundle" ]]; then
 	echo "[gpgmail] Couldn't install '$bundle' in temporary directory $temporarydir.  Aborting." >&2
 	exit 1
 fi
 ################################################################################
 
-
-# Quit Apple Mail ##############################################################
-echo "[gpgmail] Quitting Mail..."
-osascript -e "quit app \"Mail\""
-################################################################################
-
-
 # Cleanup ######################################################################
 if [[ "$existingInstallationAt" != "" ]]; then
-	echo "[gpgmail] Removing existing installation of the bundle..."
-	rm -rf "$existingInstallationAt/$bundle" || exit 1
+    echo "[gpgmail] Removing existing installation of the bundle..."
+    rm -rf "$existingInstallationAt/$bundle" || exit 1
 fi
 ################################################################################
 
@@ -61,7 +55,6 @@ if [[ ! -d "$target" ]]; then
 fi
 mv "$temporarydir/$bundle" "$target/" || exit 1
 ################################################################################
-
 
 # Permissions ##################################################################
 # see http://gpgtools.lighthouseapp.com/projects/65764-gpgmail/tickets/134
@@ -74,7 +67,6 @@ fi
 chmod -R 755 "$target"
 ################################################################################
 
-
 # TODO: Update for Mountain Lion!
 # enable bundles in Mail #######################################################
 echo "[gpgmail] Enabling bundle..."
@@ -83,6 +75,7 @@ echo "[gpgmail] Enabling bundle..."
 ######
 
 case "$(sw_vers -productVersion | cut -d . -f 2)" in
+	8) bundleCompVer=6 ;;
 	7) bundleCompVer=5 ;;
 	6) bundleCompVer=4 ;;
 	*) bundleCompVer=3 ;;

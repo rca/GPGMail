@@ -33,9 +33,11 @@
 
 @class GPGMailBundle;
 @class SUUpdater;
+@class GPGOptions;
+@class GMSpecialBox;
 
-@interface GPGMailPreferences : NSPreferencesModule {
-}
+
+@interface GPGMailPreferences : NSPreferencesModule {}
 
 /* Open FAQ page. */
 - (IBAction)openFAQ:(id)sender;
@@ -55,6 +57,19 @@
 @property (readonly) NSImage *gpgStatusImage;
 @property (readonly) NSString *gpgStatusToolTip;
 @property (readonly) NSString *gpgStatusTitle;
+@property (readonly) GPGOptions *options;
 
 @end
 
+
+@interface NSButton_LinkCursor : NSButton
+@end
+
+@interface GMSpecialBox : NSBox {
+	NSMapTable *viewPositions;
+	BOOL working;
+	BOOL positionsFilled;
+	BOOL displayed;
+	WebView *webView;
+}
+@end

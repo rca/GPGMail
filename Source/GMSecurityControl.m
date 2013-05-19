@@ -74,11 +74,26 @@
     // forcedImageName is not nil if the user clicked on the control.
     // In that case always change the control to the forced image.
     // NEVER! ignore a user decision!
-    if(self.forcedImageName) {
-        [self.control setImage:[NSImage imageNamed:self.forcedImageName] forSegment:0];
+	// EXCEPT in the case that a user wanted to encrypt/sign but that is no longer
+	// possible, due to missing pub keys or secret keys for recipients/sender.
+    
+	// Determines if the represented button could be enabled.
+	// Basically, if this is the encrypt button, and EncryptIsPossible is true,
+	// the enabled state is possible. Same goes for the sign button.
+	BOOL enabledIsPossible = self.securityTag == SECURITY_BUTTON_ENCRYPT_TAG ? [[backEnd getIvar:@"EncryptIsPossible"] boolValue] : [[backEnd getIvar:@"SignIsPossible"] boolValue];
+	if(self.forcedImageName) {
+        // The force image should always be applied, unless it's not possible,
+		// which is, when the enabled state is not possible, but the image would
+		// show the enabled state.
+		NSString *imageToForce = self.forcedImageName;
+		if(([imageToForce isEqualToString:ENCRYPT_LOCK_LOCKED_IMAGE] || [imageToForce isEqualToString:SIGN_ON_IMAGE]) &&
+		   !enabledIsPossible) {
+			imageToForce = [self imageNameForOppositeOfImageName:self.forcedImageName];
+		}
+		[self.control setImage:[NSImage imageNamed:imageToForce] forSegment:0];
         return;
     }
-    
+	
     NSString *imageName = nil;
     
     if(self.securityTag == SECURITY_BUTTON_SIGN_TAG) {
@@ -96,7 +111,19 @@
         
         imageName = setEncrypt ? ENCRYPT_LOCK_LOCKED_IMAGE : ENCRYPT_LOCK_UNLOCKED_IMAGE;
     }
+	
     [self.control setImage:[NSImage imageNamed:imageName] forSegment:0];
+}
+
+- (NSString *)imageNameForOppositeOfImageName:(NSString *)imageName {
+	if([imageName isEqualToString:ENCRYPT_LOCK_LOCKED_IMAGE])
+		return ENCRYPT_LOCK_UNLOCKED_IMAGE;
+	if([imageName isEqualToString:ENCRYPT_LOCK_UNLOCKED_IMAGE])
+		return ENCRYPT_LOCK_LOCKED_IMAGE;
+	if([imageName isEqualToString:SIGN_ON_IMAGE])
+		return SIGN_OFF_IMAGE;
+	if([imageName isEqualToString:SIGN_OFF_IMAGE])
+		return SIGN_ON_IMAGE;
 }
 
 - (void)updateStatusFromImage:(NSImage *)image {
