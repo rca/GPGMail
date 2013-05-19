@@ -116,7 +116,6 @@
 
 - (void)keyringUpdated:(NSNotification *)notification {
     // Reset the security method, since it might change due to the updated keyring.
-    ((ComposeBackEnd_GPGMail *)[((MailDocumentEditor *)self) backEnd]).securityMethod = 0;
 	[[(MailDocumentEditor *)self headersEditor] updateSecurityControls];
 }
 

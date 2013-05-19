@@ -176,15 +176,9 @@
 			[self setIvar:@"cancelSaving" value:(id)kCFBooleanTrue];
 			[(MailDocumentEditor *)[(ComposeBackEnd *)self delegate] setUserSavedMessage:NO];
 			
-			
-			// Display "our" error message.
-			NSBundle *messagesFramework = [NSBundle bundleWithIdentifier:@"com.apple.MessageFramework"];
-			NSString *localizedDescription = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"SMIME_CANT_SIGN_MESSAGE", @"Delayed", messagesFramework, @""), [((ComposeBackEnd *)self).sender gpgNormalizedEmail]];
-			NSString *titleDescription = NSLocalizedStringFromTableInBundle(@"SMIME_CANT_SIGN_TITLE", @"Delayed", messagesFramework, @"");
-			MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:nil title:titleDescription
-											  helpTag:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:localizedDescription,
-																	@"NSLocalizedDescription", titleDescription, @"_MFShortDescription", nil]];
-
+			// The error message should be set on the current activity monitor, so we
+			// simply have to fetch it.
+			MFError *error = (MFError *)[(ActivityMonitor *)[ActivityMonitor currentMonitor] error];
 			[self performSelectorOnMainThread:@selector(didCancelMessageDeliveryForError:) withObject:error waitUntilDone:NO];
 		}
         return nil;
@@ -292,6 +286,7 @@
             [newBCCList addObject:[bcc flaggedStringWithFlag:@"recipientType" value:@"bcc"]];
 
         [newBCCList addObject:[[headers valueForKey:@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"]];
+#warning In some weird cases the address doesn't get removed from BCC again.
         [headers setValue:newBCCList forKey:@"bcc"];
     }
 }
@@ -408,12 +403,14 @@
 }
 
 - (Subdata *)_newPGPInlineBodyDataWithData:(NSData *)data headers:(MutableMessageHeaders *)headers shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt {
+    if (!data)
+        return nil;
     // Now on to creating a new body and replacing the old one. 
     NSString *boundary = (NSString *)[MimeBody newMimeBoundary];
     NSData *topData = nil;
     MimePart *topPart;
     
-    NSData *signedData = nil;
+    NSData *signedData = data;
     NSData *encryptedData = nil;
     
     topPart = [[MimePart alloc] init];
@@ -423,22 +420,30 @@
     [topPart setBodyParameter:@"utf8" forKey:@"charset"];
     
     if(shouldSign) {
-        signedData = [topPart newInlineSignedDataForData:data sender:[headers firstHeaderForKey:@"from"]];
+        signedData = [topPart inlineSignedDataForData:data sender:[headers firstHeaderForKey:@"from"]];
+        if (!signedData) {
+            [boundary release];
+            [topPart release];
+            return nil;
+        }
         topData = signedData;
     }
+
+    id newlyEncryptedPart = nil;
     if(shouldEncrypt) {
         NSMutableArray *recipients = [[NSMutableArray alloc] init];
         [recipients addObjectsFromArray:[headers headersForKey:@"to"]];
         [recipients addObjectsFromArray:[headers headersForKey:@"cc"]];
         [recipients addObjectsFromArray:[headers headersForKey:@"bcc"]];
-        [topPart newEncryptedPartWithData:signedData recipients:recipients encryptedData:&encryptedData];
+        newlyEncryptedPart = [topPart newEncryptedPartWithData:signedData recipients:recipients encryptedData:&encryptedData];
         [recipients release];
         topData = encryptedData;
     }
-    
+
     if(!topData) {
         [boundary release];
         [topPart release];
+        [newlyEncryptedPart release];
         return nil;
     }
     
@@ -479,6 +484,7 @@
                                        ([bodyData length] - [headerData length]));
     Subdata *contentSubdata = [[Subdata alloc] initWithParent:bodyData range:contentRange];
     [bodyData release];
+    [newlyEncryptedPart release];
     return contentSubdata;
 }
 
@@ -649,8 +655,7 @@
     [self removeIvar:@"EncryptIsPossible"];
     [self removeIvar:@"shouldSign"];
     [self removeIvar:@"shouldEncrypt"];
-    [self removeIvar:@"ForceEncrypt"];
-    [self removeIvar:@"ForceSign"];
+	// Don't reset ForceEncrypt and ForceSign. User preference has to stick. ALWAYS!
     
     // NEVER! automatically change the security method once the user selected it.
     // Only send the notification if security method is not reset to 0.
@@ -670,8 +675,8 @@
     [self removeIvar:@"EncryptIsPossible"];
     [self removeIvar:@"shouldSign"];
     [self removeIvar:@"shouldEncrypt"];
-    [self removeIvar:@"ForceEncrypt"];
-    [self removeIvar:@"ForceSign"];
+	
+	// Don't reset ForceEncrypt and ForceSign. User preference has to stick. ALWAYS!
 }
 
 - (GPGMAIL_SECURITY_METHOD)guessedSecurityMethod {

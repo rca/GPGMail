@@ -29,6 +29,7 @@
 
 #import "CCLog.h"
 #import "GPGConstants.h"
+#import "NSObject+LPDynamicIvars.h"
 #import "NSBezierPath+StrokeExtensions.h"
 #import "NSBezierPath_KBAdditions.h"
 #import "NSWindow+GPGMail.h"
@@ -36,11 +37,15 @@
 
 @interface GMSecurityMethodAccessoryView ()
 
+
 @property (nonatomic, assign) BOOL fullscreen;
 @property (nonatomic, assign) NSRect nonFullScreenFrame;
 
 @property (nonatomic, retain) NSPopUpButton *popup;
 @property (nonatomic, retain) NSImageView *arrow;
+@property (nonatomic, retain) NSTextField *label;
+
+@property (nonatomic, retain) NSMapTable *attributedTitlesCache;
 
 @end
 
@@ -48,12 +53,27 @@
 
 @synthesize popup = _popup, fullscreen = _fullscreen, active = _active, arrow = _arrow, 
             nonFullScreenFrame = _nonFullScreenFrame, securityMethod = _securityMethod,
-            delegate = _delegate;
+            delegate = _delegate, label = _label, attributedTitlesCache = _attributedTitlesCache;
+
+- (void)dealloc {
+    _delegate = nil;
+    [_popup release];
+    _popup = nil;
+    [_arrow release];
+    _arrow = nil;
+    [_label release];
+    _label = nil;
+    [_attributedTitlesCache release];
+    _attributedTitlesCache = nil;
+    
+    [super dealloc];
+}
 
 - (id)init {
     self = [super initWithFrame:NSMakeRect(0.0f, 0.0f, GMSMA_DEFAULT_WIDTH, GMSMA_DEFAULT_HEIGHT)];
     if(self) {
         self.autoresizingMask = NSViewMinYMargin | NSViewMinXMargin;
+        _attributedTitlesCache = [[NSMapTable mapTableWithStrongToStrongObjects] retain];
         [self _configurePopupWithSecurityMethods:[NSArray arrayWithObjects:@"OpenPGP", @"S/MIME", nil]];
         [self _configureArrow];
     }
@@ -61,12 +81,13 @@
 }
 
 - (void)_configurePopupWithSecurityMethods:(NSArray *)methods {
-    NSPopUpButton *popup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(0.0f, 0.0f, 70, 17) pullsDown:NO];
+    NSPopUpButton *popup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(0.0f, 0.0f, 
+                                                                           self.frame.size.width, 
+                                                                           self.frame.size.height) pullsDown:NO];
     // The arrow is hidden, since it's strangely aligned by default.
     // GPGMail adds its own.
     [[popup cell] setArrowPosition:NSPopUpNoArrow];
     [popup setAutoresizingMask:NSViewMinYMargin];
-    //popup.font = [NSFont systemFontOfSize:10.0f];
     // Make the popup border transparent.
     [popup setBordered:NO]; 
     
@@ -81,8 +102,21 @@
         item.tag = [methods indexOfObject:method] == 0 ? GPGMAIL_SECURITY_METHOD_OPENPGP : GPGMAIL_SECURITY_METHOD_SMIME;
         item.keyEquivalent = [methods indexOfObject:method] == 0 ? @"p" : @"s";
         item.keyEquivalentModifierMask = NSCommandKeyMask | NSAlternateKeyMask;
-        item.attributedTitle = [self attributedTitle:method highlight:YES];
+        // Store the actual title to only display it when the menu is open.
+        [item setIvar:@"Title" value:method];
+        item.title = @"";
     }
+    
+    // Add the initial label.
+    NSTextField *label = [[NSTextField alloc] initWithFrame:NSMakeRect(0.0f, 0.0f, self.frame.size.width, self.frame.size.height)];
+    label.backgroundColor = [NSColor clearColor];
+    label.bordered = NO;
+    label.selectable = NO;
+    label.editable = NO;
+    
+    [self addSubview:label];
+    self.label = label;
+    [label release];
     
     // Add the popup as subview.
     [self addSubview:popup];
@@ -90,11 +124,15 @@
     self.popup = popup;
     [popup release];
     
-    // Center the menu item.
-    [self centerMenuWithItem:self.popup.selectedItem];
+    // Update the label value and center it.
+    [self updateAndCenterLabelForItem:nil];
 }
 
 - (void)changeSecurityMethod:(id)sender {
+    // Only tell the delegate if the current method is not the new method.
+    if(self.securityMethod == [sender tag])
+        return;
+    
     [self.delegate securityMethodAccessoryView:self didChangeSecurityMethod:[sender tag]];
 }
 
@@ -125,20 +163,16 @@
     frame.origin.y = frame.origin.y - 16.0f;
     self.frame = frame;
     
+    // Adjust the height of the popup.
+    self.popup.frame = NSMakeRect(0.0f, 0.0f, self.frame.size.width, GMSMA_FULLSCREEN_HEIGHT);
     self.popup.menu.font = [NSFont systemFontOfSize:12.f];
+    [self.popup setNeedsDisplay];
     
-    [self centerMenuWithItem:nil];
+    [self updateAndCenterLabelForItem:nil];
     
-    // Adjust the origin of the pop up.
-    NSRect popupFrame = self.popup.frame;
-    popupFrame.origin.y = 4.0f;
-    self.popup.frame = popupFrame;
     NSRect arrowFrame = self.arrow.frame;
     arrowFrame.origin.y = 6.0f;
     self.arrow.frame = arrowFrame;
-    
-    // Update the font size of every item.
-    [self resetMenuItemTitles];
 }
 
 - (void)configureForWindow:(NSWindow *)window {
@@ -157,48 +191,41 @@
     self.frame = frame;
     self.hidden = NO;
     
+    // Adjust the height of the popup.
+    self.popup.frame = NSMakeRect(0.0f, 0.0f, self.frame.size.width, GMSMA_DEFAULT_HEIGHT);
     self.popup.menu.font = [NSFont systemFontOfSize:10.f];
-    
-    [self centerMenuWithItem:nil];
-    
-    NSRect popupFrame = self.popup.frame;
-    popupFrame.origin.y = 0.0f;
-    self.popup.frame = popupFrame;
     [self.popup setNeedsDisplay];
     
-    // Update the font size of every item.
-    [self resetMenuItemTitles];
+    [self updateAndCenterLabelForItem:nil];
     
     [window addAccessoryView:self];
 }
 
 - (void)setSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
+    if(securityMethod == self.securityMethod)
+        return;
+    
     _securityMethod = securityMethod;
     // Update the selection and center the menu title again.
     [self.popup selectItemAtIndex:securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? 0 : 1];
-    [self centerMenuWithItem:nil];
+    [self updateAndCenterLabelForItem:nil];
     [self setNeedsDisplay:YES];
 }
 
 #pragma mark - NSMenuDelegate is repsonsible for adjusting the color of the menu titles.
 
-- (void)resetMenuItemTitles {
-    for(NSMenuItem *item in self.popup.menu.itemArray) {
-        if(!item.title)
-            continue;
-        item.attributedTitle = [self attributedTitle:item.title highlight:YES];
-    }
-}
-
 - (void)menuWillOpen:(NSMenu *)menu {
     for(NSMenuItem *item in menu.itemArray) {
-        item.attributedTitle = [self attributedTitle:item.title highlight:YES];
+        NSString *title = [item getIvar:@"Title"];
+        if(title)
+            item.attributedTitle = [self attributedTitle:title highlight:YES];
     }
 }
 
 - (void)menuDidClose:(NSMenu *)menu {
     for(NSMenuItem *item in menu.itemArray) {
-        item.attributedTitle = [self attributedTitle:item.title highlight:YES];
+        item.attributedTitle = nil;
+        item.title = @""; // [self attributedTitle:item.title highlight:YES];
     }
 }
 
@@ -209,7 +236,7 @@
         else
             citem.attributedTitle = [self attributedTitle:citem.title highlight:YES];
     }
-    [self centerMenuWithItem:item];
+    [self updateAndCenterLabelForItem:item];
     
 }
 
@@ -217,6 +244,15 @@
     // Title must never be nil!
     if(!title)
         title = @"";
+    
+    NSString *cacheID = [NSString stringWithFormat:@"%@::%@::%@", title, [NSNumber numberWithBool:highlight],
+                         [NSNumber numberWithBool:self.fullscreen]];
+    
+    NSAttributedString *cachedString = [self.attributedTitlesCache objectForKey:cacheID];
+    if(cachedString) {
+        return cachedString;
+    }
+    
     // Create the white shadow that sits behind the text
     NSShadow *shadow = [[NSShadow alloc] init];
     if(!highlight)
@@ -249,27 +285,33 @@
     // Create a new attributed string with your attributes dictionary attached
     NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title
                                                                           attributes:attributes];
+    
+    [self.attributedTitlesCache setObject:attributedTitle forKey:cacheID];
+    
     return [attributedTitle autorelease];
 }
 
-- (void)centerMenuWithItem:(NSMenuItem *)item {
+- (void)updateAndCenterLabelForItem:(NSMenuItem *)item {
     item = item != nil ? item : self.popup.selectedItem;
     
-    NSRect extFrame = self.frame;
-    NSRect frame = self.popup.frame;
-    NSAttributedString *title = [self attributedTitle:item.attributedTitle.string highlight:YES];
-    float titleWithArrowWidth = title.size.width + 3.0f + 7.0f;
-    float diff = roundf((extFrame.size.width - roundf(titleWithArrowWidth))/2);
-    // x = 0 is 9px into the accessory view. so subtract 9 from x and you
-    // get the value to center the text.
-    float x = diff - 9;
-    frame.origin.x = x;
+    NSString *title = [item getIvar:@"Title"];
+    NSAttributedString *attributedTitle = [self attributedTitle:title highlight:YES];
+    self.label.attributedStringValue = attributedTitle;
+    // Adjust the label frame to fit the text.
+    [self.label sizeToFit];
     
+    NSRect frame = self.label.frame;
+    // Center vertically.
+    frame.origin.y = (self.frame.size.height - frame.size.height) / 2.0f;
+    
+    // Now center the new label.
+    frame.origin.x = roundf((self.frame.size.width - (frame.size.width + self.arrow.frame.size.width)) / 2.0f);
+    // And position the frame.
     NSRect arrowFrame = self.arrow.frame;
-    arrowFrame.origin.x = diff + roundf(title.size.width) + 3;
-    
+    arrowFrame.origin.x = frame.origin.x + frame.size.width;
     self.arrow.frame = arrowFrame;
-    self.popup.frame = frame;
+    
+    self.label.frame = frame;
 }
 
 - (NSGradient *)gradientSMIMEWithStrokeColor:(NSColor **)strokeColor {

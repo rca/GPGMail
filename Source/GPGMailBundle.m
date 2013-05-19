@@ -42,8 +42,7 @@
 //#import "GPGDefaults.h"
 #import "GPGMailPreferences.h"
 #import "GPGMailBundle.h"
-#import "GPGVersionComparator.h"
-
+#import "Message.h"
 
 NSString *GPGMailSwizzledMethodPrefix = @"MA";
 NSString *GPGMailAgent = @"GPGMail %@";
@@ -70,7 +69,7 @@ static BOOL gpgMailWorks = NO;
 
 @synthesize publicGPGKeys, secretGPGKeys, allGPGKeys, updater, accountExistsForSigning, secretGPGKeysByEmail = _secretGPGKeysByEmail, 
             publicGPGKeysByEmail = _publicGPGKeysByEmail, gpgc, publicGPGKeysByID = _publicGPGKeysByID, disabledGroups = _disabledGroups,
-            disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus;
+            disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus, bundleImages = _bundleImages;
 
 /**
  This method replaces all of Mail's methods which are necessary for GPGMail
@@ -85,8 +84,7 @@ static BOOL gpgMailWorks = NO;
  
  swizzleMap contains all classes and methods which need to be swizzled.
  */
-+ (void)_installGPGMail {
-    //	DebugLog(@"Adding GPGMail methods");
+- (void)_installGPGMail {
     NSArray *swizzleMap = [NSArray arrayWithObjects:
                            // Mail internal classes.
                            [NSDictionary dictionaryWithObjectsAndKeys:
@@ -117,7 +115,10 @@ static BOOL gpgMailWorks = NO;
                              @"init", 
                              @"dealloc",
                              @"_updateSecurityStateInBackgroundForRecipients:sender:", 
-                             @"awakeFromNib", nil], @"selectors", nil],
+                             @"awakeFromNib",
+                             @"_updateSignButtonTooltip",
+                             @"_updateEncryptButtonTooltip",
+                             nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MessageAttachment", @"class",
                             @"MessageAttachment_GPGMail", @"gpgMailClass",
@@ -129,7 +130,7 @@ static BOOL gpgMailWorks = NO;
                             [NSArray arrayWithObjects:
                              @"backEndDidLoadInitialContent:",
                              @"dealloc",
-                             @"windowForMailFullScreen",
+//                             @"windowForMailFullScreen",
                              @"backEnd:didCancelMessageDeliveryForEncryptionError:",
                              nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
@@ -142,7 +143,7 @@ static BOOL gpgMailWorks = NO;
                             @"MessageContentController_GPGMail", @"gpgMailClass",
                             [NSArray arrayWithObjects:
                              @"setMessageToDisplay:",
-                              nil], @"selectors", nil],
+                             @"_backgroundLoadFinished:", nil], @"selectors", nil],
                            // Messages.framework classes. Messages.framework classes can be extended using
                            // categories. No need for a special GPGMail class.
                            [NSDictionary dictionaryWithObjectsAndKeys:
@@ -217,8 +218,52 @@ static BOOL gpgMailWorks = NO;
     
 }
 
++ (NSArray *)multipleInstallations {
+    NSArray *libraryPaths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSAllDomainsMask, YES);
+    NSString *bundlesPath = [@"Mail" stringByAppendingPathComponent:@"Bundles"];
+    NSString *bundleName = @"GPGMail.mailbundle";
+    
+    NSMutableArray *installations = [NSMutableArray array];
+    
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    
+    for(NSString *libraryPath in libraryPaths) {
+        NSString *bundlePath = [libraryPath stringByAppendingPathComponent:[bundlesPath stringByAppendingPathComponent:bundleName]]; 
+        if([fileManager fileExistsAtPath:bundlePath])
+            [installations addObject:bundlePath];
+    }
+    [fileManager release];
+    
+    return (NSArray *)installations;
+}
+
++ (void)showMultipleInstallationsErrorAndExit:(NSArray *)installations {
+    NSAlert *errorModal = [[NSAlert alloc] init];
+    
+    errorModal.messageText = NSLocalizedStringFromTableInBundle(@"GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE", @"GPGMail", [NSBundle bundleForClass:self], @"");
+    errorModal.informativeText = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE", @"GPGMail", [NSBundle bundleForClass:self], @""), [installations componentsJoinedByString:@"\n"]];
+    [errorModal addButtonWithTitle:NSLocalizedStringFromTableInBundle(@"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON", @"GPGMail", [NSBundle bundleForClass:self], @"")];
+    [errorModal runModal];
+    
+    [errorModal release];
+    
+    // It's not at all a good idea to use exit and kill the app,
+    // but in this case it's alright because otherwise the user would experience a
+    // crash anyway.
+    exit(0);
+}
+
 + (void)initialize {
-	// Make sure the initializer is only run once.
+	// If one happens to have for any reason (like for example installed GPGMail
+    // from the installer, which will reside in /Library and compiled with XCode
+    // which will reside in ~/Library) two GPGMail.mailbundle's, 
+    // display an error message to the user and shutdown Mail.app.
+    NSArray *installations = [self multipleInstallations];
+    if([installations count] > 1) {
+        [self showMultipleInstallationsErrorAndExit:installations];
+        return;
+    }
+    // Make sure the initializer is only run once.
     // Usually is run, for every class inheriting from
     // GPGMailBundle.
     if(self != [GPGMailBundle class])
@@ -230,19 +275,15 @@ static BOOL gpgMailWorks = NO;
     // never happens!
     if(!mvMailBundleClass)
         return;
-    
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated"
     class_setSuperclass([self class], mvMailBundleClass);
-	// Automatically performs the check, since the check is performed in init.
+#pragma GCC diagnostic pop
+    
+    // Initialize the bundle by swizzling methods, loading keys, ...
     GPGMailBundle *instance = [GPGMailBundle sharedInstance];
-    [instance description];
-    // Last step necessary to completely setup our bundle is
-    // swizzling the Mail classes.
-    [self _installGPGMail];
-    // Load all necessary images.
-    [self _loadImages];
-    // Install the Sparkle Updater.
-    [self _installSparkleUpdater];
-    NSLog(@"Loaded GPGMail %@", [(GPGMailBundle *)[self sharedInstance] version]);
+    NSLog(@"Loaded GPGMail %@", [instance version]);
     
     [((MVMailBundle *)[self class]) registerBundle];             // To force registering composeAccessoryView and preferences
 }
@@ -250,37 +291,53 @@ static BOOL gpgMailWorks = NO;
 /**
  * Loads all images which are used in the GPGMail User interface.
  */
-+ (void)_loadImages {
+- (void)_loadImages {
     // We need to load images and name them, because all images are searched by their name; as they are not located in the main bundle,
 	// +[NSImage imageNamed:] does not find them.
-	NSBundle *myBundle = [NSBundle bundleForClass:self];
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"encrypted"]] setName:@"gpgEncrypted"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"clear"]] setName:@"gpgClear"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"signed"]] setName:@"gpgSigned"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"unsigned"]] setName:@"gpgUnsigned"];
+	NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
     
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GPGMail"]] setName:@"GPGMail"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"MacGPG"]] setName:@"MacGPG"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GPGMail32"]] setName:@"GPGMail32"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GPGMailPreferences"]] setName:@"GPGMailPreferences"];
+    // Use something else then NSArray which only retains value. CFArray for example.
+    NSMutableArray *bundleImages = [[NSMutableArray alloc] init];
+    NSDictionary *bundleImageMap = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    @"encrypted", @"gpgEncrypted",
+                                    @"clear", @"gpgClear",
+                                    @"signed", @"gpgSigned",
+                                    @"unsigned", @"gpgUnsigned",
+                                    @"GPGMail", @"GPGMail",
+                                    @"MacGPG", @"MacGPG",
+                                    @"GPGMail32", @"GPGMail32",
+                                    @"GPGMailPreferences", @"GPGMailPreferences",
+                                    @"questionMark", @"gpgQuestionMark",
+                                    @"SmallAlert12", @"gpgSmallAlert12",
+                                    @"SmallAlert16", @"gpgSmallAlert16",
+                                    @"EmptyImage", @"gpgEmptyImage",
+                                    @"ValidBadge", @"gpgValidBadge",
+                                    @"InvalidBadge", @"gpgInvalidBadge",
+                                    @"encryption_unlocked", @"decryptedBadge",
+                                    @"invalid-signature-icon-overlay", @"invalid-signature-icon-overlay",
+                                    @"GreenDot", @"GreenDot",
+                                    @"YellowDot", @"YellowDot",
+                                    @"RedDot", @"RedDot",
+                                    @"menu-arrow", @"MenuArrow",
+                                    @"menu-arrow-white", @"MenuArrowWhite", nil];
     
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"questionMark"]] setName:@"gpgQuestionMark"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"SmallAlert12"]] setName:@"gpgSmallAlert12"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"SmallAlert16"]] setName:@"gpgSmallAlert16"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"EmptyImage"]] setName:@"gpgEmptyImage"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"ValidBadge"]] setName:@"gpgValidBadge"];
-	[(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"InvalidBadge"]] setName:@"gpgInvalidBadge"];
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"encryption_unlocked"]] setName:@"decryptedBadge"];
+    for(NSString *name in bundleImageMap) {
+        NSString *imageName = [bundleImageMap valueForKey:name];
+        NSImage *image = [[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:imageName]];
+        // Shoud an image not exist, log a warning, but don't crash because of inserting
+        // nil!
+        if(!image) {
+            NSLog(@"GPGMail: Image %@ not found in bundle resources.", imageName);
+            continue;
+        }
+        [image setName:name];
+        [bundleImages addObject:image];
+        [image release];
+    }
     
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"invalid-signature-icon-overlay"]] setName:@"invalid-signature-icon-overlay"];
+    self.bundleImages = bundleImages;
     
-
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"GreenDot"]] setName:@"GreenDot"];
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"YellowDot"]] setName:@"YellowDot"];
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"RedDot"]] setName:@"RedDot"];
-    
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"menu-arrow"]] setName:@"MenuArrow"];
-    [(NSImage *)[[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:@"menu-arrow-white"]] setName:@"MenuArrowWhite"];
+    [bundleImages release];
 }
 
 + (BOOL)hasPreferencesPanel {
@@ -299,20 +356,48 @@ static BOOL gpgMailWorks = NO;
  Installs the sparkle updater.
  TODO: Sparkle should automatically start to check, but sometimes it doesn't work.
  */
-+ (void)_installSparkleUpdater {
-    SUUpdater *updater = [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
-	updater.delegate = [self sharedInstance];
-	[updater resetUpdateCycle];
-    [[self sharedInstance] setUpdater:updater];
+- (void)_installSparkleUpdater {
+    SUUpdater *sparkleUpdater = [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
+	sparkleUpdater.delegate = self;
+	[sparkleUpdater resetUpdateCycle];
+    self.updater = sparkleUpdater;
 }
 
 - (NSString *)pathToRelaunchForUpdater:(SUUpdater *)updater {
 	return @"/Applications/Mail.app";
 }
 
-- (id <SUVersionComparison>)versionComparatorForUpdater:(SUUpdater *)updater {
-    return [GPGVersionComparator sharedVersionComparator];
+- (BOOL)updater:(SUUpdater *)updater relaunchUsingPath:(NSString *)path arguments:(NSArray *)arguments {
+    [GPGTask launchGeneralTask:path withArguments:arguments];
+    return YES;
 }
+
+- (NSString *)feedURLStringForUpdater:(SUUpdater *)updater {
+	NSString *updateSourceKey = @"UpdateSource";
+	NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+	
+	NSString *feedURLKey = @"SUFeedURL";
+	NSString *appcastSource = [[GPGOptions sharedOptions] stringForKey:updateSourceKey];
+	if ([appcastSource isEqualToString:@"nightly"]) {
+		feedURLKey = @"SUFeedURL_nightly";
+	} else if ([appcastSource isEqualToString:@"prerelease"]) {
+		feedURLKey = @"SUFeedURL_prerelease";
+	} else {
+		NSString *version = [bundle objectForInfoDictionaryKey:@"CFBundleVersion"];
+		if ([version rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"nN"]].length > 0) {
+			feedURLKey = @"SUFeedURL_nightly";
+		} else if ([version rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"abAB"]].length > 0) {
+			feedURLKey = @"SUFeedURL_prerelease";
+		}
+	}
+	
+	NSString *appcastURL = [bundle objectForInfoDictionaryKey:feedURLKey];
+	if (!appcastURL) {
+		appcastURL = [bundle objectForInfoDictionaryKey:@"SUFeedURL"];
+	}
+	return appcastURL;
+}
+
 
 
 /**
@@ -329,9 +414,10 @@ static BOOL gpgMailWorks = NO;
 }
 
 - (void)addCollectionTask:(gpgmail_verification_task_t)task {
-    dispatch_sync(verificationQueue, task);
+    gpgmail_verification_task_t taskCopy = Block_copy(task);
+    dispatch_async(collectingQueue, task);
+    Block_release(taskCopy);
 }
-
 
 + (BOOL)gpgMailWorks {
 	return gpgMailWorks;
@@ -368,8 +454,14 @@ static BOOL gpgMailWorks = NO;
     // Init GPGController.
     [self gpgc];
     
-    self.accountExistsForSigning = YES;
+    // Swizzling the Mail classes.
+    [self _installGPGMail];
+    // Load all necessary images.
+    [self _loadImages];
+    // Install the Sparkle Updater.
+    [self _installSparkleUpdater];
     
+    self.accountExistsForSigning = YES;
 }
 
 - (id)init {
@@ -377,16 +469,13 @@ static BOOL gpgMailWorks = NO;
 		NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
 		NSDictionary *defaultsDictionary = [NSDictionary dictionaryWithContentsOfFile:[myBundle pathForResource:@"GPGMailBundle" ofType:@"defaults"]];
         
-		[[GPGOptions sharedOptions] setStandardDomain:[[NSBundle bundleForClass:[self class]] bundleIdentifier]];
+        [[GPGOptions sharedOptions] setStandardDomain:[[NSBundle bundleForClass:[self class]] bundleIdentifier]];
 		if (defaultsDictionary) {
 			[[GPGOptions sharedOptions] registerDefaults:defaultsDictionary];
 		}
         
-        id debugLog = [[GPGOptions sharedOptions] valueInStandardDefaultsForKey:@"DebugLog"];
-        if(!debugLog)
-            debugLog = [[GPGOptions sharedOptions] valueInCommonDefaultsForKey:@"DebugLog"];
-        GPGMailLoggingLevel = [debugLog integerValue];
-        NSLog(@"Debug Log enabled: %@", GPGMailLoggingLevel > 0 ? @"YES" : @"NO");
+        GPGMailLoggingLevel = [[GPGOptions sharedOptions] integerForKey:@"DebugLog"];
+        NSLog(@"Debug Log enabled: %@", [[GPGOptions sharedOptions] integerForKey:@"DebugLog"] > 0 ? @"YES" : @"NO");
         
         gpgMailWorks = [self checkGPG];
         [self finishInitialization];
@@ -403,6 +492,7 @@ static BOOL gpgMailWorks = NO;
     dispatch_release(collectingQueue);
     dispatch_release(keysUpdateQueue);
     
+    self.bundleImages = nil;
     self.secretGPGKeys = nil;
     self.publicGPGKeys = nil;
     self.secretGPGKeysByEmail = nil;
@@ -414,11 +504,18 @@ static BOOL gpgMailWorks = NO;
     updateLock = nil;
     [allGPGKeys release];
     allGPGKeys = nil;
+    [_bundleImages release];
+    _bundleImages = nil;
     
 	//[locale release];
-    
+
 	struct objc_super s = { self, [self superclass] };
     objc_msgSendSuper(&s, @selector(dealloc));
+
+    // Suppress the missing dealloc warning, since the real super dealloc
+    // call uses the objc runtime calls directly.
+    if(0)
+        [super dealloc];
 }
 
 - (NSString *)versionDescription {
@@ -451,23 +548,6 @@ static BOOL gpgMailWorks = NO;
 /* Get: use OpenPGP to receive messages */
 - (BOOL)usesOpenPGPToReceive {
 	return [[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToReceive"];
-}
-
-- (void)setWarnedAboutMissingPrivateKeys:(BOOL)flag {
-    [[GPGOptions sharedOptions] setBool:flag forKey:@"WarnAboutMissingPrivateKeys"];
-}
-
-- (BOOL)warnedAboutMissingPrivateKeys {
-    return [[GPGOptions sharedOptions] boolForKey:@"WarnAboutMissingPrivateKeys"];
-}
-
-- (void)warnUserForMissingPrivateKeys:(id)sender {
-	NSBundle *aBundle = [NSBundle bundleForClass:[self class]];
-	NSString *aTitle = NSLocalizedStringFromTableInBundle(@"NO PGP PRIVATE KEY - TITLE", @"GPGMail", aBundle, "");
-	NSString *aMessage = NSLocalizedStringFromTableInBundle(@"NO PGP PRIVATE KEY - MESSAGE", @"GPGMail", aBundle, "");
-    
-	(void)NSRunAlertPanel(aTitle, @"%@", nil, nil, nil, aMessage);
-	[self setWarnedAboutMissingPrivateKeys:YES];
 }
 
 - (BOOL)canSignMessagesFromAddress:(NSString *)address {
@@ -543,10 +623,14 @@ static BOOL gpgMailWorks = NO;
 		NSSet *updatedKeys;
 		if ([keys count] == 0) {
             //Update all keys.
-			updatedKeys = [self.gpgc updateKeys:allGPGKeys searchFor:nil withSigs:NO];
+            // Don't use self.gpgc here, since that calls allKeys which stalls
+            // if it didn't complete once.
+			updatedKeys = [gpgc updateKeys:allGPGKeys searchFor:nil withSigs:NO];
 		} else {
             //Update only the keys in 'keys'.
-			updatedKeys = [self.gpgc updateKeys:keys withSigs:NO];
+			// Don't use self.gpgc here, since that calls allKeys which stalls
+            // if it didn't complete once.
+            updatedKeys = [gpgc updateKeys:keys withSigs:NO];
 		}
         
         if (gpgc.error) {
@@ -561,7 +645,10 @@ static BOOL gpgMailWorks = NO;
 		
         [allGPGKeys minusSet:keysToRemove];
         [allGPGKeys unionSet:updatedKeys];
-        
+
+        [keysToRemove release];
+        keysToRemove = nil;
+
         //Flush caches.
         self.secretGPGKeys = nil;
         self.publicGPGKeys = nil;
@@ -634,10 +721,6 @@ static BOOL gpgMailWorks = NO;
         self.secretGPGKeys = [[self allGPGKeys] filter:^(id obj) {
             return ((GPGKey *)obj).secret && [self canKeyBeUsedForSigning:obj] ? obj : nil;
         }];
-        
-        if ([secretGPGKeys count] == 0 && ![self warnedAboutMissingPrivateKeys]) {
-			[self performSelector:@selector(warnUserForMissingPrivateKeys:) withObject:nil afterDelay:0];
-		}
     }
     
     return secretGPGKeys;
@@ -666,9 +749,12 @@ static BOOL gpgMailWorks = NO;
 }
 
 - (NSSet *)sanitizedPublicGPGKeys:(NSSet *)publicKeys {
+    NSMutableSet *cleanKeys = [NSMutableSet set];
+
     // 1.) Create a dictionary with all user ids mapped by email address.
     NSMutableDictionary *userIDEmailMap = [[NSMutableDictionary alloc] init];
     for(GPGKey *key in publicKeys) {
+        BOOL hasEmail = NO;
         // PrimaryUserID.
         NSString *email;
         for(GPGUserID *userID in [key userIDs]) {
@@ -676,6 +762,7 @@ static BOOL gpgMailWorks = NO;
             if(!email)
                 continue;
             
+            hasEmail = YES;
             if(![userIDEmailMap objectForKey:email]) {
                 NSMutableSet *set = [[NSMutableSet alloc] initWithCapacity:0];
                 [userIDEmailMap setObject:set forKey:email];
@@ -683,10 +770,16 @@ static BOOL gpgMailWorks = NO;
             }
             [[userIDEmailMap objectForKey:email] addObject:userID];
         }
+        
+        if (!hasEmail) {
+            // Add keys without E-Mail address.
+            // This is necessary for "PublicKeyUserMap".
+            /* TODO: Müssen wir eventuell noch etwas gründlicher vorgehen. Wenn z.B. mehrere Schlüssel mit einer Adresse existieren und wenn man, mit PublicKeyUserMap, einen wählen will? */
+            [cleanKeys addObject:key];
+        }
     }
-    NSMutableSet *cleanKeys = [NSMutableSet setWithCapacity:0]; 
-    // 2.) Loop through the whole map, skip any entry which doesn't have multiple entries.
     
+    // 2.) Loop through the whole map, skip any entry which doesn't have multiple entries.
     for(id email in userIDEmailMap) {
         if([(NSMutableSet *)[userIDEmailMap objectForKey:email] count] == 1) {
             GPGKey *key = ((GPGKey *)[(NSMutableSet *)[userIDEmailMap objectForKey:email] anyObject]).primaryKey;
@@ -704,13 +797,17 @@ static BOOL gpgMailWorks = NO;
 
 - (GPGKey *)bestKeyOfUserIDs:(NSSet *)userIDs {
     // First check if any trusted keys are in there, if so, sort them by date.
+    NSMutableArray *secretUserIDs = [[NSMutableArray alloc] init];
     NSMutableArray *trustedUserIDs = [[NSMutableArray alloc] init];
     NSMutableArray *untrustedUserIDs = [[NSMutableArray alloc] init];
     for(GPGUserID *userID in userIDs) {
-        if(userID.validity >= 3)
+        if (userID.primaryKey.secret) {
+            [secretUserIDs addObject:userID];
+        } else if(userID.validity >= 3) {
             [trustedUserIDs addObject:userID];
-        else
+        } else {
             [untrustedUserIDs addObject:userID];
+        }
     }
     
     NSSortDescriptor *dateSorter = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO comparator:^NSComparisonResult(id obj1, id obj2) {
@@ -718,11 +815,18 @@ static BOOL gpgMailWorks = NO;
     }];
     
     NSArray *sortedUserIDs = nil;
-    if([trustedUserIDs count])
-        sortedUserIDs = [trustedUserIDs sortedArrayUsingDescriptors:[NSArray arrayWithObjects:dateSorter, nil]];
-    else
-        sortedUserIDs = [untrustedUserIDs sortedArrayUsingDescriptors:[NSArray arrayWithObjects:dateSorter, nil]];
+    if (secretUserIDs.count) {
+        sortedUserIDs = secretUserIDs;
+    } else if (trustedUserIDs.count) {
+        sortedUserIDs = trustedUserIDs;
+    } else {
+        sortedUserIDs = untrustedUserIDs;
+    }
     
+    sortedUserIDs = [sortedUserIDs sortedArrayUsingDescriptors:[NSArray arrayWithObjects:dateSorter, nil]];
+
+    [dateSorter release];
+    [secretUserIDs release];
     [trustedUserIDs release];
     [untrustedUserIDs release];
     
@@ -748,13 +852,38 @@ static BOOL gpgMailWorks = NO;
                 [idMap setValue:subkey forKey:subkey.keyID];
         }
         self.publicGPGKeysByID = idMap;
+        [idMap release];
     }
     return _publicGPGKeysByID;
 }
 
+- (NSDictionary *)secretGPGKeysByID {
+    if(!_secretGPGKeysByID) {
+        NSMutableDictionary *idMap = [[NSMutableDictionary alloc] initWithCapacity:0];
+        for(GPGKey *key in self.secretGPGKeys) {
+            [idMap setValue:key forKey:key.keyID];
+            for(GPGKey *subkey in key.subkeys)
+                [idMap setValue:subkey forKey:subkey.keyID];
+        }
+        self.secretGPGKeysByID = idMap;
+        [idMap release];
+    }
+    return _secretGPGKeysByID;
+}
+
+
 - (NSDictionary *)userMappedKeys {
-    NSDictionary *mappedKeys = [[GPGOptions sharedOptions] valueInCommonDefaultsForKey:@"PublicKeyUserMap"];
-    NSMutableDictionary *cleanMappedKeys = [NSMutableDictionary dictionary]; 
+    NSMutableDictionary *mappedKeys = [NSMutableDictionary dictionary];
+    NSDictionary *temp = [[GPGOptions sharedOptions] valueInCommonDefaultsForKey:@"PublicKeyUserMap"]; //Standard location...
+    if ([temp isKindOfClass:[NSDictionary class]]) {
+        [mappedKeys addEntriesFromDictionary:temp];
+    }
+    temp = [[GPGOptions sharedOptions] valueInStandardDefaultsForKey:@"PublicKeyUserMap"]; // ...but in some cases, PublicKeyUserMap is in org.gpgtools.gpgmail
+    if ([temp isKindOfClass:[NSDictionary class]]) {
+        [mappedKeys addEntriesFromDictionary:temp];
+    }
+
+    NSMutableDictionary *cleanMappedKeys = [NSMutableDictionary dictionary];
     NSMutableArray *disabledUserMappedKeys = [NSMutableArray array];
     for(id email in mappedKeys) {
         
@@ -859,6 +988,10 @@ static BOOL gpgMailWorks = NO;
 
 + (NSString *)agentHeader {
     return [NSString stringWithFormat:GPGMailAgent, [self bundleVersion]];
+}
+
++ (BOOL)isMountainLion {
+    return [Message instancesRespondToSelector:@selector(dataSource)];
 }
 
 @end

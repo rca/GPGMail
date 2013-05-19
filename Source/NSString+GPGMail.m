@@ -27,6 +27,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <CommonCrypto/CommonDigest.h>
+#define restrict
+#import <RegexKit/RegexKit.h>
 #import <Foundation/Foundation.h>
 #import <NSString-EmailAddressString.h>
 #import "NSString+GPGMail.h"
@@ -47,6 +50,47 @@
         return [self stringByDeletingPathExtension];
     
     return [NSString stringWithString:self];
+}
+
+- (NSString *)stringByDeletingAttachmentsWithNames:(NSArray *)names {
+    // Attachments in parsed messages have the following format.
+    // <object name="name" data="cid:xxxx" type=application/x-apple-msg-attachment></object>
+    // So best is to look for <object> tags which have a type of application/x-apple-msg-attachment and a .sig in the filename.
+    // Let's hope normal attachments don't have that.
+    NSString *attachmentRegex = @"(?sm)(?<all><object([^>]*)name=\"(?<name>[^\"]+)\"([^>]*)application/x-apple-msg-attachment([^>]*)></object>)";
+    
+    RKEnumerator *matchEnumerator = [self matchEnumeratorWithRegex:attachmentRegex];
+    
+    NSMutableString *withoutAttachments = [self mutableCopy];
+    
+    while([matchEnumerator nextRanges] != NULL) {
+        NSString *all = nil, *name = nil;
+        
+        [matchEnumerator getCapturesWithReferences:@"${all}", &all, @"${name}", &name, nil];
+        
+        if(![names containsObject:name])
+            continue;
+        
+        [withoutAttachments replaceOccurrencesOfString:all withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [withoutAttachments length])];
+    }
+    
+    return [withoutAttachments autorelease];
+}
+
+- (NSString *)SHA1 {
+    unsigned char digest[CC_SHA1_DIGEST_LENGTH];
+    NSData *stringBytes = [self dataUsingEncoding: NSUTF8StringEncoding];
+    if (!CC_SHA1([stringBytes bytes], [stringBytes length], digest))
+        return nil;
+    
+    NSMutableString *sha1 = [NSMutableString string];
+    
+    for(unsigned int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++) {
+        NSLog(@"%02x", digest[i]);
+        [sha1 appendFormat:@"%02x", digest[i]];
+    }
+    
+    return (NSString *)sha1;
 }
 
 @end

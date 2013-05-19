@@ -1,9 +1,30 @@
-# GPGMail
+GPGMail
+=======
 
-This is the source code for the GPG plugin for OS X's Mail.app.
+GPGMail is a plugin for OS X's Mail.app, which let's you <br>send
+and receive secure, OpenPGP encrypted and signed messages.
 
-The latest version of the plugin can be found on our official Homepage [http://www.gpgtools.org/gpgmail.html](http://www.gpgtools.org/gpgmail.html).
+Updates
+-------
 
-The project is currently in a heavy state of development. For the latest news and updates check our Twitter [http://twitter.com/gpgtools](http://twitter.com/gpgtools).
+The latest releases of GPGMail can be found on our official website [http://www.gpgtools.org/gpgmail/index.html](http://www.gpgtools.org/gpgmail/index.html).
 
-For instructions on how to build the code and further information have a look at the wiki: [http://wiki.github.com/gpgtools/GPGMail/](http://wiki.github.com/gpgtools/GPGMail/).
+The project is currently in a heavy state of development. For the latest news and updates check our Twitter [http://twitter.com/gpgtools](http://twitter.com/gpgtools)
+
+Build
+-----
+
+Building is as easy a make command.
+
+### Clone the repository
+
+    git clone --recursive https://github.com/GPGTools/GPGMail.git -b dev
+    cd GPGMail
+
+### Aaaand build
+
+    make update-libmacgpg && CONFIG=Debug make
+
+
+Enjoy your custom GPGMail.
+

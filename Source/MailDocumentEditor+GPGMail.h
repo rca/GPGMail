@@ -53,12 +53,6 @@
 - (void)updateSecurityMethodHighlight;
 
 /**
- Is called when the MailDocumentEditor receives a SecurityMethodDidChangeNotification
- which is posted by the back end once a user sets the security method.
- */
-- (void)updateSecurityMethodFromNotification:(NSNotification *)notification;
-
-/**
  Updates the security method accessory view to show the new security method.
  YEAH, this doesn't make sense. Let's investigate!
  */
@@ -102,17 +96,5 @@
 - (void)MABackEndDidLoadInitialContent:(id)content;
 
 - (void)keyringUpdated:(NSNotification *)notification;
-
-/**
- Is called when a SecurityMethodDidChangeNotification is posted.
- Extracts the securityMethod from the notification and calls updateSecurityHint:.
- */
-- (void)updateSecurityHintFromNotification:(NSNotification *)notification;
-
-/**
- Is called whenever the security method is updated to update
- the hide or display the security hint.
- */
-- (void)updateSecurityHint:(GPGMAIL_SECURITY_METHOD)securityMethod;
 
 @end

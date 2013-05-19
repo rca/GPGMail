@@ -68,7 +68,11 @@
     NSSegmentedControl *originalSecurityControl = securityControl;
     
     securityControl = signControl.control == securityControl ? signControl : encryptControl;
-    [securityControl updateStatusFromImage:[originalSecurityControl imageForSegment:0]];
+    // The securityControl passed to this method is an NSSegmentControl.
+	// So the only chance to find out what the new status of the control is,
+	// is to check its current image. (I really thought I was crazy writing this code,
+	// now it all makes sense again. WHAT A RELIEF)
+	[securityControl updateStatusFromImage:[originalSecurityControl imageForSegment:0]];
     
     [self MASecurityControlChanged:securityControl];
 }
@@ -87,9 +91,8 @@
 - (void)MA_updateSecurityStateInBackgroundForRecipients:(NSArray *)recipients sender:(NSString *)sender {
     // Check for NoUpdateSecurityState. If that is set, do not again
     // update the state 'cause we're right in the middle of that.
-    @try {
+	@try {
         [[self getIvar:@"SecurityStateLock"] lock];
-        [self resetSecurityButtons];
         [self MA_updateSecurityStateInBackgroundForRecipients:recipients sender:sender];
     }
     @catch (id e) {
@@ -165,8 +168,8 @@
 					NSInteger index = [menu indexOfItem:item];
 					
 					for (GPGKey *key in keys) {
-						NSMenuItem *subItem = [menuItems objectAtIndex:i + 1];
-						if (i + 1 < count && [subItem getIvar:@"parentItem"] && [subItem getIvar:@"gpgKey"] == key) {
+						NSMenuItem *subItem = nil;
+						if (i + 1 < count && (subItem = [menuItems objectAtIndex:i + 1]) && [subItem getIvar:@"parentItem"] && [subItem getIvar:@"gpgKey"] == key) {
 							// The next item is the item we want to create: Jump over.
 							i++;
 							index++;
@@ -232,6 +235,15 @@
 - (void)MAChangeFromHeader:(NSPopUpButton *)sender {
     BOOL calledFromGPGMail = [[sender getIvar:@"CalledFromGPGMail"] boolValue];
     [sender setIvar:@"CalledFromGPGMail" value:[NSNumber numberWithBool:NO]];
+    // If the newly selected item is the currently select item,
+    // just bail out.
+    // Update: this doesn't work, since the selected item of _accountPopup is of course already updated.
+//    if(!calledFromGPGMail) {
+//        NSPopUpButton *accountPopUp = [[self valueForKey:@"_composeHeaderView"] valueForKey:@"_accountPopUp"];
+//        if(sender.selectedItem == accountPopUp.selectedItem)
+//            return;
+//    }
+    
     // Create a new NSPopUpButton with only one item and the correct title.
 	NSPopUpButton *button = [[NSPopUpButton alloc] init];
 	NSMenuItem *item = [sender selectedItem];
@@ -247,14 +259,8 @@
     if(!calledFromGPGMail && !((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).userDidChooseSecurityMethod) {
         ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod = 0;
     }
-    
-    // Reset the sign and encrypt control if the sender
-    // is by the user.
-    if(!calledFromGPGMail) {
-        [self resetSecurityButtons];
-    }
-    
-    [self MAChangeFromHeader:button/*sender*/];
+
+	[self MAChangeFromHeader:button/*sender*/];
     [button release];
 }
 
@@ -269,7 +275,7 @@
 
 - (void)securityMethodDidChange:(NSNotification *)notification {
     // Reset the controls if the security method changes.
-    [self resetSecurityButtons];
+//    [self resetSecurityButtons];
 }
 
 - (void)keyringUpdated:(NSNotification *)notification {
@@ -280,12 +286,56 @@
         [self performSelectorOnMainThread:@selector(_fromHeaderDisplaySecretKeys:) withObject:(id)kCFBooleanTrue waitUntilDone:NO];
 }
 
+- (void)MA_updateSignButtonTooltip {
+    ComposeBackEnd_GPGMail *backEnd = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]);
+    
+    if(![[backEnd getIvar:@"SignIsPossible"] boolValue]) {
+        NSBundle *bundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+        NSPopUpButton *button = [self valueForKey:@"_fromPopup"];
+        NSString *sender = [button.selectedItem.title uncommentedAddress];
+        
+        if([sender length] == 0 && [button.itemArray count])
+            sender = [[[button.itemArray objectAtIndex:0] title] uncommentedAddress];
+        
+        GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
+        [((NSSegmentedControl *)signControl) setToolTip:[NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN", @"GPGMail", bundle, @""), sender]];
+    }
+    else {
+        [self MA_updateSignButtonTooltip];
+    }
+}
+
+- (void)MA_updateEncryptButtonTooltip {
+    ComposeBackEnd_GPGMail *backEnd = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]);
+    
+    GPGMAIL_SECURITY_METHOD securityMethod = backEnd.guessedSecurityMethod;
+    if(backEnd.securityMethod)
+        securityMethod = backEnd.securityMethod;
+    
+    if(![[backEnd getIvar:@"EncryptIsPossible"] boolValue] && securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
+        NSBundle *bundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+        NSArray *nonEligibleRecipients = [(ComposeBackEnd *)backEnd recipientsThatHaveNoKeyForEncryption];
+        GMSecurityControl *encryptControl = [self valueForKey:@"_encryptButton"];
+        NSString *toolTip = nil;
+        if(![nonEligibleRecipients count])
+            toolTip = NSLocalizedStringFromTableInBundle(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS", @"GPGMail", bundle, @"");
+        else {
+            NSString *recipients = [nonEligibleRecipients componentsJoinedByString:@", "];
+            toolTip = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT", @"GPGMail", bundle, @""), recipients];
+        }
+        [((NSSegmentedControl *)encryptControl) setToolTip:toolTip];
+    }
+    else {
+        [self MA_updateEncryptButtonTooltip];
+    }
+}
+
 - (id)MAInit {
 	self = [self MAInit];
     // This lock is used to prevent a SecurityMethodDidChange notification to
     // mess with an ongoing _updateSecurityStateInBackgroundForRecipients:recipients:
     // call.
-    NSLock *updateSecurityStateLock = [[NSLock alloc] init];
+	NSLock *updateSecurityStateLock = [[NSLock alloc] init];
     [self setIvar:@"SecurityStateLock" value:updateSecurityStateLock];
     [updateSecurityStateLock release];
 	[(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] addObserver:self selector:@selector(securityMethodDidChange:) name:@"SecurityMethodDidChangeNotification" object:nil];

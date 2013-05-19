@@ -61,9 +61,6 @@
     NSView *themeFrame = [[self contentView] superview];
     NSRect c = [themeFrame frame];	// c for "container"
     NSRect aV = [accessoryView frame];	// aV for "accessory view"
-    // 4 point from the top, 6.0px from the very right.
-    //NSPoint offset = NSMakePoint(6.0f, 4.0f);
-    NSPoint offset = NSMakePoint(-0.0f, -0.0f);
     aV.origin.x = floorf((c.size.width - aV.size.width) / 2.0f);
     [accessoryView setFrame:aV];
 }

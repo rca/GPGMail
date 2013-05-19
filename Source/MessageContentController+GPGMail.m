@@ -31,7 +31,10 @@
 #import "CCLog.h"
 #import "NSObject+LPDynamicIvars.h"
 #import "MimePart+GPGMail.h"
+#import "Message+GPGMail.h"
 #import "GPGMailBundle.h"
+#import "ActivityMonitor.h"
+#import "BannerController.h"
 #import "MessageContentController+GPGMail.h"
 
 @implementation MessageContentController_GPGMail : NSObject
@@ -44,6 +47,14 @@
 - (void)MASetMessageToDisplay:(id)message {
     [message setIvar:@"UserSelectedMessage" value:[NSNumber numberWithBool:YES]];
     [self MASetMessageToDisplay:message];
+}
+
+- (void)MA_backgroundLoadFinished:(MessageViewingState *)messageViewingState {
+    [self MA_backgroundLoadFinished:messageViewingState];
+    BOOL showBanner = ((MessageContentController *)self).message.shouldShowErrorBanner;
+    
+    if(((MessageContentController *)self).message && showBanner)
+        [(BannerController *)[self valueForKey:@"_bannerController"] _showCertificateBanner];
 }
 
 @end

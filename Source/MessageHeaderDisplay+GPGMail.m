@@ -81,11 +81,15 @@
 
 - (void)_showAttachmentsPanel {
     NSArray *pgpAttachments = ((Message *)[(MessageViewingState *)[((MessageHeaderDisplay *)self) viewingState] message]).PGPAttachments;
+    
     GPGAttachmentController *attachmentController = [[GPGAttachmentController alloc] initWithAttachmentParts:pgpAttachments];
     attachmentController.keyList = [[GPGMailBundle sharedInstance] allGPGKeys];
     [attachmentController beginSheetModalForWindow:[NSApp mainWindow] completionHandler:^(NSInteger result) {
-//        DebugLog(@"Attachment panel was closed: %d", result);
     }];
+    // Set is an an ivar of MessageHeaderDisplay so it's released, once
+    // the Message Header Display is closed.
+    [self setIvar:@"AttachmentController" value:attachmentController];
+    [attachmentController release];
 }
 
 - (void)_showSignaturePanel {
@@ -150,8 +154,12 @@
     if(!isPGPSigned && !isPGPEncrypted && !hasPGPAttachments)
         return [self MA_attributedStringForSecurityHeader];
     
-    NSMutableAttributedString *securityHeader = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\t%@\t", NSLocalizedStringFromTableInBundle(@"SECURITY_HEADER", @"Encryption", [NSBundle mainBundle], @"")]];
-    [securityHeader addAttributes:[NSAttributedString boldGrayHeaderAttributes] range:NSMakeRange(0, [securityHeader length])];
+    NSMutableAttributedString *securityHeader = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", [GPGMailBundle isMountainLion] ? @"      " : @"\t",
+									NSLocalizedStringFromTableInBundle(@"SECURITY_HEADER", @"Encryption", [NSBundle mainBundle], @"")]];
+    if(![GPGMailBundle isMountainLion]) {
+		[securityHeader addAttributes:[NSAttributedString boldGrayHeaderAttributes] range:NSMakeRange(0, [securityHeader length])];
+	}
+	
     
     NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
     // Add the encrypted part to the security header.
@@ -234,7 +242,6 @@
 
 - (NSAttributedString *)securityHeaderSignaturePartForMessage:(Message *)message {
     GPGErrorCode errorCode = GPGErrorNoError;
-    GPGSignature *signatureWithError = nil;
     BOOL errorFound = NO;
     NSImage *signedImage = nil;
     NSSet *signatures = [NSSet setWithArray:message.PGPSignatures];
@@ -245,7 +252,6 @@
     for(GPGSignature *signature in signatures) {
         if(signature.status != GPGErrorNoError) {
             errorCode = signature.status;
-            signatureWithError = signature;
             break;
         }
     }

@@ -10,104 +10,59 @@
 				<key>LOCATION</key>
 				<integer>0</integer>
 				<key>NAME</key>
-				<string>autofix</string>
-			</dict>
-			<key>PATH</key>
-			<dict>
-				<key>PATH</key>
-				<string>../Dependencies/GPGTools_Core/installer/autofix.pkg</string>
-				<key>PATH_TYPE</key>
-				<integer>1</integer>
-			</dict>
-			<key>TYPE</key>
-			<integer>1</integer>
-			<key>UUID</key>
-			<string>8A9ED7C8-4401-40BA-920D-4C11131E708A</string>
-		</dict>
-		<dict>
-			<key>PACKAGE_SETTINGS</key>
-			<dict>
-				<key>LOCATION</key>
-				<integer>0</integer>
-				<key>NAME</key>
-				<string>key</string>
-			</dict>
-			<key>PATH</key>
-			<dict>
-				<key>PATH</key>
-				<string>../Dependencies/GPGTools_Core/installer/key.pkg</string>
-				<key>PATH_TYPE</key>
-				<integer>1</integer>
-			</dict>
-			<key>TYPE</key>
-			<integer>1</integer>
-			<key>UUID</key>
-			<string>864C3F68-BD50-46E1-A757-784577F7E81E</string>
-		</dict>
-		<dict>
-			<key>PACKAGE_FILES</key>
-			<dict>
-				<key>DEFAULT_INSTALL_LOCATION</key>
-				<string>/</string>
-				<key>HIERARCHY</key>
-				<dict>
-					<key>CHILDREN</key>
-					<array/>
-					<key>GID</key>
-					<integer>0</integer>
-					<key>PATH</key>
-					<string>/</string>
-					<key>PATH_TYPE</key>
-					<integer>0</integer>
-					<key>PERMISSIONS</key>
-					<integer>493</integer>
-					<key>TYPE</key>
-					<integer>1</integer>
-					<key>UID</key>
-					<integer>0</integer>
-				</dict>
-				<key>PAYLOAD_TYPE</key>
-				<integer>0</integer>
-				<key>VERSION</key>
-				<integer>2</integer>
-			</dict>
-			<key>PACKAGE_SCRIPTS</key>
-			<dict>
-				<key>POSTINSTALL_PATH</key>
-				<dict>
-					<key>PATH</key>
-					<string>../Dependencies/GPGTools_Core/scripts/gpgmail-postinstall.sh</string>
-					<key>PATH_TYPE</key>
-					<integer>1</integer>
-				</dict>
-				<key>PREINSTALL_PATH</key>
-				<dict/>
-				<key>RESOURCES</key>
-				<array/>
-			</dict>
-			<key>PACKAGE_SETTINGS</key>
-			<dict>
-				<key>AUTHENTICATION</key>
-				<integer>1</integer>
-				<key>CONCLUSION_ACTION</key>
-				<integer>0</integer>
-				<key>IDENTIFIER</key>
-				<string>org.gpgtools.gpgmail.pkg</string>
-				<key>LOCATION</key>
-				<integer>0</integer>
-				<key>NAME</key>
 				<string>GPGMail</string>
-				<key>OVERWRITE_PERMISSIONS</key>
-				<false/>
-				<key>REFERENCE_PATH</key>
-				<string></string>
-				<key>VERSION</key>
-				<string>1.0</string>
+			</dict>
+			<key>PATH</key>
+			<dict>
+				<key>PATH</key>
+				<string>../build/GPGMail_Core.pkg</string>
+				<key>PATH_TYPE</key>
+				<integer>1</integer>
 			</dict>
 			<key>TYPE</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>UUID</key>
-			<string>34B7EB5B-A2C6-4934-9D76-AB06B8FE80B9</string>
+			<string>41568496-3B10-4DF9-9043-9FDC7120D688</string>
+		</dict>
+		<dict>
+			<key>PACKAGE_SETTINGS</key>
+			<dict>
+				<key>LOCATION</key>
+				<integer>0</integer>
+				<key>NAME</key>
+				<string>Libmacgpg</string>
+			</dict>
+			<key>PATH</key>
+			<dict>
+				<key>PATH</key>
+				<string>../Dependencies/Libmacgpg/build/Libmacgpg_core.pkg</string>
+				<key>PATH_TYPE</key>
+				<integer>1</integer>
+			</dict>
+			<key>TYPE</key>
+			<integer>1</integer>
+			<key>UUID</key>
+			<string>7F8EE289-DCE8-471F-82D9-42F5B8C953AA</string>
+		</dict>
+		<dict>
+			<key>PACKAGE_SETTINGS</key>
+			<dict>
+				<key>LOCATION</key>
+				<integer>0</integer>
+				<key>NAME</key>
+				<string>Libmacgpg XPC</string>
+			</dict>
+			<key>PATH</key>
+			<dict>
+				<key>PATH</key>
+				<string>../Dependencies/Libmacgpg/build/LibmacgpgXPC_core.pkg</string>
+				<key>PATH_TYPE</key>
+				<integer>1</integer>
+			</dict>
+			<key>TYPE</key>
+			<integer>1</integer>
+			<key>UUID</key>
+			<string>D3C037CD-0AAA-426B-A055-2503E5310561</string>
 		</dict>
 	</array>
 	<key>PROJECT</key>
@@ -124,9 +79,9 @@
 			ZW50LVN0eWxlLVR5cGUiIGNvbnRlbnQ9InRleHQvY3NzIj4KPHRp
 			dGxlPjwvdGl0bGU+CjxtZXRhIG5hbWU9IkdlbmVyYXRvciIgY29u
 			dGVudD0iQ29jb2EgSFRNTCBXcml0ZXIiPgo8bWV0YSBuYW1lPSJD
-			b2NvYVZlcnNpb24iIGNvbnRlbnQ9IjExMzgiPgo8c3R5bGUgdHlw
-			ZT0idGV4dC9jc3MiPgo8L3N0eWxlPgo8L2hlYWQ+Cjxib2R5Pgo8
-			L2JvZHk+CjwvaHRtbD4K
+			b2NvYVZlcnNpb24iIGNvbnRlbnQ9IjExODcuMzciPgo8c3R5bGUg
+			dHlwZT0idGV4dC9jc3MiPgo8L3N0eWxlPgo8L2hlYWQ+Cjxib2R5
+			Pgo8L2JvZHk+CjwvaHRtbD4K
 			</data>
 		</dict>
 		<key>PROJECT_PRESENTATION</key>
@@ -138,7 +93,7 @@
 				<key>BACKGROUND_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>background_installer.png</string>
+					<string>../Installer/background_installer.png</string>
 					<key>PATH_TYPE</key>
 					<integer>1</integer>
 				</dict>
@@ -163,10 +118,10 @@
 									<key>HIDDEN</key>
 									<false/>
 									<key>STATE</key>
-									<integer>0</integer>
+									<integer>1</integer>
 								</dict>
 								<key>PACKAGE_UUID</key>
-								<string>34B7EB5B-A2C6-4934-9D76-AB06B8FE80B9</string>
+								<string>41568496-3B10-4DF9-9043-9FDC7120D688</string>
 								<key>REQUIREMENTS</key>
 								<array/>
 								<key>TITLE</key>
@@ -176,18 +131,11 @@
 								<key>TYPE</key>
 								<integer>0</integer>
 								<key>UUID</key>
-								<string>CEB2D38C-FC0F-44DC-82CB-13EECC081185</string>
+								<string>70F43E54-CF12-4ED2-9A86-980C51A9926B</string>
 							</dict>
 							<dict>
 								<key>DESCRIPTION</key>
-								<array>
-									<dict>
-										<key>LANGUAGE</key>
-										<string>English</string>
-										<key>VALUE</key>
-										<string>Automatically fixes issues you might have with your GPGTools installation.</string>
-									</dict>
-								</array>
+								<array/>
 								<key>OPTIONS</key>
 								<dict>
 									<key>HIDDEN</key>
@@ -196,35 +144,19 @@
 									<integer>1</integer>
 								</dict>
 								<key>PACKAGE_UUID</key>
-								<string>8A9ED7C8-4401-40BA-920D-4C11131E708A</string>
-								<key>REQUIREMENTS</key>
-								<array/>
+								<string>7F8EE289-DCE8-471F-82D9-42F5B8C953AA</string>
 								<key>TITLE</key>
-								<array>
-									<dict>
-										<key>LANGUAGE</key>
-										<string>English</string>
-										<key>VALUE</key>
-										<string>GPGTools Autofix</string>
-									</dict>
-								</array>
+								<array/>
 								<key>TOOLTIP</key>
 								<array/>
 								<key>TYPE</key>
 								<integer>0</integer>
 								<key>UUID</key>
-								<string>A39A68E2-F467-4443-8BEA-0D57B28D6F3C</string>
+								<string>9C807609-78CE-4FFF-934A-62A40C03385E</string>
 							</dict>
 							<dict>
 								<key>DESCRIPTION</key>
-								<array>
-									<dict>
-										<key>LANGUAGE</key>
-										<string>English</string>
-										<key>VALUE</key>
-										<string>Adds the GPGTools public OpenPGP key to the keychain.</string>
-									</dict>
-								</array>
+								<array/>
 								<key>OPTIONS</key>
 								<dict>
 									<key>HIDDEN</key>
@@ -233,24 +165,39 @@
 									<integer>1</integer>
 								</dict>
 								<key>PACKAGE_UUID</key>
-								<string>864C3F68-BD50-46E1-A757-784577F7E81E</string>
+								<string>D3C037CD-0AAA-426B-A055-2503E5310561</string>
 								<key>REQUIREMENTS</key>
-								<array/>
-								<key>TITLE</key>
 								<array>
 									<dict>
-										<key>LANGUAGE</key>
-										<string>English</string>
-										<key>VALUE</key>
-										<string>GPGTools Public OpenPGP Key</string>
+										<key>BEHAVIOR</key>
+										<integer>0</integer>
+										<key>DICTIONARY</key>
+										<dict>
+											<key>IC_REQUIREMENT_OS_DISK_TYPE</key>
+											<integer>0</integer>
+											<key>IC_REQUIREMENT_OS_DISTRIBUTION_TYPE</key>
+											<integer>0</integer>
+											<key>IC_REQUIREMENT_OS_MINIMUM_VERSION</key>
+											<integer>100800</integer>
+										</dict>
+										<key>IDENTIFIER</key>
+										<string>fr.whitebox.Packages.requirement.os</string>
+										<key>MESSAGE</key>
+										<array/>
+										<key>NAME</key>
+										<string>Operating System &gt;= 10.8</string>
+										<key>STATE</key>
+										<true/>
 									</dict>
 								</array>
+								<key>TITLE</key>
+								<array/>
 								<key>TOOLTIP</key>
 								<array/>
 								<key>TYPE</key>
 								<integer>0</integer>
 								<key>UUID</key>
-								<string>031E34BB-F0A8-4533-AACA-9C7CCB96A318</string>
+								<string>AC76B828-F9EA-4403-AD6F-8072C5CB125A</string>
 							</dict>
 						</array>
 						<key>REMOVED</key>
@@ -260,7 +207,7 @@
 				<key>INSTALLATION TYPE</key>
 				<integer>0</integer>
 				<key>MODE</key>
-				<integer>0</integer>
+				<integer>1</integer>
 			</dict>
 			<key>INSTALLATION_STEPS</key>
 			<array>
@@ -331,7 +278,7 @@
 						<key>VALUE</key>
 						<dict>
 							<key>PATH</key>
-							<string>package-introduction.rtf</string>
+							<string>../Installer/package-introduction.rtf</string>
 							<key>PATH_TYPE</key>
 							<integer>1</integer>
 						</dict>
@@ -391,129 +338,30 @@
 					<integer>3</integer>
 					<key>DICTIONARY</key>
 					<dict>
-						<key>IC_REQUIREMENT_SCRIPT_ARGUMENTS</key>
-						<array/>
-						<key>IC_REQUIREMENT_SCRIPT_COMPARATOR</key>
+						<key>IC_REQUIREMENT_OS_DISK_TYPE</key>
+						<integer>1</integer>
+						<key>IC_REQUIREMENT_OS_DISTRIBUTION_TYPE</key>
 						<integer>0</integer>
-						<key>IC_REQUIREMENT_SCRIPT_EMBED</key>
-						<true/>
-						<key>IC_REQUIREMENT_SCRIPT_PATH</key>
-						<dict>
-							<key>PATH</key>
-							<string>../Dependencies/GPGTools_Core/scripts/check_for_gpg.sh</string>
-							<key>PATH_TYPE</key>
-							<integer>1</integer>
-						</dict>
-						<key>IC_REQUIREMENT_SCRIPT_VALUE</key>
-						<integer>0</integer>
+						<key>IC_REQUIREMENT_OS_MINIMUM_VERSION</key>
+						<integer>100700</integer>
 					</dict>
 					<key>IC_REQUIREMENT_CHECK_TYPE</key>
 					<integer>0</integer>
 					<key>IDENTIFIER</key>
-					<string>fr.whitebox.Packages.requirement.scripts</string>
+					<string>fr.whitebox.Packages.requirement.os</string>
 					<key>MESSAGE</key>
 					<array>
 						<dict>
 							<key>LANGUAGE</key>
 							<string>English</string>
 							<key>SECONDARY_VALUE</key>
-							<string>Neither GnuPG nor GnuPG 2 is found on your system! Make sure you have at least one of them installed. Please visit http://www.gpgtools.org</string>
+							<string>You need Mac OS X 10.87 or higher.</string>
 							<key>VALUE</key>
-							<string>GnuPG missing</string>
+							<string>This version of GPGMail can’t be installed on this computer.</string>
 						</dict>
 					</array>
 					<key>NAME</key>
-					<string>GnuPG installed</string>
-					<key>STATE</key>
-					<true/>
-				</dict>
-				<dict>
-					<key>BEHAVIOR</key>
-					<integer>2</integer>
-					<key>DICTIONARY</key>
-					<dict>
-						<key>IC_REQUIREMENT_SCRIPT_ARGUMENTS</key>
-						<array/>
-						<key>IC_REQUIREMENT_SCRIPT_COMPARATOR</key>
-						<integer>0</integer>
-						<key>IC_REQUIREMENT_SCRIPT_EMBED</key>
-						<true/>
-						<key>IC_REQUIREMENT_SCRIPT_PATH</key>
-						<dict>
-							<key>PATH</key>
-							<string>../Dependencies/GPGTools_Core/scripts/check_for_mail.sh</string>
-							<key>PATH_TYPE</key>
-							<integer>1</integer>
-						</dict>
-						<key>IC_REQUIREMENT_SCRIPT_VALUE</key>
-						<integer>0</integer>
-					</dict>
-					<key>IC_REQUIREMENT_CHECK_TYPE</key>
-					<integer>0</integer>
-					<key>IDENTIFIER</key>
-					<string>fr.whitebox.Packages.requirement.scripts</string>
-					<key>MESSAGE</key>
-					<array>
-						<dict>
-							<key>LANGUAGE</key>
-							<string>English</string>
-							<key>SECONDARY_VALUE</key>
-							<string>Please close Mail.app first.</string>
-							<key>VALUE</key>
-							<string>Mail.app is running</string>
-						</dict>
-					</array>
-					<key>NAME</key>
-					<string>Mail.app running?</string>
-					<key>STATE</key>
-					<true/>
-				</dict>
-				<dict>
-					<key>BEHAVIOR</key>
-					<integer>3</integer>
-					<key>DICTIONARY</key>
-					<dict>
-						<key>IC_REQUIREMENT_SCRIPT_ARGUMENTS</key>
-						<array>
-							<dict>
-								<key>IC_REQUIREMENT_SCRIPT_ARGUMENT_STATE</key>
-								<true/>
-								<key>IC_REQUIREMENT_SCRIPT_ARGUMENT_VALUE</key>
-								<string>7</string>
-							</dict>
-						</array>
-						<key>IC_REQUIREMENT_SCRIPT_COMPARATOR</key>
-						<integer>0</integer>
-						<key>IC_REQUIREMENT_SCRIPT_EMBED</key>
-						<true/>
-						<key>IC_REQUIREMENT_SCRIPT_PATH</key>
-						<dict>
-							<key>PATH</key>
-							<string>../Dependencies/GPGTools_Core/scripts/check_for_osver.sh</string>
-							<key>PATH_TYPE</key>
-							<integer>1</integer>
-						</dict>
-						<key>IC_REQUIREMENT_SCRIPT_VALUE</key>
-						<integer>0</integer>
-					</dict>
-					<key>IC_REQUIREMENT_CHECK_TYPE</key>
-					<integer>0</integer>
-					<key>IDENTIFIER</key>
-					<string>fr.whitebox.Packages.requirement.scripts</string>
-					<key>MESSAGE</key>
-					<array>
-						<dict>
-							<key>LANGUAGE</key>
-							<string>English</string>
-							<key>SECONDARY_VALUE</key>
-							<string>This version is for OS X 10.7 (Lion) only.
-Please visit http://www.gpgtools.org for more downloads.</string>
-							<key>VALUE</key>
-							<string>Wrong OS</string>
-						</dict>
-					</array>
-					<key>NAME</key>
-					<string>OS</string>
+					<string>Operating System &gt;= 10.7</string>
 					<key>STATE</key>
 					<true/>
 				</dict>
@@ -530,12 +378,9 @@ Please visit http://www.gpgtools.org for more downloads.</string>
 		<key>PROJECT_SETTINGS</key>
 		<dict>
 			<key>ADVANCED_OPTIONS</key>
-			<dict>
-				<key>installer-script.options:allow-external-scripts</key>
-				<false/>
-			</dict>
+			<dict/>
 			<key>BUILD_FORMAT</key>
-			<integer>1</integer>
+			<integer>0</integer>
 			<key>BUILD_PATH</key>
 			<dict>
 				<key>PATH</key>
@@ -622,13 +467,29 @@ Please visit http://www.gpgtools.org for more downloads.</string>
 							<key>TYPE</key>
 							<integer>1</integer>
 						</dict>
+						<dict>
+							<key>REGULAR_EXPRESSION</key>
+							<false/>
+							<key>STRING</key>
+							<string>.git</string>
+							<key>TYPE</key>
+							<integer>1</integer>
+						</dict>
+						<dict>
+							<key>REGULAR_EXPRESSION</key>
+							<false/>
+							<key>STRING</key>
+							<string>.gitignore</string>
+							<key>TYPE</key>
+							<integer>0</integer>
+						</dict>
 					</array>
 					<key>PROTECTED</key>
 					<true/>
 					<key>PROXY_NAME</key>
 					<string>Remove SCM metadata</string>
 					<key>PROXY_TOOLTIP</key>
-					<string>Remove helper files and folders used by the CVS and SVN Source Code Management systems.</string>
+					<string>Remove helper files and folders used by the CVS, SVN or Git Source Code Management systems.</string>
 					<key>STATE</key>
 					<true/>
 				</dict>
@@ -702,7 +563,10 @@ Please visit http://www.gpgtools.org for more downloads.</string>
 	<key>SHARED_GLOBAL_DATA</key>
 	<dict>
 		<key>IC_REQUIREMENT_JAVASCRIPT_SHARED_SOURCE_CODE</key>
-		<string></string>
+		<string>function checkOS() {
+  var version = system.version.ProductVersion;
+  return system.compareVersions(version, "10.6") + system.compareVersions(version, "10.7") == 0;
+}</string>
 	</dict>
 	<key>TYPE</key>
 	<integer>0</integer>

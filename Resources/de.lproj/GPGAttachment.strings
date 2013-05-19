@@ -1,13 +1,13 @@
 /* 
-  GPGAttachment.strings
-  GPGMail
-
-  Created by Lukas Pitschl on 03.12.11.
-  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
-*/
-{
-    "SIGNATURE_ERROR_GENERAL_TITLE" = "Die Signatur konnte nicht verifiziert werden.";
-    "SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "Die Signatur dieses Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet.\n\nBitte laden Sie den öffentlichen Schlüssel %@ mit GPG Schlüsselbund herunter.";
-    "DECRYPT_ERROR_GENERAL_TITLE" = "Der Anhang konnte nicht entschlüsselt werden.";
-    "DECRYPT_ERROR_GENERAL_MESSAGE" = "Der private Schlüssel zum Entschlüssen dieses Anhangs konnte nicht gefunden werden.";
-}
+ GPGAttachment.strings
+ GPGMail
+ 
+ Created by Lukas Pitschl on 03.12.11.
+ Copyright (c) 2011 __MyCompanyName__. All rights reserved.
+ */
+"SIGNATURE_ERROR_GENERAL_TITLE" = "Die Signatur konnte nicht verifiziert werden.";
+"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "Die Signatur dieses Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet.\n\nBitte laden Sie den öffentlichen Schlüssel %@ mit GPG Schlüsselbund herunter.";
+"DECRYPT_ERROR_GENERAL_TITLE" = "Der Anhang konnte nicht entschlüsselt werden.";
+"DECRYPT_ERROR_GENERAL_MESSAGE" = "Der private Schlüssel zum Entschlüssen dieses Anhangs konnte nicht gefunden werden.";
+"ATTACHMENT_DECRYPTED_SUCCESSFULLY_TITLE" = "Der Anhang wurde erfolgreich entschlüsselt";
+"ATTACHMENT_DECRYPTED_SUCCESSFULLY_MESSAGE" = "Doppelklicken Sie im Nachrichtenfenster auf eine Datei um diese zu öffnen.";

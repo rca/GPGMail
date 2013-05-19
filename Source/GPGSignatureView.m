@@ -51,8 +51,8 @@ GPGSignatureView *_sharedInstance;
 	static NSArray *images = nil;
 	if (!images) {
 		images = [[NSArray alloc] initWithObjects:
-				  [[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/ValidBadge.tif"],
-				  [[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/InvalidBadge.tif"],
+				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/ValidBadge.png"] autorelease],
+				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/InvalidBadge.png"] autorelease],
 				  nil];
 	}
 	if (signature.status != 0 || signature.trust <= 1) {
@@ -64,12 +64,20 @@ GPGSignatureView *_sharedInstance;
 
 - (NSString *)emailAndID {
 
-    NSString *value = [NSString stringWithFormat:@"%@", gpgKey.email];
+    NSMutableString *value = [[NSMutableString alloc] init];
+    if(gpgKey.email)
+        [value appendFormat:@"%@", gpgKey.email];
+    
     NSString *keyID = [self keyID];
     if(keyID) {
-        value = [value stringByAppendingFormat:@" (%@)", keyID];
+        if(gpgKey.email)
+            [value appendString:@" ("];
+        [value appendFormat:@"%@", keyID];
+        if(gpgKey.email)
+            [value appendString:@")"];
     }
-    return value;
+    
+    return [value autorelease];
 }
 
 - (NSString *)validityDescription {
@@ -107,8 +115,8 @@ GPGSignatureView *_sharedInstance;
 	static NSArray *images = nil;
 	if (!images) {
 		images = [[NSArray alloc] initWithObjects:
-				  [[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertLargeStd.tif"],
-				  [[NSImage alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForImageResource:@"GPGCertLargeNotTrusted"]],
+				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertLargeStd.png"] autorelease],
+				  [[[NSImage alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForImageResource:@"GPGCertLargeNotTrusted"]] autorelease],
 				  nil];
 	}
 
@@ -334,8 +342,8 @@ GPGSignatureView *_sharedInstance;
 NSArray *images;
 + (void)initialize {
 	images = [[NSArray alloc] initWithObjects:
-			  [[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertSmallStd.tif"],
-			  [[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertSmallStd_Invalid.tif"],
+			  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertSmallStd.png"] autorelease],
+			  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertSmallStd_Invalid.png"] autorelease],
 			  nil];
 }
 + (Class)transformedValueClass { return [NSImage class]; }
@@ -355,7 +363,7 @@ NSArray *images;
 
 
 
-@implementation FlippedView
+@implementation GPGFlippedView
 - (BOOL)isFlipped {
 	return YES;
 }
