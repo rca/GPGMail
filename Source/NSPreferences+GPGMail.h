@@ -36,7 +36,7 @@
 /**
  Returns the window size necessary to fit all toolbar items.
  */
-- (CGSize)sizeForWindowShowingAllToolbarItems:(NSWindow *)window;
+- (NSSize)sizeForWindowShowingAllToolbarItems:(NSWindow *)window;
 
 /**
  Is called when the preference pane is first shown, or the user
@@ -46,7 +46,7 @@
  all toolbar items using -[NSPreferences(GPGMail)sizeForWindowShowingAllToolbarItems:]
  and returns that value, so the window is correctly resized.
 */
-- (struct CGSize)MAWindowWillResize:(id)window toSize:(struct CGSize)toSize;
+- (NSSize)MAWindowWillResize:(id)window toSize:(NSSize)toSize;
 
 /**
  Helper function to resize the preference pane window to fit all

@@ -112,31 +112,31 @@
     return preferences;
 }
 
-- (CGSize)sizeForWindowShowingAllToolbarItems:(NSWindow *)window {
+
+- (NSSize)sizeForWindowShowingAllToolbarItems:(NSWindow *)window {
     NSRect frame = [window frame];
-    NSToolbar *toolbar = [window toolbar];
     float width = 0.0f;
-    for(id view in [[[[toolbar valueForKey:@"_toolbarView"] subviews] objectAtIndex:0] subviews])
-        width += [(NSView *)view frame].size.width;
+	NSArray *subviews = [[[[[window toolbar] valueForKey:@"_toolbarView"] subviews] objectAtIndex:0] subviews];
+    for (NSView *view in subviews) {
+        width += view.frame.size.width;
+	}
     // Add padding to fit them all.
     width += 10;
-    CGSize newSize = CGSizeMake(width, frame.size.height);
-    return newSize;
+    return NSMakeSize(width > frame.size.width ? width : frame.size.width, frame.size.height);
 }
 
-- (struct CGSize)MAWindowWillResize:(id)window toSize:(struct CGSize)toSize {
+- (NSSize)MAWindowWillResize:(id)window toSize:(NSSize)toSize {
     if(![[self getIvar:@"makeAllToolbarItemsVisible"] boolValue])
         return [self MAWindowWillResize:window toSize:toSize];
     
-    CGSize newSize = [self sizeForWindowShowingAllToolbarItems:window];
+    NSSize newSize = [self sizeForWindowShowingAllToolbarItems:window];
     [self removeIvar:@"makeAllToolbarItemsVisible"];
     return newSize;
 }
 
 - (void)resizeWindowToShowAllToolbarItems:(NSWindow *)window {
     NSRect frame = [window frame];
-    CGSize newSize = [self sizeForWindowShowingAllToolbarItems:window];
-    frame.size = NSSizeFromCGSize(newSize);
+    frame.size = [self sizeForWindowShowingAllToolbarItems:window];
     [self setIvar:@"makeAllToolbarItemsVisible" value:[NSNumber numberWithBool:YES]];
     [window setFrame:frame display:YES];
 }
