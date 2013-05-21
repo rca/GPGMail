@@ -525,7 +525,7 @@ static BOOL gpgMailWorks = NO;
 }
 
 - (NSString *)buildNumberDescription {
-    return [NSString stringWithFormat:@"Build: %@", [[self class] bundleBuildNumber]];
+    return [NSString stringWithFormat:@"Build: %@", [[self class] bundleVersion]];
 }
 
 - (NSString *)version {
