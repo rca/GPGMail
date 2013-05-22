@@ -446,6 +446,16 @@ static BOOL gpgMailWorks = NO;
     return NO;
 }
 
+- (void)cleanOldPlist {
+    //Diese Methode kann nach dem Release 2.1 gelöscht werden.
+    NSString *oldPlistPath = [@"~/Library/Preferences/org.gpgtools.gpgmail.plist" stringByExpandingTildeInPath];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:oldPlistPath]) {
+        NSLog(@"Deleting old org.gpgtools.gpgmail.plist");
+        [fileManager removeItemAtPath:oldPlistPath error:nil];
+    }
+}
+
 - (void)finishInitialization {
     // Create the decryption queue.
     decryptionQueue = dispatch_queue_create("org.gpgmail.decryption", NULL);
@@ -464,6 +474,8 @@ static BOOL gpgMailWorks = NO;
     [self _installSparkleUpdater];
     
     self.accountExistsForSigning = YES;
+    
+    [NSThread detachNewThreadSelector:@selector(cleanOldPlist) toTarget:self withObject:nil]; //Siehe cleanOldPlist
 }
 
 - (id)init {
