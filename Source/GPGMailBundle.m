@@ -595,7 +595,6 @@ static BOOL gpgMailWorks = NO;
     if (!gpgc) {
         updateLock = [NSLock new];
         gpgc = [[GPGController alloc] init];
-        gpgc.verbose = NO; //(GPGMailLoggingLevel > 0);
         gpgc.delegate = self;
         
         [self allGPGKeys];
