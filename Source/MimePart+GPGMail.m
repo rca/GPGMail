@@ -1019,13 +1019,34 @@
 
 - (void)verifyData:(NSData *)signedData signatureData:(NSData *)signatureData {
     GPGController *gpgc = [[GPGController alloc] init];
-    
+
+
     // If signature data is set, the signature is detached, otherwise it's inline.
     NSArray *signatures = nil;
-    if([signatureData length])
+    if([signatureData length]) {
+		
+		
+		NSArray *packets = [GPGPacket packetsWithData:signatureData];
+		if ([packets count] && [(GPGPacket *)packets[0] signatureType] == 0) {
+			
+			if ([signedData rangeOfData:[NSData dataWithBytes:"\r\n" length:2] options:nil range:NSMakeRange(0, signedData.length)].location == NSNotFound) {
+
+				NSString *string = [NSString stringWithData:signedData encoding:NSUTF8StringEncoding];
+				if (string) {
+					string = [string stringByReplacingOccurrencesOfString:@"\n" withString:@"\r\n"];
+					NSData *tempData = [string dataUsingEncoding:NSUTF8StringEncoding];
+					if (tempData) {
+						signedData = tempData;
+					}
+				}
+			}
+		}
+		
+		
         signatures = [gpgc verifySignature:signatureData originalData:signedData];
-    else
+	} else {
         signatures = [gpgc verifySignedData:signedData];
+	}
     
     MFError *error = [self errorFromGPGOperation:GPG_OPERATION_VERIFICATION controller:gpgc];
     self.PGPError = error;
