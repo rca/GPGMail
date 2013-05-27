@@ -55,6 +55,7 @@
 #import <MutableMessageHeaders.h>
 #import "ParsedMessage.h"
 #import "GPGMailBundle.h"
+#import "NSData-MessageAdditions.h"
 
 @implementation MimePart (GPGMail)
 
@@ -1020,28 +1021,16 @@
 - (void)verifyData:(NSData *)signedData signatureData:(NSData *)signatureData {
     GPGController *gpgc = [[GPGController alloc] init];
 
-
     // If signature data is set, the signature is detached, otherwise it's inline.
     NSArray *signatures = nil;
     if([signatureData length]) {
 		
-		
+		// If the signature is type 0x00 and the tex doesn't contain a \r\n, convert \n to \r\n.
+		// This is needed because Mail converts \r\n to \n.
 		NSArray *packets = [GPGPacket packetsWithData:signatureData];
-		if ([packets count] && [((GPGPacket *)[packets objectAtIndex:0]) signatureType] == 0) {
-			
-			if ([signedData rangeOfData:[NSData dataWithBytes:"\r\n" length:2] options:nil range:NSMakeRange(0, signedData.length)].location == NSNotFound) {
-
-				NSString *string = [NSString stringWithData:signedData encoding:NSUTF8StringEncoding];
-				if (string) {
-					string = [string stringByReplacingOccurrencesOfString:@"\n" withString:@"\r\n"];
-					NSData *tempData = [string dataUsingEncoding:NSUTF8StringEncoding];
-					if (tempData) {
-						signedData = tempData;
-					}
-				}
-			}
+		if ([packets count] && [((GPGPacket *)[packets objectAtIndex:0]) signatureType] == 0 && [signedData rangeOfData:[NSData dataWithBytes:"\r\n" length:2]].location == NSNotFound) {
+				signedData = [signedData dataByConvertingLineEndingsFromUnixToNetwork];
 		}
-		
 		
         signatures = [gpgc verifySignature:signatureData originalData:signedData];
 	} else {
