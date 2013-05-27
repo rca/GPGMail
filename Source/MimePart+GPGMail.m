@@ -1027,7 +1027,7 @@
 		
 		
 		NSArray *packets = [GPGPacket packetsWithData:signatureData];
-		if ([packets count] && [(GPGPacket *)packets[0] signatureType] == 0) {
+		if ([packets count] && [((GPGPacket *)packets[0]) signatureType] == 0) {
 			
 			if ([signedData rangeOfData:[NSData dataWithBytes:"\r\n" length:2] options:nil range:NSMakeRange(0, signedData.length)].location == NSNotFound) {
 
