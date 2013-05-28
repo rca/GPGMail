@@ -488,7 +488,7 @@ static BOOL gpgMailWorks = NO;
 			[[GPGOptions sharedOptions] registerDefaults:defaultsDictionary];
 		}
         
-        GPGMailLoggingLevel = [[GPGOptions sharedOptions] integerForKey:@"DebugLog"];
+        GPGMailLoggingLevel = (int)[[GPGOptions sharedOptions] integerForKey:@"DebugLog"];
         NSLog(@"Debug Log enabled: %@", [[GPGOptions sharedOptions] integerForKey:@"DebugLog"] > 0 ? @"YES" : @"NO");
         
         gpgMailWorks = [self checkGPG];
@@ -1004,7 +1004,10 @@ static BOOL gpgMailWorks = NO;
 }
 
 + (BOOL)isMountainLion {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wselector"
     return [Message instancesRespondToSelector:@selector(dataSource)];
+#pragma clang diagnostic pop
 }
 
 @end

@@ -680,7 +680,7 @@
 }
 
 - (GPGMAIL_SECURITY_METHOD)guessedSecurityMethod {
-    return [[self getIvar:@"GuessedSecurityMethod"] unsignedIntegerValue];
+    return (GPGMAIL_SECURITY_METHOD)[[self getIvar:@"GuessedSecurityMethod"] unsignedIntegerValue];
 }
 
 - (BOOL)userDidChooseSecurityMethod {

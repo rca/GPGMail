@@ -330,9 +330,9 @@
     
     // Fix the number of attachments, this time for real!
     // Uncomment once completely implemented.
-    [[self dataSourceProxy] setNumberOfAttachments:numberOfAttachments isSigned:isSigned isEncrypted:isEncrypted forMessage:self];
+    [[self dataSourceProxy] setNumberOfAttachments:(unsigned int)numberOfAttachments isSigned:isSigned isEncrypted:isEncrypted forMessage:self];
     if(decryptedMessage)
-        [[decryptedMessage dataSourceProxy] setNumberOfAttachments:numberOfAttachments isSigned:isSigned isEncrypted:isEncrypted forMessage:decryptedMessage];
+        [[decryptedMessage dataSourceProxy] setNumberOfAttachments:(unsigned int)numberOfAttachments isSigned:isSigned isEncrypted:isEncrypted forMessage:decryptedMessage];
     // Set PGP Info collected so this information is not overwritten.
     self.PGPInfoCollected = YES;
 }
@@ -496,11 +496,13 @@
 
 - (id)dataSourceProxy {
     // 10.8 uses dataSource, 10.7 uses messageStore.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wselector"
     if([self respondsToSelector:@selector(dataSource)])
         return [self dataSource];
     if([self respondsToSelector:@selector(messageStore)])
        return [self messageStore];
-    
+#pragma clang diagnostic pop
     return nil;
 }
 

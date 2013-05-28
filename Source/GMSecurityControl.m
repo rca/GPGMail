@@ -124,6 +124,7 @@
 		return SIGN_OFF_IMAGE;
 	if([imageName isEqualToString:SIGN_OFF_IMAGE])
 		return SIGN_ON_IMAGE;
+	return nil;
 }
 
 - (void)updateStatusFromImage:(NSImage *)image {

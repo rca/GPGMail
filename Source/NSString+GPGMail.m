@@ -80,7 +80,7 @@
 - (NSString *)SHA1 {
     unsigned char digest[CC_SHA1_DIGEST_LENGTH];
     NSData *stringBytes = [self dataUsingEncoding: NSUTF8StringEncoding];
-    if (!CC_SHA1([stringBytes bytes], [stringBytes length], digest))
+    if (!CC_SHA1([stringBytes bytes], (CC_LONG)[stringBytes length], digest))
         return nil;
     
     NSMutableString *sha1 = [NSMutableString string];

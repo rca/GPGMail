@@ -169,7 +169,7 @@
 	}
 	
 	NSSize size = self.bounds.size;
-	srandom(time(NULL));
+	srandom((unsigned int)time(NULL));
 
 	webView = [[WebView alloc] initWithFrame:NSMakeRect(0, 0, size.width, size.height)];
 	webView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;

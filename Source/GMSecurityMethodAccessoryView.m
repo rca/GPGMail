@@ -133,7 +133,7 @@
     if(self.securityMethod == [sender tag])
         return;
     
-    [self.delegate securityMethodAccessoryView:self didChangeSecurityMethod:[sender tag]];
+    [self.delegate securityMethodAccessoryView:self didChangeSecurityMethod:(GPGMAIL_SECURITY_METHOD)[sender tag]];
 }
 
 - (void)_configureArrow {

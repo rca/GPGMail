@@ -833,10 +833,10 @@
 
 - (BOOL)hasError:(NSString *)errorName noDataErrors:(NSArray *)noDataErrors {
     const NSDictionary *errorCodes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [NSString stringWithString:@"1"], @"NO_ARMORED_DATA",
-                                [NSString stringWithString:@"2"], @"EXPECTED_PACKAGE_NOT_FOUND",
-                                [NSString stringWithString:@"3"], @"INVALID_PACKET",
-                                [NSString stringWithString:@"4"], @"EXPECTED_SIGNATURE_NOT_FOUND", nil];
+                                @"1", @"NO_ARMORED_DATA",
+                                @"2", @"EXPECTED_PACKAGE_NOT_FOUND",
+                                @"3", @"INVALID_PACKET",
+                                @"4", @"EXPECTED_SIGNATURE_NOT_FOUND", nil];
     
     for(id parts in noDataErrors) {
         if([[parts objectAtIndex:0] isEqualTo:[errorCodes valueForKey:errorName]])
@@ -1010,7 +1010,7 @@
     
     CFStringEncoding stringEncoding= CFStringConvertIANACharSetNameToEncoding((CFStringRef)charsetName);
     if (stringEncoding != kCFStringEncodingInvalidId) {
-        stringEncoding = CFStringConvertEncodingToNSStringEncoding(stringEncoding);
+        stringEncoding = (CFStringEncoding)CFStringConvertEncodingToNSStringEncoding(stringEncoding);
     }
     
     return stringEncoding;
@@ -1067,7 +1067,7 @@
     CFStringEncoding stringEncoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)charsetName);
     
     if (stringEncoding != kCFStringEncodingInvalidId)
-        stringEncoding = CFStringConvertEncodingToNSStringEncoding(stringEncoding);
+        stringEncoding = (CFStringEncoding)CFStringConvertEncodingToNSStringEncoding(stringEncoding);
     
     return stringEncoding;
 }
@@ -1583,7 +1583,7 @@
 		}
     }
 	@catch(NSException *e) {
-		NSUInteger errorCode = [e isKindOfClass:[GPGException class]] ? ((GPGException *)e).errorCode : 1;
+		GPGErrorCode errorCode = [e isKindOfClass:[GPGException class]] ? ((GPGException *)e).errorCode : 1;
         [self failedToEncryptForRecipients:recipients gpgErrorCode:errorCode error:gpgc.error];
         return nil;
     }

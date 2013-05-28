@@ -125,3 +125,7 @@
 
 @end
 
+@interface Message ()
+// Prevent instance method not found.
+- (id)dataSource;
+@end

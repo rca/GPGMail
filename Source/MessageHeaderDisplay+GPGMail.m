@@ -235,7 +235,7 @@
             NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE", @"GPGMail", gpgMailBundle, @""));
     }
     
-    [securityHeaderAttachmentsPart appendAttributedString:[NSAttributedString attributedStringWithString:[NSString stringWithFormat:@"%d %@", message.numberOfPGPAttachments, attachmentPart]]];
+    [securityHeaderAttachmentsPart appendAttributedString:[NSAttributedString attributedStringWithString:[NSString stringWithFormat:@"%li %@", (long)message.numberOfPGPAttachments, attachmentPart]]];
     
     return [securityHeaderAttachmentsPart autorelease];
 }

@@ -59,8 +59,8 @@
     if([[NSThread currentThread] name] == nil)
     {
         // The thread has no name, try to find the threadnumber instead.
-        logString = [NSString stringWithFormat:@"Thread %d | %s[%d] %@",
-                     [self currentThreadNumber],
+        logString = [NSString stringWithFormat:@"Thread %li | %s[%d] %@",
+                     (long)[self currentThreadNumber],
                      [[sourceFile lastPathComponent] UTF8String],
                      lineNumber,
                      formattedString];
