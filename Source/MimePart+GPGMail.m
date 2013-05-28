@@ -259,11 +259,11 @@
         // Fetch the decrypted content, since that is already been processed, with markers and stuff.
         // In case of a decryption failure, simply return the decrypted data.
         NSString *content = nil;
-        if(!self.PGPDecrypted)
-            content = [[decryptedData stringByGuessingEncoding] markupString];
-        else
+        if(self.PGPDecryptedContent) {
             content = self.PGPDecryptedContent;
-        
+        } else {
+            content = [[decryptedData stringByGuessingEncoding] markupString];
+        }
         return content; 
     }
     
