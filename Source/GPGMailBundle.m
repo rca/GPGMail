@@ -296,29 +296,26 @@ disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus, bundleImages = _bun
 	// +[NSImage imageNamed:] does not find them.
 	NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
     
-    // Use something else then NSArray which only retains value. CFArray for example.
-    NSMutableArray *bundleImages = [[NSMutableArray alloc] init];
-    NSDictionary *bundleImageMap = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    @"GPGMail", @"GPGMail",
-                                    @"ValidBadge", @"ValidBadge",
-                                    @"InvalidBadge", @"InvalidBadge",
-                                    @"GreenDot", @"GreenDot",
-                                    @"YellowDot", @"YellowDot",
-                                    @"RedDot", @"RedDot",
-                                    @"MenuArrowWhite", @"MenuArrowWhite",
-                                    @"CertSmallStd", @"CertSmallStd",
-                                    @"CertSmallStd_Invalid", @"CertSmallStd_Invalid",
-                                    @"CertLargeStd", @"CertLargeStd",
-                                    @"CertLargeNotTrusted", @"CertLargeNotTrusted", nil];
+    NSArray *bundleImageNames = @[@"GPGMail",
+                                  @"ValidBadge",
+                                  @"InvalidBadge",
+                                  @"GreenDot",
+                                  @"YellowDot",
+                                  @"RedDot",
+                                  @"MenuArrowWhite",
+                                  @"CertSmallStd",
+                                  @"CertSmallStd_Invalid", 
+                                  @"CertLargeStd",
+                                  @"CertLargeNotTrusted"];
+    NSMutableArray *bundleImages = [[NSMutableArray alloc] initWithCapacity:[bundleImageNames count]];
     
-    for(NSString *name in bundleImageMap) {
-        NSString *imageName = [bundleImageMap valueForKey:name];
-        NSImage *image = [[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:imageName]];
+    for (NSString *name in bundleImageNames) {
+        NSImage *image = [[NSImage alloc] initByReferencingFile:[myBundle pathForImageResource:name]];
 
         // Shoud an image not exist, log a warning, but don't crash because of inserting
         // nil!
         if(!image) {
-            NSLog(@"GPGMail: Image %@ not found in bundle resources.", imageName);
+            NSLog(@"GPGMail: Image %@ not found in bundle resources.", name);
             continue;
         }
         [image setName:name];
