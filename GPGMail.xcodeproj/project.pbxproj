@@ -47,33 +47,10 @@
 		1BED93851079597600D22B4C /* NSPreferences+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80900838EA1C0052F47C /* NSPreferences+GPGMail.m */; };
 		1BF51A70108FCD1900AC8268 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BF51A6F108FCD1900AC8268 /* ExceptionHandling.framework */; };
 		1BF69D7F1405C04E008B07F5 /* HeadersEditor+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BF69D7E1405C04E008B07F5 /* HeadersEditor+GPGMail.m */; };
-		3005015E14FFE702004EB26B /* menu-arrow-white.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1B680FFE14FAE14800A43462 /* menu-arrow-white.tiff */; };
-		3005015F14FFE702004EB26B /* menu-arrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1B680FF814FAD6C600A43462 /* menu-arrow.tiff */; };
 		3005016014FFE702004EB26B /* GreenDot.png in Resources */ = {isa = PBXBuildFile; fileRef = 30675D1E14F047F000914186 /* GreenDot.png */; };
 		3005016114FFE702004EB26B /* RedDot.png in Resources */ = {isa = PBXBuildFile; fileRef = 30675D1F14F047F000914186 /* RedDot.png */; };
 		3005016214FFE702004EB26B /* YellowDot.png in Resources */ = {isa = PBXBuildFile; fileRef = 30675D2014F047F000914186 /* YellowDot.png */; };
-		3005016314FFE702004EB26B /* invalid-signature-icon-overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BB6B1DE143224DD00B58BD0 /* invalid-signature-icon-overlay.png */; };
-		3005016414FFE702004EB26B /* encryption_unlocked.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B08633F13FF9976001AF6E7 /* encryption_unlocked.png */; };
-		3005016514FFE702004EB26B /* GPGCertLargeNotTrusted.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1BACB2EA13EBF66300C750AA /* GPGCertLargeNotTrusted.tif */; };
-		3005016614FFE702004EB26B /* GPGMail.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3094CD6C12F5EBA200ABCE8A /* GPGMail.icns */; };
-		3005016714FFE702004EB26B /* CheckMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6A712B3B1350093608D /* CheckMark.png */; };
-		3005016814FFE702004EB26B /* clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6A912B3B1350093608D /* clear.png */; };
-		3005016914FFE702004EB26B /* EmptyImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6AA12B3B1350093608D /* EmptyImage.png */; };
-		3005016A14FFE702004EB26B /* encrypted.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6AC12B3B1350093608D /* encrypted.png */; };
-		3005016B14FFE702004EB26B /* GPGMail.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6AD12B3B1350093608D /* GPGMail.png */; };
-		3005016C14FFE702004EB26B /* GPGMail32.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6AE12B3B1350093608D /* GPGMail32.png */; };
-		3005016D14FFE702004EB26B /* GPGMailPreferences.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6AF12B3B1350093608D /* GPGMailPreferences.png */; };
 		3005016E14FFE702004EB26B /* InvalidBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B012B3B1350093608D /* InvalidBadge.png */; };
-		3005016F14FFE702004EB26B /* MacGPG.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B112B3B1350093608D /* MacGPG.png */; };
-		3005017014FFE702004EB26B /* OHZap.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B312B3B1350093608D /* OHZap.png */; };
-		3005017114FFE702004EB26B /* questionMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B412B3B1350093608D /* questionMark.png */; };
-		3005017214FFE702004EB26B /* RefreshNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B512B3B1350093608D /* RefreshNormal.png */; };
-		3005017314FFE702004EB26B /* RefreshPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B612B3B1350093608D /* RefreshPressed.png */; };
-		3005017414FFE702004EB26B /* signed.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B812B3B1350093608D /* signed.png */; };
-		3005017514FFE702004EB26B /* SmallAlert12.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6B912B3B1350093608D /* SmallAlert12.png */; };
-		3005017614FFE702004EB26B /* SmallAlert16.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6BA12B3B1350093608D /* SmallAlert16.png */; };
-		3005017714FFE702004EB26B /* triangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6BB12B3B1350093608D /* triangle.png */; };
-		3005017814FFE702004EB26B /* unsigned.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6BD12B3B1350093608D /* unsigned.png */; };
 		3005017914FFE702004EB26B /* ValidBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E4F6BE12B3B1350093608D /* ValidBadge.png */; };
 		3005017B14FFE70A004EB26B /* GPGMail.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B194B5911CC55A80092B810 /* GPGMail.strings */; };
 		3005017C14FFE70A004EB26B /* SignatureView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1BECA61413E372AC00C622B0 /* SignatureView.strings */; };
@@ -85,8 +62,24 @@
 		3005018314FFE719004EB26B /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 30913B4512B19B3B00327FDF /* Credits.rtf */; };
 		3005018414FFE719004EB26B /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 1B6B7E5111CD24440055F528 /* dsa_pub.pem */; };
 		3005018514FFE719004EB26B /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BCEE1E211CC051500488D19 /* LICENSE.txt */; };
+		301380D417567D26005948EE /* CertLargeStd.png in Resources */ = {isa = PBXBuildFile; fileRef = 301380D217567D26005948EE /* CertLargeStd.png */; };
+		301380D517567D26005948EE /* CertLargeStd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 301380D317567D26005948EE /* CertLargeStd@2x.png */; };
+		301380DC17569815005948EE /* CertLargeNotTrusted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 301380DB17569814005948EE /* CertLargeNotTrusted@2x.png */; };
+		301380DE17569819005948EE /* CertLargeNotTrusted.png in Resources */ = {isa = PBXBuildFile; fileRef = 301380DD17569819005948EE /* CertLargeNotTrusted.png */; };
+		301380E217578133005948EE /* GPGMail.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 301380E117578133005948EE /* GPGMail.iconset */; };
 		3057F2EB1507C9C000FA3C0D /* Special.html in Resources */ = {isa = PBXBuildFile; fileRef = 3057F2E91507C9C000FA3C0D /* Special.html */; };
+		3066C60A17579F5900384E29 /* CertSmallStd_Invalid.png in Resources */ = {isa = PBXBuildFile; fileRef = 3066C60617579F5900384E29 /* CertSmallStd_Invalid.png */; };
+		3066C60B17579F5900384E29 /* CertSmallStd_Invalid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3066C60717579F5900384E29 /* CertSmallStd_Invalid@2x.png */; };
+		3066C60C17579F5900384E29 /* CertSmallStd.png in Resources */ = {isa = PBXBuildFile; fileRef = 3066C60817579F5900384E29 /* CertSmallStd.png */; };
+		3066C60D17579F5900384E29 /* CertSmallStd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3066C60917579F5900384E29 /* CertSmallStd@2x.png */; };
+		3066C6101757A0FC00384E29 /* MenuArrowWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 3066C60E1757A0FC00384E29 /* MenuArrowWhite.png */; };
+		3066C6111757A0FC00384E29 /* MenuArrowWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3066C60F1757A0FC00384E29 /* MenuArrowWhite@2x.png */; };
 		30744AB512B9733800CC3EC5 /* MessageContentController+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A808C0838EA1C0052F47C /* MessageContentController+GPGMail.m */; };
+		30A7AE9A1756709F00746C29 /* InvalidBadge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30A7AE991756709F00746C29 /* InvalidBadge@2x.png */; };
+		30A7AEA1175670A500746C29 /* ValidBadge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30A7AEA0175670A500746C29 /* ValidBadge@2x.png */; };
+		30A7AEA31756727300746C29 /* YellowDot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30A7AEA21756727200746C29 /* YellowDot@2x.png */; };
+		30A7AEA51756728400746C29 /* GreenDot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30A7AEA41756728400746C29 /* GreenDot@2x.png */; };
+		30A7AEA71756728B00746C29 /* RedDot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30A7AEA61756728A00746C29 /* RedDot@2x.png */; };
 		30E75A671731A7F900C9E391 /* Libmacgpg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E75A661731A7F900C9E391 /* Libmacgpg.framework */; };
 		30F9646D164E89910017E253 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30F9646C164E89910017E253 /* Sparkle.framework */; };
 		30F9646E164E89960017E253 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 30F9646C164E89910017E253 /* Sparkle.framework */; };
@@ -207,7 +200,6 @@
 		1B02D70B13F1EA1D0032CFD1 /* GPGFlaggedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPGFlaggedString.h; sourceTree = "<group>"; };
 		1B02D70C13F1EA290032CFD1 /* NSArray+Functional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Functional.h"; sourceTree = "<group>"; };
 		1B06268F1746992B00E51308 /* Libmacgpg.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Libmacgpg.xcodeproj; path = Dependencies/Libmacgpg/Libmacgpg.xcodeproj; sourceTree = SOURCE_ROOT; };
-		1B08633F13FF9976001AF6E7 /* encryption_unlocked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = encryption_unlocked.png; sourceTree = "<group>"; };
 		1B194B5A11CC55A80092B810 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GPGMail.strings; sourceTree = "<group>"; };
 		1B19E83F13A2AEA4002E59ED /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		1B19E84013A2AEA4002E59ED /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -1339,8 +1331,6 @@
 		1B56ECA816175AA8004A3ABE /* GPGMail-Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GPGMail-Entitlements.plist"; sourceTree = "<group>"; };
 		1B637BC313E39FDF00196286 /* GPGMail TODOs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "GPGMail TODOs"; sourceTree = "<group>"; };
 		1B64F62013E38E9200C5B4C9 /* GPG related notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "GPG related notes"; sourceTree = "<group>"; };
-		1B680FF814FAD6C600A43462 /* menu-arrow.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "menu-arrow.tiff"; sourceTree = "<group>"; };
-		1B680FFE14FAE14800A43462 /* menu-arrow-white.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "menu-arrow-white.tiff"; sourceTree = "<group>"; };
 		1B6B7E5111CD24440055F528 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		1B7E4DB514EEEACE0069E69C /* JRLPSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRLPSwizzle.h; sourceTree = "<group>"; };
 		1B7E4DB614EEEAD90069E69C /* JRLPSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRLPSwizzle.m; sourceTree = "<group>"; };
@@ -1360,12 +1350,10 @@
 		1BA12C2714FF578B00729B28 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/GPGAttachments.xib; sourceTree = "<group>"; };
 		1BA46CFA14EEF14300EBE49A /* MessageAttachment+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MessageAttachment+GPGMail.h"; sourceTree = "<group>"; };
 		1BA46CFB14EEF14300EBE49A /* MessageAttachment+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MessageAttachment+GPGMail.m"; sourceTree = "<group>"; };
-		1BACB2EA13EBF66300C750AA /* GPGCertLargeNotTrusted.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GPGCertLargeNotTrusted.tif; sourceTree = "<group>"; };
 		1BAEF64213E9F57700A59CED /* MailAccount+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MailAccount+GPGMail.h"; sourceTree = "<group>"; };
 		1BAEF64313E9F57700A59CED /* MailAccount+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MailAccount+GPGMail.m"; sourceTree = "<group>"; };
 		1BB3DCCC1407F1CA00870DEB /* LibraryStore+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LibraryStore+GPGMail.h"; sourceTree = "<group>"; };
 		1BB3DCCD1407F1CA00870DEB /* LibraryStore+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LibraryStore+GPGMail.m"; sourceTree = "<group>"; };
-		1BB6B1DE143224DD00B58BD0 /* invalid-signature-icon-overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invalid-signature-icon-overlay.png"; sourceTree = "<group>"; };
 		1BB80745150C58660023E45F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/Test.html; sourceTree = "<group>"; };
 		1BBB07E21489A64600530876 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GPGAttachment.strings; sourceTree = "<group>"; };
 		1BBEF49A13A9115E0037E53D /* NSSet+Functional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSSet+Functional.h"; sourceTree = "<group>"; };
@@ -1382,11 +1370,22 @@
 		1BF69D7D1405C04E008B07F5 /* HeadersEditor+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HeadersEditor+GPGMail.h"; sourceTree = "<group>"; };
 		1BF69D7E1405C04E008B07F5 /* HeadersEditor+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "HeadersEditor+GPGMail.m"; sourceTree = "<group>"; };
 		1BF69D801405DDCD008B07F5 /* GPGConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPGConstants.h; sourceTree = "<group>"; };
+		301380D217567D26005948EE /* CertLargeStd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CertLargeStd.png; sourceTree = "<group>"; };
+		301380D317567D26005948EE /* CertLargeStd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CertLargeStd@2x.png"; sourceTree = "<group>"; };
+		301380DB17569814005948EE /* CertLargeNotTrusted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CertLargeNotTrusted@2x.png"; sourceTree = "<group>"; };
+		301380DD17569819005948EE /* CertLargeNotTrusted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CertLargeNotTrusted.png; sourceTree = "<group>"; };
+		301380E117578133005948EE /* GPGMail.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = GPGMail.iconset; sourceTree = "<group>"; };
 		302ED23B12B2FD350094DECD /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
 		303174A013F1E0D400279CFB /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GPGSignatureView.xib.strings; sourceTree = "<group>"; };
 		303F16261500EF92002AC36B /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GPGAttachments.xib.strings; sourceTree = "<group>"; };
 		303F16271500EF9A002AC36B /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GPGAttachments.xib.strings; sourceTree = "<group>"; };
 		3057F2EA1507C9C000FA3C0D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/Special.html; sourceTree = "<group>"; };
+		3066C60617579F5900384E29 /* CertSmallStd_Invalid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CertSmallStd_Invalid.png; sourceTree = "<group>"; };
+		3066C60717579F5900384E29 /* CertSmallStd_Invalid@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CertSmallStd_Invalid@2x.png"; sourceTree = "<group>"; };
+		3066C60817579F5900384E29 /* CertSmallStd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CertSmallStd.png; sourceTree = "<group>"; };
+		3066C60917579F5900384E29 /* CertSmallStd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CertSmallStd@2x.png"; sourceTree = "<group>"; };
+		3066C60E1757A0FC00384E29 /* MenuArrowWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MenuArrowWhite.png; sourceTree = "<group>"; };
+		3066C60F1757A0FC00384E29 /* MenuArrowWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MenuArrowWhite@2x.png"; sourceTree = "<group>"; };
 		30675D1E14F047F000914186 /* GreenDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GreenDot.png; sourceTree = "<group>"; };
 		30675D1F14F047F000914186 /* RedDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RedDot.png; sourceTree = "<group>"; };
 		30675D2014F047F000914186 /* YellowDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YellowDot.png; sourceTree = "<group>"; };
@@ -1394,29 +1393,16 @@
 		308B8FA912A6AE5F00C99BD2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GPGMailPreferences.xib; sourceTree = "<group>"; };
 		308DE1ED14FFFB920090F6F7 /* VERSIONING */ = {isa = PBXFileReference; lastKnownFileType = text; path = VERSIONING; sourceTree = "<group>"; };
 		30913B4312B19B3500327FDF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		3094CD6C12F5EBA200ABCE8A /* GPGMail.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = GPGMail.icns; sourceTree = "<group>"; };
+		30A7AE991756709F00746C29 /* InvalidBadge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "InvalidBadge@2x.png"; sourceTree = "<group>"; };
+		30A7AEA0175670A500746C29 /* ValidBadge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ValidBadge@2x.png"; sourceTree = "<group>"; };
+		30A7AEA21756727200746C29 /* YellowDot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YellowDot@2x.png"; sourceTree = "<group>"; };
+		30A7AEA41756728400746C29 /* GreenDot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GreenDot@2x.png"; sourceTree = "<group>"; };
+		30A7AEA61756728A00746C29 /* RedDot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RedDot@2x.png"; sourceTree = "<group>"; };
 		30C37B6514FFE65400649F0B /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = fr; path = fr.lproj/Credits.rtf; sourceTree = "<group>"; };
 		30C37B6714FFE65400649F0B /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/GPGMailPreferences.xib; sourceTree = "<group>"; };
 		30C37B6814FFE65400649F0B /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
 		30C37C0014FFE67300649F0B /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = sv; path = sv.lproj/Credits.rtf; sourceTree = "<group>"; };
-		30E4F6A712B3B1350093608D /* CheckMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CheckMark.png; sourceTree = "<group>"; };
-		30E4F6A912B3B1350093608D /* clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clear.png; sourceTree = "<group>"; };
-		30E4F6AA12B3B1350093608D /* EmptyImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EmptyImage.png; sourceTree = "<group>"; };
-		30E4F6AC12B3B1350093608D /* encrypted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = encrypted.png; sourceTree = "<group>"; };
-		30E4F6AD12B3B1350093608D /* GPGMail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GPGMail.png; sourceTree = "<group>"; };
-		30E4F6AE12B3B1350093608D /* GPGMail32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GPGMail32.png; sourceTree = "<group>"; };
-		30E4F6AF12B3B1350093608D /* GPGMailPreferences.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GPGMailPreferences.png; sourceTree = "<group>"; };
 		30E4F6B012B3B1350093608D /* InvalidBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InvalidBadge.png; sourceTree = "<group>"; };
-		30E4F6B112B3B1350093608D /* MacGPG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MacGPG.png; sourceTree = "<group>"; };
-		30E4F6B312B3B1350093608D /* OHZap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OHZap.png; sourceTree = "<group>"; };
-		30E4F6B412B3B1350093608D /* questionMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = questionMark.png; sourceTree = "<group>"; };
-		30E4F6B512B3B1350093608D /* RefreshNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RefreshNormal.png; sourceTree = "<group>"; };
-		30E4F6B612B3B1350093608D /* RefreshPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RefreshPressed.png; sourceTree = "<group>"; };
-		30E4F6B812B3B1350093608D /* signed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = signed.png; sourceTree = "<group>"; };
-		30E4F6B912B3B1350093608D /* SmallAlert12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallAlert12.png; sourceTree = "<group>"; };
-		30E4F6BA12B3B1350093608D /* SmallAlert16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallAlert16.png; sourceTree = "<group>"; };
-		30E4F6BB12B3B1350093608D /* triangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle.png; sourceTree = "<group>"; };
-		30E4F6BD12B3B1350093608D /* unsigned.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unsigned.png; sourceTree = "<group>"; };
 		30E4F6BE12B3B1350093608D /* ValidBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ValidBadge.png; sourceTree = "<group>"; };
 		30E75A661731A7F900C9E391 /* Libmacgpg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Libmacgpg.framework; path = /Library/Frameworks/Libmacgpg.framework; sourceTree = "<absolute>"; };
 		30F9646C164E89910017E253 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
@@ -3008,34 +2994,27 @@
 		559A80DC0838EC770052F47C /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				1B680FFE14FAE14800A43462 /* menu-arrow-white.tiff */,
-				1B680FF814FAD6C600A43462 /* menu-arrow.tiff */,
+				301380E117578133005948EE /* GPGMail.iconset */,
+				301380DD17569819005948EE /* CertLargeNotTrusted.png */,
+				301380DB17569814005948EE /* CertLargeNotTrusted@2x.png */,
+				301380D217567D26005948EE /* CertLargeStd.png */,
+				301380D317567D26005948EE /* CertLargeStd@2x.png */,
+				3066C60817579F5900384E29 /* CertSmallStd.png */,
+				3066C60917579F5900384E29 /* CertSmallStd@2x.png */,
+				3066C60617579F5900384E29 /* CertSmallStd_Invalid.png */,
+				3066C60717579F5900384E29 /* CertSmallStd_Invalid@2x.png */,
 				30675D1E14F047F000914186 /* GreenDot.png */,
-				30675D1F14F047F000914186 /* RedDot.png */,
-				30675D2014F047F000914186 /* YellowDot.png */,
-				1BB6B1DE143224DD00B58BD0 /* invalid-signature-icon-overlay.png */,
-				1B08633F13FF9976001AF6E7 /* encryption_unlocked.png */,
-				1BACB2EA13EBF66300C750AA /* GPGCertLargeNotTrusted.tif */,
-				3094CD6C12F5EBA200ABCE8A /* GPGMail.icns */,
-				30E4F6A712B3B1350093608D /* CheckMark.png */,
-				30E4F6A912B3B1350093608D /* clear.png */,
-				30E4F6AA12B3B1350093608D /* EmptyImage.png */,
-				30E4F6AC12B3B1350093608D /* encrypted.png */,
-				30E4F6AD12B3B1350093608D /* GPGMail.png */,
-				30E4F6AE12B3B1350093608D /* GPGMail32.png */,
-				30E4F6AF12B3B1350093608D /* GPGMailPreferences.png */,
+				30A7AEA41756728400746C29 /* GreenDot@2x.png */,
 				30E4F6B012B3B1350093608D /* InvalidBadge.png */,
-				30E4F6B112B3B1350093608D /* MacGPG.png */,
-				30E4F6B312B3B1350093608D /* OHZap.png */,
-				30E4F6B412B3B1350093608D /* questionMark.png */,
-				30E4F6B512B3B1350093608D /* RefreshNormal.png */,
-				30E4F6B612B3B1350093608D /* RefreshPressed.png */,
-				30E4F6B812B3B1350093608D /* signed.png */,
-				30E4F6B912B3B1350093608D /* SmallAlert12.png */,
-				30E4F6BA12B3B1350093608D /* SmallAlert16.png */,
-				30E4F6BB12B3B1350093608D /* triangle.png */,
-				30E4F6BD12B3B1350093608D /* unsigned.png */,
+				30A7AE991756709F00746C29 /* InvalidBadge@2x.png */,
+				3066C60E1757A0FC00384E29 /* MenuArrowWhite.png */,
+				3066C60F1757A0FC00384E29 /* MenuArrowWhite@2x.png */,
+				30675D1F14F047F000914186 /* RedDot.png */,
+				30A7AEA61756728A00746C29 /* RedDot@2x.png */,
 				30E4F6BE12B3B1350093608D /* ValidBadge.png */,
+				30A7AEA0175670A500746C29 /* ValidBadge@2x.png */,
+				30675D2014F047F000914186 /* YellowDot.png */,
+				30A7AEA21756727200746C29 /* YellowDot@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -3225,38 +3204,31 @@
 				3005017C14FFE70A004EB26B /* SignatureView.strings in Resources */,
 				3005017D14FFE70A004EB26B /* GPGAttachment.strings in Resources */,
 				3005018314FFE719004EB26B /* Credits.rtf in Resources */,
-				3005015E14FFE702004EB26B /* menu-arrow-white.tiff in Resources */,
-				3005015F14FFE702004EB26B /* menu-arrow.tiff in Resources */,
 				3005016014FFE702004EB26B /* GreenDot.png in Resources */,
 				3005016114FFE702004EB26B /* RedDot.png in Resources */,
 				3005016214FFE702004EB26B /* YellowDot.png in Resources */,
-				3005016314FFE702004EB26B /* invalid-signature-icon-overlay.png in Resources */,
-				3005016414FFE702004EB26B /* encryption_unlocked.png in Resources */,
-				3005016514FFE702004EB26B /* GPGCertLargeNotTrusted.tif in Resources */,
-				3005016614FFE702004EB26B /* GPGMail.icns in Resources */,
-				3005016714FFE702004EB26B /* CheckMark.png in Resources */,
-				3005016814FFE702004EB26B /* clear.png in Resources */,
-				3005016914FFE702004EB26B /* EmptyImage.png in Resources */,
-				3005016A14FFE702004EB26B /* encrypted.png in Resources */,
-				3005016B14FFE702004EB26B /* GPGMail.png in Resources */,
-				3005016C14FFE702004EB26B /* GPGMail32.png in Resources */,
-				3005016D14FFE702004EB26B /* GPGMailPreferences.png in Resources */,
 				3005016E14FFE702004EB26B /* InvalidBadge.png in Resources */,
-				3005016F14FFE702004EB26B /* MacGPG.png in Resources */,
-				3005017014FFE702004EB26B /* OHZap.png in Resources */,
-				3005017114FFE702004EB26B /* questionMark.png in Resources */,
-				3005017214FFE702004EB26B /* RefreshNormal.png in Resources */,
-				3005017314FFE702004EB26B /* RefreshPressed.png in Resources */,
-				3005017414FFE702004EB26B /* signed.png in Resources */,
-				3005017514FFE702004EB26B /* SmallAlert12.png in Resources */,
-				3005017614FFE702004EB26B /* SmallAlert16.png in Resources */,
-				3005017714FFE702004EB26B /* triangle.png in Resources */,
-				3005017814FFE702004EB26B /* unsigned.png in Resources */,
 				3005017914FFE702004EB26B /* ValidBadge.png in Resources */,
 				1B95B4C01501297B005BE119 /* ADVANCED PREFERENCES in Resources */,
 				3057F2EB1507C9C000FA3C0D /* Special.html in Resources */,
 				1BB80746150C58660023E45F /* Test.html in Resources */,
 				1B56ECA916175AA8004A3ABE /* GPGMail-Entitlements.plist in Resources */,
+				30A7AE9A1756709F00746C29 /* InvalidBadge@2x.png in Resources */,
+				30A7AEA1175670A500746C29 /* ValidBadge@2x.png in Resources */,
+				30A7AEA31756727300746C29 /* YellowDot@2x.png in Resources */,
+				30A7AEA51756728400746C29 /* GreenDot@2x.png in Resources */,
+				30A7AEA71756728B00746C29 /* RedDot@2x.png in Resources */,
+				301380D417567D26005948EE /* CertLargeStd.png in Resources */,
+				301380D517567D26005948EE /* CertLargeStd@2x.png in Resources */,
+				301380DC17569815005948EE /* CertLargeNotTrusted@2x.png in Resources */,
+				301380DE17569819005948EE /* CertLargeNotTrusted.png in Resources */,
+				301380E217578133005948EE /* GPGMail.iconset in Resources */,
+				3066C60A17579F5900384E29 /* CertSmallStd_Invalid.png in Resources */,
+				3066C60B17579F5900384E29 /* CertSmallStd_Invalid@2x.png in Resources */,
+				3066C60C17579F5900384E29 /* CertSmallStd.png in Resources */,
+				3066C60D17579F5900384E29 /* CertSmallStd@2x.png in Resources */,
+				3066C6101757A0FC00384E29 /* MenuArrowWhite.png in Resources */,
+				3066C6111757A0FC00384E29 /* MenuArrowWhite@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3345,7 +3317,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "# Set bundle bit\nSetFile -a B \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"\n\n# Set icon\n\"./Dependencies/GPGTools_Core/bin/setfileicon\" \"./Resources/Images/GPGMail.icns\" \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"\n";
+			shellScript = "# Set bundle bit\nSetFile -a B \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"\n\n# Set icon\n\"./Dependencies/GPGTools_Core/bin/setfileicon\" \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME/Contents/Resources/GPGMail.icns\" \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"\n";
 		};
 		4523EB9A150515CD00497E39 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;

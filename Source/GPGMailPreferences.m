@@ -72,7 +72,7 @@
 }	
 
 - (NSImage *)imageForPreferenceNamed:(NSString *)aName {
-	return [NSImage imageNamed:@"GPGMailPreferences"];
+	return [NSImage imageNamed:@"GPGMail"];
 }
 
 /* Open FAQ page. */

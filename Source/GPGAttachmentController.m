@@ -236,20 +236,14 @@
 
 
 - (NSImage *)validityImage {
-	if (!signature) return nil;
-	
-	static NSArray *images = nil;
-	if (!images) {
-		images = [[NSArray alloc] initWithObjects:
-				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/ValidBadge.png"] autorelease],
-				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/InvalidBadge.png"] autorelease],
-				  nil];	
+	if (![signature isKindOfClass:[GPGSignature class]]) {
+		return nil;
 	}
 	if (signature.status != 0 || signature.trust <= 1) {
-		return [images objectAtIndex:1];
+		return [NSImage imageNamed:@"InvalidBadge"];
 	} else {
-		return [images objectAtIndex:0];
-	}		
+		return [NSImage imageNamed:@"ValidBadge"];
+	}
 }
 
 - (NSString *)emailAndID {
@@ -302,22 +296,14 @@
 }
 
 - (NSImage *)signatureImage {
-	static NSArray *images = nil;
-	if (!images) {
-		images = [[NSArray alloc] initWithObjects: 
-				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertLargeStd.png"] autorelease],
-				  [[[NSImage alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForImageResource:@"GPGCertLargeNotTrusted"]] autorelease],
-				  nil];		
+	if (![signature isKindOfClass:[GPGSignature class]]) {
+		return nil;
 	}
-	
-	if ([signature isKindOfClass:[GPGSignature class]]) {
-		if (signature.status != 0 || signature.trust <= 1) {
-			return [images objectAtIndex:1];
-		} else {
-			return [images objectAtIndex:0];
-		}		
+	if (signature.status != 0 || signature.trust <= 1) {
+		return [NSImage imageNamed:@"CertLargeNotTrusted"];
+	} else {
+		return [NSImage imageNamed:@"CertLargeStd"];
 	}
-	return nil;
 }
 
 - (IBAction)close:(id)sender {
