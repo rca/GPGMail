@@ -74,6 +74,10 @@
 		3066C60D17579F5900384E29 /* CertSmallStd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3066C60917579F5900384E29 /* CertSmallStd@2x.png */; };
 		3066C6101757A0FC00384E29 /* MenuArrowWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 3066C60E1757A0FC00384E29 /* MenuArrowWhite.png */; };
 		3066C6111757A0FC00384E29 /* MenuArrowWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3066C60F1757A0FC00384E29 /* MenuArrowWhite@2x.png */; };
+		3066C6171757A54900384E29 /* certificate.png in Resources */ = {isa = PBXBuildFile; fileRef = 3066C6151757A54900384E29 /* certificate.png */; };
+		3066C6181757A54900384E29 /* certificate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3066C6161757A54900384E29 /* certificate@2x.png */; };
+		3066C6221757ACCF00384E29 /* encryption.png in Resources */ = {isa = PBXBuildFile; fileRef = 3066C6201757ACCF00384E29 /* encryption.png */; };
+		3066C6231757ACCF00384E29 /* encryption@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3066C6211757ACCF00384E29 /* encryption@2x.png */; };
 		30744AB512B9733800CC3EC5 /* MessageContentController+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A808C0838EA1C0052F47C /* MessageContentController+GPGMail.m */; };
 		30A7AE9A1756709F00746C29 /* InvalidBadge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30A7AE991756709F00746C29 /* InvalidBadge@2x.png */; };
 		30A7AEA1175670A500746C29 /* ValidBadge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30A7AEA0175670A500746C29 /* ValidBadge@2x.png */; };
@@ -1386,6 +1390,10 @@
 		3066C60917579F5900384E29 /* CertSmallStd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CertSmallStd@2x.png"; sourceTree = "<group>"; };
 		3066C60E1757A0FC00384E29 /* MenuArrowWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MenuArrowWhite.png; sourceTree = "<group>"; };
 		3066C60F1757A0FC00384E29 /* MenuArrowWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MenuArrowWhite@2x.png"; sourceTree = "<group>"; };
+		3066C6151757A54900384E29 /* certificate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = certificate.png; sourceTree = "<group>"; };
+		3066C6161757A54900384E29 /* certificate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "certificate@2x.png"; sourceTree = "<group>"; };
+		3066C6201757ACCF00384E29 /* encryption.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = encryption.png; sourceTree = "<group>"; };
+		3066C6211757ACCF00384E29 /* encryption@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "encryption@2x.png"; sourceTree = "<group>"; };
 		30675D1E14F047F000914186 /* GreenDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GreenDot.png; sourceTree = "<group>"; };
 		30675D1F14F047F000914186 /* RedDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RedDot.png; sourceTree = "<group>"; };
 		30675D2014F047F000914186 /* YellowDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = YellowDot.png; sourceTree = "<group>"; };
@@ -2995,6 +3003,8 @@
 			isa = PBXGroup;
 			children = (
 				301380E117578133005948EE /* GPGMail.iconset */,
+				3066C6151757A54900384E29 /* certificate.png */,
+				3066C6161757A54900384E29 /* certificate@2x.png */,
 				301380DD17569819005948EE /* CertLargeNotTrusted.png */,
 				301380DB17569814005948EE /* CertLargeNotTrusted@2x.png */,
 				301380D217567D26005948EE /* CertLargeStd.png */,
@@ -3003,6 +3013,8 @@
 				3066C60917579F5900384E29 /* CertSmallStd@2x.png */,
 				3066C60617579F5900384E29 /* CertSmallStd_Invalid.png */,
 				3066C60717579F5900384E29 /* CertSmallStd_Invalid@2x.png */,
+				3066C6201757ACCF00384E29 /* encryption.png */,
+				3066C6211757ACCF00384E29 /* encryption@2x.png */,
 				30675D1E14F047F000914186 /* GreenDot.png */,
 				30A7AEA41756728400746C29 /* GreenDot@2x.png */,
 				30E4F6B012B3B1350093608D /* InvalidBadge.png */,
@@ -3229,6 +3241,10 @@
 				3066C60D17579F5900384E29 /* CertSmallStd@2x.png in Resources */,
 				3066C6101757A0FC00384E29 /* MenuArrowWhite.png in Resources */,
 				3066C6111757A0FC00384E29 /* MenuArrowWhite@2x.png in Resources */,
+				3066C6171757A54900384E29 /* certificate.png in Resources */,
+				3066C6181757A54900384E29 /* certificate@2x.png in Resources */,
+				3066C6221757ACCF00384E29 /* encryption.png in Resources */,
+				3066C6231757ACCF00384E29 /* encryption@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

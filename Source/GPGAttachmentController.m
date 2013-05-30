@@ -57,13 +57,13 @@
             else {
                 [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showSignatureView"];
                 if(part.PGPSigned) {
-                    [attachment setValue:[NSImage imageNamed:@"certificate.tiff"] forKey:@"errorBadgeImage"];
+                    [attachment setValue:[NSImage imageNamed:@"certificate"] forKey:@"errorBadgeImage"];
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"_MFShortDescription"] forKey:@"errorTitle"];
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"NSLocalizedDescription"] forKey:@"errorMessage"];
                 }
                 else if(!decrypted) {
                     [attachment setValue:[attachment valueForKey:@"original-name"] forKey:@"decrypted-name"];
-                    [attachment setValue:[NSImage imageNamed:@"encryption.tiff"] forKey:@"errorBadgeImage"];
+                    [attachment setValue:[NSImage imageNamed:@"encryption"] forKey:@"errorBadgeImage"];
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"_MFShortDescription"] forKey:@"errorTitle"];
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"NSLocalizedDescription"] forKey:@"errorMessage"];
                 }                

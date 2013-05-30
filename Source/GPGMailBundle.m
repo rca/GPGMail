@@ -303,6 +303,8 @@ disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus, bundleImages = _bun
                                   @"YellowDot",
                                   @"RedDot",
                                   @"MenuArrowWhite",
+                                  @"certificate",
+                                  @"encryption",
                                   @"CertSmallStd",
                                   @"CertSmallStd_Invalid", 
                                   @"CertLargeStd",
