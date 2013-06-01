@@ -522,13 +522,6 @@ disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus, bundleImages = _bun
         [super dealloc];
 }
 
-- (NSString *)versionDescription {
-	return [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"VERSION: %@", @"GPGMail", [NSBundle bundleForClass:[self class]], "Description of version prefixed with <Version: >"), [self version]];
-}
-
-- (NSString *)buildNumberDescription {
-    return [NSString stringWithFormat:@"Build: %@", [[self class] bundleVersion]];
-}
 
 - (NSString *)version {
 	return [[[NSBundle bundleForClass:[self class]] infoDictionary] objectForKey:@"CFBundleShortVersionString"];

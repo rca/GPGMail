@@ -71,6 +71,19 @@
 	return [[[NSAttributedString alloc] initWithString:@"http://www.gpgtools.org" attributes:attributes] autorelease];
 }	
 
+
+- (NSString *)versionDescription {
+	return [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"VERSION: %@", @"GPGMail", [NSBundle bundleForClass:[self class]], "Description of version prefixed with <Version: >"), [self.bundle version]];
+}
+
+- (NSAttributedString *)buildNumberDescription {
+	NSString *string = [NSString stringWithFormat:@"Build: %@", [GPGMailBundle bundleVersion]];
+	NSDictionary *attributes = @{NSForegroundColorAttributeName: [NSColor grayColor], NSFontAttributeName: [NSFont systemFontOfSize:11]};
+	
+	return [[[NSAttributedString alloc] initWithString:string attributes:attributes] autorelease];
+}
+
+
 - (NSImage *)imageForPreferenceNamed:(NSString *)aName {
 	return [NSImage imageNamed:@"GPGMail"];
 }
@@ -91,6 +104,14 @@
 - (IBAction)openGPGStatusHelp:(id)sender {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://support.gpgtools.org/kb/how-to/gpg-status"]];
 }
+
+- (IBAction)copyVersionInfo:(id)sender {
+	NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+	[pasteboard clearContents];
+	NSString *string = [NSString stringWithFormat:@"%@\n%@", self.versionDescription, self.buildNumberDescription.string];
+	[pasteboard writeObjects:@[string]];
+}
+
 
 - (void)willBeDisplayed {
 	[[GPGMailBundle sharedInstance] checkGPG];

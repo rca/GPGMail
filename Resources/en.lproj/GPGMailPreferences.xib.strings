@@ -1,9 +1,7 @@
 "698.ibShadowedToolTip" = "Automatically check for new versions of GPGMail.";
 "699.ibShadowedToolTip" = "Download new versions of GPGMail automatically.";
 "700.ibShadowedToolTip" = "Check for updates now.";
-"703.ibShadowedToolTip" = "The version of GPGMail";
 "709.title" = "GPGMail";
-"714.title" = "Version: xxx";
 "715.title" = "Updates";
 "717.alternateTitle" = "Check for updates now";
 "717.title" = "Check Now";
@@ -24,5 +22,5 @@
 "786.ibShadowedToolTip" = "See Preferences -> Viewing -> List Preview.";
 "787.title" = "Create List Preview";
 "834.title" = "Button";
-"843.ibShadowedToolTip" = "The exact build of GPGMail";
-"844.title" = "Build: ";
+"931.title" = "Version: xxx";
+"936.title" = "Build: ";

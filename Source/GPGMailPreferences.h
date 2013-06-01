@@ -48,6 +48,8 @@
 
 - (IBAction)openGPGStatusHelp:(id)sender;
 
+/* Copy the version into the pasteboard */
+- (IBAction)copyVersionInfo:(id)sender;
 
 @property (readonly) NSString *copyright;
 @property (readonly) NSAttributedString *credits;
@@ -58,6 +60,9 @@
 @property (readonly) NSString *gpgStatusToolTip;
 @property (readonly) NSString *gpgStatusTitle;
 @property (readonly) GPGOptions *options;
+@property (readonly) NSString *versionDescription;
+@property (readonly) NSAttributedString *buildNumberDescription;
+
 
 @end
 
