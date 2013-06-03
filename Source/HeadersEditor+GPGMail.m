@@ -79,6 +79,13 @@
 
 - (void)MA_updateFromAndSignatureControls:(id)arg1 {
     [self MA_updateFromAndSignatureControls:arg1];
+	// Thanks to Hopper (YES, it's fantastic) it's not clear that
+	// _updateFromAndSignatureControls calls setAccountFieldEnabled|Visible
+	// on the ComposeHeaderView.
+	// Now to force the from (account field) it should suffice to simply
+	// call both methods with YES.
+	[[self valueForKey:@"_composeHeaderView"] setAccountFieldEnabled:YES];
+	[[self valueForKey:@"_composeHeaderView"] setAccountFieldVisible:YES];
     // If any luck, the security option should be known by now.
     ComposeBackEnd *backEnd = [(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd];
     GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
