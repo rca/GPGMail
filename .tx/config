@@ -1,5 +1,5 @@
 [main]
-host = https://www.transifex.net
+host = https://www.transifex.com
  
 [GPGMail.General]
 file_filter = Resources/<lang>.lproj/GPGMail.strings
