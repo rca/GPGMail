@@ -182,7 +182,12 @@
             ret = [self MADecodeWithContext:ctx];
     }
     else {
-        ret = [self MADecodeWithContext:ctx];
+		// Set a flag that this is not a PGPMimeEncrypted message
+		// and thus snippets should not be created.
+		// Snippets should never be generated for inline PGP messages,
+		// since they are never deleted unlike with PGP/MIME messages.
+		[currentMessage setIvar:@"DoNotCreateSnippetsForMessage" value:[NSNumber numberWithBool:YES]];
+		ret = [self MADecodeWithContext:ctx];
     }
     
     // Loop through all the mime parts that have been processed and set
@@ -192,9 +197,9 @@
     // would be overwritten. To avoid this, a check is performed if the PGP info was already
     // collected. If that's the case, skip the collecting
     if([self parentPart] == nil && !currentMessage.PGPInfoCollected) {
-        [currentMessage collectPGPInformationStartingWithMimePart:self
-                                        decryptedBody:nil];
-    }
+		[currentMessage removeIvar:@"DoNotCreateSnippetsForMessage"];
+		[currentMessage collectPGPInformationStartingWithMimePart:self decryptedBody:nil];
+	}
 
     // To remove .sig attachments, they have to be removed.
     // from the ParsedMessage html.

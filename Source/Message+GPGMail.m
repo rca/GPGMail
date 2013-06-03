@@ -446,16 +446,27 @@
     // CreatePreviewSnippets is set? Always return true.
     DebugLog(@"Create Preview snippets: %@", [[GPGOptions sharedOptions] boolForKey:@"CreatePreviewSnippets"] ? @"YES" : @"NO");
     DebugLog(@"User Selected Message: %@", [[self getIvar:@"UserSelectedMessage"] boolValue] ? @"YES" : @"NO");
-    
-	// Always disable snippet generation in classic view.
-	// RichMessageList is set to false in case of classic view.
+	
+	BOOL userDidSelectMessage = [[self getIvar:@"UserSelectedMessage"] boolValue];
+	
+	// Always *create snippet* (decrypt data) if the user actively selected the message.
+	if(userDidSelectMessage)
+		return YES;
+	
+	// Otherwise the following rules apply:
+	// * classic view is enabled (RichMessageList preference set to false) -> don't create the snippet.
+	// * inline pgp message (DoNotCreateSnippetsForThisMessage flag is set) -> don't create the snippet
+	// * none of the above and CreatePreviewSnippets preference is set -> create the snippet
+	// * none of the above but passphrase for key is available (gpg-agent or keychain) -> create the snippet
 	BOOL classicView = ![[NSUserDefaults standardUserDefaults] boolForKey:@"RichMessageList"];
 	
-	if(classicView && ![[self getIvar:@"UserSelectedMessage"] boolValue])
+	if(classicView)
 		return NO;
-		
-	if([[GPGOptions sharedOptions] boolForKey:@"CreatePreviewSnippets"] ||
-	   [[self getIvar:@"UserSelectedMessage"] boolValue])
+	
+	if([[self getIvar:@"DoNotCreateSnippetsForMessage"] boolValue])
+		return NO;
+	
+	if([[GPGOptions sharedOptions] boolForKey:@"CreatePreviewSnippets"])
 		return YES;
     
     // Otherwise check if the passphrase is already cached. If it is
