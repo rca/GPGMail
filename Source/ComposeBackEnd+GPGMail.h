@@ -176,6 +176,17 @@
 - (BOOL)messageIsBeingReplied;
 
 /**
+ Returns if the user is continuing to edit a draft.
+ */
+- (BOOL)draftIsContinued;
+
+/**
+ This hook is necessary to determine whether or not a user continues editing a draft.
+ Unfortunately the -[ComposeBackEnd type] doesn't reflect that.
+ */
+- (void)MA_configureLastDraftInformationFromHeaders:(id)headers overwrite:(BOOL)overwrite;
+
+/**
  Posts the SecurityMethodDidChange notification.
  */
 - (void)postSecurityMethodDidChangeNotification:(GPGMAIL_SECURITY_METHOD)securityMethod;

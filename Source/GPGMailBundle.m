@@ -104,6 +104,7 @@ disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus, bundleImages = _bun
                              @"setEncryptIfPossible:",
                              @"setSignIfPossible:",
                              @"_saveThreadShouldCancel",
+                             @"_configureLastDraftInformationFromHeaders:overwrite:",
                              nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"HeadersEditor", @"class",

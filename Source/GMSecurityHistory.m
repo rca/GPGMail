@@ -297,6 +297,22 @@
     return [GMSecurityOptions securityOptionsWithSecurityMethod:securityMethod shouldSign:canSign shouldEncrypt:canEncrypt];
 }
 
+- (GMSecurityOptions *)bestSecurityOptionsForMessageDraft:(Message *)message signFlags:(GPGMAIL_SIGN_FLAG)signFlags
+                                               encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags {
+	GMSecurityOptions *defaultSecurityOptions = [self securityOptionsFromDefaults];
+	
+	GPGMAIL_SECURITY_METHOD securityMethod = defaultSecurityOptions.securityMethod;
+	// If the message was signed or encrypted, we know what security method was used
+	// and will re-use that. Otherwise, use the default setting.
+	if([message isSigned] || [message isEncrypted])
+		securityMethod = [message isSMIMEEncrypted] || [message isSMIMESigned] ? GPGMAIL_SECURITY_METHOD_SMIME : GPGMAIL_SECURITY_METHOD_OPENPGP;
+	
+	BOOL shouldSign = [message isSigned];
+	BOOL shouldEncrypt = [message isEncrypted];
+	
+	return [GMSecurityOptions securityOptionsWithSecurityMethod:securityMethod shouldSign:shouldSign shouldEncrypt:shouldEncrypt];
+}
+
 + (NSSet *)_uniqueRecipients:(NSArray *)recipients {
     // Apparently mutable sets are not a good choice for NSDictionary lookups,
     // so let's make a non mutable first.

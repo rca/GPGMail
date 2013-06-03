@@ -542,6 +542,10 @@
             Message *originalMessage = [((ComposeBackEnd *)self) originalMessage];
             securityOptions = [securityHistory bestSecurityOptionsForReplyToMessage:originalMessage signFlags:signFlags encryptFlags:encryptFlags];
         }
+		else if([self draftIsContinued]) {
+			Message *originalMessage = [((ComposeBackEnd *)self) originalMessage];
+			securityOptions = [securityHistory bestSecurityOptionsForMessageDraft:originalMessage signFlags:signFlags encryptFlags:encryptFlags];
+		}
         else {
             securityOptions = [securityHistory bestSecurityOptionsForSender:sender recipients:recipients signFlags:signFlags encryptFlags:encryptFlags];
         }
@@ -691,12 +695,21 @@
     [self setIvar:@"UserDidChooseSecurityMethod" value:[NSNumber numberWithBool:userDidChoose]];
 }
 
+- (void)MA_configureLastDraftInformationFromHeaders:(id)headers overwrite:(BOOL)overwrite {
+	[self setIvar:@"DraftIsContinued" value:[NSNumber numberWithBool:YES]];
+	[self MA_configureLastDraftInformationFromHeaders:headers overwrite:overwrite];
+}
+
 - (BOOL)messageIsBeingReplied {
     // 1 = Reply
     // 2 = Reply to all.
     // 4 = Restored Reply window.
     NSInteger type = [(ComposeBackEnd *)self type];
-    return type == 1 || type == 2 || type == 4;
+    return (type == 1 || type == 2 || type == 4) && ![self draftIsContinued];
+}
+
+- (BOOL)draftIsContinued {
+	return [[self getIvar:@"DraftIsContinued"] boolValue];
 }
 
 - (void)postSecurityMethodDidChangeNotification:(GPGMAIL_SECURITY_METHOD)securityMethod {

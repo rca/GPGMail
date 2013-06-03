@@ -41,7 +41,9 @@
                                      encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags;
 - (GMSecurityOptions *)bestSecurityOptionsForReplyToMessage:(Message *)message signFlags:(GPGMAIL_SIGN_FLAG)signFlags 
                                                encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags;
-- (GMSecurityOptions *)bestSecurityOptionsForSender:(NSString *)sender recipients:(NSArray *)recipients securityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod 
+- (GMSecurityOptions *)bestSecurityOptionsForMessageDraft:(Message *)message signFlags:(GPGMAIL_SIGN_FLAG)signFlags
+											 encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags;
+- (GMSecurityOptions *)bestSecurityOptionsForSender:(NSString *)sender recipients:(NSArray *)recipients securityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod
                                             canSign:(BOOL)canSign canEncrypt:(BOOL)canEncrypt;
 
 - (GMSecurityOptions *)_getSignAndEncryptOptionsForSender:(NSString *)sender recipients:(NSSet *)recipients securityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod 
