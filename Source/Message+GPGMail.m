@@ -447,9 +447,16 @@
     DebugLog(@"Create Preview snippets: %@", [[GPGOptions sharedOptions] boolForKey:@"CreatePreviewSnippets"] ? @"YES" : @"NO");
     DebugLog(@"User Selected Message: %@", [[self getIvar:@"UserSelectedMessage"] boolValue] ? @"YES" : @"NO");
     
-    if([[GPGOptions sharedOptions] boolForKey:@"CreatePreviewSnippets"] ||
-       [[self getIvar:@"UserSelectedMessage"] boolValue])
-        return YES;
+	// Always disable snippet generation in classic view.
+	// RichMessageList is set to false in case of classic view.
+	BOOL classicView = ![[NSUserDefaults standardUserDefaults] boolForKey:@"RichMessageList"];
+	
+	if(classicView && ![[self getIvar:@"UserSelectedMessage"] boolValue])
+		return NO;
+		
+	if([[GPGOptions sharedOptions] boolForKey:@"CreatePreviewSnippets"] ||
+	   [[self getIvar:@"UserSelectedMessage"] boolValue])
+		return YES;
     
     // Otherwise check if the passphrase is already cached. If it is
     // return true, 'cause the user want be asked for the passphrase again.
