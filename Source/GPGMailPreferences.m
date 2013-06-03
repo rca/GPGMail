@@ -90,15 +90,15 @@
 
 /* Open FAQ page. */
 - (IBAction)openFAQ:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://gpgtools.org/faq.html"]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://support.gpgtools.org/kb"]];
 }
 /* Open donation page. */
 - (IBAction)openDonation:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://gpgtools.org/donate.html"]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://gpgtools.org/donate.html"]];
 }
 /* Open contact page. */
-- (IBAction)openContact:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://gpgtools.org/about.html"]];
+- (IBAction)openSupport:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://support.gpgtools.org/"]];
 }
 
 - (IBAction)openGPGStatusHelp:(id)sender {

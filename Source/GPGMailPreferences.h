@@ -39,8 +39,8 @@
 - (IBAction)openFAQ:(id)sender;
 /* Open donation page. */
 - (IBAction)openDonation:(id)sender;
-/* Open contact page. */
-- (IBAction)openContact:(id)sender;
+/* Open support page. */
+- (IBAction)openSupport:(id)sender;
 
 - (IBAction)openGPGStatusHelp:(id)sender;
 
