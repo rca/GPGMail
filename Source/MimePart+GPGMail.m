@@ -1574,7 +1574,6 @@
     // marked as such.
     // Eventually add warning for this.
     gpgc.trustAllKeys = YES;
-    gpgc.printVersion = YES;
     @try {
         *encryptedData = [gpgc processData:data withEncryptSignMode:GPGPublicKeyEncrypt recipients:flattenedNormalKeyList hiddenRecipients:flattenedBCCKeyList];
 		
@@ -1641,7 +1640,6 @@
     // marked as such.
     // Eventually add warning for this.
     gpgc.trustAllKeys = YES;
-    gpgc.printVersion = YES;
     
 	[gpgc setSignerKey:keyForSigning];
     
@@ -1739,7 +1737,6 @@
     // marked as such.
     // Eventually add warning for this.
     gpgc.trustAllKeys = YES;
-    gpgc.printVersion = YES;
 	[gpgc setSignerKey:keyForSigning];
     NSData *signedData = nil;
 	
