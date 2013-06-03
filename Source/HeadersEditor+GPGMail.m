@@ -35,6 +35,7 @@
 #import "Message+GPGMail.h"
 #import "MailDocumentEditor+GPGMail.h"
 #import "HeadersEditor.h"
+#import "ComposeHeaderView.h"
 #import "HeadersEditor+GPGMail.h"
 #import "ComposeBackEnd.h"
 #import "ComposeBackEnd+GPGMail.h"
@@ -84,8 +85,8 @@
 	// on the ComposeHeaderView.
 	// Now to force the from (account field) it should suffice to simply
 	// call both methods with YES.
-	[[self valueForKey:@"_composeHeaderView"] setAccountFieldEnabled:YES];
-	[[self valueForKey:@"_composeHeaderView"] setAccountFieldVisible:YES];
+	[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] setAccountFieldEnabled:YES];
+	[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] setAccountFieldVisible:YES];
     // If any luck, the security option should be known by now.
     ComposeBackEnd *backEnd = [(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd];
     GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
