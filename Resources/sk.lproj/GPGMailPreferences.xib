@@ -40,7 +40,7 @@
 				<string key="NSClassName">NSApplication</string>
 			</object>
 			<object class="NSBox" id="85714290">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSView" id="782958523">
@@ -50,7 +50,7 @@
 							<object class="NSButton" id="997375455">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{193, 137}, {225, 18}}</string>
+								<string key="NSFrame">{{193, 137}, {313, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="386760937"/>
 								<bool key="NSEnabled">YES</bool>
@@ -83,7 +83,7 @@
 							<object class="NSButton" id="63115413">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{193, 117}, {228, 18}}</string>
+								<string key="NSFrame">{{193, 117}, {249, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="758835818"/>
 								<bool key="NSEnabled">YES</bool>
@@ -194,7 +194,7 @@
 							<object class="NSTextField" id="97310430">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{192, 161}, {59, 17}}</string>
+								<string key="NSFrame">{{192, 161}, {86, 17}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="984611941"/>
 								<bool key="NSEnabled">YES</bool>
@@ -232,7 +232,7 @@
 							<object class="NSTextField" id="443272866">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{192, 271}, {80, 17}}</string>
+								<string key="NSFrame">{{192, 271}, {82, 17}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="915859109"/>
 								<bool key="NSEnabled">YES</bool>
@@ -250,7 +250,7 @@
 							<object class="NSButton" id="113600817">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{193, 192}, {141, 18}}</string>
+								<string key="NSFrame">{{193, 192}, {149, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="25399615"/>
 								<bool key="NSEnabled">YES</bool>
@@ -274,7 +274,7 @@
 							<object class="NSTextField" id="696331322">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{192, 216}, {59, 17}}</string>
+								<string key="NSFrame">{{192, 216}, {51, 17}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="113600817"/>
 								<bool key="NSEnabled">YES</bool>
@@ -376,7 +376,7 @@
 							<object class="NSButton" id="915859109">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{193, 247}, {212, 18}}</string>
+								<string key="NSFrame">{{193, 247}, {208, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="696331322"/>
 								<string key="NSReuseIdentifierKey">_NS:717</string>
@@ -492,6 +492,7 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{558, 335}</string>
+				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="782958523"/>
 				<string key="NSOffsets">{0, 0}</string>
 				<object class="NSTextFieldCell" key="NSTitleCell">
@@ -1260,79 +1261,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">953</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">GMSpecialBox</string>
-					<string key="superclassName">NSBox</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GMSpecialBox.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">GPGMailPreferences</string>
-					<string key="superclassName">NSPreferencesModule</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="copyVersionInfo:">id</string>
-						<string key="openContact:">id</string>
-						<string key="openDonation:">id</string>
-						<string key="openFAQ:">id</string>
-						<string key="openGPGStatusHelp:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="copyVersionInfo:">
-							<string key="name">copyVersionInfo:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="openContact:">
-							<string key="name">openContact:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="openDonation:">
-							<string key="name">openDonation:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="openFAQ:">
-							<string key="name">openFAQ:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="openGPGStatusHelp:">
-							<string key="name">openGPGStatusHelp:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GPGMailPreferences.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">GPGOptions</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GPGOptions.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSButton_LinkCursor</string>
-					<string key="superclassName">NSButton</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/NSButton_LinkCursor.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSPreferencesModule</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/NSPreferencesModule.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
