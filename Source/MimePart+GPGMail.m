@@ -1537,7 +1537,7 @@
 //    DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
     // First thing todo, check if an address with the gpg-mail prefix is found.
     // If not, S/MIME is wanted.
-    NSArray *prefixedAddresses = [recipients filter:^(id recipient){
+    NSArray *prefixedAddresses = [recipients filter:^id (id recipient){
         return [(NSString *)recipient isFlaggedValue] ? recipient : nil;
     }];
     if(![prefixedAddresses count])
@@ -1560,10 +1560,17 @@
 		
         if([@"bcc" isEqualTo:[recipient valueForFlag:@"recipientType"]])
             [bccRecipients addObject:recipient];
-        else
-            [normalRecipients addObject:recipient];
+        else {
+			// If DoNotEncryptToSelf is enabled, don't add the sender to the recipients.
+			// Of course this has the effect that the sent mails can't be read by the sender,
+			// but that's exactly what this option is for.
+			if([[recipient valueForFlag:@"recipientType"] isEqualToString:@"from"] &&
+			   [[GPGOptions sharedOptions] boolForKey:@"DoNotEncryptToSelf"])
+				continue;
+			[normalRecipients addObject:recipient];
+		}
     }
-    
+	
     // Ask the mail bundle for the GPGKeys matching the email address.
     NSSet *normalKeyList = [[GPGMailBundle sharedInstance] publicKeyListForAddresses:normalRecipients];
     NSMutableSet *bccKeyList = [[GPGMailBundle sharedInstance] publicKeyListForAddresses:bccRecipients];
