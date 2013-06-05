@@ -27,7 +27,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@interface HeadersEditor_GPGMail : NSObject
+@interface HeadersEditor_GPGMail : NSObject <NSWindowDelegate>
 
 /**
  Is called whenever the user clicks on either the sign or encrypt icon
@@ -73,5 +73,6 @@
  Reset the forced image on the security buttons
  */
 - (void)resetSecurityButtons;
+
 
 @end
