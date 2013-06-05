@@ -1,6 +1,8 @@
 #import <Cocoa/Cocoa.h>
 
-@interface GMComposeKeyEventHandler : NSView
+@interface GMComposeKeyEventHandler : NSView {
+	NSArray *eventsAndSelectors;
+}
 
 /*
  * eventsAndSelectors
