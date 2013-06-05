@@ -94,7 +94,7 @@
 }
 /* Open donation page. */
 - (IBAction)openDonation:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://gpgtools.org/donate.html"]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://gpgtools.org/donate.html#donate-paypal"]];
 }
 /* Open contact page. */
 - (IBAction)openSupport:(id)sender {
