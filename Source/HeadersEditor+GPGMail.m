@@ -44,6 +44,7 @@
 #import "GMSecurityControl.h"
 #import "NSObject+LPDynamicIvars.h"
 #import <NSString-EmailAddressString.h>
+#import "GMComposeKeyEventHandler.h"
 
 @interface HeadersEditor_GPGMail (NoImplementation)
 - (void)changeFromHeader:(NSPopUpButton *)sender;
@@ -54,20 +55,34 @@
 - (void)MAAwakeFromNib {
     [self MAAwakeFromNib];
 
-    GMSecurityControl *signControl = [[GMSecurityControl alloc] initWithControl:[self valueForKey:@"_signButton"] tag:SECURITY_BUTTON_SIGN_TAG];
+	GMSecurityControl *signControl = [[GMSecurityControl alloc] initWithControl:[self valueForKey:@"_signButton"] tag:SECURITY_BUTTON_SIGN_TAG];
     [self setValue:signControl forKey:@"_signButton"];
-    [signControl release];
     
     GMSecurityControl *encryptControl = [[GMSecurityControl alloc] initWithControl:[self valueForKey:@"_encryptButton"] tag:SECURITY_BUTTON_ENCRYPT_TAG];
     [self setValue:encryptControl forKey:@"_encryptButton"];
-    [encryptControl release];
+	
+	
+	GMComposeKeyEventHandler *handler = [[GMComposeKeyEventHandler alloc] initWithView:[[self valueForKey:@"_signButton"] superview]];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wselector"
+	handler.eventsAndSelectors = @[
+		@{@"keyEquivalent": @"y", @"keyEquivalentModifierMask": @(NSCommandKeyMask | NSAlternateKeyMask), @"target": encryptControl, @"selector": [NSValue valueWithPointer:@selector(performClick:)]},
+		@{@"keyEquivalent": @"x", @"keyEquivalentModifierMask": @(NSCommandKeyMask | NSAlternateKeyMask), @"target": signControl, @"selector": [NSValue valueWithPointer:@selector(performClick:)]},
+	];
+#pragma clang diagnostic pop
+
+	
+	[handler release];
+	[signControl release];
+    [encryptControl release];	
 }
 
 - (void)MASecurityControlChanged:(id)securityControl {
     GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
     GMSecurityControl *encryptControl = [self valueForKey:@"_encryptButton"];
     NSSegmentedControl *originalSecurityControl = securityControl;
-    
+	
+	    
     securityControl = signControl.control == securityControl ? signControl : encryptControl;
     // The securityControl passed to this method is an NSSegmentControl.
 	// So the only chance to find out what the new status of the control is,
