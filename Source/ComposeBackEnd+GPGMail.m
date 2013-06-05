@@ -18,6 +18,7 @@
 #import <MutableMessageHeaders.h>
 #import <MailNotificationCenter.h>
 #import <ComposeBackEnd.h>
+#import "MessageAttachment.h"
 #import "CCLog.h"
 #import "NSObject+LPDynamicIvars.h"
 #import "NSString+GPGMail.h"
@@ -119,6 +120,17 @@
         shouldPGPSign = [[self getIvar:@"shouldSign"] boolValue];
         shouldPGPEncrypt = [[self getIvar:@"shouldEncrypt"] boolValue];
     }
+	
+	// If this message is a calendar event which is being sent from iCal without user interaction (ForceSign and ForceEncrypt are NOT set),
+	// it should never be encrypted nor signed.
+	if([self sentActionInvokedFromiCalWithContents:contents] && ![self ivarExists:@"ForceSign"] &&
+	   ![self ivarExists:@"ForceEncrypt"]) {
+		shouldPGPEncrypt = NO;
+		shouldPGPSign = NO;
+		shouldSign = NO;
+		shouldEncrypt = NO;
+	}	
+	
     // At the moment for drafts signing and encrypting is disabled.
     // GPG not enabled, or neither encrypt nor sign are checked, let's get the shit out of here.
     if(!shouldPGPEncrypt && !shouldPGPSign) {
@@ -251,6 +263,28 @@
     return outgoingMessage;
 }
 
+- (BOOL)sentActionInvokedFromiCalWithContents:(WebComposeMessageContents *)contents {
+	if([contents.attachmentsAndHtmlStrings count] == 0)
+		return NO;
+	
+	
+	BOOL fromiCal = NO;
+	for(id item in contents.attachmentsAndHtmlStrings) {
+		if([item isKindOfClass:[MessageAttachment class]]) {
+			MessageAttachment *attachment = (MessageAttachment *)item;
+			// For some non apparent reason, iCal invitations are not recognized by isCalendarInvitation anymore...
+			// so let's check for text/calendar AND isCalendarInvitation.
+			if(([[[attachment mimeType] lowercaseString] isEqualToString:@"text/calendar"] || attachment.isCalendarInvitation) &&
+			   [[attachment filename] rangeOfString:@"iCal"].location != NSNotFound &&
+			   [[attachment filename] rangeOfString:@".ics"].location != NSNotFound) {
+				fromiCal = YES;
+				break;
+			}
+		}
+	}
+	
+	return fromiCal;
+}
 
 - (void)didCancelMessageDeliveryForError:(NSError *)error {
     [(MailDocumentEditor *)[(ComposeBackEnd *)self delegate] backEnd:self didCancelMessageDeliveryForEncryptionError:error];
@@ -729,9 +763,3 @@
 }
 
 @end
-
-/*
- Flags abfragen
- struct ComposeBackEndFlags flags;
- object_getInstanceVariable(self, "_flags", (void **)&flags);
-*/

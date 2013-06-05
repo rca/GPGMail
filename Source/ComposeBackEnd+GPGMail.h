@@ -191,4 +191,10 @@
  */
 - (void)postSecurityMethodDidChangeNotification:(GPGMAIL_SECURITY_METHOD)securityMethod;
 
+/**
+ Checks the contents of a message and tries to determine, whether the sent action
+ was invoked by iCal, in which case, the message is not to be encrypted nor signed.
+ */
+- (BOOL)sentActionInvokedFromiCalWithContents:(WebComposeMessageContents *)contents;
+
 @end
