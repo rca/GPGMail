@@ -1236,10 +1236,22 @@
 - (BOOL)MAUsesKnownSignatureProtocol {
     // Check if message should be processed (-[Message shouldBePGPProcessed])
     // otherwise out of here!
-    if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
+    
+	// It looks like, among other things, Mail.app uses this method to determine
+	// whether the message is S/MIME signed, in order to then decide,
+	// HOW the message body should be fetched from the server, which
+	// is pretty significant for signed messages.
+	// See ticket #600 to find out more.
+	// In order to force Mail.app to fetch PGP/MIME signed messages the exact
+	// same way as S/MIME signed messages, return YES if the protocol
+	// of the mime part matches application/pgp-signature.
+	// shouldBePGPProcessed is ignored at this stage, since the mimeBody
+	// nor the message are yet available.
+	
+	if([(MimeBody *)[self mimeBody] message] && ![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
         return [self MAUsesKnownSignatureProtocol];
     
-    if([[self bodyParameterForKey:@"protocol"] isEqualToString:@"application/pgp-signature"])
+    if([[[self bodyParameterForKey:@"protocol"] lowercaseString] isEqualToString:@"application/pgp-signature"])
         return YES;
     return [self MAUsesKnownSignatureProtocol];
 }
