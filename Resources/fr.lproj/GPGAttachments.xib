@@ -591,7 +591,7 @@
 																	<int key="NSvFlags">284</int>
 																	<string key="NSFrame">{{50, 0}, {350, 238}}</string>
 																	<reference key="NSSuperview" ref="44245670"/>
-																	<reference key="NSNextKeyView" ref="937110649"/>
+																	<reference key="NSNextKeyView" ref="463642861"/>
 																	<string key="NSReuseIdentifierKey">_NS:360</string>
 																	<string key="NSAntiCompressionPriority">{250, 750}</string>
 																	<bool key="NSEnabled">YES</bool>
@@ -618,7 +618,7 @@ w6ljaGFyZ2VyIGxhIGNsw6kgw6AgbCdhaWRlIGRlIEdQRyBLZXljaGFpbiBBY2Nlc3MuA</string>
 																	<int key="NSvFlags">284</int>
 																	<string key="NSFrame">{{50, 91}, {370, 17}}</string>
 																	<reference key="NSSuperview" ref="44245670"/>
-																	<reference key="NSNextKeyView" ref="138322284"/>
+																	<reference key="NSNextKeyView" ref="937110649"/>
 																	<string key="NSReuseIdentifierKey">_NS:3944</string>
 																	<bool key="NSEnabled">YES</bool>
 																	<object class="NSTextFieldCell" key="NSCell" id="233414006">
@@ -654,7 +654,7 @@ w6ljaGFyZ2VyIGxhIGNsw6kgw6AgbCdhaWRlIGRlIEdQRyBLZXljaGFpbiBBY2Nlc3MuA</string>
 																	</object>
 																	<string key="NSFrame">{{6, 82}, {32, 32}}</string>
 																	<reference key="NSSuperview" ref="44245670"/>
-																	<reference key="NSNextKeyView" ref="463642861"/>
+																	<reference key="NSNextKeyView" ref="138322284"/>
 																	<string key="NSReuseIdentifierKey">_NS:2141</string>
 																	<bool key="NSEnabled">YES</bool>
 																	<object class="NSImageCell" key="NSCell" id="800216610">
@@ -690,7 +690,7 @@ w6ljaGFyZ2VyIGxhIGNsw6kgw6AgbCdhaWRlIGRlIEdQRyBLZXljaGFpbiBBY2Nlc3MuA</string>
 																	<int key="NSvFlags">284</int>
 																	<string key="NSFrame">{{50, 0}, {350, 238}}</string>
 																	<reference key="NSSuperview" ref="210185846"/>
-																	<reference key="NSNextKeyView" ref="44245670"/>
+																	<reference key="NSNextKeyView" ref="834668756"/>
 																	<string key="NSReuseIdentifierKey">_NS:360</string>
 																	<string key="NSAntiCompressionPriority">{250, 750}</string>
 																	<bool key="NSEnabled">YES</bool>
@@ -713,7 +713,7 @@ w6ljaGFyZ2VyIGxhIGNsw6kgw6AgbCdhaWRlIGRlIEdQRyBLZXljaGFpbiBBY2Nlc3MuA</string>
 																	<int key="NSvFlags">284</int>
 																	<string key="NSFrame">{{50, 91}, {370, 17}}</string>
 																	<reference key="NSSuperview" ref="210185846"/>
-																	<reference key="NSNextKeyView" ref="1051878768"/>
+																	<reference key="NSNextKeyView" ref="44245670"/>
 																	<string key="NSReuseIdentifierKey">_NS:3944</string>
 																	<bool key="NSEnabled">YES</bool>
 																	<object class="NSTextFieldCell" key="NSCell" id="812424302">
@@ -745,7 +745,7 @@ w6ljaGFyZ2VyIGxhIGNsw6kgw6AgbCdhaWRlIGRlIEdQRyBLZXljaGFpbiBBY2Nlc3MuA</string>
 																	</object>
 																	<string key="NSFrame">{{6, 82}, {32, 32}}</string>
 																	<reference key="NSSuperview" ref="210185846"/>
-																	<reference key="NSNextKeyView" ref="834668756"/>
+																	<reference key="NSNextKeyView" ref="1051878768"/>
 																	<string key="NSReuseIdentifierKey">_NS:2141</string>
 																	<bool key="NSEnabled">YES</bool>
 																	<object class="NSImageCell" key="NSCell" id="643047161">
@@ -854,7 +854,7 @@ w6ljaGFyZ2VyIGxhIGNsw6kgw6AgbCdhaWRlIGRlIEdQRyBLZXljaGFpbiBBY2Nlc3MuA</string>
 					<reference key="NSNextKeyView" ref="1007890871"/>
 					<string key="NSReuseIdentifierKey">_NS:207</string>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
