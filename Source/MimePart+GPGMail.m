@@ -656,11 +656,23 @@
         message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
     }
     else if(((GPGException *)operationError).errorCode == GPGErrorNoSecretKey) {
+		NSArray *missingKeys = [[(GPGException *)operationError gpgTask].statusDict objectForKey:@"NO_SECKEY"]; //Array of Arrays of String!
+		NSMutableString *keyIDs = [NSMutableString string];
+		NSUInteger count = missingKeys.count - 1;
+		NSUInteger i = 0;
+		for (; i < count; i++) {
+			[keyIDs appendFormat:@"%@, ", [(NSString *)missingKeys[i][0] shortKeyID]];
+		}
+		[keyIDs appendFormat:@"%@", [(NSString *)missingKeys[i][0] shortKeyID]];
+		
+		
         titleKey = [NSString stringWithFormat:@"%@_DECRYPT_SECKEY_ERROR_TITLE", prefix];
         messageKey = [NSString stringWithFormat:@"%@_DECRYPT_SECKEY_ERROR_MESSAGE", prefix];
         
         title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
         message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
+		
+		message = [NSString stringWithFormat:message, keyIDs];
     }
     else if(((GPGException *)operationError).errorCode == GPGErrorWrongSecretKey) {
         titleKey = [NSString stringWithFormat:@"%@_DECRYPT_WRONG_SECKEY_ERROR_TITLE", prefix];
