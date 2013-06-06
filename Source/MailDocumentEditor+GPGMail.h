@@ -90,11 +90,5 @@
  */
 - (void)MADealloc;
 
-/**
- Entry point to add the title bar accessory view.
- */
-- (void)MABackEndDidLoadInitialContent:(id)content;
-
-- (void)keyringUpdated:(NSNotification *)notification;
 
 @end

@@ -150,7 +150,6 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 - (BOOL)canEncryptMessagesToAddress:(NSString *)address;
 - (BOOL)canSignMessagesFromAddress:(NSString *)address;
 - (NSSet *)signingKeyListForAddress:(NSString *)sender;
-- (GPGKey *)bestKeyOfUserIDs:(NSSet *)userIDs;
 
 
 // Allows to schedule decryption tasks which will block as

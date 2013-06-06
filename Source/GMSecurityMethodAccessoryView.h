@@ -122,7 +122,5 @@
  consideration.
  */
 - (void)updateAndCenterLabelForItem:(NSMenuItem *)item;
-- (void)configureForFullScreenWindow:(NSWindow *)window;
-- (void)configureForWindow:(NSWindow *)window;
 
 @end
