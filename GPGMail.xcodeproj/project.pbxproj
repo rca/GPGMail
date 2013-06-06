@@ -1580,7 +1580,7 @@
 		30CDD51A175CAE4B00BEC95C /* cs */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = cs; path = cs.lproj/GPGMailPreferences.xib; sourceTree = "<group>"; };
 		30CDD51B175CAE4B00BEC95C /* cs */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = cs; path = cs.lproj/GPGSignatureView.xib; sourceTree = "<group>"; };
 		30D00A1F175CAC5100E209FD /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/GPGAttachment.strings; sourceTree = "<group>"; };
-		30D00A22175CAC5100E209FD /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/GPGMail.strings; sourceTree = "<group>"; };
+		30D00A22175CAC5100E209FD /* ca */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/GPGMail.strings; sourceTree = "<group>"; };
 		30D00A27175CAC5100E209FD /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/SignatureView.strings; sourceTree = "<group>"; };
 		30D00A2B175CAC6C00E209FD /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/GPGAttachments.xib.strings; sourceTree = "<group>"; };
 		30D00A2C175CAC6C00E209FD /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
@@ -1593,7 +1593,7 @@
 		30D00A36175CAC7600E209FD /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/SignatureView.strings; sourceTree = "<group>"; };
 		30D00A37175CAC7C00E209FD /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/GPGAttachment.strings; sourceTree = "<group>"; };
 		30D00A38175CAC7C00E209FD /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/GPGAttachments.xib.strings; sourceTree = "<group>"; };
-		30D00A39175CAC7C00E209FD /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/GPGMail.strings; sourceTree = "<group>"; };
+		30D00A39175CAC7C00E209FD /* da */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/GPGMail.strings; sourceTree = "<group>"; };
 		30D00A3A175CAC7C00E209FD /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
 		30D00A3B175CAC7C00E209FD /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/GPGSignatureView.xib.strings; sourceTree = "<group>"; };
 		30D00A3C175CAC7C00E209FD /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/SignatureView.strings; sourceTree = "<group>"; };
