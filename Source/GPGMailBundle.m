@@ -143,8 +143,12 @@ disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus, bundleImages = _bun
                             @"MessageContentController", @"class",
                             @"MessageContentController_GPGMail", @"gpgMailClass",
                             [NSArray arrayWithObjects:
-                             @"setMessageToDisplay:",
-                             @"_backgroundLoadFinished:", nil], @"selectors", nil],
+                             @"setMessageToDisplay:", nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"BannerController", @"class",
+                            @"BannerController_GPGMail", @"gpgMailClass",
+                            [NSArray arrayWithObjects:
+                             @"updateBannerForViewingState:", nil], @"selectors", nil],
                            // Messages.framework classes. Messages.framework classes can be extended using
                            // categories. No need for a special GPGMail class.
                            [NSDictionary dictionaryWithObjectsAndKeys:

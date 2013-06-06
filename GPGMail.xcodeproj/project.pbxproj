@@ -41,6 +41,7 @@
 		1BB80746150C58660023E45F /* Test.html in Resources */ = {isa = PBXBuildFile; fileRef = 1BB80744150C58660023E45F /* Test.html */; };
 		1BBEF49C13A9115E0037E53D /* NSSet+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBEF49B13A9115E0037E53D /* NSSet+Functional.m */; };
 		1BC4778D1468AA4F0061120C /* GPGAttachmentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4778C1468AA4F0061120C /* GPGAttachmentController.m */; };
+		1BEA7AC51760AB5B0084B2AD /* BannerController+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEA7AC41760AB5B0084B2AD /* BannerController+GPGMail.m */; };
 		1BED92F81079529C00D22B4C /* GPGMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A806E0838E9B10052F47C /* GPGMailBundle.m */; };
 		1BED9357107957E700D22B4C /* GPGMailPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A80710838E9B10052F47C /* GPGMailPreferences.m */; };
 		1BED936B107958C700D22B4C /* NSString+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A807B0838E9B10052F47C /* NSString+GPGMail.m */; };
@@ -1373,6 +1374,8 @@
 		1BCD9A5D13A8C762003024C7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1BCEE1E211CC051500488D19 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = SOURCE_ROOT; };
 		1BDAA67313EB680D00F27826 /* CODING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CODING; sourceTree = "<group>"; };
+		1BEA7AC31760AB5B0084B2AD /* BannerController+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BannerController+GPGMail.h"; sourceTree = "<group>"; };
+		1BEA7AC41760AB5B0084B2AD /* BannerController+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BannerController+GPGMail.m"; sourceTree = "<group>"; };
 		1BECA61513E372AC00C622B0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SignatureView.strings; sourceTree = "<group>"; };
 		1BF51A6F108FCD1900AC8268 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
 		1BF69D7D1405C04E008B07F5 /* HeadersEditor+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HeadersEditor+GPGMail.h"; sourceTree = "<group>"; };
@@ -2973,6 +2976,7 @@
 				1B89E21514FC40F00012D4AD /* NSWindow+GPGMail.m */,
 				1B3F2FA013E59EE3006A8333 /* OptionalView+GPGMail.m */,
 				300F29BA175F460E00C435D2 /* GMComposeKeyEventHandler.m */,
+				1BEA7AC41760AB5B0084B2AD /* BannerController+GPGMail.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -3009,6 +3013,7 @@
 			isa = PBXGroup;
 			children = (
 				1B512327140937A7004D0818 /* NSBezierPathAdditions */,
+				1BEA7AC31760AB5B0084B2AD /* BannerController+GPGMail.h */,
 				1B4741CE14F550B700F36C54 /* GMSecurityControl.h */,
 				1B2341DC14FEEC8C0007EB64 /* GMSecurityMethodAccessoryView.h */,
 				1BC4778B1468AA4E0061120C /* GPGAttachmentController.h */,
@@ -3603,6 +3608,7 @@
 				1B97AE3815096FA700A4F0F2 /* MMStopwatch.m in Sources */,
 				4555EA4B150922DF00723E1F /* GPGException+GPGMail.m in Sources */,
 				300F29BB175F460E00C435D2 /* GMComposeKeyEventHandler.m in Sources */,
+				1BEA7AC51760AB5B0084B2AD /* BannerController+GPGMail.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
