@@ -661,9 +661,9 @@
 		NSUInteger count = missingKeys.count - 1;
 		NSUInteger i = 0;
 		for (; i < count; i++) {
-			[keyIDs appendFormat:@"%@, ", [(NSString *)missingKeys[i][0] shortKeyID]];
+			[keyIDs appendFormat:@"%@, ", [(NSString *)[[missingKeys objectAtIndex:0] objectAtIndex:0] shortKeyID]];
 		}
-		[keyIDs appendFormat:@"%@", [(NSString *)missingKeys[i][0] shortKeyID]];
+		[keyIDs appendFormat:@"%@", [(NSString *)[[missingKeys objectAtIndex:0] objectAtIndex:0] shortKeyID]];
 		
 		
         titleKey = [NSString stringWithFormat:@"%@_DECRYPT_SECKEY_ERROR_TITLE", prefix];
