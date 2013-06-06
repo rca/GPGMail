@@ -99,9 +99,10 @@
     GMSecurityMethodAccessoryView *accessoryView = [[GMSecurityMethodAccessoryView alloc] init];
     accessoryView.delegate = self;
     NSWindow *window = [self valueForKey:@"_window"];
-    
-    if(((MailDocumentEditor *)self).isModal || ((MailDocumentEditor *)self).possibleFullScreenViewerParent)
-       [accessoryView configureForFullScreenWindow:window];
+		
+	// Not longer used: if(((MailDocumentEditor *)self).isModal || ((MailDocumentEditor *)self).possibleFullScreenViewerParent)
+    if([NSApp mainWindow].styleMask & NSFullScreenWindowMask) // Only check the mein window to detect fullscreen.
+		[accessoryView configureForFullScreenWindow:window];
     else
         [accessoryView configureForWindow:window];
                                                     
