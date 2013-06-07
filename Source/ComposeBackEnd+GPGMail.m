@@ -34,6 +34,8 @@
 #import "ComposeBackEnd+GPGMail.h"
 #import "ActivityMonitor.h"
 #import <MFError.h>
+#import "NSData-MessageAdditions.h"
+
 
 @implementation ComposeBackEnd_GPGMail
 
@@ -222,6 +224,46 @@
 		}
 		return nil;
 	}
+	
+	
+	
+	
+	// Extract the keys used by MANewSignedPartWithData to sign the message. So we can add them as a mime part.
+	NSData *keysToAttach = nil;
+	range = [encryptedData rangeOfData:[gpgKeysIdentifierStart UTF8Data]];
+	if (range.length > 0) {
+		NSRange endRange = [encryptedData rangeOfData:[gpgKeysIdentifierEnd UTF8Data]];
+		if (endRange.length == 0) {
+			// Should we set any error here?
+			return nil;
+		}
+		
+		NSRange cutRange = NSMakeRange(range.location, endRange.location + endRange.length - range.location);
+		range.location += range.length;
+		range.length = endRange.location - range.location;
+		
+		NSArray *keys = [[[NSString alloc] initWithData:[encryptedData subdataWithRange:range] encoding:NSUTF8StringEncoding] componentsSeparatedByString:@","];
+		
+		GPGController *gpgc = [[GPGController alloc] init];
+		@try {
+			gpgc.useArmor = YES;
+			keysToAttach = [gpgc exportKeys:keys options:GPGExportMinimal];
+		}
+		@catch (NSException *exception) {
+			GPGDebugLog(@"Exception during exporting keys: %@", exception);
+		}
+		@finally {
+			[gpgc release];
+		}
+		
+		NSMutableData *mutableData = [NSMutableData dataWithData:encryptedData];
+		[mutableData replaceBytesInRange:cutRange withBytes:nil length:0];
+		encryptedData = mutableData;
+	}
+
+	
+	
+	
 
 	
     // And restore the original headers.
@@ -241,7 +283,7 @@
     
     if(!shouldCreatePGPInlineMessage) {
         // Check for preferences here, and set mime or plain version.
-        newBodyData = [self _newPGPBodyDataWithEncryptedData:encryptedData headers:[outgoingMessage headers] shouldBeMIME:YES];
+        newBodyData = [self _newPGPBodyDataWithEncryptedData:encryptedData headers:[outgoingMessage headers] shouldBeMIME:YES keysToAttach:nil /*keysToAttach*/];
     }
     else {
         newBodyData = [self _newPGPInlineBodyDataWithData:[[contents.plainText string] dataUsingEncoding:NSUTF8StringEncoding] headers:[outgoingMessage headers] shouldSign:shouldPGPInlineSign shouldEncrypt:shouldPGPInlineEncrypt];
@@ -325,7 +367,7 @@
     }
 }
 
-- (Subdata *)_newPGPBodyDataWithEncryptedData:(NSData *)encryptedData headers:(MutableMessageHeaders *)headers shouldBeMIME:(BOOL)shouldBeMIME {
+- (Subdata *)_newPGPBodyDataWithEncryptedData:(NSData *)encryptedData headers:(MutableMessageHeaders *)headers shouldBeMIME:(BOOL)shouldBeMIME keysToAttach:(NSData *)keysToAttach {
     // Now on to creating a new body and replacing the old one.
     NSString *boundary = (NSString *)[MimeBody newMimeBoundary];
     NSData *topData;
@@ -333,6 +375,8 @@
     MimePart *topPart;
     MimePart *versionPart;
     MimePart *dataPart;
+    MimePart *keysPart;
+	
     if(!shouldBeMIME) {
         topPart = [[MimePart alloc] init];
         [topPart setType:@"text"];
@@ -366,10 +410,22 @@
         dataPart.contentTransferEncoding = @"7bit";
         [dataPart setDisposition:@"inline"];
         [dataPart setDispositionParameter:@"encrypted.asc" forKey:@"filename"];
-        [dataPart setContentDescription:@"OpenPGP encrypted message"];
-        // 4. Append both parts to the top level part.
+        [dataPart setContentDescription:@"OpenPGP encrypted message"];		
+        // 5. Append both parts to the top level part.
         [topPart addSubpart:versionPart];
         [topPart addSubpart:dataPart];
+		
+		
+		// 6. Optionally attch the OpenPGP key(s).
+		if (keysToAttach) {
+			keysPart = [[MimePart alloc] init];
+			[keysPart setType:@"application"];
+			[keysPart setSubtype:@"pgp-keys"];
+
+			[topPart addSubpart:keysPart];
+		}
+		
+		
 
         // Again Mail.app will do the heavy lifting for us, only thing we need to do
         // is create a map of mime parts and body data.
@@ -385,6 +441,7 @@
     if(shouldBeMIME) {
         CFDictionaryAddValue(partBodyMapRef, versionPart, versionData);
         CFDictionaryAddValue(partBodyMapRef, dataPart, encryptedData);
+		if (keysToAttach) CFDictionaryAddValue(partBodyMapRef, keysPart, keysToAttach);
     }
 
     NSMutableDictionary *partBodyMap = (NSMutableDictionary *)partBodyMapRef;
@@ -421,6 +478,7 @@
     if(shouldBeMIME) {
         [versionPart release];
         [dataPart release];
+		if (keysToAttach) [keysPart release];
     }
     [topPart release];
     CFRelease(partBodyMapRef);

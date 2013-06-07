@@ -80,10 +80,10 @@
  Creates the new gpg message data which will replace the original outgoing message
  body data and sets the correct headers.
  
- shouldBePlain decides whether the returned message data is a inline gpg message or a mime
+ shouldBeMIME decides whether the returned message data is a inline gpg message or a mime
  gpg message.
  */
-- (Subdata *)_newPGPBodyDataWithEncryptedData:(NSData *)encryptedData headers:(MutableMessageHeaders *)headers shouldBeMIME:(BOOL)shouldBeMIME;
+- (Subdata *)_newPGPBodyDataWithEncryptedData:(NSData *)encryptedData headers:(MutableMessageHeaders *)headers shouldBeMIME:(BOOL)shouldBeMIME keysToAttach:(NSData *)keysToAttach;
 
 /**
  This method adds some info to the original method headers which is relevant
