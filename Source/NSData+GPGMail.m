@@ -74,13 +74,17 @@
 }
 
 - (NSRange)rangeOfPGPInlineSignatures  {
+	return [self rangeOfPGPInlineSignaturesInRange:NSMakeRange(0, self.length)];
+}
+- (NSRange)rangeOfPGPInlineSignaturesInRange:(NSRange)range  {
     // Use the regular expression to ignore all signatures contained in a reply.
-    NSString *signatureRegex = [NSString stringWithFormat:@"(?sm)(^%@\\r?\\n(.*)\\r?\n%@)", 
+    NSString *signatureRegex = [NSString stringWithFormat:@"(?sm)(^%@\\r?\\n(.*?)\\r?\n%@)",
                                 PGP_SIGNED_MESSAGE_BEGIN, PGP_MESSAGE_SIGNATURE_END];
     RKRegex *sigRKRegex = [RKRegex regexWithRegexString:signatureRegex options:RKCompileNoOptions];
     NSRange match = NSMakeRange(NSNotFound, 0);
     @try {
-        match = [self rangeOfRegex:sigRKRegex];
+		match = [self rangeOfRegex:sigRKRegex inRange:range capture:0];
+
     }
     @catch (NSException *exception) {
         // Ignore...
@@ -90,7 +94,7 @@
 }
 
 - (NSRange)rangeOfPGPSignatures  {
-    NSString *signatureRegex = [NSString stringWithFormat:@"(?sm)(%@.*%@)", 
+    NSString *signatureRegex = [NSString stringWithFormat:@"(?sm)(%@.*?%@)", 
                                 PGP_MESSAGE_SIGNATURE_BEGIN, PGP_MESSAGE_SIGNATURE_END];
     RKRegex *sigRKRegex = [RKRegex regexWithRegexString:signatureRegex options:RKCompileNoOptions];
     NSRange match = NSMakeRange(NSNotFound, 0);
@@ -106,7 +110,7 @@
 
 - (NSRange)rangeOfPGPInlineEncryptedData {
     // Use the regular expression to ignore all signatures contained in a reply.
-    NSString *messageRegex = [NSString stringWithFormat:@"(?sm)(^%@\\r?\\n(.*)\\r?\\n%@)", 
+    NSString *messageRegex = [NSString stringWithFormat:@"(?sm)(^%@\\r?\\n(.*?)\\r?\\n%@)", 
                                 PGP_MESSAGE_BEGIN, PGP_MESSAGE_END];
     RKRegex *sigRKRegex = [RKRegex regexWithRegexString:messageRegex options:RKCompileNoOptions];
     NSRange match = NSMakeRange(NSNotFound, 0);
@@ -139,7 +143,7 @@
 }
 
 - (NSRange)rangeOfPGPPublicKey {
-    NSString *signatureRegex = [NSString stringWithFormat:@"(?sm)(%@.*%@)", 
+    NSString *signatureRegex = [NSString stringWithFormat:@"(?sm)(%@.*?%@)",
                                 PGP_MESSAGE_PUBLIC_KEY_BEGIN, PGP_MESSAGE_PUBLIC_KEY_END];
     RKRegex *sigRKRegex = [RKRegex regexWithRegexString:signatureRegex options:RKCompileNoOptions];
     NSRange match = NSMakeRange(NSNotFound, 0);

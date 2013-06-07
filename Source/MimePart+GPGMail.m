@@ -273,7 +273,7 @@
     }
     
     if(signatureRange.location != NSNotFound) {
-        [self _verifyPGPInlineSignatureInData:partData range:signatureRange];
+        [self _verifyPGPInlineSignatureInData:partData];
         return self.PGPVerifiedContent;
     }
     
@@ -938,7 +938,7 @@
     if(!decryptionError) { 
         NSRange signatureRange = [decryptedData rangeOfPGPInlineSignatures];
         if(signatureRange.location != NSNotFound)
-            [self _verifyPGPInlineSignatureInData:decryptedData range:signatureRange];
+            [self _verifyPGPInlineSignatureInData:decryptedData];
     }
     
     self.PGPDecryptedData = partData;
@@ -1038,11 +1038,11 @@
 - (void)verifyData:(NSData *)signedData signatureData:(NSData *)signatureData {
     GPGController *gpgc = [[GPGController alloc] init];
 
-    // If signature data is set, the signature is detached, otherwise it's inline.
+    // If signatureData is set, the signature is detached, otherwise it's inline.
     NSArray *signatures = nil;
     if([signatureData length]) {
 		
-		// If the signature is type 0x00 and the tex doesn't contain a \r\n, convert \n to \r\n.
+		// If the signature is type 0x00 and the text doesn't contain a \r\n, convert \n to \r\n.
 		// This is needed because Mail converts \r\n to \n.
 		NSArray *packets = [GPGPacket packetsWithData:signatureData];
 		if ([packets count] && [((GPGPacket *)[packets objectAtIndex:0]) signatureType] == 0 && [signedData rangeOfData:[NSData dataWithBytes:"\r\n" length:2]].location == NSNotFound) {
@@ -1050,8 +1050,61 @@
 		}
 		
         signatures = [gpgc verifySignature:signatureData originalData:signedData];
-	} else {
-        signatures = [gpgc verifySignedData:signedData];
+	} else { // Inline
+		NSUInteger location = 0;
+		NSRange range = [signedData rangeOfPGPInlineSignatures];
+		BOOL hasOtherData = range.length != signedData.length;
+		
+		// Is it partially signed?
+		if (hasOtherData) {
+			// Yes, it's partially signed.
+			NSMutableData *signedDataWithMarkers = [NSMutableData data];
+			NSMutableSet *allSignatures = [NSMutableSet set];
+			NSString *cleartextRegex = [NSString stringWithFormat:@"(?sm)^%@\\r?\\n.*?\\r?\\n\\r?\\n(.*)\\r?\n%@",
+										PGP_SIGNED_MESSAGE_BEGIN, PGP_MESSAGE_SIGNATURE_BEGIN];
+			RKRegex *clearRKRegex = [RKRegex regexWithRegexString:cleartextRegex options:0];
+
+			// Loop through all signed parts.
+			do {
+				// Append the not sgned data.
+				[signedDataWithMarkers appendData:[signedData subdataWithRange:NSMakeRange(location, range.location - location)]];
+				
+				// Get signed data.
+				NSData *subData = [signedData subdataWithRange:range];
+				
+				// Verify subData and add the signatures to our set.
+				[allSignatures addObjectsFromArray:[gpgc verifySignedData:subData]];
+				
+				// Find the signed cleartext...
+				NSRange cleartextRange = [subData rangeOfRegex:clearRKRegex inRange:NSMakeRange(0, subData.length) capture:1];
+				if (cleartextRange.length) {
+					// ... and add it with markers.
+					[self addPGPPartMarkerToData:signedDataWithMarkers partData:[subData subdataWithRange:cleartextRange]];
+				}
+				
+				// Calculate new location and range.
+				location = range.location + range.length;
+				range = NSMakeRange(location, signedData.length - location);
+				
+				// Find next signed part.
+			} while ((range = [signedData rangeOfPGPInlineSignaturesInRange:range]).length);
+			
+			//Append trailing unsigend data.
+			[signedDataWithMarkers appendData:[signedData subdataWithRange:NSMakeRange(location, signedData.length - location)]];
+
+			
+			//Replace markers.
+			NSString *verifiedContent = [[signedDataWithMarkers stringByGuessingEncodingWithHint:[self bestStringEncoding]] markupString];
+			verifiedContent = [self contentWithReplacedPGPMarker:verifiedContent isEncrypted:NO isSigned:YES];
+			
+			// Set results.
+			self.PGPVerifiedContent = [self stripSignatureFromContent:verifiedContent];
+			signedData = signedDataWithMarkers;
+			
+			signatures = [allSignatures allObjects];
+		} else { // Not partially signed.
+			signatures = [gpgc verifySignedData:signedData];
+		}
 	}
     
     MFError *error = [self errorFromGPGOperation:GPG_OPERATION_VERIFICATION controller:gpgc];
@@ -1061,13 +1114,6 @@
     self.PGPSignatures = signatures;
     
     
-    if([self hasPGPInlineSignature:signedData]) {
-        NSData *signedDataWithMarkers = [self signedDataWithAddedPGPPartMarkersIfNecessaryForData:signedData];
-        NSString *verifiedContent = [[signedDataWithMarkers stringByGuessingEncodingWithHint:[self bestStringEncoding]] markupString];
-        verifiedContent = [self contentWithReplacedPGPMarker:verifiedContent isEncrypted:NO isSigned:YES];
-        self.PGPVerifiedContent = [self stripSignatureFromContent:verifiedContent];
-        signedData = signedDataWithMarkers;
-    }
     self.PGPVerifiedData = signedData;
     
     [gpgc release];
@@ -1194,10 +1240,7 @@
     return;
 }
 
-- (void)_verifyPGPInlineSignatureInData:(NSData *)data range:(NSRange)signedRange {
-    if(![data length] || signedRange.location == NSNotFound)
-        return;
-    
+- (void)_verifyPGPInlineSignatureInData:(NSData *)data {
     // Pass in the entire NSData to detect part-signed messages.
     [self verifyData:data signatureData:nil];
 }

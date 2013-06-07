@@ -259,7 +259,7 @@ typedef enum {
 /**
  Is used to verify PGP/inline signatures.
  */
-- (void)_verifyPGPInlineSignatureInData:(NSData *)data range:(NSRange)signedRange;
+- (void)_verifyPGPInlineSignatureInData:(NSData *)data;
 
 /**
  Strips the PGP SIGNED markes from the part HTML string.
