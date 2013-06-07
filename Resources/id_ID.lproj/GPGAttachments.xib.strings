@@ -1,4 +1,4 @@
-﻿"2.title" = "Jendela";
+"2.title" = "Jendela";
 "8.title" = "OK";
 "205.title" = "Kedaluarsa pada:";
 "210.title" = "nama";
@@ -15,10 +15,10 @@
 "256.title" = "Tanda Tangan";
 "257.title" = "Dibuat:";
 "259.title" = "Kedaluarsa:";
-"291.title" = "Tanda tangan tak bisa diverifikasi.";
-"293.title" = "Tanda tangan ini tak bisa diverifikasi karena kunci publik tak ada dalam ring kunci Anda. Harap unduh kunci memakai Akses Ring Kunci GPG.";
+"291.title" = "The signature could not be verified.";
+"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";
 "325.ibShadowedIsNilPlaceholder" = "Kedaluarsa tak ditata pada tanda tangan ini";
 "353.ibShadowedIsNilPlaceholder" = "Kedaluarsa tak ditata pada tanda tangan ini";
 "366.ibShadowedIsNilPlaceholder" = "Kedaluarsa tak ditata pada tanda tangan ini";
-"382.title" = "Tanda tangan ini tak bisa diverifikasi.";
-"383.title" = "Tanda tangan ini tak bisa diverifikasi karena kunci publik tak ada dalam ring kunci Anda. Harap unduh kunci memakai Akses Ring Kunci GPG.";
+"382.title" = "The signature could not be verified.";
+"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";

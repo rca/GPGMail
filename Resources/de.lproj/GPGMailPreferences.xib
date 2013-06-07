@@ -120,7 +120,7 @@
 									<reference key="NSControlView" ref="163650447"/>
 									<int key="NSButtonFlags">-2038284288</int>
 									<int key="NSButtonFlags2">129</int>
-									<string key="NSAlternateContents">Nach Updates suchen</string>
+									<string key="NSAlternateContents">Jetzt nach Updates suchen.</string>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">200</int>
 									<int key="NSPeriodicInterval">25</int>
@@ -142,7 +142,7 @@
 									<reference key="NSControlView" ref="758835818"/>
 									<int key="NSButtonFlags">-2038284288</int>
 									<int key="NSButtonFlags2">129</int>
-									<string key="NSAlternateContents">Häufig gestelle Fragen</string>
+									<string key="NSAlternateContents">Häufig gestellte Fragen</string>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">200</int>
 									<int key="NSPeriodicInterval">25</int>
@@ -164,7 +164,7 @@
 									<reference key="NSControlView" ref="263402944"/>
 									<int key="NSButtonFlags">-2038284288</int>
 									<int key="NSButtonFlags2">129</int>
-									<string key="NSAlternateContents">Spenden, wenn du magst was wir tun</string>
+									<string key="NSAlternateContents">Helfen Sie uns, wenn Ihnen gefällt was wir machen.</string>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">200</int>
 									<int key="NSPeriodicInterval">25</int>
@@ -2136,7 +2136,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="632062900"/>
-						<string key="toolTip">If you've any other question.</string>
+						<string key="toolTip">Wenn Sie irgendwelche andere Fragen haben.</string>
 					</object>
 				</object>
 				<boolean value="NO" key="1051.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
@@ -2163,7 +2163,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="63115413"/>
-						<string key="toolTip">Neue Versionen von GPGMail automatisch herunterladen.</string>
+						<string key="toolTip">Neue Versionen von GPGMail automatisch laden.</string>
 					</object>
 				</object>
 				<boolean value="NO" key="699.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
@@ -2207,7 +2207,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="758835818"/>
-						<string key="toolTip">Häufig gestelle Fragen.</string>
+						<string key="toolTip">Häufig gestellte Fragen.</string>
 					</object>
 				</object>
 				<boolean value="NO" key="733.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
@@ -2218,7 +2218,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="263402944"/>
-						<string key="toolTip">Spenden, wenn du magst was wir tun.</string>
+						<string key="toolTip">Helfen Sie uns, wenn Ihnen gefällt was wir machen.</string>
 					</object>
 				</object>
 				<boolean value="NO" key="736.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>

@@ -1,4 +1,4 @@
-﻿"2.title" = "Ikkuna";
+"2.title" = "Ikkuna";
 "8.title" = "OK";
 "205.title" = "Vanhentuu:";
 "210.title" = "nimi";
@@ -15,10 +15,10 @@
 "256.title" = "Allekirjoitus";
 "257.title" = "Luotu:";
 "259.title" = "Vanhentuu:";
-"291.title" = "Allekirjoitusta ei voitu varmentaa.";
-"293.title" = "Tätä allekirjoitusta ei voitu varmentaa, koska avainrenkaassasi ei ole tarvittavaa julkista avainta. Ole hyvä ja lataa avain käyttämällä GPG Avainnipun Hallintaa.";
+"291.title" = "The signature could not be verified.";
+"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";
 "325.ibShadowedIsNilPlaceholder" = "Tämä allekirjoitus ei vanhene";
 "353.ibShadowedIsNilPlaceholder" = "Tämä allekirjoitus ei vanhene";
 "366.ibShadowedIsNilPlaceholder" = "Tämä allekirjoitus ei vanhene";
-"382.title" = "Tätä allekirjoitusta ei voitu varmentaa.";
-"383.title" = "Tätä allekirjoitusta ei voitu varmentaa, koska avainrenkaassasi ei ole tarvittavaa julkista avainta. Ole hyvä ja lataa avain käyttämällä GPG Avainnipun Hallintaa.";
+"382.title" = "The signature could not be verified.";
+"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";

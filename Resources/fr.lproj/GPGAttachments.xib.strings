@@ -1,4 +1,4 @@
-﻿"2.title" = "Fenêtre";
+"2.title" = "Fenêtre";
 "8.title" = "OK";
 "205.title" = "Expire le:";
 "210.title" = "nom";
@@ -15,10 +15,10 @@
 "256.title" = "Signature";
 "257.title" = "Création:";
 "259.title" = "Expiration:";
-"291.title" = "La signature ne peut être vérifiée.";
-"293.title" = "La signature ne peut être vérifiée car la clé publique ne fait pas partie de votre trousseau de clés.\nVeuillez télécharger la clé à l'aide de GPG Keychain Access.";
+"291.title" = "The signature could not be verified.";
+"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";
 "325.ibShadowedIsNilPlaceholder" = "Aucune date d'expiration n'est définie pour cette signature";
 "353.ibShadowedIsNilPlaceholder" = "Aucune date d'expiration n'est définie pour cette signature";
 "366.ibShadowedIsNilPlaceholder" = "Aucune date d'expiration n'est définie pour cette signature";
-"382.title" = "La signature ne peut être vérifiée.";
-"383.title" = "La signature ne peut être vérifiée car la clé publique ne fait pas partie de votre trousseau de clés.\nVeuillez télécharger la clé à l'aide de GPG Keychain Access.";
+"382.title" = "The signature could not be verified.";
+"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";

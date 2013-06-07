@@ -1,4 +1,4 @@
-﻿/* 
+/* 
  SignatureView.strings
  GPGMail
  
@@ -7,14 +7,14 @@
  
  Defines the strings used in the signature view.
  */
-"VALIDITY_NO_TRUST" = "This signature is not to be trusted.";
-"VALIDITY_OK" = "This signature can be trusted";
+"VALIDITY_NO_TRUST" = "Esta sinatura non é de confianza";
+"VALIDITY_OK" = "Esta sinatura é de confianza";
 /* Signature view key status. */
-"VALIDITY_KEY_REVOKED" = "The key of this signature was revoked.";
-"VALIDITY_SIGNATURE_EXPIRED" = "This signature is expired.";
-"VALIDITY_KEY_EXPIRED" = "The key of this signature is expired.";
-"VALIDITY_KEY_REVOKED" = "The key of this signature was revoked.";
-"VALIDITY_UNKNOWN_ALGORITHM" = "Signature was created with unknown algorithm.";
-"VALIDITY_NO_PUBLIC_KEY" = "The key of this signature is not in your keychain.";
-"VALIDITY_UNKNOWN_ERROR" = "Unknown signature error.";
-"VALIDITY_BAD_SIGNATURE" = "This signature is invalid.";
+"VALIDITY_KEY_REVOKED" = "A chave desta sinatura foi revogada";
+"VALIDITY_SIGNATURE_EXPIRED" = "Esta sinatura caducou";
+"VALIDITY_KEY_EXPIRED" = "A chave desta sinatura xa caducou";
+"VALIDITY_KEY_REVOKED" = "A chave desta sinatura foi revogada";
+"VALIDITY_UNKNOWN_ALGORITHM" = "A sinatura foi creada por un algoritmo descoñecido";
+"VALIDITY_NO_PUBLIC_KEY" = "A chave desta sinatura non está no seu chaveiro";
+"VALIDITY_UNKNOWN_ERROR" = "Produciuse un erro descoñecido na sinatura";
+"VALIDITY_BAD_SIGNATURE" = "Esta sinatura non é correcta";

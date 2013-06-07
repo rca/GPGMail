@@ -120,7 +120,7 @@
 									<reference key="NSControlView" ref="163650447"/>
 									<int key="NSButtonFlags">-2038284288</int>
 									<int key="NSButtonFlags2">129</int>
-									<string key="NSAlternateContents">Güncellemeyi denetle. (şu anda devredışı)</string>
+									<string key="NSAlternateContents">Check for updates now</string>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">200</int>
 									<int key="NSPeriodicInterval">25</int>
@@ -2153,7 +2153,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="997375455"/>
-						<string key="toolTip">GPGMail'in sürüm güncellemelerini otomatik kontrol et.</string>
+						<string key="toolTip">Automatically check for new versions of GPGMail.</string>
 					</object>
 				</object>
 				<boolean value="NO" key="698.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>

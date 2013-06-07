@@ -1,4 +1,4 @@
-﻿"2.title" = "Vindue";
+"2.title" = "Vindue";
 "8.title" = "OK";
 "205.title" = "Udløber den:";
 "210.title" = "navn";
@@ -16,9 +16,9 @@
 "257.title" = "Oprettet:";
 "259.title" = "Udløber:";
 "291.title" = "Signaturen kunne ikke bekræftes.";
-"293.title" = "Signaturen kunne ikke bekræftes, fordi den offentlige nøgle ikke er i din nøglering. Hent nøglen med GPG Nøglering.";
+"293.title" = "Signaturen kunne ikke bekræftes, fordi den offentlige nøgle ikke er i din nøglering.\nHent nøglen med GPG Nøglering.";
 "325.ibShadowedIsNilPlaceholder" = "Signaturen har ingen udløbsdato";
 "353.ibShadowedIsNilPlaceholder" = "Signaturen har ingen udløbsdato";
 "366.ibShadowedIsNilPlaceholder" = "Signaturen har ingen udløbsdato";
 "382.title" = "Signaturen kunne ikke bekræftes.";
-"383.title" = "Signaturen kunne ikke bekræftes, fordi den offentlige nøgle ikke er i din nøglering. Hent nøglen med GPG Nøglering.";
+"383.title" = "Signaturen kunne ikke bekræftes, fordi den offentlige nøgle ikke er i din nøglering.\nHent nøglen med GPG Nøglering.";

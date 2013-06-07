@@ -3,7 +3,7 @@
 "700.ibShadowedToolTip" = "Se etter oppdateringer nå.";
 "709.title" = "GPGMail";
 "715.title" = "Oppdateringer";
-"717.alternateTitle" = "Søk etter oppdateringer nå (status: deaktivert)";
+"717.alternateTitle" = "Søk etter oppdateringer nå";
 "717.title" = "Sjekk nå";
 "718.title" = "Last ned oppdateringer automatisk";
 "719.title" = "Søk etter oppdateringer automatisk";
@@ -19,3 +19,7 @@
 "786.ibShadowedToolTip" = "Se Innstillinger -> Visning -> Forhåndsvisning av liste";
 "787.title" = "Opprett forhåndsvisning av liste";
 "834.title" = "Knapp";
+"931.title" = "Versjon: xxx";
+"936.title" = "Versjonsnummer:";
+"1051.ibShadowedToolTip" = "Hvis du har andre spørsmål.";
+"1053.title" = "Hjelp";

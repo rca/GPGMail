@@ -1,4 +1,4 @@
-﻿"2.title" = "Ventana";
+"2.title" = "Ventana";
 "8.title" = "OK";
 "205.title" = "Expira el:";
 "210.title" = "nombre";
@@ -15,10 +15,10 @@
 "256.title" = "Firma";
 "257.title" = "Creado:";
 "259.title" = "Expira:";
-"291.title" = "La firma no pudo ser verificada.";
-"293.title" = "La firma no se pudieron verificar porque su llave pública no está en tu llavero. Por favor, descargar la clave usando GPG Keychain Access.";
+"291.title" = "The signature could not be verified.";
+"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";
 "325.ibShadowedIsNilPlaceholder" = "No de caducidad se encuentra en esta firma";
 "353.ibShadowedIsNilPlaceholder" = "No de caducidad se encuentra en esta firma";
 "366.ibShadowedIsNilPlaceholder" = "No de caducidad se encuentra en esta firma";
-"382.title" = "La firma no pudo ser verificada.";
-"383.title" = "La firma no se pudieron verificar porque su llave pública no está en tu llavero. Por favor, descargar la clave usando GPG Keychain Access.";
+"382.title" = "The signature could not be verified.";
+"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";

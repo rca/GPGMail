@@ -1,4 +1,4 @@
-﻿"2.title" = "Venster";
+"2.title" = "Venster";
 "8.title" = "Oké";
 "205.title" = "Verloopt op:";
 "210.title" = "naam";
@@ -15,10 +15,10 @@
 "256.title" = "Handtekening";
 "257.title" = "Gemaakt:";
 "259.title" = "Verloopt:";
-"291.title" = "De handtekening kan niet geverifieerd worden.";
-"293.title" = "De handtekening kan niet geverifieerd worden omdat de publieke sleutel niet in uw keychain staat.\nDownload a.u.b. de publieke sleutel met GPG Keychain Access.";
+"291.title" = "The signature could not be verified.";
+"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";
 "325.ibShadowedIsNilPlaceholder" = "Er is geen verloopdatum ingesteld voor deze handtekening";
 "353.ibShadowedIsNilPlaceholder" = "Er is geen verloopdatum ingesteld voor deze handtekening.";
 "366.ibShadowedIsNilPlaceholder" = "Er is geen verloopdatum ingesteld voor deze handtekening";
-"382.title" = "De handtekening kan niet geverifieerd worden.";
-"383.title" = "De handtekening kan niet geverifieerd worden omdat de publieke sleutel niet in uw keychain staat.\nDownload a.u.b. de publieke sleutel met GPG Keychain Access.";
+"382.title" = "The signature could not be verified.";
+"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";

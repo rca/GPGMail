@@ -1,4 +1,4 @@
-﻿/* Description of version prefixed with <Version:> */
+/* Description of version prefixed with <Version:> */
 "VERSION: %@" = "Versjon: %@";
 
 /* PGP preferences panel name */
@@ -15,7 +15,7 @@
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Det kan ikke vises mer informasjon om denne PGP-nøkkelen, da den ikke finnes i din nøkkelring.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Mangler hemmelig nøkkel for å kunne dekryptere meldingen.";
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Den hemmelige nøkkelen som behøves for å dekryptere denne meldingen er ikke i nøkkelringen din.\n\nSjekk med avsenderen at de benyttet den riktige offentlige nøkkelen din.\nUndersøk eventuelt en sikkerhetskopi av nøkkelringen din, og prøv å importere den riktige hemmelige nøkkelen derfra.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Ingen av disse hemmelige nøklene ble funnet i nøkkelringen din (%@). Den hemmelige nøkkelen kreves for å dekryptere denne meldingen.\n\nVennligst sjekk med avsender om de brukte den riktige offentlige nøkkelen din.\nUndersøk eventuelt en sikkerhetskopi av nøkkelringen din, og prøv å importere den riktige hemmelige nøkkelen derfra.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Dekryptering feilet med en ukjent feil!";
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "En ukjent feil oppstod mens denne meldingen ble dekryptert.\n\nVennligst kontakt oss på support.gpgtools.org";
@@ -69,7 +69,7 @@
 
 /* Message Error Banner Attachment messages. */
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Den hemmelige nøkkelen for å dekryptere vedlegget mangler.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Den hemmelige nøkkelen for å dekryptere dette vedlegget er ikke i nøkkelringen din.\n\nSjekk med avsender om de benyttet riktig offentlig nøkkel.\n\nSjekk eventuelt sikkerhetskopier av nøkkelringen din og forsøk å importere den hemmelige nøkkelen derfra.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Ingen av disse hemmelige nøklene ble funnet i nøkkelringen din (%@). Den hemmelige nøkkelen kreves for å dekryptere dette vedlegget.\n\nVennligst sjekk med avsender om de brukte den riktige offentlige nøkkelen din.\nUndersøk eventuelt en sikkerhetskopi av nøkkelringen din, og prøv å importere den riktige hemmelige nøkkelen derfra.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Dekryptering feilet vmed en ukjent feil!";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "En ukjent feil oppstod under dekryptering av dette vedlegget.\n\nVennligst kontakt oss på support.gpgtools.org";    
@@ -149,3 +149,22 @@
 "GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Fant flere installasjoner av GPGMail!";
 "GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "GPGMail fant flere installasjoner på følgende steder som vil føre til en umiddelbar kræsj:\n\n%@\n\nVennligst fjern GPGMail.mailbundle på et av stedene og start Mail på nytt.\n";
 "GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Avslutt Mail";
+
+/* Errors while trying to sign a message. */
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Signering av meldingen din feilet grunnet defekt PIN-oppføring!";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "Hjelperen til PIN-oppføringen som er ansvarlig for å be om passordet ditt ser ut til å være defekt.\n\nFor å fikse dette problemet, installer den nyeste versjonen av GPGTools på nytt.";
+
+"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Signering av meldingen din feilet grunnet defekt GPG-agent!";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "GPG-agenten som er en avgjørende del av GPG ser ut til å være defekt på ditt system.\n\nFor å fikse dette problemet, installer den nyeste versjonen av GPGTools på nytt.";
+
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "Signering av meldingen din feilet fordi det oppstod en feil i kommunikasjonen med GPG-agenten.";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "Det var ikke mulig å få kontakt med GPG-agenten for å be om passordet ditt.\n\nFor å fikse dette problemet, installer den nyeste versjonen av GPGTools på nytt.";
+
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "Signering av meldingen din feilet fordi det har oppstått en ukjent feil";
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Uheldigvis kan vi ikke fikse denne feilen på det nåværende tidspunkt. ";
+
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Kryptering av meldingen din feilet fordi det har oppstått en ukjent feil";
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Uheldigvis kan ikke GPGMail fikse denne feilen på det nåværende tidspunkt.";
+
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\nSkulle problemet vedvare, vennligst kontakt oss på support.gpgtools.org med følgende feilbeskrivelse:\n\n%@";
+

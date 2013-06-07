@@ -55,7 +55,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{196, 132}, {486, 278}}</string>
 				<int key="NSWTFlags">1685586944</int>
-				<string key="NSWindowTitle">Window</string>
+				<string key="NSWindowTitle">Fenster</string>
 				<string key="NSWindowClass">NSPanel</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
@@ -489,7 +489,7 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="68258271">
 																		<int key="NSCellFlags">68157504</int>
 																		<int key="NSCellFlags2">272761856</int>
-																		<string key="NSContents">Expires on:</string>
+																		<string key="NSContents">Ablaufdatum:</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<reference key="NSControlView" ref="374660988"/>
 																		<reference key="NSBackgroundColor" ref="317639729"/>
@@ -598,7 +598,10 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="737784608">
 																		<int key="NSCellFlags">69206017</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string key="NSContents">Die Signatur dieses Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet. Bitte laden Sie den öffentlichen Schlüssel mit GPG Schlüsselbund herunter.</string>
+																		<string type="base64-UTF8" key="NSContents">RGllIFNpZ25hdHVyIGRpZXNlcyBBbmhhbmdzIGtvbm50ZSBuaWNodCDDvGJlcnByw7xmdCB3ZXJkZW4s
+IGRhIGRlciDDtmZmZW50bGljaGUgU2NobMO8c3NlbCBzaWNoIG5pY2h0IGltIFNjaGzDvHNzZWxidW5k
+IGJlZmluZGV0LgpCaXR0ZSBsYWRlbiBTaWUgZGVuIMO2ZmZlbnRsaWNoZW4gU2NobMO8c3NlbCBtaXQg
+R1BHIFNjaGzDvHNzZWxidW5kIGhlcnVudGVyLg</string>
 																		<object class="NSFont" key="NSSupport" id="179384628">
 																			<string key="NSName">LucidaGrande</string>
 																			<double key="NSSize">11</double>
@@ -695,7 +698,10 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="376725465">
 																		<int key="NSCellFlags">69206017</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string key="NSContents">Die Signatur dieses Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet. Bitte laden Sie den öffentlichen Schlüssel mit GPG Schlüsselbund herunter.</string>
+																		<string type="base64-UTF8" key="NSContents">RGllIFNpZ25hdHVyIGRpZXNlcyBBbmhhbmdzIGtvbm50ZSBuaWNodCDDvGJlcnByw7xmdCB3ZXJkZW4s
+IGRhIGRlciDDtmZmZW50bGljaGUgU2NobMO8c3NlbCBzaWNoIG5pY2h0IGltIFNjaGzDvHNzZWxidW5k
+IGJlZmluZGV0LgpCaXR0ZSBsYWRlbiBTaWUgZGVuIMO2ZmZlbnRsaWNoZW4gU2NobMO8c3NlbCBtaXQg
+R1BHIFNjaGzDvHNzZWxidW5kIGhlcnVudGVyLg</string>
 																		<reference key="NSSupport" ref="179384628"/>
 																		<string key="NSCellIdentifier">_NS:360</string>
 																		<reference key="NSControlView" ref="1051878768"/>
@@ -915,7 +921,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="544591757">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Expires:</string>
+							<string key="NSContents">Ablaufdatum:</string>
 							<reference key="NSSupport" ref="460857792"/>
 							<reference key="NSControlView" ref="739216503"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -951,7 +957,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="205118177">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Created:</string>
+							<string key="NSContents">Erstellt:</string>
 							<reference key="NSSupport" ref="460857792"/>
 							<reference key="NSControlView" ref="624834163"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -969,7 +975,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="1008281119">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Signature</string>
+							<string key="NSContents">Signatur</string>
 							<reference key="NSSupport" ref="460857792"/>
 							<reference key="NSControlView" ref="41541811"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1158,7 +1164,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="373280">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Ownertrust:</string>
+							<string key="NSContents">Vertrauen:</string>
 							<reference key="NSSupport" ref="460857792"/>
 							<reference key="NSControlView" ref="211265474"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1176,7 +1182,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="751446589">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Algorithm:</string>
+							<string key="NSContents">Algorithmus:</string>
 							<reference key="NSSupport" ref="460857792"/>
 							<reference key="NSControlView" ref="1054846190"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1194,7 +1200,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="356060348">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Expires:</string>
+							<string key="NSContents">Ablaufdatum:</string>
 							<reference key="NSSupport" ref="460857792"/>
 							<reference key="NSControlView" ref="844534807"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1212,7 +1218,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="228207610">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Created:</string>
+							<string key="NSContents">Erstellt:</string>
 							<reference key="NSSupport" ref="460857792"/>
 							<reference key="NSControlView" ref="610054460"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1230,7 +1236,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="540786287">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Key ID:</string>
+							<string key="NSContents">Schlüssel ID:</string>
 							<reference key="NSSupport" ref="460857792"/>
 							<reference key="NSControlView" ref="877264115"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1248,7 +1254,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="528727085">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Comment:</string>
+							<string key="NSContents">Kommentar:</string>
 							<reference key="NSSupport" ref="460857792"/>
 							<reference key="NSControlView" ref="164790008"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1302,7 +1308,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="635271539">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Key</string>
+							<string key="NSContents">Schlüssel</string>
 							<reference key="NSSupport" ref="460857792"/>
 							<reference key="NSControlView" ref="794873389"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1625,7 +1631,7 @@
 							<string key="NSKeyPath">selection.signature.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">No expiration is set on this signature</string>
+								<string key="NS.object.0">Diese Signatur hat kein Verfallsdatum</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
@@ -1653,7 +1659,7 @@
 							<string key="NSKeyPath">signature.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">No expiration is set on this signature</string>
+								<string key="NS.object.0">Diese Signatur hat kein Verfallsdatum</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
@@ -1733,7 +1739,7 @@
 							<string key="NSKeyPath">gpgKey.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">No expiration is set on this signature</string>
+								<string key="NS.object.0">Diese Signatur hat kein Verfallsdatum</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>

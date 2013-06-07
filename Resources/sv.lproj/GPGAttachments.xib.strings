@@ -1,4 +1,4 @@
-﻿"2.title" = "Fönster";
+"2.title" = "Fönster";
 "8.title" = "OK";
 "205.title" = "Upphör den:";
 "210.title" = "namn";
@@ -15,10 +15,10 @@
 "256.title" = "Signatur:";
 "257.title" = "Skapad:";
 "259.title" = "Upphör:";
-"291.title" = "Signaturen kunde inte verifieras.";
-"293.title" = "Signaturen kunde inte verifieras då den publika nyckeln inte finns i din nyckelring. Vänligen ladda ned nyckeln med GPG Nyckelhanterare.";
+"291.title" = "The signature could not be verified.";
+"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";
 "325.ibShadowedIsNilPlaceholder" = "Signaturen är inställd att inte upphöra";
 "353.ibShadowedIsNilPlaceholder" = "Signaturen är inställd att inte upphöra";
 "366.ibShadowedIsNilPlaceholder" = "Signaturen är inställd att inte upphöra";
-"382.title" = "Signaturen kunde inte verifieras.";
-"383.title" = "Signaturen kunde inte verifieras då den publika nyckeln inte finns i din nyckelring. Vänligen ladda ned nyckeln med GPG Nyckelhanterare.";
+"382.title" = "The signature could not be verified.";
+"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";

@@ -598,7 +598,9 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="737784608">
 																		<int key="NSCellFlags">69206017</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string key="NSContents">Signaturen kunne ikke bekræftes, fordi den offentlige nøgle ikke er i din nøglering. Hent nøglen med GPG Nøglering.</string>
+																		<string type="base64-UTF8" key="NSContents">U2lnbmF0dXJlbiBrdW5uZSBpa2tlIGJla3LDpmZ0ZXMsIGZvcmRpIGRlbiBvZmZlbnRsaWdlIG7DuGds
+ZSBpa2tlIGVyIGkgZGluIG7DuGdsZXJpbmcuCkhlbnQgbsO4Z2xlbiBtZWQgR1BHIE7DuGdsZXJpbmcu
+A</string>
 																		<object class="NSFont" key="NSSupport" id="179384628">
 																			<string key="NSName">LucidaGrande</string>
 																			<double key="NSSize">11</double>
@@ -695,7 +697,9 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="376725465">
 																		<int key="NSCellFlags">69206017</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string key="NSContents">Signaturen kunne ikke bekræftes, fordi den offentlige nøgle ikke er i din nøglering. Hent nøglen med GPG Nøglering.</string>
+																		<string type="base64-UTF8" key="NSContents">U2lnbmF0dXJlbiBrdW5uZSBpa2tlIGJla3LDpmZ0ZXMsIGZvcmRpIGRlbiBvZmZlbnRsaWdlIG7DuGds
+ZSBpa2tlIGVyIGkgZGluIG7DuGdsZXJpbmcuCkhlbnQgbsO4Z2xlbiBtZWQgR1BHIE7DuGdsZXJpbmcu
+A</string>
 																		<reference key="NSSupport" ref="179384628"/>
 																		<string key="NSCellIdentifier">_NS:360</string>
 																		<reference key="NSControlView" ref="1051878768"/>

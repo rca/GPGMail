@@ -598,9 +598,9 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="737784608">
 																		<int key="NSCellFlags">69206017</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string type="base64-UTF8" key="NSContents">RGUgaGFuZHRla2VuaW5nIGthbiBuaWV0IGdldmVyaWZpZWVyZCB3b3JkZW4gb21kYXQgZGUgcHVibGll
-a2Ugc2xldXRlbCBuaWV0IGluIHV3IGtleWNoYWluIHN0YWF0LgpEb3dubG9hZCBhLnUuYi4gZGUgcHVi
-bGlla2Ugc2xldXRlbCBtZXQgR1BHIEtleWNoYWluIEFjY2Vzcy4</string>
+																		<string type="base64-UTF8" key="NSContents">VGhlIHNpZ25hdHVyZSBjb3VsZCBub3QgYmUgdmVyaWZpZWQgYmVjYXVzZSB0aGUgcHVibGljIGtleSBp
+cyBub3QgaW4geW91ciBrZXljaGFpbi4KUGxlYXNlIGRvd25sb2FkIHRoZSBrZXkgdXNpbmcgR1BHIEtl
+eWNoYWluIEFjY2Vzcy4</string>
 																		<object class="NSFont" key="NSSupport" id="179384628">
 																			<string key="NSName">LucidaGrande</string>
 																			<double key="NSSize">11</double>
@@ -624,7 +624,7 @@ bGlla2Ugc2xldXRlbCBtZXQgR1BHIEtleWNoYWluIEFjY2Vzcy4</string>
 																	<object class="NSTextFieldCell" key="NSCell" id="233414006">
 																		<int key="NSCellFlags">67108864</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string key="NSContents">De handtekening kan niet geverifieerd worden.</string>
+																		<string key="NSContents">The signature could not be verified.</string>
 																		<object class="NSFont" key="NSSupport" id="501760921">
 																			<string key="NSName">LucidaGrande-Bold</string>
 																			<double key="NSSize">13</double>
@@ -697,9 +697,9 @@ bGlla2Ugc2xldXRlbCBtZXQgR1BHIEtleWNoYWluIEFjY2Vzcy4</string>
 																	<object class="NSTextFieldCell" key="NSCell" id="376725465">
 																		<int key="NSCellFlags">69206017</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string type="base64-UTF8" key="NSContents">RGUgaGFuZHRla2VuaW5nIGthbiBuaWV0IGdldmVyaWZpZWVyZCB3b3JkZW4gb21kYXQgZGUgcHVibGll
-a2Ugc2xldXRlbCBuaWV0IGluIHV3IGtleWNoYWluIHN0YWF0LgpEb3dubG9hZCBhLnUuYi4gZGUgcHVi
-bGlla2Ugc2xldXRlbCBtZXQgR1BHIEtleWNoYWluIEFjY2Vzcy4</string>
+																		<string type="base64-UTF8" key="NSContents">VGhlIHNpZ25hdHVyZSBjb3VsZCBub3QgYmUgdmVyaWZpZWQgYmVjYXVzZSB0aGUgcHVibGljIGtleSBp
+cyBub3QgaW4geW91ciBrZXljaGFpbi4KUGxlYXNlIGRvd25sb2FkIHRoZSBrZXkgdXNpbmcgR1BHIEtl
+eWNoYWluIEFjY2Vzcy4</string>
 																		<reference key="NSSupport" ref="179384628"/>
 																		<string key="NSCellIdentifier">_NS:360</string>
 																		<reference key="NSControlView" ref="1051878768"/>
@@ -719,7 +719,7 @@ bGlla2Ugc2xldXRlbCBtZXQgR1BHIEtleWNoYWluIEFjY2Vzcy4</string>
 																	<object class="NSTextFieldCell" key="NSCell" id="812424302">
 																		<int key="NSCellFlags">67108864</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string key="NSContents">De handtekening kan niet geverifieerd worden.</string>
+																		<string key="NSContents">The signature could not be verified.</string>
 																		<reference key="NSSupport" ref="501760921"/>
 																		<string key="NSCellIdentifier">_NS:3944</string>
 																		<reference key="NSControlView" ref="834668756"/>

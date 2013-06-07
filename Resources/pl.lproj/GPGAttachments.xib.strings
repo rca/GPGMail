@@ -1,4 +1,4 @@
-﻿"2.title" = "Okno";
+"2.title" = "Okno";
 "8.title" = "OK";
 "205.title" = "Wygasa:";
 "210.title" = "nazwa";
@@ -15,10 +15,10 @@
 "256.title" = "Podpis";
 "257.title" = "Utworzony:";
 "259.title" = "Wygasa:";
-"291.title" = "Podpis nie może być zweryfikowany.";
-"293.title" = "Podpis nie może być zweryfikowany, ponieważ klucz publiczny nie znajduje się w twoim pęku kluczy. Pobierz klucz korzystając z narzędzia GPG Keychain Access.";
+"291.title" = "The signature could not be verified.";
+"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";
 "325.ibShadowedIsNilPlaceholder" = "Nie ustawiono daty ważności dla tego podpisu";
 "353.ibShadowedIsNilPlaceholder" = "Nie ustawiono daty ważności dla tego podpisu";
 "366.ibShadowedIsNilPlaceholder" = "Nie ustawiono daty ważności dla tego podpisu";
-"382.title" = "Ten podpis nie może być zweryfikowany.";
-"383.title" = "Podpis nie może być zweryfikowany, ponieważ klucz publiczny nie znajduje się w twoim pęku kluczy. Pobierz klucz korzystając z narzędzia GPG Keychain Access.";
+"382.title" = "The signature could not be verified.";
+"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";

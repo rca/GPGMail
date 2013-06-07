@@ -1,9 +1,9 @@
-"698.ibShadowedToolTip" = "Controlla automaticamente gli aggiornamenti di GPGMail.";
+"698.ibShadowedToolTip" = "Automatically check for new versions of GPGMail.";
 "699.ibShadowedToolTip" = "Scarica automaticamente gli aggiornamenti di GPGMail.";
 "700.ibShadowedToolTip" = "Controlla gli aggiornamenti";
 "709.title" = "GPGMail";
 "715.title" = "Aggiornamenti";
-"717.alternateTitle" = "Controlla gli aggiornamenti (attualmente disattivato)";
+"717.alternateTitle" = "Check for updates now";
 "717.title" = "Controlla ora";
 "718.title" = "Scarica gli aggiornamenti automaticamente";
 "719.title" = "Controlla gli aggiornamenti automaticamente";
@@ -19,3 +19,7 @@
 "786.ibShadowedToolTip" = "Controlla Preferenze -> Vista -> Anteprima Elenco";
 "787.title" = "Crea Anteprima Elenco";
 "834.title" = "Bottone";
+"931.title" = "Version: xxx";
+"936.title" = "Build: ";
+"1051.ibShadowedToolTip" = "If you've any other question.";
+"1053.title" = "Support";
