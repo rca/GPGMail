@@ -226,6 +226,8 @@
 	}
 	
 	
+	// Enable this, instead of parsing the key from encryptedData!
+	//GPGKey *key = [self getIvar:@"gpgKeyForSigning"];
 	
 	
 	// Extract the keys used by MANewSignedPartWithData to sign the message. So we can add them as a mime part.

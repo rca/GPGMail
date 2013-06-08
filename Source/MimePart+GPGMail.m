@@ -1066,7 +1066,7 @@
 
 			// Loop through all signed parts.
 			do {
-				// Append the not sgned data.
+				// Append the unsigned data.
 				[signedDataWithMarkers appendData:[signedData subdataWithRange:NSMakeRange(location, range.location - location)]];
 				
 				// Get signed data.
