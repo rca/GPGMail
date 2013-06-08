@@ -159,7 +159,6 @@
     
 	menu.autoenablesItems = NO;
 	
-	
 	NSUInteger count = [menuItems count], i = 0;
 	for (; i < count; i++) {
 		item = [menuItems objectAtIndex:i];
@@ -233,6 +232,8 @@
 		}
 	}
 	
+	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+	
     // Select a valid item if needed.
     if (selectedItem.isHidden) {
         [popUp setIvar:@"CalledFromGPGMail" value:[NSNumber numberWithBool:YES]];
@@ -252,7 +253,12 @@
         [popUp setIvar:@"CalledFromGPGMail" value:[NSNumber numberWithBool:YES]];
         [popUp selectItem:selectedItem];
         [self changeFromHeader:popUp];
-    }
+    } else if (![backEnd getIvar:@"gpgKeyForSigning"]) {
+		id gpgKey = [selectedItem getIvar:@"gpgKey"];
+		if (gpgKey) {
+			[backEnd setIvar:@"gpgKeyForSigning" value:gpgKey];
+		}
+	}
 }
 
 - (void)MAChangeFromHeader:(NSPopUpButton *)sender {
