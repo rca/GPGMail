@@ -48,8 +48,6 @@ NSString *GPGMailSwizzledMethodPrefix = @"MA";
 NSString *GPGMailAgent = @"GPGMail %@";
 NSString *GPGMailKeyringUpdatedNotification = @"GPGMailKeyringUpdatedNotification";
 NSString *gpgErrorIdentifier = @"^~::gpgmail-error-code::~^";
-NSString *gpgKeysIdentifierStart = @"^~::gpgmail-key-ids-start::~^";
-NSString *gpgKeysIdentifierEnd = @"^~::gpgmail-key-ids-end::~^";
 
 
 int GPGMailLoggingLevel = 1;

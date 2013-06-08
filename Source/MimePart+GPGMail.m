@@ -1638,26 +1638,6 @@
 	}
 	
 	
-	// Extract data in range from gpgKeysIdentifierStart to gpgKeysIdentifierEnd and store it in keysData, so we can append it after encryption again.
-	NSData *keysData = nil;
-	range = [data rangeOfData:[gpgKeysIdentifierStart UTF8Data]];
-	if (range.length > 0) {
-		NSRange endRange = [data rangeOfData:[gpgKeysIdentifierEnd UTF8Data]];
-		if (endRange.length == 0) {
-			[self failedToEncryptForRecipients:recipients gpgErrorCode:1 error:[GPGException exceptionWithReason:@"gpgKeysIdentifierEnd could not be found!" errorCode:1]];
-			return nil;
-		}
-		
-		range.length = endRange.location + endRange.length - range.location;
-		keysData = [data subdataWithRange:range];
-		
-		NSMutableData *mutableData = [NSMutableData dataWithData:data];
-		[mutableData replaceBytesInRange:range withBytes:nil length:0];
-		data = mutableData;
-	}
-	
-	
-
 	// Split the recipients in normal and bcc recipients.
     NSMutableArray *normalRecipients = [NSMutableArray arrayWithCapacity:1];
     NSMutableArray *bccRecipients = [NSMutableArray arrayWithCapacity:1];
@@ -1696,13 +1676,6 @@
 		
 		if (gpgc.error) {
 			@throw gpgc.error;
-		}
-		
-		if (keysData) {
-			// Append keysData. This is needed so the back-end can add the signing! key to the message.
-			NSMutableData *mutableData = [NSMutableData dataWithData:*encryptedData];
-			[mutableData appendData:keysData];
-			*encryptedData = mutableData;
 		}
     }
 	@catch(NSException *e) {
@@ -1777,12 +1750,7 @@
 		if (gpgc.error) {
 			@throw gpgc.error;
 		}
-		
-		// Append the used GPGKey to to signature data, so the back-end can add the key to the resulting message.
-		NSMutableData *mutableData = [NSMutableData dataWithData:*signatureData];
-		[mutableData appendData:[[gpgKeysIdentifierStart stringByAppendingFormat:@"%@%@", keyForSigning, gpgKeysIdentifierEnd] UTF8Data]];
-		*signatureData = mutableData;
-    }
+	}
 	@catch (GPGException *e) {
 		if (e.errorCode == GPGErrorCancelled) {
 			// Write the errorCode in signatureData, so the back-end can cancel the operation.

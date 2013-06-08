@@ -226,47 +226,6 @@
 	}
 	
 	
-	// Enable this, instead of parsing the key from encryptedData!
-	//GPGKey *key = [self getIvar:@"gpgKeyForSigning"];
-	
-	
-	// Extract the keys used by MANewSignedPartWithData to sign the message. So we can add them as a mime part.
-	NSData *keysToAttach = nil;
-	range = [encryptedData rangeOfData:[gpgKeysIdentifierStart UTF8Data]];
-	if (range.length > 0) {
-		NSRange endRange = [encryptedData rangeOfData:[gpgKeysIdentifierEnd UTF8Data]];
-		if (endRange.length == 0) {
-			// Should we set any error here?
-			return nil;
-		}
-		
-		NSRange cutRange = NSMakeRange(range.location, endRange.location + endRange.length - range.location);
-		range.location += range.length;
-		range.length = endRange.location - range.location;
-		
-		NSArray *keys = [[[NSString alloc] initWithData:[encryptedData subdataWithRange:range] encoding:NSUTF8StringEncoding] componentsSeparatedByString:@","];
-		
-		GPGController *gpgc = [[GPGController alloc] init];
-		@try {
-			gpgc.useArmor = YES;
-			keysToAttach = [gpgc exportKeys:keys options:GPGExportMinimal];
-		}
-		@catch (NSException *exception) {
-			GPGDebugLog(@"Exception during exporting keys: %@", exception);
-		}
-		@finally {
-			[gpgc release];
-		}
-		
-		NSMutableData *mutableData = [NSMutableData dataWithData:encryptedData];
-		[mutableData replaceBytesInRange:cutRange withBytes:nil length:0];
-		encryptedData = mutableData;
-	}
-
-	
-	
-	
-
 	
     // And restore the original headers.
     [(ComposeBackEnd *)self setValue:[self getIvar:@"originalCleanHeaders"] forKey:@"_cleanHeaders"];
@@ -284,6 +243,24 @@
     Subdata *newBodyData = nil;
     
     if(!shouldCreatePGPInlineMessage) {
+		
+		// Get the signer key and export it, so we can attach it to the message.
+		NSData *keysToAttach = nil;
+		GPGKey *key = [self getIvar:@"gpgKeyForSigning"];
+		if (key) {
+			GPGController *gpgc = [[GPGController alloc] init];
+			@try {
+				gpgc.useArmor = YES;
+				keysToAttach = [gpgc exportKeys:[NSArray arrayWithObject:key] options:GPGExportMinimal];
+			}
+			@catch (NSException *exception) {
+				GPGDebugLog(@"Exception during exporting keys: %@", exception);
+			}
+			@finally {
+				[gpgc release];
+			}
+		}
+		
         // Check for preferences here, and set mime or plain version.
         newBodyData = [self _newPGPBodyDataWithEncryptedData:encryptedData headers:[outgoingMessage headers] shouldBeMIME:YES keysToAttach:nil /*keysToAttach*/];
     }
