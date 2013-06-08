@@ -554,69 +554,86 @@
     if(![[(MimeBody *)[self mimeBody] message] shouldCreateSnippetWithData:encryptedData])    
         return nil;
     
-    GPGController *gpgc = [[GPGController alloc] init];
-    
-    NSData *deArmoredEncryptedData = nil;
-    NSException *crcError = nil;
+	
+	NSData *deArmoredEncryptedData = nil;
     // De-armor the message and catch any CRC-Errors.
     @try {
         deArmoredEncryptedData = [GPGPacket unArmor:encryptedData];
     }
     @catch (NSException *exception) {
-        crcError = exception;
+		self.PGPError = [self errorForDecryptionError:exception status:nil errorText:nil];
+		return nil;
     }
-    
-    NSData *decryptedData = nil;
-    MFError *error = nil;
-    if(!crcError) {
-        decryptedData = [gpgc decryptData:deArmoredEncryptedData];
-        error = [self errorFromGPGOperation:GPG_OPERATION_DECRYPTION controller:gpgc];
-    }
-    else
-        error = [self errorForDecryptionError:crcError status:nil errorText:nil];
-    
-    NSArray *signatures = gpgc.signatures;
-    // Sometimes decryption okay is issued even though a NODATA error occured.
-    BOOL success = gpgc.decryptionOkay && !error;
-    // Check if this is a non-clear-signed message.
-    // Conditions: decryptionOkay == false and encrypted data has signature packets.
-    // If decryptedData length != 0 && !decryptionOkay signature packets are expected.
-    BOOL nonClearSigned = !gpgc.decryptionOkay && [decryptedData hasSignaturePacketsWithSignaturePacketsExpected:[decryptedData length] != 0 && !gpgc.decryptionOkay];
-    
-    // Let's reset the error if the message is non-clear-signed,
-    // since error will be general error.
-    if(nonClearSigned)
-        error = nil;
-    
-    // Part is encrypted, otherwise we wouldn't come here, so
-    // set that status.
-    self.PGPEncrypted = nonClearSigned ? NO : YES;
-    
-    // No error for decryption? Check the signatures for errors.
-    if(!error) {
-        // Decryption succeed, so set that status.
-        self.PGPDecrypted = nonClearSigned ? NO : YES;
-        error = [self errorFromGPGOperation:GPG_OPERATION_VERIFICATION controller:gpgc];
-    }
-    
-    // Signatures found, set is signed status, also store the signatures.
-    if([signatures count]) {
-        self.PGPSigned = YES;
-        self.PGPSignatures = signatures;
-        // If there is an error and decrypted is yes, there was an error
-        // with a signature. Set verified to false.
-        if(success && error)
-            self.PGPVerified = NO;
-        else
-            self.PGPVerified = YES;
-    }
-    
+
+	
+	// Find key needed to decrypt. We do this to lock until last decyption using this key is done.
+	NSDictionary *secretGPGKeysByID = [[GPGMailBundle sharedInstance] secretGPGKeysByID];
+	__block NSString *decryptKey = nil;
+	
+	[GPGPacket enumeratePacketsWithData:deArmoredEncryptedData block:^(GPGPacket *packet, BOOL *stop) {
+		GPGKey *key = [secretGPGKeysByID objectForKey:packet.keyID];
+		if (key) {
+			decryptKey = [key description];
+			*stop = YES;
+		}
+	}];
+	
+	
+	GPGController *gpgc = [[GPGController alloc] init];
+	NSData *decryptedData = nil;
+	
+	if (!decryptKey || [gpgc isPassphraseForKeyInCache:decryptKey]) { //
+		decryptedData = [gpgc decryptData:deArmoredEncryptedData];
+	} else { // Only lock if the passphrase is not cached.
+		@synchronized(decryptKey) {
+			decryptedData = [gpgc decryptData:deArmoredEncryptedData];
+		}
+	}
+	
+	MFError *error = [self errorFromGPGOperation:GPG_OPERATION_DECRYPTION controller:gpgc];
+	
+	// Sometimes decryption okay is issued even though a NODATA error occured.
+	BOOL success = gpgc.decryptionOkay && !error;
+	
+	// Check if this is a clear-signed message.
+	// Conditions: decryptionOkay == YES or encrypted data has no signature packets.
+	// If decryptedData length > 0 && !decryptionOkay signature packets are expected.
+	BOOL clearSigned = gpgc.decryptionOkay || ![decryptedData hasSignaturePacketsWithSignaturePacketsExpected:decryptedData.length > 0];
+	
+	// Let's reset the error if the message is not clear-signed,
+	// since error will be general error.
+	if (!clearSigned) {
+		error = nil;
+	}
+	
+	// No error for decryption? Check the signatures for errors.
+	if (!error) {
+		// Decryption succeed, so set that status.
+		self.PGPDecrypted = clearSigned;
+		error = [self errorFromGPGOperation:GPG_OPERATION_VERIFICATION controller:gpgc];
+	}
+
+	// Part is encrypted, otherwise we wouldn't come here, so
+	// set that status.
+	self.PGPEncrypted = clearSigned;
+		
+	// Signatures found, set is signed status, also store the signatures.
+	NSArray *signatures = gpgc.signatures;
+	if (signatures.count) {
+		self.PGPSigned = YES;
+		self.PGPSignatures = signatures;
+		
+		// If there is an error and decrypted is yes, there was an error
+		// with a signature. Set verified to false.
+		self.PGPVerified = !(success && error);
+	}
+	
+	[gpgc release];
+	
     // Last, store the error itself.
     self.PGPError = error;
     
-    [gpgc release];
-    
-    if(!success && !nonClearSigned)
+    if (!success && clearSigned)
         return nil;
     
     return decryptedData;
