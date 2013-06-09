@@ -871,7 +871,7 @@ disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus, bundleImages = _bun
         self.secretGPGKeysByID = idMap;
         [idMap release];
     }
-    return [[_secretGPGKeysByID retain] autorelease];
+    return _secretGPGKeysByID;
 }
 
 
