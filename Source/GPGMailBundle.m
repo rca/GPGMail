@@ -58,9 +58,11 @@ static BOOL gpgMailWorks = NO;
 
 @implementation GPGMailBundle
 
+
 @synthesize publicGPGKeys, secretGPGKeys, allGPGKeys, updater, accountExistsForSigning,
 gpgc, publicGPGKeysByID, secretGPGKeysByID, gpgStatus, bundleImages = _bundleImages,
-publicKeyMapping, secretKeyMapping;
+publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesWereAppliedTo;
+
 
 
 - (void)_installGPGMail {
@@ -165,6 +167,11 @@ publicKeyMapping, secretKeyMapping;
                             [NSArray arrayWithObjects:
                              @"isSignedByMe",
                              @"_isPossiblySignedOrEncrypted", nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"MessageCriterion", @"class",
+                            [NSArray arrayWithObjects:
+                             @"_evaluateIsDigitallySignedCriterion:",
+                             @"_evaluateIsEncryptedCriterion:", nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MailAccount", @"class",
                             [NSArray arrayWithObjects:
@@ -376,6 +383,7 @@ publicKeyMapping, secretKeyMapping;
         case GPGErrorConfigurationError:
             DebugLog(@"DEBUG: checkGPG - GPGErrorConfigurationError");
         case GPGErrorNoError:
+            gpgMailWorks = YES;
             return YES;
         default:
             DebugLog(@"DEBUG: checkGPG - %i", gpgStatus);
@@ -402,6 +410,8 @@ publicKeyMapping, secretKeyMapping;
     verificationQueue = dispatch_queue_create("org.gpgmail.verification", NULL);
     collectingQueue = dispatch_queue_create("org.gpgmail.collection", NULL);
     keysUpdateQueue = dispatch_queue_create("org.gpgmail.update", DISPATCH_QUEUE_CONCURRENT);
+    _rulesQueue = dispatch_queue_create("org.gpgmail.rules", NULL);
+    _messagesRulesWereAppliedTo = [[NSMutableArray alloc] init];
     
     // Init GPGController.
     [self gpgc];
@@ -445,6 +455,9 @@ publicKeyMapping, secretKeyMapping;
     dispatch_release(verificationQueue);
     dispatch_release(collectingQueue);
     dispatch_release(keysUpdateQueue);
+    dispatch_release(_rulesQueue);
+    [_messagesRulesWereAppliedTo release];
+    _messagesRulesWereAppliedTo = nil;
     
     self.bundleImages = nil;
     self.secretGPGKeys = nil;
@@ -979,6 +992,28 @@ publicKeyMapping, secretKeyMapping;
     return ((GPGUserID *)[sortedUserIDs objectAtIndex:0]).primaryKey;
 }
 
+
+
+#pragma mark Message Rules
+
+- (BOOL)wereRulesAppliedToMessage:(id)message {
+    BOOL __block result = NO;
+    typeof(self) __block weakSelf = self;
+    long long messageID = (long long)[message messageID];
+    dispatch_sync(_rulesQueue, ^{
+        result = [weakSelf.messagesRulesWereAppliedTo containsObject:[NSNumber numberWithLongLong:messageID]];
+    });
+    return result;
+}
+
+- (void)addMessageRulesWereAppliedTo:(id)message {
+    typeof(self) __block weakSelf = self;
+    long long messageID = (long long)[message messageID];
+    
+    dispatch_sync(_rulesQueue, ^{
+        [weakSelf->_messagesRulesWereAppliedTo addObject:[NSNumber numberWithLongLong:messageID]];
+    });
+}
 
 #pragma mark General Info
 

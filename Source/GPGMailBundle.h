@@ -64,6 +64,7 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
     dispatch_queue_t keysUpdateQueue;
     
     BOOL accountExistsForSigning;
+    BOOL _warnedAboutMissingPrivateKeys;
     
 	// Map which uses the key id to lookup a private key.
 	NSDictionary *secretGPGKeysByID;
@@ -81,6 +82,13 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 	SUUpdater *updater;
     
     NSMutableArray *_bundleImages;
+	
+	/*
+	 Holds an array of message ID's which already have had their
+	 rules applied, so we don't create too much overhead.
+	 */
+	NSMutableArray *_messagesRulesWereAppliedTo;
+	dispatch_queue_t _rulesQueue;
 }
 
 /**
@@ -118,6 +126,7 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 @property (readonly, nonatomic, retain) NSDictionary *secretGPGKeysByID;
 
 @property (readonly) GPGController *gpgc;
+@property (nonatomic, retain) NSArray *messagesRulesWereAppliedTo;
 
 @property (nonatomic, readonly, retain) SUUpdater *updater;
 
@@ -172,6 +181,18 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
  Return if we're running on Mountain Lion or not.
  */
 + (BOOL)isMountainLion;
+
+/**
+ Message rules should only be applied once per session.
+ For this matter, all messages which have had their rules applied
+ are attached to an array.
+ */
+- (void)addMessageRulesWereAppliedTo:(id)message;
+
+/**
+ Check if a message has already had their rules applied.
+ */
+- (BOOL)wereRulesAppliedToMessage:(id)message;
 
 @end
 
