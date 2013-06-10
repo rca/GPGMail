@@ -69,7 +69,7 @@ static BOOL gpgMailWorks = NO;
 
 @synthesize publicGPGKeys, secretGPGKeys, allGPGKeys, updater, accountExistsForSigning, secretGPGKeysByEmail = _secretGPGKeysByEmail,
 publicGPGKeysByEmail = _publicGPGKeysByEmail, gpgc, publicGPGKeysByID = _publicGPGKeysByID, disabledGroups = _disabledGroups,
-disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus, bundleImages = _bundleImages;
+disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus, bundleImages = _bundleImages, secretGPGKeysByID = _secretGPGKeysByID, warnedAboutMissingPrivateKeys = _warnedAboutMissingPrivateKeys, messagesRulesWereAppliedTo = _messagesRulesWereAppliedTo;
 
 /**
  This method replaces all of Mail's methods which are necessary for GPGMail
@@ -173,6 +173,11 @@ disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus, bundleImages = _bun
                             [NSArray arrayWithObjects:
                              @"isSignedByMe",
                              @"_isPossiblySignedOrEncrypted", nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"MessageCriterion", @"class",
+                            [NSArray arrayWithObjects:
+                             @"_evaluateIsDigitallySignedCriterion:",
+                             @"_evaluateIsEncryptedCriterion:", nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MailAccount", @"class",
                             [NSArray arrayWithObjects:
@@ -433,6 +438,7 @@ disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus, bundleImages = _bun
         case GPGErrorConfigurationError:
             DebugLog(@"DEBUG: checkGPG - GPGErrorConfigurationError");
         case GPGErrorNoError:
+            gpgMailWorks = YES;
             return YES;
         default:
             DebugLog(@"DEBUG: checkGPG - %i", gpgStatus);
@@ -459,6 +465,8 @@ disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus, bundleImages = _bun
     verificationQueue = dispatch_queue_create("org.gpgmail.verification", NULL);
     collectingQueue = dispatch_queue_create("org.gpgmail.collection", NULL);
     keysUpdateQueue = dispatch_queue_create("org.gpgmail.update", DISPATCH_QUEUE_CONCURRENT);
+    _rulesQueue = dispatch_queue_create("org.gpgmail.rules", NULL);
+    _messagesRulesWereAppliedTo = [[NSMutableArray alloc] init];
     
     // Init GPGController.
     [self gpgc];
@@ -502,6 +510,9 @@ disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus, bundleImages = _bun
     dispatch_release(verificationQueue);
     dispatch_release(collectingQueue);
     dispatch_release(keysUpdateQueue);
+    dispatch_release(_rulesQueue);
+    [_messagesRulesWereAppliedTo release];
+    _messagesRulesWereAppliedTo = nil;
     
     self.bundleImages = nil;
     self.secretGPGKeys = nil;
@@ -970,6 +981,25 @@ disabledUserMappedKeys = _disabledUserMappedKeys, gpgStatus, bundleImages = _bun
     // non-expired, non-disabled, non-revoked and be used for encryption.
     // We don't care about ownerTrust, validity
 	return key.canAnySign && key.status < GPGKeyStatus_Invalid;
+}
+
+- (BOOL)wereRulesAppliedToMessage:(id)message {
+    BOOL __block result = NO;
+    typeof(self) __block weakSelf = self;
+    long long messageID = [message messageID];
+    dispatch_sync(_rulesQueue, ^{
+        result = [weakSelf.messagesRulesWereAppliedTo containsObject:[NSNumber numberWithLongLong:messageID]];
+    });
+    return result;
+}
+
+- (void)addMessageRulesWereAppliedTo:(id)message {
+    typeof(self) __block weakSelf = self;
+    long long messageID = [message messageID];
+    
+    dispatch_sync(_rulesQueue, ^{
+        [weakSelf->_messagesRulesWereAppliedTo addObject:[NSNumber numberWithLongLong:messageID]];
+    });
 }
 
 - (id)locale {

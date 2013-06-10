@@ -35,6 +35,7 @@
 #import <MessageStore.h>
 #import <ActivityMonitor.h>
 #import "MFError.h"
+#import "MessageRouter.h"
 #import "MimePart+GPGMail.h"
 #import "Message+GPGMail.h"
 #import "GPGMailBundle.h"
@@ -297,9 +298,21 @@
     self.PGPVerified = isVerified;
     
     [self fakeMessageFlagsIsEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];
-    if(decryptedMessage)
-        [decryptedMessage fakeMessageFlagsIsEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];
     
+	if(decryptedMessage) {
+		[decryptedMessage fakeMessageFlagsIsEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];
+	}
+    
+	// The problem is, Mail.app would correctly apply the rules, if we didn't
+	// deactivate the snippet generation. But since we do, because it's kind of
+	// a pain in the ass, it doesn't.
+	// So we re-evaluate the message rules here and then they should be applied correctly.
+	// ATTENTION: We have to make sure that the user actively selected this message,
+	//			  otherwise, the body data is not yet available, and will 'cause the evaluation rules
+	//			  to wreak havoc.
+	if(!self.isSMIMEEncrypted && !self.isSMIMESigned)
+		[self applyMatchingRulesIfNecessary];
+		
     // Only for test purpose, after the correct error to be displayed should be constructed.
     MFError *error = nil;
     if([errors count])
@@ -328,6 +341,25 @@
         [[decryptedMessage dataSourceProxy] setNumberOfAttachments:(unsigned int)numberOfAttachments isSigned:isSigned isEncrypted:isEncrypted forMessage:decryptedMessage];
     // Set PGP Info collected so this information is not overwritten.
     self.PGPInfoCollected = YES;
+}
+
+- (void)applyMatchingRulesIfNecessary {
+	if(![[self dataSourceProxy] respondsToSelector:@selector(routeMessages:isUserAction:)])
+		return;
+	
+	if(!self.isEncrypted && !self.isSigned)
+		return;
+	
+	// isEncrypted has to be re-evaluated again, since it might contain a signed message
+	// but didn't have the key in cache, to correctly apply rules the first time around.
+	if([[GPGMailBundle sharedInstance] wereRulesAppliedToMessage:self] && !self.isEncrypted)
+		return;
+	
+	typeof(self) __block weakSelf = self;
+ 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+		[[weakSelf dataSourceProxy] routeMessages:[NSArray arrayWithObject:weakSelf] isUserAction:NO];
+	});
+	[[GPGMailBundle sharedInstance] addMessageRulesWereAppliedTo:self];
 }
 
 - (MFError *)errorSummaryForPGPAttachments:(NSArray *)attachments {
