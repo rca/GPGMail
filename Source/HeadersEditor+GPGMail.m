@@ -148,7 +148,7 @@
 	[attributes setObject:truncateStyle forKey:NSParagraphStyleAttributeName];
 	[truncateStyle release];
     NSMenuItem *item, *parentItem, *selectedItem = [popUp selectedItem], *subItemToSelect = nil;
-	GPGKey *defaultKey = [bundle findSecretKeyByKeyHint:[[GPGOptions sharedOptions] valueInGPGConfForKey:@"default-key"]];
+	GPGKey *defaultKey = [bundle findKeyByHint:[[GPGOptions sharedOptions] valueInGPGConfForKey:@"default-key"] onlySecret:YES];
 	BOOL useTitleFromAccount = [[GPGOptions sharedOptions] boolForKey:@"ShowAccountNameForKeysOfSameAddress"];
 	
     // If menu items are not yet set, simply exit.
