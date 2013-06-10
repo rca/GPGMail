@@ -18,9 +18,10 @@ Set this option to 2 to force S/MIME. 1 = OpenPGP.
 
 defaults write org.gpgtools.gpgmail DefaultSecurityMethod -int 1|2
 
-* Add a mapping for a missing UID to a public key. *
+* Add a mapping for a mail-address or a domain to a key. *
 
-defaults write org.gpgtools.common PublicKeyUserMap -dict-add email fingerprint
+defaults write org.gpgtools.common KeyMapping -dict-add email fingerprint
+defaults write org.gpgtools.common KeyMapping -dict-add *@domain.com fingerprint
 
 * Enable debug logging. This spills out a LOT of messages. *
 

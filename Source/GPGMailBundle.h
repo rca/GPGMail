@@ -51,7 +51,6 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 @interface GPGMailBundle : NSObject <NSToolbarDelegate, GPGControllerDelegate> {
 	NSArray *cachedPersonalKeys;
 	NSArray *cachedPublicKeys;
-	//NSDictionary *locale;
     
     NSSet *secretGPGKeys;
     NSSet *publicGPGKeys;
@@ -66,20 +65,14 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
     
     BOOL accountExistsForSigning;
     
-    // Map which uses the email address to lookup a personal key.
-    NSDictionary *_secretGPGKeysByEmail;
 	// Map which uses the key id to lookup a private key.
-	NSDictionary *_secretGPGKeysByID;
+	NSDictionary *secretGPGKeysByID;
     // Map which uses the email address to lookup a public key.
-    NSDictionary *_publicGPGKeysByEmail;
-    // Map which uses the key id to lookup a public key.
-    NSDictionary *_publicGPGKeysByID;
-    // Contains all groups which were disabled because they contained keys
-    // which can not be used for encryption.
-    NSArray *_disabledGroups;
-    // Contains all user mapped keys which can't be used for encryption.
-    NSArray *_disabledUserMappedKeys;
-    
+    NSDictionary *publicGPGKeysByID;
+	
+	NSDictionary *publicKeyMapping;
+	NSDictionary *secretKeyMapping;
+	    
     GPGErrorCode gpgStatus;
     
 	GPGController *gpgc;
@@ -117,18 +110,13 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 @property BOOL usesOpenPGPToReceive; // use OpenPGP to receive messages
 
 
-@property BOOL warnedAboutMissingPrivateKeys;
-
-@property (nonatomic, retain) NSArray *disabledGroups;
-@property (nonatomic, retain) NSArray *disabledUserMappedKeys;
 @property (readonly) GPGErrorCode gpgStatus;
-@property (nonatomic, retain) NSSet *secretGPGKeys;
-@property (nonatomic, retain) NSDictionary *secretGPGKeysByEmail;
-@property (nonatomic, retain) NSSet *publicGPGKeys;
-@property (nonatomic, retain) NSDictionary *publicGPGKeysByEmail;
-@property (nonatomic, retain) NSDictionary *publicGPGKeysByID;
-@property (nonatomic, retain) NSDictionary *secretGPGKeysByID;
 @property (readonly, retain) NSSet *allGPGKeys;
+@property (readonly, nonatomic, retain) NSSet *secretGPGKeys;
+@property (readonly, nonatomic, retain) NSSet *publicGPGKeys;
+@property (readonly, nonatomic, retain) NSDictionary *publicGPGKeysByID;
+@property (readonly, nonatomic, retain) NSDictionary *secretGPGKeysByID;
+
 @property (readonly) GPGController *gpgc;
 
 @property (nonatomic, readonly, retain) SUUpdater *updater;
@@ -142,14 +130,10 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 - (BOOL)gpgMailWorks;
 - (BOOL)checkGPG;
 
-- (BOOL)canKeyBeUsedForEncryption:(GPGKey *)key;
-- (BOOL)canKeyBeUsedForSigning:(GPGKey *)key;
-- (id)locale;
-
 - (NSMutableSet *)publicKeyListForAddresses:(NSArray *)recipients;
+- (NSMutableSet *)signingKeyListForAddress:(NSString *)sender;
 - (BOOL)canEncryptMessagesToAddress:(NSString *)address;
 - (BOOL)canSignMessagesFromAddress:(NSString *)address;
-- (NSSet *)signingKeyListForAddress:(NSString *)sender;
 
 
 // Allows to schedule decryption tasks which will block as
@@ -170,45 +154,19 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
  */
 - (void)addCollectionTask:(gpgmail_verification_task_t)task;
 
-/**
- Checks for public keys which share the same email address and returns
- a list only including the most trusted and newest key with the email address.
- */
-- (NSSet *)sanitizedPublicGPGKeys:(NSSet *)publicKeys;
 
 /**
  Checks a list of keys and returns the newest and most trusted key.
  */
 - (GPGKey *)bestKeyOfUserIDs:(NSSet *)userIDs;
 
-/**
- Returns all keys which were mapped by the user (email -> fingerprint).
- First removes all keys which can't be used for encryption and adds them to disabledUserMappedKeys.
- */
-- (NSDictionary *)userMappedKeys;
-
-/**
- Returns all groups defined in gpg.conf.
- First removes any groups where not all keys can't be used for encryption and adds them to disabledGroups.
-*/
-- (NSDictionary *)groups;
 
 /**
  Finds a key by matching one of its properties. (internally uses textForFilter which contains information for the
  key and all subkeys)
  */
-- (GPGKey *)findPublicKeyByKeyHint:(NSString *)hint;
-- (GPGKey *)findSecretKeyByKeyHint:(NSString *)hint;
+- (GPGKey *)findKeyByHint:(NSString *)hint onlySecret:(BOOL)onlySecret;
 
-
-/**
- Create a map for the gpg keys which can be accessed by using
- an email address.
- All email addresses of user ids are taking into consideration.
- If duplicate emails are found, allow duplicates decides whether to discard them
- or keep them.
- */
-- (NSMutableDictionary *)emailMapForGPGKeys:(NSSet *)keys allowDuplicates:(BOOL)allowDuplicates;
 
 /**
  Return if we're running on Mountain Lion or not.
