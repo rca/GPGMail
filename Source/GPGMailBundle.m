@@ -156,6 +156,7 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
                              @"decodeTextPlainWithContext:",
                              @"decodeTextHtmlWithContext:",
                              @"decodeApplicationOctet_streamWithContext:",
+                             @"decodeTextEnrichedWithContext:",
                              @"isSigned",
                              @"isMimeSigned",
                              @"isMimeEncrypted",
@@ -582,7 +583,7 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
 - (void)updateGPGKeys:(NSObject <EnumerationList> *)keys {
     if (!gpgMailWorks) return;
     
-	if (![updateLock tryLock])
+	if (updateLock && ![updateLock tryLock])
 		return;
 	
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -1001,19 +1002,19 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
 - (BOOL)wereRulesAppliedToMessage:(id)message {
     BOOL __block result = NO;
     typeof(self) __block weakSelf = self;
-    long long messageID = (long long)[message messageID];
+    id messageID = [message messageID];
     dispatch_sync(_rulesQueue, ^{
-        result = [weakSelf.messagesRulesWereAppliedTo containsObject:[NSNumber numberWithLongLong:messageID]];
+        result = [weakSelf.messagesRulesWereAppliedTo containsObject:messageID];
     });
     return result;
 }
 
 - (void)addMessageRulesWereAppliedTo:(id)message {
     typeof(self) __block weakSelf = self;
-    long long messageID = (long long)[message messageID];
+    id messageID = [message messageID];
     
     dispatch_sync(_rulesQueue, ^{
-        [weakSelf->_messagesRulesWereAppliedTo addObject:[NSNumber numberWithLongLong:messageID]];
+        [weakSelf->_messagesRulesWereAppliedTo addObject:messageID];
     });
 }
 
