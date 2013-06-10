@@ -341,7 +341,6 @@
             [newBCCList addObject:[bcc flaggedStringWithFlag:@"recipientType" value:@"bcc"]];
 
         [newBCCList addObject:[[headers valueForKey:@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"]];
-#warning In some weird cases the address doesn't get removed from BCC again.
         [headers setValue:newBCCList forKey:@"bcc"];
     }
 }
