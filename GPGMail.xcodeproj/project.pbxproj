@@ -2995,7 +2995,6 @@
 				1B8289FA13FD62880007E6A2 /* Message+GPGMail.m */,
 				559A80780838E9B10052F47C /* MimeBody+GPGMail.m */,
 				559A80790838E9B10052F47C /* MimePart+GPGMail.m */,
-				1BD7D27D1765E59C00F5A266 /* MessageCriterion+GPGMail.h */,
 				1BD7D27E1765E59C00F5A266 /* MessageCriterion+GPGMail.m */,
 			);
 			name = Logic;
@@ -3012,6 +3011,7 @@
 				1B8289F913FD62880007E6A2 /* Message+GPGMail.h */,
 				559A805D0838E8300052F47C /* MimeBody+GPGMail.h */,
 				559A805E0838E8300052F47C /* MimePart+GPGMail.h */,
+				1BD7D27D1765E59C00F5A266 /* MessageCriterion+GPGMail.h */,
 			);
 			name = Logic;
 			sourceTree = "<group>";
