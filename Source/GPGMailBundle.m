@@ -744,9 +744,31 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
 }
 
 - (NSDictionary *)userMappedKeysSecretOnly:(BOOL)secretOnly {
+    NSMutableDictionary *mappedKeys = [[NSMutableDictionary alloc] init];
+    BOOL needWrite = NO;
+    GPGOptions *options = [GPGOptions sharedOptions];
+    
+    NSDictionary *oldMap = [options valueInStandardDefaultsForKey:@"PublicKeyUserMap"];
+    if (oldMap) {
+        needWrite = YES;
+        [mappedKeys addEntriesFromDictionary:oldMap];
+        [options setValueInStandardDefaults:nil forKey:@"PublicKeyUserMap"];
+    }
+    oldMap = [options valueInCommonDefaultsForKey:@"PublicKeyUserMap"];
+    if (oldMap) {
+        needWrite = YES;
+        [mappedKeys addEntriesFromDictionary:oldMap];
+        [options setValueInCommonDefaults:nil forKey:@"PublicKeyUserMap"];
+    }
+    
+    
     /* "KeyMapping" is a dictionary the form @{@"Address": @"KeyID", @"*@domain.com": @"Fingerprint", @"Address": @[@"KeyID", @"Name", @"Fingerprint"]} */
-    NSMutableDictionary *mappedKeys = [[GPGOptions sharedOptions] valueInCommonDefaultsForKey:@"KeyMapping"];
-
+    [mappedKeys addEntriesFromDictionary:[options valueInCommonDefaultsForKey:@"KeyMapping"]];
+    
+    if (needWrite) {
+        [options setValueInCommonDefaults:mappedKeys forKey:@"KeyMapping"];
+    }
+    
 	Class stringClass = [NSString class];
 	Class arrayClass = [NSArray class];
     
@@ -779,6 +801,7 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
         if (object)
             [cleanMappedKeys setObject:object forKey:pattern];
     }
+    [mappedKeys release];
     
     return cleanMappedKeys;
 }
