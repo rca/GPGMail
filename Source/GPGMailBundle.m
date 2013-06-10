@@ -573,8 +573,9 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
 }
 
 - (void)gpgController:(GPGController *)gpgc keysDidChanged:(NSObject<EnumerationList> *)keys external:(BOOL)external {
+    typeof(self) __block weakSelf = self;
     dispatch_async(keysUpdateQueue, ^(void) {
-        [self updateGPGKeys:keys];
+        [weakSelf updateGPGKeys:keys];
     });
 }
 
@@ -664,9 +665,10 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
     
     static dispatch_once_t onceQueue;
     
+    typeof(self) __block weakSelf = self;
     dispatch_once(&onceQueue, ^{
         allGPGKeys = [[NSMutableSet alloc] init];
-        [self updateGPGKeys:nil];
+        [weakSelf updateGPGKeys:nil];
     });
     
     return allGPGKeys;
