@@ -344,9 +344,12 @@
 }
 
 - (void)applyMatchingRulesIfNecessary {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wselector"
 	if(![[self dataSourceProxy] respondsToSelector:@selector(routeMessages:isUserAction:)])
 		return;
-	
+#pragma clang diagnostic pop
+
 	if(!self.isEncrypted && !self.isSigned)
 		return;
 	
