@@ -40,7 +40,7 @@
 #import "NSSet+Functional.h"
 #import "NSString+GPGMail.h"
 #import "GPGMailPreferences.h"
-#import "GPGMailBundle_Private.h"
+#import "GPGMailBundle+Private.h"
 #import "Message.h"
 #define restrict
 #import <RegexKit/RegexKit.h>
@@ -156,7 +156,6 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
                              @"decodeTextPlainWithContext:",
                              @"decodeTextHtmlWithContext:",
                              @"decodeApplicationOctet_streamWithContext:",
-                             @"decodeTextEnrichedWithContext:",
                              @"isSigned",
                              @"isMimeSigned",
                              @"isMimeEncrypted",
