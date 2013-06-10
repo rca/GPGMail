@@ -170,8 +170,22 @@
     if(![currentMessage shouldBePGPProcessed])
         return [self MADecodeWithContext:ctx];
     
-    id ret = nil;
-    if([self isPGPMimeEncrypted]) {
+	// Check if this is an exchange TNEF attachment and.
+	MimePart *tnefPart = nil;
+	id ret = nil;
+    if(![self parentPart] && (tnefPart = [self mimePartWithTNEFAttachmentContainingSignedMessage])) {
+		MimeBody *newMessageBody = [tnefPart decodeApplicationMS_tnefWithContext:ctx];
+		((MFMimeDecodeContext *)ctx).shouldSkipUpdatingMessageFlags = YES;
+		ret = [newMessageBody parsedMessageWithContext:ctx];
+		MimePart *newTopLevel = [newMessageBody topLevelPart];
+		self.PGPSigned = [newTopLevel PGPSigned];
+		self.PGPError = [newTopLevel PGPError];
+		
+		[currentMessage collectPGPInformationStartingWithMimePart:self decryptedBody:newMessageBody];
+		if(!ret)
+			ret = [self MADecodeWithContext:ctx];
+	}
+	else if([self isPGPMimeEncrypted]) {
         MimeBody *decryptedBody = [self decodeMultipartEncryptedWithContext:ctx];
         // Add PGP information from mime parts.
         ((MFMimeDecodeContext *)ctx).shouldSkipUpdatingMessageFlags = YES;
@@ -208,6 +222,149 @@
         ((ParsedMessage *)ret).html = [((ParsedMessage *)ret).html stringByDeletingAttachmentsWithNames:[self signatureAttachmentScheduledForRemoval]];
     }
     return ret;
+}
+
+- (MimePart *)mimePartWithTNEFAttachmentContainingSignedMessage {
+	MimePart * __block tnefPart = nil;
+	
+	[self enumerateSubpartsWithBlock:^(MimePart *part) {
+		if(![[[part type] lowercaseString] isEqualToString:@"application"])
+			return;
+		
+		if(![[[part subtype] lowercaseString] isEqualToString:@"ms-tnef"] &&
+		   ![[[part bodyParameterForKey:@"name"] lowercaseString] isEqualToString:@"winmail.dat"] &&
+		   ![[[part bodyParameterForKey:@"name"] lowercaseString] isEqualToString:@"win.dat"])
+			return;
+		
+		// Last but not least, let's look into the body, to find multipart/signed.
+		NSData *bodyData = [part bodyData];
+		if([[[part contentTransferEncoding] lowercaseString] isEqualToString:@"base64"])
+			bodyData = [bodyData decodeBase64];
+		
+		NSData *searchData = [@"multipart/signed" dataUsingEncoding:NSASCIIStringEncoding];
+		if([bodyData rangeOfData:searchData].location == NSNotFound)
+			return;
+		
+		tnefPart = part;
+	}];
+	
+	return tnefPart;
+}
+
+- (id)decodeApplicationMS_tnefWithContext:(id)ctx {
+	// TNEF decoding is inspired by tnefparser python extension.
+	NSData *bodyData = [self bodyData];
+	
+	NSUInteger (^bytesToInt)(NSData *) = ^(NSData *data) {
+		const char *bytes = [data bytes];
+		NSUInteger n = 0, num = 0;
+		
+		for(NSUInteger i = 0; i < [data length]; i++) {
+			uint8_t byte = bytes[i];
+			num += (NSUInteger)(byte << n);
+			n += 8;
+		}
+		return num;
+	};
+	
+	// Some TNEF constants.
+	NSUInteger tnefSignature = 0x223e9f78;
+	NSUInteger tnefAttachmentRenderingData = 0x9002;
+	NSUInteger tnefAttachmentData = 0x800f;
+	NSUInteger tnefLevelAttachment = 0x02;
+	NSUInteger offset = 0;
+	
+	// Verify the signature. If it doesn't match, out of here.
+	NSUInteger signature = bytesToInt([bodyData subdataWithRange:NSMakeRange(offset, 4)]);
+	if(signature != tnefSignature)
+		return nil;
+	
+	NSMutableArray *attachments = [[NSMutableArray alloc] init];
+	offset = 6;
+	
+	NSUInteger dataLength = [bodyData length];
+	/* Temporarily store the data of an attachment. */
+	NSMutableData *attachmentData = nil;
+	
+	// For some reason, the internal objects might not all
+	// be complete objects. So it might happen, subdataWithRange receives
+	// an invalid range and raises an exception.
+	// We'll simply catch that exception and ignore it.
+	@try {
+		while(offset < (dataLength - 7)) {
+			NSData *tnefObject = [bodyData subdataWithRange:NSMakeRange(offset, dataLength - offset)];
+			NSUInteger internalOffset = 0;
+			// Get the object level.
+			NSUInteger level = bytesToInt([tnefObject subdataWithRange:NSMakeRange(internalOffset, 1)]);
+			// Get the object name. Only attachments are of interest.
+			internalOffset += 1;
+			NSUInteger name = bytesToInt([tnefObject subdataWithRange:NSMakeRange(internalOffset, 2)]);
+			// Get the object length.
+			internalOffset += 4;
+			NSUInteger length = bytesToInt([tnefObject subdataWithRange:NSMakeRange(internalOffset, 4)]);
+			// Get the object data.
+			internalOffset += 4;
+			NSData *objectData = [tnefObject subdataWithRange:NSMakeRange(internalOffset, length)];
+			
+			// Length of the entire tnefObject.
+			internalOffset += length + 2;
+			NSUInteger tnefObjectLength = internalOffset;
+			NSLog(@"object length: %ld", (unsigned long)tnefObjectLength);
+			
+			
+			// Forward the offset to the next tnefObject.
+			offset += tnefObjectLength;
+			
+			// Only attachments are of interest.
+			if(name != tnefAttachmentRenderingData && level != tnefLevelAttachment)
+				continue;
+			
+			// Now name matches tnefAttachmentRenderingData, initialize
+			// a new attachment data.
+			if(name == tnefAttachmentRenderingData) {
+				if(attachmentData != nil) {
+					[attachments addObject:attachmentData];
+					[attachmentData release];
+					attachmentData = nil;
+				}
+				attachmentData = [[NSMutableData alloc] init];
+			}
+			else if(level == tnefLevelAttachment && name == tnefAttachmentData) {
+				[attachmentData appendData:objectData];
+			}
+		}
+	}
+	@catch (id exception) {
+		if(!([exception isKindOfClass:[NSRangeException class]] && [exception isEqualToString:NSRangeException]))
+			@throw exception;
+	}
+		
+	if(attachmentData != nil)
+		[attachments addObject:attachmentData];
+	
+	NSData *signedAttachment = nil;
+	NSData *multipartSignedData = [@"multipart/signed" dataUsingEncoding:NSASCIIStringEncoding];
+	NSData *pgpSignature = [@"pgp-signature" dataUsingEncoding:NSASCIIStringEncoding];
+	
+	for(NSData *signedData in attachments) {
+		if([signedData rangeOfData:multipartSignedData].location != NSNotFound ||
+		   [signedData rangeOfData:pgpSignature].location != NSNotFound) {
+			signedAttachment = signedData;
+			break;
+		}
+	}
+	
+	// If attachment data doesn't contain multipart/signed nor application/pgp-signature,
+	// return nil;
+	if(!signedAttachment)
+		return nil;
+	
+	// Otherwise let's create a new message now.
+	Message *signedMessage = [Message messageWithRFC822Data:signedAttachment sanitizeData:YES];
+	[signedMessage setMessageInfoFromMessage:[(MimeBody *)[self mimeBody] message]];
+	MimeBody *messageBody = [signedMessage messageBodyUpdatingFlags:YES];
+	
+	return messageBody;
 }
 
 - (void)enumerateSubpartsWithBlock:(void (^)(MimePart *))partBlock {
