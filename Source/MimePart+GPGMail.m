@@ -785,6 +785,19 @@
 		self.PGPVerified = !(success && error);
 	}
 	
+	// Set attachment filename if needed.
+	NSString *filename = gpgc.filename;
+	if (!filename && self.PGPDecrypted) {
+		filename = [self dispositionParameterForKey:@"filename"];
+		if (filename) {
+			filename = [[filename lastPathComponent] stringByDeletingPGPExtension];
+		}
+	}
+	if (filename) {
+		[self setDispositionParameter:filename forKey:@"filename"];
+	}
+	
+	
 	[gpgc release];
 	
     // Last, store the error itself.

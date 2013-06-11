@@ -31,8 +31,7 @@
             [attachment setValue:[NSNumber numberWithBool:part.PGPEncrypted] forKey:@"encrypted"];
             [attachment setValue:[NSNumber numberWithBool:part.PGPSigned] forKey:@"signed"];
             [attachment setValue:part.PGPError forKey:@"error"];
-            [attachment setValue:[part dispositionParameterForKey:@"filename"]  forKey:@"original-name"];
-            [attachment setValue:[[[part dispositionParameterForKey:@"filename"] lastPathComponent] stringByDeletingPathExtension] forKey:@"decrypted-name"];
+            [attachment setValue:[part dispositionParameterForKey:@"filename"] forKey:@"decrypted-name"];
             if(part.PGPSignatures)
                 [attachment setValue:[part.PGPSignatures objectAtIndex:0] forKey:@"signature"];
             BOOL decrypted = part.PGPDecrypted;
@@ -62,7 +61,6 @@
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"NSLocalizedDescription"] forKey:@"errorMessage"];
                 }
                 else if(!decrypted) {
-                    [attachment setValue:[attachment valueForKey:@"original-name"] forKey:@"decrypted-name"];
                     [attachment setValue:[NSImage imageNamed:@"encryption"] forKey:@"errorBadgeImage"];
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"_MFShortDescription"] forKey:@"errorTitle"];
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"NSLocalizedDescription"] forKey:@"errorMessage"];
