@@ -55,6 +55,7 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
     NSSet *secretGPGKeys;
     NSSet *publicGPGKeys;
     NSMutableSet *allGPGKeys;
+	BOOL needGPGKeysUpdate;
     
     // A serial queue which makes sure that only one pinentry
     // password request is run at once.
@@ -89,6 +90,8 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 	 */
 	NSMutableArray *_messagesRulesWereAppliedTo;
 	dispatch_queue_t _rulesQueue;
+	
+	dispatch_source_t _checkGPGTimer;
 }
 
 /**
@@ -125,7 +128,6 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 @property (readonly, nonatomic, retain) NSDictionary *publicGPGKeysByID;
 @property (readonly, nonatomic, retain) NSDictionary *secretGPGKeysByID;
 
-@property (readonly) GPGController *gpgc;
 @property (nonatomic, retain) NSArray *messagesRulesWereAppliedTo;
 
 @property (nonatomic, readonly, retain) SUUpdater *updater;
