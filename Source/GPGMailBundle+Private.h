@@ -10,7 +10,6 @@
 @property (nonatomic, retain) NSDictionary *publicGPGKeysByID;
 @property (nonatomic, retain) NSDictionary *secretGPGKeysByID;
 
-
 - (void)updateGPGKeys:(NSObject <EnumerationList> *)keys;
 - (void)flushGPGKeys;
 
@@ -34,6 +33,9 @@
  Find matching keys by checking all mappings.
  */
 - (NSMutableSet *)keysForAddresses:(NSArray *)addresses onlySecret:(BOOL)onlySecret stopOnFound:(BOOL)stop;
+
+
+- (void)initGPGC;
 @end
 
 

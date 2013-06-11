@@ -60,7 +60,7 @@ static BOOL gpgMailWorks = NO;
 
 
 @synthesize publicGPGKeys, secretGPGKeys, allGPGKeys, updater, accountExistsForSigning,
-gpgc, publicGPGKeysByID, secretGPGKeysByID, gpgStatus, bundleImages = _bundleImages,
+publicGPGKeysByID, secretGPGKeysByID, gpgStatus, bundleImages = _bundleImages,
 publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesWereAppliedTo;
 
 
@@ -383,12 +383,17 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
         case GPGErrorConfigurationError:
             DebugLog(@"DEBUG: checkGPG - GPGErrorConfigurationError");
         case GPGErrorNoError:
+            if (!gpgMailWorks) {
+                needGPGKeysUpdate = YES;
+                [self flushGPGKeys];
+            }
             gpgMailWorks = YES;
             return YES;
         default:
             DebugLog(@"DEBUG: checkGPG - %i", gpgStatus);
             break;
     }
+    gpgMailWorks = NO;
     return NO;
 }
 
@@ -413,8 +418,17 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
     _rulesQueue = dispatch_queue_create("org.gpgmail.rules", NULL);
     _messagesRulesWereAppliedTo = [[NSMutableArray alloc] init];
     
-    // Init GPGController.
-    [self gpgc];
+    
+    // Periodically check status of gpg.
+    [self checkGPG];
+    _checkGPGTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0));
+    dispatch_source_set_timer(_checkGPGTimer, DISPATCH_TIME_NOW, 60 * NSEC_PER_SEC, 10 * NSEC_PER_SEC);
+    __block typeof(self) weakSelf = self;
+    dispatch_source_set_event_handler(_checkGPGTimer, ^{
+        [weakSelf checkGPG];
+    });
+    dispatch_resume(_checkGPGTimer);
+
     
     // Swizzling the Mail classes.
     [self _installGPGMail];
@@ -441,7 +455,6 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
         GPGMailLoggingLevel = (int)[[GPGOptions sharedOptions] integerForKey:@"DebugLog"];
         NSLog(@"Debug Log enabled: %@", [[GPGOptions sharedOptions] integerForKey:@"DebugLog"] > 0 ? @"YES" : @"NO");
         
-        gpgMailWorks = [self checkGPG];
         [self finishInitialization];
         
 	}
@@ -458,6 +471,8 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
     dispatch_release(_rulesQueue);
     [_messagesRulesWereAppliedTo release];
     _messagesRulesWereAppliedTo = nil;
+    
+    dispatch_release(_checkGPGTimer);
     
     self.bundleImages = nil;
     self.secretGPGKeys = nil;
@@ -560,16 +575,12 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
 
 #pragma mark "Updating keys"
 
-- (GPGController *)gpgc {
-    if (!gpgMailWorks) return nil;
+- (void)initGPGC {
     if (!gpgc) {
         updateLock = [NSLock new];
         gpgc = [[GPGController alloc] init];
         gpgc.delegate = self;
-        
-        [self allGPGKeys];
     }
-    return gpgc;
 }
 
 - (void)gpgController:(GPGController *)gpgc keysDidChanged:(NSObject<EnumerationList> *)keys external:(BOOL)external {
@@ -663,13 +674,17 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
 - (NSSet *)allGPGKeys {
     if (!gpgMailWorks) return nil;
     
-    static dispatch_once_t onceQueue;
-    
+    static dispatch_once_t onceQueue;    
     typeof(self) __block weakSelf = self;
     dispatch_once(&onceQueue, ^{
         allGPGKeys = [[NSMutableSet alloc] init];
-        [weakSelf updateGPGKeys:nil];
+        [weakSelf initGPGC];
     });
+    
+    if (needGPGKeysUpdate) {
+        [self updateGPGKeys:nil];
+        needGPGKeysUpdate = NO;
+    }
     
     return allGPGKeys;
 }
@@ -677,7 +692,6 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
 - (NSSet *)secretGPGKeys {
     if(!gpgMailWorks)
         return nil;
-    
     if(!secretGPGKeys) {
         self.secretGPGKeys = [self.allGPGKeys filter:^id(GPGKey *key) {
             // Only either the key or one of the subkeys has to be valid,
