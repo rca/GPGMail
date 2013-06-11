@@ -200,7 +200,6 @@
 		// and thus snippets should not be created.
 		// Snippets should never be generated for inline PGP messages,
 		// since they are never deleted unlike with PGP/MIME messages.
-		[currentMessage setIvar:@"DoNotCreateSnippetsForMessage" value:[NSNumber numberWithBool:YES]];
 		ret = [self MADecodeWithContext:ctx];
     }
     
@@ -211,7 +210,6 @@
     // would be overwritten. To avoid this, a check is performed if the PGP info was already
     // collected. If that's the case, skip the collecting
     if([self parentPart] == nil && !currentMessage.PGPInfoCollected) {
-		[currentMessage removeIvar:@"DoNotCreateSnippetsForMessage"];
 		[currentMessage collectPGPInformationStartingWithMimePart:self decryptedBody:nil];
 	}
 
@@ -399,11 +397,16 @@
     if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
         return [self MADecodeTextPlainWithContext:ctx];
     
+	BOOL userDidSelectMessage = [[[(MimeBody *)[self mimeBody] message] getIvar:@"UserSelectedMessage"] boolValue];
+	
     // 1. Step, check if the message was already decrypted.
     if(self.PGPEncrypted && self.PGPDecryptedData)
-        return self.PGPDecryptedData ? self.PGPDecryptedContent : [self MADecodeTextPlainWithContext:ctx];
+		// Inline PGP will never return the decrypted data, unless the
+		// use explicitly selected the message.
+		return self.PGPDecryptedData && userDidSelectMessage ? self.PGPDecryptedContent : [self MADecodeTextPlainWithContext:ctx];
+    
     if(self.PGPSigned && self.PGPVerifiedContent)
-        return self.PGPVerifiedContent ? self.PGPVerifiedContent : [self MADecodeTextPlainWithContext:ctx];
+        return self.PGPVerifiedContent && userDidSelectMessage ? self.PGPVerifiedContent : [self MADecodeTextPlainWithContext:ctx];
     
     // Check if the part is base64 encoded. If so, decode it.
     NSData *partData = [self bodyData];
@@ -426,7 +429,9 @@
         } else {
             content = [[decryptedData stringByGuessingEncoding] markupString];
         }
-        return content; 
+		if(!userDidSelectMessage)
+			return [self MADecodeTextPlainWithContext:ctx];
+		return content;
     }
     
     if(signatureRange.location != NSNotFound) {
