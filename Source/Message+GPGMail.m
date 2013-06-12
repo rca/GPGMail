@@ -355,14 +355,7 @@
 	
 	// isEncrypted has to be re-evaluated again, since it might contain a signed message
 	// but didn't have the key in cache, to correctly apply rules the first time around.
-	if([[GPGMailBundle sharedInstance] wereRulesAppliedToMessage:self] && !self.isEncrypted)
-		return;
-	
-	typeof(self) __block weakSelf = self;
- 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-		[[weakSelf dataSourceProxy] routeMessages:[NSArray arrayWithObject:weakSelf] isUserAction:NO];
-	});
-	[[GPGMailBundle sharedInstance] addMessageRulesWereAppliedTo:self];
+	[[GPGMailBundle sharedInstance] scheduleApplyingRulesForMessage:self isEncrypted:self.isEncrypted];
 }
 
 - (MFError *)errorSummaryForPGPAttachments:(NSArray *)attachments {

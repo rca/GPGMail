@@ -35,12 +35,14 @@
 #import <Libmacgpg/Libmacgpg.h>
 #import <MailApp.h>
 #import <MailAccount.h>
+#import <MessageStore.h>
 #import "JRLPSwizzle.h"
 #import "CCLog.h"
 #import "NSSet+Functional.h"
 #import "NSString+GPGMail.h"
 #import "GPGMailPreferences.h"
 #import "GPGMailBundle+Private.h"
+#import "Message+GPGMail.h"
 #import "Message.h"
 #define restrict
 #import <RegexKit/RegexKit.h>
@@ -1030,23 +1032,22 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
 
 #pragma mark Message Rules
 
-- (BOOL)wereRulesAppliedToMessage:(id)message {
-    BOOL __block result = NO;
+- (void)scheduleApplyingRulesForMessage:(Message *)message isEncrypted:(BOOL)isEncrypted {
+    id messageID = [[message messageID] retain];
     typeof(self) __block weakSelf = self;
-    id messageID = [message messageID];
+    typeof(message) __block weakMessage = message;
     dispatch_sync(_rulesQueue, ^{
-        result = [weakSelf.messagesRulesWereAppliedTo containsObject:messageID];
+        if(![weakSelf.messagesRulesWereAppliedTo containsObject:messageID]
+            || isEncrypted) {
+            if(weakMessage) {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                    [[weakMessage dataSourceProxy] routeMessages:[NSArray arrayWithObject:weakMessage] isUserAction:NO];
+                });
+            }
+            [weakSelf.messagesRulesWereAppliedTo addObject:messageID];
+        }
     });
-    return result;
-}
-
-- (void)addMessageRulesWereAppliedTo:(id)message {
-    typeof(self) __block weakSelf = self;
-    id messageID = [message messageID];
-    
-    dispatch_sync(_rulesQueue, ^{
-        [weakSelf->_messagesRulesWereAppliedTo addObject:messageID];
-    });
+    [messageID release];
 }
 
 #pragma mark General Info
