@@ -195,6 +195,8 @@
 			MFError *error = (MFError *)[(ActivityMonitor *)[ActivityMonitor currentMonitor] error];
 			[self performSelectorOnMainThread:@selector(didCancelMessageDeliveryForError:) withObject:error waitUntilDone:NO];
 		}
+		// Restore the clean headers so BCC is removed as well.
+		[(ComposeBackEnd *)self setValue:[self getIvar:@"originalCleanHeaders"] forKey:@"_cleanHeaders"];
         return nil;
 	}
 
@@ -222,10 +224,9 @@
 				[(MailDocumentEditor *)[(ComposeBackEnd *)self delegate] setUserSavedMessage:NO];
 			}
 		}
+		[(ComposeBackEnd *)self setValue:[self getIvar:@"originalCleanHeaders"] forKey:@"_cleanHeaders"];
 		return nil;
 	}
-	
-	
 	
     // And restore the original headers.
     [(ComposeBackEnd *)self setValue:[self getIvar:@"originalCleanHeaders"] forKey:@"_cleanHeaders"];
