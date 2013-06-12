@@ -115,11 +115,6 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
                              @"_updateEncryptButtonTooltip",
                              nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
-                            @"MessageAttachment", @"class",
-                            @"MessageAttachment_GPGMail", @"gpgMailClass",
-                            [NSArray arrayWithObjects:
-                             @"filename", nil], @"selectors", nil],
-                           [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MailDocumentEditor", @"class",
                             @"MailDocumentEditor_GPGMail", @"gpgMailClass",
                             [NSArray arrayWithObjects:
