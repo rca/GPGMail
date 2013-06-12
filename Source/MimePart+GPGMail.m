@@ -1597,7 +1597,7 @@
 }
 
 - (NSArray *)PGPSignatures {
-    return [self getIvar:@"PGPSignatures"];
+    return [[[self getIvar:@"PGPSignatures"] retain] autorelease];
 }
 
 - (void)setPGPError:(MFError *)PGPError {
@@ -1605,7 +1605,7 @@
 }
 
 - (MFError *)PGPError {
-    return [self getIvar:@"PGPError"];
+    return [[[self getIvar:@"PGPError"] retain] autorelease];
 }
 
 - (void)setPGPDecryptedData:(NSData *)PGPDecryptedData {
@@ -1613,7 +1613,7 @@
 }
 
 - (NSData *)PGPDecryptedData {
-    return [self getIvar:@"PGPDecryptedData"];
+    return [[[self getIvar:@"PGPDecryptedData"] retain] autorelease];
 }
 
 - (void)setPGPDecryptedContent:(NSString *)PGPDecryptedContent {
@@ -1621,7 +1621,7 @@
 }
 
 - (NSString *)PGPDecryptedContent {
-    return [self getIvar:@"PGPDecryptedContent"];
+    return [[[self getIvar:@"PGPDecryptedContent"] retain] autorelease];
 }
 
 - (void)setPGPDecryptedBody:(MessageBody *)PGPDecryptedBody {
@@ -1629,7 +1629,7 @@
 }
 
 - (MessageBody *)PGPDecryptedBody {
-    return [self getIvar:@"PGPDecryptedBody"];
+    return [[[self getIvar:@"PGPDecryptedBody"] retain] autorelease];
 }
 
 - (void)setPGPVerifiedContent:(NSString *)PGPVerifiedContent {
@@ -1637,7 +1637,7 @@
 }
 
 - (NSString *)PGPVerifiedContent {
-    return [self getIvar:@"PGPVerifiedContent"];
+    return [[[self getIvar:@"PGPVerifiedContent"] retain] autorelease];
 }
 
 - (void)setPGPVerifiedData:(NSData *)PGPVerifiedData {
@@ -1645,7 +1645,7 @@
 }
 
 - (NSData *)PGPVerifiedData {
-    return [self getIvar:@"PGPVerifiedData"];
+    return [[[self getIvar:@"PGPVerifiedData"] retain] autorelease];
 }
 
 

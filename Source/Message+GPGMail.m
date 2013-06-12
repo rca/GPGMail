@@ -118,7 +118,7 @@
 }
 
 - (NSArray *)PGPSignatures {
-    return [self getIvar:@"PGPSignatures"];
+    return [[[self getIvar:@"PGPSignatures"] retain] autorelease];
 }
 
 - (void)setPGPErrors:(NSArray *)errors {
@@ -126,7 +126,7 @@
 }
 
 - (NSArray *)PGPErrors {
-    return [self getIvar:@"PGPErrors"];
+    return [[[self getIvar:@"PGPErrors"] retain] autorelease];
 }
 
 - (void)setPGPAttachments:(NSArray *)attachments {
@@ -134,7 +134,7 @@
 }
 
 - (NSArray *)PGPAttachments {
-    return [self getIvar:@"PGPAttachments"];
+    return [[[self getIvar:@"PGPAttachments"] retain] autorelease];
 }
 
 - (NSArray *)PGPSignatureLabels {
@@ -151,7 +151,7 @@
 			if (![[email gpgNormalizedEmail] isEqualToString:senderEmail]) {
 				NSString *fingerprint = signature.primaryFingerprint ? signature.primaryFingerprint : signature.fingerprint;
 				if (fingerprint) {
-					NSSet *keys = [[GPGMailBundle sharedInstance] allGPGKeys];
+					NSSet *keys = [[[GPGMailBundle sharedInstance] allGPGKeys] retain];
 					GPGKey *key = [keys member:fingerprint];
 					if (!key) {
 						for (key in keys) {
@@ -161,6 +161,7 @@
 							}
 						}
 					}
+					[keys release];
 					for (GPGUserID *userID in key.userIDs) {
 						if ([[userID.email gpgNormalizedEmail] isEqualToString:senderEmail]) {
 							email = userID.email;

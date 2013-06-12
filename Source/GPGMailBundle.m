@@ -741,7 +741,7 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
         self.publicGPGKeysByID = idMap;
         [idMap release];
     }
-    return publicGPGKeysByID;
+    return [[publicGPGKeysByID retain] autorelease];
 }
 
 - (NSDictionary *)secretGPGKeysByID {
@@ -755,7 +755,7 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
         self.secretGPGKeysByID = idMap;
         [idMap release];
     }
-    return secretGPGKeysByID;
+    return [[secretGPGKeysByID retain] autorelease];
 }
 
 - (NSDictionary *)userMappedKeysSecretOnly:(BOOL)secretOnly {

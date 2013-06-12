@@ -68,7 +68,7 @@
     if(!_uncommentedFlaggedValue) {
         _uncommentedFlaggedValue = [[GPGFlaggedString alloc] initWithString:[string uncommentedAddress] flags:flags];
     }
-    return _uncommentedFlaggedValue;
+    return [[_uncommentedFlaggedValue retain] autorelease];
 }
 
 - (BOOL)isFlaggedValue {
@@ -76,7 +76,7 @@
 }
 
 - (id)valueForFlag:(NSString *)flag {
-	return [flags objectForKey:flag];
+	return [[[flags objectForKey:flag] retain] autorelease];
 }
 
 - (BOOL)isKindOfClass:(Class)aClass {
