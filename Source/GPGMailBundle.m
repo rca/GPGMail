@@ -55,9 +55,6 @@ NSString *gpgErrorIdentifier = @"^~::gpgmail-error-code::~^";
 int GPGMailLoggingLevel = 1;
 static BOOL gpgMailWorks = NO;
 
-
-
-
 @implementation GPGMailBundle
 
 
@@ -169,6 +166,13 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
                             [NSArray arrayWithObjects:
                              @"_evaluateIsDigitallySignedCriterion:",
                              @"_evaluateIsEncryptedCriterion:", nil], @"selectors", nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"Library", @"class",
+                            @"Library_GPGMail", @"gpgMailClass",
+                            [NSArray arrayWithObjects:
+                             
+                             /** Only for Maverick */@"plistDataForMessage:subject:sender:to:dateSent:dateReceived:dateLastViewed:remoteID:originalMailboxURLString:gmailLabels:flags:mergeWithDictionary:",
+                             @"plistDataForMessage:subject:sender:to:dateSent:remoteID:originalMailbox:flags:mergeWithDictionary:", nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"MailAccount", @"class",
                             [NSArray arrayWithObjects:
