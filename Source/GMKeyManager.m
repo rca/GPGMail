@@ -495,7 +495,8 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 - (NSMutableSet *)keysForAddresses:(NSArray *)addresses onlySecret:(BOOL)onlySecret stopOnFound:(BOOL)stop {
     Class regexClass = [RKRegex class];
 	Class setClass = [NSSet class];
-    NSDictionary *map = onlySecret ? self.secretKeyMap : self.publicKeyMap;
+    Class arrayClass = [NSArray class];
+	NSDictionary *map = onlySecret ? self.secretKeyMap : self.publicKeyMap;
     NSString *allAdresses = [addresses componentsJoinedByString:@"\n"];
     NSMutableSet *keys = [NSMutableSet set];
     
@@ -503,6 +504,8 @@ publicKeyMap = _publicKeyMap, groups = _groups;
         if ([identifier isKindOfClass:regexClass] ? [allAdresses isMatchedByRegex:identifier] : [addresses containsObject:identifier]) {
 			id object = [map objectForKey:identifier];
 			if([object isKindOfClass:setClass])
+				[keys addObjectsFromArray:[object allObjects]];
+			else if([object isKindOfClass:arrayClass])
 				[keys addObjectsFromArray:object];
 			else
 				[keys addObject:object];
