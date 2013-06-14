@@ -892,8 +892,12 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
             if(!email)
                 continue;
             
-            if(![keyEmailMap objectForKey:email])
-                [keyEmailMap setObject:key forKey:email];
+            if (![keyEmailMap objectForKey:email]) {
+                NSMutableArray *dict = [[NSMutableArray alloc] init];
+                [keyEmailMap setObject:dict forKey:email];
+                [dict release];
+            }
+            [[keyEmailMap objectForKey:email] addObject:key];
         }
     }
     return keyEmailMap;
@@ -928,24 +932,21 @@ publicKeyMapping, secretKeyMapping, messagesRulesWereAppliedTo = _messagesRulesW
 
 - (NSMutableSet *)keysForAddresses:(NSArray *)addresses onlySecret:(BOOL)onlySecret stopOnFound:(BOOL)stop {
     Class regexClass = [RKRegex class];
+    Class arrayClass = [NSArray class];
     NSDictionary *map = onlySecret ? self.secretKeyMapping : self.publicKeyMapping;
     NSString *allAdresses = [addresses componentsJoinedByString:@"\n"];
     NSMutableSet *keys = [NSMutableSet set];
     
     for (id identifier in map) {
-        if ([identifier isKindOfClass:regexClass]) {
-            if ([allAdresses isMatchedByRegex:identifier]) {
-                [keys addObject:[map objectForKey:identifier]];
-                if (stop) {
-                    break;
-                }
+        if ([identifier isKindOfClass:regexClass] ? [allAdresses isMatchedByRegex:identifier] : [addresses containsObject:identifier]) {
+            id object = [map objectForKey:identifier];
+            if ([object isKindOfClass:arrayClass]) {
+                [keys addObjectsFromArray:object];
+            } else {
+                [keys addObject:object];
             }
-        } else {
-            if ([addresses containsObject:identifier]) {
-                [keys addObject:[map objectForKey:identifier]];
-                if (stop) {
-                    break;
-                }
+            if (stop) {
+                break;
             }
         }
     }
