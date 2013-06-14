@@ -9,6 +9,7 @@
 @property (nonatomic, retain) NSSet *publicGPGKeys;
 @property (nonatomic, retain) NSDictionary *publicGPGKeysByID;
 @property (nonatomic, retain) NSDictionary *secretGPGKeysByID;
+@property (nonatomic, retain) NSMutableArray *messagesRulesWereAppliedTo;
 
 - (void)updateGPGKeys:(NSObject <EnumerationList> *)keys;
 - (void)flushGPGKeys;

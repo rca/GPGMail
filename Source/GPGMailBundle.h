@@ -128,8 +128,6 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 @property (readonly, nonatomic, retain) NSDictionary *publicGPGKeysByID;
 @property (readonly, nonatomic, retain) NSDictionary *secretGPGKeysByID;
 
-@property (nonatomic, retain) NSArray *messagesRulesWereAppliedTo;
-
 @property (nonatomic, readonly, retain) SUUpdater *updater;
 
 @property (nonatomic, assign) BOOL accountExistsForSigning;
@@ -185,16 +183,14 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 + (BOOL)isMountainLion;
 
 /**
- Message rules should only be applied once per session.
- For this matter, all messages which have had their rules applied
- are attached to an array.
+ Schedules a message which should have rules applied.
+ While the app is running, each message should only have rules applied
+ once. This is assured by performing the check if the message was already
+ scheduled using a serial queue. The actual applying of the rules, is performed
+ on the background.
  */
-- (void)addMessageRulesWereAppliedTo:(id)message;
 
-/**
- Check if a message has already had their rules applied.
- */
-- (BOOL)wereRulesAppliedToMessage:(id)message;
+- (void)scheduleApplyingRulesForMessage:(Message *)message isEncrypted:(BOOL)isEncrypted;
 
 @end
 

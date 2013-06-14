@@ -118,7 +118,7 @@
 }
 
 - (NSArray *)PGPSignatures {
-    return [self getIvar:@"PGPSignatures"];
+    return [[[self getIvar:@"PGPSignatures"] retain] autorelease];
 }
 
 - (void)setPGPErrors:(NSArray *)errors {
@@ -126,7 +126,7 @@
 }
 
 - (NSArray *)PGPErrors {
-    return [self getIvar:@"PGPErrors"];
+    return [[[self getIvar:@"PGPErrors"] retain] autorelease];
 }
 
 - (void)setPGPAttachments:(NSArray *)attachments {
@@ -134,7 +134,7 @@
 }
 
 - (NSArray *)PGPAttachments {
-    return [self getIvar:@"PGPAttachments"];
+    return [[[self getIvar:@"PGPAttachments"] retain] autorelease];
 }
 
 - (NSArray *)PGPSignatureLabels {
@@ -151,7 +151,7 @@
 			if (![[email gpgNormalizedEmail] isEqualToString:senderEmail]) {
 				NSString *fingerprint = signature.primaryFingerprint ? signature.primaryFingerprint : signature.fingerprint;
 				if (fingerprint) {
-					NSSet *keys = [[GPGMailBundle sharedInstance] allGPGKeys];
+					NSSet *keys = [[[GPGMailBundle sharedInstance] allGPGKeys] retain];
 					GPGKey *key = [keys member:fingerprint];
 					if (!key) {
 						for (key in keys) {
@@ -161,6 +161,7 @@
 							}
 						}
 					}
+					[keys release];
 					for (GPGUserID *userID in key.userIDs) {
 						if ([[userID.email gpgNormalizedEmail] isEqualToString:senderEmail]) {
 							email = userID.email;
@@ -355,14 +356,7 @@
 	
 	// isEncrypted has to be re-evaluated again, since it might contain a signed message
 	// but didn't have the key in cache, to correctly apply rules the first time around.
-	if([[GPGMailBundle sharedInstance] wereRulesAppliedToMessage:self] && !self.isEncrypted)
-		return;
-	
-	typeof(self) __block weakSelf = self;
- 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-		[[weakSelf dataSourceProxy] routeMessages:[NSArray arrayWithObject:weakSelf] isUserAction:NO];
-	});
-	[[GPGMailBundle sharedInstance] addMessageRulesWereAppliedTo:self];
+	[[GPGMailBundle sharedInstance] scheduleApplyingRulesForMessage:self isEncrypted:self.isEncrypted];
 }
 
 - (MFError *)errorSummaryForPGPAttachments:(NSArray *)attachments {
@@ -481,18 +475,10 @@
 	if(userDidSelectMessage)
 		return YES;
 	
-	// Otherwise the following rules apply:
-	// * classic view is enabled (RichMessageList preference set to false) -> don't create the snippet.
-	// * inline pgp message (DoNotCreateSnippetsForThisMessage flag is set) -> don't create the snippet
+	// Since rule applying and snippet creation are connected, snippets are
+	// created in classic view as well, but always only if the passphrase is in cache.
 	// * none of the above and CreatePreviewSnippets preference is set -> create the snippet
 	// * none of the above but passphrase for key is available (gpg-agent or keychain) -> create the snippet
-	BOOL classicView = ![[NSUserDefaults standardUserDefaults] boolForKey:@"RichMessageList"];
-	
-	if(classicView)
-		return NO;
-	
-	if([[self getIvar:@"DoNotCreateSnippetsForMessage"] boolValue])
-		return NO;
 	
 	if([[GPGOptions sharedOptions] boolForKey:@"CreatePreviewSnippets"])
 		return YES;
