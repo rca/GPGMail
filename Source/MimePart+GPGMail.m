@@ -729,11 +729,10 @@
 
 	
 	// Find key needed to decrypt. We do this to lock until last decyption using this key is done.
-	NSDictionary *secretGPGKeysByID = [[GPGMailBundle sharedInstance] secretGPGKeysByID];
 	__block NSString *decryptKey = nil;
 	
 	[GPGPacket enumeratePacketsWithData:deArmoredEncryptedData block:^(GPGPacket *packet, BOOL *stop) {
-		GPGKey *key = [secretGPGKeysByID objectForKey:packet.keyID];
+		GPGKey *key = [[GPGMailBundle sharedInstance] secretGPGKeyForKeyID:packet.keyID];
 		if (key) {
 			decryptKey = [key description];
 			*stop = YES;

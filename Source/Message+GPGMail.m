@@ -151,17 +151,8 @@
 			if (![[email gpgNormalizedEmail] isEqualToString:senderEmail]) {
 				NSString *fingerprint = signature.primaryFingerprint ? signature.primaryFingerprint : signature.fingerprint;
 				if (fingerprint) {
-					NSSet *keys = [[[GPGMailBundle sharedInstance] allGPGKeys] retain];
-					GPGKey *key = [keys member:fingerprint];
-					if (!key) {
-						for (key in keys) {
-							NSUInteger index = [key.subkeys indexOfObject:fingerprint];
-							if (index != NSNotFound) {
-								break;
-							}
-						}
-					}
-					[keys release];
+					GPGKey *key = [[GPGMailBundle sharedInstance] keyForFingerprint:fingerprint];
+					
 					for (GPGUserID *userID in key.userIDs) {
 						if ([[userID.email gpgNormalizedEmail] isEqualToString:senderEmail]) {
 							email = userID.email;
@@ -508,7 +499,7 @@
     GPGController *gpgc = [[GPGController alloc] init];
     
     for(NSString *keyID in keyIDs) {
-        GPGKey *key = [[[GPGMailBundle sharedInstance] secretGPGKeysByID] valueForKey:keyID];
+        GPGKey *key = [[GPGMailBundle sharedInstance] secretGPGKeyForKeyID:keyID];
         if(!key)
             continue;
         if([gpgc isPassphraseForKeyInCache:key]) {
