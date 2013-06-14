@@ -120,7 +120,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 }
 
 - (NSMutableSet *)publicKeyListForAddresses:(NSArray *)addresses {
-    NSMutableSet *normalizedAddresses = [NSMutableSet init];
+    NSMutableSet *normalizedAddresses = [NSMutableSet set];
     for (NSString *address in addresses) {
         [normalizedAddresses addObject:[address gpgNormalizedEmail]];
     }
