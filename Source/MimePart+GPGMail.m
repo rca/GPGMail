@@ -1807,21 +1807,28 @@
 		return dataPart;
 	}
 	
+	BOOL symmetricEncrypt = NO;
 	
 	// Split the recipients in normal and bcc recipients.
+	BOOL doNotEncryptToSelf = [[GPGOptions sharedOptions] boolForKey:@"DoNotEncryptToSelf"];
     NSMutableArray *normalRecipients = [NSMutableArray arrayWithCapacity:1];
     NSMutableArray *bccRecipients = [NSMutableArray arrayWithCapacity:1];
     for(NSString *recipient in recipients) {
-		
-        if([@"bcc" isEqualTo:[recipient valueForFlag:@"recipientType"]])
+		NSString *recipientType = [recipient valueForFlag:@"recipientType"];
+        if([recipientType isEqualTo:@"bcc"]) {
             [bccRecipients addObject:recipient];
-        else {
+        } else {
 			// If DoNotEncryptToSelf is enabled, don't add the sender to the recipients.
 			// Of course this has the effect that the sent mails can't be read by the sender,
 			// but that's exactly what this option is for.
-			if([[recipient valueForFlag:@"recipientType"] isEqualToString:@"from"] &&
-			   [[GPGOptions sharedOptions] boolForKey:@"DoNotEncryptToSelf"])
-				continue;
+			if([recipientType isEqualToString:@"from"]) {
+				if ([[recipient valueForFlag:@"symmetricEncrypt"] boolValue]) {
+					symmetricEncrypt = YES;
+				}
+				if (doNotEncryptToSelf) {
+					continue;
+				}
+			}
 			[normalRecipients addObject:recipient];
 		}
     }
@@ -1842,7 +1849,7 @@
     // Eventually add warning for this.
     gpgc.trustAllKeys = YES;
     @try {
-        *encryptedData = [gpgc processData:data withEncryptSignMode:GPGPublicKeyEncrypt recipients:flattenedNormalKeyList hiddenRecipients:flattenedBCCKeyList];
+        *encryptedData = [gpgc processData:data withEncryptSignMode:GPGPublicKeyEncrypt | (symmetricEncrypt * GPGSymetricEncrypt) recipients:flattenedNormalKeyList hiddenRecipients:flattenedBCCKeyList];
 		
 		if (gpgc.error) {
 			@throw gpgc.error;
