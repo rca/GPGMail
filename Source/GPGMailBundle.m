@@ -39,6 +39,7 @@
 #import "GMMessageRulesApplier.h"
 #import "GMKeyManager.h"
 #import "GPGMailPreferences.h"
+#import "NSString+GPGMail.h"
 
 NSString *GPGMailSwizzledMethodPrefix = @"MA";
 NSString *GPGMailAgent = @"GPGMail %@";
@@ -320,7 +321,7 @@ static BOOL gpgMailWorks = NO;
 - (NSMutableSet *)signingKeyListForAddress:(NSString *)sender {
     if (!gpgMailWorks) return nil;
     
-    return [_keyManager signingKeyListForAddress:sender];
+    return [_keyManager signingKeyListForAddress:[sender gpgNormalizedEmail]];
 }
 
 - (NSMutableSet *)publicKeyListForAddresses:(NSArray *)recipients {
@@ -332,13 +333,13 @@ static BOOL gpgMailWorks = NO;
 - (BOOL)canSignMessagesFromAddress:(NSString *)address {
     if (!gpgMailWorks) return NO;
     
-    return [_keyManager secretKeyExistsForAddress:address];
+    return [_keyManager secretKeyExistsForAddress:[address gpgNormalizedEmail]];
 }
 
 - (BOOL)canEncryptMessagesToAddress:(NSString *)address {
     if (!gpgMailWorks) return NO;
     
-    return [_keyManager publicKeyExistsForAddress:address];
+    return [_keyManager publicKeyExistsForAddress:[address gpgNormalizedEmail]];
 }
 
 - (GPGKey *)preferredGPGKeyForSigning {
