@@ -132,14 +132,13 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 
 - (GPGController *)gpgc {
 	static dispatch_once_t onceToken;
-	static GPGController *_instance;
 	
 	typeof(self) __block weakSelf = self;
-	dispatch_once(&onceToken, ^{
-		_instance = [[GPGController alloc] init];
-		_instance.delegate = weakSelf;
+    dispatch_once(&onceToken, ^{
+		weakSelf->_gpgc = [[GPGController alloc] init];
+		weakSelf->_gpgc.delegate = weakSelf;
 	});
-	return _instance;
+	return [[_gpgc retain] autorelease];
 }
 
 - (void)scheduleInitialKeyUpdateAfterSeconds:(double)seconds {
