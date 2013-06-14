@@ -56,7 +56,7 @@ static BOOL gpgMailWorks = NO;
 
 @implementation GPGMailBundle
 
-@synthesize accountExistsForSigning, gpgStatus ;
+@synthesize accountExistsForSigning, gpgStatus, updater = _updater;
 
 + (NSArray *)multipleInstallations {
     NSArray *libraryPaths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSAllDomainsMask, YES);

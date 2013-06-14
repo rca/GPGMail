@@ -128,6 +128,7 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 @property (readonly) GPGErrorCode gpgStatus;
 @property (readonly, retain) NSSet *allGPGKeys;
 @property (nonatomic, assign) BOOL accountExistsForSigning;
+@property (nonatomic, retain) GMUpdater *updater;
 
 @end
 

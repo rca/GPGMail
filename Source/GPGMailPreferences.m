@@ -41,7 +41,7 @@
 }
 
 - (SUUpdater *)updater {
-	return [[GPGMailBundle sharedInstance] updater];
+	return [[(GPGMailBundle *)[GPGMailBundle sharedInstance] updater] updater];
 }
 
 - (NSString *)copyright {

@@ -33,6 +33,8 @@
 
 @implementation GMUpdater
 
+@synthesize updater = _updater;
+
 - (id)initWithBundle:(NSBundle *)bundle {
 	if(self = [super init]) {
 		_updater = [SUUpdater updaterForBundle:bundle];

@@ -37,4 +37,6 @@
 - (id)initWithBundle:(NSBundle *)bundle;
 - (void)start;
 
+@property (nonatomic, retain, readonly) SUUpdater *updater;
+
 @end
