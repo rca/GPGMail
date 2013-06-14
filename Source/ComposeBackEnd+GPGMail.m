@@ -28,7 +28,7 @@
 #import "GPGFlaggedString.h"
 #import "GMSecurityHistory.h"
 #import "GPGMailBundle.h"
-#import "HeadersEditor+GPGMail.h"
+//#import "HeadersEditor+GPGMail.h"
 #import "MailDocumentEditor.h"
 #import "MailDocumentEditor+GPGMail.h"
 #import "ComposeBackEnd+GPGMail.h"
@@ -324,8 +324,8 @@
     //   to encrypt for self, so each message can also be decrypted by the sender.
     //   (the "from" value is not inlucded in the recipients list passed to the encryption
     //    method)
+	GPGFlaggedString *flaggedString = [[headers valueForKey:@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"];
     if(forSigning) {
-		GPGFlaggedString *flaggedString = [[headers valueForKey:@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"];
 		GPGKey *key = [self getIvar:@"gpgKeyForSigning"];
 		if (key) {
 			[flaggedString setValue:key forFlag:@"gpgKey"];
@@ -341,7 +341,10 @@
         for(NSString *bcc in bccRecipients)
             [newBCCList addObject:[bcc flaggedStringWithFlag:@"recipientType" value:@"bcc"]];
 
-        [newBCCList addObject:[[headers valueForKey:@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"]];
+		if ([[self getIvar:@"shouldSymmetricEncrypt"] boolValue]) {
+			[flaggedString setValue:[NSNumber numberWithBool:YES] forFlag:@"symmetricEncrypt"];
+		}
+        [newBCCList addObject:flaggedString];
         [headers setValue:newBCCList forKey:@"bcc"];
     }
 }

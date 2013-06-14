@@ -52,6 +52,14 @@
 
 @implementation HeadersEditor_GPGMail
 
+
+- (void)chnageShouldSymmetricEncrypt {
+	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+	NSNumber *value = [backEnd getIvar:@"shouldSymmetricEncrypt"];
+	value = [NSNumber numberWithBool:![value boolValue]];
+	[backEnd setIvar:@"shouldSymmetricEncrypt" value:value];
+}
+
 - (void)MAAwakeFromNib {
     [self MAAwakeFromNib];
 
@@ -68,6 +76,7 @@
 	handler.eventsAndSelectors = @[
 		@{@"keyEquivalent": @"y", @"keyEquivalentModifierMask": @(NSCommandKeyMask | NSAlternateKeyMask), @"target": encryptControl, @"selector": [NSValue valueWithPointer:@selector(performClick:)]},
 		@{@"keyEquivalent": @"x", @"keyEquivalentModifierMask": @(NSCommandKeyMask | NSAlternateKeyMask), @"target": signControl, @"selector": [NSValue valueWithPointer:@selector(performClick:)]},
+		@{@"keyEquivalent": @"Y", @"keyEquivalentModifierMask": @(NSCommandKeyMask | NSShiftKeyMask), @"target": self, @"selector": [NSValue valueWithPointer:@selector(chnageShouldSymmetricEncrypt)]}
 	];
 #pragma clang diagnostic pop
 
