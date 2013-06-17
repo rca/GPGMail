@@ -68,6 +68,7 @@
                              @"setSignIfPossible:",
                              @"_saveThreadShouldCancel",
                              @"_configureLastDraftInformationFromHeaders:overwrite:",
+							 @"sender",
                              nil], @"selectors", nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:
                             @"HeadersEditor", @"class",

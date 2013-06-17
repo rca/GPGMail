@@ -18,6 +18,7 @@
 #import <MutableMessageHeaders.h>
 #import <MailNotificationCenter.h>
 #import <ComposeBackEnd.h>
+#import "MailAccount.h"
 #import "MessageAttachment.h"
 #import "CCLog.h"
 #import "NSObject+LPDynamicIvars.h"
@@ -86,6 +87,38 @@
     [self setIvar:@"shouldSign" value:[NSNumber numberWithBool:signIfPossible]];
     [self MASetSignIfPossible:signIfPossible];
     [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
+}
+
+- (id)MASender {
+	// If a message is to be redirected, the flagged from string,
+	// which might have been set in -[ComposeBackEnd _makeMessageWithContents:isDraft:shouldSign:shouldEncrypt:shouldSkipSignature:shouldBePlainText:]
+	// is replaced with this value, which of course is a simple string and
+	// not a flagged value.
+	// So in that case, they from header is checked and if it is
+	// a flagged string it is returned instead of invoking the MASender
+	// method.
+	// This way the flagged from string makes it through to the newSignedPart method.
+	
+	// Not a resend? Out of here!
+	if([(ComposeBackEnd *)self type] != 7)
+		return [self MASender];
+	
+	// Fetch the from header from the clean headers to check
+	// if this message should be pgp signed.
+	NSDictionary *cleanHeaders = [(ComposeBackEnd *)self cleanHeaders];
+	id sender = [cleanHeaders objectForKey:@"from"];
+	// Not a GPGFlaggedString. Out of here!
+	if(![sender respondsToSelector:@selector(setValue:forFlag:)])
+		return [self MASender];
+	
+	// Now emulate what -[ComposeBackEnd sender] does internally.
+	// At least part of it.
+	MailAccount *account = [MailAccount accountContainingEmailAddress:sender];
+	// Not sure what to do in this case, so let's fall back.
+	if(!account)
+		return [self MASender];
+	// IF we're still in here, return the flagged sender.
+	return sender;
 }
 
 - (id)MA_makeMessageWithContents:(WebComposeMessageContents *)contents isDraft:(BOOL)isDraft shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt shouldSkipSignature:(BOOL)shouldSkipSignature shouldBePlainText:(BOOL)shouldBePlainText {
