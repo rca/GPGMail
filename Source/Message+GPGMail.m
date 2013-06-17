@@ -478,7 +478,7 @@
     // return true, 'cause the user want be asked for the passphrase again.
     
     // The message could be encrypted to multiple subkeys.
-    // At least one of the keys has to be in cache.
+    // All of the keys have to be in the cache.
     NSMutableSet *keyIDs = [[NSMutableSet alloc] initWithCapacity:0];
     
     NSArray *packets = nil;
@@ -495,24 +495,28 @@
             [keyIDs addObject:packet.keyID];
     }
     
-    BOOL passphraseInCache = NO;
+	NSUInteger nrOfMatchingSecretKeys = 0;
+	NSUInteger nrOfKeysWithPassphraseInCache = 0;
     GPGController *gpgc = [[GPGController alloc] init];
     
     for(NSString *keyID in keyIDs) {
         GPGKey *key = [[GPGMailBundle sharedInstance] secretGPGKeyForKeyID:keyID];
         if(!key)
             continue;
-        if([gpgc isPassphraseForKeyInCache:key]) {
-            passphraseInCache = YES;
-            DebugLog(@"Passphrase found in cache!");
-            break;
+		nrOfMatchingSecretKeys += 1;
+		if([gpgc isPassphraseForKeyInCache:key]) {
+			nrOfKeysWithPassphraseInCache += 1;
+			DebugLog(@"Passphrase found in cache!");
         }
     }
     [keyIDs release];
     [gpgc release];
-    DebugLog(@"Passphrase in cache? %@", passphraseInCache ? @"YES" : @"NO");
     
-    return passphraseInCache;
+	BOOL passphraseInCache = nrOfMatchingSecretKeys + nrOfKeysWithPassphraseInCache	!= 0 && nrOfMatchingSecretKeys == nrOfKeysWithPassphraseInCache ? YES : NO;
+	
+	DebugLog(@"Passphrase in cache? %@", passphraseInCache ? @"YES" : @"NO");
+    
+	return passphraseInCache;
 }
 
 #pragma mark - Proxies for OS X version differences.
