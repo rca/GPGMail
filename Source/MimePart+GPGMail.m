@@ -240,7 +240,7 @@
 			bodyData = [bodyData decodeBase64];
 		
 		NSData *searchData = [@"multipart/signed" dataUsingEncoding:NSASCIIStringEncoding];
-		if([bodyData rangeOfData:searchData].location == NSNotFound)
+		if([bodyData rangeOfData:searchData options:0 range:NSMakeRange(0, [bodyData length])].location == NSNotFound)
 			return;
 		
 		tnefPart = part;
@@ -345,8 +345,8 @@
 	NSData *pgpSignature = [@"pgp-signature" dataUsingEncoding:NSASCIIStringEncoding];
 	
 	for(NSData *signedData in attachments) {
-		if([signedData rangeOfData:multipartSignedData].location != NSNotFound ||
-		   [signedData rangeOfData:pgpSignature].location != NSNotFound) {
+		if([signedData rangeOfData:multipartSignedData options:0 range:NSMakeRange(0, [signedData length])].location != NSNotFound ||
+		   [signedData rangeOfData:pgpSignature options:0 range:NSMakeRange(0, [signedData length])].location != NSNotFound) {
 			signedAttachment = signedData;
 			break;
 		}
@@ -1243,7 +1243,7 @@
 		// If the signature is type 0x00 and the text doesn't contain a \r\n, convert \n to \r\n.
 		// This is needed because Mail converts \r\n to \n.
 		NSArray *packets = [GPGPacket packetsWithData:signatureData];
-		if ([packets count] && [((GPGPacket *)[packets objectAtIndex:0]) signatureType] == 0 && [signedData rangeOfData:[NSData dataWithBytes:"\r\n" length:2]].location == NSNotFound) {
+		if ([packets count] && [((GPGPacket *)[packets objectAtIndex:0]) signatureType] == 0 && [signedData rangeOfData:[NSData dataWithBytes:"\r\n" length:2] options:0 range:NSMakeRange(0, [signedData length])].location == NSNotFound) {
 				signedData = [signedData dataByConvertingLineEndingsFromUnixToNetwork];
 		}
 		
