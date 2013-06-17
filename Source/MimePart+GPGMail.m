@@ -2070,6 +2070,8 @@
 	else if([error isKindOfClass:[NSException class]])
 		errorText = ((NSException *)error).reason;
 	
+	BOOL appendContactGPGToolsInfo = YES;
+	
 	switch (errorCode) {
 		case GPGErrorNoPINEntry: {
 			title = NSLocalizedStringFromTableInBundle(@"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE", @"GPGMail", gpgMailBundle, @"");
@@ -2091,6 +2093,14 @@
 			
 			break;
 		}
+		case GPGErrorBadPassphrase: {
+			title = NSLocalizedStringFromTableInBundle(@"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE", @"GPGMail", gpgMailBundle, @"");
+			description = NSLocalizedStringFromTableInBundle(@"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION", @"GPGMail", gpgMailBundle, @"");
+			
+			appendContactGPGToolsInfo = NO;
+			
+			break;
+		}
 			
 		default:
 			title = NSLocalizedStringFromTableInBundle(@"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
@@ -2100,7 +2110,7 @@
 			break;
 	}
 	
-	if(errorText.length) {
+	if(errorText.length && appendContactGPGToolsInfo) {
 		description = [description stringByAppendingFormat:NSLocalizedStringFromTableInBundle(@"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE", @"GPGMail", gpgMailBundle, @""), errorText];
 	}
 	

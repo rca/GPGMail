@@ -166,5 +166,8 @@
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Ihrer Nachricht konnte aufgrund eines unbekannten Fehlers nicht verschlüsselt werden";
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unglücklicherweise kann GPGMail den Fehler an dieser Stelle nicht behandeln.";
 
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "Sie haben zu oft das falsche Passwort eingegeben.";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Das Signieren Ihrer Nachricht wurde abgebrochen, da sie 3 Mal das falsche Passwort eingegeben haben.";
+
 "CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nSollte Ihr Problem weiterhin bestehen, kontaktieren Sie uns bitte auf support.gpgtools.org und teilen uns folgende Fehlerbeschreibung mit:\n\n%@";
 
