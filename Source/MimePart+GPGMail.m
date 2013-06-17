@@ -1813,6 +1813,8 @@
 	
 	BOOL symmetricEncrypt = NO;
 	
+	GPGKey *senderPublicKey = nil;
+	
 	// Split the recipients in normal and bcc recipients.
 	BOOL doNotEncryptToSelf = [[GPGOptions sharedOptions] boolForKey:@"DoNotEncryptToSelf"];
     NSMutableArray *normalRecipients = [NSMutableArray arrayWithCapacity:1];
@@ -1829,7 +1831,17 @@
 				if ([[recipient valueForFlag:@"symmetricEncrypt"] boolValue]) {
 					symmetricEncrypt = YES;
 				}
-				if (doNotEncryptToSelf) {
+				
+				if (doNotEncryptToSelf)
+					continue;
+				
+				// In order to fix a problem where a random key matching an address
+				// is chosen for encrypt-to-self, the senderKey is queried for its
+				// public key and the from address is not added to the list of normal
+				// recipients. (#608)
+				GPGKey *signerKey = [recipient valueForFlag:@"gpgKey"];
+				if(signerKey) {
+					senderPublicKey = signerKey.primaryKey;
 					continue;
 				}
 			}
@@ -1838,13 +1850,17 @@
     }
 	
     // Ask the mail bundle for the GPGKeys matching the email address.
-    NSSet *normalKeyList = [[GPGMailBundle sharedInstance] publicKeyListForAddresses:normalRecipients];
+    NSMutableSet *normalKeyList = [[[GPGMailBundle sharedInstance] publicKeyListForAddresses:normalRecipients] mutableCopy];
+	if(senderPublicKey)
+		[normalKeyList addObject:senderPublicKey];
     NSMutableSet *bccKeyList = [[GPGMailBundle sharedInstance] publicKeyListForAddresses:bccRecipients];
 	[bccKeyList minusSet:normalKeyList];
     
     NSMutableSet *flattenedNormalKeyList = [self flattenedKeyList:normalKeyList];
     NSMutableSet *flattenedBCCKeyList = [self flattenedKeyList:bccKeyList];
     
+	[normalKeyList release];
+	
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.useArmor = YES;
     gpgc.useTextMode = YES;
