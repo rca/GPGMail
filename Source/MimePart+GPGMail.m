@@ -957,10 +957,14 @@
     else {
         GPGErrorCode errorCode = GPGErrorNoError;
         GPGSignature *signatureWithError = nil;
+		NSString *signatureKeyID = nil;
+		NSString *signatureKeyIDString = nil;
         for(GPGSignature *signature in signatures) {
             if(signature.status != GPGErrorNoError) {
                 errorCode = signature.status;
                 signatureWithError = signature;
+				signatureKeyID = [signature.fingerprint substringFromIndex:[signatureWithError.fingerprint length] - 8];
+				signatureKeyIDString = [NSString stringWithFormat:@"0x%@", signatureKeyID];
                 break;
             }
         }
@@ -973,7 +977,7 @@
                 
                 title = GMLocalizedString(titleKey);
                 message = GMLocalizedString(messageKey);
-                message = [NSString stringWithFormat:message, signatureWithError.fingerprint];
+                message = [NSString stringWithFormat:message, signatureKeyIDString];
                 break;
                 
             case GPGErrorUnknownAlgorithm:
@@ -990,7 +994,7 @@
                 
                 title = GMLocalizedString(titleKey);
                 message = GMLocalizedString(messageKey);
-                message = [NSString stringWithFormat:message, signatureWithError.fingerprint];
+                message = [NSString stringWithFormat:message, signatureKeyIDString];
                 break;
                 
             case GPGErrorKeyExpired:
@@ -999,7 +1003,7 @@
                 
                 title = GMLocalizedString(titleKey);
                 message = GMLocalizedString(messageKey);
-                message = [NSString stringWithFormat:message, signatureWithError.fingerprint];
+                message = [NSString stringWithFormat:message, signatureKeyIDString];
                 break;
                 
             case GPGErrorSignatureExpired:
