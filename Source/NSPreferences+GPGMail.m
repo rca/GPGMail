@@ -57,7 +57,7 @@
     
     // Check modules, if GPGMailPreferences is not yet in there.
     NSPreferencesModule *gpgMailPreferences = [GPGMailPreferences sharedInstance];
-    NSString *preferencesName = NSLocalizedStringFromTableInBundle(@"PGP_PREFERENCES", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "PGP preferences panel name");
+    NSString *preferencesName = GMLocalizedString(@"PGP_PREFERENCES");
     [preferences addPreferenceNamed:preferencesName owner:gpgMailPreferences];
     added = YES;
 	

@@ -73,7 +73,7 @@
 
 
 - (NSString *)versionDescription {
-	return [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"VERSION: %@", @"GPGMail", [NSBundle bundleForClass:[self class]], "Description of version prefixed with <Version: >"), [self.bundle version]];
+	return [NSString stringWithFormat:GMLocalizedString(@"VERSION: %@"), [self.bundle version]];
 }
 
 - (NSAttributedString *)buildNumberDescription {

@@ -81,9 +81,9 @@ static BOOL gpgMailWorks = NO;
 + (void)showMultipleInstallationsErrorAndExit:(NSArray *)installations {
     NSAlert *errorModal = [[NSAlert alloc] init];
     
-    errorModal.messageText = NSLocalizedStringFromTableInBundle(@"GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE", @"GPGMail", [NSBundle bundleForClass:self], @"");
-    errorModal.informativeText = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE", @"GPGMail", [NSBundle bundleForClass:self], @""), [installations componentsJoinedByString:@"\n"]];
-    [errorModal addButtonWithTitle:NSLocalizedStringFromTableInBundle(@"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON", @"GPGMail", [NSBundle bundleForClass:self], @"")];
+    errorModal.messageText = GMLocalizedString(@"GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE");
+    errorModal.informativeText = [NSString stringWithFormat:GMLocalizedString(@"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE"), [installations componentsJoinedByString:@"\n"]];
+    [errorModal addButtonWithTitle:GMLocalizedString(@"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON")];
     [errorModal runModal];
     
     [errorModal release];
@@ -259,7 +259,7 @@ static BOOL gpgMailWorks = NO;
 }
 
 + (NSString *)preferencesPanelName {
-	return NSLocalizedStringFromTableInBundle(@"PGP_PREFERENCES", @"GPGMail", [NSBundle bundleForClass:self], "PGP preferences panel name");
+	return GMLocalizedString(@"PGP_PREFERENCES");
 }
 
 + (BOOL)gpgMailWorks {
@@ -359,6 +359,20 @@ static BOOL gpgMailWorks = NO;
 - (void)scheduleApplyingRulesForMessage:(Message *)message isEncrypted:(BOOL)isEncrypted {
     [_messageRulesApplier scheduleMessage:message isEncrypted:isEncrypted];
 }
+
+#pragma mark Localization Helper
+
+- (NSString *)localizedStringForKey:(NSString *)key {
+    NSBundle *gmBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+    NSString *localizedString = NSLocalizedStringFromTableInBundle(key, @"GPGMail", gmBundle, @"");
+    // Translation found, out of here.
+    if(![localizedString isEqualToString:key])
+        return localizedString;
+    
+    NSBundle *englishLanguageBundle = [NSBundle bundleWithPath:[gmBundle pathForResource:@"en" ofType:@"lproj"]];
+    return [englishLanguageBundle localizedStringForKey:key value:@"" table:@"GPGMail"];
+}
+
 
 #pragma mark General Info
 

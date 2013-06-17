@@ -829,7 +829,6 @@
     MFError *error = nil;
     NSArray *noDataErrors = [status valueForKey:@"NODATA"];
     
-    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
     NSString *title = nil, *message = nil;
     NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithCapacity:0];
     
@@ -843,8 +842,8 @@
         titleKey = [NSString stringWithFormat:@"%@_DECRYPT_SYSTEM_ERROR_TITLE", prefix];
         messageKey = [NSString stringWithFormat:@"%@_DECRYPT_SYSTEM_ERROR_MESSAGE", prefix];
         
-        title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
-        message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
+        title = GMLocalizedString(titleKey);
+        message = GMLocalizedString(messageKey);
     }
     else if(((GPGException *)operationError).errorCode == GPGErrorNoSecretKey) {
 		NSArray *missingKeys = [[(GPGException *)operationError gpgTask].statusDict objectForKey:@"NO_SECKEY"]; //Array of Arrays of String!
@@ -860,8 +859,8 @@
         titleKey = [NSString stringWithFormat:@"%@_DECRYPT_SECKEY_ERROR_TITLE", prefix];
         messageKey = [NSString stringWithFormat:@"%@_DECRYPT_SECKEY_ERROR_MESSAGE", prefix];
         
-        title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
-        message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
+        title = GMLocalizedString(titleKey);
+        message = GMLocalizedString(messageKey);
 		
 		message = [NSString stringWithFormat:message, keyIDs];
     }
@@ -869,8 +868,8 @@
         titleKey = [NSString stringWithFormat:@"%@_DECRYPT_WRONG_SECKEY_ERROR_TITLE", prefix];
         messageKey = [NSString stringWithFormat:@"%@_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE", prefix];
         
-        title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
-        message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
+        title = GMLocalizedString(titleKey);
+        message = GMLocalizedString(messageKey);
     }
     else if([self hasError:@"NO_ARMORED_DATA" noDataErrors:noDataErrors] || 
             [self hasError:@"INVALID_PACKET" noDataErrors:noDataErrors] || 
@@ -878,15 +877,15 @@
         titleKey = [NSString stringWithFormat:@"%@_DECRYPT_CORRUPTED_DATA_ERROR_TITLE", prefix];
         messageKey = [NSString stringWithFormat:@"%@_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE", prefix];
         
-        title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
-        message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
+        title = GMLocalizedString(titleKey);
+        message = GMLocalizedString(messageKey);
     }
     else {
         titleKey = [NSString stringWithFormat:@"%@_DECRYPT_GENERAL_ERROR_TITLE", prefix];
         messageKey = [NSString stringWithFormat:@"%@_DECRYPT_GENERAL_ERROR_MESSAGE", prefix];
         
-        title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
-        message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
+        title = GMLocalizedString(titleKey);
+        message = GMLocalizedString(messageKey);
         message = [NSString stringWithFormat:message, errorText];
     }
     
@@ -917,7 +916,6 @@
     
     NSArray *noDataErrors = [status valueForKey:@"NODATA"];
     
-    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
     NSString *title = nil, *message = nil;
     NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithCapacity:0];
     
@@ -938,8 +936,8 @@
         titleKey = [NSString stringWithFormat:@"%@_VERIFY_SYSTEM_ERROR_TITLE", prefix];
         messageKey = [NSString stringWithFormat:@"%@_VERIFY_SYSTEM_ERROR_MESSAGE", prefix];
         
-        title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
-        message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
+        title = GMLocalizedString(titleKey);
+        message = GMLocalizedString(messageKey);
         errorFound = YES;
     }
     else if([self hasError:@"EXPECTED_SIGNATURE_NOT_FOUND" noDataErrors:noDataErrors] ||
@@ -947,8 +945,8 @@
         titleKey = [NSString stringWithFormat:@"%@_VERIFY_CORRUPTED_DATA_ERROR_TITLE", prefix];
         messageKey = [NSString stringWithFormat:@"%@_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE", prefix];
         
-        title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
-        message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
+        title = GMLocalizedString(titleKey);
+        message = GMLocalizedString(messageKey);
         errorFound = YES;
     }
     else {
@@ -968,8 +966,8 @@
                 titleKey = [NSString stringWithFormat:@"%@_VERIFY_NO_PUBKEY_ERROR_TITLE", prefix];
                 messageKey = [NSString stringWithFormat:@"%@_VERIFY_NO_PUBKEY_ERROR_MESSAGE", prefix];
                 
-                title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
-                message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
+                title = GMLocalizedString(titleKey);
+                message = GMLocalizedString(messageKey);
                 message = [NSString stringWithFormat:message, signatureWithError.fingerprint];
                 break;
                 
@@ -977,16 +975,16 @@
                 titleKey = [NSString stringWithFormat:@"%@_VERIFY_ALGORITHM_ERROR_TITLE", prefix];
                 messageKey = [NSString stringWithFormat:@"%@_VERIFY_ALGORITHM_ERROR_MESSAGE", prefix];
                 
-                title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
-                message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
+                title = GMLocalizedString(titleKey);
+                message = GMLocalizedString(messageKey);
                 break;
                 
             case GPGErrorCertificateRevoked:
                 titleKey = [NSString stringWithFormat:@"%@_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE", prefix];
                 messageKey = [NSString stringWithFormat:@"%@_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE", prefix];
                 
-                title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
-                message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
+                title = GMLocalizedString(titleKey);
+                message = GMLocalizedString(messageKey);
                 message = [NSString stringWithFormat:message, signatureWithError.fingerprint];
                 break;
                 
@@ -994,8 +992,8 @@
                 titleKey = [NSString stringWithFormat:@"%@_VERIFY_KEY_EXPIRED_ERROR_TITLE", prefix];
                 messageKey = [NSString stringWithFormat:@"%@_VERIFY_KEY_EXPIRED_ERROR_MESSAGE", prefix];
                 
-                title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
-                message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
+                title = GMLocalizedString(titleKey);
+                message = GMLocalizedString(messageKey);
                 message = [NSString stringWithFormat:message, signatureWithError.fingerprint];
                 break;
                 
@@ -1003,16 +1001,16 @@
                 titleKey = [NSString stringWithFormat:@"%@_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE", prefix];
                 messageKey = [NSString stringWithFormat:@"%@_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE", prefix];
                 
-                title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
-                message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
+                title = GMLocalizedString(titleKey);
+                message = GMLocalizedString(messageKey);
                 break;
                 
             case GPGErrorBadSignature:
                 titleKey = [NSString stringWithFormat:@"%@_VERIFY_BAD_SIGNATURE_ERROR_TITLE", prefix];
                 messageKey = [NSString stringWithFormat:@"%@_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE", prefix];
                 
-                title = NSLocalizedStringFromTableInBundle(titleKey, @"GPGMail", gpgMailBundle, @"");
-                message = NSLocalizedStringFromTableInBundle(messageKey, @"GPGMail", gpgMailBundle, @"");
+                title = GMLocalizedString(titleKey);
+                message = GMLocalizedString(messageKey);
                 break;
                 
             default:
@@ -1513,13 +1511,13 @@
     
     NSMutableString *partString = [NSMutableString string];
     if(isEncrypted)
-        [partString appendString:NSLocalizedStringFromTableInBundle(@"MESSAGE_VIEW_PGP_PART_ENCRYPTED", @"GPGMail", bundle, @"")];
+        [partString appendString:GMLocalizedString(@"MESSAGE_VIEW_PGP_PART_ENCRYPTED")];
     if(isEncrypted && isSigned)
         [partString appendString:@" & "];
     if(isSigned)
-        [partString appendString:NSLocalizedStringFromTableInBundle(@"MESSAGE_VIEW_PGP_PART_SIGNED", @"GPGMail", bundle, @"")];
+        [partString appendString:GMLocalizedString(@"MESSAGE_VIEW_PGP_PART_SIGNED")];
     
-    [partString appendFormat:@" %@", NSLocalizedStringFromTableInBundle(@"MESSAGE_VIEW_PGP_PART", @"GPGMail", bundle, @"")];
+    [partString appendFormat:@" %@", GMLocalizedString(@"MESSAGE_VIEW_PGP_PART")];
     
     content = [content stringByReplacingString:PGP_PART_MARKER_START withString:[NSString stringWithFormat:@"<fieldset style=\"padding-top:10px; border:0px; border: 3px solid #CCC; padding-left: 20px;\"><legend style=\"font-weight:bold\">%@</legend><div style=\"padding-left:3px;\">", partString]];
     content = [content stringByReplacingString:PGP_PART_MARKER_END withString:@"</div></fieldset>"];
@@ -1915,7 +1913,6 @@
     }
 	
 	GPGKey *keyForSigning = [sender valueForFlag:@"gpgKey"];
-	
 	if (!keyForSigning) {
 		//Should not happen!
 		keyForSigning = [[[GPGMailBundle sharedInstance] signingKeyListForAddress:sender] anyObject];
@@ -2074,28 +2071,28 @@
 	
 	switch (errorCode) {
 		case GPGErrorNoPINEntry: {
-			title = NSLocalizedStringFromTableInBundle(@"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE", @"GPGMail", gpgMailBundle, @"");
+			title = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE");
 			
-			description = NSLocalizedStringFromTableInBundle(@"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION", @"GPGMail", gpgMailBundle, @"");
+			description = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION");
 			break;
 		}
 		case GPGErrorNoAgent: {
-			title = NSLocalizedStringFromTableInBundle(@"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE", @"GPGMail", gpgMailBundle, @"");
+			title = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE");
 			
-			description = NSLocalizedStringFromTableInBundle(@"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION", @"GPGMail", gpgMailBundle, @"");
+			description = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION");
 			
 			break;
 		}
 		case GPGErrorAgentError: {
-			title = NSLocalizedStringFromTableInBundle(@"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+			title = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE");
 			
-			description = NSLocalizedStringFromTableInBundle(@"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION", @"GPGMail", gpgMailBundle, @"");
+			description = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION");
 			
 			break;
 		}
 		case GPGErrorBadPassphrase: {
-			title = NSLocalizedStringFromTableInBundle(@"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE", @"GPGMail", gpgMailBundle, @"");
-			description = NSLocalizedStringFromTableInBundle(@"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION", @"GPGMail", gpgMailBundle, @"");
+			title = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE");
+			description = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION");
 			
 			appendContactGPGToolsInfo = NO;
 			
@@ -2103,15 +2100,15 @@
 		}
 			
 		default:
-			title = NSLocalizedStringFromTableInBundle(@"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+			title = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE");
 			
-			description = NSLocalizedStringFromTableInBundle(@"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION", @"GPGMail", gpgMailBundle, @"");
+			description = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION");
 			
 			break;
 	}
 	
 	if(errorText.length && appendContactGPGToolsInfo) {
-		description = [description stringByAppendingFormat:NSLocalizedStringFromTableInBundle(@"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE", @"GPGMail", gpgMailBundle, @""), errorText];
+		description = [description stringByAppendingFormat:GMLocalizedString(@"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE"), errorText];
 	}
 	
 	MFError *mailError = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:nil title:title
@@ -2136,16 +2133,16 @@
 	
 	switch (errorCode) {
 		default: {
-			title = NSLocalizedStringFromTableInBundle(@"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
+			title = GMLocalizedString(@"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE");
 			
-			description = NSLocalizedStringFromTableInBundle(@"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION", @"GPGMail", gpgMailBundle, @"");
+			description = GMLocalizedString(@"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION");
 			
 			break;
 		}
 	}
 	
 	if(errorText.length) {
-		description = [description stringByAppendingFormat:NSLocalizedStringFromTableInBundle(@"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE", @"GPGMail", gpgMailBundle, @""), errorText];
+		description = [description stringByAppendingFormat:GMLocalizedString(@"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE"), errorText];
 	}
 	
 	MFError *mailError = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:nil title:title

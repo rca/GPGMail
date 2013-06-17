@@ -328,7 +328,6 @@
     ComposeBackEnd_GPGMail *backEnd = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]);
     
     if(![[backEnd getIvar:@"SignIsPossible"] boolValue]) {
-        NSBundle *bundle = [NSBundle bundleForClass:[GPGMailBundle class]];
         NSPopUpButton *button = [self valueForKey:@"_fromPopup"];
         NSString *sender = [button.selectedItem.title uncommentedAddress];
         
@@ -336,7 +335,7 @@
             sender = [[[button.itemArray objectAtIndex:0] title] uncommentedAddress];
         
         GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
-        [((NSSegmentedControl *)signControl) setToolTip:[NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN", @"GPGMail", bundle, @""), sender]];
+        [((NSSegmentedControl *)signControl) setToolTip:[NSString stringWithFormat:GMLocalizedString(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN"), sender]];
     }
     else {
         [self MA_updateSignButtonTooltip];
@@ -351,15 +350,14 @@
         securityMethod = backEnd.securityMethod;
     
     if(![[backEnd getIvar:@"EncryptIsPossible"] boolValue] && securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
-        NSBundle *bundle = [NSBundle bundleForClass:[GPGMailBundle class]];
         NSArray *nonEligibleRecipients = [(ComposeBackEnd *)backEnd recipientsThatHaveNoKeyForEncryption];
         GMSecurityControl *encryptControl = [self valueForKey:@"_encryptButton"];
         NSString *toolTip = nil;
         if(![nonEligibleRecipients count])
-            toolTip = NSLocalizedStringFromTableInBundle(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS", @"GPGMail", bundle, @"");
+            toolTip = GMLocalizedString(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS");
         else {
             NSString *recipients = [nonEligibleRecipients componentsJoinedByString:@", "];
-            toolTip = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT", @"GPGMail", bundle, @""), recipients];
+            toolTip = [NSString stringWithFormat:GMLocalizedString(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT"), recipients];
         }
         [((NSSegmentedControl *)encryptControl) setToolTip:toolTip];
     }

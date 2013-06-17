@@ -369,7 +369,6 @@
     
     NSUInteger totalErrors = verificationErrors + decryptionErrors;
     
-    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
     NSString *title = nil;
     NSString *message = nil;
     // 1035 says decryption error, 1036 says verification error.
@@ -378,29 +377,29 @@
     
     if(verificationErrors && decryptionErrors) {
         // @"%d Anhänge konnten nicht entschlüsselt oder verifiziert werden."
-        title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
-        message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+        title = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE");
+        message = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE");
         errorCode = 1035;
     }
     else if(verificationErrors) {
         if(verificationErrors == 1) {
-            title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
-            message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+            title = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_TITLE");
+            message = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_MESSAGE");
         }
         else {
-            title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
-            message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+            title = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_TITLE");
+            message = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_MESSAGE");
         }
         errorCode = 1036;
     }
     else if(decryptionErrors) {
         if(decryptionErrors == 1) {
-            title = title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
-            message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+            title = title = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_TITLE");
+            message = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE");
         }
         else {
-            title = title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
-            message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+            title = title = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_TITLE");
+            message = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_MESSAGE");
         }
         errorCode = 1035;
     }

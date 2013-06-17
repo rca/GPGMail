@@ -8,3 +8,5 @@ extern void instrumentObjcMessageSends(BOOL enabled);
 extern int  GPGMailLoggingLevel;
 
 #define DebugLog(...) if (GPGMailLoggingLevel) {CCLog(__VA_ARGS__);}
+#define GMLocalizedString(key) \
+[[GPGMailBundle sharedInstance] localizedStringForKey:(key)]

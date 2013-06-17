@@ -125,6 +125,8 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
  */
 - (BOOL)canSignMessagesFromAddress:(NSString *)address;
 
+- (NSString *)localizedStringForKey:(NSString *)key;
+
 @property (readonly) GPGErrorCode gpgStatus;
 @property (readonly, retain) NSSet *allGPGKeys;
 @property (nonatomic, assign) BOOL accountExistsForSigning;
