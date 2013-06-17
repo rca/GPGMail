@@ -1512,8 +1512,6 @@
 }
 
 - (NSString *)contentWithReplacedPGPMarker:(NSString *)content isEncrypted:(BOOL)isEncrypted isSigned:(BOOL)isSigned {
-    NSBundle *bundle = [NSBundle bundleForClass:[GPGMailBundle class]];
-    
     NSMutableString *partString = [NSMutableString string];
     if(isEncrypted)
         [partString appendString:GMLocalizedString(@"MESSAGE_VIEW_PGP_PART_ENCRYPTED")];
@@ -2062,8 +2060,6 @@
 }
 
 - (void)failedToSignForSender:(NSString *)sender gpgErrorCode:(GPGErrorCode)errorCode error:(NSException *)error {
-    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
- 	
 	NSString *title = nil;
 	NSString *description = nil;
 	NSString *errorText = nil;
@@ -2126,8 +2122,6 @@
 }
 
 - (void)failedToEncryptForRecipients:(NSArray *)recipients gpgErrorCode:(GPGErrorCode)errorCode error:(NSException *)error {
-	NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
- 	
 	NSString *title = nil;
 	NSString *description = nil;
 	NSString *errorText = nil;
