@@ -545,8 +545,13 @@
         }
     }
     
-	if(!signedPart)
+	if(!signedPart) {
+		// If there's no signed part, there's a good chance, this
+		// attachment isn't really signed after all, so let's reset
+		// PGPAttachment.
+		self.PGPAttachment = NO;
 		return [self MADecodeApplicationOctet_streamWithContext:nil];
+	}
 	
     // Now try to verify.
     [self verifyData:[signedPart bodyData] signatureData:[self bodyData]];
