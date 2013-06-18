@@ -207,6 +207,25 @@
         shouldPGPSign = NO;
         shouldPGPEncrypt = NO;
     }
+	
+	
+	
+	// If we are only signing and there isn't a newline at the end of the plaintext, append it.
+	// We need this to prevent servers from doin this.
+	if (shouldPGPSign && ! shouldPGPEncrypt) {
+		NSAttributedString *plainText = contents.plainText;
+		NSString *plainString = plainText.string;
+		if ([plainString characterAtIndex:plainString.length - 1] != '\n') {
+			NSMutableAttributedString *newPlainText = [plainText mutableCopy];
+			
+			NSAttributedString *newline = [[NSAttributedString alloc] initWithString:@"\n"];
+			[newPlainText appendAttributedString:newline];
+			[newline release];
+			
+			contents.plainText = newPlainText;
+			[newPlainText release];
+		}
+	}
     
     // Drafts store the messages with a very minor set of headers and mime types
     // not suitable for encrypted/signed messages. But fortunately, Mail.app doesn't
