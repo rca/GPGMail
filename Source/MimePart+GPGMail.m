@@ -876,6 +876,10 @@
         title = GMLocalizedString(titleKey);
         message = GMLocalizedString(messageKey);
     }
+	else if(((GPGException *)operationError).errorCode == GPGErrorNotFound) {
+		title = GMLocalizedString(@"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE");
+        message = GMLocalizedString(@"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE");
+	}
     else if([self hasError:@"NO_ARMORED_DATA" noDataErrors:noDataErrors] || 
             [self hasError:@"INVALID_PACKET" noDataErrors:noDataErrors] || 
             [(GPGException *)operationError isCorruptedInputError]) {
@@ -897,7 +901,9 @@
     [userInfo setValue:title forKey:@"_MFShortDescription"];
     [userInfo setValue:message forKey:@"NSLocalizedDescription"];
     [userInfo setValue:[NSNumber numberWithBool:YES] forKey:@"DecryptionError"];
-    
+    if([operationError isKindOfClass:[GPGException class]])
+		[userInfo setValue:[NSNumber numberWithLong:((GPGException *)operationError).errorCode] forKey:@"DecryptionErrorCode"];
+	
     error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:nil title:title helpTag:nil 
                             userInfo:userInfo];
     
@@ -954,6 +960,11 @@
         message = GMLocalizedString(messageKey);
         errorFound = YES;
     }
+	else if(((GPGException *)operationError).errorCode == GPGErrorNotFound) {
+		title = GMLocalizedString(@"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE");
+		message = GMLocalizedString(@"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE");
+		errorFound = YES;
+	}
     else {
         GPGErrorCode errorCode = GPGErrorNoError;
         GPGSignature *signatureWithError = nil;
@@ -1033,7 +1044,9 @@
     [userInfo setValue:title forKey:@"_MFShortDescription"];
     [userInfo setValue:message forKey:@"NSLocalizedDescription"];
     [userInfo setValue:[NSNumber numberWithBool:YES] forKey:@"VerificationError"];
-    
+    if([operationError isKindOfClass:[GPGException class]])
+		[userInfo setValue:[NSNumber numberWithLong:((GPGException *)operationError).errorCode] forKey:@"VerificationErrorCode"];
+	
     if(errorFound)
         error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:nil title:title helpTag:nil 
                                 userInfo:userInfo];
@@ -1307,7 +1320,9 @@
     
     MFError *error = [self errorFromGPGOperation:GPG_OPERATION_VERIFICATION controller:gpgc];
     self.PGPError = error;
-    self.PGPSigned = YES;
+	// If MacGPG2 is not installed, don't flag the message as signed,
+	// since we can't know.
+    self.PGPSigned = [gpgc.error isKindOfClass:[GPGException class]] && ((GPGException *)gpgc.error).errorCode == NSNotFound ? NO : YES;
     self.PGPVerified = self.PGPError ? NO : YES;
     self.PGPSignatures = signatures;
     

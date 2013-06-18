@@ -52,6 +52,12 @@
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Die Signatur der Nachricht ist abgelaufen.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Die Signatur der Nachricht konnte nicht verifiziert werden, da die Signatur abgelaufen ist.\n\nErkundigen Sie sich beim Absender, warum die Signatur abgelaufen ist.";
 
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 ist nicht installiert.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Die Entschlüsselung ist fehlgeschlagen, da MacGPG2 nicht installiert ist.\n\nMacGPG2 ist das Programm welches von GPGMail zum bearbeiten Ihrer verschlüsselten und signierten Nachrichten verwendet wird. MacGPG2 muss daher installiert sein, damit GPGMail korrekt funktioniert.\n\nBitten laden Sie MacGPG2 von https://gpgtools.org herunter.";
+
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 ist nicht installiert";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Die Verifizierung ist fehlgeschlagen, da MacGPG2 nicht installiert ist.\n\nMacGPG2 ist das Programm welches von GPGMail zum bearbeiten Ihrer verschlüsselten und signierten Nachrichten verwendet wird. MacGPG2 muss daher installiert sein, damit GPGMail korrekt funktioniert.\n\nBitten laden Sie MacGPG2 von https://gpgtools.org herunter.";
+
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d Anhänge konnten nicht entschlüsselt oder verifiziert werden.";
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Bitte klicken Sie im Nachrichten Kopf unter Sicherheit auf das Anhang Icon um weitere Informationen zu erhalten.";
 

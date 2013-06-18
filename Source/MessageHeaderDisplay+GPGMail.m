@@ -252,7 +252,21 @@
     }
     errorFound = errorCode != GPGErrorNoError ? YES : NO;
     
-    NSString *titlePart = nil;
+	// Check if MacGPG2 was not found.
+	// If that's the case, don't try to append signature labels.
+	if(!errorFound) {
+		GPGErrorCode __block newErrorCode = GPGErrorNotFound;
+		[[message PGPErrors] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+			if([obj isKindOfClass:[MFError class]]) {
+				if([(NSDictionary *)[(MFError *)obj userInfo] objectForKey:@"VerificationErrorCode"])
+					newErrorCode = (GPGErrorCode)[[(NSDictionary *)[(MFError *)obj userInfo] objectForKey:@"VerificationErrorCode"] longValue];
+				*stop = YES;
+			}
+		}];
+		errorCode = newErrorCode;
+	}
+	
+	NSString *titlePart = nil;
     
     switch (errorCode) {
         case GPGErrorNoPublicKey:
@@ -293,9 +307,12 @@
     
     [securityHeaderSignaturePart appendAttributedString:signedAttachmentString];
     
-    NSString *signerLabelsString = [NSString stringWithFormat:@"%@ (%@)", titlePart, 
-                                    [[signerLabels allObjects] componentsJoinedByString:@", "]];
-    [securityHeaderSignaturePart appendAttributedString:[NSAttributedString attributedStringWithString:signerLabelsString]];
+    NSMutableString *signerLabelsString = [NSMutableString stringWithString:titlePart];
+	// No MacGPG2? No signer labels!
+	if(errorCode != GPGErrorNotFound && [[signerLabels allObjects] count] != 0)
+		[signerLabelsString appendFormat:@" (%@)", [[signerLabels allObjects] componentsJoinedByString:@", "]];
+    
+	[securityHeaderSignaturePart appendAttributedString:[NSAttributedString attributedStringWithString:signerLabelsString]];
     return [securityHeaderSignaturePart autorelease];
 }
 
