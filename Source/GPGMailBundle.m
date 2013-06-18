@@ -82,7 +82,7 @@ static BOOL gpgMailWorks = NO;
     NSAlert *errorModal = [[NSAlert alloc] init];
     
     errorModal.messageText = GMLocalizedString(@"GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE");
-    errorModal.informativeText = [NSString stringWithFormat:GMLocalizedString(@"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE"), [installations componentsJoinedByString:@"\n"]];
+    errorModal.informativeText = [NSString stringWithFormat:GMLocalizedString(@"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE"), [installations componentsJoinedByString:@"\n\n"]];
     [errorModal addButtonWithTitle:GMLocalizedString(@"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON")];
     [errorModal runModal];
     
@@ -362,7 +362,7 @@ static BOOL gpgMailWorks = NO;
 
 #pragma mark Localization Helper
 
-- (NSString *)localizedStringForKey:(NSString *)key {
++ (NSString *)localizedStringForKey:(NSString *)key {
     NSBundle *gmBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
     NSString *localizedString = NSLocalizedStringFromTableInBundle(key, @"GPGMail", gmBundle, @"");
     // Translation found, out of here.
@@ -372,7 +372,6 @@ static BOOL gpgMailWorks = NO;
     NSBundle *englishLanguageBundle = [NSBundle bundleWithPath:[gmBundle pathForResource:@"en" ofType:@"lproj"]];
     return [englishLanguageBundle localizedStringForKey:key value:@"" table:@"GPGMail"];
 }
-
 
 #pragma mark General Info
 
