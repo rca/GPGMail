@@ -255,7 +255,7 @@
 	// Check if MacGPG2 was not found.
 	// If that's the case, don't try to append signature labels.
 	if(!errorFound) {
-		GPGErrorCode __block newErrorCode = GPGErrorNotFound;
+		GPGErrorCode __block newErrorCode = GPGErrorNoError;
 		[[message PGPErrors] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 			if([obj isKindOfClass:[MFError class]]) {
 				if([(NSDictionary *)[(MFError *)obj userInfo] objectForKey:@"VerificationErrorCode"])
