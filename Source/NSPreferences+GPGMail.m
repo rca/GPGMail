@@ -92,7 +92,7 @@
         [toolbar insertItemWithItemIdentifier:preferencesName atIndex:[[toolbar items] count]];
     
     // Make sure the preferences window shows all toolbar items.
-    [preferences setIvar:@"makeAllToolbarItemsVisible" value:[NSNumber numberWithBool:YES]];
+    [preferences setIvar:@"makeAllToolbarItemsVisible" value:@YES];
     // If the preference window wasn't closed before Mail.app was shutdown
     // and the last preference module to be shown was GPGMail,
     // Mail.app doesn't show it automatically after restarting and restoring
@@ -116,7 +116,7 @@
 - (NSSize)sizeForWindowShowingAllToolbarItems:(NSWindow *)window {
     NSRect frame = [window frame];
     float width = 0.0f;
-	NSArray *subviews = [[[[[window toolbar] valueForKey:@"_toolbarView"] subviews] objectAtIndex:0] subviews];
+	NSArray *subviews = [[[[window toolbar] valueForKey:@"_toolbarView"] subviews][0] subviews];
     for (NSView *view in subviews) {
         width += view.frame.size.width;
 	}
@@ -137,7 +137,7 @@
 - (void)resizeWindowToShowAllToolbarItems:(NSWindow *)window {
     NSRect frame = [window frame];
     frame.size = [self sizeForWindowShowingAllToolbarItems:window];
-    [self setIvar:@"makeAllToolbarItemsVisible" value:[NSNumber numberWithBool:YES]];
+    [self setIvar:@"makeAllToolbarItemsVisible" value:@YES];
     [window setFrame:frame display:YES];
 }
 

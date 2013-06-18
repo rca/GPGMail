@@ -376,7 +376,7 @@ static BOOL gpgMailWorks = NO;
 #pragma mark General Info
 
 - (NSString *)version {
-	return [[[NSBundle bundleForClass:[self class]] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+	return [[NSBundle bundleForClass:[self class]] infoDictionary][@"CFBundleShortVersionString"];
 }
 
 /**

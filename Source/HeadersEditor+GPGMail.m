@@ -56,7 +56,7 @@
 - (void)chnageShouldSymmetricEncrypt {
 	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
 	NSNumber *value = [backEnd getIvar:@"shouldSymmetricEncrypt"];
-	value = [NSNumber numberWithBool:![value boolValue]];
+	value = @((BOOL)[value boolValue]);
 	[backEnd setIvar:@"shouldSymmetricEncrypt" value:value];
 }
 
@@ -153,8 +153,8 @@
     [truncateStyle setLineBreakMode:NSLineBreakByTruncatingTail];
     
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-    [attributes addEntriesFromDictionary:[[[menuItems objectAtIndex:0] attributedTitle] fontAttributesInRange:NSMakeRange(0, [[[menuItems objectAtIndex:0] attributedTitle] length])]];
-	[attributes setObject:truncateStyle forKey:NSParagraphStyleAttributeName];
+    [attributes addEntriesFromDictionary:[[menuItems[0] attributedTitle] fontAttributesInRange:NSMakeRange(0, [[menuItems[0] attributedTitle] length])]];
+	attributes[NSParagraphStyleAttributeName] = truncateStyle;
 	[truncateStyle release];
     NSMenuItem *item, *parentItem, *selectedItem = [popUp selectedItem], *subItemToSelect = nil;
 	GPGKey *defaultKey = [bundle preferredGPGKeyForSigning];
@@ -170,7 +170,7 @@
 	
 	NSUInteger count = [menuItems count], i = 0;
 	for (; i < count; i++) {
-		item = [menuItems objectAtIndex:i];
+		item = menuItems[i];
 		parentItem = [item getIvar:@"parentItem"];
 		if (parentItem) {
 			[menu removeItem:item]; // We remove all elements that represent a key.
@@ -200,7 +200,7 @@
 					
 					for (GPGKey *key in keys) {
 						NSMenuItem *subItem = nil;
-						if (i + 1 < count && (subItem = [menuItems objectAtIndex:i + 1]) && [subItem getIvar:@"parentItem"] && [subItem getIvar:@"gpgKey"] == key) {
+						if (i + 1 < count && (subItem = menuItems[i + 1]) && [subItem getIvar:@"parentItem"] && [subItem getIvar:@"gpgKey"] == key) {
 							// The next item is the item we want to create: Jump over.
 							i++;
 							index++;
@@ -245,7 +245,7 @@
 	
     // Select a valid item if needed.
     if (selectedItem.isHidden) {
-        [popUp setIvar:@"CalledFromGPGMail" value:[NSNumber numberWithBool:YES]];
+        [popUp setIvar:@"CalledFromGPGMail" value:@YES];
 		NSUInteger index;
 		if (subItemToSelect) {
 			index = [menu indexOfItem:subItemToSelect];
@@ -259,7 +259,7 @@
         if ((parentItem = [selectedItem getIvar:@"parentItem"])) {
             selectedItem = parentItem;
         }
-        [popUp setIvar:@"CalledFromGPGMail" value:[NSNumber numberWithBool:YES]];
+        [popUp setIvar:@"CalledFromGPGMail" value:@YES];
         [popUp selectItem:selectedItem];
         [self changeFromHeader:popUp];
     } else if (![backEnd getIvar:@"gpgKeyForSigning"]) {
@@ -272,7 +272,7 @@
 
 - (void)MAChangeFromHeader:(NSPopUpButton *)sender {
     BOOL calledFromGPGMail = [[sender getIvar:@"CalledFromGPGMail"] boolValue];
-    [sender setIvar:@"CalledFromGPGMail" value:[NSNumber numberWithBool:NO]];
+    [sender setIvar:@"CalledFromGPGMail" value:@NO];
     // If the newly selected item is the currently select item,
     // just bail out.
     // Update: this doesn't work, since the selected item of _accountPopup is of course already updated.
@@ -332,7 +332,7 @@
         NSString *sender = [button.selectedItem.title uncommentedAddress];
         
         if([sender length] == 0 && [button.itemArray count])
-            sender = [[[button.itemArray objectAtIndex:0] title] uncommentedAddress];
+            sender = [[(button.itemArray)[0] title] uncommentedAddress];
         
         GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
         [((NSSegmentedControl *)signControl) setToolTip:[NSString stringWithFormat:GMLocalizedString(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN"), sender]];

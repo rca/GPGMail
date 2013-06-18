@@ -218,7 +218,7 @@ GPGSignatureView *_sharedInstance;
 		signatureIndexes = [value retain];
 		NSUInteger index;
 		if ([value count] > 0 && (index = [value firstIndex]) < [signatures count]) {
-			self.signature = [signatures objectAtIndex:index];
+			self.signature = signatures[index];
 		} else {
 			self.signature = nil;
 		}
@@ -235,8 +235,8 @@ GPGSignatureView *_sharedInstance;
 }
 - (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize {
 	NSArray *subviews = [splitView subviews];
-	NSView *view1 = [subviews objectAtIndex:0];
-	NSView *view2 = [subviews objectAtIndex:1];
+	NSView *view1 = subviews[0];
+	NSView *view2 = subviews[1];
 	NSSize splitViewSize = [splitView frame].size;
 	NSSize size1 = [view1 frame].size;
 	NSRect frame2 = [view2 frame];

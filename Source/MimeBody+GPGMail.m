@@ -53,7 +53,7 @@
     // This results in a crash, since Mail.app
     // can't handle GPGSignature signatures.
     NSArray *messageSigners = [[self message] PGPSignatures];
-    if([messageSigners count] && [[messageSigners objectAtIndex:0] isKindOfClass:[GPGSignature class]]) {
+    if([messageSigners count] && [messageSigners[0] isKindOfClass:[GPGSignature class]]) {
         return YES;
     }
     // Otherwise call the original method.
@@ -90,9 +90,9 @@
         // To get the complete data, the message store has to be asked directly.
         NSRange encryptedDataRange = [[[[self message] dataSourceProxy] fullBodyDataForMessage:[self message]] rangeOfPGPInlineEncryptedData];
         if(encryptedDataRange.location != NSNotFound)
-            [[self message] setIvar:@"containsPGPEncryptedData" value:[NSNumber numberWithBool:YES]];
+            [[self message] setIvar:@"containsPGPEncryptedData" value:@YES];
         else
-            [[self message] setIvar:@"containsPGPEncryptedData" value:[NSNumber numberWithBool:NO]];
+            [[self message] setIvar:@"containsPGPEncryptedData" value:@NO];
     }   
     return [[[self message] getIvar:@"containsPGPEncryptedData"] boolValue];
 }
@@ -101,9 +101,9 @@
     if(![[self message] ivarExists:@"containsPGPSignedData"]) {
         NSRange signedDataRange = [[self bodyData] rangeOfPGPSignatures];
         if(signedDataRange.location != NSNotFound)
-            [[self message] setIvar:@"containsPGPSignedData" value:[NSNumber numberWithBool:YES]];
+            [[self message] setIvar:@"containsPGPSignedData" value:@YES];
         else
-            [[self message] setIvar:@"containsPGPSignedData" value:[NSNumber numberWithBool:NO]];
+            [[self message] setIvar:@"containsPGPSignedData" value:@NO];
     }
     // In case of a inline decrypted message body, the decrypted data doesn't contain the signature
     // but only the top level part of the decrypted message body.

@@ -338,50 +338,50 @@
         securityMethodHistory = [[NSMutableDictionary alloc] init];
     }
     // Building the dictionary for non existing keys.
-    if(![securityMethodHistory objectForKey:@"sign"])
+    if(!securityMethodHistory[@"sign"])
         [securityMethodHistory setValue:[NSMutableDictionary dictionary] forKey:@"sign"];
-    if(![(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender])
+    if(!((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])
         // No entry exists, initialize one.
-        [[securityMethodHistory objectForKey:@"sign"] setValue:[NSMutableDictionary dictionary] forKey:sender];
-    if(![(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey]) {
-        [[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] setValue:[NSMutableDictionary dictionary] forKey:securityMethodKey];
-        [[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] setValue:[NSNumber numberWithUnsignedInteger:0] forKey:@"DidSignCount"];
-        [[(NSMutableDictionary *)[(NSMutableDictionary *)(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] setValue:[NSNumber numberWithUnsignedInteger:0] forKey:@"DidNotSignCount"];
+        [securityMethodHistory[@"sign"] setValue:[NSMutableDictionary dictionary] forKey:sender];
+    if(!((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey]) {
+        [((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender] setValue:[NSMutableDictionary dictionary] forKey:securityMethodKey];
+        [((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey] setValue:@0U forKey:@"DidSignCount"];
+        [((NSMutableDictionary *)((NSMutableDictionary *)(NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey] setValue:@0U forKey:@"DidNotSignCount"];
     }
     // Now increase the existing one.
     // Out of frustration I gotta say this. I FUCKING HATE DICTIONARY SYNTAX IN OBJECTIVE-C! FUCKING! HATE! IT!
     NSString *countKey = didSign ? @"DidSignCount" : @"DidNotSignCount";
-    NSUInteger count = [[[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] valueForKey:countKey] unsignedIntegerValue];
+    NSUInteger count = [[((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey] valueForKey:countKey] unsignedIntegerValue];
     count++;
-    [[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] setValue:[NSNumber numberWithUnsignedInteger:count] forKey:countKey];
-    [[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] setValue:[NSNumber numberWithBool:didSign] forKey:@"DidLastSign"];
+    [((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey] setValue:@(count) forKey:countKey];
+    [((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey] setValue:@(didSign) forKey:@"DidLastSign"];
     
-    if(![(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] objectForKey:uniqueRecipients]) {
+    if(!((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey])[uniqueRecipients]) {
         // If there's not entry for sign from address to recipients, add it.
-        [(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] setObject:[NSMutableDictionary dictionary] forKey:uniqueRecipients];
-        [(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] objectForKey:uniqueRecipients] setValue:[NSNumber numberWithUnsignedInteger:0] forKey:@"DidSignCount"];
-        [(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] objectForKey:uniqueRecipients] setValue:[NSNumber numberWithUnsignedInteger:0] forKey:@"DidNotSignCount"];
+        ((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey])[uniqueRecipients] = [NSMutableDictionary dictionary];
+        [(NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey])[uniqueRecipients] setValue:@0U forKey:@"DidSignCount"];
+        [(NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey])[uniqueRecipients] setValue:@0U forKey:@"DidNotSignCount"];
     }
-    count = [[(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] objectForKey:uniqueRecipients] objectForKey:countKey] unsignedIntegerValue];
+    count = [((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey])[uniqueRecipients])[countKey] unsignedIntegerValue];
     count++;
-    [(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] objectForKey:uniqueRecipients] setObject:[NSNumber numberWithUnsignedInteger:count] forKey:countKey];
-    [(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] objectForKey:uniqueRecipients] setObject:[NSNumber numberWithBool:didSign] forKey:@"DidLastSign"];
+    ((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey])[uniqueRecipients])[countKey] = @(count);
+    ((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey])[uniqueRecipients])[@"DidLastSign"] = @(didSign);
     
-    if(![securityMethodHistory objectForKey:@"encrypt"])
+    if(!securityMethodHistory[@"encrypt"])
         [securityMethodHistory setValue:[NSMutableDictionary dictionary] forKey:@"encrypt"];
-    if(![(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients])
-        [(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] setObject:[NSMutableDictionary dictionary] forKey:uniqueRecipients];
-    if(![(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients] objectForKey:securityMethodKey]) {
-        [(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients] setObject:[NSMutableDictionary dictionary] forKey:securityMethodKey]; 
-        [[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients] objectForKey:securityMethodKey] setValue:[NSNumber numberWithUnsignedInteger:0] forKey:@"DidEncryptCount"];
-        [[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients] objectForKey:securityMethodKey] setValue:[NSNumber numberWithUnsignedInteger:0] forKey:@"DidNotEncryptCount"];
+    if(!((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])
+        ((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients] = [NSMutableDictionary dictionary];
+    if(!((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])[securityMethodKey]) {
+        ((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])[securityMethodKey] = [NSMutableDictionary dictionary]; 
+        [((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])[securityMethodKey] setValue:@0U forKey:@"DidEncryptCount"];
+        [((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])[securityMethodKey] setValue:@0U forKey:@"DidNotEncryptCount"];
     }
     
     countKey = didEncrypt ? @"DidEncryptCount" : @"DidNotEncryptCount";
-    count = [[(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients] objectForKey:securityMethodKey] objectForKey:countKey] unsignedIntegerValue];
+    count = [((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])[securityMethodKey])[countKey] unsignedIntegerValue];
     count++;
-    [(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients] objectForKey:securityMethodKey] setObject:[NSNumber numberWithUnsignedInteger:count] forKey:countKey];
-    [(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients] objectForKey:securityMethodKey] setObject:[NSNumber numberWithBool:didEncrypt] forKey:@"DidLastEncrypt"];
+    ((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])[securityMethodKey])[countKey] = @(count);
+    ((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])[securityMethodKey])[@"DidLastEncrypt"] = @(didEncrypt);
     
     // Dang, this is some seriously fucking code. But if anyone knows how to do this
     // nice, please clean it up!

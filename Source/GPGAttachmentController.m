@@ -28,33 +28,33 @@
         attachments = [[NSMutableArray alloc] init];
         for(MimePart *part in attachmentParts) {
             NSMutableDictionary *attachment = [[NSMutableDictionary alloc] init];
-            [attachment setValue:[NSNumber numberWithBool:part.PGPEncrypted] forKey:@"encrypted"];
-            [attachment setValue:[NSNumber numberWithBool:part.PGPSigned] forKey:@"signed"];
+            [attachment setValue:@(part.PGPEncrypted) forKey:@"encrypted"];
+            [attachment setValue:@(part.PGPSigned) forKey:@"signed"];
             [attachment setValue:part.PGPError forKey:@"error"];
             [attachment setValue:[part dispositionParameterForKey:@"filename"] forKey:@"decrypted-name"];
             if(part.PGPSignatures)
-                [attachment setValue:[part.PGPSignatures objectAtIndex:0] forKey:@"signature"];
+                [attachment setValue:(part.PGPSignatures)[0] forKey:@"signature"];
             BOOL decrypted = part.PGPDecrypted;
-            [attachment setValue:[NSNumber numberWithBool:decrypted] forKey:@"decrypted"];
+            [attachment setValue:@(decrypted) forKey:@"decrypted"];
             if(!part.PGPError) {
-                [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showErrorView"];
+                [attachment setValue:@YES forKey:@"showErrorView"];
                 if(decrypted && part.PGPVerified) {
-                    [attachment setValue:[NSNumber numberWithBool:NO] forKey:@"showSignatureView"];
-                    [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showDecryptedNoSignatureView"];
+                    [attachment setValue:@NO forKey:@"showSignatureView"];
+                    [attachment setValue:@YES forKey:@"showDecryptedNoSignatureView"];
                 }
                 else if(part.PGPVerified) {
-                    [attachment setValue:[NSNumber numberWithBool:NO] forKey:@"showSignatureView"];
-                    [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showDecryptedNoSignatureView"];
+                    [attachment setValue:@NO forKey:@"showSignatureView"];
+                    [attachment setValue:@YES forKey:@"showDecryptedNoSignatureView"];
                 }
                 else if(decrypted) {
-                    [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showSignatureView"];
-                    [attachment setValue:[NSNumber numberWithBool:NO] forKey:@"showDecryptedNoSignatureView"];
+                    [attachment setValue:@YES forKey:@"showSignatureView"];
+                    [attachment setValue:@NO forKey:@"showDecryptedNoSignatureView"];
                     [attachment setValue:localizedAttachmentMessage(@"ATTACHMENT_DECRYPTED_SUCCESSFULLY_TITLE") forKey:@"decryptionSuccessTitle"];
                     [attachment setValue:localizedAttachmentMessage(@"ATTACHMENT_DECRYPTED_SUCCESSFULLY_MESSAGE") forKey:@"decryptionSuccessMessage"];
                 }
             }
             else {
-                [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showSignatureView"];
+                [attachment setValue:@YES forKey:@"showSignatureView"];
                 if(part.PGPSigned) {
                     [attachment setValue:[NSImage imageNamed:@"certificate"] forKey:@"errorBadgeImage"];
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"_MFShortDescription"] forKey:@"errorTitle"];
@@ -141,7 +141,7 @@
 		attachmentIndexes = [value retain];
 		NSUInteger index;
 		if ([value count] > 0 && (index = [value firstIndex]) < [attachments count]) {
-			self.currentAttachment = [attachments objectAtIndex:index];
+			self.currentAttachment = attachments[index];
             self.signature = [self.currentAttachment valueForKey:@"signature"];
 		} else {
 			self.currentAttachment = nil;
@@ -318,8 +318,8 @@
 }
 - (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize {
 	NSArray *subviews = [splitView subviews];
-	NSView *view1 = [subviews objectAtIndex:0];
-	NSView *view2 = [subviews objectAtIndex:1];
+	NSView *view1 = subviews[0];
+	NSView *view2 = subviews[1];
 	NSSize splitViewSize = [splitView frame].size;
 	NSSize size1 = [view1 frame].size;
 	NSRect frame2 = [view2 frame];
@@ -341,7 +341,7 @@
 
 - (void)awakeFromNib {
     // Get attachment for row.
-    NSDictionary *attachment = [attachments objectAtIndex:0];
+    NSDictionary *attachment = attachments[0];
     if([attachment valueForKey:@"error"])
         [scrollView setBackgroundColor:[NSColor colorWithDeviceRed:1.0 green:0.9451 blue:0.6074 alpha:1.0]];
     else
@@ -414,7 +414,7 @@
 
 - (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex {
     // Get attachment for row.
-    NSDictionary *attachment = [attachments objectAtIndex:rowIndex];
+    NSDictionary *attachment = attachments[rowIndex];
     if([attachment valueForKey:@"error"])
         [scrollView setBackgroundColor:[NSColor colorWithDeviceRed:1.0 green:0.9451 blue:0.6074 alpha:1.0]];
     else

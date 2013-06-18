@@ -39,12 +39,12 @@
 @implementation MessageContentController_GPGMail : NSObject
 
 - (void)decryptPGPMessage {
-    [[((MessageContentController *)self) message] setIvar:@"shouldBeDecrypting" value:[NSNumber numberWithBool:YES]];
+    [[((MessageContentController *)self) message] setIvar:@"shouldBeDecrypting" value:@YES];
     [((MessageContentController *)self) reloadCurrentMessageShouldReparseBody:YES];
 }
 
 - (void)MASetMessageToDisplay:(id)message {
-    [message setIvar:@"UserSelectedMessage" value:[NSNumber numberWithBool:YES]];
+    [message setIvar:@"UserSelectedMessage" value:@YES];
     [self MASetMessageToDisplay:message];
 }
 

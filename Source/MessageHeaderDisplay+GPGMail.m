@@ -48,7 +48,7 @@
         {
             NSRange theEffectiveRange;
             NSDictionary *theAttributes = [self attributesAtIndex:N longestEffectiveRange:&theEffectiveRange inRange:theStringRange];
-            NSTextAttachment *theAttachment = [theAttributes objectForKey:NSAttachmentAttributeName];
+            NSTextAttachment *theAttachment = theAttributes[NSAttachmentAttributeName];
             if (theAttachment != NULL)
                 [theAttachments addObject:theAttachment];
             N = theEffectiveRange.location + theEffectiveRange.length;
@@ -107,7 +107,7 @@
         NSString *title = GMLocalizedString(@"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE");
         NSString *message = GMLocalizedString(@"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE");
         
-        MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:message title:title helpTag:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:title, @"_MFShortDescription", message, @"NSLocalizedDescription", nil]];
+        MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:message title:title helpTag:nil userInfo:@{@"_MFShortDescription": title, @"NSLocalizedDescription": message}];
         NSAlert *alert = [NSAlert alertForError:error defaultButton:@"OK" alternateButton:nil otherButton:nil];
         [alert beginSheetModalForWindow:[NSApp mainWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
         return;
@@ -258,8 +258,8 @@
 		GPGErrorCode __block newErrorCode = GPGErrorNoError;
 		[[message PGPErrors] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 			if([obj isKindOfClass:[MFError class]]) {
-				if([(NSDictionary *)[(MFError *)obj userInfo] objectForKey:@"VerificationErrorCode"])
-					newErrorCode = (GPGErrorCode)[[(NSDictionary *)[(MFError *)obj userInfo] objectForKey:@"VerificationErrorCode"] longValue];
+				if(((NSDictionary *)[(MFError *)obj userInfo])[@"VerificationErrorCode"])
+					newErrorCode = (GPGErrorCode)[((NSDictionary *)[(MFError *)obj userInfo])[@"VerificationErrorCode"] longValue];
 				*stop = YES;
 			}
 		}];

@@ -44,7 +44,7 @@
 }
 
 - (NSString *)stringByDeletingPGPExtension {
-    NSArray *PGPExtensions = [NSArray arrayWithObjects:@"pgp", @"gpg", @"asc", nil];
+    NSArray *PGPExtensions = @[@"pgp", @"gpg", @"asc"];
     NSString *extension = [self pathExtension];
     if([PGPExtensions containsObject:extension])
         return [self stringByDeletingPathExtension];

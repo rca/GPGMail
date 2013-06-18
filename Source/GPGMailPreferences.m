@@ -45,7 +45,7 @@
 }
 
 - (NSString *)copyright {
-	return [[[NSBundle bundleForClass:[self class]] infoDictionary] objectForKey:@"NSHumanReadableCopyright"];
+	return [[NSBundle bundleForClass:[self class]] infoDictionary][@"NSHumanReadableCopyright"];
 }
 
 - (NSAttributedString *)credits {
@@ -60,13 +60,11 @@
 
 	[pStyle setAlignment:NSRightTextAlignment];
 
-	NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-								pStyle, NSParagraphStyleAttributeName,
-								@"http://www.gpgtools.org/", NSLinkAttributeName,
-								[NSColor blueColor], NSForegroundColorAttributeName,
-								[NSFont fontWithName:@"Lucida Grande" size:9], NSFontAttributeName,
-								[NSNumber numberWithInt:1], NSUnderlineStyleAttributeName,
-								nil];
+	NSDictionary *attributes = @{NSParagraphStyleAttributeName: pStyle,
+								NSLinkAttributeName: @"http://www.gpgtools.org/",
+								NSForegroundColorAttributeName: [NSColor blueColor],
+								NSFontAttributeName: [NSFont fontWithName:@"Lucida Grande" size:9],
+								NSUnderlineStyleAttributeName: @1};
 
 	return [[[NSAttributedString alloc] initWithString:@"http://www.gpgtools.org" attributes:attributes] autorelease];
 }	

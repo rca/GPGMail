@@ -54,7 +54,7 @@
 }
 
 - (void)setValue:(id)value forFlag:(NSString *)flag {
-	[flags setObject:value forKey:flag];
+	flags[flag] = value;
 }
 
 - (id)description {
@@ -76,7 +76,7 @@
 }
 
 - (id)valueForFlag:(NSString *)flag {
-	return [[[flags objectForKey:flag] retain] autorelease];
+	return [[flags[flag] retain] autorelease];
 }
 
 - (BOOL)isKindOfClass:(Class)aClass {

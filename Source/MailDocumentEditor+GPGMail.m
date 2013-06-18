@@ -139,7 +139,7 @@
 }
 
 - (void)MABackEnd:(id)arg1 didCancelMessageDeliveryForEncryptionError:(MFError *)error {
-	if ([[(NSDictionary *)error.userInfo objectForKey:@"GPGErrorCode"] integerValue] == GPGErrorCancelled) {
+	if ([((NSDictionary *)error.userInfo)[@"GPGErrorCode"] integerValue] == GPGErrorCancelled) {
 		return;
 	}
 	[self MABackEnd:arg1 didCancelMessageDeliveryForEncryptionError:error];

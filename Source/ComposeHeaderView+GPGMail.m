@@ -43,7 +43,7 @@
     if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"])
         return [self MAAwakeFromNib];
     ComposeBackEnd *backEnd = [(DocumentEditor *)[[((ComposeHeaderView *)self) delegate] valueForKey:@"_documentEditor"] backEnd];
-    [backEnd setIvar:@"PGPEnabled" value:[NSNumber numberWithBool:YES]];
+    [backEnd setIvar:@"PGPEnabled" value:@YES];
 
     [self MAAwakeFromNib];
 }

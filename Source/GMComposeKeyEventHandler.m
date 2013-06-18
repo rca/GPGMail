@@ -15,12 +15,12 @@
 
 - (BOOL)performKeyEquivalent:(NSEvent *)event {
 	for (NSDictionary *dict in self.eventsAndSelectors) {
-		NSString *keyEquivalent = [dict objectForKey:@"keyEquivalent"];
-		NSUInteger keyEquivalentModifierMask = [[dict objectForKey:@"keyEquivalentModifierMask"] unsignedIntegerValue];
+		NSString *keyEquivalent = dict[@"keyEquivalent"];
+		NSUInteger keyEquivalentModifierMask = [dict[@"keyEquivalentModifierMask"] unsignedIntegerValue];
 		
 		if ((event.modifierFlags & NSDeviceIndependentModifierFlagsMask) == keyEquivalentModifierMask && [keyEquivalent isEqualToString:event.charactersIgnoringModifiers]) {
-			id target = [dict objectForKey:@"target"];
-			SEL selector = [[dict objectForKey:@"selector"] pointerValue];
+			id target = dict[@"target"];
+			SEL selector = [dict[@"selector"] pointerValue];
 	
 			[target performSelector:selector withObject:self];
 			return YES;

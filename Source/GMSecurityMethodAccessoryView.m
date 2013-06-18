@@ -74,7 +74,7 @@
     if(self) {
         self.autoresizingMask = NSViewMinYMargin | NSViewMinXMargin;
         _attributedTitlesCache = [[NSMapTable mapTableWithStrongToStrongObjects] retain];
-        [self _configurePopupWithSecurityMethods:[NSArray arrayWithObjects:@"OpenPGP", @"S/MIME", nil]];
+        [self _configurePopupWithSecurityMethods:@[@"OpenPGP", @"S/MIME"]];
         [self _configureArrow];
     }
     return self;
@@ -245,8 +245,8 @@
     if(!title)
         title = @"";
     
-    NSString *cacheID = [NSString stringWithFormat:@"%@::%@::%@", title, [NSNumber numberWithBool:highlight],
-                         [NSNumber numberWithBool:self.fullscreen]];
+    NSString *cacheID = [NSString stringWithFormat:@"%@::%@::%@", title, @(highlight),
+                         @(self.fullscreen)];
     
     NSAttributedString *cachedString = [self.attributedTitlesCache objectForKey:cacheID];
     if(cachedString) {

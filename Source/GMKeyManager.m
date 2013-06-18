@@ -90,11 +90,11 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 #pragma mark - Public API
 
 - (BOOL)secretKeyExistsForAddress:(NSString *)address {
-	return [[self keysForAddresses:[NSArray arrayWithObject:address] onlySecret:YES stopOnFound:YES] count] > 0;
+	return [[self keysForAddresses:@[address] onlySecret:YES stopOnFound:YES] count] > 0;
 }
 
 - (BOOL)publicKeyExistsForAddress:(NSString *)address {
-	return [[self keysForAddresses:[NSArray arrayWithObject:address] onlySecret:NO stopOnFound:YES] count];
+	return [[self keysForAddresses:@[address] onlySecret:NO stopOnFound:YES] count];
 }
 
 - (GPGKey *)keyForFingerprint:(NSString *)fingerprint {
@@ -112,11 +112,11 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 }
 
 - (GPGKey *)secretKeyForKeyID:(NSString *)keyID {
-	return [[[self.secretKeysByID objectForKey:keyID] retain] autorelease];
+	return [[(self.secretKeysByID)[keyID] retain] autorelease];
 }
 
 - (NSMutableSet *)signingKeyListForAddress:(NSString *)address {
-    return [self keysForAddresses:[NSArray arrayWithObject:[address gpgNormalizedEmail]] onlySecret:YES stopOnFound:NO];
+    return [self keysForAddresses:@[[address gpgNormalizedEmail]] onlySecret:YES stopOnFound:NO];
 }
 
 - (NSMutableSet *)publicKeyListForAddresses:(NSArray *)addresses {
@@ -327,26 +327,26 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 			if(!email)
 				continue;
 			
-			if(![userIDEmailMap objectForKey:email]) {
+			if(!userIDEmailMap[email]) {
 				NSMutableSet *set = [[NSMutableSet alloc] init];
-				[userIDEmailMap setObject:set forKey:email];
+				userIDEmailMap[email] = set;
 				[set release];
 			}
-			[[userIDEmailMap objectForKey:email] addObject:userID];
+			[userIDEmailMap[email] addObject:userID];
 		}
 	}
 	
 	// Loop through the entire map and if an email address has multiple
 	// matching user ids select the one that is best (newest or most trusted.)
 	for(NSString *email in userIDEmailMap) {
-		NSSet *userIDs = [userIDEmailMap objectForKey:email];
+		NSSet *userIDs = userIDEmailMap[email];
 		if([userIDs count] == 1) {
 			GPGKey *key = [[userIDs anyObject] primaryKey];
-			[map setObject:key forKey:email];
+			map[email] = key;
 			continue;
 		}
 		GPGKey *key = [self bestKeyOfUserIDs:userIDs];
-		[map setObject:key forKey:email];
+		map[email] = key;
 	}
 	[userIDEmailMap release];
 	
@@ -370,12 +370,12 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 			if(!email)
 				continue;
 			
-			if(![map objectForKey:email]) {
+			if(!map[email]) {
 				NSMutableSet *list = [[NSMutableSet alloc] init];
-				[map setObject:list forKey:email];
+				map[email] = list;
 				[list release];
 			}
-			[[map objectForKey:email] addObject:key];
+			[map[email] addObject:key];
 		}
 	}
 	
@@ -394,7 +394,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 	NSMutableDictionary *cleanGroups = [[NSMutableDictionary alloc] init];
 	
 	for (NSString *email in groups) {
-		NSArray *keyHints = [groups objectForKey:email];
+		NSArray *keyHints = groups[email];
 		BOOL allKeysValid = YES;
 		NSMutableSet *keys = [[NSMutableSet alloc] init];
 		for (NSString *keyHint in keyHints) {
@@ -406,7 +406,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 			[keys addObject:key];
 		}
 		if (allKeysValid)
-			[cleanGroups setObject:keys forKey:[email gpgNormalizedEmail]];
+			cleanGroups[[email gpgNormalizedEmail]] = keys;
 	}
 	
 	self.groups = cleanGroups;
@@ -501,7 +501,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
     
     for (id identifier in map) {
         if ([identifier isKindOfClass:regexClass] ? [allAdresses isMatchedByRegex:identifier] : [addresses containsObject:identifier]) {
-			id object = [map objectForKey:identifier];
+			id object = map[identifier];
 			if([object isKindOfClass:setClass])
 				[keys addObjectsFromArray:[object allObjects]];
 			else if([object isKindOfClass:arrayClass])
@@ -562,7 +562,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
     
     NSMutableDictionary *cleanMappedKeys = [NSMutableDictionary dictionary];
     for (NSString *pattern in mappedKeys) {
-        id keyIdentifier = [mappedKeys objectForKey:pattern];
+        id keyIdentifier = mappedKeys[pattern];
         id object = nil;
         
         if ([keyIdentifier isKindOfClass:stringClass]) {
@@ -587,7 +587,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
         }
         
         if (object)
-            [cleanMappedKeys setObject:object forKey:pattern];
+            cleanMappedKeys[pattern] = object;
     }
     [mappedKeys release];
     
@@ -622,14 +622,14 @@ publicKeyMap = _publicKeyMap, groups = _groups;
         sortedUserIDs = untrustedUserIDs;
     }
     
-    sortedUserIDs = [sortedUserIDs sortedArrayUsingDescriptors:[NSArray arrayWithObjects:dateSorter, nil]];
+    sortedUserIDs = [sortedUserIDs sortedArrayUsingDescriptors:@[dateSorter]];
     
     [dateSorter release];
     [secretUserIDs release];
     [trustedUserIDs release];
     [untrustedUserIDs release];
     
-    return ((GPGUserID *)[sortedUserIDs objectAtIndex:0]).primaryKey;
+    return ((GPGUserID *)sortedUserIDs[0]).primaryKey;
 }
 
 #pragma mark - Cleaning up

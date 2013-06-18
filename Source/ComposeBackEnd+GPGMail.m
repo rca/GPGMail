@@ -52,14 +52,14 @@
     // image could be shown.
     if([self ivarExists:@"ForceEncrypt"]) {
         encryptIfPossible = [[self getIvar:@"ForceEncrypt"] boolValue];
-        [self setIvar:@"SetEncrypt" value:[NSNumber numberWithBool:encryptIfPossible]];
+        [self setIvar:@"SetEncrypt" value:@(encryptIfPossible)];
     }
     // If SetEncrypt and CanEncrypt don't match, use CanEncrypt,
     // since that's more important.
     if(![[self getIvar:@"EncryptIsPossible"] boolValue])
         encryptIfPossible = NO;
     
-    [self setIvar:@"shouldEncrypt" value:[NSNumber numberWithBool:encryptIfPossible]];
+    [self setIvar:@"shouldEncrypt" value:@(encryptIfPossible)];
     [self MASetEncryptIfPossible:encryptIfPossible];
     [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
 }
@@ -76,7 +76,7 @@
     // image could be shown.
     if([self ivarExists:@"ForceSign"]) {
         signIfPossible = [[self getIvar:@"ForceSign"] boolValue];
-        [self setIvar:@"SetSign" value:[NSNumber numberWithBool:signIfPossible]];
+        [self setIvar:@"SetSign" value:@(signIfPossible)];
     }
     
     // If SetSign and CanSign don't match, use CanSign,
@@ -84,7 +84,7 @@
     if(![[self getIvar:@"SignIsPossible"] boolValue])
         signIfPossible = NO;
     
-    [self setIvar:@"shouldSign" value:[NSNumber numberWithBool:signIfPossible]];
+    [self setIvar:@"shouldSign" value:@(signIfPossible)];
     [self MASetSignIfPossible:signIfPossible];
     [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
 }
@@ -106,7 +106,7 @@
 	// Fetch the from header from the clean headers to check
 	// if this message should be pgp signed.
 	NSDictionary *cleanHeaders = [(ComposeBackEnd *)self cleanHeaders];
-	id sender = [cleanHeaders objectForKey:@"from"];
+	id sender = cleanHeaders[@"from"];
 	// Not a GPGFlaggedString. Out of here!
 	if(![sender respondsToSelector:@selector(setValue:forFlag:)])
 		return [self MASender];
@@ -304,7 +304,7 @@
 			GPGController *gpgc = [[GPGController alloc] init];
 			@try {
 				gpgc.useArmor = YES;
-				keysToAttach = [gpgc exportKeys:[NSArray arrayWithObject:key] options:GPGExportMinimal];
+				keysToAttach = [gpgc exportKeys:@[key] options:GPGExportMinimal];
 			}
 			@catch (NSException *exception) {
 				GPGDebugLog(@"Exception during exporting keys: %@", exception);
@@ -382,7 +382,7 @@
 		if (key) {
 			[flaggedString setValue:key forFlag:@"gpgKey"];
 		}
-        [headers setObject:flaggedString forKey:@"from"];
+        headers[@"from"] = flaggedString;
     }
     if(forEncrypting) {
         // Save the original bcc recipients, to restore later.
@@ -394,7 +394,7 @@
             [newBCCList addObject:[bcc flaggedStringWithFlag:@"recipientType" value:@"bcc"]];
 
 		if ([[self getIvar:@"shouldSymmetricEncrypt"] boolValue]) {
-			[flaggedString setValue:[NSNumber numberWithBool:YES] forFlag:@"symmetricEncrypt"];
+			[flaggedString setValue:@YES forFlag:@"symmetricEncrypt"];
 		}
         [newBCCList addObject:flaggedString];
         [headers setValue:newBCCList forKey:@"bcc"];
@@ -708,10 +708,10 @@
         }
     }
     
-    [self setIvar:@"SetEncrypt" value:[NSNumber numberWithBool:securityOptions.shouldEncrypt]];
-    [self setIvar:@"SetSign" value:[NSNumber numberWithBool:securityOptions.shouldSign]];
-    [self setIvar:@"EncryptIsPossible" value:[NSNumber numberWithBool:canEncrypt]];
-    [self setIvar:@"SignIsPossible" value:[NSNumber numberWithBool:canSign]];
+    [self setIvar:@"SetEncrypt" value:@(securityOptions.shouldEncrypt)];
+    [self setIvar:@"SetSign" value:@(securityOptions.shouldSign)];
+    [self setIvar:@"EncryptIsPossible" value:@(canEncrypt)];
+    [self setIvar:@"SignIsPossible" value:@(canSign)];
     
     [securityHistory release];
     [mutableRecipients release];
@@ -741,8 +741,8 @@
     // only Apple's implementation.
     // So to avoid this, always return YES here if the security method is not already set.
     // The correct status is stored for later lookup in canEncrypt.
-    [self setIvar:@"CanPGPSign" value:[NSNumber numberWithBool:canPGPSign]];
-    [self setIvar:@"CanSMIMESign" value:[NSNumber numberWithBool:canSMIMESign]];
+    [self setIvar:@"CanPGPSign" value:@(canPGPSign)];
+    [self setIvar:@"CanSMIMESign" value:@(canSMIMESign)];
     [self release];
     return YES;
 }
@@ -769,7 +769,7 @@
 }
 
 - (void)setWasInitialized:(BOOL)wasInitialized {
-    [self setIvar:@"WasInitialized" value:[NSNumber numberWithBool:wasInitialized]];
+    [self setIvar:@"WasInitialized" value:@(wasInitialized)];
 }
 
 - (GPGMAIL_SECURITY_METHOD)securityMethod {
@@ -777,7 +777,7 @@
 }
 
 - (void)setSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
-    [self setIvar:@"SecurityMethod" value:[NSNumber numberWithUnsignedInt:securityMethod]];
+    [self setIvar:@"SecurityMethod" value:@((unsigned int)securityMethod)];
     // Reset SetSign, SetEncrypt, SignIsPossible, EncryptIsPossible, shouldSign, shouldEncrypt.
     [self removeIvar:@"SetSign"];
     [self removeIvar:@"SetEncrypt"];
@@ -798,7 +798,7 @@
 }
 
 - (void)setGuessedSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
-    [self setIvar:@"GuessedSecurityMethod" value:[NSNumber numberWithUnsignedInteger:securityMethod]];
+    [self setIvar:@"GuessedSecurityMethod" value:@(securityMethod)];
     [self removeIvar:@"SetSign"];
     [self removeIvar:@"SetEncrypt"];
     [self removeIvar:@"SignIsPossible"];
@@ -818,11 +818,11 @@
 }
 
 - (void)setUserDidChooseSecurityMethod:(BOOL)userDidChoose {
-    [self setIvar:@"UserDidChooseSecurityMethod" value:[NSNumber numberWithBool:userDidChoose]];
+    [self setIvar:@"UserDidChooseSecurityMethod" value:@(userDidChoose)];
 }
 
 - (void)MA_configureLastDraftInformationFromHeaders:(id)headers overwrite:(BOOL)overwrite {
-	[self setIvar:@"DraftIsContinued" value:[NSNumber numberWithBool:YES]];
+	[self setIvar:@"DraftIsContinued" value:@YES];
 	[self MA_configureLastDraftInformationFromHeaders:headers overwrite:overwrite];
 }
 
@@ -842,7 +842,7 @@
     if(!securityMethod)
         return;
     /* Post notification that the security method has changed. */
-    NSNotification *notification = [NSNotification notificationWithName:@"SecurityMethodDidChangeNotification" object:nil userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithUnsignedInt:securityMethod] forKey:@"SecurityMethod"]];
+    NSNotification *notification = [NSNotification notificationWithName:@"SecurityMethodDidChangeNotification" object:nil userInfo:@{@"SecurityMethod": @((unsigned int)securityMethod)}];
     [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] postNotification:notification];
 }
 

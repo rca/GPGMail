@@ -57,7 +57,7 @@
 		if(![weakSelf.messages containsObject:messageID] || isEncrypted) {
 			[weakSelf.messages addObject:messageID];
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-				[[message dataSourceProxy] routeMessages:[NSArray arrayWithObject:message] isUserAction:NO];
+				[[message dataSourceProxy] routeMessages:@[message] isUserAction:NO];
 			});
 		}
 	});

@@ -67,7 +67,7 @@
 }
 
 - (void)setPGPEncrypted:(BOOL)isPGPEncrypted {
-    [self setIvar:@"PGPEncrypted" value:[NSNumber numberWithBool:isPGPEncrypted]];
+    [self setIvar:@"PGPEncrypted" value:@(isPGPEncrypted)];
 }
 
 - (BOOL)PGPEncrypted {
@@ -83,7 +83,7 @@
 }
 
 - (void)setPGPSigned:(BOOL)isPGPSigned {
-    [self setIvar:@"PGPSigned" value:[NSNumber numberWithBool:isPGPSigned]];
+    [self setIvar:@"PGPSigned" value:@(isPGPSigned)];
 }
 
 - (BOOL)PGPPartlyEncrypted {
@@ -93,7 +93,7 @@
 
 
 - (void)setPGPPartlyEncrypted:(BOOL)isPGPEncrypted {
-    [self setIvar:@"PGPPartlyEncrypted" value:[NSNumber numberWithBool:isPGPEncrypted]];
+    [self setIvar:@"PGPPartlyEncrypted" value:@(isPGPEncrypted)];
 }
 
 - (BOOL)PGPPartlySigned {
@@ -102,7 +102,7 @@
 }
 
 - (void)setPGPPartlySigned:(BOOL)isPGPSigned {
-    [self setIvar:@"PGPPartlySigned" value:[NSNumber numberWithBool:isPGPSigned]];
+    [self setIvar:@"PGPPartlySigned" value:@(isPGPSigned)];
 }
 
 - (NSUInteger)numberOfPGPAttachments {
@@ -110,7 +110,7 @@
 }
 
 - (void)setNumberOfPGPAttachments:(NSUInteger)nr {
-    [self setIvar:@"PGPNumberOfPGPAttachments" value:[NSNumber numberWithInteger:nr]];
+    [self setIvar:@"PGPNumberOfPGPAttachments" value:@((NSUInteger)nr)];
 }
 
 - (void)setPGPSignatures:(NSArray *)signatures {
@@ -183,7 +183,7 @@
 }
 
 - (void)setPGPInfoCollected:(BOOL)infoCollected {
-    [self setIvar:@"PGPInfoCollected" value:[NSNumber numberWithBool:infoCollected]];
+    [self setIvar:@"PGPInfoCollected" value:@(infoCollected)];
 	// If infoCollected is set to NO, clear all associated info.
 	if(!infoCollected)
 		[self clearPGPInformation];
@@ -194,7 +194,7 @@
 }
 
 - (void)setPGPDecrypted:(BOOL)isDecrypted {
-    [self setIvar:@"PGPDecrypted" value:[NSNumber numberWithBool:isDecrypted]];
+    [self setIvar:@"PGPDecrypted" value:@(isDecrypted)];
 }
 
 - (BOOL)PGPVerified {
@@ -202,7 +202,7 @@
 }
 
 - (void)setPGPVerified:(BOOL)isVerified {
-    [self setIvar:@"PGPVerified" value:[NSNumber numberWithBool:isVerified]];
+    [self setIvar:@"PGPVerified" value:@(isVerified)];
 }
 
 - (void)collectPGPInformationStartingWithMimePart:(MimePart *)topPart decryptedBody:(MimeBody *)decryptedBody {
@@ -308,7 +308,7 @@
     // Only for test purpose, after the correct error to be displayed should be constructed.
     MFError *error = nil;
     if([errors count])
-        error = [errors objectAtIndex:0];
+        error = errors[0];
     else if([self.PGPAttachments count])
         error = [self errorSummaryForPGPAttachments:self.PGPAttachments];
     
@@ -411,7 +411,7 @@
     
     [userInfo setValue:title forKey:@"_MFShortDescription"];
     [userInfo setValue:message forKey:@"NSLocalizedDescription"];
-    [userInfo setValue:[NSNumber numberWithBool:YES] forKey:@"DecryptionError"];
+    [userInfo setValue:@YES forKey:@"DecryptionError"];
     
     error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:errorCode localizedDescription:nil title:title helpTag:nil 
                             userInfo:userInfo];

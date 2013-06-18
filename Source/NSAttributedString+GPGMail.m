@@ -36,7 +36,7 @@
         offset = -3.0;
     
     [attachmentString addAttribute:NSBaselineOffsetAttributeName 
-                             value:[NSNumber numberWithFloat:offset]
+                             value:@(offset)
                              range:NSMakeRange(0,[attachmentString length])];
     NSAttributedString *nonMutableAttachmentString = [[NSAttributedString alloc] initWithAttributedString:attachmentString];
     [attachmentString release];
