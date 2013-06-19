@@ -4042,7 +4042,7 @@
 				TEST_AFTER_BUILD = YES;
 				TEST_LOAD_BUNDLE = "${BUILT_PRODUCTS_DIR}/GPGMail.mailbundle";
 				TEST_RIG = "${BUILT_PRODUCTS_DIR}/BundleTestRunner";
-				VALID_ARCHS = "x86_64 i386";
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
@@ -4091,7 +4091,7 @@
 				TEST_AFTER_BUILD = YES;
 				TEST_LOAD_BUNDLE = "${BUILT_PRODUCTS_DIR}/GPGMail.mailbundle";
 				TEST_RIG = "${BUILT_PRODUCTS_DIR}/BundleTestRunner";
-				VALID_ARCHS = "x86_64 i386";
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
