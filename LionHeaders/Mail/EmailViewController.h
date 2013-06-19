@@ -92,7 +92,7 @@
 - (id)messageHeaderDisplay;
 - (void)saveAttachments:(id)arg1;
 - (void)saveAttachmentsWithoutPrompting:(id)arg1;
-@property id parentController; // @synthesize parentController=_parentController;
+@property (assign) id parentController; // @synthesize parentController=_parentController;
 @property(retain, nonatomic) NSInvocation *currentMessageContentViewInvocation; // @synthesize currentMessageContentViewInvocation=_currentMessageContentViewInvocation;
 
 @end

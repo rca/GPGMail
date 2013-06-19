@@ -22,7 +22,10 @@
 			id target = dict[@"target"];
 			SEL selector = [dict[@"selector"] pointerValue];
 	
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warc-performSelector-leaks"
 			[target performSelector:selector withObject:self];
+#pragma GCC diagnostic pop
 			return YES;
 		}
 	}

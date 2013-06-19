@@ -517,7 +517,6 @@
     if (!data)
         return nil;
     // Now on to creating a new body and replacing the old one. 
-    NSString *boundary = (NSString *)[MimeBody newMimeBoundary];
     NSData *topData = nil;
     MimePart *topPart;
     
