@@ -75,4 +75,6 @@
 - (void)resetSecurityButtons;
 
 
+- (void)updateSymmetricButton;
+
 @end

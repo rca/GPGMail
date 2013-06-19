@@ -53,12 +53,46 @@
 @implementation HeadersEditor_GPGMail
 
 
-- (void)chnageShouldSymmetricEncrypt {
+
+
+- (void)symmetricEncryptClicked:(id)sender {
 	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
-	NSNumber *value = [backEnd getIvar:@"shouldSymmetricEncrypt"];
-	value = @((BOOL)[value boolValue]);
-	[backEnd setIvar:@"shouldSymmetricEncrypt" value:value];
+	BOOL oldValue = [[backEnd getIvar:@"shouldSymmetric"] boolValue];
+	BOOL newValue = !oldValue;
+	
+	if (![[backEnd getIvar:@"SymmetricIsPossible"] boolValue]) {
+		newValue = NO;
+	}
+	
+	[backEnd setIvar:@"shouldSymmetric" value:@(newValue)];
+	if (newValue != oldValue) {
+		[backEnd setIvar:@"forceSymmetric" value:@(newValue)];
+	}
+	
+	[self updateSymmetricButton];
 }
+
+- (void)updateSymmetricButton {
+	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+	
+	NSSegmentedControl *symmetricButton = [self getIvar:@"_symmetricButton"];
+	NSString *imageName;
+	if ([[backEnd getIvar:@"SymmetricIsPossible"] boolValue]) {
+		[symmetricButton setEnabled:YES forSegment:0];
+		if ([[backEnd getIvar:@"shouldSymmetric"] boolValue]) {
+			imageName = @"SymmetricEncryptionOn";
+		} else {
+			imageName = @"SymmetricEncryptionOff";
+		}
+	} else {
+		imageName = @"SymmetricEncryptionOff";
+		[symmetricButton setEnabled:NO forSegment:0];
+	}
+	
+	[symmetricButton setImage:[NSImage imageNamed:imageName] forSegment:0];
+}
+
+
 
 - (void)MAAwakeFromNib {
     [self MAAwakeFromNib];
@@ -72,21 +106,52 @@
 	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyringUpdated:) name:GPGMailKeyringUpdatedNotification object:nil];
 
 	
+	NSSegmentedControl *symmetricButton = nil;
+	NSView *superview = [[self valueForKey:@"_signButton"] superview];
+	
+	
+	if ([[GPGOptions sharedOptions] boolForKey:@"AllowSymmetricEncryption"]) {
+		symmetricButton = [[NSSegmentedControl alloc] initWithFrame:NSMakeRect(24, -1, 38, 24)];
+		symmetricButton.segmentCount = 1;
+		[symmetricButton setWidth:32 forSegment:0];
+		symmetricButton.segmentStyle = NSSegmentStyleRounded;
+		((NSSegmentedCell *)symmetricButton.cell).trackingMode = NSSegmentSwitchTrackingMomentary;
+		symmetricButton.target = self;
+		symmetricButton.action = @selector(symmetricEncryptClicked:);
+		
+		NSRect frame = superview.frame;
+		frame.size.width += 44;
+		superview.frame = frame;
+		
+		for (NSView *view in superview.subviews) {
+			if (![view isKindOfClass:[NSButton class]]) {
+				frame = view.frame;
+				frame.origin.x += 44;
+				view.frame = frame;
+			}
+		}
+		
+		[self setIvar:@"_symmetricButton" value:symmetricButton];
+		[self updateSymmetricButton];
+		[superview addSubview:symmetricButton];
+	}
+	
+	
+	
 	GMSecurityControl *signControl = [[GMSecurityControl alloc] initWithControl:[self valueForKey:@"_signButton"] tag:SECURITY_BUTTON_SIGN_TAG];
     [self setValue:signControl forKey:@"_signButton"];
     
     GMSecurityControl *encryptControl = [[GMSecurityControl alloc] initWithControl:[self valueForKey:@"_encryptButton"] tag:SECURITY_BUTTON_ENCRYPT_TAG];
     [self setValue:encryptControl forKey:@"_encryptButton"];
 	
-	
-	GMComposeKeyEventHandler *handler = [[GMComposeKeyEventHandler alloc] initWithView:[[self valueForKey:@"_signButton"] superview]];
+	GMComposeKeyEventHandler *handler = [[GMComposeKeyEventHandler alloc] initWithView:superview];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wselector"
-	handler.eventsAndSelectors = @[
+	handler.eventsAndSelectors = [NSArray arrayWithObjects:
 		@{@"keyEquivalent": @"y", @"keyEquivalentModifierMask": @(NSCommandKeyMask | NSAlternateKeyMask), @"target": encryptControl, @"selector": [NSValue valueWithPointer:@selector(performClick:)]},
 		@{@"keyEquivalent": @"x", @"keyEquivalentModifierMask": @(NSCommandKeyMask | NSAlternateKeyMask), @"target": signControl, @"selector": [NSValue valueWithPointer:@selector(performClick:)]},
-		@{@"keyEquivalent": @"Y", @"keyEquivalentModifierMask": @(NSCommandKeyMask | NSShiftKeyMask), @"target": self, @"selector": [NSValue valueWithPointer:@selector(chnageShouldSymmetricEncrypt)]}
-	];
+		symmetricButton ? @{@"keyEquivalent": @"Y", @"keyEquivalentModifierMask": @(NSCommandKeyMask | NSShiftKeyMask), @"target": symmetricButton, @"selector": [NSValue valueWithPointer:@selector(performClick:)]} : nil,
+	nil];
 #pragma clang diagnostic pop
 
 	

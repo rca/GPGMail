@@ -94,6 +94,8 @@
 		30D00A2E175CAC6C00E209FD /* GPGAttachments.xib.strings in Resources */ = {isa = PBXBuildFile; fileRef = 303F16251500EF92002AC36B /* GPGAttachments.xib.strings */; };
 		30D00A2F175CAC6C00E209FD /* GPGSignatureView.xib.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3031749D13F1E0C900279CFB /* GPGSignatureView.xib.strings */; };
 		30D00A30175CAC6C00E209FD /* GPGMailPreferences.xib.strings in Resources */ = {isa = PBXBuildFile; fileRef = 302ED23812B2FD2C0094DECD /* GPGMailPreferences.xib.strings */; };
+		30E227901772057A00AD9A48 /* SymmetricEncryptionOff.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 30E2278E1772057A00AD9A48 /* SymmetricEncryptionOff.pdf */; };
+		30E227911772057A00AD9A48 /* SymmetricEncryptionOn.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 30E2278F1772057A00AD9A48 /* SymmetricEncryptionOn.pdf */; };
 		30E75A671731A7F900C9E391 /* Libmacgpg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E75A661731A7F900C9E391 /* Libmacgpg.framework */; };
 		30F9646D164E89910017E253 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30F9646C164E89910017E253 /* Sparkle.framework */; };
 		30F9646E164E89960017E253 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 30F9646C164E89910017E253 /* Sparkle.framework */; };
@@ -1584,6 +1586,8 @@
 		30D00A3A175CAC7C00E209FD /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/GPGMailPreferences.xib.strings; sourceTree = "<group>"; };
 		30D00A3B175CAC7C00E209FD /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/GPGSignatureView.xib.strings; sourceTree = "<group>"; };
 		30D00A3C175CAC7C00E209FD /* da */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/SignatureView.strings; sourceTree = "<group>"; };
+		30E2278E1772057A00AD9A48 /* SymmetricEncryptionOff.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = SymmetricEncryptionOff.pdf; sourceTree = "<group>"; };
+		30E2278F1772057A00AD9A48 /* SymmetricEncryptionOn.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = SymmetricEncryptionOn.pdf; sourceTree = "<group>"; };
 		30E4F6B012B3B1350093608D /* InvalidBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InvalidBadge.png; sourceTree = "<group>"; };
 		30E4F6BE12B3B1350093608D /* ValidBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ValidBadge.png; sourceTree = "<group>"; };
 		30E75A661731A7F900C9E391 /* Libmacgpg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Libmacgpg.framework; path = /Library/Frameworks/Libmacgpg.framework; sourceTree = "<absolute>"; };
@@ -3168,6 +3172,8 @@
 		559A80DC0838EC770052F47C /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				30E2278E1772057A00AD9A48 /* SymmetricEncryptionOff.pdf */,
+				30E2278F1772057A00AD9A48 /* SymmetricEncryptionOn.pdf */,
 				301380E117578133005948EE /* GPGMail.iconset */,
 				3066C6151757A54900384E29 /* certificate.png */,
 				3066C6161757A54900384E29 /* certificate@2x.png */,
@@ -3366,6 +3372,7 @@
 				30A7AEA31756727300746C29 /* YellowDot@2x.png in Resources */,
 				30A7AEA51756728400746C29 /* GreenDot@2x.png in Resources */,
 				30A7AEA71756728B00746C29 /* RedDot@2x.png in Resources */,
+				30E227911772057A00AD9A48 /* SymmetricEncryptionOn.pdf in Resources */,
 				301380D417567D26005948EE /* CertLargeStd.png in Resources */,
 				301380D517567D26005948EE /* CertLargeStd@2x.png in Resources */,
 				301380DC17569815005948EE /* CertLargeNotTrusted@2x.png in Resources */,
@@ -3374,6 +3381,7 @@
 				3066C60A17579F5900384E29 /* CertSmallStd_Invalid.png in Resources */,
 				3066C60B17579F5900384E29 /* CertSmallStd_Invalid@2x.png in Resources */,
 				3066C60C17579F5900384E29 /* CertSmallStd.png in Resources */,
+				30E227901772057A00AD9A48 /* SymmetricEncryptionOff.pdf in Resources */,
 				3066C60D17579F5900384E29 /* CertSmallStd@2x.png in Resources */,
 				3066C6101757A0FC00384E29 /* MenuArrowWhite.png in Resources */,
 				3066C6111757A0FC00384E29 /* MenuArrowWhite@2x.png in Resources */,

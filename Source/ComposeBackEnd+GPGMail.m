@@ -29,7 +29,7 @@
 #import "GPGFlaggedString.h"
 #import "GMSecurityHistory.h"
 #import "GPGMailBundle.h"
-//#import "HeadersEditor+GPGMail.h"
+#import "HeadersEditor+GPGMail.h"
 #import "MailDocumentEditor.h"
 #import "MailDocumentEditor+GPGMail.h"
 #import "ComposeBackEnd+GPGMail.h"
@@ -62,6 +62,11 @@
     [self setIvar:@"shouldEncrypt" value:@(encryptIfPossible)];
     [self MASetEncryptIfPossible:encryptIfPossible];
     [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
+	
+	
+	HeadersEditor_GPGMail *headersEditor = ((MailDocumentEditor *)[((ComposeBackEnd *)self) delegate]).headersEditor;
+				
+	[headersEditor updateSymmetricButton];
 }
 
 - (void)MASetSignIfPossible:(BOOL)signIfPossible {
@@ -122,7 +127,9 @@
 }
 
 - (id)MA_makeMessageWithContents:(WebComposeMessageContents *)contents isDraft:(BOOL)isDraft shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt shouldSkipSignature:(BOOL)shouldSkipSignature shouldBePlainText:(BOOL)shouldBePlainText {
-    GPGMAIL_SECURITY_METHOD securityMethod = self.guessedSecurityMethod;
+    //TODO: Check shouldSymmetric or so.
+	
+	GPGMAIL_SECURITY_METHOD securityMethod = self.guessedSecurityMethod;
     if(self.securityMethod)
         securityMethod = self.securityMethod;
     if(securityMethod == GPGMAIL_SECURITY_METHOD_SMIME) {
@@ -371,14 +378,18 @@
     //   to encrypt for self, so each message can also be decrypted by the sender.
     //   (the "from" value is not inlucded in the recipients list passed to the encryption
     //    method)
-	GPGFlaggedString *flaggedString = [[headers valueForKey:@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"];
+	GPGFlaggedString *flaggedString = [headers[@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"];
+	if ([[self getIvar:@"shouldSymmetric"] boolValue]) {
+		[flaggedString setValue:@YES forFlag:@"symmetricEncrypt"];
+	}
+
     if(forSigning) {
 		GPGKey *key = [self getIvar:@"gpgKeyForSigning"];
 		if (key) {
 			[flaggedString setValue:key forFlag:@"gpgKey"];
 		}
-        headers[@"from"] = flaggedString;
     }
+	headers[@"from"] = flaggedString;
     if(forEncrypting) {
         // Save the original bcc recipients, to restore later.
         [self setIvar:@"originalBCCRecipients" value:[headers valueForKey:@"bcc"]];
@@ -388,9 +399,6 @@
         for(NSString *bcc in bccRecipients)
             [newBCCList addObject:[bcc flaggedStringWithFlag:@"recipientType" value:@"bcc"]];
 
-		if ([[self getIvar:@"shouldSymmetricEncrypt"] boolValue]) {
-			[flaggedString setValue:@YES forFlag:@"symmetricEncrypt"];
-		}
         [newBCCList addObject:flaggedString];
         [headers setValue:newBCCList forKey:@"bcc"];
     }
@@ -685,6 +693,10 @@
     [self setIvar:@"EncryptIsPossible" value:@(canEncrypt)];
     [self setIvar:@"SignIsPossible" value:@(canSign)];
     
+	[self setIvar:@"SymmetricIsPossible" value:@([GPGMailBundle gpgMailWorks])];
+	// Uncomment when securityOptions.shouldSymmetric is implemented.
+	//[self setIvar:@"shouldSymmetric" value:@(securityOptions.shouldSymmetric)];
+	
     
     
     return canEncrypt;
@@ -750,8 +762,12 @@
     [self removeIvar:@"SetEncrypt"];
     [self removeIvar:@"SignIsPossible"];
     [self removeIvar:@"EncryptIsPossible"];
+    [self removeIvar:@"SymmetricIsPossible"];
     [self removeIvar:@"shouldSign"];
     [self removeIvar:@"shouldEncrypt"];
+    [self removeIvar:@"shouldSymmetric"];
+
+	
 	// Don't reset ForceEncrypt and ForceSign. User preference has to stick. ALWAYS!
     
     // NEVER! automatically change the security method once the user selected it.
@@ -770,8 +786,10 @@
     [self removeIvar:@"SetEncrypt"];
     [self removeIvar:@"SignIsPossible"];
     [self removeIvar:@"EncryptIsPossible"];
+    [self removeIvar:@"SymmetricIsPossible"];
     [self removeIvar:@"shouldSign"];
     [self removeIvar:@"shouldEncrypt"];
+    [self removeIvar:@"shouldSymmetric"];
 	
 	// Don't reset ForceEncrypt and ForceSign. User preference has to stick. ALWAYS!
 }

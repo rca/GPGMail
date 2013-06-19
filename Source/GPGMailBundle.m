@@ -206,7 +206,9 @@ static BOOL gpgMailWorks = NO;
                                   @"CertSmallStd",
                                   @"CertSmallStd_Invalid", 
                                   @"CertLargeStd",
-                                  @"CertLargeNotTrusted"];
+                                  @"CertLargeNotTrusted",
+                                  @"SymmetricEncryptionOn",
+                                  @"SymmetricEncryptionOff"];
     NSMutableArray *bundleImages = [[NSMutableArray alloc] initWithCapacity:[bundleImageNames count]];
     
     for (NSString *name in bundleImageNames) {
