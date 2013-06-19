@@ -157,7 +157,7 @@ static BOOL gpgMailWorks = NO;
         GPGMailLoggingLevel = (int)[[GPGOptions sharedOptions] integerForKey:@"DebugLog"];
         NSLog(@"Debug Log enabled: %@", [[GPGOptions sharedOptions] integerForKey:@"DebugLog"] > 0 ? @"YES" : @"NO");
         
-        _keyManager = nil;
+        _keyManager = [[GMKeyManager alloc] init];
         
         // Initiate the Message Rules Applier.
         _messageRulesApplier = [[GMMessageRulesApplier alloc] init];
@@ -246,7 +246,8 @@ static BOOL gpgMailWorks = NO;
     [self checkGPG];
     _checkGPGTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0));
     dispatch_source_set_timer(_checkGPGTimer, dispatch_time(DISPATCH_TIME_NOW, 60 * NSEC_PER_SEC), 60 * NSEC_PER_SEC, 10 * NSEC_PER_SEC);
-    __unsafe_unretained GPGMailBundle *weakSelf = self;
+    
+    __block typeof(self) __unsafe_unretained weakSelf = self;
     dispatch_source_set_event_handler(_checkGPGTimer, ^{
         [weakSelf checkGPG];
     });
@@ -263,10 +264,11 @@ static BOOL gpgMailWorks = NO;
             DebugLog(@"DEBUG: checkGPG - GPGErrorConfigurationError");
         case GPGErrorNoError: {
             static dispatch_once_t onceToken;
-            __block GPGMailBundle *weakSelf = self;
+            
+            GMKeyManager * __weak weakKeyManager = self->_keyManager;
+            
             dispatch_once(&onceToken, ^{
-                weakSelf.keyManager = [[GMKeyManager alloc] init];
-                weakSelf = nil;
+                [weakKeyManager scheduleInitialKeyUpdate];
             });
             
             gpgMailWorks = YES;

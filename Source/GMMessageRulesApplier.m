@@ -54,8 +54,9 @@
 	typeof(self) __weak weakSelf = self;
 	
 	dispatch_async(_rulesQueue, ^{
-		if(![weakSelf.messages containsObject:messageID] || isEncrypted) {
-			[weakSelf.messages addObject:messageID];
+		__strong typeof(self) strongSelf = weakSelf;
+		if(![strongSelf.messages containsObject:messageID] || isEncrypted) {
+			[strongSelf.messages addObject:messageID];
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 				[[message dataSourceProxy] routeMessages:@[message] isUserAction:NO];
 			});

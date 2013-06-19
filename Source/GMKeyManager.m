@@ -80,8 +80,6 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 		_gpgc = nil;
 		_allKeys = nil;
 		_keysUpdateQueue = dispatch_queue_create("org.gpgmail.keys", NULL);
-		// Schedule the keys to be loaded a little later.
-		[self scheduleInitialKeyUpdateAfterSeconds:kGMKeyManagerDelayInSecondsForInitialKeyLoad];
 	}
 	
 	return self;
@@ -128,6 +126,10 @@ publicKeyMap = _publicKeyMap, groups = _groups;
     return [self keysForAddresses:[normalizedAddresses allObjects] onlySecret:NO stopOnFound:NO];
 }
 
+- (void)scheduleInitialKeyUpdate {
+	[self scheduleInitialKeyUpdateAfterSeconds:kGMKeyManagerDelayInSecondsForInitialKeyLoad];
+}
+
 #pragma mark -
 
 - (GPGController *)gpgc {
@@ -139,7 +141,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 		if(!strongSelf)
 			return;
 		strongSelf->_gpgc = [[GPGController alloc] init];
-		strongSelf->_gpgc.delegate = weakSelf;
+		strongSelf->_gpgc.delegate = strongSelf;
 	});
 	return _gpgc;
 }
@@ -200,7 +202,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 				DebugLog(@"%@: failed - %@ (Error text: %@)", _cmd, strongSelf.gpgc.error, ((GPGException *)strongSelf.gpgc.error).gpgTask.errText);
 			}
 			else if([strongSelf.gpgc.error isKindOfClass:[NSException class]]) {
-				DebugLog(@"%@: unknown error - %@", weakSelf.gpgc.error);
+				DebugLog(@"%@: unknown error - %@", strongSelf.gpgc.error);
 			}
 			return;
 		}

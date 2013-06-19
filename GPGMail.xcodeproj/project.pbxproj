@@ -4044,6 +4044,7 @@
 				TEST_LOAD_BUNDLE = "${BUILT_PRODUCTS_DIR}/GPGMail.mailbundle";
 				TEST_RIG = "${BUILT_PRODUCTS_DIR}/BundleTestRunner";
 				VALID_ARCHS = x86_64;
+				WARNING_CFLAGS = "-Warc-repeated-use-of-weak";
 			};
 			name = Debug;
 		};
@@ -4094,6 +4095,7 @@
 				TEST_LOAD_BUNDLE = "${BUILT_PRODUCTS_DIR}/GPGMail.mailbundle";
 				TEST_RIG = "${BUILT_PRODUCTS_DIR}/BundleTestRunner";
 				VALID_ARCHS = x86_64;
+				WARNING_CFLAGS = "-Warc-repeated-use-of-weak";
 			};
 			name = Release;
 		};

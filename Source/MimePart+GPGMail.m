@@ -369,10 +369,12 @@
     __block void (^__weak weakWalkParts)(MimePart *);
 	
 	walkParts = ^(MimePart *currentPart) {
-        partBlock(currentPart);
+        typeof(walkParts) __strong strongWalkParts = weakWalkParts;
+		
+		partBlock(currentPart);
         for(MimePart *tmpPart in [currentPart subparts]) {
-            NSAssert(weakWalkParts != NULL && weakWalkParts != nil, @"Fuck, this should not be nil");
-			weakWalkParts(tmpPart);
+            NSAssert(strongWalkParts != NULL && strongWalkParts != nil, @"BUG! strongWalkParts should not be nil");
+			strongWalkParts(tmpPart);
         }
     };
     weakWalkParts = walkParts;

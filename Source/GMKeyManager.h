@@ -88,6 +88,11 @@
 - (GPGKey *)findKeyByHint:(NSString *)hint onlySecret:(BOOL)onlySecret;
 
 /**
+ Loads the keys in the background and returns immediately.
+ */
+- (void)scheduleInitialKeyUpdate;
+
+/**
  Contains all GPG keys available.
  */
 @property (nonatomic, strong, readonly) NSMutableSet *allKeys;
