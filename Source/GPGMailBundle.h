@@ -76,6 +76,14 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 + (BOOL)gpgMailWorks;
 - (BOOL)gpgMailWorks;
 
+
+/**
+ Returns the NSBundle for GPGMail.
+ It's a bit faster than [NSBundle bundleForClass:[self class]].
+ */
++ (NSBundle *)bundle;
+
+
 /**
  Return if we're running on Mountain Lion or not.
  */

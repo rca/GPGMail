@@ -245,6 +245,17 @@ static BOOL gpgMailWorks = NO;
 }
 
 
++ (NSBundle *)bundle {
+    static NSBundle *bundle;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        bundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+    });
+    return bundle;
+}
+
+
+
 - (BOOL)checkGPG {
     self.gpgStatus = (GPGErrorCode)[GPGController testGPG];
     switch (gpgStatus) {
