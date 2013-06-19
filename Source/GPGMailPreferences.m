@@ -32,7 +32,7 @@
 #import "GPGMailBundle.h"
 #import "GMUpdater.h"
 
-#define localized(key) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:(key) table:@"GPGMail"]
+#define localized(key) [[GPGMailBundle bundle] localizedStringForKey:(key) value:(key) table:@"GPGMail"]
 
 
 @implementation GPGMailPreferences
@@ -46,11 +46,11 @@
 }
 
 - (NSString *)copyright {
-	return [[NSBundle bundleForClass:[self class]] infoDictionary][@"NSHumanReadableCopyright"];
+	return [[GPGMailBundle bundle] infoDictionary][@"NSHumanReadableCopyright"];
 }
 
 - (NSAttributedString *)credits {
-	NSBundle *mailBundle = [NSBundle bundleForClass:[self class]];
+	NSBundle *mailBundle = [GPGMailBundle bundle];
 	NSAttributedString *credits = [[NSAttributedString alloc] initWithURL:[mailBundle URLForResource:@"Credits" withExtension:@"rtf"] documentAttributes:nil];
 
 	return credits;
@@ -208,7 +208,7 @@
         
         if(isMartin)
             file = @"Test";
-		[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[[NSBundle bundleForClass:[self class]] URLForResource:file withExtension:@"html"]]];
+		[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[[GPGMailBundle bundle] URLForResource:file withExtension:@"html"]]];
 		displayed = YES;
 		working = NO;
 	};

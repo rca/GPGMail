@@ -128,7 +128,7 @@ static BOOL gpgMailWorks = NO;
 	if (self = [super init]) {
 		NSLog(@"Loaded GPGMail %@", [self version]);
         
-        NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
+        NSBundle *myBundle = [GPGMailBundle bundle];
         
         // Load all necessary images.
         [self _loadImages];
@@ -136,7 +136,7 @@ static BOOL gpgMailWorks = NO;
         // Register the main defaults.
 		NSDictionary *defaultsDictionary = [NSDictionary dictionaryWithContentsOfFile:[myBundle pathForResource:@"GPGMailBundle" ofType:@"defaults"]];
         
-        [[GPGOptions sharedOptions] setStandardDomain:[[NSBundle bundleForClass:[self class]] bundleIdentifier]];
+        [[GPGOptions sharedOptions] setStandardDomain:[[GPGMailBundle bundle] bundleIdentifier]];
 		if (defaultsDictionary)
 			[[GPGOptions sharedOptions] registerDefaults:defaultsDictionary];
         
@@ -150,7 +150,7 @@ static BOOL gpgMailWorks = NO;
         _messageRulesApplier = [[GMMessageRulesApplier alloc] init];
         
         // Initiate the GPGMail Updater.
-        _updater = [[GMUpdater alloc] initWithBundle:[NSBundle bundleForClass:[self class]]];
+        _updater = [[GMUpdater alloc] initWithBundle:[GPGMailBundle bundle]];
         [_updater start];
         
         // Start the GPG checker.
@@ -191,7 +191,7 @@ static BOOL gpgMailWorks = NO;
      */
     // We need to load images and name them, because all images are searched by their name; as they are not located in the main bundle,
 	// +[NSImage imageNamed:] does not find them.
-	NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
+	NSBundle *myBundle = [GPGMailBundle bundle];
     
     NSArray *bundleImageNames = @[@"GPGMail",
                                   @"ValidBadge",
@@ -354,7 +354,7 @@ static BOOL gpgMailWorks = NO;
 #pragma mark Localization Helper
 
 + (NSString *)localizedStringForKey:(NSString *)key {
-    NSBundle *gmBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+    NSBundle *gmBundle = [GPGMailBundle bundle];
     NSString *localizedString = NSLocalizedStringFromTableInBundle(key, @"GPGMail", gmBundle, @"");
     // Translation found, out of here.
     if(![localizedString isEqualToString:key])
@@ -367,18 +367,18 @@ static BOOL gpgMailWorks = NO;
 #pragma mark General Info
 
 - (NSString *)version {
-	return [[NSBundle bundleForClass:[self class]] infoDictionary][@"CFBundleShortVersionString"];
+	return [[GPGMailBundle bundle] infoDictionary][@"CFBundleShortVersionString"];
 }
 
 /**
  Returns the version of the bundle as string.
  */
 + (NSString *)bundleVersion {
-    return [[[NSBundle bundleForClass:self] infoDictionary] valueForKey:@"CFBundleVersion"];
+    return [[[GPGMailBundle bundle] infoDictionary] valueForKey:@"CFBundleVersion"];
 }
 
 + (NSNumber *)bundleBuildNumber {
-    return [[[NSBundle bundleForClass:self] infoDictionary] valueForKey:@"BuildNumber"];
+    return [[[GPGMailBundle bundle] infoDictionary] valueForKey:@"BuildNumber"];
 }
 
 + (NSString *)agentHeader {

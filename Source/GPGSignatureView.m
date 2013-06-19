@@ -1,6 +1,7 @@
 #import "GPGSignatureView.h"
+#import "GPGMailBundle.h"
 
-#define localized(key) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:(key) table:@"SignatureView"]
+#define localized(key) [[GPGMailBundle bundle] localizedStringForKey:(key) value:(key) table:@"SignatureView"]
 
 
 @implementation GPGSignatureView

@@ -30,6 +30,7 @@
 #import <Sparkle/Sparkle.h>
 #import <Libmacgpg/Libmacgpg.h>
 #import "GMUpdater.h"
+#import "GPGMailBundle.h"
 
 @implementation GMUpdater
 
@@ -58,7 +59,7 @@
 
 - (NSString *)feedURLStringForUpdater:(SUUpdater *)updater {
 	NSString *updateSourceKey = @"UpdateSource";
-	NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+	NSBundle *bundle = [GPGMailBundle bundle];
 	
 	NSString *feedURLKey = @"SUFeedURL";
 	NSString *appcastSource = [[GPGOptions sharedOptions] stringForKey:updateSourceKey];

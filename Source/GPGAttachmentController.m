@@ -5,8 +5,8 @@
 //  Created by Lukas Pitschl on 08.11.11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
-#define localized(key) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:(key) table:@"SignatureView"]
-#define localizedAttachmentMessage(key) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:(key) table:@"GPGAttachment"]
+#define localized(key) [[GPGMailBundle bundle] localizedStringForKey:(key) value:(key) table:@"SignatureView"]
+#define localizedAttachmentMessage(key) [[GPGMailBundle bundle] localizedStringForKey:(key) value:(key) table:@"GPGAttachment"]
 
 #import "MimePart.h"
 #import "NSObject+LPDynamicIvars.h"
@@ -14,6 +14,7 @@
 #import "MFError.h"
 #import "GPGAttachmentController.h"
 #import "GPGSignatureView.h"
+#import "GPGMailBundle.h"
 
 @implementation GPGAttachmentController
 @synthesize errorImageView;
