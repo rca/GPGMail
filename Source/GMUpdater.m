@@ -86,10 +86,5 @@
     return [GPGOptions sharedOptions];
 }
 
-- (void)dealloc {
-	[_updater release];
-	
-	[super dealloc];
-}
 
 @end

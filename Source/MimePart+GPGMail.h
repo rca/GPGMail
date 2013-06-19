@@ -330,7 +330,7 @@ typedef enum {
  
  The actual encrypted data is stored in the pointer *encryptedData.
  */
-- (id)MANewEncryptedPartWithData:(NSData *)data recipients:(id)recipients encryptedData:(NSData **)encryptedData;
+- (id)MANewEncryptedPartWithData:(NSData *)data recipients:(id)recipients encryptedData:(NSData **)encryptedData NS_RETURNS_RETAINED;
 
 /**
  Like newEncryptedPartWithData (see above), this method is called from MessageWriter
@@ -342,7 +342,7 @@ typedef enum {
  Again, the mime part containing the data is returned and the signature written
  to the *signatureData pointer. 
  */
-- (id)MANewSignedPartWithData:(id)data sender:(id)sender signatureData:(id *)signatureData;
+- (id)MANewSignedPartWithData:(id)data sender:(id)sender signatureData:(id *)signatureData NS_RETURNS_RETAINED;
 
 /**
  Get the (autoreleased) data for a new PGP/Inline signed message.

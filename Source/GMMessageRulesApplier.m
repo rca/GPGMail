@@ -33,7 +33,7 @@
 
 @interface GMMessageRulesApplier ()
 
-@property (nonatomic, retain) NSMutableArray *messages;
+@property (nonatomic, strong) NSMutableArray *messages;
 
 @end
 
@@ -50,8 +50,8 @@
 }
 
 - (void)scheduleMessage:(Message *)message isEncrypted:(BOOL)isEncrypted {
-	id messageID = [[message messageID] retain];
-	typeof(self) __block weakSelf = self;
+	id messageID = [message messageID];
+	typeof(self) __weak weakSelf = self;
 	
 	dispatch_async(_rulesQueue, ^{
 		if(![weakSelf.messages containsObject:messageID] || isEncrypted) {
@@ -61,14 +61,10 @@
 			});
 		}
 	});
-	[messageID release];
 }
 
 - (void)dealloc {
 	dispatch_release(_rulesQueue);
-	[_messages release];
-	
-	[super dealloc];
 }
 
 @end

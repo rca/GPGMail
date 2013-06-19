@@ -42,20 +42,20 @@ const double kGMKeyManagerDelayInSecondsForInitialKeyLoad = 4;
 
 @interface GMKeyManager ()
 
-@property (nonatomic, retain) GPGController *gpgc;
+@property (nonatomic, strong) GPGController *gpgc;
 
 // Key caches
 @property (nonatomic, assign) dispatch_queue_t keysUpdateQueue;
-@property (nonatomic, retain, readwrite) NSMutableSet *allKeys;
-@property (nonatomic, retain) NSSet *secretKeys;
-@property (nonatomic, retain) NSDictionary *secretKeysByID;
-@property (nonatomic, retain) NSDictionary *secretKeysByEmail;
-@property (nonatomic, retain) NSDictionary *secretKeyMap;
-@property (nonatomic, retain) NSSet *publicKeys;
-@property (nonatomic, retain) NSDictionary *publicKeysByID;
-@property (nonatomic, retain) NSDictionary *publicKeysByEmail;
-@property (nonatomic, retain) NSDictionary *publicKeyMap;
-@property (nonatomic, retain) NSDictionary *groups;
+@property (nonatomic, strong, readwrite) NSMutableSet *allKeys;
+@property (nonatomic, strong) NSSet *secretKeys;
+@property (nonatomic, strong) NSDictionary *secretKeysByID;
+@property (nonatomic, strong) NSDictionary *secretKeysByEmail;
+@property (nonatomic, strong) NSDictionary *secretKeyMap;
+@property (nonatomic, strong) NSSet *publicKeys;
+@property (nonatomic, strong) NSDictionary *publicKeysByID;
+@property (nonatomic, strong) NSDictionary *publicKeysByEmail;
+@property (nonatomic, strong) NSDictionary *publicKeyMap;
+@property (nonatomic, strong) NSDictionary *groups;
 
 @end
 
@@ -101,18 +101,18 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 	GPGKey *key = [self.allKeys member:fingerprint];
 	// If no key matches, check the subkeys.
 	if(key)
-		return [[key retain] autorelease];
+		return key;
 	
 	for(key in self.allKeys) {
 		NSUInteger index = [key.subkeys indexOfObject:fingerprint];
 		if(index != NSNotFound)
 			break;
 	}
-	return [[key retain] autorelease];
+	return key;
 }
 
 - (GPGKey *)secretKeyForKeyID:(NSString *)keyID {
-	return [[(self.secretKeysByID)[keyID] retain] autorelease];
+	return (self.secretKeysByID)[keyID];
 }
 
 - (NSMutableSet *)signingKeyListForAddress:(NSString *)address {
@@ -133,23 +133,29 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 - (GPGController *)gpgc {
 	static dispatch_once_t onceToken;
 	
-	typeof(self) __block weakSelf = self;
+	typeof(self) __weak weakSelf = self;
     dispatch_once(&onceToken, ^{
-		weakSelf->_gpgc = [[GPGController alloc] init];
-		weakSelf->_gpgc.delegate = weakSelf;
+		GMKeyManager *strongSelf = weakSelf;
+		if(!strongSelf)
+			return;
+		strongSelf->_gpgc = [[GPGController alloc] init];
+		strongSelf->_gpgc.delegate = weakSelf;
 	});
-	return [[_gpgc retain] autorelease];
+	return _gpgc;
 }
 
 - (void)scheduleInitialKeyUpdateAfterSeconds:(double)seconds {
 	// The keys should loaded after a specified period of time,
 	dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, (int64_t)seconds * NSEC_PER_SEC);
-	typeof(self) __block weakSelf = self;
+	typeof(self) __weak weakSelf = self;
 	dispatch_queue_t keysUpdateQueue = self.keysUpdateQueue;
 	dispatch_after(delay, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
 		// This is only necessary if the keys were not already fetched earlier.
-		if(!weakSelf->_allKeys)
-			[weakSelf updateKeys:nil onQueue:keysUpdateQueue asynchronously:YES];
+		GMKeyManager *strongSelf = weakSelf;
+		if(!strongSelf)
+			return;
+		if(!strongSelf->_allKeys)
+			[strongSelf updateKeys:nil onQueue:keysUpdateQueue asynchronously:YES];
 	});
 }
 
@@ -159,15 +165,19 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 
 - (void)updateKeys:(NSObject <EnumerationList> *)keys onQueue:(dispatch_queue_t)queue asynchronously:(BOOL)asynchronously {
 	
-	typeof(self) __block weakSelf = self;
+	typeof(self) __weak weakSelf = self;
 	dispatch_block_t _updateKeys = ^{
+		GMKeyManager *strongSelf = weakSelf;
+		if(!strongSelf)
+			return;
+		
 		NSMutableSet *realKeys = [[NSMutableSet alloc] initWithCapacity:[keys count]];
 		
 		// Replace fingerprints with the actual GPGKeys keys.
 		Class keyClass = [GPGKey class];
-		for(id key in keys) {
+		for(__strong id key in keys) {
 			if(![key isKindOfClass:keyClass]) {
-				GPGKey *tempKey = [weakSelf->_allKeys member:key];
+				GPGKey *tempKey = [strongSelf->_allKeys member:key];
 				if(tempKey)
 					key = tempKey;
 			}
@@ -177,19 +187,19 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 		NSSet *updatedKeys = nil;
 		if([realKeys count] == 0) {
 			// Update all keys.
-			updatedKeys = [weakSelf.gpgc updateKeys:weakSelf->_allKeys searchFor:nil withSigs:NO];
+			updatedKeys = [strongSelf.gpgc updateKeys:strongSelf->_allKeys searchFor:nil withSigs:NO];
 		}
 		else {
 			// Update only the keys in realKeys.
-			updatedKeys = [weakSelf.gpgc updateKeys:keys withSigs:NO];
+			updatedKeys = [strongSelf.gpgc updateKeys:keys withSigs:NO];
 		}
 		
 		// Check for errors.
-		if(weakSelf.gpgc.error) {
-			if([weakSelf.gpgc.error isKindOfClass:[GPGException class]]) {
-				DebugLog(@"%@: failed - %@ (Error text: %@)", _cmd, weakSelf.gpgc.error, ((GPGException *)weakSelf.gpgc.error).gpgTask.errText);
+		if(strongSelf.gpgc.error) {
+			if([strongSelf.gpgc.error isKindOfClass:[GPGException class]]) {
+				DebugLog(@"%@: failed - %@ (Error text: %@)", _cmd, strongSelf.gpgc.error, ((GPGException *)strongSelf.gpgc.error).gpgTask.errText);
 			}
-			else if([weakSelf.gpgc.error isKindOfClass:[NSException class]]) {
+			else if([strongSelf.gpgc.error isKindOfClass:[NSException class]]) {
 				DebugLog(@"%@: unknown error - %@", weakSelf.gpgc.error);
 			}
 			return;
@@ -197,22 +207,21 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 		
 		// No errors, great, let's continue.
 		if([realKeys count] == 0)
-			realKeys = weakSelf->_allKeys;
+			realKeys = strongSelf->_allKeys;
 		
 		NSMutableSet *keysToRemove = [realKeys mutableCopy];
 		[keysToRemove minusSet:updatedKeys];
 		
-		[weakSelf->_allKeys minusSet:keysToRemove];
-		[weakSelf->_allKeys unionSet:updatedKeys];
+		[strongSelf->_allKeys minusSet:keysToRemove];
+		[strongSelf->_allKeys unionSet:updatedKeys];
 		
-		[keysToRemove release];
 		keysToRemove = nil;
 		
 		// Flush the key caches so they are recreated on request.
-		[weakSelf rebuildKeyCaches];
+		[strongSelf rebuildKeyCaches];
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[[NSNotificationCenter defaultCenter] postNotificationName:GPGMailKeyringUpdatedNotification object:weakSelf];
+			[[NSNotificationCenter defaultCenter] postNotificationName:GPGMailKeyringUpdatedNotification object:strongSelf];
 		});
 	};
 	
@@ -246,7 +255,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 	// This will also rebuild the caches if the keys
 	// are not yet available.
 	[self allKeys];
-	return [[_secretKeys retain] autorelease];
+	return _secretKeys;
 }
 
 - (void)rebuildSecretKeysCache {
@@ -264,7 +273,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 
 - (NSSet *)publicKeys {
 	[self allKeys];
-	return [[_publicKeys retain] autorelease];
+	return _publicKeys;
 }
 
 - (void)rebuildPublicKeysCache {
@@ -282,7 +291,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 
 - (NSDictionary *)publicKeysByID {
 	[self allKeys];
-	return [[_publicKeysByID retain] autorelease];
+	return _publicKeysByID;
 }
 
 - (void)rebuildPublicKeysByIDCache {
@@ -293,12 +302,11 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 			[map setValue:subkey forKey:subkey.keyID];
 	}
 	self.publicKeysByID = map;
-	[map release];
 }
 
 - (NSDictionary *)secretKeysByID {
 	[self allKeys];
-	return [[_secretKeysByID retain] autorelease];
+	return _secretKeysByID;
 }
 
 - (void)rebuildSecretKeysByIDCache {
@@ -309,12 +317,11 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 			[map setValue:subkey forKey:subkey.keyID];
 	}
 	self.secretKeysByID = map;
-	[map release];
 }
 
 - (NSDictionary *)publicKeysByEmail {
 	[self allKeys];
-	return [[_publicKeysByEmail retain] autorelease];
+	return _publicKeysByEmail;
 }
 
 - (void)rebuildPublicKeysByEmailCache {
@@ -330,7 +337,6 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 			if(!userIDEmailMap[email]) {
 				NSMutableSet *set = [[NSMutableSet alloc] init];
 				userIDEmailMap[email] = set;
-				[set release];
 			}
 			[userIDEmailMap[email] addObject:userID];
 		}
@@ -348,7 +354,6 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 		GPGKey *key = [self bestKeyOfUserIDs:userIDs];
 		map[email] = key;
 	}
-	[userIDEmailMap release];
 	
 	self.publicKeysByEmail = map;
 }
@@ -356,7 +361,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 
 - (NSDictionary *)secretKeysByEmail {
 	[self allKeys];
-	return [[_secretKeysByEmail retain] autorelease];
+	return _secretKeysByEmail;
 }
 
 - (void)rebuildSecretKeysByEmailCache {
@@ -373,19 +378,17 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 			if(!map[email]) {
 				NSMutableSet *list = [[NSMutableSet alloc] init];
 				map[email] = list;
-				[list release];
 			}
 			[map[email] addObject:key];
 		}
 	}
 	
 	self.secretKeysByEmail = map;
-	[map release];
 }
 
 - (NSDictionary *)groups {
 	[self allKeys];
-	return [[_groups retain] autorelease];
+	return _groups;
 	
 }
 
@@ -414,7 +417,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 
 - (NSDictionary *)publicKeyMap {
 	[self allKeys];
-	return [[_publicKeyMap retain] autorelease];
+	return _publicKeyMap;
 }
 
 - (void)rebuildPublicKeyMapCache {
@@ -424,12 +427,11 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 	[keyMap addEntriesFromDictionary:[self userMappedKeysSecretOnly:NO]];
 	
 	self.publicKeyMap = keyMap;
-	[keyMap release];
 }
 
 - (NSDictionary *)secretKeyMap {
 	[self allKeys];
-	return [[_secretKeyMap retain] autorelease];
+	return _secretKeyMap;
 }
 
 - (void)rebuildSecretKeyMapCache {
@@ -438,7 +440,6 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 	[keyMap addEntriesFromDictionary:[self userMappedKeysSecretOnly:YES]];
 	
 	self.secretKeyMap = keyMap;
-	[keyMap release];
 }
 
 - (void)rebuildKeyCaches {
@@ -462,7 +463,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 	
 	dispatch_group_t cachesGroup = dispatch_group_create();
 	
-	typeof(self) __block weakSelf = self;
+	typeof(self) __weak weakSelf = self;
 	
 	dispatch_group_async(cachesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
 		[weakSelf rebuildSecretKeysByEmailCache];
@@ -561,7 +562,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 	Class arrayClass = [NSArray class];
     
     NSMutableDictionary *cleanMappedKeys = [NSMutableDictionary dictionary];
-    for (NSString *pattern in mappedKeys) {
+    for (__strong NSString *pattern in mappedKeys) {
         id keyIdentifier = mappedKeys[pattern];
         id object = nil;
         
@@ -589,7 +590,6 @@ publicKeyMap = _publicKeyMap, groups = _groups;
         if (object)
             cleanMappedKeys[pattern] = object;
     }
-    [mappedKeys release];
     
     return cleanMappedKeys;
 }
@@ -624,10 +624,6 @@ publicKeyMap = _publicKeyMap, groups = _groups;
     
     sortedUserIDs = [sortedUserIDs sortedArrayUsingDescriptors:@[dateSorter]];
     
-    [dateSorter release];
-    [secretUserIDs release];
-    [trustedUserIDs release];
-    [untrustedUserIDs release];
     
     return ((GPGUserID *)sortedUserIDs[0]).primaryKey;
 }
@@ -636,19 +632,6 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 
 - (void)dealloc {
 	dispatch_release(_keysUpdateQueue);
-	[_allKeys release];
-	[_gpgc release];
-	[_secretKeys release];
-	[_secretKeysByID release];
-	[_secretKeysByEmail release];
-	[_secretKeyMap release];
-	[_publicKeys release];
-	[_publicKeysByID release];
-	[_publicKeysByEmail release];
-	[_publicKeyMap release];
-	[_groups release];
-	
-	[super dealloc];
 }
 
 @end

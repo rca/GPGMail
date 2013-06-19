@@ -10,7 +10,7 @@
 #import "GPGSignatureView.h"
 
 @interface GPGAttachmentController : NSWindowController <NSTableViewDelegate, NSTableViewDataSource, NSSplitViewDelegate> {
-    NSImageView *errorImageView;
+    NSImageView *__weak errorImageView;
     NSMutableArray *attachments;
     GPGSignature *signature;
     GPGKey *gpgKey;
@@ -32,13 +32,13 @@
 - (void)beginSheetModalForWindow:(NSWindow *)modalWindow completionHandler:(void (^)(NSInteger result))handler;
 - (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 
-@property (assign) IBOutlet NSImageView *errorImageView;
-@property (retain) NSArray *attachments;
-@property (nonatomic, retain) NSIndexSet *attachmentIndexes;
-@property (retain) NSDictionary *currentAttachment;
-@property (nonatomic, retain) GPGSignature *signature;
-@property (retain) NSSet *keyList;
-@property (retain) GPGKey *gpgKey;
+@property (weak) IBOutlet NSImageView *errorImageView;
+@property (strong) NSArray *attachments;
+@property (nonatomic, strong) NSIndexSet *attachmentIndexes;
+@property (strong) NSDictionary *currentAttachment;
+@property (nonatomic, strong) GPGSignature *signature;
+@property (strong) NSSet *keyList;
+@property (strong) GPGKey *gpgKey;
 
 
 /**

@@ -184,7 +184,6 @@
     
     // Parsing packets failed due to unsupported packets.
     if(![packets count]) {
-        [packetData release];
         return signaturePacketsExpected;
     }
     
@@ -196,13 +195,12 @@
             break;
         }
     }
-    [packetData release];
     
     return hasSignature;
 }
 
 - (NSData *)dataPreparedForVerification {
-	return [[[NSData alloc] initWithDataConvertingLineEndingsFromUnixToNetwork:self] autorelease];
+	return [[NSData alloc] initWithDataConvertingLineEndingsFromUnixToNetwork:self];
 }
 
 @end

@@ -107,7 +107,6 @@
         [accessoryView configureForWindow:window];
                                                     
     [self setIvar:@"SecurityMethodHintAccessoryView" value:accessoryView];
-    [accessoryView release];
 }
 
 - (void)hideSecurityMethodAccessoryView {

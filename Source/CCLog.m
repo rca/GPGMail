@@ -81,8 +81,6 @@
 #endif /* USE_NSLOG */
     
     // cleanup
-    [formattedString release];
-    [sourceFile release];
 } /* end myLog */
 
 @end /* implementation CCLog */

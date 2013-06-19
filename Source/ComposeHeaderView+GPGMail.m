@@ -35,6 +35,7 @@
 #import "CCLog.h"
 #import "NSObject+LPDynamicIvars.h"
 #import "ComposeBackEnd+GPGMail.h"
+#import "ComposeHeaderView.h"
 #import "ComposeHeaderView+GPGMail.h"
 
 @implementation ComposeHeaderView_GPGMail

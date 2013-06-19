@@ -47,7 +47,7 @@
     BOOL _active;
     GPGMAIL_SECURITY_METHOD _securityMethod;
     
-    id <GMSecurityMethodAccessoryViewDelegate> _delegate;
+    id <GMSecurityMethodAccessoryViewDelegate> __weak _delegate;
     
     NSRect _nonFullScreenFrame;
     NSPopUpButton *_popup;
@@ -59,7 +59,7 @@
 
 @property (nonatomic, assign) GPGMAIL_SECURITY_METHOD securityMethod;
 @property (nonatomic, assign) BOOL active;
-@property (nonatomic, assign) id <GMSecurityMethodAccessoryViewDelegate> delegate;
+@property (nonatomic, weak) id <GMSecurityMethodAccessoryViewDelegate> delegate;
 
 - (id)init;
 

@@ -8,17 +8,17 @@
 
 #pragma mark Named Structures
 
-struct EnrichedState {
-    unsigned int excerptLevel:8;
-    unsigned int alignment:4;
-    unsigned int bold:1;
-    unsigned int italic:1;
-    unsigned int fixed:1;
-    unsigned int underline:1;
-    unsigned int fontDelta:16;
-    NSString *fontFamily;
-    NSColor *color;
-};
+//struct EnrichedState {
+//    unsigned int excerptLevel:8;
+//    unsigned int alignment:4;
+//    unsigned int bold:1;
+//    unsigned int italic:1;
+//    unsigned int fixed:1;
+//    unsigned int underline:1;
+//    unsigned int fontDelta:16;
+//    NSString *fontFamily;
+//    NSColor *color;
+//};
 
 struct __CFArray;
 
@@ -67,26 +67,26 @@ typedef struct {
 
 #pragma mark Typedef'd Structures
 
-typedef struct {
-    id _field1;
-    id _field2;
-    char _field3;
-    id _field4;
-    id _field5;
-    id _field6;
-    id _field7;
-    unsigned long long _field8;
-    unsigned int _field9;
-    char _field10;
-} CDStruct_9f3328ff;
+//typedef struct {
+//    id _field1;
+//    id _field2;
+//    char _field3;
+//    id _field4;
+//    id _field5;
+//    id _field6;
+//    id _field7;
+//    unsigned long long _field8;
+//    unsigned int _field9;
+//    char _field10;
+//} CDStruct_9f3328ff;
 
-typedef struct {
-    id _field1;
-    unsigned int :1;
-    unsigned int :1;
-    unsigned int :1;
-    unsigned int :2;
-} CDStruct_3441fd00;
+//typedef struct {
+//    id _field1;
+//    unsigned int :1;
+//    unsigned int :1;
+//    unsigned int :1;
+//    unsigned int :2;
+//} CDStruct_3441fd00;
 
 typedef struct {
     unsigned char _field1;
@@ -158,16 +158,16 @@ typedef struct {
     unsigned long long size;
 } CDStruct_d3e19d9e;
 
-typedef struct {
-    id _field1;
-    id _field2;
-    struct __CFDictionary *_field3;
-    struct __CFDictionary *_field4;
-    unsigned long long _field5;
-    unsigned long long _field6;
-    long long _field7;
-    id _field8;
-} CDStruct_591b809f;
+//typedef struct {
+//    id _field1;
+//    id _field2;
+//    struct __CFDictionary *_field3;
+//    struct __CFDictionary *_field4;
+//    unsigned long long _field5;
+//    unsigned long long _field6;
+//    long long _field7;
+//    id _field8;
+//} CDStruct_591b809f;
 
 typedef struct {
     unsigned short buffer[64];
@@ -181,65 +181,65 @@ typedef struct {
     long long bufferedRangeEnd;
 } CDStruct_7e4886f7;
 
-typedef struct {
-    int _field1;
-    id _field2;
-    id _field3;
-    union {
-        char _field1;
-        CDStruct_21f7855f _field2;
-        CDStruct_21f7855f _field3;
-        struct {
-            id _field1;
-        } _field4;
-        struct {
-            struct __CFReadStream *_field1;
-            struct __CFWriteStream *_field2;
-        } _field5;
-    } _field4;
-} CDStruct_1d72fa59;
+//typedef struct {
+//    int _field1;
+//    id _field2;
+//    id _field3;
+//    union {
+//        char _field1;
+//        CDStruct_21f7855f _field2;
+//        CDStruct_21f7855f _field3;
+//        struct {
+//            id _field1;
+//        } _field4;
+//        struct {
+//            struct __CFReadStream *_field1;
+//            struct __CFWriteStream *_field2;
+//        } _field5;
+//    } _field4;
+//} CDStruct_1d72fa59;
 
 #pragma mark Named Unions
 
-union _IMAPResponseData {
-    struct {
-        long long responseCode;
-        id responseInfoAndOrUserData;
-    } basic;
-    NSArray *capabilities;
-    unsigned long long number;
-    NSSet *flags;
-    struct {
-        NSString *mailboxName;
-        NSDictionary *entries;
-    } status;
-    NSArray *searchResults;
-    struct {
-        unsigned long long mailboxAttributes;
-        id separatorAndOrMboxName;
-    } list;
-    struct {
-        unsigned long long number;
-        char isValid;
-        NSArray *items;
-    } fetch;
-    struct {
-        NSString *mailboxName;
-        NSArray *quotaRootNames;
-    } quotaRoot;
-    struct {
-        NSString *quotaRootName;
-        NSArray *quotas;
-    } quota;
-    NSDictionary *serverID;
-    struct {
-        NSIndexSet *uids;
-        IMAPFetchResult *flagsFetchResult;
-        char change;
-    } uidFlags;
-    struct {
-        NSString *name;
-        NSArray *parameters;
-    } other;
-};
+//union _IMAPResponseData {
+//    struct {
+//        long long responseCode;
+//        id responseInfoAndOrUserData;
+//    } basic;
+//    NSArray *capabilities;
+//    unsigned long long number;
+//    NSSet *flags;
+//    struct {
+//        NSString *mailboxName;
+//        NSDictionary *entries;
+//    } status;
+//    NSArray *searchResults;
+//    struct {
+//        unsigned long long mailboxAttributes;
+//        id separatorAndOrMboxName;
+//    } list;
+//    struct {
+//        unsigned long long number;
+//        char isValid;
+//        NSArray *items;
+//    } fetch;
+//    struct {
+//        NSString *mailboxName;
+//        NSArray *quotaRootNames;
+//    } quotaRoot;
+//    struct {
+//        NSString *quotaRootName;
+//        NSArray *quotas;
+//    } quota;
+//    NSDictionary *serverID;
+//    struct {
+//        NSIndexSet *uids;
+//        IMAPFetchResult *flagsFetchResult;
+//        char change;
+//    } uidFlags;
+//    struct {
+//        NSString *name;
+//        NSArray *parameters;
+//    } other;
+//};
 

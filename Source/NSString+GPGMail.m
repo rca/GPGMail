@@ -74,7 +74,7 @@
         [withoutAttachments replaceOccurrencesOfString:all withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [withoutAttachments length])];
     }
     
-    return [withoutAttachments autorelease];
+    return withoutAttachments;
 }
 
 - (NSString *)SHA1 {

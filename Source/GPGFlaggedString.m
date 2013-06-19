@@ -48,7 +48,7 @@
     self = [super init];
     if (self) {
 		self.string = theString;
-		flags = [theFlags retain];
+		flags = theFlags;
     }
     return self;
 }
@@ -68,7 +68,7 @@
     if(!_uncommentedFlaggedValue) {
         _uncommentedFlaggedValue = [[GPGFlaggedString alloc] initWithString:[string uncommentedAddress] flags:flags];
     }
-    return [[_uncommentedFlaggedValue retain] autorelease];
+    return _uncommentedFlaggedValue;
 }
 
 - (BOOL)isFlaggedValue {
@@ -76,7 +76,7 @@
 }
 
 - (id)valueForFlag:(NSString *)flag {
-	return [[flags[flag] retain] autorelease];
+	return flags[flag];
 }
 
 - (BOOL)isKindOfClass:(Class)aClass {
@@ -89,12 +89,6 @@
     return string;
 }
 
-- (void)dealloc {
-    [_uncommentedFlaggedValue release];
-	[flags release];
-	self.string = nil;
-    [super dealloc];
-}
 
 @end
 
@@ -103,7 +97,7 @@
 - (GPGFlaggedString *)flaggedStringWithFlag:(NSString *)flag value:(id)value {
     // Don't autorelease it here, otherwise the object is overreleased,
     // after the message is sent.
-	return [[[GPGFlaggedString alloc] initWithString:self flag:flag value:value] autorelease];
+	return [[GPGFlaggedString alloc] initWithString:self flag:flag value:value];
 }
 
 - (BOOL)isFlaggedValue {

@@ -81,6 +81,6 @@
 - (void)saveHistory:(NSDictionary *)history;
 + (GMSecurityHistoryStore *)sharedInstance;
 
-@property (nonatomic, retain, readonly) NSDictionary *securityOptionsHistory;
+@property (nonatomic, strong, readonly) NSDictionary *securityOptionsHistory;
 
 @end

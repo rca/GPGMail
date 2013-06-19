@@ -62,7 +62,16 @@
 
 - (void)MAAwakeFromNib {
     [self MAAwakeFromNib];
+	
+    // This lock is used to prevent a SecurityMethodDidChange notification to
+    // mess with an ongoing _updateSecurityStateInBackgroundForRecipients:recipients:
+    // call.
+	NSLock *updateSecurityStateLock = [[NSLock alloc] init];
+    [self setIvar:@"SecurityStateLock" value:updateSecurityStateLock];
+	[(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] addObserver:self selector:@selector(securityMethodDidChange:) name:@"SecurityMethodDidChangeNotification" object:nil];
+	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyringUpdated:) name:GPGMailKeyringUpdatedNotification object:nil];
 
+	
 	GMSecurityControl *signControl = [[GMSecurityControl alloc] initWithControl:[self valueForKey:@"_signButton"] tag:SECURITY_BUTTON_SIGN_TAG];
     [self setValue:signControl forKey:@"_signButton"];
     
@@ -81,9 +90,6 @@
 #pragma clang diagnostic pop
 
 	
-	[handler release];
-	[signControl release];
-    [encryptControl release];	
 }
 
 - (void)MASecurityControlChanged:(id)securityControl {
@@ -155,7 +161,6 @@
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
     [attributes addEntriesFromDictionary:[[menuItems[0] attributedTitle] fontAttributesInRange:NSMakeRange(0, [[menuItems[0] attributedTitle] length])]];
 	attributes[NSParagraphStyleAttributeName] = truncateStyle;
-	[truncateStyle release];
     NSMenuItem *item, *parentItem, *selectedItem = [popUp selectedItem], *subItemToSelect = nil;
 	GPGKey *defaultKey = [bundle preferredGPGKeyForSigning];
 	BOOL useTitleFromAccount = [[GPGOptions sharedOptions] boolForKey:@"ShowAccountNameForKeysOfSameAddress"];
@@ -217,12 +222,10 @@
 							// Create the menu item with the given title...
 							subItem = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@""];
 							[subItem setAttributedTitle:attributedTitle];
-                            [attributedTitle release];
 							[subItem setIvar:@"gpgKey" value:key]; // GPGKey...
 							[subItem setIvar:@"parentItem" value:item]; // and set the parentItem.
 							
 							[menu insertItem:subItem atIndex:++index]; // Insert it in the "From:" menu.
-                            [subItem release];
                         }
 						if (item == selectedItem) {
 							if (key == defaultKey) {
@@ -299,7 +302,6 @@
     }
 
 	[self MAChangeFromHeader:button/*sender*/];
-    [button release];
 }
 
 - (void)resetSecurityButtons {
@@ -364,19 +366,6 @@
     else {
         [self MA_updateEncryptButtonTooltip];
     }
-}
-
-- (id)MAInit {
-	self = [self MAInit];
-    // This lock is used to prevent a SecurityMethodDidChange notification to
-    // mess with an ongoing _updateSecurityStateInBackgroundForRecipients:recipients:
-    // call.
-	NSLock *updateSecurityStateLock = [[NSLock alloc] init];
-    [self setIvar:@"SecurityStateLock" value:updateSecurityStateLock];
-    [updateSecurityStateLock release];
-	[(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] addObserver:self selector:@selector(securityMethodDidChange:) name:@"SecurityMethodDidChangeNotification" object:nil];
-	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyringUpdated:) name:GPGMailKeyringUpdatedNotification object:nil];
-	return self;
 }
 
 - (void)MADealloc {

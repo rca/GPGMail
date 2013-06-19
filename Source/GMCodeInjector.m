@@ -68,7 +68,6 @@
                             @"selectors": @[@"securityControlChanged:",
                              @"_updateFromAndSignatureControls:",
                              @"changeFromHeader:",
-                             @"init",
                              @"dealloc",
                              @"_updateSecurityStateInBackgroundForRecipients:sender:",
                              @"awakeFromNib",

@@ -28,6 +28,8 @@
  */
 
 #import "BannerController+GPGMail.h"
+#import "MessageViewingState.h"
+#import "MFError.h"
 
 @implementation BannerController_GPGMail
 

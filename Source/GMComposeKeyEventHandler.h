@@ -12,7 +12,7 @@
  *	 id       target
  *	 NSValue  selector
  */
-@property (retain) NSArray *eventsAndSelectors;
+@property (strong) NSArray *eventsAndSelectors;
 
 - (id)initWithView:(NSView *)view;
 

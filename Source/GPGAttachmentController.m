@@ -11,6 +11,7 @@
 #import "MimePart.h"
 #import "NSObject+LPDynamicIvars.h"
 #import "MimePart+GPGMail.h"
+#import "MFError.h"
 #import "GPGAttachmentController.h"
 #import "GPGSignatureView.h"
 
@@ -86,7 +87,6 @@
             
             
             [attachments addObject:attachment];
-            [attachment release];
         }
     }
     return self;
@@ -124,11 +124,11 @@
 }
 
 - (void)beginSheetModalForWindow:(NSWindow *)modalWindow completionHandler:(void (^)(NSInteger result))handler {
-	[NSApp beginSheet:self.window modalForWindow:modalWindow modalDelegate:self didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:handler];
+	[NSApp beginSheet:self.window modalForWindow:modalWindow modalDelegate:self didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:(__bridge void *)(handler)];
 }
 
 - (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
-	((void (^)(NSInteger result))contextInfo)(NSOKButton);
+	((__bridge void (^)(NSInteger result))contextInfo)(NSOKButton);
 }
 
 - (void)setAttachmentParts:(NSArray *)attachmentParts {
@@ -137,8 +137,7 @@
 
 - (void)setAttachmentIndexes:(NSIndexSet *)value {
 	if (value != attachmentIndexes) {
-		[attachmentIndexes release];
-		attachmentIndexes = [value retain];
+		attachmentIndexes = value;
 		NSUInteger index;
 		if ([value count] > 0 && (index = [value firstIndex]) < [attachments count]) {
 			self.currentAttachment = attachments[index];
@@ -152,8 +151,7 @@
 
 - (void)setSignature:(GPGSignature *)value {
 	if (value != signature) {
-		[signature release];
-		signature = [value retain];
+		signature = value;
 		
 		GPGKey *key = nil;
 		if (signature) {
@@ -185,8 +183,12 @@
 			return nil;
 		}
 		keyPath = [keyPath substringFromIndex:10];
-        if([self respondsToSelector:NSSelectorFromString(keyPath)])
-            return [self performSelector:NSSelectorFromString(keyPath)];
+        if([self respondsToSelector:NSSelectorFromString(keyPath)]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+			return [self performSelector:NSSelectorFromString(keyPath)];
+#pragma clang diagnostic pop
+		}
         if ([signature respondsToSelector:NSSelectorFromString(keyPath)]) {
 			return [signature valueForKey:keyPath];
 		}
@@ -259,7 +261,7 @@
             [value appendString:@")"];
     }
     
-    return [value autorelease];
+    return value;
 }
 
 - (NSString *)validityDescription {
@@ -421,24 +423,6 @@
         [scrollView setBackgroundColor:[NSColor whiteColor]];
     
     return YES;
-}
-
-- (void)dealloc {
-    [attachments release];
-    attachments = nil;
-    [attachmentIndexes release];
-    attachmentIndexes = nil;
-    [currentAttachment release];
-    currentAttachment = nil;
-    [signature release];
-    signature = nil;
-    [keyList release];
-    keyList = nil;
-    [gpgKey release];
-    gpgKey = nil;
-    
-    
-    [super dealloc];
 }
 
 @end

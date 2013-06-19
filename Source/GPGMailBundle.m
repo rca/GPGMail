@@ -52,6 +52,7 @@ static BOOL gpgMailWorks = NO;
 @interface GPGMailBundle ()
 
 @property GPGErrorCode gpgStatus;
+@property (nonatomic, strong) GMKeyManager *keyManager;
 
 @end
 
@@ -73,7 +74,6 @@ static BOOL gpgMailWorks = NO;
         if([fileManager fileExistsAtPath:bundlePath])
             [installations addObject:bundlePath];
     }
-    [fileManager release];
     
     return (NSArray *)installations;
 }
@@ -86,7 +86,6 @@ static BOOL gpgMailWorks = NO;
     [errorModal addButtonWithTitle:GMLocalizedString(@"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON")];
     [errorModal runModal];
     
-    [errorModal release];
     
     // It's not at all a good idea to use exit and kill the app,
     // but in this case it's alright because otherwise the user would experience a
@@ -122,16 +121,17 @@ static BOOL gpgMailWorks = NO;
     class_setSuperclass([self class], mvMailBundleClass);
 #pragma GCC diagnostic pop
     
-    // Initialize the bundle by swizzling methods, loading keys, ...
-    GPGMailBundle *instance = [GPGMailBundle sharedInstance];
-    NSLog(@"Loaded GPGMail %@", [instance version]);
-    
     [[((MVMailBundle *)self) class] registerBundle];             // To force registering composeAccessoryView and preferences
 }
 
 - (id)init {
 	if (self = [super init]) {
-		NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
+		NSLog(@"Loaded GPGMail %@", [self version]);
+        
+        NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
+        
+        // Load all necessary images.
+        [self _loadImages];
         
         // Register the main defaults.
 		NSDictionary *defaultsDictionary = [NSDictionary dictionaryWithContentsOfFile:[myBundle pathForResource:@"GPGMailBundle" ofType:@"defaults"]];
@@ -156,9 +156,6 @@ static BOOL gpgMailWorks = NO;
         // Start the GPG checker.
         [self startGPGChecker];
         
-        // Load all necessary images.
-        [self _loadImages];
-        
         // Specify that a count exists for signing.
         accountExistsForSigning = YES;
         
@@ -174,26 +171,6 @@ static BOOL gpgMailWorks = NO;
 
 - (void)dealloc {
     dispatch_release(_checkGPGTimer);
-    
-    [_keyManager release];
-    _keyManager = nil;
-    
-    [_updater release];
-    _updater = nil;
-    
-    [_messageRulesApplier release];
-    _messageRulesApplier = nil;
-    
-    [_bundleImages release];
-    _bundleImages = nil;
-    
-    struct objc_super s = { self, [self superclass] };
-    objc_msgSendSuper(&s, @selector(dealloc));
-    
-    // Suppress the missing dealloc warning, since the real super dealloc
-    // call uses the objc runtime calls directly.
-    if(0)
-        [super dealloc];
 }
 
 - (void)startGPGChecker {
@@ -201,9 +178,10 @@ static BOOL gpgMailWorks = NO;
     [self checkGPG];
     _checkGPGTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0));
     dispatch_source_set_timer(_checkGPGTimer, DISPATCH_TIME_NOW, 60 * NSEC_PER_SEC, 10 * NSEC_PER_SEC);
-    __block typeof(self) weakSelf = self;
+    __block GPGMailBundle *weakSelf = self;
     dispatch_source_set_event_handler(_checkGPGTimer, ^{
         [weakSelf checkGPG];
+        weakSelf = nil;
     });
     dispatch_resume(_checkGPGTimer);
 }
@@ -242,12 +220,10 @@ static BOOL gpgMailWorks = NO;
         }
         [image setName:name];
         [bundleImages addObject:image];
-        [image release];
     }
     
-    _bundleImages = [bundleImages retain];
+    _bundleImages = bundleImages;
     
-    [bundleImages release];
 }
 
 + (BOOL)hasPreferencesPanel {
@@ -278,12 +254,17 @@ static BOOL gpgMailWorks = NO;
             break;
         case GPGErrorConfigurationError:
             DebugLog(@"DEBUG: checkGPG - GPGErrorConfigurationError");
-        case GPGErrorNoError:
-            if (!gpgMailWorks) {
-                _keyManager = [[GMKeyManager alloc] init];
-            }
+        case GPGErrorNoError: {
+            static dispatch_once_t onceToken;
+            __block GPGMailBundle *weakSelf = self;
+            dispatch_once(&onceToken, ^{
+                weakSelf.keyManager = [[GMKeyManager alloc] init];
+                weakSelf = nil;
+            });
+            
             gpgMailWorks = YES;
             return YES;
+        }
         default:
             DebugLog(@"DEBUG: checkGPG - %i", gpgStatus);
             break;

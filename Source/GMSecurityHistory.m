@@ -320,7 +320,6 @@
     for(NSString *address in recipients)
         [uniqueRecipientsMutable addObject:[address gpgNormalizedEmail]];
     NSSet *uniqueRecipients = [NSSet setWithSet:uniqueRecipientsMutable];
-    [uniqueRecipientsMutable release];
     return uniqueRecipients;
 }
 
@@ -389,7 +388,6 @@
     
     [[GMSecurityHistoryStore sharedInstance] saveHistory:securityMethodHistory];
     
-    [securityMethodHistory release];
 }
 
 @end
@@ -409,7 +407,7 @@
 
 + (GMSecurityOptions *)securityOptionsWithSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt {
     GMSecurityOptions *securityOptions = [[GMSecurityOptions alloc] initWithSecurityMethod:securityMethod shouldSign:shouldSign shouldEncrypt:shouldEncrypt];
-    return [securityOptions autorelease];
+    return securityOptions;
 }
 
 - (NSString *)description {
@@ -422,7 +420,7 @@
 
 @interface GMSecurityHistoryStore ()
 
-@property (nonatomic, retain) NSDictionary *securityOptionsHistory;
+@property (nonatomic, strong) NSDictionary *securityOptionsHistory;
 
 @end
 
@@ -448,7 +446,7 @@
             [fileManager createDirectoryAtPath:historyStoreDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
         
         NSString *historyStorePath = [historyStoreDirectory stringByAppendingPathComponent:historyFile];
-        _storePath = [historyStorePath retain];
+        _storePath = historyStorePath;
         [self openHistoryStoreAtPath:historyStorePath];
     }
     return self;
@@ -464,11 +462,5 @@
     [NSKeyedArchiver archiveRootObject:self.securityOptionsHistory toFile:_storePath];
 }
 
-- (void)dealloc {
-    [super dealloc];
-    
-    [_storePath release];
-    [_securityOptionsHistory release];
-}
 
 @end

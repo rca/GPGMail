@@ -12,11 +12,11 @@
 @implementation NSObject (LPDynamicIvars)
 
 - (void)setIvar:(id)key value:(id)value {
-    objc_setAssociatedObject(self, key, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC); 
+    objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC); 
 }
 
 - (id)getIvar:(id)key {
-    return objc_getAssociatedObject(self, key);
+    return objc_getAssociatedObject(self, (__bridge const void *)(key));
 }
 
 - (void)removeIvar:(id)key {

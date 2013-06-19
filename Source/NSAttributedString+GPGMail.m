@@ -15,7 +15,6 @@
     GPGTextAttachmentCell *cell = [[GPGTextAttachmentCell alloc] init];
     cell.image = image;
     attachment.attachmentCell = cell;
-    [cell release];
     NSMutableAttributedString *attachmentString = [[NSAttributedString attributedStringWithAttachment:attachment] mutableCopy];
     // Now this is unusual but comfortable.
     // Set a link attribute on the attachment, so we get an event
@@ -39,12 +38,11 @@
                              value:@(offset)
                              range:NSMakeRange(0,[attachmentString length])];
     NSAttributedString *nonMutableAttachmentString = [[NSAttributedString alloc] initWithAttributedString:attachmentString];
-    [attachmentString release];
-    return [nonMutableAttachmentString autorelease];
+    return nonMutableAttachmentString;
 }
 
 + (NSAttributedString *)attributedStringWithString:(NSString *)string {
-    return [[[NSAttributedString alloc] initWithString:string] autorelease];
+    return [[NSAttributedString alloc] initWithString:string];
 }
 
 @end

@@ -27,8 +27,6 @@
 @implementation MMStopwatch
 - (void)dealloc {
     [items removeAllObjects];
-	[items release];
-    [super dealloc];
 }
 + (void) start:(NSString *)name {
 	[(MMStopwatch *)[MMStopwatch sharedInstance] add:name];
@@ -143,14 +141,8 @@ static id _sharedSingleton		= nil;
 @synthesize name;
 @synthesize started;
 @synthesize stopped;
-- (void)dealloc {
-	[name release];
-	[started release];
-	[stopped release];
-    [super dealloc];
-}
 + (MMStopwatchItem *) itemWithName:(NSString *)name {
-	MMStopwatchItem *item	= [[[MMStopwatchItem alloc] init] autorelease];
+	MMStopwatchItem *item	= [[MMStopwatchItem alloc] init];
 	item.name				= name;
 	item.started			= [NSDate date];
 	return item;
@@ -159,12 +151,12 @@ static id _sharedSingleton		= nil;
 	self.stopped			= [NSDate date];
 }
 - (NSString *) description {
-	NSMutableString *outString = [[[NSMutableString alloc] init] autorelease];
+	NSMutableString *outString = [[NSMutableString alloc] init];
 	[outString appendFormat:@"Stopwatch: [%@] runtime: [%@]", name, [self runtimePretty]];
 	return outString;
 }
 - (NSString *) fullDescription {
-	NSMutableString *outString = [[[NSMutableString alloc] init] autorelease];
+	NSMutableString *outString = [[NSMutableString alloc] init];
 	[outString appendFormat:@"Stopwatch:	[%@]\n", name];
 	[outString appendFormat:@"	started:	[%@]\n", started];
 	[outString appendFormat:@"	stopped:	[%@]\n", stopped];

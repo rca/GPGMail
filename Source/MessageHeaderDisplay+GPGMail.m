@@ -24,6 +24,7 @@
 #import "NSAttributedString+GPGMail.h"
 #import "MessageHeaderDisplay+GPGMail.h"
 #import "MessageContentController+GPGMail.h"
+#import "EmailViewController.h"
 
 @interface NSAttributedString (NSAttributedString_MoreExtensions)
 
@@ -89,7 +90,6 @@
     // Set is an an ivar of MessageHeaderDisplay so it's released, once
     // the Message Header Display is closed.
     [self setIvar:@"AttachmentController" value:attachmentController];
-    [attachmentController release];
 }
 
 - (void)_showSignaturePanel {
@@ -164,7 +164,7 @@
     if(isPGPEncrypted) {
         NSImage *encryptedBadge = message.PGPDecrypted ? [NSImage imageNamed:@"NSLockUnlockedTemplate"] : [NSImage imageNamed:@"NSLockLockedTemplate"];
         NSString *linkID = message.PGPDecrypted ? nil : @"gpgmail://decrypt";
-        NSAttributedString *encryptAttachmentString = [NSAttributedString attributedStringWithAttachment:[[[NSTextAttachment alloc] init] autorelease] 
+        NSAttributedString *encryptAttachmentString = [NSAttributedString attributedStringWithAttachment:[[NSTextAttachment alloc] init] 
                                                                                                    image:encryptedBadge
                                                                                                     link:linkID];
         [securityHeader appendAttributedString:[NSAttributedString attributedStringWithString:@"\t"]];
@@ -196,7 +196,7 @@
     [securityHeader appendAttributedString:[NSAttributedString attributedStringWithString:@"\n"]];
     viewingState.headerSecurityString = securityHeader;
     
-    return [securityHeader autorelease];
+    return securityHeader;
 }
 
 - (NSAttributedString *)securityHeaderAttachmentsPartForMessage:(Message *)message {
@@ -205,7 +205,7 @@
     BOOL singular = message.numberOfPGPAttachments > 1 ? NO : YES;
     
     NSMutableAttributedString *securityHeaderAttachmentsPart = [[NSMutableAttributedString alloc] init];
-    [securityHeaderAttachmentsPart appendAttributedString:[NSAttributedString attributedStringWithAttachment:[[[NSTextAttachment alloc] init] autorelease] image:[NSImage imageNamed:@"attachment_header"] link:@"gpgmail://show-attachments"]];
+    [securityHeaderAttachmentsPart appendAttributedString:[NSAttributedString attributedStringWithAttachment:[[NSTextAttachment alloc] init] image:[NSImage imageNamed:@"attachment_header"] link:@"gpgmail://show-attachments"]];
     
     
     for(MimePart *attachment in message.PGPAttachments) {
@@ -233,7 +233,7 @@
     
     [securityHeaderAttachmentsPart appendAttributedString:[NSAttributedString attributedStringWithString:[NSString stringWithFormat:@"%li %@", (long)message.numberOfPGPAttachments, attachmentPart]]];
     
-    return [securityHeaderAttachmentsPart autorelease];
+    return securityHeaderAttachmentsPart;
 }
 
 - (NSAttributedString *)securityHeaderSignaturePartForMessage:(Message *)message {
@@ -301,7 +301,7 @@
     }
     
     NSSet *signerLabels = [NSSet setWithArray:[message PGPSignatureLabels]];
-    NSAttributedString *signedAttachmentString = [NSAttributedString attributedStringWithAttachment:[[[NSTextAttachment alloc] init] autorelease] 
+    NSAttributedString *signedAttachmentString = [NSAttributedString attributedStringWithAttachment:[[NSTextAttachment alloc] init] 
                                                                                               image:signedImage 
                                                                                                link:@"gpgmail://show-signature"];
     
@@ -313,7 +313,7 @@
 		[signerLabelsString appendFormat:@" (%@)", [[signerLabels allObjects] componentsJoinedByString:@", "]];
     
 	[securityHeaderSignaturePart appendAttributedString:[NSAttributedString attributedStringWithString:signerLabelsString]];
-    return [securityHeaderSignaturePart autorelease];
+    return securityHeaderSignaturePart;
 }
 
 @end

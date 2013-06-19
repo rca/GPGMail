@@ -41,11 +41,11 @@
 @property (nonatomic, assign) BOOL fullscreen;
 @property (nonatomic, assign) NSRect nonFullScreenFrame;
 
-@property (nonatomic, retain) NSPopUpButton *popup;
-@property (nonatomic, retain) NSImageView *arrow;
-@property (nonatomic, retain) NSTextField *label;
+@property (nonatomic, strong) NSPopUpButton *popup;
+@property (nonatomic, strong) NSImageView *arrow;
+@property (nonatomic, strong) NSTextField *label;
 
-@property (nonatomic, retain) NSMapTable *attributedTitlesCache;
+@property (nonatomic, strong) NSMapTable *attributedTitlesCache;
 
 @end
 
@@ -55,25 +55,11 @@
             nonFullScreenFrame = _nonFullScreenFrame, securityMethod = _securityMethod,
             delegate = _delegate, label = _label, attributedTitlesCache = _attributedTitlesCache;
 
-- (void)dealloc {
-    _delegate = nil;
-    [_popup release];
-    _popup = nil;
-    [_arrow release];
-    _arrow = nil;
-    [_label release];
-    _label = nil;
-    [_attributedTitlesCache release];
-    _attributedTitlesCache = nil;
-    
-    [super dealloc];
-}
-
 - (id)init {
     self = [super initWithFrame:NSMakeRect(0.0f, 0.0f, GMSMA_DEFAULT_WIDTH, GMSMA_DEFAULT_HEIGHT)];
     if(self) {
         self.autoresizingMask = NSViewMinYMargin | NSViewMinXMargin;
-        _attributedTitlesCache = [[NSMapTable mapTableWithStrongToStrongObjects] retain];
+        _attributedTitlesCache = [NSMapTable mapTableWithStrongToStrongObjects];
         [self _configurePopupWithSecurityMethods:@[@"OpenPGP", @"S/MIME"]];
         [self _configureArrow];
     }
@@ -116,13 +102,11 @@
     
     [self addSubview:label];
     self.label = label;
-    [label release];
     
     // Add the popup as subview.
     [self addSubview:popup];
     
     self.popup = popup;
-    [popup release];
     
     // Update the label value and center it.
     [self updateAndCenterLabelForItem:nil];
@@ -146,7 +130,6 @@
     
     self.arrow = imageView;
     
-    [imageView release];
 }
 
 - (void)configureForFullScreenWindow:(NSWindow *)window {
@@ -178,9 +161,7 @@
 - (void)configureForWindow:(NSWindow *)window {
     DebugLog(@"Exit fullscreen: re-add security method accessory view");
     self.fullscreen = NO;
-    [self retain];
     [self removeFromSuperview];
-    [self release];
     
     NSRect arrowFrame = self.arrow.frame;
     arrowFrame.origin.y = 4.0f;
@@ -274,21 +255,19 @@
     NSMutableParagraphStyle *mutParaStyle=[[NSMutableParagraphStyle alloc] init];
     [mutParaStyle setAlignment:NSLeftTextAlignment];
     
-    NSMutableDictionary *attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                         font ,NSFontAttributeName,
                                         shadow, NSShadowAttributeName, color,
                                         NSForegroundColorAttributeName, mutParaStyle, NSParagraphStyleAttributeName,
-                                        nil] autorelease];
-    [mutParaStyle release];
+                                        nil];
     // The shadow object has been assigned to the dictionary, so release
-    [shadow release];
     // Create a new attributed string with your attributes dictionary attached
     NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title
                                                                           attributes:attributes];
     
     [self.attributedTitlesCache setObject:attributedTitle forKey:cacheID];
     
-    return [attributedTitle autorelease];
+    return attributedTitle;
 }
 
 - (void)updateAndCenterLabelForItem:(NSMenuItem *)item {
@@ -343,7 +322,7 @@
     
     *strokeColor = [NSColor colorWithDeviceRed:redStart/255.0f green:greenStart/255.0f blue:blueStart/255.0f alpha:1.0];
     
-    return [gradient autorelease];
+    return gradient;
 }
 
 - (NSGradient *)gradientPGPWithStrokeColor:(NSColor **)strokeColor {
@@ -370,7 +349,7 @@
     
     *strokeColor = [NSColor colorWithDeviceRed:0/255.0f green:greenStart/255.0f blue:0/255.0f alpha:1.0];
     
-    return [gradient autorelease];
+    return gradient;
 }
 
 - (NSGradient *)gradientNotActiveWithStrokeColor:(NSColor **)strokeColor {
@@ -400,7 +379,7 @@
     
     *strokeColor = [NSColor colorWithDeviceRed:greyStart/255.0f green:greyStart/255.0f blue:greyStart/255.0f alpha:1.0];
     
-    return [gradient autorelease];
+    return gradient;
 }
 
 - (void)setActive:(BOOL)active {

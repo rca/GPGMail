@@ -90,6 +90,6 @@
 /**
  Contains all GPG keys available.
  */
-@property (nonatomic, retain, readonly) NSMutableSet *allKeys;
+@property (nonatomic, strong, readonly) NSMutableSet *allKeys;
 
 @end

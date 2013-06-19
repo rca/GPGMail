@@ -322,7 +322,6 @@
 			if(name == tnefAttachmentRenderingData) {
 				if(attachmentData != nil) {
 					[attachments addObject:attachmentData];
-					[attachmentData release];
 					attachmentData = nil;
 				}
 				attachmentData = [[NSMutableData alloc] init];
@@ -366,14 +365,18 @@
 }
 
 - (void)enumerateSubpartsWithBlock:(void (^)(MimePart *))partBlock {
-    __block void (^_walkParts)(MimePart *);
-    _walkParts = ^(MimePart *currentPart) {
+    __block void (^walkParts)(MimePart *);
+    __block void (^__weak weakWalkParts)(MimePart *);
+	
+	walkParts = ^(MimePart *currentPart) {
         partBlock(currentPart);
         for(MimePart *tmpPart in [currentPart subparts]) {
-            _walkParts(tmpPart);
+            NSAssert(weakWalkParts != NULL && weakWalkParts != nil, @"Fuck, this should not be nil");
+			weakWalkParts(tmpPart);
         }
     };
-    _walkParts(self);
+    weakWalkParts = walkParts;
+	walkParts(self);
 }
 
 - (MimePart *)topPart {
@@ -658,7 +661,6 @@
         NSMutableData *newData = [NSMutableData data];
         NSString *boundary = (NSString *)[MimeBody newMimeBoundary];
         [newData appendData:[boundary dataUsingEncoding:NSUTF8StringEncoding]];
-        [boundary release];
         [newData appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
         NSRange boundaryStart = [data rangeOfData:[@"--Apple-Mail=_" dataUsingEncoding:NSUTF8StringEncoding] options:0 range:NSMakeRange(0, [data length])];
         NSRange boundaryEnd = [data rangeOfData:[@"\n" dataUsingEncoding:NSUTF8StringEncoding] options:0 range:NSMakeRange(boundaryStart.location, [data length] - boundaryStart.location)];
@@ -807,7 +809,6 @@
 	}
 	
 	
-	[gpgc release];
 	
     // Last, store the error itself.
     self.PGPError = error;
@@ -908,7 +909,6 @@
     error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:nil title:title helpTag:nil 
                             userInfo:userInfo];
     
-    [userInfo release];
     
     return error;
 }
@@ -1054,7 +1054,6 @@
                                 userInfo:userInfo];
 	}
     
-    [userInfo release];
     
     return error;
 }
@@ -1174,7 +1173,6 @@
         self.PGPPartlyEncrypted = self.PGPEncrypted;
     }
     
-    [partData release];
     
     return self.PGPDecryptedData;
 }
@@ -1210,7 +1208,6 @@
             // Convert the data to UTF-8.
             NSString *decryptedString = [[NSString alloc] initWithData:partDecryptedData encoding:encoding];
             partDecryptedData = [decryptedString dataUsingEncoding:NSUTF8StringEncoding];
-            [decryptedString release];
         }
 		
         // Part decrypted data is always an NSData object,
@@ -1332,7 +1329,6 @@
     
     self.PGPVerifiedData = signedData;
     
-    [gpgc release];
 }
 
 - (NSStringEncoding)bestStringEncoding {
@@ -1392,7 +1388,6 @@
     }
     
     if(![before length] && ![after length]) {
-        [partData release];
         return signedData;
     }
     
@@ -1402,7 +1397,7 @@
     [partData appendData:[whitespaceAfter dataUsingEncoding:bestEncoding]];
     [partData appendData:[after dataUsingEncoding:bestEncoding]];
     
-    return [partData autorelease];
+    return partData;
 }
 
 - (void)MAVerifySignature {
@@ -1619,7 +1614,7 @@
 }
 
 - (NSArray *)PGPSignatures {
-    return [[[self getIvar:@"PGPSignatures"] retain] autorelease];
+    return [self getIvar:@"PGPSignatures"];
 }
 
 - (void)setPGPError:(MFError *)PGPError {
@@ -1627,7 +1622,7 @@
 }
 
 - (MFError *)PGPError {
-    return [[[self getIvar:@"PGPError"] retain] autorelease];
+    return [self getIvar:@"PGPError"];
 }
 
 - (void)setPGPDecryptedData:(NSData *)PGPDecryptedData {
@@ -1635,7 +1630,7 @@
 }
 
 - (NSData *)PGPDecryptedData {
-    return [[[self getIvar:@"PGPDecryptedData"] retain] autorelease];
+    return [self getIvar:@"PGPDecryptedData"];
 }
 
 - (void)setPGPDecryptedContent:(NSString *)PGPDecryptedContent {
@@ -1643,7 +1638,7 @@
 }
 
 - (NSString *)PGPDecryptedContent {
-    return [[[self getIvar:@"PGPDecryptedContent"] retain] autorelease];
+    return [self getIvar:@"PGPDecryptedContent"];
 }
 
 - (void)setPGPDecryptedBody:(MessageBody *)PGPDecryptedBody {
@@ -1651,7 +1646,7 @@
 }
 
 - (MessageBody *)PGPDecryptedBody {
-    return [[[self getIvar:@"PGPDecryptedBody"] retain] autorelease];
+    return [self getIvar:@"PGPDecryptedBody"];
 }
 
 - (void)setPGPVerifiedContent:(NSString *)PGPVerifiedContent {
@@ -1659,7 +1654,7 @@
 }
 
 - (NSString *)PGPVerifiedContent {
-    return [[[self getIvar:@"PGPVerifiedContent"] retain] autorelease];
+    return [self getIvar:@"PGPVerifiedContent"];
 }
 
 - (void)setPGPVerifiedData:(NSData *)PGPVerifiedData {
@@ -1667,7 +1662,7 @@
 }
 
 - (NSData *)PGPVerifiedData {
-    return [[[self getIvar:@"PGPVerifiedData"] retain] autorelease];
+    return [self getIvar:@"PGPVerifiedData"];
 }
 
 
@@ -1765,17 +1760,14 @@
     if([self bodyParameterForKey:@"charset"])
         [contentTypeString appendFormat:@"; charset=\"%@\"", [self bodyParameterForKey:@"charset"]];
     [headers setHeader:[contentTypeString dataUsingEncoding:NSASCIIStringEncoding] forKey:@"Content-Type"];
-    [contentTypeString release];
     if(self.contentTransferEncoding)
         [headers setHeader:self.contentTransferEncoding forKey:@"Content-Transfer-Encoding"];
 
     NSMutableData *completeMessageData = [[NSMutableData alloc] init];
     [completeMessageData appendData:[headers encodedHeadersIncludingFromSpace:NO]];
     [completeMessageData appendData:messageData];
-    [headers release];
 
     Message *message = [Message messageWithRFC822Data:completeMessageData];
-    [completeMessageData release];
 
     return message;
 }
@@ -1814,7 +1806,7 @@
 }
 
 
-- (id)MANewEncryptedPartWithData:(NSData *)data recipients:(id)recipients encryptedData:(NSData **)encryptedData {
+- (id)MANewEncryptedPartWithData:(NSData *)data recipients:(id)recipients encryptedData:(NSData **)encryptedData NS_RETURNS_RETAINED {
 //    DebugLog(@"[DEBUG] %s enter", __PRETTY_FUNCTION__);
     // First thing todo, check if an address with the gpg-mail prefix is found.
     // If not, S/MIME is wanted.
@@ -1882,7 +1874,6 @@
     NSMutableSet *flattenedNormalKeyList = [self flattenedKeyList:normalKeyList];
     NSMutableSet *flattenedBCCKeyList = [self flattenedKeyList:bccKeyList];
     
-	[normalKeyList release];
 	
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.useArmor = YES;
@@ -1904,7 +1895,7 @@
         return nil;
     }
     @finally {
-        [gpgc release];
+        gpgc = nil;
     }
 
     // 1. Create a new mime part for the encrypted data.
@@ -1929,7 +1920,7 @@
 
 // TODO: Translate the error message if creating the signature fails.
 //       At the moment the standard S/MIME message is used.
-- (id)MANewSignedPartWithData:(id)data sender:(id)sender signatureData:(id *)signatureData {
+- (id)MANewSignedPartWithData:(id)data sender:(id)sender signatureData:(id *)signatureData NS_RETURNS_RETAINED {
     // If sender doesn't show any injected header values, S/MIME is wanted,
     // hence the original method called.
     if(![@"from" isEqualTo:[sender valueForFlag:@"recipientType"]]) {
@@ -1986,7 +1977,7 @@
         return nil;
     }
     @finally {
-        [gpgc release];
+        gpgc = nil;
     }
 
     if(hashAlgorithm) {
@@ -2075,7 +2066,7 @@
 		@throw e;
     }
     @finally {
-        [gpgc release];
+        gpgc = nil;
     }
     
     return signedData;

@@ -47,12 +47,12 @@
 /* Copy the version into the pasteboard */
 - (IBAction)copyVersionInfo:(id)sender;
 
-@property (readonly) NSString *copyright, *versionDescription, *gpgStatusToolTip, *gpgStatusTitle;
-@property (readonly) NSAttributedString *credits, *websiteLink, *buildNumberDescription;
-@property (readonly) GPGMailBundle *bundle;
-@property (readonly) SUUpdater *updater;
-@property (readonly) NSImage *gpgStatusImage;
-@property (readonly) GPGOptions *options;
+@property (weak, readonly) NSString *copyright, *versionDescription, *gpgStatusToolTip, *gpgStatusTitle;
+@property (weak, readonly) NSAttributedString *credits, *websiteLink, *buildNumberDescription;
+@property (weak, readonly) GPGMailBundle *bundle;
+@property (weak, readonly) SUUpdater *updater;
+@property (weak, readonly) NSImage *gpgStatusImage;
+@property (weak, readonly) GPGOptions *options;
 
 
 @end

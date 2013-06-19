@@ -185,12 +185,10 @@
     copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
 
     [self setIvar:@"originalCleanHeaders" value:copiedCleanHeaders];
-    [copiedCleanHeaders release];
     // If isDraft is set the cleanHeaders are an NSDictionary instead of an NSMutableDictionary.
     // Using mutableCopy they are converted into an NSMutableDictionary.
     copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
     [self setValue:copiedCleanHeaders forKey:@"_cleanHeaders"];
-    [copiedCleanHeaders release];
     
     // Inject the headers needed in newEncryptedPart and newSignedPart.
     [self _addGPGFlaggedStringsToHeaders:[(ComposeBackEnd *)self cleanHeaders] forEncrypting:shouldPGPEncrypt forSigning:shouldPGPSign];
@@ -220,10 +218,8 @@
 			
 			NSAttributedString *newline = [[NSAttributedString alloc] initWithString:@"\n"];
 			[newPlainText appendAttributedString:newline];
-			[newline release];
 			
 			contents.plainText = newPlainText;
-			[newPlainText release];
 		}
 	}
     
@@ -310,7 +306,7 @@
 				GPGDebugLog(@"Exception during exporting keys: %@", exception);
 			}
 			@finally {
-				[gpgc release];
+				gpgc = nil;
 			}
 		}
 		
@@ -329,7 +325,6 @@
     // contains the data of the entire message including the header data.
     // Not sure why it's done this way, but HECK it works!
     [outgoingMessage setValue:[newBodyData valueForKey:@"_parentData"] forKey:@"_rawData"];
-    [newBodyData release];
     
     if(!isDraft)
         [GMSecurityHistory addEntryForSender:((ComposeBackEnd *)self).sender recipients:[((ComposeBackEnd *)self) allRecipients] securityMethod:GPGMAIL_SECURITY_METHOD_OPENPGP didSign:shouldPGPSign didEncrypt:shouldPGPEncrypt];
@@ -471,14 +466,14 @@
     }
 
     CFMutableDictionaryRef partBodyMapRef = CFDictionaryCreateMutable(NULL, 0, NULL, NULL);
-    CFDictionaryAddValue(partBodyMapRef, topPart, topData);
+    CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(topPart), (__bridge const void *)(topData));
     if(shouldBeMIME) {
-        CFDictionaryAddValue(partBodyMapRef, versionPart, versionData);
-        CFDictionaryAddValue(partBodyMapRef, dataPart, encryptedData);
-		if (keysToAttach) CFDictionaryAddValue(partBodyMapRef, keysPart, keysToAttach);
+        CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(versionPart), (__bridge const void *)(versionData));
+        CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(dataPart), (__bridge const void *)(encryptedData));
+		if (keysToAttach) CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(keysPart), (__bridge const void *)(keysToAttach));
     }
 
-    NSMutableDictionary *partBodyMap = (NSMutableDictionary *)partBodyMapRef;
+    NSMutableDictionary *partBodyMap = (__bridge NSMutableDictionary *)partBodyMapRef;
     // The body is done, now on to updating the headers since we'll use the original headers
     // but have to change the top part headers.
     // And also add our own special GPGMail header.
@@ -488,7 +483,6 @@
     for(id key in [topPart bodyParameterKeys])
         [contentTypeData appendData:[[NSString stringWithFormat:@"\n\t%@=\"%@\";", key, [topPart bodyParameterForKey:key]] dataUsingEncoding:NSASCIIStringEncoding]];
     [headers setHeader:contentTypeData forKey:@"content-type"];
-    [contentTypeData release];
     [headers setHeader:[GPGMailBundle agentHeader] forKey:@"x-pgp-agent"];
     [headers setHeader:@"7bit" forKey:@"content-transfer-encoding"];
     [headers removeHeaderForKey:@"content-disposition"];
@@ -508,15 +502,7 @@
     // Now the mime parts.
     MessageWriter *messageWriter = [[MessageWriter alloc] init];
     [messageWriter appendDataForMimePart:topPart toData:bodyData withPartData:partBodyMap];
-    [messageWriter release];
-    if(shouldBeMIME) {
-        [versionPart release];
-        [dataPart release];
-		if (keysToAttach) [keysPart release];
-    }
-    [topPart release];
     CFRelease(partBodyMapRef);
-    [boundary release];
     // Contains the range, which separates the mail headers
     // from the actual mime content.
     // JUST FOR INFO: messageDataIncludingFromSpace: returns an instance of NSMutableData, so basically
@@ -524,7 +510,6 @@
     NSRange contentRange = NSMakeRange([headerData length],
                                        ([bodyData length] - [headerData length]));
     Subdata *contentSubdata = [[Subdata alloc] initWithParent:bodyData range:contentRange];
-    [bodyData release];
     return contentSubdata;
 }
 
@@ -548,8 +533,6 @@
     if(shouldSign) {
         signedData = [topPart inlineSignedDataForData:data sender:[headers firstHeaderForKey:@"from"]];
         if (!signedData) {
-            [boundary release];
-            [topPart release];
             return nil;
         }
         topData = signedData;
@@ -562,14 +545,10 @@
         [recipients addObjectsFromArray:[headers headersForKey:@"cc"]];
         [recipients addObjectsFromArray:[headers headersForKey:@"bcc"]];
         newlyEncryptedPart = [topPart newEncryptedPartWithData:signedData recipients:recipients encryptedData:&encryptedData];
-        [recipients release];
         topData = encryptedData;
     }
 
     if(!topData) {
-        [boundary release];
-        [topPart release];
-        [newlyEncryptedPart release];
         return nil;
     }
     
@@ -582,7 +561,6 @@
     for(id key in [topPart bodyParameterKeys])
         [contentTypeData appendData:[[NSString stringWithFormat:@"\n\t%@=\"%@\";", key, [topPart bodyParameterForKey:key]] dataUsingEncoding:NSASCIIStringEncoding]];
     [headers setHeader:contentTypeData forKey:@"content-type"];
-    [contentTypeData release];
     [headers setHeader:[GPGMailBundle agentHeader] forKey:@"x-pgp-agent"];
     [headers setHeader:topPart.contentTransferEncoding forKey:@"content-transfer-encoding"];
     [headers removeHeaderForKey:@"content-disposition"];
@@ -600,8 +578,6 @@
     // First add the header data.
     [bodyData appendData:headerData];
     [bodyData appendData:topData];
-    [topPart release];
-    [boundary release];
     // Contains the range, which separates the mail headers
     // from the actual mime content.
     // JUST FOR INFO: messageDataIncludingFromSpace: returns an instance of NSMutableData, so basically
@@ -609,8 +585,6 @@
     NSRange contentRange = NSMakeRange([headerData length], 
                                        ([bodyData length] - [headerData length]));
     Subdata *contentSubdata = [[Subdata alloc] initWithParent:bodyData range:contentRange];
-    [bodyData release];
-    [newlyEncryptedPart release];
     return contentSubdata;
 }
 
@@ -620,7 +594,6 @@
     // If no recipients are set, encrypt is false.
     // For some reason, we're running into zombies if we don't do
     // this.
-    [self retain];
     DebugLog(@"Recipients: %@", recipients);
     
     sender = [sender gpgNormalizedEmail];
@@ -713,10 +686,7 @@
     [self setIvar:@"EncryptIsPossible" value:@(canEncrypt)];
     [self setIvar:@"SignIsPossible" value:@(canSign)];
     
-    [securityHistory release];
-    [mutableRecipients release];
     
-    [self release];
     
     return canEncrypt;
 }
@@ -727,7 +697,6 @@
     // for signing.
     // For some reason, we're running into zombies if we don't do
     // this.
-    [self retain];
     BOOL canSMIMESign = [self MACanSignFromAddress:address];
     
     DebugLog(@"Can sign S/MIME from address: %@? %@", address, canSMIMESign ? @"YES" : @"NO");
@@ -743,7 +712,6 @@
     // The correct status is stored for later lookup in canEncrypt.
     [self setIvar:@"CanPGPSign" value:@(canPGPSign)];
     [self setIvar:@"CanSMIMESign" value:@(canSMIMESign)];
-    [self release];
     return YES;
 }
 

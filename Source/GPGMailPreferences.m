@@ -30,6 +30,7 @@
 #import "GPGMailPreferences.h"
 #import <Sparkle/Sparkle.h>
 #import "GPGMailBundle.h"
+#import "GMUpdater.h"
 
 #define localized(key) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:(key) table:@"GPGMail"]
 
@@ -50,13 +51,13 @@
 
 - (NSAttributedString *)credits {
 	NSBundle *mailBundle = [NSBundle bundleForClass:[self class]];
-	NSAttributedString *credits = [[[NSAttributedString alloc] initWithURL:[mailBundle URLForResource:@"Credits" withExtension:@"rtf"] documentAttributes:nil] autorelease];
+	NSAttributedString *credits = [[NSAttributedString alloc] initWithURL:[mailBundle URLForResource:@"Credits" withExtension:@"rtf"] documentAttributes:nil];
 
 	return credits;
 }
 
 - (NSAttributedString *)websiteLink {
-	NSMutableParagraphStyle *pStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+	NSMutableParagraphStyle *pStyle = [[NSMutableParagraphStyle alloc] init];
 
 	[pStyle setAlignment:NSRightTextAlignment];
 
@@ -66,7 +67,7 @@
 								NSFontAttributeName: [NSFont fontWithName:@"Lucida Grande" size:9],
 								NSUnderlineStyleAttributeName: @1};
 
-	return [[[NSAttributedString alloc] initWithString:@"http://www.gpgtools.org" attributes:attributes] autorelease];
+	return [[NSAttributedString alloc] initWithString:@"http://www.gpgtools.org" attributes:attributes];
 }	
 
 
@@ -78,7 +79,7 @@
 	NSString *string = [NSString stringWithFormat:@"Build: %@", [GPGMailBundle bundleVersion]];
 	NSDictionary *attributes = @{NSForegroundColorAttributeName: [NSColor grayColor], NSFontAttributeName: [NSFont systemFontOfSize:11]};
 	
-	return [[[NSAttributedString alloc] initWithString:string attributes:attributes] autorelease];
+	return [[NSAttributedString alloc] initWithString:string attributes:attributes];
 }
 
 
@@ -208,7 +209,6 @@
         if(isMartin)
             file = @"Test";
 		[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[[NSBundle bundleForClass:[self class]] URLForResource:file withExtension:@"html"]]];
-		[webView release];
 		displayed = YES;
 		working = NO;
 	};
@@ -290,10 +290,6 @@
 
 - (BOOL)acceptsFirstResponder {
     return YES;
-}
-- (void)dealloc {
-	[viewPositions release];
-	[super dealloc];
 }
 @end
 

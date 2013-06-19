@@ -102,7 +102,6 @@
     if(!lastSelectedItem && [lastSelectedItemIdentifier isEqualToString:preferencesName]) {
         NSToolbarItem *toolbarItem = [[NSToolbarItem alloc] initWithItemIdentifier:preferencesName];
         [preferences toolbarItemClicked:toolbarItem];
-        [toolbarItem release];
     }
     else
         [preferences toolbarItemClicked:lastSelectedItem];

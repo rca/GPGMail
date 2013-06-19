@@ -71,7 +71,7 @@ GPGSignatureView *_sharedInstance;
             [value appendString:@")"];
     }
     
-    return [value autorelease];
+    return value;
 }
 
 - (NSString *)validityDescription {
@@ -121,15 +121,13 @@ GPGSignatureView *_sharedInstance;
 
 - (void)setGpgKey:(GPGKey *)value {
 	if (value != gpgKey) {
-		[gpgKey release];
-		gpgKey = [value retain];
+		gpgKey = value;
 	}
 }
 
 - (void)setSignature:(GPGSignature *)value {
 	if (value != signature) {
-		[signature release];
-		signature = [value retain];
+		signature = value;
 
 		GPGKey *key = nil;
 		if (signature) {
@@ -184,14 +182,14 @@ GPGSignatureView *_sharedInstance;
 		running = 1;
 		[self willChangeValueForKey:@"signatureDescriptions"];
 		[self didChangeValueForKey:@"signatureDescriptions"];
-		[NSApp beginSheet:window modalForWindow:modalWindow modalDelegate:self didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:handler];
+		[NSApp beginSheet:window modalForWindow:modalWindow modalDelegate:self didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:(__bridge void *)(handler)];
 	} else {
 		handler(NSCancelButton);
 	}
 }
 
 - (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
-	((void (^)(NSInteger result))contextInfo)(NSOKButton);
+	((__bridge void (^)(NSInteger result))contextInfo)(NSOKButton);
 }
 
 
@@ -210,12 +208,11 @@ GPGSignatureView *_sharedInstance;
 }
 
 - (NSIndexSet *)signatureIndexes {
-	return [[signatureIndexes retain] autorelease];
+	return signatureIndexes;
 }
 - (void)setSignatureIndexes:(NSIndexSet *)value {
 	if (value != signatureIndexes) {
-		[signatureIndexes release];
-		signatureIndexes = [value retain];
+		signatureIndexes = value;
 		NSUInteger index;
 		if ([value count] > 0 && (index = [value firstIndex]) < [signatures count]) {
 			self.signature = signatures[index];

@@ -118,7 +118,7 @@
 }
 
 - (NSArray *)PGPSignatures {
-    return [[[self getIvar:@"PGPSignatures"] retain] autorelease];
+    return [self getIvar:@"PGPSignatures"];
 }
 
 - (void)setPGPErrors:(NSArray *)errors {
@@ -126,7 +126,7 @@
 }
 
 - (NSArray *)PGPErrors {
-    return [[[self getIvar:@"PGPErrors"] retain] autorelease];
+    return [self getIvar:@"PGPErrors"];
 }
 
 - (void)setPGPAttachments:(NSArray *)attachments {
@@ -134,7 +134,7 @@
 }
 
 - (NSArray *)PGPAttachments {
-    return [[[self getIvar:@"PGPAttachments"] retain] autorelease];
+    return [self getIvar:@"PGPAttachments"];
 }
 
 - (NSArray *)PGPSignatureLabels {
@@ -485,7 +485,6 @@
         packets = [GPGPacket packetsWithData:data];
     }
     @catch (NSException *exception) {
-        [keyIDs release];
         return NO;
     }
     
@@ -508,8 +507,6 @@
 			DebugLog(@"Passphrase found in cache!");
         }
     }
-    [keyIDs release];
-    [gpgc release];
     
 	BOOL passphraseInCache = nrOfMatchingSecretKeys + nrOfKeysWithPassphraseInCache	!= 0 && nrOfMatchingSecretKeys == nrOfKeysWithPassphraseInCache ? YES : NO;
 	
