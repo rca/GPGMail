@@ -181,7 +181,6 @@ static BOOL gpgMailWorks = NO;
     __block GPGMailBundle *weakSelf = self;
     dispatch_source_set_event_handler(_checkGPGTimer, ^{
         [weakSelf checkGPG];
-        weakSelf = nil;
     });
     dispatch_resume(_checkGPGTimer);
 }
