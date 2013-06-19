@@ -27,19 +27,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <objc/runtime.h>
-#import <objc/message.h>
 #import <Libmacgpg/Libmacgpg.h>
-#import "Message.h"
+#import <objc/message.h>
+#import <objc/runtime.h>
 #import "CCLog.h"
-#import "MVMailBundle.h"
-#import "GPGMailBundle.h"
 #import "GMCodeInjector.h"
-#import "GMUpdater.h"
-#import "GMMessageRulesApplier.h"
 #import "GMKeyManager.h"
+#import "GMMessageRulesApplier.h"
+#import "GMUpdater.h"
+#import "GPGMailBundle.h"
 #import "GPGMailPreferences.h"
+#import "MVMailBundle.h"
+#import "Message.h"
 #import "NSString+GPGMail.h"
+
+
+@interface GPGMailBundle ()
+
+@property GPGErrorCode gpgStatus;
+@property (nonatomic, strong) GMKeyManager *keyManager;
+
+@end
+
+
+#pragma mark Constants and global variables
 
 NSString *GPGMailSwizzledMethodPrefix = @"MA";
 NSString *GPGMailAgent = @"GPGMail %@";
@@ -49,16 +60,14 @@ NSString *gpgErrorIdentifier = @"^~::gpgmail-error-code::~^";
 int GPGMailLoggingLevel = 1;
 static BOOL gpgMailWorks = NO;
 
-@interface GPGMailBundle ()
 
-@property GPGErrorCode gpgStatus;
-@property (nonatomic, strong) GMKeyManager *keyManager;
-
-@end
+#pragma mark GPGMailBundle Implementation
 
 @implementation GPGMailBundle
-
 @synthesize accountExistsForSigning, gpgStatus, updater = _updater;
+
+
+#pragma mark Multiple Installations
 
 + (NSArray *)multipleInstallations {
     NSArray *libraryPaths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSAllDomainsMask, YES);
@@ -93,6 +102,9 @@ static BOOL gpgMailWorks = NO;
     exit(0);
 }
 
+
+#pragma mark Init, dealloc etc.
+
 + (void)initialize {
 	// If one happens to have for any reason (like for example installed GPGMail
     // from the installer, which will reside in /Library and compiled with XCode
@@ -103,6 +115,7 @@ static BOOL gpgMailWorks = NO;
         [self showMultipleInstallationsErrorAndExit:installations];
         return;
     }
+    
     // Make sure the initializer is only run once.
     // Usually is run, for every class inheriting from
     // GPGMailBundle.
@@ -173,18 +186,6 @@ static BOOL gpgMailWorks = NO;
     dispatch_release(_checkGPGTimer);
 }
 
-- (void)startGPGChecker {
-    // Periodically check status of gpg.
-    [self checkGPG];
-    _checkGPGTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0));
-    dispatch_source_set_timer(_checkGPGTimer, dispatch_time(DISPATCH_TIME_NOW, 60 * NSEC_PER_SEC), 60 * NSEC_PER_SEC, 10 * NSEC_PER_SEC);
-    __block GPGMailBundle *weakSelf = self;
-    dispatch_source_set_event_handler(_checkGPGTimer, ^{
-        [weakSelf checkGPG];
-    });
-    dispatch_resume(_checkGPGTimer);
-}
-
 - (void)_loadImages {
     /**
      * Loads all images which are used in the GPGMail User interface.
@@ -225,36 +226,32 @@ static BOOL gpgMailWorks = NO;
     
 }
 
-+ (BOOL)hasPreferencesPanel {
-	return YES;             // LEOPARD Invoked on +initialize. Else, invoked from +registerBundle
-}
-
-+ (NSString *)preferencesOwnerClassName {
-	return NSStringFromClass([GPGMailPreferences class]);
-}
-
-+ (NSString *)preferencesPanelName {
-	return GMLocalizedString(@"PGP_PREFERENCES");
-}
-
-+ (BOOL)gpgMailWorks {
-	return gpgMailWorks;
-}
-- (BOOL)gpgMailWorks {
-	return gpgMailWorks;
+- (void)cleanOldPlist {
+    if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_7) {
+        //Diese Methode kann nach dem Release 2.1 gelöscht werden.
+        NSString *oldPlistPath = [@"~/Library/Preferences/org.gpgtools.gpgmail.plist" stringByExpandingTildeInPath];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        if ([fileManager fileExistsAtPath:oldPlistPath]) {
+            NSLog(@"Deleting old org.gpgtools.gpgmail.plist");
+            [fileManager removeItemAtPath:oldPlistPath error:nil];
+        }
+    }
 }
 
 
-+ (NSBundle *)bundle {
-    static NSBundle *bundle;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        bundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+#pragma mark Check and status of GPG.
+
+- (void)startGPGChecker {
+    // Periodically check status of gpg.
+    [self checkGPG];
+    _checkGPGTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0));
+    dispatch_source_set_timer(_checkGPGTimer, dispatch_time(DISPATCH_TIME_NOW, 60 * NSEC_PER_SEC), 60 * NSEC_PER_SEC, 10 * NSEC_PER_SEC);
+    __block GPGMailBundle *weakSelf = self;
+    dispatch_source_set_event_handler(_checkGPGTimer, ^{
+        [weakSelf checkGPG];
     });
-    return bundle;
+    dispatch_resume(_checkGPGTimer);
 }
-
-
 
 - (BOOL)checkGPG {
     self.gpgStatus = (GPGErrorCode)[GPGController testGPG];
@@ -283,19 +280,16 @@ static BOOL gpgMailWorks = NO;
     return NO;
 }
 
-- (void)cleanOldPlist {
-    if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_7) {
-        //Diese Methode kann nach dem Release 2.1 gelöscht werden.
-        NSString *oldPlistPath = [@"~/Library/Preferences/org.gpgtools.gpgmail.plist" stringByExpandingTildeInPath];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        if ([fileManager fileExistsAtPath:oldPlistPath]) {
-            NSLog(@"Deleting old org.gpgtools.gpgmail.plist");
-            [fileManager removeItemAtPath:oldPlistPath error:nil];
-        }
-    }
++ (BOOL)gpgMailWorks {
+	return gpgMailWorks;
 }
 
-#pragma mark "Handling keys"
+- (BOOL)gpgMailWorks {
+	return gpgMailWorks;
+}
+
+
+#pragma mark Handling keys
 
 - (NSSet *)allGPGKeys {
     if (!gpgMailWorks) return nil;
@@ -364,16 +358,26 @@ static BOOL gpgMailWorks = NO;
     return [englishLanguageBundle localizedStringForKey:key value:@"" table:@"GPGMail"];
 }
 
-#pragma mark General Info
+#pragma mark General Infos
+
++ (NSBundle *)bundle {
+    static NSBundle *bundle;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        bundle = [NSBundle bundleForClass:[GPGMailBundle class]];
+    });
+    return bundle;
+}
+
 
 - (NSString *)version {
 	return [[GPGMailBundle bundle] infoDictionary][@"CFBundleShortVersionString"];
 }
 
-/**
- Returns the version of the bundle as string.
- */
 + (NSString *)bundleVersion {
+    /**
+     Returns the version of the bundle as string.
+     */
     return [[[GPGMailBundle bundle] infoDictionary] valueForKey:@"CFBundleVersion"];
 }
 
@@ -385,11 +389,27 @@ static BOOL gpgMailWorks = NO;
     return [NSString stringWithFormat:GPGMailAgent, [self bundleVersion]];
 }
 
+
 + (BOOL)isMountainLion {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wselector"
     return [Message instancesRespondToSelector:@selector(dataSource)];
 #pragma clang diagnostic pop
 }
+
+
++ (BOOL)hasPreferencesPanel {
+    // LEOPARD Invoked on +initialize. Else, invoked from +registerBundle.
+	return YES;
+}
+
++ (NSString *)preferencesOwnerClassName {
+	return NSStringFromClass([GPGMailPreferences class]);
+}
+
++ (NSString *)preferencesPanelName {
+	return GMLocalizedString(@"PGP_PREFERENCES");
+}
+
 
 @end
