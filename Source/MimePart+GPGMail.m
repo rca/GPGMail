@@ -1829,6 +1829,7 @@
 	}
 	
 	BOOL symmetricEncrypt = NO;
+	BOOL doNotPublicEncrypt = NO;
 	
 	GPGKey *senderPublicKey = nil;
 	
@@ -1836,17 +1837,25 @@
 	BOOL doNotEncryptToSelf = [[GPGOptions sharedOptions] boolForKey:@"DoNotEncryptToSelf"];
     NSMutableArray *normalRecipients = [NSMutableArray arrayWithCapacity:1];
     NSMutableArray *bccRecipients = [NSMutableArray arrayWithCapacity:1];
-    for(NSString *recipient in recipients) {
+	
+    for (NSString *recipient in recipients) {
 		NSString *recipientType = [recipient valueForFlag:@"recipientType"];
-        if([recipientType isEqualTo:@"bcc"]) {
+        if ([recipientType isEqualTo:@"bcc"]) {
             [bccRecipients addObject:recipient];
         } else {
 			// If DoNotEncryptToSelf is enabled, don't add the sender to the recipients.
 			// Of course this has the effect that the sent mails can't be read by the sender,
 			// but that's exactly what this option is for.
-			if([recipientType isEqualToString:@"from"]) {
+			if ([recipientType isEqualToString:@"from"]) {
+				
+				// The from recipient can be flagged to indicate symmetric encryption.
 				if ([[recipient valueForFlag:@"symmetricEncrypt"] boolValue]) {
 					symmetricEncrypt = YES;
+					// The from recipient can be flagged to indicate no public key encryption.
+					if ([[recipient valueForFlag:@"doNotPublicEncrypt"] boolValue]) {
+						doNotPublicEncrypt = YES;
+						break;
+					}
 				}
 				
 				if (doNotEncryptToSelf)
@@ -1866,15 +1875,19 @@
 		}
     }
 	
-    // Ask the mail bundle for the GPGKeys matching the email address.
-    NSMutableSet *normalKeyList = [[[GPGMailBundle sharedInstance] publicKeyListForAddresses:normalRecipients] mutableCopy];
-	if(senderPublicKey)
-		[normalKeyList addObject:senderPublicKey];
-    NSMutableSet *bccKeyList = [[GPGMailBundle sharedInstance] publicKeyListForAddresses:bccRecipients];
-	[bccKeyList minusSet:normalKeyList];
-    
-    NSMutableSet *flattenedNormalKeyList = [self flattenedKeyList:normalKeyList];
-    NSMutableSet *flattenedBCCKeyList = [self flattenedKeyList:bccKeyList];
+	NSMutableSet *flattenedNormalKeyList = nil, *flattenedBCCKeyList = nil;
+	
+	if (!doNotPublicEncrypt) {  // We need no keys, if only syymetric is set.
+		// Ask the mail bundle for the GPGKeys matching the email address.
+		NSMutableSet *normalKeyList = [[[GPGMailBundle sharedInstance] publicKeyListForAddresses:normalRecipients] mutableCopy];
+		if(senderPublicKey)
+			[normalKeyList addObject:senderPublicKey];
+		NSMutableSet *bccKeyList = [[GPGMailBundle sharedInstance] publicKeyListForAddresses:bccRecipients];
+		[bccKeyList minusSet:normalKeyList];
+		
+		flattenedNormalKeyList = [self flattenedKeyList:normalKeyList];
+		flattenedBCCKeyList = [self flattenedKeyList:bccKeyList];
+	}
     
 	
     GPGController *gpgc = [[GPGController alloc] init];
@@ -1885,7 +1898,10 @@
     // Eventually add warning for this.
     gpgc.trustAllKeys = YES;
     @try {
-        *encryptedData = [gpgc processData:data withEncryptSignMode:GPGPublicKeyEncrypt | (symmetricEncrypt * GPGSymetricEncrypt) recipients:flattenedNormalKeyList hiddenRecipients:flattenedBCCKeyList];
+		GPGEncryptSignMode encryptMode = doNotPublicEncrypt ? 0 : GPGPublicKeyEncrypt;
+		encryptMode |= symmetricEncrypt ? GPGSymetricEncrypt : 0;
+		
+        *encryptedData = [gpgc processData:data withEncryptSignMode:encryptMode recipients:flattenedNormalKeyList hiddenRecipients:flattenedBCCKeyList];
 		
 		if (gpgc.error) {
 			@throw gpgc.error;
@@ -1894,6 +1910,9 @@
 	@catch(NSException *e) {
 		GPGErrorCode errorCode = [e isKindOfClass:[GPGException class]] ? ((GPGException *)e).errorCode : 1;
         [self failedToEncryptForRecipients:recipients gpgErrorCode:errorCode error:gpgc.error];
+		if (errorCode == GPGErrorCancelled) {
+			return [NSData data];
+		}
         return nil;
     }
     @finally {

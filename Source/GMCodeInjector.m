@@ -78,7 +78,7 @@
                             @"selectors": @[@"backEndDidLoadInitialContent:",
                              @"dealloc",
                              //                             @"windowForMailFullScreen",
-                             @"backEnd:didCancelMessageDeliveryForEncryptionError:"]},
+                             @"backEnd:didCancelMessageDeliveryForEncryptionError:", @"backEnd:didCancelMessageDeliveryForError:"]},
                            @{@"class": @"NSWindow",
                             @"selectors": @[@"toggleFullScreen:"]},
                            @{@"class": @"MessageContentController",

@@ -127,12 +127,10 @@
 }
 
 - (id)MA_makeMessageWithContents:(WebComposeMessageContents *)contents isDraft:(BOOL)isDraft shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt shouldSkipSignature:(BOOL)shouldSkipSignature shouldBePlainText:(BOOL)shouldBePlainText {
-    //TODO: Check shouldSymmetric or so.
-	
 	GPGMAIL_SECURITY_METHOD securityMethod = self.guessedSecurityMethod;
     if(self.securityMethod)
         securityMethod = self.securityMethod;
-    if(securityMethod == GPGMAIL_SECURITY_METHOD_SMIME) {
+    if(securityMethod != GPGMAIL_SECURITY_METHOD_OPENPGP) {
         id ret = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldSign shouldEncrypt:shouldEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
         // If a message has been successfully created, add an entry to the security options history.
         if(ret && !isDraft) {
@@ -145,37 +143,39 @@
     // Mail.app is gonna do the heavy lifting with our GPG encryption method
     // instead of the S/MIME one.
     // After that's done, we only have to extract the encrypted part.
-    BOOL shouldPGPEncrypt = NO;
-    BOOL shouldPGPSign = NO;
+    BOOL shouldPGPEncrypt = shouldEncrypt;
+    BOOL shouldPGPSign = shouldSign;
+	BOOL shouldPGPSymmetric = [[self getIvar:@"shouldSymmetric"] boolValue];
     BOOL shouldPGPInlineSign = NO;
     BOOL shouldPGPInlineEncrypt = NO;
-    // It might not be possible to inline encrypt drafts, since contents.text is nil.
-    // Maybe it's not problem, and simply html should be used. (TODO: Figure that out.)
-    BOOL shouldCreatePGPInlineMessage = [[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPInlineToSend"] && !isDraft;
-    if(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
-        shouldPGPEncrypt = shouldEncrypt;
-        shouldPGPSign = shouldSign;
-    }
-    // If this message is to be saved as draft, shouldEncrypt and shouldSign is always false.
+    BOOL shouldPGPInlineSymmetric = NO;
+	
+	// If this message is to be saved as draft, shouldEncrypt and shouldSign is always false.
     // That's why GPGMail takes the values store by clicking on the signed and encrypt icons.
     if(isDraft && [[GPGOptions sharedOptions] boolForKey:@"OptionallyEncryptDrafts"]) {
         shouldPGPSign = [[self getIvar:@"shouldSign"] boolValue];
         shouldPGPEncrypt = [[self getIvar:@"shouldEncrypt"] boolValue];
     }
 	
+    // It might not be possible to inline encrypt drafts, since contents.text is nil.
+    // Maybe it's not problem, and simply html should be used. (TODO: Figure that out.)
+    BOOL shouldCreatePGPInlineMessage = [[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPInlineToSend"] && !isDraft;
+
+    
 	// If this message is a calendar event which is being sent from iCal without user interaction (ForceSign and ForceEncrypt are NOT set),
 	// it should never be encrypted nor signed.
-	if([self sentActionInvokedFromiCalWithContents:contents] && ![self ivarExists:@"ForceSign"] &&
-	   ![self ivarExists:@"ForceEncrypt"]) {
+	if(![self ivarExists:@"ForceSign"] && ![self ivarExists:@"ForceEncrypt"] &&
+	   [self sentActionInvokedFromiCalWithContents:contents]) {
 		shouldPGPEncrypt = NO;
 		shouldPGPSign = NO;
 		shouldSign = NO;
 		shouldEncrypt = NO;
+		shouldPGPSymmetric = NO;
 	}	
 	
     // At the moment for drafts signing and encrypting is disabled.
     // GPG not enabled, or neither encrypt nor sign are checked, let's get the shit out of here.
-    if(!shouldPGPEncrypt && !shouldPGPSign) {
+    if(!shouldPGPEncrypt && !shouldPGPSign && !shouldPGPSymmetric) {
         OutgoingMessage *outMessage = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldSign shouldEncrypt:shouldEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
         return outMessage;
     }
@@ -197,9 +197,12 @@
     copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
     [self setValue:copiedCleanHeaders forKey:@"_cleanHeaders"];
     
-    // Inject the headers needed in newEncryptedPart and newSignedPart.
-    [self _addGPGFlaggedStringsToHeaders:[(ComposeBackEnd *)self cleanHeaders] forEncrypting:shouldPGPEncrypt forSigning:shouldPGPSign];
 
+	
+	// Inject the headers needed in newEncryptedPart and newSignedPart.
+	[self _addGPGFlaggedStringsToHeaders:[(ComposeBackEnd *)self cleanHeaders] forEncrypting:shouldPGPEncrypt forSigning:shouldPGPSign forSymmetric:shouldPGPSymmetric];
+
+	
     // If the message is supposed to be encrypted or signed inline,
     // GPGMail does that directly in the Compose back end, and not use
     // the message write to create it, yet, to get an OutgoingMessage to work with.
@@ -209,15 +212,17 @@
     if(shouldCreatePGPInlineMessage) {
         shouldPGPInlineSign = shouldPGPSign;
         shouldPGPInlineEncrypt = shouldPGPEncrypt;
+		shouldPGPInlineSymmetric = shouldPGPSymmetric;
         shouldPGPSign = NO;
         shouldPGPEncrypt = NO;
+		shouldPGPSymmetric = NO;
     }
 	
 	
 	
 	// If we are only signing and there isn't a newline at the end of the plaintext, append it.
 	// We need this to prevent servers from doin this.
-	if (shouldPGPSign && ! shouldPGPEncrypt) {
+	if (shouldPGPSign && !shouldPGPEncrypt && !shouldPGPSymmetric) {
 		NSAttributedString *plainText = contents.plainText;
 		NSString *plainString = plainText.string;
 		if ([plainString characterAtIndex:plainString.length - 1] != '\n') {
@@ -230,12 +235,14 @@
 		}
 	}
     
+	
     // Drafts store the messages with a very minor set of headers and mime types
     // not suitable for encrypted/signed messages. But fortunately, Mail.app doesn't
     // have a problem if a normal message is stored as draft, so GPGMail just needs
     // to disable the isDraft parameter, Mail.app will take care of the rest.
-    OutgoingMessage *outgoingMessage = [self MA_makeMessageWithContents:contents isDraft:NO shouldSign:shouldPGPSign shouldEncrypt:shouldPGPEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
+    OutgoingMessage *outgoingMessage = [self MA_makeMessageWithContents:contents isDraft:NO shouldSign:shouldPGPSign shouldEncrypt:shouldPGPEncrypt || shouldPGPSymmetric shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
 
+	
 	
     // If there was an error creating the outgoing message it's gonna be nil
     // and the error is stored away for later display.
@@ -289,7 +296,7 @@
     // Signing only results in an outgoing message which can be sent
     // out exactly as created by Mail.app. No need to further modify.
     // Only encrypted messages have to be adjusted.
-    if(shouldPGPSign && !shouldPGPEncrypt && !shouldCreatePGPInlineMessage) {
+    if(shouldPGPSign && !shouldPGPEncrypt && !shouldPGPSymmetric && !shouldCreatePGPInlineMessage) {
         if(!isDraft)
             [GMSecurityHistory addEntryForSender:((ComposeBackEnd *)self).sender recipients:[((ComposeBackEnd *)self) allRecipients] securityMethod:GPGMAIL_SECURITY_METHOD_OPENPGP didSign:shouldPGPSign didEncrypt:shouldPGPEncrypt];
         return outgoingMessage;
@@ -298,6 +305,7 @@
 
     Subdata *newBodyData = nil;
     
+	// Check for preferences here, and set mime or plain version
     if(!shouldCreatePGPInlineMessage) {
 		
 		// Get the signer key and export it, so we can attach it to the message.
@@ -317,10 +325,9 @@
 			}
 		}
 		
-        // Check for preferences here, and set mime or plain version.
+        
         newBodyData = [self _newPGPBodyDataWithEncryptedData:encryptedData headers:[outgoingMessage headers] shouldBeMIME:YES keysToAttach:nil /*keysToAttach*/];
-    }
-    else {
+    } else {
         newBodyData = [self _newPGPInlineBodyDataWithData:[[contents.plainText string] dataUsingEncoding:NSUTF8StringEncoding] headers:[outgoingMessage headers] shouldSign:shouldPGPInlineSign shouldEncrypt:shouldPGPInlineEncrypt];
     }
 
@@ -366,7 +373,7 @@
     [(MailDocumentEditor *)[(ComposeBackEnd *)self delegate] backEnd:self didCancelMessageDeliveryForEncryptionError:error];
 }
 
-- (void)_addGPGFlaggedStringsToHeaders:(NSMutableDictionary *)headers forEncrypting:(BOOL)forEncrypting forSigning:(BOOL)forSigning {
+- (void)_addGPGFlaggedStringsToHeaders:(NSMutableDictionary *)headers forEncrypting:(BOOL)forEncrypting forSigning:(BOOL)forSigning forSymmetric:(BOOL)forSymmetric {
     // To decide whether S/MIME or PGP operations should be performed on
     // the message, different headers have to be flagged.
     //
@@ -379,8 +386,11 @@
     //   (the "from" value is not inlucded in the recipients list passed to the encryption
     //    method)
 	GPGFlaggedString *flaggedString = [headers[@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"];
-	if ([[self getIvar:@"shouldSymmetric"] boolValue]) {
+	if (forSymmetric) {
 		[flaggedString setValue:@YES forFlag:@"symmetricEncrypt"];
+		if (!forEncrypting) {
+			[flaggedString setValue:@YES forFlag:@"doNotPublicEncrypt"];
+		}
 	}
 
     if(forSigning) {
