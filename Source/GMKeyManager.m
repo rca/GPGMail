@@ -241,12 +241,13 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 #pragma mark - Getters for lazy key cache loading.
 
 - (NSMutableSet *)allKeys {
-	typeof(self) __block weakSelf = self;
+	typeof(self) __weak weakSelf = self;
 	
 	dispatch_sync(_keysUpdateQueue, ^{
-		if(!_allKeys) {
-			_allKeys = [[NSMutableSet alloc] init];
-			[weakSelf updateKeys:nil onQueue:NULL asynchronously:NO];
+		typeof(weakSelf) __strong strongSelf = weakSelf;
+		if(!strongSelf->_allKeys) {
+			strongSelf->_allKeys = [[NSMutableSet alloc] init];
+			[strongSelf updateKeys:nil onQueue:NULL asynchronously:NO];
 		}
 	});
 	return _allKeys;
