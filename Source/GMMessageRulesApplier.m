@@ -27,6 +27,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import "CCLog.h"
 #import "GMMessageRulesApplier.h"
 #import "Message+GPGMail.h"
 #import "MessageStore.h"
@@ -53,8 +54,19 @@
 	id messageID = [message messageID];
 	typeof(self) __weak weakSelf = self;
 	
+	// EWSMessage seems to be a special type of message related
+	// to exchange. Don't apply rules for those messages, not worth
+	// it. Don't even have a message id.
+	if([message isKindOfClass:[NSClassFromString(@"EWSMessage") class]])
+		return;
+	
 	dispatch_async(_rulesQueue, ^{
-		__strong typeof(self) strongSelf = weakSelf;
+		typeof(weakSelf) __strong strongSelf = weakSelf;
+		// Is it possible that messages don't have a message ID.
+		if(!messageID) {
+			DebugLog(@"[GPGMail] %@ Message has no ID! Message: %@ - Class: %@", NSStringFromSelector(_cmd), message, [message class]);
+			return;
+		}
 		if(![strongSelf.messages containsObject:messageID] || isEncrypted) {
 			[strongSelf.messages addObject:messageID];
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
