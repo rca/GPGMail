@@ -1232,7 +1232,7 @@
 
 - (NSStringEncoding)stringEncodingFromPGPData:(NSData *)PGPData {
     NSString *asciiData = [NSString stringWithData:PGPData encoding:NSASCIIStringEncoding];
-    NSString *charsetName = nil;
+    __autoreleasing NSString *charsetName = nil;
     [asciiData getCapturesWithRegexAndReferences:@"Charset:\\s*(?<charset>.+)\r?\n", @"${charset}", &charsetName, nil];
     
     if(![charsetName length])
@@ -1375,7 +1375,7 @@
     RKEnumerator *matches = [[signedData stringByGuessingEncodingWithHint:bestEncoding] matchEnumeratorWithRegex:regex];
     
     NSMutableData *markedPart = [NSMutableData data];
-    NSString *before = nil, *signedText = nil, *after = nil, *whitespaceBefore = nil,
+    __autoreleasing NSString *before = nil, *signedText = nil, *after = nil, *whitespaceBefore = nil,
              *whitespaceAfter = nil, *headers = nil;
     
     while([matches nextRanges] != NULL) {

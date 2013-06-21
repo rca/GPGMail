@@ -64,7 +64,7 @@
     NSMutableString *withoutAttachments = [self mutableCopy];
     
     while([matchEnumerator nextRanges] != NULL) {
-        NSString *all = nil, *name = nil;
+        __autoreleasing NSString *all = nil, __autoreleasing *name = nil;
         
         [matchEnumerator getCapturesWithReferences:@"${all}", &all, @"${name}", &name, nil];
         
