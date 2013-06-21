@@ -137,11 +137,20 @@
     [self MADealloc];
 }
 
-- (void)MABackEnd:(id)arg1 didCancelMessageDeliveryForEncryptionError:(MFError *)error {
+- (void)MABackEnd:(id)backEnd didCancelMessageDeliveryForEncryptionError:(MFError *)error {
 	if ([((NSDictionary *)error.userInfo)[@"GPGErrorCode"] integerValue] == GPGErrorCancelled) {
 		return;
 	}
-	[self MABackEnd:arg1 didCancelMessageDeliveryForEncryptionError:error];
+	[self MABackEnd:backEnd didCancelMessageDeliveryForEncryptionError:error];
 }
+
+- (void)MABackEnd:(id)backEnd didCancelMessageDeliveryForError:(MFError *)error {
+	if ([((NSDictionary *)error.userInfo)[@"GPGErrorCode"] integerValue] == GPGErrorCancelled) {
+		return;
+	}
+	[self MABackEnd:backEnd didCancelMessageDeliveryForError:error];
+}
+
+
 
 @end
