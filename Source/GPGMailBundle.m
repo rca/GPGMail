@@ -106,7 +106,13 @@ static BOOL gpgMailWorks = NO;
 #pragma mark Init, dealloc etc.
 
 + (void)initialize {
-	// If one happens to have for any reason (like for example installed GPGMail
+	// Make sure the initializer is only run once.
+    // Usually is run, for every class inheriting from
+    // GPGMailBundle.
+    if(self != [GPGMailBundle class])
+        return;
+    
+    // If one happens to have for any reason (like for example installed GPGMail
     // from the installer, which will reside in /Library and compiled with XCode
     // which will reside in ~/Library) two GPGMail.mailbundle's,
     // display an error message to the user and shutdown Mail.app.
@@ -115,12 +121,6 @@ static BOOL gpgMailWorks = NO;
         [self showMultipleInstallationsErrorAndExit:installations];
         return;
     }
-    
-    // Make sure the initializer is only run once.
-    // Usually is run, for every class inheriting from
-    // GPGMailBundle.
-    if(self != [GPGMailBundle class])
-        return;
     
     Class mvMailBundleClass = NSClassFromString(@"MVMailBundle");
     // If this class is not available that means Mail.app
