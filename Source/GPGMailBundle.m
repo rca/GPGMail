@@ -174,9 +174,6 @@ static BOOL gpgMailWorks = NO;
         
         // Inject the plugin code.
         [GMCodeInjector injectUsingMethodPrefix:GPGMailSwizzledMethodPrefix];
-        
-        // Remove old plists on Mountain Lion.
-        [NSThread detachNewThreadSelector:@selector(cleanOldPlist) toTarget:self withObject:nil];
 	}
     
 	return self;
@@ -227,19 +224,6 @@ static BOOL gpgMailWorks = NO;
     _bundleImages = bundleImages;
     
 }
-
-- (void)cleanOldPlist {
-    if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_7) {
-        //Diese Methode kann nach dem Release 2.1 gelöscht werden.
-        NSString *oldPlistPath = [@"~/Library/Preferences/org.gpgtools.gpgmail.plist" stringByExpandingTildeInPath];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        if ([fileManager fileExistsAtPath:oldPlistPath]) {
-            NSLog(@"Deleting old org.gpgtools.gpgmail.plist");
-            [fileManager removeItemAtPath:oldPlistPath error:nil];
-        }
-    }
-}
-
 
 #pragma mark Check and status of GPG.
 
