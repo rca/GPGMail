@@ -151,9 +151,13 @@
 	
 	// If this message is to be saved as draft, shouldEncrypt and shouldSign is always false.
     // That's why GPGMail takes the values store by clicking on the signed and encrypt icons.
-    if(isDraft && [[GPGOptions sharedOptions] boolForKey:@"OptionallyEncryptDrafts"]) {
-        shouldPGPSign = [[self getIvar:@"shouldSign"] boolValue];
-        shouldPGPEncrypt = [[self getIvar:@"shouldEncrypt"] boolValue];
+    if(isDraft) {
+		if ([[GPGOptions sharedOptions] boolForKey:@"OptionallyEncryptDrafts"]) {
+			shouldPGPSign = [[self getIvar:@"shouldSign"] boolValue];
+			shouldPGPEncrypt = [[self getIvar:@"shouldEncrypt"] boolValue];
+		} else {
+			shouldPGPSymmetric = NO;
+		}
     }
 	
     // It might not be possible to inline encrypt drafts, since contents.text is nil.
