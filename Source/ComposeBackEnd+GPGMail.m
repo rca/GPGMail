@@ -65,7 +65,6 @@
 	
 	
 	HeadersEditor_GPGMail *headersEditor = ((MailDocumentEditor *)[((ComposeBackEnd *)self) delegate]).headersEditor;
-				
 	[headersEditor updateSymmetricButton];
 }
 
@@ -703,10 +702,11 @@
     [self setIvar:@"EncryptIsPossible" value:@(canEncrypt)];
     [self setIvar:@"SignIsPossible" value:@(canSign)];
     
-	[self setIvar:@"SymmetricIsPossible" value:@([GPGMailBundle gpgMailWorks])];
-	// Uncomment when securityOptions.shouldSymmetric is implemented.
-	//[self setIvar:@"shouldSymmetric" value:@(securityOptions.shouldSymmetric)];
-	
+	if ([[((MailDocumentEditor *)[((ComposeBackEnd *)self) delegate]).headersEditor getIvar:@"AllowSymmetricEncryption"] boolValue]) {
+		[self setIvar:@"SymmetricIsPossible" value:@([GPGMailBundle gpgMailWorks])];
+		// Uncomment when securityOptions.shouldSymmetric is implemented.
+		//[self setIvar:@"shouldSymmetric" value:@(securityOptions.shouldSymmetric)];
+	}
     
     
     return canEncrypt;
@@ -772,7 +772,6 @@
     [self removeIvar:@"SetEncrypt"];
     [self removeIvar:@"SignIsPossible"];
     [self removeIvar:@"EncryptIsPossible"];
-    [self removeIvar:@"SymmetricIsPossible"];
     [self removeIvar:@"shouldSign"];
     [self removeIvar:@"shouldEncrypt"];
     [self removeIvar:@"shouldSymmetric"];
@@ -796,7 +795,6 @@
     [self removeIvar:@"SetEncrypt"];
     [self removeIvar:@"SignIsPossible"];
     [self removeIvar:@"EncryptIsPossible"];
-    [self removeIvar:@"SymmetricIsPossible"];
     [self removeIvar:@"shouldSign"];
     [self removeIvar:@"shouldEncrypt"];
     [self removeIvar:@"shouldSymmetric"];

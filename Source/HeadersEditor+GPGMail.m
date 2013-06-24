@@ -66,18 +66,34 @@
 	
 	[backEnd setIvar:@"shouldSymmetric" value:@(newValue)];
 	if (newValue != oldValue) {
-		[backEnd setIvar:@"forceSymmetric" value:@(newValue)];
+		[backEnd setIvar:@"ForceSymmetric" value:@(newValue)];
 	}
 	
 	[self updateSymmetricButton];
+	[(MailDocumentEditor_GPGMail *)[backEnd delegate] updateSecurityMethodHighlight];
 }
 
 - (void)updateSymmetricButton {
+	if (![[self getIvar:@"AllowSymmetricEncryption"] boolValue]) {
+		return;
+	}
 	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
 	
 	NSSegmentedControl *symmetricButton = [self getIvar:@"_symmetricButton"];
+	
+	GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
+	if (((ComposeBackEnd_GPGMail *)backEnd).securityMethod)
+		securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).securityMethod;
+	
+	
+	
 	NSString *imageName;
-	if ([[backEnd getIvar:@"SymmetricIsPossible"] boolValue]) {
+	if ([[backEnd getIvar:@"SymmetricIsPossible"] boolValue] && securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
+		NSNumber *forceSymmetric = [backEnd getIvar:@"ForceSymmetric"];
+		if (forceSymmetric) {
+			[backEnd setIvar:@"shouldSymmetric" value:forceSymmetric];
+		}
+		
 		[symmetricButton setEnabled:YES forSegment:0];
 		if ([[backEnd getIvar:@"shouldSymmetric"] boolValue]) {
 			imageName = @"SymmetricEncryptionOn";
@@ -91,7 +107,6 @@
 	
 	[symmetricButton setImage:[NSImage imageNamed:imageName] forSegment:0];
 }
-
 
 
 - (void)MAAwakeFromNib {
@@ -132,7 +147,8 @@
 		}
 		
 		[self setIvar:@"_symmetricButton" value:symmetricButton];
-		[self updateSymmetricButton];
+		[self setIvar:@"AllowSymmetricEncryption" value:@YES];
+		//[self updateSymmetricButton];
 		[superview addSubview:symmetricButton];
 	}
 	
@@ -207,6 +223,7 @@
 }
 
 - (void)MAUpdateSecurityControls {
+	[self updateSymmetricButton];
     [self MAUpdateSecurityControls];
 }
 

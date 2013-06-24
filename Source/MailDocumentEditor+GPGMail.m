@@ -60,6 +60,7 @@
     
     BOOL shouldEncrypt = [[backEnd getIvar:@"shouldEncrypt"] boolValue];
     BOOL shouldSign = [[backEnd getIvar:@"shouldSign"] boolValue];
+	BOOL shouldSymmetric = [[backEnd getIvar:@"shouldSymmetric"] boolValue];
     
     GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
     if(((ComposeBackEnd_GPGMail *)backEnd).securityMethod)
@@ -67,7 +68,7 @@
     
     accessoryView.securityMethod = securityMethod;
     
-    if(shouldEncrypt || shouldSign)
+    if(shouldEncrypt || shouldSign || (shouldSymmetric && securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP))
         accessoryView.active = YES;
     else
         accessoryView.active = NO;
