@@ -107,4 +107,34 @@ else
 fi
 ################################################################################
 
+
+# Remove old plist #############################################################
+a=$'\6'
+b=$'\7'
+p1=".*?${b}name: ([^$a]*)"
+p2=".*?${a}uid: ([^$a]*)"
+p3=".*?${a}gid: ([^$a]*)"
+p4=".*?${a}dir: ([^$a]*)"
+pend="[^$b]*"
+
+temptext=$b$(dscacheutil -q user | perl -0 -pe "s/\n\n/$b/g;s/\n/$a/g") # Get all users and replace all newlines, so the next RE can work correctly.
+perl -pe "s/$p1$p2$p3$p4$pend/\1 \2 \3 \4\n/g" <<<"$temptext" | # This RE create one line per user.
+while read username uid gid homedir # Iterate through each user.
+do
+	[[ -n "$uid" && "$uid" -ge 500 && -d "$homedir" ]] || continue # Only proceed with regular accounts, which also have a homedir.
+	[[ "$gid" -lt 500 ]] || continue # I think a gid >= 500 indicates a special user. (e.g. like macports)
+
+	[[ "$homedir" == "${homedir#/Network}" ]] || continue # Ignore home-dirs starting with "/Network".
+
+	# If the plist exists, remove it.
+	oldPlist="$homedir/Library/Containers/com.apple.mail/Data/Library/Preferences/org.gpgtools.gpgmail.plist"
+	if [[ -f "$oldPlist" ]] ;then
+		rm -f "$oldPlist"
+	fi
+done
+################################################################################
+
+
+
+
 exit 0
