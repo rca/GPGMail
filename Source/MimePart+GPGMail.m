@@ -883,6 +883,12 @@
 		title = GMLocalizedString(@"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE");
         message = GMLocalizedString(@"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE");
 	}
+	else if(((GPGException *)operationError).errorCode == GPGErrorCancelled) {
+		titleKey = [NSString stringWithFormat:@"%@_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE", prefix];
+		messageKey = [NSString stringWithFormat:@"%@_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE", prefix];
+		title = GMLocalizedString(titleKey);
+		message = GMLocalizedString(messageKey);
+	}
     else if([self hasError:@"NO_ARMORED_DATA" noDataErrors:noDataErrors] || 
             [self hasError:@"INVALID_PACKET" noDataErrors:noDataErrors] || 
             [(GPGException *)operationError isCorruptedInputError]) {

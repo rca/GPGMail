@@ -177,3 +177,9 @@
 
 "CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nSollte Ihr Problem weiterhin bestehen, kontaktieren Sie uns bitte auf support.gpgtools.org und teilen uns folgende Fehlerbeschreibung mit:\n\n%@";
 
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Sie haben die Entschlüsselung abgebrochen.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "Die Entschlüsselung dieser Nachricht konnte nicht abgeschlossen werden, da sie die Passwortabfrage unterbrochen haben.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Sie haben die Entschlüsselung abgebrochen";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "Die Entschlüsselung dieses Anhangs konnte nicht abgeschlossen werden, da sie die Passwortabfrage unterbrochen haben.";
+
