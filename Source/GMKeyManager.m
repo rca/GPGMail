@@ -202,7 +202,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 				DebugLog(@"%@: failed - %@ (Error text: %@)", _cmd, strongSelf.gpgc.error, ((GPGException *)strongSelf.gpgc.error).gpgTask.errText);
 			}
 			else if([strongSelf.gpgc.error isKindOfClass:[NSException class]]) {
-				DebugLog(@"%@: unknown error - %@", strongSelf.gpgc.error);
+				DebugLog(@"%@: unknown error - %@", _cmd, strongSelf.gpgc.error);
 			}
 			return;
 		}
