@@ -156,6 +156,11 @@
 "GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "GPGMail hat Installationen in folgenden Verzeichnissen gefunden, was einen soforting Absturz zur Folge hat:\n\n%@\n\nBitte löschen Sie GPGMail.mailbundle aus einem der Verzeichnisse und starten Sie Mail erneut.\n";
 "GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Mail beenden";
 
+/* No Libmacgpg. */
+"LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg nicht gefunden";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg wurde auf deinem System nicht gefunden. Bitte installiere Libmacgpg, z.B. mit dem GPGTools Installer von https://www.gpgtools.org.";
+
+
 /* Errors while trying to sign a message. */
 "MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Ihrer Nachricht konnte nicht signiert werden, da pinentry defekt ist!";
 "MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "pinentry, das Programm welches zum eingeben der Passphrase benötigt wird, scheint defekt zu sein.\n\nUm dieses Problem zu beheben, installieren Sie die neueste Version der GPGTools.";
