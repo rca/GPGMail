@@ -4,6 +4,13 @@ PRODUCT = GPGMail.mailbundle
 MAKE_DEFAULT = Dependencies/GPGTools_Core/newBuildSystem/Makefile.default
 NEED_LIBMACGPG = 1
 
+ifeq ($(USER),root)
+	INSTALL_DIR = /Library/Mail/Bundles
+else
+	INSTALL_DIR = "$$HOME/Library/Mail/Bundles"
+endif
+
+
 -include $(MAKE_DEFAULT)
 
 .PRECIOUS: $(MAKE_DEFAULT)
@@ -19,10 +26,12 @@ pkg: pkg-libmacgpg
 clean-all: clean-libmacgpg
 
 $(PRODUCT): Source/* Resources/* Resources/*/* GPGMail.xcodeproj
-ifeq ($(CONFIG),Debug)
-	# When using Scheme, Libmacgpg is built.
-	@xcodebuild -project $(PROJECT).xcodeproj -configuration $(CONFIG) -scheme $(PROJECT) build $(XCCONFIG)
-else
-	# For release builds, do not build Libmacgpg by specifying the target to build.
 	@xcodebuild -project $(PROJECT).xcodeproj -configuration $(CONFIG) -target $(TARGET) build $(XCCONFIG)
-endif
+
+install: $(PRODUCT)
+	@echo Installing GPGMail...
+	@mkdir -p "$(INSTALL_DIR)"
+	@rsync -rltDE "build/$(CONFIG)/GPGMail.mailbundle" "$(INSTALL_DIR)"
+	@echo Done
+	@echo "In order to use GPGMail, please don't forget to install MacGPG2 and Libmacgpg."
+
