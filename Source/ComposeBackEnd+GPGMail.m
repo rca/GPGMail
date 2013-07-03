@@ -612,8 +612,11 @@
     // Otherwise check the gpg keys.
     // Loop through all the addresses and check if we can encrypt for them.
     // If no recipients are set, encrypt is false.
-    // For some reason, we're running into zombies if we don't do
-    // this.
+    // This method is never supposed to be called on the main thread,
+	// so let's check for that.
+    if([NSThread isMainThread])
+		return NO;
+	
     DebugLog(@"Recipients: %@", recipients);
     
     sender = [sender gpgNormalizedEmail];
