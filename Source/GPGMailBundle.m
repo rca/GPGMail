@@ -129,6 +129,13 @@ static BOOL gpgMailWorks = NO;
     if(!mvMailBundleClass)
         return;
     
+    
+    if (![GPGController class]) {
+		NSRunAlertPanel([self localizedStringForKey:@"LIBMACGPG_NOT_FOUND_TITLE"], [self localizedStringForKey:@"LIBMACGPG_NOT_FOUND_MESSAGE"], nil, nil, nil);
+		return;
+	}
+
+    
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated"
     class_setSuperclass([self class], mvMailBundleClass);

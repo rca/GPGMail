@@ -202,13 +202,8 @@
 	[[NSAnimationContext currentContext] setDuration:2.0f];
 	[NSAnimationContext currentContext].completionHandler = ^{
 		[self addSubview:webView];
-        NSString *file = @"Special";
         
-        BOOL isMartin = [[(GPGOptions *)[GPGOptions sharedOptions] valueForKey:@"TheRealThankYous"] boolValue];
-        
-        if(isMartin)
-            file = @"Test";
-		[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[[GPGMailBundle bundle] URLForResource:file withExtension:@"html"]]];
+		[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[[GPGMailBundle bundle] URLForResource:@"Special" withExtension:@"html"]]];
 		displayed = YES;
 		working = NO;
 	};
@@ -249,7 +244,7 @@
 	working = NO;
 }
 - (void)keyDown:(NSEvent *)event {
-	unsigned short keySequence[] = {126, 125, 47, 126, 125, 46, 0, 15, 17, 34, 38, 45, USHRT_MAX};
+	unsigned short keySequence[] = {126, 125, 47, 5, 35, 5, 17, 31, 31, 37, 1, USHRT_MAX};
 	static int index = 0;
 	
 	if (!displayed) {
