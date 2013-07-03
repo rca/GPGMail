@@ -709,11 +709,11 @@
     [self setIvar:@"EncryptIsPossible" value:@(canEncrypt)];
     [self setIvar:@"SignIsPossible" value:@(canSign)];
     
-	if ([[((MailDocumentEditor *)[((ComposeBackEnd *)self) delegate]).headersEditor getIvar:@"AllowSymmetricEncryption"] boolValue]) {
-		[self setIvar:@"SymmetricIsPossible" value:@([GPGMailBundle gpgMailWorks])];
-		// Uncomment when securityOptions.shouldSymmetric is implemented.
-		//[self setIvar:@"shouldSymmetric" value:@(securityOptions.shouldSymmetric)];
-	}
+//	if ([[((MailDocumentEditor *)[((ComposeBackEnd *)self) delegate]).headersEditor getIvar:@"AllowSymmetricEncryption"] boolValue]) {
+//		[self setIvar:@"SymmetricIsPossible" value:@([GPGMailBundle gpgMailWorks])];
+//		// Uncomment when securityOptions.shouldSymmetric is implemented.
+//		//[self setIvar:@"shouldSymmetric" value:@(securityOptions.shouldSymmetric)];
+//	}
     
     
     return canEncrypt;
