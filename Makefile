@@ -1,7 +1,8 @@
 PROJECT = GPGMail
 TARGET = GPGMail
-PRODUCT = GPGMail.mailbundle
+PRODUCT = GPGMail
 MAKE_DEFAULT = Dependencies/GPGTools_Core/newBuildSystem/Makefile.default
+VPATH = build/$(CONFIG)/GPGMail.mailbundle/Contents/MacOS
 NEED_LIBMACGPG = 1
 
 
