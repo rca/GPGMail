@@ -14,11 +14,6 @@ $(MAKE_DEFAULT):
 
 init: $(MAKE_DEFAULT)
 
-update: update-libmacgpg
-
-pkg: pkg-libmacgpg
-
-clean-all: clean-libmacgpg
 
 $(PRODUCT): Source/* Resources/* Resources/*/* GPGMail.xcodeproj
 	@xcodebuild -project $(PROJECT).xcodeproj -configuration $(CONFIG) -target $(TARGET) build $(XCCONFIG)
@@ -26,7 +21,7 @@ $(PRODUCT): Source/* Resources/* Resources/*/* GPGMail.xcodeproj
 install: $(PRODUCT)
 	@echo "Installing GPGMail into $(INSTALL_ROOT)Library/Mail/Bundles"
 	@mkdir -p "$(INSTALL_ROOT)Library/Mail/Bundles"
-	@rsync -rltDE "build/$(CONFIG)/GPGMail.mailbundle" $(INSTALL_ROOT)Library/Mail/Bundles"
+	@rsync -rltDE "build/$(CONFIG)/GPGMail.mailbundle" "$(INSTALL_ROOT)Library/Mail/Bundles"
 	@echo Done
 	@echo "In order to use GPGMail, please don't forget to install MacGPG2 and Libmacgpg."
 
