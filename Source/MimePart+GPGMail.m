@@ -889,6 +889,15 @@
 		title = GMLocalizedString(titleKey);
 		message = GMLocalizedString(messageKey);
 	}
+    else if(((GPGException *)operationError).errorCode == GPGErrorXPCBinaryError ||
+			((GPGException *)operationError).errorCode == GPGErrorXPCConnectionError ||
+			((GPGException *)operationError).errorCode == GPGErrorXPCConnectionInterruptedError) {
+		titleKey = [NSString stringWithFormat:@"%@_DECRYPT_ERROR_XPC_DAMAGED_TITLE", prefix];
+		messageKey = [NSString stringWithFormat:@"%@_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE", prefix];
+		
+		title = GMLocalizedString(titleKey);
+		message = GMLocalizedString(messageKey);
+	}
     else if([self hasError:@"NO_ARMORED_DATA" noDataErrors:noDataErrors] || 
             [self hasError:@"INVALID_PACKET" noDataErrors:noDataErrors] || 
             [(GPGException *)operationError isCorruptedInputError]) {
@@ -972,6 +981,16 @@
 	else if(((GPGException *)operationError).errorCode == GPGErrorNotFound) {
 		title = GMLocalizedString(@"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE");
 		message = GMLocalizedString(@"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE");
+		errorFound = YES;
+	}
+	else if(((GPGException *)operationError).errorCode == GPGErrorXPCBinaryError ||
+			((GPGException *)operationError).errorCode == GPGErrorXPCConnectionError ||
+			((GPGException *)operationError).errorCode == GPGErrorXPCConnectionInterruptedError) {
+		titleKey = [NSString stringWithFormat:@"%@_VERIFY_ERROR_XPC_DAMAGED_TITLE", prefix];
+		messageKey = [NSString stringWithFormat:@"%@_VERIFY_ERROR_XPC_DAMAGED_MESSAGE", prefix];
+		
+		title = GMLocalizedString(titleKey);
+		message = GMLocalizedString(messageKey);
 		errorFound = YES;
 	}
     else {
