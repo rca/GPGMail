@@ -199,10 +199,10 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 		// Check for errors.
 		if(strongSelf.gpgc.error) {
 			if([strongSelf.gpgc.error isKindOfClass:[GPGException class]]) {
-				DebugLog(@"%@: failed - %@ (Error text: %@)", _cmd, strongSelf.gpgc.error, ((GPGException *)strongSelf.gpgc.error).gpgTask.errText);
+				DebugLog(@"%@: failed - %@ (Error text: %@)", NSStringFromSelector(_cmd), strongSelf.gpgc.error, ((GPGException *)strongSelf.gpgc.error).gpgTask.errText);
 			}
 			else if([strongSelf.gpgc.error isKindOfClass:[NSException class]]) {
-				DebugLog(@"%@: unknown error - %@", _cmd, strongSelf.gpgc.error);
+				DebugLog(@"%@: unknown error - %@", NSStringFromSelector(_cmd), strongSelf.gpgc.error);
 			}
 			return;
 		}
