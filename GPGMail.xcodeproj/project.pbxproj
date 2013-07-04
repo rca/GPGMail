@@ -138,6 +138,13 @@
 			remoteGlobalIDString = 1BD78B9F1726B2820005F251;
 			remoteInfo = LeakFinder;
 		};
+		1BAFDDAD1784F65700E9BA6A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D5B49AC048680CD000E48DA;
+			remoteInfo = GPGMail;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1633,7 +1640,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4523EBCF1505451700497E39 /* Foundation.framework in Frameworks */,
 				4555EADF15094E0500723E1F /* SenTestingKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3509,7 +3515,7 @@
 		4523EBE415054A5A00497E39 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8D5B49AC048680CD000E48DA /* GPGMail */;
-			targetProxy = 4523EBE315054A5A00497E39 /* PBXContainerItemProxy */;
+			targetProxy = 1BAFDDAD1784F65700E9BA6A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3874,11 +3880,11 @@
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Frameworks\"",
-					/Library/Frameworks,
-					"$(HOME)/Library/Frameworks",
-					"$(HOME)/Library/Containers/com.apple.mail/Data/Library/Frameworks",
-					"\"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
 					"$(SRCROOT)/Dependencies/Libmacgpg/build/$(CONFIGURATION)",
+					"$(HOME)/Library/Containers/com.apple.mail/Data/Library/Frameworks",
+					"$(HOME)/Library/Frameworks",
+					/Library/Frameworks,
+					"\"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_GC = unsupported;
@@ -3922,11 +3928,11 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Frameworks\"",
-					/Library/Frameworks,
-					"$(HOME)/Library/Frameworks",
-					"$(HOME)/Library/Containers/com.apple.mail/Data/Library/Frameworks",
-					"\"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
 					"$(SRCROOT)/Dependencies/Libmacgpg/build/$(CONFIGURATION)",
+					"$(HOME)/Library/Containers/com.apple.mail/Data/Library/Frameworks",
+					"$(HOME)/Library/Frameworks",
+					/Library/Frameworks,
+					"\"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
 				);
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_OPTIMIZATION_LEVEL = s;
