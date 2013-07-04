@@ -6,16 +6,56 @@
 //  Copyright (c) 2012 Chris Fraire. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "NSData+GPGMail.h"
 
-@interface NSData_GPGMailTest : SenTestCase
+@interface NSData_GPGMailTest : XCTestCase
 
 - (NSData *)dataForResourceAtPath:(NSString *)path ofType:(NSString *)rtype;
 
 @end
 
 @implementation NSData_GPGMailTest
+
++ (void)setUp {
+	[super setUp];
+	
+	[self loadGPGMail];
+}
+
++ (NSArray *)requiredFrameworks {
+    NSArray *frameworks = @[@"/System/Library/PrivateFrameworks/CoreMessage.framework",
+                            @"/System/Library/PrivateFrameworks/IMAP.framework",
+                            @"/System/Library/Frameworks/Message.framework"];
+    if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8) {
+        frameworks = @[@"/System/Library/PrivateFrameworks/MailCore.framework",
+                       @"/System/Library/PrivateFrameworks/Mail.framework",
+                       @"/System/Library/PrivateFrameworks/MailUI.framework"];
+    }
+	return frameworks;
+}
+
++ (void)loadFrameworks {
+	for(NSString *frameworkPath in [self requiredFrameworks])
+		[self loadBundleAtPath:frameworkPath];
+}
+
++ (void)loadBundleAtPath:(NSString *)path {
+	NSBundle *bundle;
+	bundle = [NSBundle bundleWithPath:path];
+	
+	// Try to load the bundle but with load instead of loadAndReturnError,
+    // since that appears to reveal more information on why the bundle couldn't be loaded.
+	if(![bundle load])
+        return;
+}
+
++ (void)loadGPGMail {
+	NSString *GPGMailPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"GPGMail" ofType:@"mailbundle" inDirectory:nil];
+	// First, load the frameworks otherwise GPGMailBundle won't load, since it depends on them.
+	[self loadFrameworks];
+	[self loadBundleAtPath:GPGMailPath];
+}
 
 - (NSData *)dataForResourceAtPath:(NSString *)path ofType:(NSString *)rtype {
     NSBundle *execBundl = [NSBundle bundleForClass:[self class]];
@@ -26,168 +66,164 @@
 
 - (void)testMightContainPGPEncryptedDataOrSignatures_1 {
     NSData *data = [self dataForResourceAtPath:@"PGPMessageBlockGood" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     BOOL rc = [data mightContainPGPEncryptedDataOrSignatures];
-    STAssertTrue(rc, @"Unexpected rc!");
+    XCTAssertTrue(rc, @"Unexpected rc!");
 }
 
 - (void)testMightContainPGPEncryptedDataOrSignatures_2 {
     NSData *data = [self dataForResourceAtPath:@"PGPMessageBlockBad" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     BOOL rc = [data mightContainPGPEncryptedDataOrSignatures];
-    STAssertFalse(rc, @"Unexpected rc!");
+    XCTAssertFalse(rc, @"Unexpected rc!");
 }
 
 - (void)testMightContainPGPEncryptedDataOrSignatures_3 {
     NSData *data = [self dataForResourceAtPath:@"PGPMessageBlockGood2" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     BOOL rc = [data mightContainPGPEncryptedDataOrSignatures];
-    STAssertTrue(rc, @"Unexpected rc!");
+    XCTAssertTrue(rc, @"Unexpected rc!");
 }
 
 - (void)testMightContainPGPEncryptedDataOrSignatures_4 {
     NSData *data = [self dataForResourceAtPath:@"PGPSignatureBlockGood" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     BOOL rc = [data mightContainPGPEncryptedDataOrSignatures];
-    STAssertTrue(rc, @"Unexpected rc!");
+    XCTAssertTrue(rc, @"Unexpected rc!");
 }
 
 - (void)testMightContainPGPEncryptedDataOrSignatures_5 {
     NSData *data = [self dataForResourceAtPath:@"PGPSignatureBlockBad" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     BOOL rc = [data mightContainPGPEncryptedDataOrSignatures];
-    STAssertFalse(rc, @"Unexpected rc!");
+    XCTAssertFalse(rc, @"Unexpected rc!");
 }
 
 - (void)testRangeOfPGPPublicKey {
     NSData *data = [self dataForResourceAtPath:@"PGPPublicKey" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     NSRange match = [data rangeOfPGPPublicKey];
-    STAssertEquals(21ul, match.location, @"Did not match public key!");
-    STAssertEquals(72ul, match.length, @"Did not match public key!");
+    XCTAssertEquals(21ul, match.location, @"Did not match public key!");
+    XCTAssertEquals(72ul, match.length, @"Did not match public key!");
 }
 
 - (void)testRangeOfPGPInlineSignaturesUTF8Good {
     NSData *data = [self dataForResourceAtPath:@"PGPInlineSignatureUTF8Good" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     NSRange match = [data rangeOfPGPInlineSignatures];
-    STAssertTrue(match.location != NSNotFound, @"Did not find signature as expected!");
+    XCTAssertTrue(match.location != NSNotFound, @"Did not find signature as expected!");
 
     NSData *signature = [data subdataWithRange:match];
     // This first does a UTF8 guess, so it's good
     NSString *decoded = [[NSString alloc] initWithData:signature encoding:NSUTF8StringEncoding];
     // existing implementation should pass, but was broken before RegexKit
-    STAssertTrue([decoded hasPrefix:PGP_SIGNED_MESSAGE_BEGIN], decoded);
-    STAssertTrue([decoded hasSuffix:PGP_MESSAGE_SIGNATURE_END], decoded);
-    [decoded release];
+    XCTAssertTrue([decoded hasPrefix:PGP_SIGNED_MESSAGE_BEGIN], @"%@", decoded);
+    XCTAssertTrue([decoded hasSuffix:PGP_MESSAGE_SIGNATURE_END], @"%@", decoded);
 }
 
 - (void)testRangeOfPGPInlineSignaturesASCIIGood {
     NSData *data = [self dataForResourceAtPath:@"PGPInlineSignatureASCIIGood" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     NSRange match = [data rangeOfPGPInlineSignatures];
-    STAssertTrue(match.location != NSNotFound, @"Did not find signature as expected!");
+    XCTAssertTrue(match.location != NSNotFound, @"Did not find signature as expected!");
     
     NSData *signature = [data subdataWithRange:match];
     NSString *decoded = [[NSString alloc] initWithData:signature encoding:NSASCIIStringEncoding];
-    STAssertTrue([decoded hasPrefix:PGP_SIGNED_MESSAGE_BEGIN], decoded);
-    STAssertTrue([decoded hasSuffix:PGP_MESSAGE_SIGNATURE_END], decoded);
-    [decoded release];
+    XCTAssertTrue([decoded hasPrefix:PGP_SIGNED_MESSAGE_BEGIN], @"%@", decoded);
+    XCTAssertTrue([decoded hasSuffix:PGP_MESSAGE_SIGNATURE_END], @"%@", decoded);
 }
 
 - (void)testRangeOfPGPInlineSignaturesUTF8quoted {
     NSData *data = [self dataForResourceAtPath:@"PGPInlineSignatureUTF8quoted" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     NSRange match = [data rangeOfPGPInlineSignatures];
-    STAssertTrue(match.location == NSNotFound, @"Found unexpected signature!");
+    XCTAssertTrue(match.location == NSNotFound, @"Found unexpected signature!");
 }
 
 - (void)testRangeOfPGPInlineSignaturesASCIIquoted {
     NSData *data = [self dataForResourceAtPath:@"PGPInlineSignatureASCIIquoted" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     NSRange match = [data rangeOfPGPInlineSignatures];
-    STAssertTrue(match.location == NSNotFound, @"Found unexpected signature!");
+    XCTAssertTrue(match.location == NSNotFound, @"Found unexpected signature!");
 }
 
 - (void)testRangeOfPGPSignaturesUTF8Good {
     NSData *data = [self dataForResourceAtPath:@"PGPSignatureUTF8Good" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     NSRange match = [data rangeOfPGPSignatures];
-    STAssertTrue(match.location != NSNotFound, @"Did not find signature as expected!");
+    XCTAssertTrue(match.location != NSNotFound, @"Did not find signature as expected!");
     
     NSData *signature = [data subdataWithRange:match];
     NSString *decoded = [[NSString alloc] initWithData:signature encoding:NSUTF8StringEncoding];
     // existing implementation should pass, but was broken before RegexKit
-    STAssertTrue([decoded hasPrefix:PGP_MESSAGE_SIGNATURE_BEGIN], decoded);
-    STAssertTrue([decoded hasSuffix:PGP_MESSAGE_SIGNATURE_END], decoded);
-    [decoded release];
+    XCTAssertTrue([decoded hasPrefix:PGP_MESSAGE_SIGNATURE_BEGIN], @"%@", decoded);
+    XCTAssertTrue([decoded hasSuffix:PGP_MESSAGE_SIGNATURE_END], @"%@", decoded);
 }
 
 - (void)testRangeOfPGPSignaturesASCIIGood {
     NSData *data = [self dataForResourceAtPath:@"PGPSignatureASCIIGood" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     NSRange match = [data rangeOfPGPSignatures];
-    STAssertTrue(match.location != NSNotFound, @"Did not find signature as expected!");
+    XCTAssertTrue(match.location != NSNotFound, @"Did not find signature as expected!");
     
     NSData *signature = [data subdataWithRange:match];
     NSString *decoded = [[NSString alloc] initWithData:signature encoding:NSASCIIStringEncoding];
-    STAssertTrue([decoded hasPrefix:PGP_MESSAGE_SIGNATURE_BEGIN], decoded);
-    STAssertTrue([decoded hasSuffix:PGP_MESSAGE_SIGNATURE_END], decoded);
-    [decoded release];
+    XCTAssertTrue([decoded hasPrefix:PGP_MESSAGE_SIGNATURE_BEGIN], @"%@", decoded);
+    XCTAssertTrue([decoded hasSuffix:PGP_MESSAGE_SIGNATURE_END], @"%@", decoded);
 }
 
 - (void)testRangeOfPGPInlineEncryptedDataUTF8Good {
     NSData *data = [self dataForResourceAtPath:@"PGPInlineDataUTF8Good" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     NSRange match = [data rangeOfPGPInlineEncryptedData];
-    STAssertTrue(match.location != NSNotFound, @"Did not find data as expected!");
+    XCTAssertTrue(match.location != NSNotFound, @"Did not find data as expected!");
     
     NSData *pgpBlock = [data subdataWithRange:match];
     NSString *decoded = [[NSString alloc] initWithData:pgpBlock encoding:NSUTF8StringEncoding];
     // existing implementation should pass, but was broken before RegexKit
-    STAssertTrue([decoded hasPrefix:PGP_MESSAGE_BEGIN], decoded);
-    STAssertTrue([decoded hasSuffix:PGP_MESSAGE_END], decoded);
+    XCTAssertTrue([decoded hasPrefix:PGP_MESSAGE_BEGIN], @"%@", decoded);
+    XCTAssertTrue([decoded hasSuffix:PGP_MESSAGE_END], @"%@", decoded);
 }
 
 - (void)testRangeOfPGPInlineEncryptedDataASCIIGood {
     NSData *data = [self dataForResourceAtPath:@"PGPInlineDataASCIIGood" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     NSRange match = [data rangeOfPGPInlineEncryptedData];
-    STAssertTrue(match.location != NSNotFound, @"Did not find data as expected!");
+    XCTAssertTrue(match.location != NSNotFound, @"Did not find data as expected!");
     
     NSData *pgpBlock = [data subdataWithRange:match];
     NSString *decoded = [[NSString alloc] initWithData:pgpBlock encoding:NSASCIIStringEncoding];
     // existing implementation should pass, but was broken before RegexKit
-    STAssertTrue([decoded hasPrefix:PGP_MESSAGE_BEGIN], decoded);
-    STAssertTrue([decoded hasSuffix:PGP_MESSAGE_END], decoded);
+    XCTAssertTrue([decoded hasPrefix:PGP_MESSAGE_BEGIN], @"%@", decoded);
+    XCTAssertTrue([decoded hasSuffix:PGP_MESSAGE_END], @"%@", decoded);
 }
 
 - (void)testRangeOfPGPInlineEncryptedDataUTF8quoted {
     NSData *data = [self dataForResourceAtPath:@"PGPInlineDataUTF8quoted" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     NSRange match = [data rangeOfPGPInlineEncryptedData];
-    STAssertTrue(match.location == NSNotFound, @"Found unexpected data!");
+    XCTAssertTrue(match.location == NSNotFound, @"Found unexpected data!");
 }
 
 - (void)testRangeOfPGPInlineEncryptedDataASCIIquoted {
     NSData *data = [self dataForResourceAtPath:@"PGPInlineDataASCIIquoted" ofType:@"txt"];
-    STAssertNotNil(data, @"Did not read Resource!");
+    XCTAssertNotNil(data, @"Did not read Resource!");
     NSRange match = [data rangeOfPGPInlineEncryptedData];
-    STAssertTrue(match.location == NSNotFound, @"Found unexpected data!");
+    XCTAssertTrue(match.location == NSNotFound, @"Found unexpected data!");
 }
 
 - (void)testPGPVersionMarker {
     NSString *case1 = @"éúêø version: 1 Å";
     NSData *encoded = [case1 dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:FALSE];
-    STAssertNotNil(encoded, @"Failed to UTF8 encode!");
-    STAssertTrue([encoded containsPGPVersionMarker:1], @"version match failed!");
-    STAssertFalse([encoded containsPGPVersionMarker:2], @"version match passed unexpectedly!");
+    XCTAssertNotNil(encoded, @"Failed to UTF8 encode!");
+    XCTAssertTrue([encoded containsPGPVersionMarker:1], @"version match failed!");
+    XCTAssertFalse([encoded containsPGPVersionMarker:2], @"version match passed unexpectedly!");
 
     case1 = @"éúêø VERSION : 1 Å";
     encoded = [case1 dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:TRUE];
-    STAssertNotNil(encoded, @"Failed to ASCII-lossy encode!");
-    STAssertTrue([encoded containsPGPVersionMarker:1], @"version match failed!");
-    STAssertFalse([encoded containsPGPVersionMarker:2], @"version match passed unexpectedly!");
+    XCTAssertNotNil(encoded, @"Failed to ASCII-lossy encode!");
+    XCTAssertTrue([encoded containsPGPVersionMarker:1], @"version match failed!");
+    XCTAssertFalse([encoded containsPGPVersionMarker:2], @"version match passed unexpectedly!");
 }
 
 @end
