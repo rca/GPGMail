@@ -18,13 +18,13 @@
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Ontsleutelen mislukt om een onbekende reden!";
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Er is een onbekende fout opgetreden tijdens het ontsleutelen van dit bericht.\n\nNeem contact met ons op via support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Er is een onbekende fout opgetreden tijdens het ontsleutelen van dit bericht.\n\nNeem contact met ons op via http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Ontsleutelen mislukt om een onbekende reden!";
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Er is een onbekende fout opgetreden tijdens het ontsleutelen van dit bericht.\n\nGPG foutbericht:\n%@\nNeem contact met ons op via support.gpgtools.org en vermeld het GPG foutbericht.";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Er is een onbekende fout opgetreden tijdens het ontsleutelen van dit bericht.\n\nGPG foutbericht:\n%@\nNeem contact met ons op via http://support.gpgtools.org en vermeld het GPG foutbericht.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Een verkeerde sleutel is gebruikt om dit bericht te versleutelen.";
-"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Dit bericht kon niet ontsleuteld worden, omdat de verkeerde publieke sleutel is gebruikt om het te versleutelen.\n\nNeem contact met ons op via support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Dit bericht kon niet ontsleuteld worden, omdat de verkeerde publieke sleutel is gebruikt om het te versleutelen.\n\nNeem contact met ons op via http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Het versleutelde bericht is beschadigd.";
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Dit versleutelde bericht is beschadigd en kon niet worden ontsleuteld.\n\nVraag de afzender om het bericht nogmaals te versturen.";
@@ -35,16 +35,16 @@
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Het bericht kon niet worden geverifiëerd, omdat de sleutel waarmee het is ondertekend, zich niet in je GPG Sleutelbos bevindt.\n\nZoek de sleutel op met ID %@ in GPG Keychain Toegang en importeer het om het bericht te verifiëren.";
 
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "De handtekening van het bericht is met een niet-ondersteund algoritme gemaakt.";
-"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Het bericht kon niet worden geverifiëerd, omdat de handtekening is gemaakt met een algoritme dat niet ondersteund wordt.\n\nNeem contact met ons op via support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Het bericht kon niet worden geverifiëerd, omdat de handtekening is gemaakt met een algoritme dat niet ondersteund wordt.\n\nNeem contact met ons op via http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "LET OP: De handtekening van dit bericht is ongeldig!";
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "LET OP: Het bericht is mogelijk gewijzigd nadat de handtekening is gemaakt.\n\nNeem contact op met de afzender om er zeker van te zijn dat de inhoud overeenkomt met het origineel.\n\nNeem contact met ons op via support.gpgtools.org als je er zeker van bent dat het bericht niet gewijzigd is.";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "LET OP: Het bericht is mogelijk gewijzigd nadat de handtekening is gemaakt.\n\nNeem contact op met de afzender om er zeker van te zijn dat de inhoud overeenkomt met het origineel.\n\nNeem contact met ons op via http://support.gpgtools.org als je er zeker van bent dat het bericht niet gewijzigd is.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Verificatie van de handtekening van het bericht is mislukt om een onbekende reden!";
-"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Een onbekende fout is opgetreden bij de verificatie van de handtekening van dit bericht.\n\nNeem contact met ons op via support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Een onbekende fout is opgetreden bij de verificatie van de handtekening van dit bericht.\n\nNeem contact met ons op via http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Gegevensfout in de handtekening van het bericht!";
-"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "De handtekening van dit bericht is ongeldig en kan niet worden geverifiëerd.\n\nNeem contact met ons op via support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "De handtekening van dit bericht is ongeldig en kan niet worden geverifiëerd.\n\nNeem contact met ons op via http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Sleutel voor handtekening van het bericht is verlopen";
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "LET OP: De sleutel die gebruikt is voor de handtekening van dit bericht, is verlopen.\n\nJe kunt proberen om de sleutel met ID %@ te verversen in GPG Keychain Toegang en de afzender te vragen waarom de sleutel is verlopen.";
@@ -72,13 +72,13 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Ontsleutelen mislukt om een onbekende reden!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Er is een onbekende fout opgetreden bij het ontsleutelen van deze bijlage.\n\nNeem contact met ons op via support.gpgtools.org";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Er is een onbekende fout opgetreden bij het ontsleutelen van deze bijlage.\n\nNeem contact met ons op via http://support.gpgtools.org";    
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "Ontsleutelen mislukt om een onbekende reden!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Er is een onbekende fout opgetreden tijdens het ontsleutelen van deze bijlage.\n\nGPG foutbericht:\n%@\nNeem contact met ons op via support.gpgtools.org en vermeld het GPG foutbericht.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Er is een onbekende fout opgetreden tijdens het ontsleutelen van deze bijlage.\n\nGPG foutbericht:\n%@\nNeem contact met ons op via http://support.gpgtools.org en vermeld het GPG foutbericht.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Verkeerde sleutel gebruikt om deze bijlage te versleutelen.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Deze bijlage kon niet worden ontsleuteld, omdat de verkeerde publieke sleutel is gebruikt om haar te versleutelen.\n\nNeem contact met ons op via support.gpgtools.org";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Deze bijlage kon niet worden ontsleuteld, omdat de verkeerde publieke sleutel is gebruikt om haar te versleutelen.\n\nNeem contact met ons op via http://support.gpgtools.org";    
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "De versleutelde bijlage is beschadigd.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Deze versleutelde bijlage is beschadigd en kan niet worden ontsleuteld.\n\nVraag de afzender om het bericht nogmaals te sturen.";
@@ -90,16 +90,16 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "De bijlage kon niet worden geverifiëerd, omdat de sleutel waarmee ze is ondertekend, zich niet in je GPG Sleutelbos bevindt.\n\nZoek de sleutel op met ID %@ in GPG Keychain Access en importeer het om de bijlage te verifiëren.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "De handtekening van de bijlage is met een niet-ondersteund algoritme gemaakt.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "De bijlage kon niet worden geverifiëerd, omdat de handtekening is gemaakt met een algoritme dat niet ondersteund wordt.\n\nNeem contact met ons op via support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "De bijlage kon niet worden geverifiëerd, omdat de handtekening is gemaakt met een algoritme dat niet ondersteund wordt.\n\nNeem contact met ons op via http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "LET OP: De handtekening van deze bijlage is ongeldig!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "LET OP: Deze bijlage is mogelijk gewijzigd nadat de handtekening is gemaakt.\n\nNeem contact op met de afzender om er zeker van te zijn dat de inhoud overeenkomt met het origineel.\n\nNeem contact met ons op via support.gpgtools.org als je er zeker van bent dat de bijlage niet gewijzigd is.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "LET OP: Deze bijlage is mogelijk gewijzigd nadat de handtekening is gemaakt.\n\nNeem contact op met de afzender om er zeker van te zijn dat de inhoud overeenkomt met het origineel.\n\nNeem contact met ons op via http://support.gpgtools.org als je er zeker van bent dat de bijlage niet gewijzigd is.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Verificatie van de handtekening is mislukt om een onbekende reden!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Een onbekende fout is opgetreden bij de verificatie van de handtekening van deze bijlage.\n\nNeem contact met ons op via support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Een onbekende fout is opgetreden bij de verificatie van de handtekening van deze bijlage.\n\nNeem contact met ons op via http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Gegevensfout in de handtekening!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "De handtekening van deze bijlage is ongeldig en kan niet worden geverifiëerd.\n\nNeem contact met ons op via support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "De handtekening van deze bijlage is ongeldig en kan niet worden geverifiëerd.\n\nNeem contact met ons op via http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Sleutel voor handtekening is verlopen";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "LET OP: De sleutel die gebruikt is voor de handtekening van deze bijlage, is verlopen.\n\nJe kunt proberen om de sleutel met ID %@ te verversen in GPG Keychain Toegang en de afzender te vragen waarom de sleutel is verlopen.";
@@ -166,5 +166,5 @@
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Encrypting your message failed because an unknown error has occured";
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately GPGMail can't handle the error at this point.";
 
-"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at support.gpgtools.org with the following error description:\n\n%@";
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at http://support.gpgtools.org with the following error description:\n\n%@";
 
