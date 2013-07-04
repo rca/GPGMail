@@ -9,7 +9,7 @@ Updates
 
 The latest releases of GPGMail can be found on our official website [https://gpgtools.org/gpgmail/index.html](https://gpgtools.org/gpgmail/index.html).
 
-The project is currently in a heavy state of development. For the latest news and updates check our Twitter [https://twitter.com/gpgtools](https://twitter.com/gpgtools)
+The project is currently in a heavy state of development. For the latest news and updates check our [Twitter](https://twitter.com/gpgtools)
 
 Build
 -----
