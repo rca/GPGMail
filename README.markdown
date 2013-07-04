@@ -14,7 +14,7 @@ The project is currently in a heavy state of development. For the latest news an
 Build
 -----
 
-Building is as easy a make command.
+Building is as easy as a make command.
 
 ### Clone the repository
 
