@@ -108,8 +108,16 @@
         NSString *message = GMLocalizedString(@"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE");
         
         MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:message title:title helpTag:nil userInfo:@{@"_MFShortDescription": title, @"NSLocalizedDescription": message}];
-        NSAlert *alert = [NSAlert alertForError:error defaultButton:@"OK" alternateButton:nil otherButton:nil];
-        [alert beginSheetModalForWindow:[NSApp mainWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
+        // NSAlert has different category methods based on the version of OS X.
+		NSAlert *alert = nil;
+		if([[NSAlert class] respondsToSelector:@selector(alertForError:defaultButton:alternateButton:otherButton:)]) {
+			alert = [NSAlert alertForError:error defaultButton:@"OK" alternateButton:nil otherButton:nil];
+		}
+		else if([[NSAlert class] respondsToSelector:@selector(alertForError:firstButton:secondButton:thirdButton:)]) {
+			alert = [NSAlert alertForError:error firstButton:@"OK" secondButton:nil thirdButton:nil];
+		}
+		
+		[alert beginSheetModalForWindow:[NSApp mainWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
         return;
     }
     GPGSignatureView *signatureView = [GPGSignatureView signatureView];
