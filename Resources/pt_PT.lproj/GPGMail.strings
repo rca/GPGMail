@@ -18,13 +18,13 @@
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Desencriptação falhou com um erro não definido!";
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Aconteceu um erro não definido enquanto se processava a desencriptação desta mensagem.\n\nPor favor contacte-nos através do website support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Aconteceu um erro não definido enquanto se processava a desencriptação desta mensagem.\n\nPor favor contacte-nos através do website http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Desencriptação falhou com um erro não definido!";
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Aconteceu um erro não definido enquanto se processava a desencriptação desta mensagem.\n\nMensagem de erro GPG:\n%@\nPor favor contacte-nos através do website support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Aconteceu um erro não definido enquanto se processava a desencriptação desta mensagem.\n\nMensagem de erro GPG:\n%@\nPor favor contacte-nos através do website http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Foi usada uma chave errada para a encriptação desta mensagem.";
-"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Esta mensagem não pode ser desencriptada visto que foi usada uma chave pública incorrecta para a sua encriptação. \n\nPor favor contacte-nos através do website support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Esta mensagem não pode ser desencriptada visto que foi usada uma chave pública incorrecta para a sua encriptação. \n\nPor favor contacte-nos através do website http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "A mensagem encriptada está incorrecta ou danificada.";
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Esta mensagem encriptada está danificada e não pode ser desencriptada.\n\nPor favor peça ao remetente para proceder ao seu reenvio. ";
@@ -38,13 +38,13 @@
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Esta mensagem não pode ser verificada visto que a assinatura foi criada com um algoritmo não suportado.";
 
 "MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATENÇÃO: A assinatura desta mensagem não é válida.";
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATENÇÃO: Esta mensagem poderá ter sido modificada após a sua assinatura.\n\nPor favor contacte o remetente original de modo a garantir que o conteúdo desta mensagem coincide com a original.\n\nPor favor contacte-nos no site support.gpgtools.org se tem a certeza de que a mensagem não foi modificada.";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATENÇÃO: Esta mensagem poderá ter sido modificada após a sua assinatura.\n\nPor favor contacte o remetente original de modo a garantir que o conteúdo desta mensagem coincide com a original.\n\nPor favor contacte-nos no site http://support.gpgtools.org se tem a certeza de que a mensagem não foi modificada.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "A verificação da assinatura desta mensagem falhou com um erro desconhecido.";
-"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ocorreu um erro desconhecido  aquando da verificação da assinatura desta mensagem. \n\nPor favor contacte-nos através do site: support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ocorreu um erro desconhecido  aquando da verificação da assinatura desta mensagem. \n\nPor favor contacte-nos através do site: http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Erro na assinatura desta mensagem.";
-"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "A assinatura desta mensagem não é válida e não pode ser verificada.\n\nPor favor contacte-nos através do site: support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "A assinatura desta mensagem não é válida e não pode ser verificada.\n\nPor favor contacte-nos através do site: http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "A chave responsável pela assinatura desta mensagem já expirou. ";
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATENÇÃO: A chave que foi usada para assinar esta mensagem já expirou.\n\nPode tentar actualizar a chave com a ID %@ através do programa GPG Keychain Access e perguntar ao remetente porque é que a chave utilizada expirou.";
@@ -72,13 +72,13 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "A desencriptação falhou com um erro desconhecido.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Houve erro desconhecido aquando da desencriptação deste anexo. \n\nPor favor contacte-nos através do website: support.gpgtools.org";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Houve erro desconhecido aquando da desencriptação deste anexo. \n\nPor favor contacte-nos através do website: http://support.gpgtools.org";    
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "A desencriptação falhou com um erro desconhecido. ";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Houve erro desconhecido aquando da desencriptação deste anexo. \n\nMensagem de erro GPG:\n%@\nPor favor contacte-nos e inclua a mensagem de erro GPG através do website: support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Houve erro desconhecido aquando da desencriptação deste anexo. \n\nMensagem de erro GPG:\n%@\nPor favor contacte-nos e inclua a mensagem de erro GPG através do website: http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Foi usada a chave errada para encriptar este anexo. ";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Este anexo não pode ser desencriptado, visto que foi usada a chave pública errada.\n\nPor favor contacte-nos através do website: support.gpgtools.org";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Este anexo não pode ser desencriptado, visto que foi usada a chave pública errada.\n\nPor favor contacte-nos através do website: http://support.gpgtools.org";    
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "O anexo encriptado está danificado. ";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "O anexo encriptado está danificado e não pode ser desencriptado. \n\nPor favor peça ao remetente para lhe enviar a mensagem novamente. ";
@@ -90,7 +90,7 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "A assinatura do anexo não pode ser verificada, visto que a chave que foi usada não está presente no seu porta-chaves GPG.\n\nPor favor procure a chave com a \"key ID\" %@ no programa \"GPG Keychain Access\" e importe-a correctamente para verificar o anexo.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "A assinatura do anexo foi criada através de um algoritmo não suportado.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "A assinatura do anexo não pode ser verificada, visto que a chave que foi usada foi criada através de um algoritmo não suportado.\n\nPor favor contacte-nos através do website: support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "A assinatura do anexo não pode ser verificada, visto que a chave que foi usada foi criada através de um algoritmo não suportado.\n\nPor favor contacte-nos através do website: http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATENÇÃO: A assinatura do anexo não é válida.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATENÇÃO: Este anexo poderá ter sido modificado após a criação da assinatura.⏎ ⏎ Por favor contacte o remetente e certifique-se de que o conteúdo dos anexos corresponde ao original. ⏎ ⏎ Por favor contacte-nos através do website: http://support.gpgtools.org se tiver a certeza de que o conteúdo dos anexos não foi modificado de qualquer maneira.";
@@ -166,5 +166,5 @@
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Encrypting your message failed because an unknown error has occured";
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately GPGMail can't handle the error at this point.";
 
-"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at support.gpgtools.org with the following error description:\n\n%@";
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at http://support.gpgtools.org with the following error description:\n\n%@";
 

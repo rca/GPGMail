@@ -18,13 +18,13 @@
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Keiner der folgenden privaten Schlüssel konnte in Ihrem Schlüsselbund gefunden werden (%@). Der private Schlüssel wird zu entschlüsseln dieser Nachricht benötigt. Überprüfen Sie ob der Absender der Nachricht Ihren richtigen öffentlichen Schlüssel verwendet hat. Versuchen Sie den privaten Schlüssel in einem Backup zu finden und importieren Sie ihn mit GPG Schlüsselbund.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Unbekannter Fehler beim Entschlüsseln.";
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Beim Entschlüsseln der Nachricht ist ein unbekannter Fehler aufgetreten.\n\nBitte kontaktieren Sie uns unter support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Beim Entschlüsseln der Nachricht ist ein unbekannter Fehler aufgetreten.\n\nBitte kontaktieren Sie uns unter http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Unbekannter Fehler beim Entschlüsseln.";
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Beim Entschlüsseln der Nachricht ist ein unbekannter Fehler aufgetreten.\n\nGPG Fehlermeldung:\n%@\nBitte kontaktieren Sie uns mit der GPG Fehlermeldung unter support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Beim Entschlüsseln der Nachricht ist ein unbekannter Fehler aufgetreten.\n\nGPG Fehlermeldung:\n%@\nBitte kontaktieren Sie uns mit der GPG Fehlermeldung unter http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Falscher Schlüssel zum Verschlüsseln der Nachricht verwendet.";
-"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Diese Nachricht konnte nicht Entschlüsselt werden, weil zur Verschlüsselung ein falscher öffentlicher Schlüssel verwendet wurde.\n\nBitte kontaktieren Sie uns unter support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Diese Nachricht konnte nicht Entschlüsselt werden, weil zur Verschlüsselung ein falscher öffentlicher Schlüssel verwendet wurde.\n\nBitte kontaktieren Sie uns unter http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Diese verschlüsselte Nachricht ist beschädigt.";
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Diese Nachricht kann nicht entschlüsselt werden, da sie beschädigt ist.\n\nBitte Sie den Absender Ihnen die Nachricht erneut zu senden.";
@@ -35,16 +35,16 @@
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Diese Nachricht konnte nicht verifiziert werden, weil sich der Schlüssel nicht im GPG Schlüsselbund befindet.\n\nSuchen Sie nach dem Schlüssel mit ID %@ im GPG Schlüsselbund und importieren Sie ihn um diese Nachricht zu verifizieren.";
 
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "Der Schlüssel zu dieser Signatur wurde mit einem nicht unterstützen Algorithmus erstellt.";
-"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Diese Nachricht kann nicht verifiziert werden, da der Schlüssel zu der Signatur mit einem Algorithmus erstellt wurde, welcher nicht unterstützt ist.\n\nBitte kontaktieren Sie uns auf support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Diese Nachricht kann nicht verifiziert werden, da der Schlüssel zu der Signatur mit einem Algorithmus erstellt wurde, welcher nicht unterstützt ist.\n\nBitte kontaktieren Sie uns auf http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ACHTUNG: Die Signatur dieser Nachricht ist ungültig!";
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ACHTUNG: Es könnte sein, dass diese Nachricht nach dem Signieren geändert wurde.\n\nKontaktieren Sie den Absender und gleichen Sie den Inhalt der Nachricht ab.\n\nSollte die Nachricht nicht geändert worden sein, kontaktieren Sie uns bitte unter support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ACHTUNG: Es könnte sein, dass diese Nachricht nach dem Signieren geändert wurde.\n\nKontaktieren Sie den Absender und gleichen Sie den Inhalt der Nachricht ab.\n\nSollte die Nachricht nicht geändert worden sein, kontaktieren Sie uns bitte unter http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Unbekannter Fehler beim Verifizieren!";
-"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Diese Nachricht konnte nicht verifiziert werden, da ein unbekannter Fehler aufgetreten ist.\n\nBitte kontaktieren Sie uns unter support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Diese Nachricht konnte nicht verifiziert werden, da ein unbekannter Fehler aufgetreten ist.\n\nBitte kontaktieren Sie uns unter http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Signatur Daten Fehler!";
-"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Diese Nachricht konnte nicht verifiziert werden, da die keine gültigen Signatur Daten gefunden wurden.\n\nBitte kontaktieren Sie uns unter support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Diese Nachricht konnte nicht verifiziert werden, da die keine gültigen Signatur Daten gefunden wurden.\n\nBitte kontaktieren Sie uns unter http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Schlüssel der Signatur ist abgelaufen.";
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ACHTUNG: Der Schlüssel, welcher verwendet wurde diese Nachricht zu unterzeichnen, ist abgelaufen.\n\nSie können versuchen den Schlüssel %@ mit GPG Schlüsselbund zu aktualisieren und informieren Sie sich beim Absender warum der Schlüssel abgelaufen ist.";
@@ -78,13 +78,13 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Keiner der folgenden privaten Schlüssel konnte in Ihrem Schlüsselbund gefunden werden (%@). Der private Schlüssel wird zu entschlüsseln dieses Anhangs benötigt. Überprüfen Sie ob der Absender der Nachricht Ihren richtigen öffentlichen Schlüssel verwendet hat. Versuchen Sie den privaten Schlüssel in einem Backup zu finden und importieren Sie ihn mit GPG Schlüsselbund.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Unbekannter Fehler beim Entschlüsseln.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Beim Entschlüsseln des Anhangs ist ein unbekannter Fehler aufgetreten.\n\nBitte kontaktieren Sie uns unter support.gpgtools.org";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Beim Entschlüsseln des Anhangs ist ein unbekannter Fehler aufgetreten.\n\nBitte kontaktieren Sie uns unter http://support.gpgtools.org";    
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "Unbekannter Fehler beim Entschlüsseln.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Beim Entschlüsseln des Anhangs ist ein unbekannter Fehler aufgetreten.\n\nGPG Fehlermeldung:\n%@\nBitte kontaktieren Sie uns mit der GPG Fehlermeldung unter support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Beim Entschlüsseln des Anhangs ist ein unbekannter Fehler aufgetreten.\n\nGPG Fehlermeldung:\n%@\nBitte kontaktieren Sie uns mit der GPG Fehlermeldung unter http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Falscher Schlüssel zum Verschlüsseln des Anhangs verwendet.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Der Anhang konnte nicht entschlüsselt werden, weil zur Verschlüsselung ein falscher öffentlicher Schlüssel verwendet wurde.\n\nBitte kontaktieren Sie uns unter support.gpgtools.org";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Der Anhang konnte nicht entschlüsselt werden, weil zur Verschlüsselung ein falscher öffentlicher Schlüssel verwendet wurde.\n\nBitte kontaktieren Sie uns unter http://support.gpgtools.org";    
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Dieser verschlüsselte Anhang ist beschädigt.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Dieser Anhang kann nicht entschlüsselt werden, da er beschädigt ist.\n\nBitte Sie den Absender Ihnen den Anhang erneut zu senden.";
@@ -96,16 +96,16 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Dieser Anhang konnte nicht verifiziert werden, weil sich der Schlüssel nicht im GPG Schlüsselbund befindet.\n\nSuchen Sie nach dem Schlüssel mit ID %@ im GPG Schlüsselbund und importieren Sie ihn um diesen Anhang zu verifizieren.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "Der Schlüssel zu dieser Signatur wurde mit einem nicht unterstützen Algorithmus erstellt.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Dieser Anhang kann nicht verifiziert werden, da der Schlüssel zu der Signatur mit einem Algorithmus erstellt wurde, welcher nicht unterstützt ist.\n\nBitte kontaktieren Sie uns auf support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Dieser Anhang kann nicht verifiziert werden, da der Schlüssel zu der Signatur mit einem Algorithmus erstellt wurde, welcher nicht unterstützt ist.\n\nBitte kontaktieren Sie uns auf http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ACHTUNG: Die Signatur dieses Anhangs ist ungültig!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ACHTUNG: Es könnte sein, dass dieser Anhang nach dem Signieren geändert wurde.\n\nKontaktieren Sie den Absender und gleichen Sie den Inhalt des Anhangs ab.\n\nSollte der Anhang nicht geändert worden sein, kontaktieren Sie uns bitte unter support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ACHTUNG: Es könnte sein, dass dieser Anhang nach dem Signieren geändert wurde.\n\nKontaktieren Sie den Absender und gleichen Sie den Inhalt des Anhangs ab.\n\nSollte der Anhang nicht geändert worden sein, kontaktieren Sie uns bitte unter http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Unbekannter Fehler beim Verifizieren!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Dieser Anhang konnte nicht verifiziert werden, da ein unbekannter Fehler aufgetreten ist.\n\nBitte kontaktieren Sie uns unter support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Dieser Anhang konnte nicht verifiziert werden, da ein unbekannter Fehler aufgetreten ist.\n\nBitte kontaktieren Sie uns unter http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Signatur Daten Fehler!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Dieser Anhang konnte nicht verifiziert werden, da keine gültigen Signatur Daten gefunden wurden.\n\nBitte kontaktieren Sie uns unter support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Dieser Anhang konnte nicht verifiziert werden, da keine gültigen Signatur Daten gefunden wurden.\n\nBitte kontaktieren Sie uns unter http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Schlüssel der Signatur ist abgelaufen.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ACHTUNG: Der Schlüssel, welcher verwendet wurde diesen Anhang zu unterzeichnen, ist abgelaufen.\n\nSie können versuchen den Schlüssel %@ mit GPG Schlüsselbund zu aktualisieren und informieren Sie sich beim Absender warum der Schlüssel abgelaufen ist.";
@@ -180,7 +180,7 @@
 "MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "Sie haben zu oft das falsche Passwort eingegeben.";
 "MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Das Signieren Ihrer Nachricht wurde abgebrochen, da sie 3 Mal das falsche Passwort eingegeben haben.";
 
-"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nSollte Ihr Problem weiterhin bestehen, kontaktieren Sie uns bitte auf support.gpgtools.org und teilen uns folgende Fehlerbeschreibung mit:\n\n%@";
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nSollte Ihr Problem weiterhin bestehen, kontaktieren Sie uns bitte auf http://support.gpgtools.org und teilen uns folgende Fehlerbeschreibung mit:\n\n%@";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Sie haben die Entschlüsselung abgebrochen.";
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "Die Entschlüsselung dieser Nachricht konnte nicht abgeschlossen werden, da sie die Passwortabfrage unterbrochen haben.";

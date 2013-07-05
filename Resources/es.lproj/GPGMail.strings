@@ -18,13 +18,13 @@
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "¡Hubo un error desconocido durante el descifrado!";
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Ocurrió un error desconocido al descifrar este mensaje. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Ocurrió un error desconocido al descifrar este mensaje. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "¡Hubo un error desconocido durante el descifrado!";
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Ocurrió un error desconocido al descifrar este mensaje. ⏎\n⏎\nMensaje de error GPG:⏎\n%@⏎\nPor favor, póngase en contacto con nosotros, incluyendo el mensaje de error GPG, en support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Ocurrió un error desconocido al descifrar este mensaje. ⏎\n⏎\nMensaje de error GPG:⏎\n%@⏎\nPor favor, póngase en contacto con nosotros, incluyendo el mensaje de error GPG, en http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "No se utilizó la clave adecuada para cifrar este mensaje.";
-"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Este mensaje no se pudo descifrar, ya que se utilizó una clave pública errónea para cifrarlo. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Este mensaje no se pudo descifrar, ya que se utilizó una clave pública errónea para cifrarlo. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "El mensaje cifrado está dañado.";
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Este mensaje cifrado está dañado y no se ha podido descifrar. ⏎\n⏎\nPor favor, pida al remitente que vuelva a enviarle el mensaje.";
@@ -35,16 +35,16 @@
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "El mensaje no pudo ser verificada, ya que la clave que se utilizó para firmar este mensaje no está en tu llavero GPG. ⏎\n⏎\nBusque la clave con ID %@ en GPG Keychain Access e impórtela para verificar el mensaje.";
 
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "La firma del mensaje se ha creado con un algoritmo que no está soportado actualmente.";
-"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Este mensaje no pudo ser verificado, ya que la firma fue creada con un algoritmo que no está soportado actualmente. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Este mensaje no pudo ser verificado, ya que la firma fue creada con un algoritmo que no está soportado actualmente. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATENCIÓN: ¡La firma de este mensaje no es válida!";
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATENCIÓN: Este mensaje podría haber sido modificado después de firmarse. ⏎\n⏎\nPor favor, póngase en contacto con el remitente para asegurarse de que el contenido del mensaje coincide con el original. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en support.gpgtools.org si está seguro de que el mensaje no fue modificado.";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATENCIÓN: Este mensaje podría haber sido modificado después de firmarse. ⏎\n⏎\nPor favor, póngase en contacto con el remitente para asegurarse de que el contenido del mensaje coincide con el original. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en http://support.gpgtools.org si está seguro de que el mensaje no fue modificado.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "¡La verificación de la firma del mensaje ha fallado (error desconocido)!";
-"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ocurrió un error desconocido mientras se verificaba la firma de este mensaje. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ocurrió un error desconocido mientras se verificaba la firma de este mensaje. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "¡Error en los datos de la firma del mensaje!";
-"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "La firma de este mensaje no es válida y no pudo ser verificada. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "La firma de este mensaje no es válida y no pudo ser verificada. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "La clave con la que se firmó este mensaje ha caducado.";
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATENCIÓN: La clave que se utilizó para firmar este mensaje ha caducado. ⏎\n⏎\nUsted puede intentar actualizar la clave con ID %@ en GPG Keychain Access y preguntar al remitente por qué caducó la clave.";
@@ -72,13 +72,13 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "¡Descifrado se produjo el error desconocido!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Ocurrió un error desconocido al descifrar este archivo adjunto. ⏎ \n⏎ \nPor favor, póngase en contacto con nosotros en support.gpgtools.org";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Ocurrió un error desconocido al descifrar este archivo adjunto. ⏎ \n⏎ \nPor favor, póngase en contacto con nosotros en http://support.gpgtools.org";    
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "¡Descifrado se produjo el error desconocido!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Ocurrió un error desconocido al descifrar este archivo adjunto. ⏎ \n⏎ \nGPG mensaje de error: ⏎ \n%@ ⏎ \nPor favor, póngase en contacto con nosotros, incluyendo el mensaje de error GPG, en support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Ocurrió un error desconocido al descifrar este archivo adjunto. ⏎ \n⏎ \nGPG mensaje de error: ⏎ \n%@ ⏎ \nPor favor, póngase en contacto con nosotros, incluyendo el mensaje de error GPG, en http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Clave equivocada se utiliza para cifrar el archivo adjunto. ";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Esta unión no podía ser descifrado, ya que la clave pública errónea, se utilizó para cifrarlo. ⏎ \n⏎ \nPor favor, póngase en contacto con nosotros en support.gpgtools.org ";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Esta unión no podía ser descifrado, ya que la clave pública errónea, se utilizó para cifrarlo. ⏎ \n⏎ \nPor favor, póngase en contacto con nosotros en http://support.gpgtools.org ";    
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "El archivo adjunto cifrado está dañado. ";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Este archivo adjunto cifrado está dañado y no podía descifrar. ⏎ \n⏎ \nPor favor, pida al remitente que le envíe el mensaje de nuevo.";
@@ -90,16 +90,16 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "La firma de unión no pudo ser verificada, ya que la clave que se usó para firmar no está en tu llavero GPG. ⏎ \n⏎ \nBuscar la clave con ID %@ en GPG Keychain Access y de importación a comprobar el archivo adjunto. ";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "La firma fue creada con la unión de un algoritmo que no es compatible.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Esta unión no pudo ser verificada, ya que la clave para la firma fue creada con un algoritmo que no es compatible. ⏎ \n⏎ \nPor favor, póngase en contacto con nosotros en support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Esta unión no pudo ser verificada, ya que la clave para la firma fue creada con un algoritmo que no es compatible. ⏎ \n⏎ \nPor favor, póngase en contacto con nosotros en http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATENCIÓN: La firma de apego no es válido!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATENCIÓN:. Esta unión podría haber sido modificado después de la firma fue creada ⏎\n⏎\nPor favor, póngase en contacto con el remitente y asegúrese de que el contenido del archivo adjunto coincide con el original. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en support.gpgtools.org, si está seguro de la unión no se modificó.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATENCIÓN:. Esta unión podría haber sido modificado después de la firma fue creada ⏎\n⏎\nPor favor, póngase en contacto con el remitente y asegúrese de que el contenido del archivo adjunto coincide con el original. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en http://support.gpgtools.org, si está seguro de la unión no se modificó.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "La verificación de firmas se produjo el error desconocido!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ocurrió un error desconocido, mientras que la verificación de esta firma adjunto. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ocurrió un error desconocido, mientras que la verificación de esta firma adjunto. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Datos de la firma de error!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Esta firma apego es válido y no puede ser verificada. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Esta firma apego es válido y no puede ser verificada. ⏎\n⏎\nPor favor, póngase en contacto con nosotros en http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "La clave de la firma ha caducado.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATENCIÓN:. La clave que se usó para firmar este anexo ha caducado ⏎\n⏎\nUsted puede tratar de actualizar la clave con ID %@ en GPG Keychain Access y le preguntar el remitente por qué ha caducado la clave.";
@@ -166,5 +166,5 @@
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Encrypting your message failed because an unknown error has occured";
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately GPGMail can't handle the error at this point.";
 
-"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at support.gpgtools.org with the following error description:\n\n%@";
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at http://support.gpgtools.org with the following error description:\n\n%@";
 

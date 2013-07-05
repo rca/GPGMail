@@ -18,13 +18,13 @@
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Decifratura fallita a causa di un errore non identificato.";
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Un errore non identificato si è verificato durante la decifratura di questo mssaggio.\n\nPer favore, contattaci visitando support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Un errore non identificato si è verificato durante la decifratura di questo mssaggio.\n\nPer favore, contattaci visitando http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Decifratura fallita a causa di un errore non identificato!";
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Un errore non identificato si è verificato durante la decifratura di questo messaggio.\n\nMessaggio di errore GPG:\n%@\nPer favore contattaci visitando support.gpgtools.org, e riportando questo messaggio di errore GPG:";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Un errore non identificato si è verificato durante la decifratura di questo messaggio.\n\nMessaggio di errore GPG:\n%@\nPer favore contattaci visitando http://support.gpgtools.org, e riportando questo messaggio di errore GPG:";
 
 "MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "E' stata usata la chiave sbagliata per cifrare questo messaggio.";
-"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Il messaggio non può essere decifrato perché è stata usata una chiave pubblica sbagliata per cifrarlo.\n\nPer favore contattaci visitando support.gpgtools.org.";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Il messaggio non può essere decifrato perché è stata usata una chiave pubblica sbagliata per cifrarlo.\n\nPer favore contattaci visitando http://support.gpgtools.org.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Il messaggio cifrato si è corrotto.";
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Il messaggio cifrato si è corrotto e non può essere decifrato.\n\nPer favore richiedi un nuovo invio al mittente.";
@@ -35,16 +35,16 @@
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Il messaggio non può essere verificato, perché la chiave utilizzata per firmarlo non si trova nel tuo portachiavi GPG.\n\nCerca la chiave il cui ID è %@ nel programma Accesso Portachiavi GPG, ed importala per verificare il messaggio.";
 
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "La firma digitale del messaggio è stata creata con un algoritmo non supportato.";
-"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Il messaggio non è stato verificato perché la firma è stata creata con un algoritmo non supportato.\n\nPer favore contattaci visitando support.gpgtools.org.";
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Il messaggio non è stato verificato perché la firma è stata creata con un algoritmo non supportato.\n\nPer favore contattaci visitando http://support.gpgtools.org.";
 
 "MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATTENZIONE: La firma del messaggio non è valida!";
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATTENZIONE: Questo messaggio potrebbe essere stato modificato dopo la creazione della firma.\n\nPer favore contatta il mittente per assicurarti che il contenuto del messaggio corrisponda all'originale.\n\nSe sei sicuro che il messaggio non è stato alterato, per favore contattaci visitando support.gpgtools.org.";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATTENZIONE: Questo messaggio potrebbe essere stato modificato dopo la creazione della firma.\n\nPer favore contatta il mittente per assicurarti che il contenuto del messaggio corrisponda all'originale.\n\nSe sei sicuro che il messaggio non è stato alterato, per favore contattaci visitando http://support.gpgtools.org.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "La verifica del messaggio è fallita a causa di un errore non identificato!";
-"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Un errore non identificato è avvenuto durante la verifica della firma del messaggio.\n\nPer favore contattaci visitando support.gpgtools.org.";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Un errore non identificato è avvenuto durante la verifica della firma del messaggio.\n\nPer favore contattaci visitando http://support.gpgtools.org.";
 
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Errore nel contenuto della firma del messaggio!";
-"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "La firma di questo messaggio non è valida e non può essere verificata.\n\nPer favore contattaci visitando support.gpgtools.org.";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "La firma di questo messaggio non è valida e non può essere verificata.\n\nPer favore contattaci visitando http://support.gpgtools.org.";
 
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "La chiave di firma del messaggio è scaduta.";
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATTENZIONE: la chiave che è stata usata per firmare questo messaggio è scaduta.\n\nPuoi provare ad aggiornare la chiave il cui ID è %@ nel programma Accesso Portachiavi GPG e chiedere al mittente come mai la chiave è scaduta.";
@@ -72,10 +72,10 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Decifratura fallita a causa di un errore non identificato";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Un errore non identificato si è verificato durante la decifratura di questo allegato.\n\nPer favore contattaci visitando support.gpgtools.org.";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Un errore non identificato si è verificato durante la decifratura di questo allegato.\n\nPer favore contattaci visitando http://support.gpgtools.org.";    
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "Decrittazione fallita con errore sconosciuto!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Si è verificato un errore sconosciuto decrittando questo allegato.\nMessaggio di errore GPG:\n%@\nPrego contattaci a support.gpgtools.org, includendo il messaggio di errore GPG";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Si è verificato un errore sconosciuto decrittando questo allegato.\nMessaggio di errore GPG:\n%@\nPrego contattaci a http://support.gpgtools.org, includendo il messaggio di errore GPG";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "La chiave usata per crittografare questo allegato è errata.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Questo allegato non può essere decrittato in quanto per crittografarlo è stata usata una chiave pubblica errata.";    
@@ -93,13 +93,13 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Questo allegato non può essere verificato, perché la chiave usata per firmarlo è stata creata con un algoritmo non supportato.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATTENZIONE: La firma dell'allegato non è valida!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATTENZIONE: Questo allegato potrebbe essere stato modificato dopo la creazione della firma.\nPrego contatta il mittente e assicurati che il contenuto dell'allegato corrisponda all'originale.\nPrego contattaci a support.gpgtools.org se sei sicuro che l'allegato non sia stato modificato.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATTENZIONE: Questo allegato potrebbe essere stato modificato dopo la creazione della firma.\nPrego contatta il mittente e assicurati che il contenuto dell'allegato corrisponda all'originale.\nPrego contattaci a http://support.gpgtools.org se sei sicuro che l'allegato non sia stato modificato.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Verifica della firma fallita con errore sconosciuto!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Si è verificato un errore sconosciuto verificando la firma di questo allegato.\nPrego contattaci a support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Si è verificato un errore sconosciuto verificando la firma di questo allegato.\nPrego contattaci a http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Errore nei dati della firma!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "La firma di questo allegato non è valida e non può essere verificata.\nPrego contattaci a support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "La firma di questo allegato non è valida e non può essere verificata.\nPrego contattaci a http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "La chiave della firma è scaduta.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATTENZIONE: La chiave usata per firmare questo allegato è scaduta.\nPuoi provare ad aggiornare la chiave con ID %@ in GPG Accesso Portachiavi e chiedere al mittente perché la chiave è scaduta.";
@@ -166,5 +166,5 @@
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Encrypting your message failed because an unknown error has occured";
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately GPGMail can't handle the error at this point.";
 
-"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at support.gpgtools.org with the following error description:\n\n%@";
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at http://support.gpgtools.org with the following error description:\n\n%@";
 
