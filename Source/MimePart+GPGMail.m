@@ -2170,6 +2170,16 @@
 			
 			break;
 		}
+		case GPGErrorXPCBinaryError:
+		case GPGErrorXPCConnectionError:
+		case GPGErrorXPCConnectionInterruptedError: {
+			title = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE");
+			description = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION");
+			
+			appendContactGPGToolsInfo = NO;
+			
+			break;
+		}
 		default:
 			title = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE");
 			
@@ -2206,6 +2216,14 @@
 		errorText = ((NSException *)error).reason;
 	
 	switch (errorCode) {
+		case GPGErrorXPCBinaryError:
+		case GPGErrorXPCConnectionError:
+		case GPGErrorXPCConnectionInterruptedError: {
+			title = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE");
+			description = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION");
+			
+			break;
+		}
 		default: {
 			title = GMLocalizedString(@"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE");
 			
