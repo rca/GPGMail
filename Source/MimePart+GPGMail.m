@@ -219,6 +219,12 @@
         DebugLog(@"Parsed Message without objects: %@", [((ParsedMessage *)ret).html stringByDeletingAttachmentsWithNames:[[(MimeBody *)[self mimeBody] message] getIvar:@"PGPSignatureAttachmentsToRemove"]]);
         ((ParsedMessage *)ret).html = [((ParsedMessage *)ret).html stringByDeletingAttachmentsWithNames:[self signatureAttachmentScheduledForRemoval]];
     }
+	
+	// If this is a PGP-Partitioned message, PGPPartitionedContent is set,
+	// so return that.
+	if([self parentPart] == nil && [currentMessage getIvar:@"PGPPartitionedContent"])
+		return [currentMessage getIvar:@"PGPPartitionedContent"];
+	
     return ret;
 }
 
@@ -535,6 +541,17 @@
     NSData *decryptedData = nil;
     decryptedData = [self decryptedMessageBodyOrDataForEncryptedData:partData encryptedInlineRange:NSMakeRange(0, [partData length])];
     
+	// If this a PGP-Partitioned PGPexch.htm attachment, store the decrypted data
+	// to be returned as the main content of the message.
+	NSString *filename = [[self dispositionParameterForKey:@"filename"] lowercaseString];
+	if([decryptedData length] && [filename isEqualToString:@"pgpexch.htm"]) {
+		NSString *decryptedContent = [decryptedData stringByGuessingEncodingWithHint:[self bestStringEncoding]];
+		
+		[[(MimeBody *)[self mimeBody] message] setIvar:@"PGPPartitionedContent" value:decryptedContent];
+		// Also reset PGPAttachment, so this is not treated as an attachment.
+		self.PGPAttachment = NO;
+	}
+	
     return decryptedData;
 }
 
