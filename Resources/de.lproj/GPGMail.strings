@@ -188,3 +188,11 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Sie haben die Entschlüsselung abgebrochen";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "Die Entschlüsselung dieses Anhangs konnte nicht abgeschlossen werden, da sie die Passwortabfrage unterbrochen haben.";
 
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Ihre Nachricht konnte nicht signiert werden, da die Passwortabfrage nicht funktioniert";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "PIN-Entry, das Programm, welches für das Abfragen Ihres Passworts zuständig ist, scheint defekt zu sein.\n\nUm dieses Problem zu beheben, installieren Sie bitte die neuste Version von MacGPG2 von https://gpgtools.org";
+
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Das Entschlüsseln der Nachricht ist fehlgeschlagen, da die Passwortabfrage nicht funktioniert.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "PIN-Entry, das Programm, welches für das Abfragen Ihres Passworts zuständig ist, scheint defekt zu sein.\n\nUm dieses Problem zu beheben, installieren Sie bitte die neuste Version von MacGPG2 von https://gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Das Entschlüsseln des Anhangs ist fehlgeschlagen, da die Passwortabfrage nicht funktioniert.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "PIN-Entry, das Programm, welches für das Abfragen Ihres Passworts zuständig ist, scheint defekt zu sein.\n\nUm dieses Problem zu beheben, installieren Sie bitte die neuste Version von MacGPG2 von https://gpgtools.org";

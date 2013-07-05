@@ -889,6 +889,12 @@
 		title = GMLocalizedString(titleKey);
 		message = GMLocalizedString(messageKey);
 	}
+	else if(((GPGException *)operationError).errorCode == GPGErrorEOF) {
+		titleKey = [NSString stringWithFormat:@"%@_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE", prefix];
+		messageKey = [NSString stringWithFormat:@"%@_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE", prefix];
+		title = GMLocalizedString(titleKey);
+		message = GMLocalizedString(messageKey);
+	}
     else if(((GPGException *)operationError).errorCode == GPGErrorXPCBinaryError ||
 			((GPGException *)operationError).errorCode == GPGErrorXPCConnectionError ||
 			((GPGException *)operationError).errorCode == GPGErrorXPCConnectionInterruptedError) {
@@ -2158,7 +2164,12 @@
 			
 			break;
 		}
+		case GPGErrorEOF: {
+			title = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE");
+			description = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION");
 			
+			break;
+		}
 		default:
 			title = GMLocalizedString(@"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE");
 			
