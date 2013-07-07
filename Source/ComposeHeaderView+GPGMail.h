@@ -41,10 +41,7 @@
 /**
  Is called by Mail internally to know the frame that is needed
  to draw the security view in.
- 
- Since the OpenPGP checkbox takes some space, the size of the checkbox and text is 
- added to the original frame.
  */
-- (CGRect)MA_calculateSecurityFrame:(CGRect)frame;
+/*- (CGRect)MA_calculateSecurityFrame:(CGRect)frame;*/
 
 @end

@@ -45,14 +45,15 @@
 #import "NSObject+LPDynamicIvars.h"
 #import <NSString-EmailAddressString.h>
 #import "GMComposeKeyEventHandler.h"
+#import "OptionalView.h"
+
+
 
 @interface HeadersEditor_GPGMail (NoImplementation)
 - (void)changeFromHeader:(NSPopUpButton *)sender;
 @end
 
 @implementation HeadersEditor_GPGMail
-
-
 
 
 - (void)symmetricEncryptClicked:(id)sender {
@@ -122,8 +123,8 @@
 
 	
 	NSSegmentedControl *symmetricButton = nil;
-	NSView *superview = [[self valueForKey:@"_signButton"] superview];
-	
+	OptionalView *optionalView = (OptionalView *)[[self valueForKey:@"_signButton"] superview];
+
 	
 	if ([[GPGOptions sharedOptions] boolForKey:@"AllowSymmetricEncryption"]) {
 		symmetricButton = [[NSSegmentedControl alloc] initWithFrame:NSMakeRect(24, -1, 38, 24)];
@@ -134,11 +135,11 @@
 		symmetricButton.target = self;
 		symmetricButton.action = @selector(symmetricEncryptClicked:);
 		
-		NSRect frame = superview.frame;
+		NSRect frame = optionalView.frame;
 		frame.size.width += 44;
-		superview.frame = frame;
+		optionalView.frame = frame;
 		
-		for (NSView *view in superview.subviews) {
+		for (NSView *view in optionalView.subviews) {
 			if (![view isKindOfClass:[NSButton class]]) {
 				frame = view.frame;
 				frame.origin.x += 44;
@@ -146,10 +147,14 @@
 			}
 		}
 		
+		
 		[self setIvar:@"_symmetricButton" value:symmetricButton];
 		[self setIvar:@"AllowSymmetricEncryption" value:@YES];
-		//[self updateSymmetricButton];
-		[superview addSubview:symmetricButton];
+		[self updateSymmetricButton];
+		
+		[optionalView addSubview:symmetricButton];
+		CFBridgingRetain(optionalView.primaryView); //TODO: Verursacht dieser Aufruf ein Leak?
+		[optionalView setValue:symmetricButton forKey:@"primaryView"];
 	}
 	
 	
@@ -160,7 +165,7 @@
     GMSecurityControl *encryptControl = [[GMSecurityControl alloc] initWithControl:[self valueForKey:@"_encryptButton"] tag:SECURITY_BUTTON_ENCRYPT_TAG];
     [self setValue:encryptControl forKey:@"_encryptButton"];
 	
-	GMComposeKeyEventHandler *handler = [[GMComposeKeyEventHandler alloc] initWithView:superview];
+	GMComposeKeyEventHandler *handler = [[GMComposeKeyEventHandler alloc] initWithView:optionalView];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wselector"
 	handler.eventsAndSelectors = [NSArray arrayWithObjects:
