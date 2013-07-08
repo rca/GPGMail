@@ -20,7 +20,6 @@
 		1B3F2F9913E58FD3006A8333 /* NSAttributedString+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3F2F9813E58FD3006A8333 /* NSAttributedString+GPGMail.m */; };
 		1B3F2F9C13E590AB006A8333 /* MessageHeaderDisplay+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3F2F9B13E590AB006A8333 /* MessageHeaderDisplay+GPGMail.m */; };
 		1B3F2F9E13E59639006A8333 /* ComposeBackEnd+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3F2F9D13E59639006A8333 /* ComposeBackEnd+GPGMail.m */; };
-		1B3F2FA113E59EE3006A8333 /* OptionalView+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3F2FA013E59EE3006A8333 /* OptionalView+GPGMail.m */; };
 		1B45481A14F7D0F0000F1646 /* GMSecurityHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B45481914F7D0F0000F1646 /* GMSecurityHistory.m */; };
 		1B4741D014F550B800F36C54 /* GMSecurityControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4741CF14F550B800F36C54 /* GMSecurityControl.m */; };
 		1B51231E1409345C004D0818 /* MailDocumentEditor+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B51231D1409345C004D0818 /* MailDocumentEditor+GPGMail.m */; };
@@ -1304,8 +1303,6 @@
 		1B3F2F9A13E590AB006A8333 /* MessageHeaderDisplay+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MessageHeaderDisplay+GPGMail.h"; sourceTree = "<group>"; };
 		1B3F2F9B13E590AB006A8333 /* MessageHeaderDisplay+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MessageHeaderDisplay+GPGMail.m"; sourceTree = "<group>"; };
 		1B3F2F9D13E59639006A8333 /* ComposeBackEnd+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ComposeBackEnd+GPGMail.m"; sourceTree = "<group>"; };
-		1B3F2F9F13E59EE3006A8333 /* OptionalView+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OptionalView+GPGMail.h"; sourceTree = "<group>"; };
-		1B3F2FA013E59EE3006A8333 /* OptionalView+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OptionalView+GPGMail.m"; sourceTree = "<group>"; };
 		1B45481814F7D0F0000F1646 /* GMSecurityHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSecurityHistory.h; sourceTree = "<group>"; };
 		1B45481914F7D0F0000F1646 /* GMSecurityHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMSecurityHistory.m; sourceTree = "<group>"; };
 		1B4741CE14F550B700F36C54 /* GMSecurityControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSecurityControl.h; sourceTree = "<group>"; };
@@ -2966,7 +2963,6 @@
 				1B3F2F9813E58FD3006A8333 /* NSAttributedString+GPGMail.m */,
 				559A80900838EA1C0052F47C /* NSPreferences+GPGMail.m */,
 				1B89E21514FC40F00012D4AD /* NSWindow+GPGMail.m */,
-				1B3F2FA013E59EE3006A8333 /* OptionalView+GPGMail.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -3032,7 +3028,6 @@
 				1B3F2F9713E58FD2006A8333 /* NSAttributedString+GPGMail.h */,
 				559A80680838E8890052F47C /* NSPreferences+GPGMail.h */,
 				1B89E21414FC40F00012D4AD /* NSWindow+GPGMail.h */,
-				1B3F2F9F13E59EE3006A8333 /* OptionalView+GPGMail.h */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -3501,7 +3496,6 @@
 				1B3F2F9913E58FD3006A8333 /* NSAttributedString+GPGMail.m in Sources */,
 				1B3F2F9C13E590AB006A8333 /* MessageHeaderDisplay+GPGMail.m in Sources */,
 				1B3F2F9E13E59639006A8333 /* ComposeBackEnd+GPGMail.m in Sources */,
-				1B3F2FA113E59EE3006A8333 /* OptionalView+GPGMail.m in Sources */,
 				1BAEF64413E9F57700A59CED /* MailAccount+GPGMail.m in Sources */,
 				1B02D70813F1E9D80032CFD1 /* GPGFlaggedString.m in Sources */,
 				1B02D70A13F1E9F00032CFD1 /* NSArray+Functional.m in Sources */,
@@ -4095,6 +4089,7 @@
 				1B87636E1786020A00B24BBC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		55541F4C085AE6B100548474 /* Build configuration list for PBXNativeTarget "GPGMail" */ = {
 			isa = XCConfigurationList;

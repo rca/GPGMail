@@ -49,13 +49,8 @@
     [self MAAwakeFromNib];
 }
 
-- (CGRect)MA_calculateSecurityFrame:(CGRect)frame {
-    if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
-        if([[self valueForKey:@"_securityOptionalView"] ivarExists:@"securityViewWidth"])
-            frame.size.width = [[[self valueForKey:@"_securityOptionalView"] getIvar:@"securityViewWidth"] floatValue];
-    }
-    CGRect newRect = [self MA_calculateSecurityFrame:frame];
-    return newRect;
-}
+/*- (CGRect)MA_calculateSecurityFrame:(CGRect)frame {
+    return [self MA_calculateSecurityFrame:frame];
+}*/
 
 @end
