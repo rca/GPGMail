@@ -153,8 +153,7 @@
 		[self updateSymmetricButton];
 		
 		[optionalView addSubview:symmetricButton];
-		CFBridgingRetain(optionalView.primaryView); //TODO: Verursacht dieser Aufruf ein Leak?
-		[optionalView setValue:symmetricButton forKey:@"primaryView"];
+		[optionalView setIvar:@"AdjustedWidth" value:@YES];
 	}
 	
 	
