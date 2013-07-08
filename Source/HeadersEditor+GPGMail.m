@@ -207,21 +207,6 @@
     [self fromHeaderDisplaySecretKeys:securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP];
 }
 
-- (void)MA_updateSecurityStateInBackgroundForRecipients:(NSArray *)recipients sender:(NSString *)sender {
-    // Check for NoUpdateSecurityState. If that is set, do not again
-    // update the state 'cause we're right in the middle of that.
-	@try {
-        [[self getIvar:@"SecurityStateLock"] lock];
-        [self MA_updateSecurityStateInBackgroundForRecipients:recipients sender:sender];
-    }
-    @catch (id e) {
-        DebugLog(@"Failed to acquire SecurityStateLock: %@", e);
-    }
-    @finally {
-        [[self getIvar:@"SecurityStateLock"] unlock];
-    }
-}
-
 - (void)MAUpdateSecurityControls {
 	[self updateSymmetricButton];
     [self MAUpdateSecurityControls];

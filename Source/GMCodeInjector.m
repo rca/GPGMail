@@ -69,7 +69,6 @@
                              @"_updateFromAndSignatureControls:",
                              @"changeFromHeader:",
                              @"dealloc",
-                             @"_updateSecurityStateInBackgroundForRecipients:sender:",
                              @"awakeFromNib",
                              @"_updateSignButtonTooltip",
                              @"_updateEncryptButtonTooltip",
