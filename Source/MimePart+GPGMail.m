@@ -539,7 +539,7 @@
     
     NSData *partData = [self bodyData];
     NSData *decryptedData = nil;
-    decryptedData = [self decryptedMessageBodyOrDataForEncryptedData:partData encryptedInlineRange:NSMakeRange(0, [partData length])];
+    decryptedData = [self decryptedMessageBodyOrDataForEncryptedData:partData encryptedInlineRange:NSMakeRange(0, [partData length]) isAttachment:YES];
     
 	// If this a PGP-Partitioned PGPexch.htm attachment, store the decrypted data
 	// to be returned as the main content of the message.
@@ -1228,6 +1228,10 @@
 }
 
 - (id)decryptedMessageBodyOrDataForEncryptedData:(NSData *)encryptedData encryptedInlineRange:(NSRange)encryptedRange {
+	return [self decryptedMessageBodyOrDataForEncryptedData:encryptedData encryptedInlineRange:encryptedRange isAttachment:NO];
+}
+
+- (id)decryptedMessageBodyOrDataForEncryptedData:(NSData *)encryptedData encryptedInlineRange:(NSRange)encryptedRange isAttachment:(BOOL)isAttachment {
     __block NSData *decryptedData = nil;
     __block id decryptedMimeBody = nil;
     __block NSData *partDecryptedData = nil;
@@ -1245,6 +1249,11 @@
     
     BOOL error = partDecryptedData == nil;
     
+	// If this a a pgp encrypted attachment, there's no need to further handle it,
+	// then return the data.
+	if(isAttachment && inlineEncrypted)
+		return partDecryptedData;
+	
     // Creating a new message from the PGP decrypted data for PGP/MIME encrypted messages
     // is not supposed to happen within the decryption task.
     // Otherwise it could block the decryption queue for new jobs if the decrypted message contains

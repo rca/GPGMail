@@ -238,6 +238,11 @@ typedef enum {
 - (id)decryptedMessageBodyOrDataForEncryptedData:(NSData *)encryptedData encryptedInlineRange:(NSRange)encryptedRange;
 
 /**
+ Calls decryptdData: but doesn't try to further process the decrypted data if isAttachment is set to YES.
+ */
+- (id)decryptedMessageBodyOrDataForEncryptedData:(NSData *)encryptedData encryptedInlineRange:(NSRange)encryptedRange isAttachment:(BOOL)isAttachment;
+
+/**
  Verifies the passed data and sets the PGP information for the part.
  */
 - (void)verifyData:(NSData *)signedData signatureData:(NSData *)signatureData;
