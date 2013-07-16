@@ -266,9 +266,9 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 		// Only either the key or one of the subkeys has to be valid,
 		// non-expired, non-disabled, non-revoked and be used for signing.
 		// We don't care about ownerTrust, validity.
-		if(key.secret && key.canSign && key.status < GPGKeyStatus_Invalid)
+		if(key.secret && key.canAnySign && key.status < GPGKeyStatus_Invalid)
 			return key;
-				
+		
 		return nil;
 	}];
 	self.secretKeys = secretKeys;
