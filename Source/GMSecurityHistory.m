@@ -47,7 +47,7 @@
 	id signValue = [options valueForKey:@"SignNewEmailsByDefault"];
 	id encryptValue = [options valueForKey:@"EncryptNewEmailsByDefault"];
 	// If the values are not configured, default to not sign.
-	BOOL signDefault = NO;
+	BOOL signDefault = YES;
 	BOOL encrpytDefault = NO;
 	BOOL sign = signValue ? [signValue boolValue] : signDefault;
 	BOOL encrypt = encryptValue ? [encryptValue boolValue] : encrpytDefault;
