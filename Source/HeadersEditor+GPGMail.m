@@ -113,14 +113,7 @@
 - (void)MAAwakeFromNib {
     [self MAAwakeFromNib];
 	
-    // This lock is used to prevent a SecurityMethodDidChange notification to
-    // mess with an ongoing _updateSecurityStateInBackgroundForRecipients:recipients:
-    // call.
-	NSLock *updateSecurityStateLock = [[NSLock alloc] init];
-    [self setIvar:@"SecurityStateLock" value:updateSecurityStateLock];
-	[(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] addObserver:self selector:@selector(securityMethodDidChange:) name:@"SecurityMethodDidChangeNotification" object:nil];
-	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyringUpdated:) name:GPGMailKeyringUpdatedNotification object:nil];
-
+    [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyringUpdated:) name:GPGMailKeyringUpdatedNotification object:nil];
 	
 	NSSegmentedControl *symmetricButton = nil;
 	OptionalView *optionalView = (OptionalView *)[[self valueForKey:@"_signButton"] superview];
@@ -202,26 +195,45 @@
 	// call both methods with YES.
 	[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] setAccountFieldEnabled:YES];
 	[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] setAccountFieldVisible:YES];
-    // If any luck, the security option should be known by now.
+    
+	// If any luck, the security option should be known by now.
+	// It's not, but it still works as assumed.
     ComposeBackEnd *backEnd = [(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd];
     GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
     if(((ComposeBackEnd_GPGMail *)backEnd).securityMethod)
         securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).securityMethod;
     
-    [self fromHeaderDisplaySecretKeys:securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP];
+    [self updateFromAndAddSecretKeysIfNecessary:@(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP)];
 }
 
 - (void)MAUpdateSecurityControls {
-	[self updateSymmetricButton];
-    [self MAUpdateSecurityControls];
+	// Do nothing, if documentEditor is no longer set.
+	// Might already have been released, or some such...
+	// Belongs to: #624.
+	if(![self valueForKey:@"_documentEditor"])
+		return;
+	
+	[self MAUpdateSecurityControls];
 }
 
-- (void)_fromHeaderDisplaySecretKeys:(NSNumber *)display {
-    [self fromHeaderDisplaySecretKeys:[display boolValue]];
+- (void)MA_updateSecurityStateInBackgroundForRecipients:(NSArray *)recipients sender:(id)sender {
+	[self MA_updateSecurityStateInBackgroundForRecipients:recipients sender:sender];
+	
+	// Do the same as _updateSecurityStateInBackgroundForRecipients and update the
+	// symmetric UI part on the main thread.
+	typeof(self) __weak weakSelf = self;
+	
+	[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+		typeof(weakSelf) __strong strongSelf = weakSelf;
+		if(!strongSelf)
+			return;
+		[strongSelf updateSymmetricButton];
+	}];
 }
 
-- (void)fromHeaderDisplaySecretKeys:(BOOL)display {
-    NSPopUpButton *popUp = [[self valueForKey:@"_composeHeaderView"] valueForKey:@"_accountPopUp"];
+- (void)updateFromAndAddSecretKeysIfNecessary:(NSNumber *)necessary {
+    BOOL display = [necessary boolValue];
+	NSPopUpButton *popUp = [self valueForKey:@"_fromPopup"];
 	NSMenu *menu = [popUp menu];
 	NSArray *menuItems = [menu itemArray];
 	GPGMailBundle *bundle = [GPGMailBundle sharedInstance];
@@ -319,7 +331,6 @@
 	
     // Select a valid item if needed.
     if (selectedItem.isHidden) {
-        [popUp setIvar:@"CalledFromGPGMail" value:@YES];
 		NSUInteger index;
 		if (subItemToSelect) {
 			index = [menu indexOfItem:subItemToSelect];
@@ -327,14 +338,19 @@
 			index = [menu indexOfItem:selectedItem] + 1;
 		}
         [popUp selectItemAtIndex:index];
-        [self changeFromHeader:popUp];
+        [popUp synchronizeTitleAndSelectedItem];
+		
+		[popUp setIvar:@"CalledFromGPGMail" value:@YES];
+		[self changeFromHeader:popUp];
     }
     else if ([popUp selectedItem] != selectedItem) {
         if ((parentItem = [selectedItem getIvar:@"parentItem"])) {
             selectedItem = parentItem;
         }
-        [popUp setIvar:@"CalledFromGPGMail" value:@YES];
         [popUp selectItem:selectedItem];
+        [popUp synchronizeTitleAndSelectedItem];
+		
+		[popUp setIvar:@"CalledFromGPGMail" value:@YES];
         [self changeFromHeader:popUp];
     } else if (![backEnd getIvar:@"gpgKeyForSigning"]) {
 		id gpgKey = [selectedItem getIvar:@"gpgKey"];
@@ -347,14 +363,6 @@
 - (void)MAChangeFromHeader:(NSPopUpButton *)sender {
     BOOL calledFromGPGMail = [[sender getIvar:@"CalledFromGPGMail"] boolValue];
     [sender setIvar:@"CalledFromGPGMail" value:@NO];
-    // If the newly selected item is the currently select item,
-    // just bail out.
-    // Update: this doesn't work, since the selected item of _accountPopup is of course already updated.
-//    if(!calledFromGPGMail) {
-//        NSPopUpButton *accountPopUp = [[self valueForKey:@"_composeHeaderView"] valueForKey:@"_accountPopUp"];
-//        if(sender.selectedItem == accountPopUp.selectedItem)
-//            return;
-//    }
     
     // Create a new NSPopUpButton with only one item and the correct title.
 	NSPopUpButton *button = [[NSPopUpButton alloc] init];
@@ -372,29 +380,25 @@
         ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod = 0;
     }
 
-	[self MAChangeFromHeader:button/*sender*/];
-}
-
-- (void)resetSecurityButtons {
-    GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
-    GMSecurityControl *encryptControl = [self valueForKey:@"_encryptButton"];
-    
-    // Reset the controls if the security method changes.
-    signControl.forcedImageName = nil;
-    encryptControl.forcedImageName = nil;
-}
-
-- (void)securityMethodDidChange:(NSNotification *)notification {
-    // Reset the controls if the security method changes.
-//    [self resetSecurityButtons];
+	[self MAChangeFromHeader:button];
 }
 
 - (void)keyringUpdated:(NSNotification *)notification {
-    GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).guessedSecurityMethod;
+    // Will always be called on the main thread!.
+	if(![NSThread isMainThread]) {
+		DebugLog(@"%@: not called on main thread? What the fuck?!", NSStringFromSelector(_cmd));
+		return;
+	}
+	
+	GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).guessedSecurityMethod;
     if(((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod)
         securityMethod = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod;
-    if(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP)
-        [self performSelectorOnMainThread:@selector(_fromHeaderDisplaySecretKeys:) withObject:(id)kCFBooleanTrue waitUntilDone:NO];
+	if(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP)
+		// Calls updateSecurityControls internally, because changeFromHeader is called
+		[self updateFromAndAddSecretKeysIfNecessary:@(YES)];
+	else
+		// Explicitly call updateSecurityControls.
+		[(HeadersEditor *)self updateSecurityControls];
 }
 
 - (void)MA_updateSignButtonTooltip {
@@ -450,5 +454,139 @@
 }
 
 @end
+
+/* ORIGINAL SOURCE OF MAIL.APP FOR LEARING. */
+
+//- (void)configureButtonsAndPopUps {
+//    WebViewEditor *webViewEditor = [[self valueForKey:@"_documentEditor"] webViewEditor];
+//	[webViewEditor updateIgnoredWordsForHeader:NO];
+//	[webViewEditor updateSecurityControls];
+//	[webViewEditor updatePriorityPopUpMakeActive:YES];
+//
+//	ComposeBackEnd *backEnd = [self _valueForKey:@"_documentEditor"];
+//	long long messagePriority = [backEnd displayableMessagePriority];
+//
+//	if(messagePriority != 3) {
+//		if([[self valueForKey:@"_priorityPopup"] isHiddenOrHasHiddenAncestor])
+//		   [[self valueForKey:@"_composeHeaderView"] setPriorityFieldVisible:YES];
+//	}
+//
+//	[self _updateFromAndSignatureControls];
+//}
+//
+//- (void)changeHeaderField:(id)headerField {
+//	NSString *headerKey = [self _headerKeyForView:headerField];
+//	if(!headerKey)
+//		return;
+//
+//	if([self valueForKey:@"_subjectField"] != headerField) {
+//		NSString *attributedStringValue = [headerField attributedStringValue];
+//		NSString *unatomicAddress = [attributedStringValue unatomicAddresses];
+//		[[[self valueForKey:@"_documentEditor"] backEnd] setAddressList:unatomicAddress forHeader:headerKey];
+//
+//		if([self valueForKey:@"_toField"] != headerField && [self valueForKey:@"_ccField"] != headerField) {
+//			if([self valueForKey:@"_bccField"] == headerField) {
+//				[[self valueForKey:@"_documentEditor"] updateSendButtonStateInToolbar];
+//				[self updateSecurityControls];
+//				[self updatePresenceButtonState];
+//			}
+//			else
+//				return;
+//		}
+//		else {
+//			[[self valueForKey:@"_documentEditor"] updateSendButtonStateInToolbar];
+//			[self updateSecurityControls];
+//			[self updatePresenceButtonState];
+//		}
+//	}
+//}
+//
+//- (void)changeFromHeader:(id)header {
+//	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd]; // r15
+//	NSString *title = [header titleOfSelectedItem];
+//	if(title) {
+//		NSString *sender = [backEnd sender];
+//		[sender retain];
+//		[backEnd setSender:title];
+//		[self updateCcOrBccMyselfFieldWithSender:title oldSender:sender];
+//		[sender release];
+//		[self updateSecurityControls];
+//		[self updateSignatureControlOverridingExistingSignature:YES];
+//		[[self valueForKey:@"_documentEditor"] updateAttachmentStatus];
+//	}
+//	// And some more stuff which shall not be our concern currently.
+//
+//}
+//
+//- (void)updateSecurityControls {
+//	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+//	NSArray *recipients = [backEnd allRecipients];
+//	NSString *sender = [backEnd sender];
+//    NSInvocation *invocation = [NSInvocation invocationWithSelector:@selector(_updateSecurityStateInBackgroundForRecipients:sender:) target:self object1:recipients	object2:sender];
+//
+//	[WorkerThread addInvocationToQueue:invocation];
+//}
+//
+//- (void)_updateSecurityStateInBackgroundForRecipients:(id)recipients sender:(id)sender {
+//	BOOL canSignFromAnyAccount = [self canSignFromAnyAccount];
+//
+//	BOOL canSignFromAddress = NO;
+//	BOOL canEncryptFromAddress = NO;
+//	if(canSignFromAnyAccount) {
+//		ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+//		canSignFromAddress = [backEnd canSignFromAddress:sender];
+//		if(canSignFromAddress) {
+//			canEncryptFromAddress = [backEnd canEncryptForRecipients:recipients sender:sender];
+//		}
+//	}
+//	[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+//		[[self valueForKey:@"_composeHeaderView"] setSecurityFieldEnabled:canSignFromAddress];
+//		if(canSignFromAddress && canEncryptFromAddress) {
+//			if(![[self valueForKey:@"_composeHeaderView"] securityFieldVisible]) {
+//				[[self valueForKey:@"_signButton"] setImage:@"" forSegment:0];
+//				[[self valueForKey:@"_encryptButton"] setImage:@"" forSegment:0];
+//				[[self valueForKey:@"_signButton"] setEnabled:NO];
+//				[[self valueForKey:@"_encryptButton"] setEnabled:NO];
+//
+//				[[[self valueForKey:@"_documentEditor"] backEnd] setSignIfPossible:NO];
+//			}
+//			else {
+//				BOOL sign = (BOOL)[NSApp signOutgoingMessages]; // r15
+//				BOOL encrypt = (BOOL)[NSApp encryptOutgoingMessages];
+//
+//				NSImage *signImage = nil; // some image.
+//				NSImage *encryptImage = nil; // some other image.
+//				if(sign) {
+//					signImage = nil; // different image
+//				}
+//
+//				[[self valueForKey:@"_signButton"] setImage:signImage forSegment:0];
+//				[[self valueForKey:@"_signButton"] setEnabled:YES];
+//				[[[self valueForKey:@"_documentEditor"] backEnd] setSignIfPossible:sign];
+//
+//				if(!canEncryptFromAddress) {
+//					[[self valueForKey:@"_encryptButton"] setEnabled:canEncryptFromAddress];
+//					[[self valueForKey:@"_encryptButton"] setImage:encryptImage forSegment:0];
+//
+//					[[[self valueForKey:@"_documentEditor"] backEnd] setEncryptIfPossible:NO];
+//				}
+//				else {
+//					[[self valueForKey:@"_encryptButton"] setEnabled:YES];
+//
+//					NSImage *encryptImage = nil; // some image.
+//					if(encrypt)
+//						encryptImage = nil; // some other image.
+//					[[self valueForKey:@"_encryptButton"] setImage:encryptImage forSegment:0];
+//					[[[self valueForKey:@"_documentEditor"] backEnd] setEncryptIfPossible:encrypt];
+//
+//					[self _updateSignButtonTooltip];
+//					[self _updateEncryptButtonTooltip];
+//
+//					[[self valueForKey:@"_documentEditor"] encryptionStatusDidChange];
+//				}
+//			}
+//		}
+//	}];
+//}
 
 

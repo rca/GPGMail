@@ -58,6 +58,8 @@
     GMSecurityMethodAccessoryView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
     ComposeBackEnd *backEnd = ((MailDocumentEditor *)self).backEnd;
     
+	GPGMAIL_SECURITY_METHOD oldSecurityMethod = accessoryView.securityMethod;
+	
     BOOL shouldEncrypt = [[backEnd getIvar:@"shouldEncrypt"] boolValue];
     BOOL shouldSign = [[backEnd getIvar:@"shouldSign"] boolValue];
 	BOOL shouldSymmetric = [[backEnd getIvar:@"shouldSymmetric"] boolValue];
@@ -73,7 +75,8 @@
     else
         accessoryView.active = NO;
     
-    [[((MailDocumentEditor *)self) headersEditor] fromHeaderDisplaySecretKeys:(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? YES : NO)];
+	if(oldSecurityMethod != securityMethod)
+		[[((MailDocumentEditor *)self) headersEditor] updateFromAndAddSecretKeysIfNecessary:@(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? YES : NO)];
 }
 
 - (void)updateSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
@@ -82,7 +85,6 @@
 }
 
 - (void)MABackEndDidLoadInitialContent:(id)content {
-    [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyringUpdated:) name:GPGMailKeyringUpdatedNotification object:nil];
     [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didExitFullScreen:) name:@"NSWindowDidExitFullScreenNotification" object:nil];
     
     // Setup security method hint accessory view in top right corner of the window.
@@ -115,11 +117,6 @@
     accessoryView.hidden = YES;
 }
 
-- (void)keyringUpdated:(NSNotification *)notification {
-    // Reset the security method, since it might change due to the updated keyring.
-	[[(MailDocumentEditor *)self headersEditor] updateSecurityControls];
-}
-
 - (void)securityMethodAccessoryView:(GMSecurityMethodAccessoryView *)accessoryView didChangeSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
     ((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).securityMethod = securityMethod;
     ((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).userDidChooseSecurityMethod = YES;
@@ -135,7 +132,11 @@
     @catch(NSException *e) {
         
     }
-    [self MADealloc];
+	// To really fix #624 make sure the backEnd is set to nil as a last resort.
+	[(ComposeBackEnd *)[self valueForKey:@"_backEnd"] setDelegate:nil];
+	CFBridgingRelease((__bridge CFTypeRef)([self valueForKey:@"_backEnd"]));
+    [self setValue:nil forKey:@"_backEnd"];
+	[self MADealloc];
 }
 
 - (void)MABackEnd:(id)backEnd didCancelMessageDeliveryForEncryptionError:(MFError *)error {
