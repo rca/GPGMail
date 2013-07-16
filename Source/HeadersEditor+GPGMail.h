@@ -64,14 +64,7 @@
 /**
   Norification handling.
  */
-- (void)securityMethodDidChange:(NSNotification *)notification;
 - (void)keyringUpdated:(NSNotification *)notification;
-
-/**
- Reset the forced image on the security buttons
- */
-- (void)resetSecurityButtons;
-
 
 - (void)updateSymmetricButton;
 
