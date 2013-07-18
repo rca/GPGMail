@@ -278,7 +278,6 @@
 		securityMethod = canPGPSign && canSMIMESign ? defaultSecurityOptions.securityMethod : (canPGPSign ? GPGMAIL_SECURITY_METHOD_OPENPGP : GPGMAIL_SECURITY_METHOD_SMIME);
 	}
 	
-	
 	// If there's a signing key, and the message was signed, enable signing.
 	if(messageIsSigned && (canSMIMESign || canPGPSign))
 		canSign = YES;
@@ -287,12 +286,18 @@
 	if(messageIsEncrypted && (canSMIMEEncrypt || canPGPEncrypt))
 		canEncrypt = YES;
 	
-	if(SMIMEKeyAvailable && !PGPKeyAvailable)
+	// Keys for both methods are available
+	if(SMIMEKeyAvailable && PGPKeyAvailable) {
+		if(message.isSMIMESigned || message.isSMIMEEncrypted)
+			securityMethod = GPGMAIL_SECURITY_METHOD_SMIME;
+		else if(message.PGPEncrypted || message.PGPSigned)
+			securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
+		// Not signed or not encrypted is already handled above.
+	}
+	else if(SMIMEKeyAvailable && !PGPKeyAvailable)
 		securityMethod = GPGMAIL_SECURITY_METHOD_SMIME;
 	else if(PGPKeyAvailable && !SMIMEKeyAvailable)
 		securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
-	else
-		securityMethod = defaultSecurityOptions.securityMethod;
 	
     return [GMSecurityOptions securityOptionsWithSecurityMethod:securityMethod shouldSign:canSign shouldEncrypt:canEncrypt];
 }
