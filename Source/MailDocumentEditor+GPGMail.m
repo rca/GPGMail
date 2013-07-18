@@ -132,10 +132,6 @@
     @catch(NSException *e) {
         
     }
-	// To really fix #624 make sure the backEnd is set to nil as a last resort.
-	[(ComposeBackEnd *)[self valueForKey:@"_backEnd"] setDelegate:nil];
-	CFBridgingRelease((__bridge CFTypeRef)([self valueForKey:@"_backEnd"]));
-    [self setValue:nil forKey:@"_backEnd"];
 	[self MADealloc];
 }
 
