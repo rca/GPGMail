@@ -176,7 +176,9 @@
     if(![self parentPart] && (tnefPart = [self mimePartWithTNEFAttachmentContainingSignedMessage])) {
 		MimeBody *newMessageBody = [tnefPart decodeApplicationMS_tnefWithContext:ctx];
 		((MFMimeDecodeContext *)ctx).shouldSkipUpdatingMessageFlags = YES;
-		ret = [newMessageBody parsedMessageWithContext:ctx];
+#warning It's no necessary, maybe even harmful to use parsedMessageWithContext here.
+		// parsedMessageWithContext should be replaced with [[newMessageBody topLevelPart] decodeWithContext:]
+		ret = [[newMessageBody topLevelPart] decodeWithContext:ctx];
 		MimePart *newTopLevel = [newMessageBody topLevelPart];
 		self.PGPSigned = [newTopLevel PGPSigned];
 		self.PGPError = [newTopLevel PGPError];
@@ -313,8 +315,6 @@
 			// Length of the entire tnefObject.
 			internalOffset += length + 2;
 			NSUInteger tnefObjectLength = internalOffset;
-			NSLog(@"object length: %ld", (unsigned long)tnefObjectLength);
-			
 			
 			// Forward the offset to the next tnefObject.
 			offset += tnefObjectLength;
@@ -366,6 +366,10 @@
 	Message *signedMessage = [Message messageWithRFC822Data:signedAttachment sanitizeData:YES];
 	[signedMessage setMessageInfoFromMessage:[(MimeBody *)[self mimeBody] message]];
 	MimeBody *messageBody = [signedMessage messageBodyUpdatingFlags:YES];
+	
+	// It's necessary to temporarily store this message, so it's retained,
+	// otherwise it will be released to early.
+	[[(MimeBody *)[self mimeBody] message] setIvar:@"TNEFDecodedMessage" value:signedMessage];
 	
 	return messageBody;
 }
@@ -638,7 +642,8 @@
 
 - (id)decodeMultipartEncryptedWithContext:(id)ctx {
     // 1. Step, check if the message was already decrypted.
-    if(self.PGPDecryptedBody || self.PGPError)
+#warning this lookup should be locked as Mail.app does it in decryptedMessageBodyIsEncrypted:isSigned:error
+	if(self.PGPDecryptedBody || self.PGPError)
         return self.PGPDecryptedBody ? self.PGPDecryptedBody : nil;
     
     // 2. Fetch the data part.
