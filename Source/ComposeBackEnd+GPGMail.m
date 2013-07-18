@@ -155,9 +155,8 @@
 		if ([[GPGOptions sharedOptions] boolForKey:@"OptionallyEncryptDrafts"]) {
 			shouldPGPSign = [[self getIvar:@"shouldSign"] boolValue];
 			shouldPGPEncrypt = [[self getIvar:@"shouldEncrypt"] boolValue];
-		} else {
-			shouldPGPSymmetric = NO;
 		}
+		shouldPGPSymmetric = NO;
     }
 	
     // It might not be possible to inline encrypt drafts, since contents.text is nil.
