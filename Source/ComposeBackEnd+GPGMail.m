@@ -609,18 +609,18 @@
 }
 
 - (BOOL)MACanEncryptForRecipients:(NSArray *)recipients sender:(NSString *)sender {
-    // Otherwise check the gpg keys.
-    // Loop through all the addresses and check if we can encrypt for them.
-    // If no recipients are set, encrypt is false.
     // This method is never supposed to be called on the main thread,
 	// so let's check for that.
     if([NSThread isMainThread])
 		return NO;
 	
-    DebugLog(@"Recipients: %@", recipients);
+    // To really fix #624 make sure the backEnd is alive till the end of this method.
+	ComposeBackEnd_GPGMail *bself __attribute__((objc_precise_lifetime)) = self;
+	
+	DebugLog(@"Recipients: %@", recipients);
     
     sender = [sender gpgNormalizedEmail];
-    BOOL canSMIMEEncrypt = [self MACanEncryptForRecipients:recipients sender:sender];
+    BOOL canSMIMEEncrypt = [(ComposeBackEnd_GPGMail *)bself MACanEncryptForRecipients:recipients sender:sender];
     
     DebugLog(@"Can S/MIME encrypt to recipients: %@? %@", recipients, canSMIMEEncrypt ? @"YES" : @"NO");
     
@@ -636,8 +636,8 @@
     
     DebugLog(@"Can PGP encrypt to recipients: %@? %@", mutableRecipients, canPGPEncrypt ? @"YES" : @"NO");
     
-    BOOL canSMIMESign = [[self getIvar:@"CanSMIMESign"] boolValue];
-    BOOL canPGPSign = [[self getIvar:@"CanPGPSign"] boolValue];
+    BOOL canSMIMESign = [[bself getIvar:@"CanSMIMESign"] boolValue];
+    BOOL canPGPSign = [[bself getIvar:@"CanPGPSign"] boolValue];
     
     GPGMAIL_SIGN_FLAG signFlags = 0;
     if(canPGPSign)
@@ -659,21 +659,21 @@
     GMSecurityHistory *securityHistory = [[GMSecurityHistory alloc] init];
     GMSecurityOptions *securityOptions = nil;
     
-    if(!self.securityMethod) {
-        if(self.messageIsBeingReplied) {
-            Message *originalMessage = [((ComposeBackEnd *)self) originalMessage];
+    if(!bself.securityMethod) {
+        if(bself.messageIsBeingReplied) {
+            Message *originalMessage = [((ComposeBackEnd *)bself) originalMessage];
             securityOptions = [securityHistory bestSecurityOptionsForReplyToMessage:originalMessage signFlags:signFlags encryptFlags:encryptFlags];
         }
-		else if([self draftIsContinued]) {
-			Message *originalMessage = [((ComposeBackEnd *)self) originalMessage];
+		else if([bself draftIsContinued]) {
+			Message *originalMessage = [((ComposeBackEnd *)bself) originalMessage];
 			securityOptions = [securityHistory bestSecurityOptionsForMessageDraft:originalMessage signFlags:signFlags encryptFlags:encryptFlags];
 		}
         else {
             securityOptions = [securityHistory bestSecurityOptionsForSender:sender recipients:recipients signFlags:signFlags encryptFlags:encryptFlags];
         }
-        self.guessedSecurityMethod = securityOptions.securityMethod;
+        bself.guessedSecurityMethod = securityOptions.securityMethod;
         
-        if(self.guessedSecurityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
+        if(bself.guessedSecurityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
             canEncrypt = canPGPEncrypt;
             canSign = canPGPSign;
         }
@@ -681,36 +681,36 @@
             canEncrypt = canSMIMEEncrypt;
             canSign = canSMIMESign;
         }
-        if(self.guessedSecurityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
+        if(bself.guessedSecurityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
             DebugLog(@"Security Method is OpenPGP");
             DebugLog(@"Can OpenPGP Encrypt: %@", canPGPEncrypt ? @"YES" : @"NO");
             DebugLog(@"Can OpenPGP Sign: %@", canPGPSign ? @"YES" : @"NO");
         }
-        else if(self.guessedSecurityMethod == GPGMAIL_SECURITY_METHOD_SMIME) {
+        else if(bself.guessedSecurityMethod == GPGMAIL_SECURITY_METHOD_SMIME) {
             DebugLog(@"Security Method is S/MIME");
             DebugLog(@"Can S/MIME Encrypt: %@", canSMIMEEncrypt ? @"YES" : @"NO");
             DebugLog(@"Can S/MIME Sign: %@", canSMIMESign ? @"YES" : @"NO");
         }
     }
     else {
-        canEncrypt = self.securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? canPGPEncrypt : canSMIMEEncrypt;
-        canSign = self.securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? canPGPSign : canSMIMESign;
-        if(self.messageIsBeingReplied) {
-            Message *originalMessage = [((ComposeBackEnd *)self) originalMessage];
+        canEncrypt = bself.securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? canPGPEncrypt : canSMIMEEncrypt;
+        canSign = bself.securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? canPGPSign : canSMIMESign;
+        if(bself.messageIsBeingReplied) {
+            Message *originalMessage = [((ComposeBackEnd *)bself) originalMessage];
             securityOptions = [securityHistory bestSecurityOptionsForReplyToMessage:originalMessage signFlags:signFlags encryptFlags:encryptFlags];
         }
         else {
-            securityOptions = [securityHistory bestSecurityOptionsForSender:sender recipients:recipients securityMethod:self.securityMethod canSign:canSign canEncrypt:canEncrypt];
+            securityOptions = [securityHistory bestSecurityOptionsForSender:sender recipients:recipients securityMethod:bself.securityMethod canSign:canSign canEncrypt:canEncrypt];
         }
     }
     
-    [self setIvar:@"SetEncrypt" value:@(securityOptions.shouldEncrypt)];
-    [self setIvar:@"SetSign" value:@(securityOptions.shouldSign)];
-    [self setIvar:@"EncryptIsPossible" value:@(canEncrypt)];
-    [self setIvar:@"SignIsPossible" value:@(canSign)];
+    [bself setIvar:@"SetEncrypt" value:@(securityOptions.shouldEncrypt)];
+    [bself setIvar:@"SetSign" value:@(securityOptions.shouldSign)];
+    [bself setIvar:@"EncryptIsPossible" value:@(canEncrypt)];
+    [bself setIvar:@"SignIsPossible" value:@(canSign)];
 	
 	if ([[GPGOptions sharedOptions] boolForKey:@"AllowSymmetricEncryption"]) {
-		[self setIvar:@"SymmetricIsPossible" value:@([GPGMailBundle gpgMailWorks])];
+		[bself setIvar:@"SymmetricIsPossible" value:@([GPGMailBundle gpgMailWorks])];
 		// Uncomment when securityOptions.shouldSymmetric is implemented.
 		//[self setIvar:@"shouldSymmetric" value:@(securityOptions.shouldSymmetric)];
 	}
@@ -720,12 +720,15 @@
 }
 
 - (BOOL)MACanSignFromAddress:(NSString *)address {
-    // If the security method is not yet set and the back end was not yet initialized,
+    // To really fix #624 make sure the backEnd is alive till the end of this method.
+	ComposeBackEnd_GPGMail *bself __attribute__((objc_precise_lifetime)) = self;
+	
+	// If the security method is not yet set and the back end was not yet initialized,
     // check S/MIME and PGP keychains to see if either method has a key
     // for signing.
     // For some reason, we're running into zombies if we don't do
     // this.
-    BOOL canSMIMESign = [self MACanSignFromAddress:address];
+    BOOL canSMIMESign = [bself MACanSignFromAddress:address];
     
     DebugLog(@"Can sign S/MIME from address: %@? %@", address, canSMIMESign ? @"YES" : @"NO");
     
@@ -738,8 +741,8 @@
     // only Apple's implementation.
     // So to avoid this, always return YES here if the security method is not already set.
     // The correct status is stored for later lookup in canEncrypt.
-    [self setIvar:@"CanPGPSign" value:@(canPGPSign)];
-    [self setIvar:@"CanSMIMESign" value:@(canSMIMESign)];
+    [bself setIvar:@"CanPGPSign" value:@(canPGPSign)];
+    [bself setIvar:@"CanSMIMESign" value:@(canSMIMESign)];
     return YES;
 }
 
