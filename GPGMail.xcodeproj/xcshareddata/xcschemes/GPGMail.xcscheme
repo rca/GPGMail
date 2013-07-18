@@ -106,7 +106,7 @@
       </EnvironmentVariables>
       <AdditionalOptions>
          <AdditionalOption
-            key = "MallocStackLogging"
+            key = "MallocScribble"
             value = ""
             isEnabled = "YES">
          </AdditionalOption>
