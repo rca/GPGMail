@@ -151,7 +151,7 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 	dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, (int64_t)seconds * NSEC_PER_SEC);
 	typeof(self) __weak weakSelf = self;
 	dispatch_queue_t keysUpdateQueue = self.keysUpdateQueue;
-	dispatch_after(delay, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
+	dispatch_after(delay, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
 		// This is only necessary if the keys were not already fetched earlier.
 		GMKeyManager *strongSelf = weakSelf;
 		if(!strongSelf)
@@ -468,19 +468,19 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 	
 	typeof(self) __weak weakSelf = self;
 	
-	dispatch_group_async(cachesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+	dispatch_group_async(cachesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		[weakSelf rebuildSecretKeysByEmailCache];
 	});
-	dispatch_group_async(cachesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+	dispatch_group_async(cachesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		[weakSelf rebuildPublicKeysByEmailCache];
 	});
-	dispatch_group_async(cachesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+	dispatch_group_async(cachesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		[weakSelf rebuildSecretKeysByIDCache];
 	});
-	dispatch_group_async(cachesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+	dispatch_group_async(cachesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		[weakSelf rebuildPublicKeysByIDCache];
 	});
-	dispatch_group_async(cachesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+	dispatch_group_async(cachesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		[weakSelf rebuildGroupsCache];
 	});
 	
