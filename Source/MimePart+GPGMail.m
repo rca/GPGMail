@@ -191,7 +191,7 @@
         MimeBody *decryptedBody = [self decodeMultipartEncryptedWithContext:ctx];
         // Add PGP information from mime parts.
         ((MFMimeDecodeContext *)ctx).shouldSkipUpdatingMessageFlags = YES;
-        ret = [decryptedBody parsedMessageWithContext:ctx];
+        ret = [[decryptedBody topLevelPart] decodeWithContext:ctx];
         [currentMessage collectPGPInformationStartingWithMimePart:self decryptedBody:decryptedBody];
         // If decryption failed, call the original method.
         if(!ret)
@@ -763,7 +763,7 @@
 	__block NSString *decryptKey = nil;
 	
 	[GPGPacket enumeratePacketsWithData:deArmoredEncryptedData block:^(GPGPacket *packet, BOOL *stop) {
-		GPGKey *key = [[GPGMailBundle sharedInstance] secretGPGKeyForKeyID:packet.keyID];
+		GPGKey *key = [[GPGMailBundle sharedInstance] secretGPGKeyForKeyID:packet.keyID includeDisabled:YES];
 		if (key) {
 			decryptKey = [key description];
 			*stop = YES;

@@ -498,7 +498,7 @@
     GPGController *gpgc = [[GPGController alloc] init];
     
     for(NSString *keyID in keyIDs) {
-        GPGKey *key = [[GPGMailBundle sharedInstance] secretGPGKeyForKeyID:keyID];
+        GPGKey *key = [[GPGMailBundle sharedInstance] secretGPGKeyForKeyID:keyID includeDisabled:YES];
         if(!key)
             continue;
 		nrOfMatchingSecretKeys += 1;

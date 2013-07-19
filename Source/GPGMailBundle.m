@@ -295,7 +295,13 @@ static BOOL gpgMailWorks = NO;
 - (GPGKey *)secretGPGKeyForKeyID:(NSString *)keyID {
     if (!gpgMailWorks) return nil;
     
-    return [_keyManager secretKeyForKeyID:keyID];
+    return [_keyManager secretKeyForKeyID:keyID includeDisabled:NO];
+}
+
+- (GPGKey *)secretGPGKeyForKeyID:(NSString *)keyID includeDisabled:(BOOL)includeDisabled {
+    if (!gpgMailWorks) return nil;
+    
+    return [_keyManager secretKeyForKeyID:keyID includeDisabled:includeDisabled];
 }
 
 - (NSMutableSet *)signingKeyListForAddress:(NSString *)sender {

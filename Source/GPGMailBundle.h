@@ -102,6 +102,12 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
  Returns the secret key matching ID.
  */
 - (GPGKey *)secretGPGKeyForKeyID:(NSString *)keyID;
+
+/**
+ Also includes disabled keys when looking for the secret key.
+ */
+- (GPGKey *)secretGPGKeyForKeyID:(NSString *)keyID includeDisabled:(BOOL)includeDisabled;
+
 /**
  Returns the preferred secret GPG key.
  User can set this via gpg.conf

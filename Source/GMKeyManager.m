@@ -47,7 +47,9 @@ const double kGMKeyManagerDelayInSecondsForInitialKeyLoad = 4;
 // Key caches
 @property (nonatomic, assign) dispatch_queue_t keysUpdateQueue;
 @property (nonatomic, strong, readwrite) NSMutableSet *allKeys;
+@property (nonatomic, strong, readwrite) NSSet *allSecretKeys;
 @property (nonatomic, strong) NSSet *secretKeys;
+@property (nonatomic, strong) NSDictionary *allSecretKeysByID;
 @property (nonatomic, strong) NSDictionary *secretKeysByID;
 @property (nonatomic, strong) NSDictionary *secretKeysByEmail;
 @property (nonatomic, strong) NSDictionary *secretKeyMap;
@@ -64,7 +66,7 @@ const double kGMKeyManagerDelayInSecondsForInitialKeyLoad = 4;
 
 @synthesize gpgc = _gpgc, keysUpdateQueue = _keysUpdateQueue, allKeys = _allKeys, secretKeys = _secretKeys,
 secretKeysByID = _secretKeysByID, secretKeysByEmail = _secretKeysByEmail, secretKeyMap = _secretKeyMap, publicKeys = _publicKeys, publicKeysByID = _publicKeysByID, publicKeysByEmail = _publicKeysByEmail,
-publicKeyMap = _publicKeyMap, groups = _groups;
+publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, allSecretKeysByID = _allSecretKeysByID;
 
 - (id)sharedInstance {
 	static dispatch_once_t onceToken;
@@ -110,6 +112,12 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 }
 
 - (GPGKey *)secretKeyForKeyID:(NSString *)keyID {
+	return [self secretKeyForKeyID:keyID includeDisabled:NO];
+}
+
+- (GPGKey *)secretKeyForKeyID:(NSString *)keyID includeDisabled:(BOOL)includeDisabled {
+	if(includeDisabled)
+		return (self.allSecretKeysByID)[keyID];
 	return (self.secretKeysByID)[keyID];
 }
 
@@ -266,17 +274,30 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 	return _secretKeys;
 }
 
+- (NSSet *)allSecretKeys {
+	// Load all keys if not already available.
+	// This will also rebuild the caches if the keys
+	// are not yet available.
+	[self allKeys];
+	return _allSecretKeys;
+}
+
+
 - (void)rebuildSecretKeysCache {
+	NSMutableSet *allSecretKeys = [[NSMutableSet alloc]  init];
+	
 	NSSet *secretKeys = [_allKeys filter:^id (GPGKey *key) {
 		// Only either the key or one of the subkeys has to be valid,
 		// non-expired, non-disabled, non-revoked and be used for signing.
 		// We don't care about ownerTrust, validity.
+		[allSecretKeys addObject:key];
 		if(key.secret && key.canAnySign && key.status < GPGKeyStatus_Invalid)
 			return key;
 		
 		return nil;
 	}];
 	self.secretKeys = secretKeys;
+	self.allSecretKeys = allSecretKeys;
 }
 
 - (NSSet *)publicKeys {
@@ -317,6 +338,11 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 	return _secretKeysByID;
 }
 
+- (NSDictionary *)allSecretKeysByID {
+	[self allKeys];
+	return _allSecretKeysByID;
+}
+
 - (void)rebuildSecretKeysByIDCache {
 	NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
 	for(GPGKey *key in _secretKeys) {
@@ -325,6 +351,16 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 			[map setValue:subkey forKey:subkey.keyID];
 	}
 	self.secretKeysByID = map;
+}
+
+- (void)rebuildAllSecretKeysByIDCache {
+	NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
+	for(GPGKey *key in _allSecretKeys) {
+		[map setValue:key forKey:key.keyID];
+		for(GPGKey *subkey in key.subkeys)
+			[map setValue:subkey forKey:subkey.keyID];
+	}
+	self.allSecretKeysByID = map;
 }
 
 - (NSDictionary *)publicKeysByEmail {
@@ -481,6 +517,9 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 	});
 	dispatch_group_async(cachesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		[weakSelf rebuildSecretKeysByIDCache];
+	});
+	dispatch_group_async(cachesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+		[weakSelf rebuildAllSecretKeysByIDCache];
 	});
 	dispatch_group_async(cachesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		[weakSelf rebuildPublicKeysByIDCache];

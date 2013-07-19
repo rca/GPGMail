@@ -39,6 +39,14 @@
 	// Key caches for quick access.
 	NSSet *_secretKeys;
 	NSDictionary *_secretKeysByID;
+	// All secret keys also holds keys that are disabled, since
+	// those keys are still able to decrypt messages.
+	// If only enabled secret keys are checked against the keys
+	// which passphrase is in the gpg-agent cache, there's a chance
+	// that a pinentry request might pop up even though not all keys
+	// necessary are in the agent cache.
+	NSSet *_allSecretKeys;
+	NSDictionary *_allSecretKeysByID;
 	NSDictionary *_secretKeysByEmail;
 	NSDictionary *_secretKeyMap;
 	
@@ -54,6 +62,8 @@
  Returns the matching secret key to a given key ID.
  */
 - (GPGKey *)secretKeyForKeyID:(NSString *)keyID;
+
+- (GPGKey *)secretKeyForKeyID:(NSString *)keyID includeDisabled:(BOOL)includeDisabled;
 
 /**
  Return all secret keys which are available for a specified address.
