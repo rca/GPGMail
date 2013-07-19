@@ -213,6 +213,11 @@ publicKeyMap = _publicKeyMap, groups = _groups;
 		
 		NSMutableSet *keysToRemove = [realKeys mutableCopy];
 		[keysToRemove minusSet:updatedKeys];
+		// For some reason NSMutableSet doesn't update our keys properly.
+		// Most likely due to a wrong hashing method.
+		// In order to fix this, keys to be updated or added to the
+		// keysToRemove as well so they are removed and later re-added.
+		[keysToRemove unionSet:updatedKeys];
 		
 		[strongSelf->_allKeys minusSet:keysToRemove];
 		[strongSelf->_allKeys unionSet:updatedKeys];
