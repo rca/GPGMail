@@ -30,6 +30,8 @@
 #import <Libmacgpg/Libmacgpg.h>
 #import <NSObject+LPDynamicIvars.h>
 #import "CCLog.h"
+#import "MailAccount.h"
+#import "AddressAttachment.h"
 #import <MailDocumentEditor.h>
 #import "MailNotificationCenter.h"
 #import "Message+GPGMail.h"
@@ -46,8 +48,7 @@
 #import <NSString-EmailAddressString.h>
 #import "GMComposeKeyEventHandler.h"
 #import "OptionalView.h"
-
-
+#import "GMSecurityHistory.h"
 
 @interface HeadersEditor_GPGMail (NoImplementation)
 - (void)changeFromHeader:(NSPopUpButton *)sender;
@@ -188,22 +189,80 @@
 
 - (void)MA_updateFromAndSignatureControls:(id)arg1 {
     [self MA_updateFromAndSignatureControls:arg1];
-	// Thanks to Hopper (YES, it's fantastic) it's not clear that
+	// Thanks to Hopper (YES, it's fantastic) it's now clear that
 	// _updateFromAndSignatureControls calls setAccountFieldEnabled|Visible
-	// on the ComposeHeaderView.
-	// Now to force the from (account field) it should suffice to simply
-	// call both methods with YES.
-	[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] setAccountFieldEnabled:YES];
-	[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] setAccountFieldVisible:YES];
-    
+	// and configureAccountPopUpSize on the ComposeHeaderView.
+	
+	// If there's only one account setup, Mail.app chooses to not to display
+	// the "From:" field. That's alright, unless there are multiple secret keys
+	// available for the same account. In such a case, GPGMail will fill the
+	// popup and force it to be displayed, so that the user can choose which
+	// secret key to use.
+	if([[[self valueForKey:@"_fromPopup"] itemArray] count] == 1 &&
+	   ![[[[self valueForKey:@"_fromPopup"] itemArray] objectAtIndex:0] attributedTitle]) {
+		[self fixEmptyAccountPopUpIfNecessary];
+	}
+	else {
+		[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] setAccountFieldEnabled:YES];
+		[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] setAccountFieldVisible:YES];
+	}
+	
 	// If any luck, the security option should be known by now.
 	// It's not, but it still works as assumed.
     ComposeBackEnd *backEnd = [(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd];
     GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
     if(((ComposeBackEnd_GPGMail *)backEnd).securityMethod)
         securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).securityMethod;
-    
+	
+	if(securityMethod == 0)
+		securityMethod = [GMSecurityHistory defaultSecurityMethod];
+	
     [self updateFromAndAddSecretKeysIfNecessary:@(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP)];
+}
+
+- (void)fixEmptyAccountPopUpIfNecessary {
+    // 1. Find the accounts to be displayed.
+    NSArray *accounts = (NSArray *)[MailAccount allEmailAddressesIncludingFullUserName:YES];
+	
+	// There should only be on account available, otherwise we wouldn't be here.
+	NSString *onlyAccount = [[accounts objectAtIndex:0] uncommentedAddress];
+	BOOL multipleKeysAvailable = [[[GPGMailBundle sharedInstance] signingKeyListForAddress:onlyAccount] count] > 1;
+	
+	if(!multipleKeysAvailable)
+		return;
+	
+	Class AddressAttachmentClass = NSClassFromString(@"AddressAttachment");
+	
+    NSPopUpButton *fromPopup = [self valueForKey:@"_fromPopup"];
+    // 3. Construct the style of the menu.
+    NSFont *font = [NSFont menuFontOfSize:[[(NSPopUpButtonCell *)[fromPopup cell] font] pointSize]];
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+    [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+    NSDictionary *externalAttributes = [[NSDictionary alloc] initWithObjectsAndKeys:
+										[AddressAttachmentClass colorForExternalDomain], NSForegroundColorAttributeName,
+                                        font, NSFontAttributeName, nil];
+    NSDictionary *normalAttributes = [[NSDictionary alloc] initWithObjectsAndKeys:font, NSFontAttributeName,
+									  paragraphStyle, NSParagraphStyleAttributeName, nil];
+    [fromPopup removeAllItems];
+    [fromPopup addItemsWithTitles:accounts];
+    if([accounts count]) {
+        NSUInteger i = 0;
+        for(id account in accounts) {
+            NSDictionary *attributes = normalAttributes;
+            if([AddressAttachmentClass addressIsExternal:account])
+                attributes = externalAttributes;
+            NSAttributedString *title = [[NSAttributedString alloc] initWithString:account attributes:attributes];
+            [[fromPopup itemAtIndex:i] setAttributedTitle:title];
+            i++;
+        }
+    }
+    
+    // Set the field visible so the layout will be adjusted accordingly.
+    if(multipleKeysAvailable) {
+		[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] setAccountFieldEnabled:YES];
+		[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] setAccountFieldVisible:YES];
+		[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] configureAccountPopUpSize];
+	}
 }
 
 - (void)MAUpdateSecurityControls {
@@ -233,10 +292,13 @@
 
 - (void)updateFromAndAddSecretKeysIfNecessary:(NSNumber *)necessary {
     BOOL display = [necessary boolValue];
-	NSPopUpButton *popUp = [self valueForKey:@"_fromPopup"];
+	NSPopUpButton *popUp = [[self valueForKey:@"_composeHeaderView"] valueForKey:@"_accountPopUp"];
 	NSMenu *menu = [popUp menu];
 	NSArray *menuItems = [menu itemArray];
 	GPGMailBundle *bundle = [GPGMailBundle sharedInstance];
+	
+	Class AddressAttachmentClass = NSClassFromString(@"AddressAttachment");
+	
 	// Is used to properly truncate our own menu items.
     NSMutableParagraphStyle *truncateStyle = [[NSMutableParagraphStyle alloc] init];
     [truncateStyle setLineBreakMode:NSLineBreakByTruncatingTail];
@@ -244,11 +306,22 @@
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
     [attributes addEntriesFromDictionary:[[menuItems[0] attributedTitle] fontAttributesInRange:NSMakeRange(0, [[menuItems[0] attributedTitle] length])]];
 	attributes[NSParagraphStyleAttributeName] = truncateStyle;
-    NSMenuItem *item, *parentItem, *selectedItem = [popUp selectedItem], *subItemToSelect = nil;
+    
+	// Also use the proper styling for external addresses.
+	NSPopUpButton *fromPopup = [self valueForKey:@"_fromPopup"];
+    NSFont *font = [NSFont menuFontOfSize:[[(NSPopUpButtonCell *)[fromPopup cell] font] pointSize]];
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+    [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+    NSDictionary *externalAttributes = [[NSDictionary alloc] initWithObjectsAndKeys:
+										[AddressAttachmentClass colorForExternalDomain], NSForegroundColorAttributeName,
+                                        font, NSFontAttributeName, nil];
+	
+	
+	NSMenuItem *item, *parentItem, *selectedItem = [popUp selectedItem], *subItemToSelect = nil;
 	GPGKey *defaultKey = [bundle preferredGPGKeyForSigning];
 	BOOL useTitleFromAccount = [[GPGOptions sharedOptions] boolForKey:@"ShowAccountNameForKeysOfSameAddress"];
 	
-    // If menu items are not yet set, simply exit.
+	// If menu items are not yet set, simply exit.
     // This might happen if securityMethodDidChange notification
     // is posted before the menu items have been configured.
     if(!menuItems.count)
@@ -257,6 +330,8 @@
 	menu.autoenablesItems = NO;
 	
 	NSUInteger count = [menuItems count], i = 0;
+	NSDictionary *currentAttributes = attributes;
+	
 	for (; i < count; i++) {
 		item = menuItems[i];
 		parentItem = [item getIvar:@"parentItem"];
@@ -300,7 +375,9 @@
 								title = [NSString stringWithFormat:@"%@ <%@> (%@)", key.name, email, key.shortKeyID]; // Compose the title "key.Name <E-Mail> (KeyID)".
 							}
 							
-							NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attributes];
+							currentAttributes = [AddressAttachmentClass addressIsExternal:email] ? externalAttributes : attributes;
+							
+							NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:currentAttributes];
 
 							// Create the menu item with the given title...
 							subItem = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@""];
@@ -394,8 +471,8 @@
     if(((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod)
         securityMethod = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod;
 	if(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP)
-		// Calls updateSecurityControls internally, because changeFromHeader is called
-		[self updateFromAndAddSecretKeysIfNecessary:@(YES)];
+		// Calls updateSecurityControls internally, because updateFromAndAddSecretKeysIfNecessary.
+		[(HeadersEditor *)self _updateFromAndSignatureControls:nil];
 	else
 		// Explicitly call updateSecurityControls.
 		[(HeadersEditor *)self updateSecurityControls];
