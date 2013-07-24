@@ -167,7 +167,7 @@
 				}
 				fingerprint = [fingerprint stringByAppendingString:@"\n"];
 				for (key in keyList) {
-					if ([[key allFingerprints] rangeOfString:fingerprint].length > 0) {
+					if ([[key allFingerprints] member:fingerprint]) {
 						goto found;
 					}
 				}

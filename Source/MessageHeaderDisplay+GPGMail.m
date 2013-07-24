@@ -98,7 +98,7 @@
         return;
     BOOL notInKeychain = NO;
     for(GPGSignature *signature in messageSigners) {
-        if(!signature.userID) {
+        if(!signature.primaryKey) {
             notInKeychain = YES;
             break;
         }
