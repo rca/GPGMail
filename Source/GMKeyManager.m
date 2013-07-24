@@ -244,7 +244,7 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 		// non-expired, non-disabled, non-revoked and be used for signing.
 		// We don't care about ownerTrust, validity.
 		[allSecretKeys addObject:key];
-		if(key.secret && key.canAnySign && key.status < GPGKeyStatus_Invalid)
+		if(key.secret && key.canAnySign && key.validity < GPGValidityInvalid)
 			return key;
 		
 		return nil;
@@ -263,7 +263,7 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 		// Only either the key or one of the subkeys has to be valid,
 		// non-expired, non-disabled, non-revoked and be used for signing.
 		// We don't care about ownerTrust, validity.
-		if(key.canAnyEncrypt && key.status < GPGKeyStatus_Invalid)
+		if(key.canAnyEncrypt && key.validity < GPGValidityInvalid)
 			return key;
 				
 		return nil;
