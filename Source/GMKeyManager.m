@@ -82,6 +82,8 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 		_gpgc = nil;
 		_allKeys = nil;
 		_keysUpdateQueue = dispatch_queue_create("org.gpgmail.keys", NULL);
+		
+		[[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(keysDidChange:) name:GPGKeyManagerKeysDidChangeNotification object:nil];
 	}
 	
 	return self;
@@ -140,20 +142,6 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 
 #pragma mark -
 
-- (GPGController *)gpgc {
-	static dispatch_once_t onceToken;
-	
-	typeof(self) __weak weakSelf = self;
-    dispatch_once(&onceToken, ^{
-		GMKeyManager *strongSelf = weakSelf;
-		if(!strongSelf)
-			return;
-		strongSelf->_gpgc = [[GPGController alloc] init];
-		strongSelf->_gpgc.delegate = strongSelf;
-	});
-	return _gpgc;
-}
-
 - (void)scheduleInitialKeyUpdateAfterSeconds:(double)seconds {
 	// The keys should loaded after a specified period of time,
 	dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, (int64_t)seconds * NSEC_PER_SEC);
@@ -169,11 +157,11 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 	});
 }
 
-- (void)gpgController:(GPGController *)gpgc keysDidChanged:(NSObject<EnumerationList> *)keys external:(BOOL)external {
-    [self updateKeys:keys onQueue:_keysUpdateQueue asynchronously:YES];
+- (void)keysDidChange:(NSNotification *)notification {
+    [self updateKeys:nil onQueue:_keysUpdateQueue asynchronously:YES];
 }
 
-- (void)updateKeys:(NSObject <EnumerationList> *)keys onQueue:(dispatch_queue_t)queue asynchronously:(BOOL)asynchronously {
+- (void)updateKeys:(NSSet *)keys onQueue:(dispatch_queue_t)queue asynchronously:(BOOL)asynchronously {
 	
 	typeof(self) __weak weakSelf = self;
 	dispatch_block_t _updateKeys = ^{
@@ -181,56 +169,21 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 		if(!strongSelf)
 			return;
 		
-		NSMutableSet *realKeys = [[NSMutableSet alloc] initWithCapacity:[keys count]];
-		
-		// Replace fingerprints with the actual GPGKeys keys.
-		Class keyClass = [GPGKey class];
-		for(__strong id key in keys) {
-			if(![key isKindOfClass:keyClass]) {
-				GPGKey *tempKey = [strongSelf->_allKeys member:key];
-				if(tempKey)
-					key = tempKey;
-			}
-			[realKeys addObject:key];
-		}
+		if(!strongSelf->_allKeys)
+			strongSelf->_allKeys = [[NSMutableSet alloc] init];
 		
 		NSSet *updatedKeys = nil;
-		if([realKeys count] == 0) {
+		if([keys count] == 0) {
 			// Update all keys.
-			updatedKeys = [strongSelf.gpgc updateKeys:strongSelf->_allKeys searchFor:nil withSigs:NO];
+			updatedKeys = [[GPGKeyManager sharedInstance] allKeys];
 		}
 		else {
 			// Update only the keys in realKeys.
-			updatedKeys = [strongSelf.gpgc updateKeys:keys withSigs:NO];
+			updatedKeys = keys;
 		}
 		
-		// Check for errors.
-		if(strongSelf.gpgc.error) {
-			if([strongSelf.gpgc.error isKindOfClass:[GPGException class]]) {
-				DebugLog(@"%@: failed - %@ (Error text: %@)", NSStringFromSelector(_cmd), strongSelf.gpgc.error, ((GPGException *)strongSelf.gpgc.error).gpgTask.errText);
-			}
-			else if([strongSelf.gpgc.error isKindOfClass:[NSException class]]) {
-				DebugLog(@"%@: unknown error - %@", NSStringFromSelector(_cmd), strongSelf.gpgc.error);
-			}
-			return;
-		}
-		
-		// No errors, great, let's continue.
-		if([realKeys count] == 0)
-			realKeys = strongSelf->_allKeys;
-		
-		NSMutableSet *keysToRemove = [realKeys mutableCopy];
-		[keysToRemove minusSet:updatedKeys];
-		// For some reason NSMutableSet doesn't update our keys properly.
-		// Most likely due to a wrong hashing method.
-		// In order to fix this, keys to be updated or added to the
-		// keysToRemove as well so they are removed and later re-added.
-		[keysToRemove unionSet:updatedKeys];
-		
-		[strongSelf->_allKeys minusSet:keysToRemove];
+		[strongSelf->_allKeys minusSet:updatedKeys];
 		[strongSelf->_allKeys unionSet:updatedKeys];
-		
-		keysToRemove = nil;
 		
 		// Flush the key caches so they are recreated on request.
 		[strongSelf rebuildKeyCaches];
