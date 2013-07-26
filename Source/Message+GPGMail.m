@@ -145,32 +145,32 @@
     NSMutableArray *signerLabels = [NSMutableArray array];
     NSArray *messageSigners = [self PGPSignatures];
     for(GPGSignature *signature in messageSigners) {
-        NSString *email = [signature email];
+		// Check with the key manager if an updated key is available for
+		// this signature, since auto-key-retrieve might have changed it.
+		GPGKey *newKey = [[GPGMailBundle sharedInstance] keyForFingerprint:signature.fingerprint];
+        signature.key = newKey;
+		NSString *email = signature.email;
         if(email) {
 			// If the sender E-Mail != signature E-Mail, we display the sender E-Mail if possible.
 			if (![[email gpgNormalizedEmail] isEqualToString:senderEmail]) {
-				NSString *fingerprint = signature.primaryFingerprint ? signature.primaryFingerprint : signature.fingerprint;
-				if (fingerprint) {
-					GPGKey *key = [[GPGMailBundle sharedInstance] keyForFingerprint:fingerprint];
-					
-					for (GPGUserID *userID in key.userIDs) {
-						if ([[userID.email gpgNormalizedEmail] isEqualToString:senderEmail]) {
-							email = userID.email;
-							break;
-						}
+				GPGKey *key = signature.key;
+				for (GPGUserID *userID in key.userIDs) {
+					if ([[userID.email gpgNormalizedEmail] isEqualToString:senderEmail]) {
+						email = userID.email;
+						break;
 					}
 				}
 			}
 		} else {
             // Check if name is available and use that.
-            if([[signature name] length])
-                email = [signature name];
+            if([signature.name length])
+                email = signature.name;
             else
                 // For some reason a signature might not have an email set.
                 // This happens if the public key is not available (not downloaded or imported
                 // from the signature server yet). In that case, display the user id.
                 // Also, add an appropriate warning.
-                email = [NSString stringWithFormat:@"0x%@", [[signature fingerprint] shortKeyID]];
+                email = [NSString stringWithFormat:@"0x%@", [signature.fingerprint shortKeyID]];
 		}
         [signerLabels addObject:email];
     }

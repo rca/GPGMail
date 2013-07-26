@@ -30,12 +30,6 @@
 #import <Foundation/Foundation.h>
 
 @interface GMKeyManager : NSObject <GPGControllerDelegate> {
-	// Key dispatch queue which makes sure that key updates
-	// are happening one after the other.
-	dispatch_queue_t _keysUpdateQueue;
-	NSMutableSet *_allKeys;
-	GPGController *_gpgc;
-	
 	// Key caches for quick access.
 	NSSet *_secretKeys;
 	NSDictionary *_secretKeysByID;
@@ -105,6 +99,6 @@
 /**
  Contains all GPG keys available.
  */
-@property (nonatomic, strong, readonly) NSMutableSet *allKeys;
+@property (nonatomic, strong, readonly) NSSet *allKeys;
 
 @end

@@ -64,7 +64,7 @@ const double kGMKeyManagerDelayInSecondsForInitialKeyLoad = 4;
 
 @implementation GMKeyManager
 
-@synthesize gpgc = _gpgc, keysUpdateQueue = _keysUpdateQueue, allKeys = _allKeys, secretKeys = _secretKeys,
+@synthesize secretKeys = _secretKeys,
 secretKeysByID = _secretKeysByID, secretKeysByEmail = _secretKeysByEmail, secretKeyMap = _secretKeyMap, publicKeys = _publicKeys, publicKeysByID = _publicKeysByID, publicKeysByEmail = _publicKeysByEmail,
 publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, allSecretKeysByID = _allSecretKeysByID;
 
@@ -79,10 +79,6 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 
 - (id)init {
 	if(self = [super init]) {
-		_gpgc = nil;
-		_allKeys = nil;
-		_keysUpdateQueue = dispatch_queue_create("org.gpgmail.keys", NULL);
-		
 		[[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(keysDidChange:) name:GPGKeyManagerKeysDidChangeNotification object:nil];
 	}
 	
@@ -100,16 +96,7 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 }
 
 - (GPGKey *)keyForFingerprint:(NSString *)fingerprint {
-	GPGKey *key = [self.allKeys member:fingerprint];
-	// If no key matches, check the subkeys.
-	if(key)
-		return key;
-	
-	for(key in self.allKeys) {
-		NSUInteger index = [key.subkeys indexOfObject:fingerprint];
-		if(index != NSNotFound)
-			break;
-	}
+	GPGKey *key = [self.allKeysAndSubkeys member:fingerprint];
 	return key;
 }
 
@@ -145,78 +132,23 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 - (void)scheduleInitialKeyUpdateAfterSeconds:(double)seconds {
 	// The keys should loaded after a specified period of time,
 	dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, (int64_t)seconds * NSEC_PER_SEC);
-	typeof(self) __weak weakSelf = self;
-	dispatch_queue_t keysUpdateQueue = self.keysUpdateQueue;
 	dispatch_after(delay, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-		// This is only necessary if the keys were not already fetched earlier.
-		GMKeyManager *strongSelf = weakSelf;
-		if(!strongSelf)
-			return;
-		if(!strongSelf->_allKeys)
-			[strongSelf updateKeys:nil onQueue:keysUpdateQueue asynchronously:YES];
+		[[GPGKeyManager sharedInstance] allKeys];
 	});
 }
 
 - (void)keysDidChange:(NSNotification *)notification {
-    [self updateKeys:nil onQueue:_keysUpdateQueue asynchronously:YES];
-}
-
-- (void)updateKeys:(NSSet *)keys onQueue:(dispatch_queue_t)queue asynchronously:(BOOL)asynchronously {
-	
-	typeof(self) __weak weakSelf = self;
-	dispatch_block_t _updateKeys = ^{
-		GMKeyManager *strongSelf = weakSelf;
-		if(!strongSelf)
-			return;
-		
-		if(!strongSelf->_allKeys)
-			strongSelf->_allKeys = [[NSMutableSet alloc] init];
-		
-		NSSet *updatedKeys = nil;
-		if([keys count] == 0) {
-			// Update all keys.
-			updatedKeys = [[GPGKeyManager sharedInstance] allKeys];
-		}
-		else {
-			// Update only the keys in realKeys.
-			updatedKeys = keys;
-		}
-		
-		[strongSelf->_allKeys minusSet:updatedKeys];
-		[strongSelf->_allKeys unionSet:updatedKeys];
-		
-		// Flush the key caches so they are recreated on request.
-		[strongSelf rebuildKeyCaches];
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[[NSNotificationCenter defaultCenter] postNotificationName:GPGMailKeyringUpdatedNotification object:strongSelf];
-		});
-	};
-	
-	// If no queue is set, simply execute the block.
-	if(!queue)
-		_updateKeys();
-	else {
-		if(asynchronously)
-			dispatch_async(queue, _updateKeys);
-		else
-			dispatch_sync(queue, _updateKeys);
-	}
+	[self rebuildKeyCaches];
 }
 
 #pragma mark - Getters for lazy key cache loading.
 
-- (NSMutableSet *)allKeys {
-	typeof(self) __weak weakSelf = self;
-	
-	dispatch_sync(_keysUpdateQueue, ^{
-		typeof(weakSelf) __strong strongSelf = weakSelf;
-		if(!strongSelf->_allKeys) {
-			strongSelf->_allKeys = [[NSMutableSet alloc] init];
-			[strongSelf updateKeys:nil onQueue:NULL asynchronously:NO];
-		}
-	});
-	return _allKeys;
+- (NSSet *)allKeys {
+	return [[GPGKeyManager sharedInstance] allKeys];
+}
+
+- (NSSet *)allKeysAndSubkeys {
+	return [[GPGKeyManager sharedInstance] allKeysAndSubkeys];
 }
 
 - (NSSet *)secretKeys {
@@ -239,12 +171,13 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 - (void)rebuildSecretKeysCache {
 	NSMutableSet *allSecretKeys = [[NSMutableSet alloc]  init];
 	
-	NSSet *secretKeys = [_allKeys filter:^id (GPGKey *key) {
+	NSSet *secretKeys = [self.allKeys filter:^id (GPGKey *key) {
 		// Only either the key or one of the subkeys has to be valid,
 		// non-expired, non-disabled, non-revoked and be used for signing.
 		// We don't care about ownerTrust, validity.
-		[allSecretKeys addObject:key];
-		if(key.secret && key.canAnySign && key.status < GPGKeyStatus_Invalid)
+		if(key.secret)
+			[allSecretKeys addObject:key];
+		if(key.secret && key.canAnySign && key.validity < GPGValidityInvalid)
 			return key;
 		
 		return nil;
@@ -259,11 +192,11 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 }
 
 - (void)rebuildPublicKeysCache {
-	NSSet *publicKeys = [_allKeys filter:^id (GPGKey *key) {
+	NSSet *publicKeys = [self.allKeys filter:^id (GPGKey *key) {
 		// Only either the key or one of the subkeys has to be valid,
 		// non-expired, non-disabled, non-revoked and be used for signing.
 		// We don't care about ownerTrust, validity.
-		if(key.canAnyEncrypt && key.status < GPGKeyStatus_Invalid)
+		if(key.canAnyEncrypt && key.validity < GPGValidityInvalid)
 			return key;
 				
 		return nil;
@@ -488,6 +421,10 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 	
 	[self rebuildSecretKeyMapCache];
 	[self rebuildPublicKeyMapCache];
+	
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[NSNotificationCenter defaultCenter] postNotificationName:GPGMailKeyringUpdatedNotification object:nil];
+	});
 }
 
 #pragma mark - Key helper methods
@@ -631,7 +568,11 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 #pragma mark - Cleaning up
 
 - (void)dealloc {
-	dispatch_release(_keysUpdateQueue);
+	@try {
+		[[NSDistributedNotificationCenter defaultCenter] removeObserver:self];
+	}
+	@catch (NSException *e) {
+	}
 }
 
 @end

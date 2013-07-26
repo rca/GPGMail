@@ -370,9 +370,9 @@
 						} else {
 							NSString *title;
 							if (useTitleFromAccount) {
-								title = [NSString stringWithFormat:@"%@ (%@)", itemTitle, key.shortKeyID]; // Compose the title "Name <E-Mail> (KeyID)".
+								title = [NSString stringWithFormat:@"%@ (%@)", itemTitle, [key.keyID shortKeyID]]; // Compose the title "Name <E-Mail> (KeyID)".
 							} else {
-								title = [NSString stringWithFormat:@"%@ <%@> (%@)", key.name, email, key.shortKeyID]; // Compose the title "key.Name <E-Mail> (KeyID)".
+								title = [NSString stringWithFormat:@"%@ <%@> (%@)", key.name, email, [key.keyID shortKeyID]]; // Compose the title "key.Name <E-Mail> (KeyID)".
 							}
 							
 							currentAttributes = [AddressAttachmentClass addressIsExternal:email] ? externalAttributes : attributes;

@@ -1030,7 +1030,7 @@
             if(signature.status != GPGErrorNoError) {
                 errorCode = signature.status;
                 signatureWithError = signature;
-				signatureKeyID = [signature.fingerprint substringFromIndex:[signatureWithError.fingerprint length] - 8];
+				signatureKeyID = [signature.fingerprint shortKeyID];
 				signatureKeyIDString = [NSString stringWithFormat:@"0x%@", signatureKeyID];
                 break;
             }
