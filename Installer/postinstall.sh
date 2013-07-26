@@ -8,7 +8,7 @@ netdir="/Network/Library/Mail/Bundles"
 homedir="$HOME/Library/Mail/Bundles"
 bundle="GPGMail.mailbundle"
 USER=${USER:-$(id -un)}
-temporarydir="$2"
+temporarydir=/private/tmp/org.gpgtools/gpgmail_lml_install
 ################################################################################
 
 
