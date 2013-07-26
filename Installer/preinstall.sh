@@ -8,5 +8,8 @@ echo "Mail is running. Killing it softly..."
 osascript -e 'tell application "/System/Library/CoreServices/Installer.app"
 	activate
 	display dialog "In order to finish the installation of GPGMail we have to quit Mail" buttons {"Quit Mail"} default button 1 giving up after 60 with icon caution
-	end tell
-	quit app "Mail"'
+	end tell'
+
+killall Mail
+
+exit 0
