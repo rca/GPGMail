@@ -18,6 +18,8 @@
 #import <MutableMessageHeaders.h>
 #import <MailNotificationCenter.h>
 #import <ComposeBackEnd.h>
+#import "MailAccount.h"
+#import "MessageAttachment.h"
 #import "CCLog.h"
 #import "NSObject+LPDynamicIvars.h"
 #import "NSString+GPGMail.h"
@@ -33,6 +35,8 @@
 #import "ComposeBackEnd+GPGMail.h"
 #import "ActivityMonitor.h"
 #import <MFError.h>
+#import "NSData-MessageAdditions.h"
+
 
 @implementation ComposeBackEnd_GPGMail
 
@@ -48,16 +52,20 @@
     // image could be shown.
     if([self ivarExists:@"ForceEncrypt"]) {
         encryptIfPossible = [[self getIvar:@"ForceEncrypt"] boolValue];
-        [self setIvar:@"SetEncrypt" value:[NSNumber numberWithBool:encryptIfPossible]];
+        [self setIvar:@"SetEncrypt" value:@(encryptIfPossible)];
     }
     // If SetEncrypt and CanEncrypt don't match, use CanEncrypt,
     // since that's more important.
     if(![[self getIvar:@"EncryptIsPossible"] boolValue])
         encryptIfPossible = NO;
     
-    [self setIvar:@"shouldEncrypt" value:[NSNumber numberWithBool:encryptIfPossible]];
+    [self setIvar:@"shouldEncrypt" value:@(encryptIfPossible)];
     [self MASetEncryptIfPossible:encryptIfPossible];
     [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
+	
+	
+	HeadersEditor_GPGMail *headersEditor = ((MailDocumentEditor *)[((ComposeBackEnd *)self) delegate]).headersEditor;
+	[headersEditor updateSymmetricButton];
 }
 
 - (void)MASetSignIfPossible:(BOOL)signIfPossible {
@@ -72,7 +80,7 @@
     // image could be shown.
     if([self ivarExists:@"ForceSign"]) {
         signIfPossible = [[self getIvar:@"ForceSign"] boolValue];
-        [self setIvar:@"SetSign" value:[NSNumber numberWithBool:signIfPossible]];
+        [self setIvar:@"SetSign" value:@(signIfPossible)];
     }
     
     // If SetSign and CanSign don't match, use CanSign,
@@ -80,16 +88,48 @@
     if(![[self getIvar:@"SignIsPossible"] boolValue])
         signIfPossible = NO;
     
-    [self setIvar:@"shouldSign" value:[NSNumber numberWithBool:signIfPossible]];
+    [self setIvar:@"shouldSign" value:@(signIfPossible)];
     [self MASetSignIfPossible:signIfPossible];
     [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
 }
 
+- (id)MASender {
+	// If a message is to be redirected, the flagged from string,
+	// which might have been set in -[ComposeBackEnd _makeMessageWithContents:isDraft:shouldSign:shouldEncrypt:shouldSkipSignature:shouldBePlainText:]
+	// is replaced with this value, which of course is a simple string and
+	// not a flagged value.
+	// So in that case, they from header is checked and if it is
+	// a flagged string it is returned instead of invoking the MASender
+	// method.
+	// This way the flagged from string makes it through to the newSignedPart method.
+	
+	// Not a resend? Out of here!
+	if([(ComposeBackEnd *)self type] != 7)
+		return [self MASender];
+	
+	// Fetch the from header from the clean headers to check
+	// if this message should be pgp signed.
+	NSDictionary *cleanHeaders = [(ComposeBackEnd *)self cleanHeaders];
+	id sender = cleanHeaders[@"from"];
+	// Not a GPGFlaggedString. Out of here!
+	if(![sender respondsToSelector:@selector(setValue:forFlag:)])
+		return [self MASender];
+	
+	// Now emulate what -[ComposeBackEnd sender] does internally.
+	// At least part of it.
+	MailAccount *account = [MailAccount accountContainingEmailAddress:sender];
+	// Not sure what to do in this case, so let's fall back.
+	if(!account)
+		return [self MASender];
+	// IF we're still in here, return the flagged sender.
+	return sender;
+}
+
 - (id)MA_makeMessageWithContents:(WebComposeMessageContents *)contents isDraft:(BOOL)isDraft shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt shouldSkipSignature:(BOOL)shouldSkipSignature shouldBePlainText:(BOOL)shouldBePlainText {
-    GPGMAIL_SECURITY_METHOD securityMethod = self.guessedSecurityMethod;
+	GPGMAIL_SECURITY_METHOD securityMethod = self.guessedSecurityMethod;
     if(self.securityMethod)
         securityMethod = self.securityMethod;
-    if(securityMethod == GPGMAIL_SECURITY_METHOD_SMIME) {
+    if(securityMethod != GPGMAIL_SECURITY_METHOD_OPENPGP) {
         id ret = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldSign shouldEncrypt:shouldEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
         // If a message has been successfully created, add an entry to the security options history.
         if(ret && !isDraft) {
@@ -102,26 +142,42 @@
     // Mail.app is gonna do the heavy lifting with our GPG encryption method
     // instead of the S/MIME one.
     // After that's done, we only have to extract the encrypted part.
-    BOOL shouldPGPEncrypt = NO;
-    BOOL shouldPGPSign = NO;
+    BOOL shouldPGPEncrypt = shouldEncrypt;
+    BOOL shouldPGPSign = shouldSign;
+	BOOL shouldPGPSymmetric = [[self getIvar:@"shouldSymmetric"] boolValue];
     BOOL shouldPGPInlineSign = NO;
     BOOL shouldPGPInlineEncrypt = NO;
+    BOOL shouldPGPInlineSymmetric = NO;
+	
+	// If this message is to be saved as draft, shouldEncrypt and shouldSign is always false.
+    // That's why GPGMail takes the values store by clicking on the signed and encrypt icons.
+    if(isDraft) {
+		if ([[GPGOptions sharedOptions] boolForKey:@"OptionallyEncryptDrafts"]) {
+			shouldPGPSign = [[self getIvar:@"shouldSign"] boolValue];
+			shouldPGPEncrypt = [[self getIvar:@"shouldEncrypt"] boolValue];
+		}
+		shouldPGPSymmetric = NO;
+    }
+	
     // It might not be possible to inline encrypt drafts, since contents.text is nil.
     // Maybe it's not problem, and simply html should be used. (TODO: Figure that out.)
     BOOL shouldCreatePGPInlineMessage = [[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPInlineToSend"] && !isDraft;
-    if(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
-        shouldPGPEncrypt = shouldEncrypt;
-        shouldPGPSign = shouldSign;
-    }
-    // If this message is to be saved as draft, shouldEncrypt and shouldSign is always false.
-    // That's why GPGMail takes the values store by clicking on the signed and encrypt icons.
-    if(isDraft && [[GPGOptions sharedOptions] boolForKey:@"OptionallyEncryptDrafts"]) {
-        shouldPGPSign = [[self getIvar:@"shouldSign"] boolValue];
-        shouldPGPEncrypt = [[self getIvar:@"shouldEncrypt"] boolValue];
-    }
+
+    
+	// If this message is a calendar event which is being sent from iCal without user interaction (ForceSign and ForceEncrypt are NOT set),
+	// it should never be encrypted nor signed.
+	if(![self ivarExists:@"ForceSign"] && ![self ivarExists:@"ForceEncrypt"] &&
+	   [self sentActionInvokedFromiCalWithContents:contents]) {
+		shouldPGPEncrypt = NO;
+		shouldPGPSign = NO;
+		shouldSign = NO;
+		shouldEncrypt = NO;
+		shouldPGPSymmetric = NO;
+	}	
+	
     // At the moment for drafts signing and encrypting is disabled.
     // GPG not enabled, or neither encrypt nor sign are checked, let's get the shit out of here.
-    if(!shouldPGPEncrypt && !shouldPGPSign) {
+    if(!shouldPGPEncrypt && !shouldPGPSign && !shouldPGPSymmetric) {
         OutgoingMessage *outMessage = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:shouldSign shouldEncrypt:shouldEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
         return outMessage;
     }
@@ -138,16 +194,17 @@
     copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
 
     [self setIvar:@"originalCleanHeaders" value:copiedCleanHeaders];
-    [copiedCleanHeaders release];
     // If isDraft is set the cleanHeaders are an NSDictionary instead of an NSMutableDictionary.
     // Using mutableCopy they are converted into an NSMutableDictionary.
     copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
     [self setValue:copiedCleanHeaders forKey:@"_cleanHeaders"];
-    [copiedCleanHeaders release];
     
-    // Inject the headers needed in newEncryptedPart and newSignedPart.
-    [self _addGPGFlaggedStringsToHeaders:[(ComposeBackEnd *)self cleanHeaders] forEncrypting:shouldPGPEncrypt forSigning:shouldPGPSign];
 
+	
+	// Inject the headers needed in newEncryptedPart and newSignedPart.
+	[self _addGPGFlaggedStringsToHeaders:[(ComposeBackEnd *)self cleanHeaders] forEncrypting:shouldPGPEncrypt forSigning:shouldPGPSign forSymmetric:shouldPGPSymmetric];
+
+	
     // If the message is supposed to be encrypted or signed inline,
     // GPGMail does that directly in the Compose back end, and not use
     // the message write to create it, yet, to get an OutgoingMessage to work with.
@@ -157,16 +214,37 @@
     if(shouldCreatePGPInlineMessage) {
         shouldPGPInlineSign = shouldPGPSign;
         shouldPGPInlineEncrypt = shouldPGPEncrypt;
+		shouldPGPInlineSymmetric = shouldPGPSymmetric;
         shouldPGPSign = NO;
         shouldPGPEncrypt = NO;
+		shouldPGPSymmetric = NO;
     }
+	
+	
+	
+	// If we are only signing and there isn't a newline at the end of the plaintext, append it.
+	// We need this to prevent servers from doin this.
+	if (shouldPGPSign && !shouldPGPEncrypt && !shouldPGPSymmetric) {
+		NSAttributedString *plainText = contents.plainText;
+		NSString *plainString = plainText.string;
+		if ([plainString characterAtIndex:plainString.length - 1] != '\n') {
+			NSMutableAttributedString *newPlainText = [plainText mutableCopy];
+			
+			NSAttributedString *newline = [[NSAttributedString alloc] initWithString:@"\n"];
+			[newPlainText appendAttributedString:newline];
+			
+			contents.plainText = newPlainText;
+		}
+	}
     
+	
     // Drafts store the messages with a very minor set of headers and mime types
     // not suitable for encrypted/signed messages. But fortunately, Mail.app doesn't
     // have a problem if a normal message is stored as draft, so GPGMail just needs
     // to disable the isDraft parameter, Mail.app will take care of the rest.
-    OutgoingMessage *outgoingMessage = [self MA_makeMessageWithContents:contents isDraft:NO shouldSign:shouldPGPSign shouldEncrypt:shouldPGPEncrypt shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
+    OutgoingMessage *outgoingMessage = [self MA_makeMessageWithContents:contents isDraft:NO shouldSign:shouldPGPSign shouldEncrypt:shouldPGPEncrypt || shouldPGPSymmetric shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
 
+	
 	
     // If there was an error creating the outgoing message it's gonna be nil
     // and the error is stored away for later display.
@@ -181,6 +259,8 @@
 			MFError *error = (MFError *)[(ActivityMonitor *)[ActivityMonitor currentMonitor] error];
 			[self performSelectorOnMainThread:@selector(didCancelMessageDeliveryForError:) withObject:error waitUntilDone:NO];
 		}
+		// Restore the clean headers so BCC is removed as well.
+		[(ComposeBackEnd *)self setValue:[self getIvar:@"originalCleanHeaders"] forKey:@"_cleanHeaders"];
         return nil;
 	}
 
@@ -208,9 +288,9 @@
 				[(MailDocumentEditor *)[(ComposeBackEnd *)self delegate] setUserSavedMessage:NO];
 			}
 		}
+		[(ComposeBackEnd *)self setValue:[self getIvar:@"originalCleanHeaders"] forKey:@"_cleanHeaders"];
 		return nil;
 	}
-
 	
     // And restore the original headers.
     [(ComposeBackEnd *)self setValue:[self getIvar:@"originalCleanHeaders"] forKey:@"_cleanHeaders"];
@@ -218,7 +298,7 @@
     // Signing only results in an outgoing message which can be sent
     // out exactly as created by Mail.app. No need to further modify.
     // Only encrypted messages have to be adjusted.
-    if(shouldPGPSign && !shouldPGPEncrypt && !shouldCreatePGPInlineMessage) {
+    if(shouldPGPSign && !shouldPGPEncrypt && !shouldPGPSymmetric && !shouldCreatePGPInlineMessage) {
         if(!isDraft)
             [GMSecurityHistory addEntryForSender:((ComposeBackEnd *)self).sender recipients:[((ComposeBackEnd *)self) allRecipients] securityMethod:GPGMAIL_SECURITY_METHOD_OPENPGP didSign:shouldPGPSign didEncrypt:shouldPGPEncrypt];
         return outgoingMessage;
@@ -227,11 +307,29 @@
 
     Subdata *newBodyData = nil;
     
+	// Check for preferences here, and set mime or plain version
     if(!shouldCreatePGPInlineMessage) {
-        // Check for preferences here, and set mime or plain version.
-        newBodyData = [self _newPGPBodyDataWithEncryptedData:encryptedData headers:[outgoingMessage headers] shouldBeMIME:YES];
-    }
-    else {
+		
+		// Get the signer key and export it, so we can attach it to the message.
+		NSData *keysToAttach = nil;
+		GPGKey *key = [self getIvar:@"gpgKeyForSigning"];
+		if (key) {
+			GPGController *gpgc = [[GPGController alloc] init];
+			@try {
+				gpgc.useArmor = YES;
+				keysToAttach = [gpgc exportKeys:@[key] options:GPGExportMinimal];
+			}
+			@catch (NSException *exception) {
+				GPGDebugLog(@"Exception during exporting keys: %@", exception);
+			}
+			@finally {
+				gpgc = nil;
+			}
+		}
+		
+        
+        newBodyData = [self _newPGPBodyDataWithEncryptedData:encryptedData headers:[outgoingMessage headers] shouldBeMIME:YES keysToAttach:nil /*keysToAttach*/];
+    } else {
         newBodyData = [self _newPGPInlineBodyDataWithData:[[contents.plainText string] dataUsingEncoding:NSUTF8StringEncoding] headers:[outgoingMessage headers] shouldSign:shouldPGPInlineSign shouldEncrypt:shouldPGPInlineEncrypt];
     }
 
@@ -243,7 +341,6 @@
     // contains the data of the entire message including the header data.
     // Not sure why it's done this way, but HECK it works!
     [outgoingMessage setValue:[newBodyData valueForKey:@"_parentData"] forKey:@"_rawData"];
-    [newBodyData release];
     
     if(!isDraft)
         [GMSecurityHistory addEntryForSender:((ComposeBackEnd *)self).sender recipients:[((ComposeBackEnd *)self) allRecipients] securityMethod:GPGMAIL_SECURITY_METHOD_OPENPGP didSign:shouldPGPSign didEncrypt:shouldPGPEncrypt];
@@ -251,12 +348,34 @@
     return outgoingMessage;
 }
 
+- (BOOL)sentActionInvokedFromiCalWithContents:(WebComposeMessageContents *)contents {
+	if([contents.attachmentsAndHtmlStrings count] == 0)
+		return NO;
+	
+	
+	BOOL fromiCal = NO;
+	for(id item in contents.attachmentsAndHtmlStrings) {
+		if([item isKindOfClass:[MessageAttachment class]]) {
+			MessageAttachment *attachment = (MessageAttachment *)item;
+			// For some non apparent reason, iCal invitations are not recognized by isCalendarInvitation anymore...
+			// so let's check for text/calendar AND isCalendarInvitation.
+			if(([[[attachment mimeType] lowercaseString] isEqualToString:@"text/calendar"] || attachment.isCalendarInvitation) &&
+			   [[attachment filename] rangeOfString:@"iCal"].location != NSNotFound &&
+			   [[attachment filename] rangeOfString:@".ics"].location != NSNotFound) {
+				fromiCal = YES;
+				break;
+			}
+		}
+	}
+	
+	return fromiCal;
+}
 
 - (void)didCancelMessageDeliveryForError:(NSError *)error {
     [(MailDocumentEditor *)[(ComposeBackEnd *)self delegate] backEnd:self didCancelMessageDeliveryForEncryptionError:error];
 }
 
-- (void)_addGPGFlaggedStringsToHeaders:(NSMutableDictionary *)headers forEncrypting:(BOOL)forEncrypting forSigning:(BOOL)forSigning {
+- (void)_addGPGFlaggedStringsToHeaders:(NSMutableDictionary *)headers forEncrypting:(BOOL)forEncrypting forSigning:(BOOL)forSigning forSymmetric:(BOOL)forSymmetric {
     // To decide whether S/MIME or PGP operations should be performed on
     // the message, different headers have to be flagged.
     //
@@ -268,14 +387,21 @@
     //   to encrypt for self, so each message can also be decrypted by the sender.
     //   (the "from" value is not inlucded in the recipients list passed to the encryption
     //    method)
+	GPGFlaggedString *flaggedString = [headers[@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"];
+	if (forSymmetric) {
+		[flaggedString setValue:@YES forFlag:@"symmetricEncrypt"];
+		if (!forEncrypting) {
+			[flaggedString setValue:@YES forFlag:@"doNotPublicEncrypt"];
+		}
+	}
+
     if(forSigning) {
-		GPGFlaggedString *flaggedString = [[headers valueForKey:@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"];
 		GPGKey *key = [self getIvar:@"gpgKeyForSigning"];
 		if (key) {
 			[flaggedString setValue:key forFlag:@"gpgKey"];
 		}
-        [headers setObject:flaggedString forKey:@"from"];
     }
+	headers[@"from"] = flaggedString;
     if(forEncrypting) {
         // Save the original bcc recipients, to restore later.
         [self setIvar:@"originalBCCRecipients" value:[headers valueForKey:@"bcc"]];
@@ -285,13 +411,12 @@
         for(NSString *bcc in bccRecipients)
             [newBCCList addObject:[bcc flaggedStringWithFlag:@"recipientType" value:@"bcc"]];
 
-        [newBCCList addObject:[[headers valueForKey:@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"]];
-#warning In some weird cases the address doesn't get removed from BCC again.
+        [newBCCList addObject:flaggedString];
         [headers setValue:newBCCList forKey:@"bcc"];
     }
 }
 
-- (Subdata *)_newPGPBodyDataWithEncryptedData:(NSData *)encryptedData headers:(MutableMessageHeaders *)headers shouldBeMIME:(BOOL)shouldBeMIME {
+- (Subdata *)_newPGPBodyDataWithEncryptedData:(NSData *)encryptedData headers:(MutableMessageHeaders *)headers shouldBeMIME:(BOOL)shouldBeMIME keysToAttach:(NSData *)keysToAttach {
     // Now on to creating a new body and replacing the old one.
     NSString *boundary = (NSString *)[MimeBody newMimeBoundary];
     NSData *topData;
@@ -299,6 +424,8 @@
     MimePart *topPart;
     MimePart *versionPart;
     MimePart *dataPart;
+    MimePart *keysPart;
+	
     if(!shouldBeMIME) {
         topPart = [[MimePart alloc] init];
         [topPart setType:@"text"];
@@ -332,10 +459,22 @@
         dataPart.contentTransferEncoding = @"7bit";
         [dataPart setDisposition:@"inline"];
         [dataPart setDispositionParameter:@"encrypted.asc" forKey:@"filename"];
-        [dataPart setContentDescription:@"OpenPGP encrypted message"];
-        // 4. Append both parts to the top level part.
+        [dataPart setContentDescription:@"OpenPGP encrypted message"];		
+        // 5. Append both parts to the top level part.
         [topPart addSubpart:versionPart];
         [topPart addSubpart:dataPart];
+		
+		
+		// 6. Optionally attch the OpenPGP key(s).
+		if (keysToAttach) {
+			keysPart = [[MimePart alloc] init];
+			[keysPart setType:@"application"];
+			[keysPart setSubtype:@"pgp-keys"];
+
+			[topPart addSubpart:keysPart];
+		}
+		
+		
 
         // Again Mail.app will do the heavy lifting for us, only thing we need to do
         // is create a map of mime parts and body data.
@@ -347,13 +486,14 @@
     }
 
     CFMutableDictionaryRef partBodyMapRef = CFDictionaryCreateMutable(NULL, 0, NULL, NULL);
-    CFDictionaryAddValue(partBodyMapRef, topPart, topData);
+    CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(topPart), (__bridge const void *)(topData));
     if(shouldBeMIME) {
-        CFDictionaryAddValue(partBodyMapRef, versionPart, versionData);
-        CFDictionaryAddValue(partBodyMapRef, dataPart, encryptedData);
+        CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(versionPart), (__bridge const void *)(versionData));
+        CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(dataPart), (__bridge const void *)(encryptedData));
+		if (keysToAttach) CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(keysPart), (__bridge const void *)(keysToAttach));
     }
 
-    NSMutableDictionary *partBodyMap = (NSMutableDictionary *)partBodyMapRef;
+    NSMutableDictionary *partBodyMap = (__bridge NSMutableDictionary *)partBodyMapRef;
     // The body is done, now on to updating the headers since we'll use the original headers
     // but have to change the top part headers.
     // And also add our own special GPGMail header.
@@ -363,7 +503,6 @@
     for(id key in [topPart bodyParameterKeys])
         [contentTypeData appendData:[[NSString stringWithFormat:@"\n\t%@=\"%@\";", key, [topPart bodyParameterForKey:key]] dataUsingEncoding:NSASCIIStringEncoding]];
     [headers setHeader:contentTypeData forKey:@"content-type"];
-    [contentTypeData release];
     [headers setHeader:[GPGMailBundle agentHeader] forKey:@"x-pgp-agent"];
     [headers setHeader:@"7bit" forKey:@"content-transfer-encoding"];
     [headers removeHeaderForKey:@"content-disposition"];
@@ -383,14 +522,7 @@
     // Now the mime parts.
     MessageWriter *messageWriter = [[MessageWriter alloc] init];
     [messageWriter appendDataForMimePart:topPart toData:bodyData withPartData:partBodyMap];
-    [messageWriter release];
-    if(shouldBeMIME) {
-        [versionPart release];
-        [dataPart release];
-    }
-    [topPart release];
     CFRelease(partBodyMapRef);
-    [boundary release];
     // Contains the range, which separates the mail headers
     // from the actual mime content.
     // JUST FOR INFO: messageDataIncludingFromSpace: returns an instance of NSMutableData, so basically
@@ -398,7 +530,6 @@
     NSRange contentRange = NSMakeRange([headerData length],
                                        ([bodyData length] - [headerData length]));
     Subdata *contentSubdata = [[Subdata alloc] initWithParent:bodyData range:contentRange];
-    [bodyData release];
     return contentSubdata;
 }
 
@@ -406,7 +537,6 @@
     if (!data)
         return nil;
     // Now on to creating a new body and replacing the old one. 
-    NSString *boundary = (NSString *)[MimeBody newMimeBoundary];
     NSData *topData = nil;
     MimePart *topPart;
     
@@ -422,8 +552,6 @@
     if(shouldSign) {
         signedData = [topPart inlineSignedDataForData:data sender:[headers firstHeaderForKey:@"from"]];
         if (!signedData) {
-            [boundary release];
-            [topPart release];
             return nil;
         }
         topData = signedData;
@@ -436,14 +564,10 @@
         [recipients addObjectsFromArray:[headers headersForKey:@"cc"]];
         [recipients addObjectsFromArray:[headers headersForKey:@"bcc"]];
         newlyEncryptedPart = [topPart newEncryptedPartWithData:signedData recipients:recipients encryptedData:&encryptedData];
-        [recipients release];
         topData = encryptedData;
     }
 
     if(!topData) {
-        [boundary release];
-        [topPart release];
-        [newlyEncryptedPart release];
         return nil;
     }
     
@@ -456,7 +580,6 @@
     for(id key in [topPart bodyParameterKeys])
         [contentTypeData appendData:[[NSString stringWithFormat:@"\n\t%@=\"%@\";", key, [topPart bodyParameterForKey:key]] dataUsingEncoding:NSASCIIStringEncoding]];
     [headers setHeader:contentTypeData forKey:@"content-type"];
-    [contentTypeData release];
     [headers setHeader:[GPGMailBundle agentHeader] forKey:@"x-pgp-agent"];
     [headers setHeader:topPart.contentTransferEncoding forKey:@"content-transfer-encoding"];
     [headers removeHeaderForKey:@"content-disposition"];
@@ -474,8 +597,6 @@
     // First add the header data.
     [bodyData appendData:headerData];
     [bodyData appendData:topData];
-    [topPart release];
-    [boundary release];
     // Contains the range, which separates the mail headers
     // from the actual mime content.
     // JUST FOR INFO: messageDataIncludingFromSpace: returns an instance of NSMutableData, so basically
@@ -483,22 +604,22 @@
     NSRange contentRange = NSMakeRange([headerData length], 
                                        ([bodyData length] - [headerData length]));
     Subdata *contentSubdata = [[Subdata alloc] initWithParent:bodyData range:contentRange];
-    [bodyData release];
-    [newlyEncryptedPart release];
     return contentSubdata;
 }
 
 - (BOOL)MACanEncryptForRecipients:(NSArray *)recipients sender:(NSString *)sender {
-    // Otherwise check the gpg keys.
-    // Loop through all the addresses and check if we can encrypt for them.
-    // If no recipients are set, encrypt is false.
-    // For some reason, we're running into zombies if we don't do
-    // this.
-    [self retain];
-    DebugLog(@"Recipients: %@", recipients);
+    // This method is never supposed to be called on the main thread,
+	// so let's check for that.
+    if([NSThread isMainThread])
+		return NO;
+	
+    // To really fix #624 make sure the backEnd is alive till the end of this method.
+	ComposeBackEnd_GPGMail *bself __attribute__((objc_precise_lifetime)) = self;
+	
+	DebugLog(@"Recipients: %@", recipients);
     
     sender = [sender gpgNormalizedEmail];
-    BOOL canSMIMEEncrypt = [self MACanEncryptForRecipients:recipients sender:sender];
+    BOOL canSMIMEEncrypt = [(ComposeBackEnd_GPGMail *)bself MACanEncryptForRecipients:recipients sender:sender];
     
     DebugLog(@"Can S/MIME encrypt to recipients: %@? %@", recipients, canSMIMEEncrypt ? @"YES" : @"NO");
     
@@ -514,8 +635,8 @@
     
     DebugLog(@"Can PGP encrypt to recipients: %@? %@", mutableRecipients, canPGPEncrypt ? @"YES" : @"NO");
     
-    BOOL canSMIMESign = [[self getIvar:@"CanSMIMESign"] boolValue];
-    BOOL canPGPSign = [[self getIvar:@"CanPGPSign"] boolValue];
+    BOOL canSMIMESign = [[bself getIvar:@"CanSMIMESign"] boolValue];
+    BOOL canPGPSign = [[bself getIvar:@"CanPGPSign"] boolValue];
     
     GPGMAIL_SIGN_FLAG signFlags = 0;
     if(canPGPSign)
@@ -537,17 +658,21 @@
     GMSecurityHistory *securityHistory = [[GMSecurityHistory alloc] init];
     GMSecurityOptions *securityOptions = nil;
     
-    if(!self.securityMethod) {
-        if(self.messageIsBeingReplied) {
-            Message *originalMessage = [((ComposeBackEnd *)self) originalMessage];
+    if(!bself.securityMethod) {
+        if(bself.messageIsBeingReplied) {
+            Message *originalMessage = [((ComposeBackEnd *)bself) originalMessage];
             securityOptions = [securityHistory bestSecurityOptionsForReplyToMessage:originalMessage signFlags:signFlags encryptFlags:encryptFlags];
         }
+		else if([bself draftIsContinued]) {
+			Message *originalMessage = [((ComposeBackEnd *)bself) originalMessage];
+			securityOptions = [securityHistory bestSecurityOptionsForMessageDraft:originalMessage signFlags:signFlags encryptFlags:encryptFlags];
+		}
         else {
             securityOptions = [securityHistory bestSecurityOptionsForSender:sender recipients:recipients signFlags:signFlags encryptFlags:encryptFlags];
         }
-        self.guessedSecurityMethod = securityOptions.securityMethod;
+        bself.guessedSecurityMethod = securityOptions.securityMethod;
         
-        if(self.guessedSecurityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
+        if(bself.guessedSecurityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
             canEncrypt = canPGPEncrypt;
             canSign = canPGPSign;
         }
@@ -555,50 +680,54 @@
             canEncrypt = canSMIMEEncrypt;
             canSign = canSMIMESign;
         }
-        if(self.guessedSecurityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
+        if(bself.guessedSecurityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
             DebugLog(@"Security Method is OpenPGP");
             DebugLog(@"Can OpenPGP Encrypt: %@", canPGPEncrypt ? @"YES" : @"NO");
             DebugLog(@"Can OpenPGP Sign: %@", canPGPSign ? @"YES" : @"NO");
         }
-        else if(self.guessedSecurityMethod == GPGMAIL_SECURITY_METHOD_SMIME) {
+        else if(bself.guessedSecurityMethod == GPGMAIL_SECURITY_METHOD_SMIME) {
             DebugLog(@"Security Method is S/MIME");
             DebugLog(@"Can S/MIME Encrypt: %@", canSMIMEEncrypt ? @"YES" : @"NO");
             DebugLog(@"Can S/MIME Sign: %@", canSMIMESign ? @"YES" : @"NO");
         }
     }
     else {
-        canEncrypt = self.securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? canPGPEncrypt : canSMIMEEncrypt;
-        canSign = self.securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? canPGPSign : canSMIMESign;
-        if(self.messageIsBeingReplied) {
-            Message *originalMessage = [((ComposeBackEnd *)self) originalMessage];
+        canEncrypt = bself.securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? canPGPEncrypt : canSMIMEEncrypt;
+        canSign = bself.securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? canPGPSign : canSMIMESign;
+        if(bself.messageIsBeingReplied) {
+            Message *originalMessage = [((ComposeBackEnd *)bself) originalMessage];
             securityOptions = [securityHistory bestSecurityOptionsForReplyToMessage:originalMessage signFlags:signFlags encryptFlags:encryptFlags];
         }
         else {
-            securityOptions = [securityHistory bestSecurityOptionsForSender:sender recipients:recipients securityMethod:self.securityMethod canSign:canSign canEncrypt:canEncrypt];
+            securityOptions = [securityHistory bestSecurityOptionsForSender:sender recipients:recipients securityMethod:bself.securityMethod canSign:canSign canEncrypt:canEncrypt];
         }
     }
     
-    [self setIvar:@"SetEncrypt" value:[NSNumber numberWithBool:securityOptions.shouldEncrypt]];
-    [self setIvar:@"SetSign" value:[NSNumber numberWithBool:securityOptions.shouldSign]];
-    [self setIvar:@"EncryptIsPossible" value:[NSNumber numberWithBool:canEncrypt]];
-    [self setIvar:@"SignIsPossible" value:[NSNumber numberWithBool:canSign]];
+    [bself setIvar:@"SetEncrypt" value:@(securityOptions.shouldEncrypt)];
+    [bself setIvar:@"SetSign" value:@(securityOptions.shouldSign)];
+    [bself setIvar:@"EncryptIsPossible" value:@(canEncrypt)];
+    [bself setIvar:@"SignIsPossible" value:@(canSign)];
+	
+	if ([[GPGOptions sharedOptions] boolForKey:@"AllowSymmetricEncryption"]) {
+		[bself setIvar:@"SymmetricIsPossible" value:@([GPGMailBundle gpgMailWorks])];
+		// Uncomment when securityOptions.shouldSymmetric is implemented.
+		//[self setIvar:@"shouldSymmetric" value:@(securityOptions.shouldSymmetric)];
+	}
     
-    [securityHistory release];
-    [mutableRecipients release];
-    
-    [self release];
     
     return canEncrypt;
 }
 
 - (BOOL)MACanSignFromAddress:(NSString *)address {
-    // If the security method is not yet set and the back end was not yet initialized,
+    // To really fix #624 make sure the backEnd is alive till the end of this method.
+	ComposeBackEnd_GPGMail *bself __attribute__((objc_precise_lifetime)) = self;
+	
+	// If the security method is not yet set and the back end was not yet initialized,
     // check S/MIME and PGP keychains to see if either method has a key
     // for signing.
     // For some reason, we're running into zombies if we don't do
     // this.
-    [self retain];
-    BOOL canSMIMESign = [self MACanSignFromAddress:address];
+    BOOL canSMIMESign = [bself MACanSignFromAddress:address];
     
     DebugLog(@"Can sign S/MIME from address: %@? %@", address, canSMIMESign ? @"YES" : @"NO");
     
@@ -611,9 +740,8 @@
     // only Apple's implementation.
     // So to avoid this, always return YES here if the security method is not already set.
     // The correct status is stored for later lookup in canEncrypt.
-    [self setIvar:@"CanPGPSign" value:[NSNumber numberWithBool:canPGPSign]];
-    [self setIvar:@"CanSMIMESign" value:[NSNumber numberWithBool:canSMIMESign]];
-    [self release];
+    [bself setIvar:@"CanPGPSign" value:@(canPGPSign)];
+    [bself setIvar:@"CanSMIMESign" value:@(canSMIMESign)];
     return YES;
 }
 
@@ -639,7 +767,7 @@
 }
 
 - (void)setWasInitialized:(BOOL)wasInitialized {
-    [self setIvar:@"WasInitialized" value:[NSNumber numberWithBool:wasInitialized]];
+    [self setIvar:@"WasInitialized" value:@(wasInitialized)];
 }
 
 - (GPGMAIL_SECURITY_METHOD)securityMethod {
@@ -647,7 +775,7 @@
 }
 
 - (void)setSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
-    [self setIvar:@"SecurityMethod" value:[NSNumber numberWithUnsignedInt:securityMethod]];
+    [self setIvar:@"SecurityMethod" value:@((unsigned int)securityMethod)];
     // Reset SetSign, SetEncrypt, SignIsPossible, EncryptIsPossible, shouldSign, shouldEncrypt.
     [self removeIvar:@"SetSign"];
     [self removeIvar:@"SetEncrypt"];
@@ -655,6 +783,9 @@
     [self removeIvar:@"EncryptIsPossible"];
     [self removeIvar:@"shouldSign"];
     [self removeIvar:@"shouldEncrypt"];
+    [self removeIvar:@"shouldSymmetric"];
+
+	
 	// Don't reset ForceEncrypt and ForceSign. User preference has to stick. ALWAYS!
     
     // NEVER! automatically change the security method once the user selected it.
@@ -668,19 +799,20 @@
 }
 
 - (void)setGuessedSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
-    [self setIvar:@"GuessedSecurityMethod" value:[NSNumber numberWithUnsignedInteger:securityMethod]];
+    [self setIvar:@"GuessedSecurityMethod" value:@(securityMethod)];
     [self removeIvar:@"SetSign"];
     [self removeIvar:@"SetEncrypt"];
     [self removeIvar:@"SignIsPossible"];
     [self removeIvar:@"EncryptIsPossible"];
     [self removeIvar:@"shouldSign"];
     [self removeIvar:@"shouldEncrypt"];
+    [self removeIvar:@"shouldSymmetric"];
 	
 	// Don't reset ForceEncrypt and ForceSign. User preference has to stick. ALWAYS!
 }
 
 - (GPGMAIL_SECURITY_METHOD)guessedSecurityMethod {
-    return [[self getIvar:@"GuessedSecurityMethod"] unsignedIntegerValue];
+    return (GPGMAIL_SECURITY_METHOD)[[self getIvar:@"GuessedSecurityMethod"] unsignedIntegerValue];
 }
 
 - (BOOL)userDidChooseSecurityMethod {
@@ -688,7 +820,12 @@
 }
 
 - (void)setUserDidChooseSecurityMethod:(BOOL)userDidChoose {
-    [self setIvar:@"UserDidChooseSecurityMethod" value:[NSNumber numberWithBool:userDidChoose]];
+    [self setIvar:@"UserDidChooseSecurityMethod" value:@(userDidChoose)];
+}
+
+- (void)MA_configureLastDraftInformationFromHeaders:(id)headers overwrite:(BOOL)overwrite {
+	[self setIvar:@"DraftIsContinued" value:@YES];
+	[self MA_configureLastDraftInformationFromHeaders:headers overwrite:overwrite];
 }
 
 - (BOOL)messageIsBeingReplied {
@@ -696,14 +833,18 @@
     // 2 = Reply to all.
     // 4 = Restored Reply window.
     NSInteger type = [(ComposeBackEnd *)self type];
-    return type == 1 || type == 2 || type == 4;
+    return (type == 1 || type == 2 || type == 4) && ![self draftIsContinued];
+}
+
+- (BOOL)draftIsContinued {
+	return [[self getIvar:@"DraftIsContinued"] boolValue];
 }
 
 - (void)postSecurityMethodDidChangeNotification:(GPGMAIL_SECURITY_METHOD)securityMethod {
     if(!securityMethod)
         return;
     /* Post notification that the security method has changed. */
-    NSNotification *notification = [NSNotification notificationWithName:@"SecurityMethodDidChangeNotification" object:nil userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithUnsignedInt:securityMethod] forKey:@"SecurityMethod"]];
+    NSNotification *notification = [NSNotification notificationWithName:@"SecurityMethodDidChangeNotification" object:nil userInfo:@{@"SecurityMethod": @((unsigned int)securityMethod)}];
     [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] postNotification:notification];
 }
 
@@ -716,9 +857,3 @@
 }
 
 @end
-
-/*
- Flags abfragen
- struct ComposeBackEndFlags flags;
- object_getInstanceVariable(self, "_flags", (void **)&flags);
-*/

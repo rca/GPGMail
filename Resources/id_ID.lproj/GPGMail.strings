@@ -1,0 +1,170 @@
+/* Description of version prefixed with <Version:> */
+"VERSION: %@" = "Versi: %@";
+
+/* PGP preferences panel name */
+"PGP_PREFERENCES" = "GPGMail";
+
+/* Message Error Banner messages. */
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "Tak bisa mendekripsi pesan PGP.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "Ada masalah saat mendekripsi pesan ini. Periksa apakah Anda memiliki kunci yang valid dalam Keychain GPG Anda.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Tak bisa memeriksa tanda tangan pesan PGP.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Ada masalah saat membaca tanda tangan PGP bagi pesan ini.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "Kunci PGP bagi pesan ini tak ada dalam keychain Anda.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Pesan memiliki tanda tangan PGP yang valid, tapi kunci PGP tak ada dalam ring kunci Anda. Harap gunakan Akses Ring Kunci GPG untuk menambahkannya.";
+"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Tak tersedia informasi bagi kunci PGP ini.";
+"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Tak ada informasi tambahan yang diketahui tentang kunci PGP ini, karena ini tak ada dalam keychain Anda.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Kunci rahasia untuk mendekripsi pesan ini hilang.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Dekripsi gagal dengan kesalahan tak dikenal!";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Terjadi galat yang tak dikenal ketika mendekripsi pesan ini.\n\nHarap hubungi kami pada http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Pendekripsian gagal dengan galat yang tak dikenal!";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Galat yang tak dikenal terjadi ketika mendekripsi pesan ini.\n\nPesan galat GPG:\n%@\nHarap hubungi kami, sertakan pesan galat GPG, pada http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Kunci yang salah dipakai untuk mengenkripsi pesan ini.";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Pesan ini tak bisa didekripsi, karena kunci publik yang salah dipakai untuk mengekripsinya.\n\nHarap hubungi kami pada http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Pesan yang terenkripsi rusak.";
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Pesan yang terenkripsi rusak dan tak bisa didekripsi.\n\nSilakan minta ke pengirim untuk mengirim ulang pesan.";
+
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Kunci tanda tangan telah dicabut.";
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "PERHATIAN: Kunci yang dipakai untuk menandatangani pesan ini telah dicabut.\n\nAnda mesti menyegarkan kunci dengan ID kunci %@ dalam Akses Ring Kunci GPG untuk memeriksa apakah tersedia yang baru. Bila yang terbaru masih dicabut, periksalah dengan pengirim mengapa kunci dicabut.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Kunci bagi tanda tangan pesan ini tak ada dalam Ring Kunci GPG Anda.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Pesan ini tak bisa diverifikasi, karena kunci yang dipakai untuk menandatangani pesan ini tak ada dalam Ring Kunci GPG Anda.\n\nCarilah kunci dengan ID %@ dalam Akses Ring Kunci GPG dan imporlah untuk memverifikasi pesan.";
+
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "Tanda tangan pesan dibuat dengan algoritma yang tak didukung.";
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Pesan ini tak bisa diverifikasi, karena tanda tangan dibuat dengan algoritma yang tak didukung.\n\nHarap hubungi kami di http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "PERHATIAN: Tanda tangan pesan ini tak valid!";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "PERHATIAN: Pesan ini mungkin telah diubah setelah tanda tangan dibuat.\n\nHarap hubungi pengirim untuk memastikan isi pesan cocok dengan aslinya.\n\nHarap hubungi kami pada http://support.gpgtools.org bila Anda yakin bahwa pesan tak diubah.";
+
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Verifikasi tanda tangan pesan gagal dengan galat tak dikenal!";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Terjadi galat yang tak dikenal ketika verifikasi tanda tangan pesan ini.\n\nMohon kontak kami di http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Galat data tanda tangan pesan!";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Tanda tangan pesan ini tak valid dan tak bisa diverifikasi.\n\nHarap kontak kami di http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Kunci tanda tangan pesan kedaluarsa.";
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "PERHATIAN: Kunci yang dipakai untuk menandatangani pesan ini kedaluarsa.\n\nAnda dapat mencoba menyegarkan kunci dengan ID %@ dalam Akses Ring Kunci GPG dan menanyakan ke pengirim mengapa kunci kedaluarsa.";
+
+"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Tanda tangan pesan ini kedaluarsa.";
+"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Tanda tangan kedaluarsa dan tak bisa diverifikasi.\n\nTanyakan ke pengirim mengapa tanda tangan kedaluarsa.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d lampiran gagal didekripsi atau diverifikasi.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Harap klik pada ikon lampiran dalam bagian keamanan kepala pesan untuk rincian lebih lanjut.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_TITLE" = "%d lampiran gagal diverifikasi.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_MESSAGE" = "Harap klik pada ikon lampiran dalam bagian keamanan kepala pesan untuk rincian lebih lanjut.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_TITLE" = "%d lampiran gagal didekripsi.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_MESSAGE" = "Harap klik pada ikon lampiran dalam bagian keamanan kepala pesan untuk rincian lebih lanjut.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_TITLE" = "%d lampiran gagal diverifikasi.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_MESSAGE" = "Harap klik pada ikon lampiran dalam bagian keamanan kepala pesan untuk rincian lebih lanjut.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_TITLE" = "%d lampiran gagal didekripsi.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE" = "Harap klik pada ikon lampiran dalam bagian keamanan kepala pesan untuk rincian lebih lanjut.";
+
+/* Message Error Banner Attachment messages. */
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Kunci rahasia untuk mendekripsi lampiran hilang.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Dekripsi gagal dengan kesalahan tak dikenal!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Terjadi galat yang tak dikenal ketika mendekripsi pesan ini.\n\nHarap hubungi kami pada http://support.gpgtools.org";    
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "Dekripsi gagal dengan kesalahan tak dikenal!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Galat yang tak dikenal terjadi ketika mendekripsi pesan ini.\n\nPesan galat GPG:\n%@\nHarap hubungi kami, sertakan pesan galat GPG, pada http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Kunci yang salah dipakai untuk mengenkripsi lampiran ini.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Lampiran ini tak bisa didekripsi, karena kunci publik yang salah dipakai untuk mengekripsinya.\n\nHarap hubungi kami pada http://support.gpgtools.org";    
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Lampiran yang terenkripsi rusak.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Lampiran yang terenkripsi rusak dan tak bisa didekripsi.\n\nSilakan minta ke pengirim untuk mengirim ulang pesan.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Kunci tanda tangan telah dicabut.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "PERHATIAN: Kunci yang dipakai untuk menandatangani lampiran ini telah dicabut.\n\nAnda mesti menyegarkan kunci dengan ID kunci %@ dalam Akses Ring Kunci GPG untuk memeriksa apakah tersedia yang baru. Bila yang terbaru masih dicabut, periksalah dengan pengirim mengapa kunci dicabut.";    
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Kunci tanda tangan ini tak ada dalam Ring Kunci GPG Anda.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Tanda tangan lampiran ini tak bisa diverifikasi, karena kunci yang dipakai untuk menandatangani tak ada dalam Ring Kunci GPG Anda.\n\nCarilah kunci dengan ID %@ dalam Akses Ring Kunci GPG dan imporlah untuk memverifikasi lampiran.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "Tanda tangan lampiran dibuat dengan algoritma yang tak didukung.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Lampiran ini tak bisa diverifikasi, karena kunci tanda tangan dibuat dengan algoritma yang tak didukung.\n\nHarap hubungi kami di http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "PERHATIAN: Tanda tangan lampiran ini tak valid!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "PERHATIAN: Lampiran ini mungkin telah diubah setelah tanda tangan dibuat.\n\nHarap hubungi pengirim untuk memastikan isi lampiran cocok dengan aslinya.\n\nHarap hubungi kami pada http://support.gpgtools.org bila Anda yakin bahwa lampiran tak diubah.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Verifikasi tanda tangan gagal dengan galat tak dikenal!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Terjadi galat yang tak dikenal ketika verifikasi tanda tangan lampiran ini.\n\nMohon kontak kami di http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Galat data tanda tangan!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Tanda tangan lampiran ini tak valid dan tak bisa diverifikasi.\n\nHarap kontak kami di http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Kunci dari tanda tangan ini kedaluarsa.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "PERHATIAN: Kunci yang dipakai untuk menandatangani lampiran ini kedaluarsa.\n\nAnda dapat mencoba menyegarkan kunci dengan ID %@ dalam Akses Ring Kunci GPG dan menanyakan ke pengirim mengapa kunci kedaluarsa.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Tanda tangan lampiran ini kedaluarsa.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Tanda tangan lampiran kedaluarsa dan tak bisa diverifikasi.\n\nTanyakan ke pengirim mengapa tanda tangan kedaluarsa.";
+
+"MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Sebagian Terenkripsi";
+"MESSAGE_IS_PGP_PARTLY_SIGNED" = "Sebagian Ditandatangani";
+"MESSAGE_IS_PGP_ENCRYPTED" = "Terenkripsi";
+"MESSAGE_IS_PGP_SIGNED" = "Ditandatangani";
+"MESSAGE_IS_PGP_SIGNED_INVALID" = "Tanda Tangan Tak Valid";
+
+/* Security Header signature related. */
+"MESSAGE_SECURITY_HEADER_SIGNATURE_NO_PUBLIC_KEY_TITLE" = "Ditandatangani dengan kunci yang tak dikenal";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE" = "Ditandatangani dengan kunci yang telah dicabut";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE" = "Tanda tangan tak valid";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE" = "Ditandatangani";
+
+/* Security header attachments related. */
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE" = "lampiran yang dienkripsi/ditandatangani";
+"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_ENCRYPTED_TITLE" = "lampiran yang dienkripsi/ditandatangani";
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_ENCRYPTED_TITLE" = "lampiran yang dienkripsi";
+"MESSAGE_SECURITY_HEADER_ATTACHMENTS_ENCRYPTED_TITLE" = "lampiran yang dienkripsi";
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_TITLE" = "lampiran yang ditandatangani";
+"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "lampiran yang ditandatangani";
+
+/* Compose Window encrypt/sign button tooltips. */
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "Pesan ini tak bisa ditandatangani, karena tak ada kunci privat bagi %@.\n\nMohon pastikan bahwa suatu kunci privat bagi alamat ini ada dalam Akses Ring Kunci GPG. Tambahkan suatu UID baru ke kunci yang ada bagi alamat ini bila perlu, atau buat kunci baru bagi alamat ini.\n\nBila suatu kunci bagi alamat ada, pastikan bahwa alamat dalam Preferensi Surat benar dan cocok sepenuhnya dengan alamat dari kunci Anda.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "Pesan ini tak bisa dienkripsi, karena tak tersedia kunci publik bagi alamat-alamat berikut: %@.\n\nHarap gunakan Akses Ring Kunci GPG untuk mencari dan mengimpor kunci-kunci bagi alamat-alamat tersebut.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "Pesan ini tak bisa dienkripsi. Anda mesti terlebih dahulu memasukkan paling tidak satu penerima.";
+
+/* Message view pgp part. */
+"MESSAGE_VIEW_PGP_PART_ENCRYPTED" = "Dienkripsi";
+"MESSAGE_VIEW_PGP_PART_SIGNED" = "Ditandatangani";    
+"MESSAGE_VIEW_PGP_PART" = "Bagian PGP";
+
+/* GPGMail Preferences strings. */
+"GPG_STATUS_NO_ERROR_TITLE" = "GPGMail siap.";
+"GPG_STATUS_NO_ERROR_TOOLTIP" = "Instalasi MacGPG Anda bekerja tanpa galat."; 
+"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 tak terpasang. Periksalah instalasi Anda.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Harap unduh pemasang GPGTools dari http://www.gpgtools.org untuk memasang semua GPGTools.";
+"GPG_STATUS_OTHER_ERROR_TITLE" = "Harap periksa instalasi dan konfigurasi Anda.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Harap unduh pemasang GPGTools dari http://www.gpgtools.org untuk memasang semua GPGTools.";
+
+/* Multiple GPGMail installations. */
+"GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Menemukan instalasi berganda dari GPGMail!";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "GPGMail mendeteksi instalasi berganda dalam lokasi-lokasi berikut yang akan mengarah ke crash seketika:\n\n%@\n\nHarap hapus GPGMail.mailbundle dalam satu dari lokasi-lokasi tersebut dan mulai ulang Mail.\n";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Keluar Mail";
+
+/* Errors while trying to sign a message. */
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Signing your message failed due to defect PIN-Entry!";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "The PIN-Entry helper responsible for asking for your passphrase seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools";
+
+"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Signing your message failed due to defect GPG agent!";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "The GPG agent which is a crucial part of GPG seems to be defect on your system.\n\nTo fix this problem, re-install the newest version of GPGTools";
+
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "Signing your message failed due to GPG agent communication error!";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "It was not possible to talk to the GPG agent in order to request your passphrase.\n\nTo fix this problem, re-install the newest version of GPGTools";
+
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "Signing your message failed because an unknown error has occured";
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately we can't handle the error at this point.";
+
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Encrypting your message failed because an unknown error has occured";
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately GPGMail can't handle the error at this point.";
+
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at http://support.gpgtools.org with the following error description:\n\n%@";
+

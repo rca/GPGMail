@@ -4,9 +4,7 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2010 by Steve Nygard.
  */
 
-#import "NSTextAttachment.h"
-
-@class CachingABRecord, NSColor, NSFont, NSString;
+@class CachingABRecord, NSColor, NSFont, NSString, NSTextAttachment;
 
 @interface AddressAttachment : NSTextAttachment <NSCopying>
 {

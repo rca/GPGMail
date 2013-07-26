@@ -30,8 +30,9 @@
 #import "GPGMailPreferences.h"
 #import <Sparkle/Sparkle.h>
 #import "GPGMailBundle.h"
+#import "GMUpdater.h"
 
-#define localized(key) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:(key) table:@"GPGMail"]
+#define localized(key) [[GPGMailBundle bundle] localizedStringForKey:(key) value:(key) table:@"GPGMail"]
 
 
 @implementation GPGMailPreferences
@@ -41,56 +42,75 @@
 }
 
 - (SUUpdater *)updater {
-	return [[GPGMailBundle sharedInstance] updater];
+	return [[(GPGMailBundle *)[GPGMailBundle sharedInstance] updater] updater];
 }
 
 - (NSString *)copyright {
-	return [[[NSBundle bundleForClass:[self class]] infoDictionary] objectForKey:@"NSHumanReadableCopyright"];
+	return [[GPGMailBundle bundle] infoDictionary][@"NSHumanReadableCopyright"];
 }
 
 - (NSAttributedString *)credits {
-	NSBundle *mailBundle = [NSBundle bundleForClass:[self class]];
-	NSAttributedString *credits = [[[NSAttributedString alloc] initWithURL:[mailBundle URLForResource:@"Credits" withExtension:@"rtf"] documentAttributes:nil] autorelease];
+	NSBundle *mailBundle = [GPGMailBundle bundle];
+	NSAttributedString *credits = [[NSAttributedString alloc] initWithURL:[mailBundle URLForResource:@"Credits" withExtension:@"rtf"] documentAttributes:nil];
 
 	return credits;
 }
 
 - (NSAttributedString *)websiteLink {
-	NSMutableParagraphStyle *pStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+	NSMutableParagraphStyle *pStyle = [[NSMutableParagraphStyle alloc] init];
 
 	[pStyle setAlignment:NSRightTextAlignment];
 
-	NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-								pStyle, NSParagraphStyleAttributeName,
-								@"http://www.gpgtools.org/", NSLinkAttributeName,
-								[NSColor blueColor], NSForegroundColorAttributeName,
-								[NSFont fontWithName:@"Lucida Grande" size:9], NSFontAttributeName,
-								[NSNumber numberWithInt:1], NSUnderlineStyleAttributeName,
-								nil];
+	NSDictionary *attributes = @{NSParagraphStyleAttributeName: pStyle,
+								NSLinkAttributeName: @"http://www.gpgtools.org/",
+								NSForegroundColorAttributeName: [NSColor blueColor],
+								NSFontAttributeName: [NSFont fontWithName:@"Lucida Grande" size:9],
+								NSUnderlineStyleAttributeName: @1};
 
-	return [[[NSAttributedString alloc] initWithString:@"http://www.gpgtools.org" attributes:attributes] autorelease];
+	return [[NSAttributedString alloc] initWithString:@"http://www.gpgtools.org" attributes:attributes];
 }	
 
+
+- (NSString *)versionDescription {
+	return [NSString stringWithFormat:GMLocalizedString(@"VERSION: %@"), [self.bundle version]];
+}
+
+- (NSAttributedString *)buildNumberDescription {
+	NSString *string = [NSString stringWithFormat:@"Build: %@", [GPGMailBundle bundleVersion]];
+	NSDictionary *attributes = @{NSForegroundColorAttributeName: [NSColor grayColor], NSFontAttributeName: [NSFont systemFontOfSize:11]};
+	
+	return [[NSAttributedString alloc] initWithString:string attributes:attributes];
+}
+
+
 - (NSImage *)imageForPreferenceNamed:(NSString *)aName {
-	return [NSImage imageNamed:@"GPGMailPreferences"];
+	return [NSImage imageNamed:@"GPGMail"];
 }
 
 /* Open FAQ page. */
 - (IBAction)openFAQ:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://gpgtools.org/faq.html"]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://support.gpgtools.org/kb"]];
 }
 /* Open donation page. */
 - (IBAction)openDonation:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://gpgtools.org/donate.html"]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://gpgtools.org/donate.html#donate-paypal"]];
 }
 /* Open contact page. */
-- (IBAction)openContact:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://gpgtools.org/about.html"]];
+- (IBAction)openSupport:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://support.gpgtools.org/"]];
 }
 
 - (IBAction)openGPGStatusHelp:(id)sender {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://support.gpgtools.org/kb/how-to/gpg-status"]];
 }
+
+- (IBAction)copyVersionInfo:(id)sender {
+	NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+	[pasteboard clearContents];
+	NSString *string = [NSString stringWithFormat:@"%@\n%@", self.versionDescription, self.buildNumberDescription.string];
+	[pasteboard writeObjects:@[string]];
+}
+
 
 - (void)willBeDisplayed {
 	[[GPGMailBundle sharedInstance] checkGPG];
@@ -169,7 +189,7 @@
 	}
 	
 	NSSize size = self.bounds.size;
-	srandom(time(NULL));
+	srandom((unsigned int)time(NULL));
 
 	webView = [[WebView alloc] initWithFrame:NSMakeRect(0, 0, size.width, size.height)];
 	webView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
@@ -182,14 +202,8 @@
 	[[NSAnimationContext currentContext] setDuration:2.0f];
 	[NSAnimationContext currentContext].completionHandler = ^{
 		[self addSubview:webView];
-        NSString *file = @"Special";
         
-        BOOL isMartin = [[(GPGOptions *)[GPGOptions sharedOptions] valueForKey:@"TheRealThankYous"] boolValue];
-        
-        if(isMartin)
-            file = @"Test";
-		[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[[NSBundle bundleForClass:[self class]] URLForResource:file withExtension:@"html"]]];
-		[webView release];
+		[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[[GPGMailBundle bundle] URLForResource:@"Special" withExtension:@"html"]]];
 		displayed = YES;
 		working = NO;
 	};
@@ -230,7 +244,7 @@
 	working = NO;
 }
 - (void)keyDown:(NSEvent *)event {
-	unsigned short keySequence[] = {126, 125, 47, 126, 125, 46, 0, 15, 17, 34, 38, 45, USHRT_MAX};
+	unsigned short keySequence[] = {126, 125, 47, 5, 35, 5, 17, 31, 31, 37, 1, USHRT_MAX};
 	static int index = 0;
 	
 	if (!displayed) {
@@ -271,10 +285,6 @@
 
 - (BOOL)acceptsFirstResponder {
     return YES;
-}
-- (void)dealloc {
-	[viewPositions release];
-	[super dealloc];
 }
 @end
 

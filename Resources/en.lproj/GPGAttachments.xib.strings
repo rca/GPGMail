@@ -15,14 +15,12 @@
 "256.title" = "Signature";
 "257.title" = "Created:";
 "259.title" = "Expires:";
-"291.title" = "Die Signatur konnte nicht verizifiert werden.";
-"293.title" = "Die Signatur dieses Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet.
-
-Bitte laden Sie den öffentlichen Schlüssel mit GPG Schlüsselbund herunter.";
+"291.title" = "The signature could not be verified.";
+"293.title" = "The signature could not be verified because the public key is not in your keychain.
+Please download the key using GPG Keychain Access.";
 "325.ibShadowedIsNilPlaceholder" = "No expiration is set on this signature";
 "353.ibShadowedIsNilPlaceholder" = "No expiration is set on this signature";
 "366.ibShadowedIsNilPlaceholder" = "No expiration is set on this signature";
-"382.title" = "Die Signatur konnte nicht verizifiert werden.";
-"383.title" = "Die Signatur dieses Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet.
-
-Bitte laden Sie den öffentlichen Schlüssel mit GPG Schlüsselbund herunter.";
+"382.title" = "The signature could not be verified.";
+"383.title" = "The signature could not be verified because the public key is not in your keychain.
+Please download the key using GPG Keychain Access.";

@@ -58,8 +58,11 @@
     GMSecurityMethodAccessoryView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
     ComposeBackEnd *backEnd = ((MailDocumentEditor *)self).backEnd;
     
+	GPGMAIL_SECURITY_METHOD oldSecurityMethod = accessoryView.securityMethod;
+	
     BOOL shouldEncrypt = [[backEnd getIvar:@"shouldEncrypt"] boolValue];
     BOOL shouldSign = [[backEnd getIvar:@"shouldSign"] boolValue];
+	BOOL shouldSymmetric = [[backEnd getIvar:@"shouldSymmetric"] boolValue];
     
     GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
     if(((ComposeBackEnd_GPGMail *)backEnd).securityMethod)
@@ -67,12 +70,13 @@
     
     accessoryView.securityMethod = securityMethod;
     
-    if(shouldEncrypt || shouldSign)
+    if(shouldEncrypt || shouldSign || (shouldSymmetric && securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP))
         accessoryView.active = YES;
     else
         accessoryView.active = NO;
     
-    [[((MailDocumentEditor *)self) headersEditor] fromHeaderDisplaySecretKeys:(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? YES : NO)];
+	if(oldSecurityMethod != securityMethod)
+		[[((MailDocumentEditor *)self) headersEditor] updateFromAndAddSecretKeysIfNecessary:@(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? YES : NO)];
 }
 
 - (void)updateSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
@@ -81,7 +85,6 @@
 }
 
 - (void)MABackEndDidLoadInitialContent:(id)content {
-    [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyringUpdated:) name:GPGMailKeyringUpdatedNotification object:nil];
     [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didExitFullScreen:) name:@"NSWindowDidExitFullScreenNotification" object:nil];
     
     // Setup security method hint accessory view in top right corner of the window.
@@ -99,24 +102,19 @@
     GMSecurityMethodAccessoryView *accessoryView = [[GMSecurityMethodAccessoryView alloc] init];
     accessoryView.delegate = self;
     NSWindow *window = [self valueForKey:@"_window"];
-    
-    if(((MailDocumentEditor *)self).isModal || ((MailDocumentEditor *)self).possibleFullScreenViewerParent)
-       [accessoryView configureForFullScreenWindow:window];
+		
+	// Not longer used: if(((MailDocumentEditor *)self).isModal || ((MailDocumentEditor *)self).possibleFullScreenViewerParent)
+    if([NSApp mainWindow].styleMask & NSFullScreenWindowMask) // Only check the mein window to detect fullscreen.
+		[accessoryView configureForFullScreenWindow:window];
     else
         [accessoryView configureForWindow:window];
                                                     
     [self setIvar:@"SecurityMethodHintAccessoryView" value:accessoryView];
-    [accessoryView release];
 }
 
 - (void)hideSecurityMethodAccessoryView {
     GMSecurityMethodAccessoryView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
     accessoryView.hidden = YES;
-}
-
-- (void)keyringUpdated:(NSNotification *)notification {
-    // Reset the security method, since it might change due to the updated keyring.
-	[[(MailDocumentEditor *)self headersEditor] updateSecurityControls];
 }
 
 - (void)securityMethodAccessoryView:(GMSecurityMethodAccessoryView *)accessoryView didChangeSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
@@ -134,14 +132,23 @@
     @catch(NSException *e) {
         
     }
-    [self MADealloc];
+	[self MADealloc];
 }
 
-- (void)MABackEnd:(id)arg1 didCancelMessageDeliveryForEncryptionError:(MFError *)error {
-	if ([[(NSDictionary *)error.userInfo objectForKey:@"GPGErrorCode"] integerValue] == GPGErrorCancelled) {
+- (void)MABackEnd:(id)backEnd didCancelMessageDeliveryForEncryptionError:(MFError *)error {
+	if ([((NSDictionary *)error.userInfo)[@"GPGErrorCode"] integerValue] == GPGErrorCancelled) {
 		return;
 	}
-	[self MABackEnd:arg1 didCancelMessageDeliveryForEncryptionError:error];
+	[self MABackEnd:backEnd didCancelMessageDeliveryForEncryptionError:error];
 }
+
+- (void)MABackEnd:(id)backEnd didCancelMessageDeliveryForError:(MFError *)error {
+	if ([((NSDictionary *)error.userInfo)[@"GPGErrorCode"] integerValue] == GPGErrorCancelled) {
+		return;
+	}
+	[self MABackEnd:backEnd didCancelMessageDeliveryForError:error];
+}
+
+
 
 @end

@@ -147,3 +147,32 @@ mach services which end in _OpenStep.
 Mail.app's entitlements allow every mach service which only has numbers as its name.
 So as long as Apple doesn't remove these rules and our xpc service has a matching name
 we're mighty mighty fine :)!
+
+* Additional documentation for NSXPCConnection *
+
+NSXPCConnection invokes error, interruption or invalidation handlers
+for specific errors which are documented, but as not much as one would want.
+
+This is a list of all the available handlers and when they are invoked:
+
+- invalidationHandler:
+	- invoked when there's a problem establishing a connection:
+		- the xpc service was unloaded or is being unloaded while a message
+		  is waiting for a response
+		- the xpc service is not loaded at all -> in that case it's invoked
+		  immediately after calling resume.
+
+- remoteObjectProxy errorHandler:
+	- when the xpc service crashes (e.g. overrelease or other BAD EXC failure in the xpc service)
+	- when the xpc service is killed (also with -9)
+	- when the xpc service is unloaded with `launchctl unload`
+	- when the xpc service is unloaded with `launchctl remove`
+
+- interruptionHandler:
+	- when the connection was already invalidated (call to invalidate)
+	  and the xpc service is killed.
+	- everytime remoteObjectProxy errorHandler is invoked.
+
+* Class weak linking for Mavericks *
+
+http://www.sealiesoftware.com/blog/archive/2010/4/8/Do-it-yourself_Objective-C_weak_import.html

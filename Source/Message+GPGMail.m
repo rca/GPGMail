@@ -35,6 +35,7 @@
 #import <MessageStore.h>
 #import <ActivityMonitor.h>
 #import "MFError.h"
+#import "MessageRouter.h"
 #import "MimePart+GPGMail.h"
 #import "Message+GPGMail.h"
 #import "GPGMailBundle.h"
@@ -66,7 +67,7 @@
 }
 
 - (void)setPGPEncrypted:(BOOL)isPGPEncrypted {
-    [self setIvar:@"PGPEncrypted" value:[NSNumber numberWithBool:isPGPEncrypted]];
+    [self setIvar:@"PGPEncrypted" value:@(isPGPEncrypted)];
 }
 
 - (BOOL)PGPEncrypted {
@@ -82,7 +83,7 @@
 }
 
 - (void)setPGPSigned:(BOOL)isPGPSigned {
-    [self setIvar:@"PGPSigned" value:[NSNumber numberWithBool:isPGPSigned]];
+    [self setIvar:@"PGPSigned" value:@(isPGPSigned)];
 }
 
 - (BOOL)PGPPartlyEncrypted {
@@ -92,7 +93,7 @@
 
 
 - (void)setPGPPartlyEncrypted:(BOOL)isPGPEncrypted {
-    [self setIvar:@"PGPPartlyEncrypted" value:[NSNumber numberWithBool:isPGPEncrypted]];
+    [self setIvar:@"PGPPartlyEncrypted" value:@(isPGPEncrypted)];
 }
 
 - (BOOL)PGPPartlySigned {
@@ -101,7 +102,7 @@
 }
 
 - (void)setPGPPartlySigned:(BOOL)isPGPSigned {
-    [self setIvar:@"PGPPartlySigned" value:[NSNumber numberWithBool:isPGPSigned]];
+    [self setIvar:@"PGPPartlySigned" value:@(isPGPSigned)];
 }
 
 - (NSUInteger)numberOfPGPAttachments {
@@ -109,7 +110,7 @@
 }
 
 - (void)setNumberOfPGPAttachments:(NSUInteger)nr {
-    [self setIvar:@"PGPNumberOfPGPAttachments" value:[NSNumber numberWithInteger:nr]];
+    [self setIvar:@"PGPNumberOfPGPAttachments" value:@((NSUInteger)nr)];
 }
 
 - (void)setPGPSignatures:(NSArray *)signatures {
@@ -144,40 +145,32 @@
     NSMutableArray *signerLabels = [NSMutableArray array];
     NSArray *messageSigners = [self PGPSignatures];
     for(GPGSignature *signature in messageSigners) {
-        NSString *email = [signature email];
+		// Check with the key manager if an updated key is available for
+		// this signature, since auto-key-retrieve might have changed it.
+		GPGKey *newKey = [[GPGMailBundle sharedInstance] keyForFingerprint:signature.fingerprint];
+        signature.key = newKey;
+		NSString *email = signature.email;
         if(email) {
 			// If the sender E-Mail != signature E-Mail, we display the sender E-Mail if possible.
 			if (![[email gpgNormalizedEmail] isEqualToString:senderEmail]) {
-				NSString *fingerprint = signature.primaryFingerprint ? signature.primaryFingerprint : signature.fingerprint;
-				if (fingerprint) {
-					NSSet *keys = [[GPGMailBundle sharedInstance] allGPGKeys];
-					GPGKey *key = [keys member:fingerprint];
-					if (!key) {
-						for (key in keys) {
-							NSUInteger index = [key.subkeys indexOfObject:fingerprint];
-							if (index != NSNotFound) {
-								break;
-							}
-						}
-					}
-					for (GPGUserID *userID in key.userIDs) {
-						if ([[userID.email gpgNormalizedEmail] isEqualToString:senderEmail]) {
-							email = userID.email;
-							break;
-						}
+				GPGKey *key = signature.key;
+				for (GPGUserID *userID in key.userIDs) {
+					if ([[userID.email gpgNormalizedEmail] isEqualToString:senderEmail]) {
+						email = userID.email;
+						break;
 					}
 				}
 			}
 		} else {
             // Check if name is available and use that.
-            if([[signature name] length])
-                email = [signature name];
+            if([signature.name length])
+                email = signature.name;
             else
                 // For some reason a signature might not have an email set.
                 // This happens if the public key is not available (not downloaded or imported
                 // from the signature server yet). In that case, display the user id.
                 // Also, add an appropriate warning.
-                email = [NSString stringWithFormat:@"0x%@", [[signature fingerprint] shortKeyID]];
+                email = [NSString stringWithFormat:@"0x%@", [signature.fingerprint shortKeyID]];
 		}
         [signerLabels addObject:email];
     }
@@ -190,7 +183,7 @@
 }
 
 - (void)setPGPInfoCollected:(BOOL)infoCollected {
-    [self setIvar:@"PGPInfoCollected" value:[NSNumber numberWithBool:infoCollected]];
+    [self setIvar:@"PGPInfoCollected" value:@(infoCollected)];
 	// If infoCollected is set to NO, clear all associated info.
 	if(!infoCollected)
 		[self clearPGPInformation];
@@ -201,7 +194,7 @@
 }
 
 - (void)setPGPDecrypted:(BOOL)isDecrypted {
-    [self setIvar:@"PGPDecrypted" value:[NSNumber numberWithBool:isDecrypted]];
+    [self setIvar:@"PGPDecrypted" value:@(isDecrypted)];
 }
 
 - (BOOL)PGPVerified {
@@ -209,15 +202,7 @@
 }
 
 - (void)setPGPVerified:(BOOL)isVerified {
-    [self setIvar:@"PGPVerified" value:[NSNumber numberWithBool:isVerified]];
-}
-
-- (void)setShouldShowErrorBanner:(BOOL)shouldShow {
-    [self setIvar:@"ShouldShowErrorBanner" value:[NSNumber numberWithBool:shouldShow]];
-}
-
-- (BOOL)shouldShowErrorBanner {
-    return [[self getIvar:@"ShouldShowErrorBanner"] boolValue];
+    [self setIvar:@"PGPVerified" value:@(isVerified)];
 }
 
 - (void)collectPGPInformationStartingWithMimePart:(MimePart *)topPart decryptedBody:(MimeBody *)decryptedBody {
@@ -305,20 +290,33 @@
     self.PGPVerified = isVerified;
     
     [self fakeMessageFlagsIsEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];
-    if(decryptedMessage)
-        [decryptedMessage fakeMessageFlagsIsEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];
     
+	if(decryptedMessage) {
+		[decryptedMessage fakeMessageFlagsIsEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];
+	}
+    
+	// The problem is, Mail.app would correctly apply the rules, if we didn't
+	// deactivate the snippet generation. But since we do, because it's kind of
+	// a pain in the ass, it doesn't.
+	// So we re-evaluate the message rules here and then they should be applied correctly.
+	// ATTENTION: We have to make sure that the user actively selected this message,
+	//			  otherwise, the body data is not yet available, and will 'cause the evaluation rules
+	//			  to wreak havoc.
+	if(!self.isSMIMEEncrypted && !self.isSMIMESigned)
+		[self applyMatchingRulesIfNecessary];
+		
     // Only for test purpose, after the correct error to be displayed should be constructed.
     MFError *error = nil;
     if([errors count])
-        error = [errors objectAtIndex:0];
+        error = errors[0];
     else if([self.PGPAttachments count])
         error = [self errorSummaryForPGPAttachments:self.PGPAttachments];
     
-    if(error) {
-        self.shouldShowErrorBanner = YES;
+	// Set the error on the activity monitor so the error banner is displayed
+	// on above the message content.
+    if(error)
         [(ActivityMonitor *)[ActivityMonitor currentMonitor] setError:error];
-    }
+    
 
     DebugLog(@"%@ Decrypted Message [%@]:\n\tisEncrypted: %@, isSigned: %@,\n\tisPartlyEncrypted: %@, isPartlySigned: %@\n\tsignatures: %@\n\terrors: %@",
           decryptedMessage, [decryptedMessage subject], decryptedMessage.PGPEncrypted ? @"YES" : @"NO", decryptedMessage.PGPSigned ? @"YES" : @"NO",
@@ -330,11 +328,26 @@
     
     // Fix the number of attachments, this time for real!
     // Uncomment once completely implemented.
-    [[self dataSourceProxy] setNumberOfAttachments:numberOfAttachments isSigned:isSigned isEncrypted:isEncrypted forMessage:self];
+    [[self dataSourceProxy] setNumberOfAttachments:(unsigned int)numberOfAttachments isSigned:isSigned isEncrypted:isEncrypted forMessage:self];
     if(decryptedMessage)
-        [[decryptedMessage dataSourceProxy] setNumberOfAttachments:numberOfAttachments isSigned:isSigned isEncrypted:isEncrypted forMessage:decryptedMessage];
+        [[decryptedMessage dataSourceProxy] setNumberOfAttachments:(unsigned int)numberOfAttachments isSigned:isSigned isEncrypted:isEncrypted forMessage:decryptedMessage];
     // Set PGP Info collected so this information is not overwritten.
     self.PGPInfoCollected = YES;
+}
+
+- (void)applyMatchingRulesIfNecessary {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wselector"
+	if(![[self dataSourceProxy] respondsToSelector:@selector(routeMessages:isUserAction:)])
+		return;
+#pragma clang diagnostic pop
+
+	if(!self.isEncrypted && !self.isSigned)
+		return;
+	
+	// isEncrypted has to be re-evaluated again, since it might contain a signed message
+	// but didn't have the key in cache, to correctly apply rules the first time around.
+	[[GPGMailBundle sharedInstance] scheduleApplyingRulesForMessage:self isEncrypted:self.isEncrypted];
 }
 
 - (MFError *)errorSummaryForPGPAttachments:(NSArray *)attachments {
@@ -356,7 +369,6 @@
     
     NSUInteger totalErrors = verificationErrors + decryptionErrors;
     
-    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
     NSString *title = nil;
     NSString *message = nil;
     // 1035 says decryption error, 1036 says verification error.
@@ -365,29 +377,29 @@
     
     if(verificationErrors && decryptionErrors) {
         // @"%d Anhänge konnten nicht entschlüsselt oder verifiziert werden."
-        title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
-        message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+        title = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE");
+        message = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE");
         errorCode = 1035;
     }
     else if(verificationErrors) {
         if(verificationErrors == 1) {
-            title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
-            message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+            title = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_TITLE");
+            message = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_MESSAGE");
         }
         else {
-            title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
-            message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+            title = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_TITLE");
+            message = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_MESSAGE");
         }
         errorCode = 1036;
     }
     else if(decryptionErrors) {
         if(decryptionErrors == 1) {
-            title = title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
-            message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+            title = title = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_TITLE");
+            message = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE");
         }
         else {
-            title = title = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_TITLE", @"GPGMail", gpgMailBundle, @"");
-            message = NSLocalizedStringFromTableInBundle(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+            title = title = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_TITLE");
+            message = GMLocalizedString(@"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_MESSAGE");
         }
         errorCode = 1035;
     }
@@ -399,7 +411,7 @@
     
     [userInfo setValue:title forKey:@"_MFShortDescription"];
     [userInfo setValue:message forKey:@"NSLocalizedDescription"];
-    [userInfo setValue:[NSNumber numberWithBool:YES] forKey:@"DecryptionError"];
+    [userInfo setValue:@YES forKey:@"DecryptionError"];
     
     error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:errorCode localizedDescription:nil title:title helpTag:nil 
                             userInfo:userInfo];
@@ -446,16 +458,26 @@
     // CreatePreviewSnippets is set? Always return true.
     DebugLog(@"Create Preview snippets: %@", [[GPGOptions sharedOptions] boolForKey:@"CreatePreviewSnippets"] ? @"YES" : @"NO");
     DebugLog(@"User Selected Message: %@", [[self getIvar:@"UserSelectedMessage"] boolValue] ? @"YES" : @"NO");
-    
-    if([[GPGOptions sharedOptions] boolForKey:@"CreatePreviewSnippets"] ||
-       [[self getIvar:@"UserSelectedMessage"] boolValue])
-        return YES;
+	
+	BOOL userDidSelectMessage = [[self getIvar:@"UserSelectedMessage"] boolValue];
+	
+	// Always *create snippet* (decrypt data) if the user actively selected the message.
+	if(userDidSelectMessage)
+		return YES;
+	
+	// Since rule applying and snippet creation are connected, snippets are
+	// created in classic view as well, but always only if the passphrase is in cache.
+	// * none of the above and CreatePreviewSnippets preference is set -> create the snippet
+	// * none of the above but passphrase for key is available (gpg-agent or keychain) -> create the snippet
+	
+	if([[GPGOptions sharedOptions] boolForKey:@"CreatePreviewSnippets"])
+		return YES;
     
     // Otherwise check if the passphrase is already cached. If it is
     // return true, 'cause the user want be asked for the passphrase again.
     
     // The message could be encrypted to multiple subkeys.
-    // At least one of the keys has to be in cache.
+    // All of the keys have to be in the cache.
     NSMutableSet *keyIDs = [[NSMutableSet alloc] initWithCapacity:0];
     
     NSArray *packets = nil;
@@ -463,7 +485,6 @@
         packets = [GPGPacket packetsWithData:data];
     }
     @catch (NSException *exception) {
-        [keyIDs release];
         return NO;
     }
     
@@ -472,35 +493,39 @@
             [keyIDs addObject:packet.keyID];
     }
     
-    BOOL passphraseInCache = NO;
+	NSUInteger nrOfMatchingSecretKeys = 0;
+	NSUInteger nrOfKeysWithPassphraseInCache = 0;
     GPGController *gpgc = [[GPGController alloc] init];
     
     for(NSString *keyID in keyIDs) {
-        GPGKey *key = [[[GPGMailBundle sharedInstance] secretGPGKeysByID] valueForKey:keyID];
+        GPGKey *key = [[GPGMailBundle sharedInstance] secretGPGKeyForKeyID:keyID includeDisabled:YES];
         if(!key)
             continue;
-        if([gpgc isPassphraseForKeyInCache:key]) {
-            passphraseInCache = YES;
-            DebugLog(@"Passphrase found in cache!");
-            break;
+		nrOfMatchingSecretKeys += 1;
+		if([gpgc isPassphraseForKeyInCache:key]) {
+			nrOfKeysWithPassphraseInCache += 1;
+			DebugLog(@"Passphrase found in cache!");
         }
     }
-    [keyIDs release];
-    [gpgc release];
-    DebugLog(@"Passphrase in cache? %@", passphraseInCache ? @"YES" : @"NO");
     
-    return passphraseInCache;
+	BOOL passphraseInCache = nrOfMatchingSecretKeys + nrOfKeysWithPassphraseInCache	!= 0 && nrOfMatchingSecretKeys == nrOfKeysWithPassphraseInCache ? YES : NO;
+	
+	DebugLog(@"Passphrase in cache? %@", passphraseInCache ? @"YES" : @"NO");
+    
+	return passphraseInCache;
 }
 
 #pragma mark - Proxies for OS X version differences.
 
 - (id)dataSourceProxy {
     // 10.8 uses dataSource, 10.7 uses messageStore.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wselector"
     if([self respondsToSelector:@selector(dataSource)])
         return [self dataSource];
     if([self respondsToSelector:@selector(messageStore)])
        return [self messageStore];
-    
+#pragma clang diagnostic pop
     return nil;
 }
 

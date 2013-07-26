@@ -27,7 +27,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@interface HeadersEditor_GPGMail : NSObject
+@interface HeadersEditor_GPGMail : NSObject <NSWindowDelegate>
 
 /**
  Is called whenever the user clicks on either the sign or encrypt icon
@@ -45,17 +45,15 @@
  */
 - (void)MA_updateFromAndSignatureControls:(id)arg1;
 
+/**
+ This is called asynchronously from updateSecurityControls on a invocation queue.
+ */
+- (void)MA_updateSecurityStateInBackgroundForRecipients:(NSArray *)recipients sender:(id)sender;
 
 /**
  Adds or removes the secret keys to the From NSPopUpButton.
  */
-- (void)fromHeaderDisplaySecretKeys:(BOOL)display;
-/**
- Helper method to run fromHeaderDisplaySecretKeys: on main thread,
- since the param can only be an object. Unpacks the NSNumber boolean
- and calls fromHeaderDisplaySecretKeys:.
- */
-- (void)_fromHeaderDisplaySecretKeys:(NSNumber *)display;
+- (void)updateFromAndAddSecretKeysIfNecessary:(NSNumber *)necessary;
 
 /**
  Is called whenever the user select a account in the PopUp.
@@ -66,12 +64,8 @@
 /**
   Norification handling.
  */
-- (void)securityMethodDidChange:(NSNotification *)notification;
 - (void)keyringUpdated:(NSNotification *)notification;
 
-/**
- Reset the forced image on the security buttons
- */
-- (void)resetSecurityButtons;
+- (void)updateSymmetricButton;
 
 @end

@@ -30,11 +30,14 @@
 #import <Libmacgpg/Libmacgpg.h>
 #import <NSObject+LPDynamicIvars.h>
 #import "CCLog.h"
+#import "MailAccount.h"
+#import "AddressAttachment.h"
 #import <MailDocumentEditor.h>
 #import "MailNotificationCenter.h"
 #import "Message+GPGMail.h"
 #import "MailDocumentEditor+GPGMail.h"
 #import "HeadersEditor.h"
+#import "ComposeHeaderView.h"
 #import "HeadersEditor+GPGMail.h"
 #import "ComposeBackEnd.h"
 #import "ComposeBackEnd+GPGMail.h"
@@ -43,6 +46,9 @@
 #import "GMSecurityControl.h"
 #import "NSObject+LPDynamicIvars.h"
 #import <NSString-EmailAddressString.h>
+#import "GMComposeKeyEventHandler.h"
+#import "OptionalView.h"
+#import "GMSecurityHistory.h"
 
 @interface HeadersEditor_GPGMail (NoImplementation)
 - (void)changeFromHeader:(NSPopUpButton *)sender;
@@ -50,23 +56,127 @@
 
 @implementation HeadersEditor_GPGMail
 
+
+- (void)symmetricEncryptClicked:(id)sender {
+	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+	BOOL oldValue = [[backEnd getIvar:@"shouldSymmetric"] boolValue];
+	BOOL newValue = !oldValue;
+	
+	if (![[backEnd getIvar:@"SymmetricIsPossible"] boolValue]) {
+		newValue = NO;
+	}
+	
+	[backEnd setIvar:@"shouldSymmetric" value:@(newValue)];
+	if (newValue != oldValue) {
+		[backEnd setIvar:@"ForceSymmetric" value:@(newValue)];
+	}
+	
+	[self updateSymmetricButton];
+	[(MailDocumentEditor_GPGMail *)[backEnd delegate] updateSecurityMethodHighlight];
+}
+
+- (void)updateSymmetricButton {
+	if (![[self getIvar:@"AllowSymmetricEncryption"] boolValue]) {
+		return;
+	}
+	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+	
+	NSSegmentedControl *symmetricButton = [self getIvar:@"_symmetricButton"];
+	
+	GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
+	if (((ComposeBackEnd_GPGMail *)backEnd).securityMethod)
+		securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).securityMethod;
+	
+	
+	
+	NSString *imageName;
+	if ([[backEnd getIvar:@"SymmetricIsPossible"] boolValue] && securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
+		NSNumber *forceSymmetric = [backEnd getIvar:@"ForceSymmetric"];
+		if (forceSymmetric) {
+			[backEnd setIvar:@"shouldSymmetric" value:forceSymmetric];
+		}
+		
+		[symmetricButton setEnabled:YES forSegment:0];
+		if ([[backEnd getIvar:@"shouldSymmetric"] boolValue]) {
+			imageName = @"SymmetricEncryptionOn";
+		} else {
+			imageName = @"SymmetricEncryptionOff";
+		}
+	} else {
+		imageName = @"SymmetricEncryptionOff";
+		[symmetricButton setEnabled:NO forSegment:0];
+	}
+	
+	[symmetricButton setImage:[NSImage imageNamed:imageName] forSegment:0];
+}
+
+
 - (void)MAAwakeFromNib {
     [self MAAwakeFromNib];
+	
+    [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyringUpdated:) name:GPGMailKeyringUpdatedNotification object:nil];
+	
+	NSSegmentedControl *symmetricButton = nil;
+	OptionalView *optionalView = (OptionalView *)[[self valueForKey:@"_signButton"] superview];
 
-    GMSecurityControl *signControl = [[GMSecurityControl alloc] initWithControl:[self valueForKey:@"_signButton"] tag:SECURITY_BUTTON_SIGN_TAG];
+	
+	if ([[GPGOptions sharedOptions] boolForKey:@"AllowSymmetricEncryption"]) {
+		symmetricButton = [[NSSegmentedControl alloc] initWithFrame:NSMakeRect(24, -1, 38, 24)];
+		symmetricButton.segmentCount = 1;
+		[symmetricButton setWidth:32 forSegment:0];
+		symmetricButton.segmentStyle = NSSegmentStyleRounded;
+		((NSSegmentedCell *)symmetricButton.cell).trackingMode = NSSegmentSwitchTrackingMomentary;
+		symmetricButton.target = self;
+		symmetricButton.action = @selector(symmetricEncryptClicked:);
+		
+		NSRect frame = optionalView.frame;
+		frame.size.width += 44;
+		optionalView.frame = frame;
+		
+		for (NSView *view in optionalView.subviews) {
+			if (![view isKindOfClass:[NSButton class]]) {
+				frame = view.frame;
+				frame.origin.x += 44;
+				view.frame = frame;
+			}
+		}
+		
+		
+		[self setIvar:@"_symmetricButton" value:symmetricButton];
+		[self setIvar:@"AllowSymmetricEncryption" value:@YES];
+		[self updateSymmetricButton];
+		
+		[optionalView addSubview:symmetricButton];
+		[optionalView setIvar:@"AdjustedWidth" value:@YES];
+	}
+	
+	
+	
+	GMSecurityControl *signControl = [[GMSecurityControl alloc] initWithControl:[self valueForKey:@"_signButton"] tag:SECURITY_BUTTON_SIGN_TAG];
     [self setValue:signControl forKey:@"_signButton"];
-    [signControl release];
     
     GMSecurityControl *encryptControl = [[GMSecurityControl alloc] initWithControl:[self valueForKey:@"_encryptButton"] tag:SECURITY_BUTTON_ENCRYPT_TAG];
     [self setValue:encryptControl forKey:@"_encryptButton"];
-    [encryptControl release];
+	
+	GMComposeKeyEventHandler *handler = [[GMComposeKeyEventHandler alloc] initWithView:optionalView];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wselector"
+	handler.eventsAndSelectors = [NSArray arrayWithObjects:
+		@{@"keyEquivalent": @"y", @"keyEquivalentModifierMask": @(NSCommandKeyMask | NSAlternateKeyMask), @"target": encryptControl, @"selector": [NSValue valueWithPointer:@selector(performClick:)]},
+		@{@"keyEquivalent": @"x", @"keyEquivalentModifierMask": @(NSCommandKeyMask | NSAlternateKeyMask), @"target": signControl, @"selector": [NSValue valueWithPointer:@selector(performClick:)]},
+		symmetricButton ? @{@"keyEquivalent": @"Y", @"keyEquivalentModifierMask": @(NSCommandKeyMask | NSShiftKeyMask), @"target": symmetricButton, @"selector": [NSValue valueWithPointer:@selector(performClick:)]} : nil,
+	nil];
+#pragma clang diagnostic pop
+
+	
 }
 
 - (void)MASecurityControlChanged:(id)securityControl {
     GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
     GMSecurityControl *encryptControl = [self valueForKey:@"_encryptButton"];
     NSSegmentedControl *originalSecurityControl = securityControl;
-    
+	
+	    
     securityControl = signControl.control == securityControl ? signControl : encryptControl;
     // The securityControl passed to this method is an NSSegmentControl.
 	// So the only chance to find out what the new status of the control is,
@@ -79,56 +189,139 @@
 
 - (void)MA_updateFromAndSignatureControls:(id)arg1 {
     [self MA_updateFromAndSignatureControls:arg1];
-    // If any luck, the security option should be known by now.
+	// Thanks to Hopper (YES, it's fantastic) it's now clear that
+	// _updateFromAndSignatureControls calls setAccountFieldEnabled|Visible
+	// and configureAccountPopUpSize on the ComposeHeaderView.
+	
+	// If there's only one account setup, Mail.app chooses to not to display
+	// the "From:" field. That's alright, unless there are multiple secret keys
+	// available for the same account. In such a case, GPGMail will fill the
+	// popup and force it to be displayed, so that the user can choose which
+	// secret key to use.
+	if([[[self valueForKey:@"_fromPopup"] itemArray] count] == 1 &&
+	   ![[[[self valueForKey:@"_fromPopup"] itemArray] objectAtIndex:0] attributedTitle]) {
+		[self fixEmptyAccountPopUpIfNecessary];
+	}
+	else {
+		[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] setAccountFieldEnabled:YES];
+		[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] setAccountFieldVisible:YES];
+	}
+	
+	// If any luck, the security option should be known by now.
+	// It's not, but it still works as assumed.
     ComposeBackEnd *backEnd = [(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd];
     GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
     if(((ComposeBackEnd_GPGMail *)backEnd).securityMethod)
         securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).securityMethod;
-    
-    [self fromHeaderDisplaySecretKeys:securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP];
+	
+	if(securityMethod == 0)
+		securityMethod = [GMSecurityHistory defaultSecurityMethod];
+	
+    [self updateFromAndAddSecretKeysIfNecessary:@(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP)];
 }
 
-- (void)MA_updateSecurityStateInBackgroundForRecipients:(NSArray *)recipients sender:(NSString *)sender {
-    // Check for NoUpdateSecurityState. If that is set, do not again
-    // update the state 'cause we're right in the middle of that.
-	@try {
-        [[self getIvar:@"SecurityStateLock"] lock];
-        [self MA_updateSecurityStateInBackgroundForRecipients:recipients sender:sender];
+- (void)fixEmptyAccountPopUpIfNecessary {
+    // 1. Find the accounts to be displayed.
+    NSArray *accounts = (NSArray *)[MailAccount allEmailAddressesIncludingFullUserName:YES];
+	
+	// There should only be on account available, otherwise we wouldn't be here.
+	NSString *onlyAccount = [[accounts objectAtIndex:0] uncommentedAddress];
+	BOOL multipleKeysAvailable = [[[GPGMailBundle sharedInstance] signingKeyListForAddress:onlyAccount] count] > 1;
+	
+	if(!multipleKeysAvailable)
+		return;
+	
+	Class AddressAttachmentClass = NSClassFromString(@"AddressAttachment");
+	
+    NSPopUpButton *fromPopup = [self valueForKey:@"_fromPopup"];
+    // 3. Construct the style of the menu.
+    NSFont *font = [NSFont menuFontOfSize:[[(NSPopUpButtonCell *)[fromPopup cell] font] pointSize]];
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+    [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+    NSDictionary *externalAttributes = [[NSDictionary alloc] initWithObjectsAndKeys:
+										[AddressAttachmentClass colorForExternalDomain], NSForegroundColorAttributeName,
+                                        font, NSFontAttributeName, nil];
+    NSDictionary *normalAttributes = [[NSDictionary alloc] initWithObjectsAndKeys:font, NSFontAttributeName,
+									  paragraphStyle, NSParagraphStyleAttributeName, nil];
+    [fromPopup removeAllItems];
+    [fromPopup addItemsWithTitles:accounts];
+    if([accounts count]) {
+        NSUInteger i = 0;
+        for(id account in accounts) {
+            NSDictionary *attributes = normalAttributes;
+            if([AddressAttachmentClass addressIsExternal:account])
+                attributes = externalAttributes;
+            NSAttributedString *title = [[NSAttributedString alloc] initWithString:account attributes:attributes];
+            [[fromPopup itemAtIndex:i] setAttributedTitle:title];
+            i++;
+        }
     }
-    @catch (id e) {
-        DebugLog(@"Failed to acquire SecurityStateLock: %@", e);
-    }
-    @finally {
-        [[self getIvar:@"SecurityStateLock"] unlock];
-    }
+    
+    // Set the field visible so the layout will be adjusted accordingly.
+    if(multipleKeysAvailable) {
+		[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] setAccountFieldEnabled:YES];
+		[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] setAccountFieldVisible:YES];
+		[(ComposeHeaderView *)[self valueForKey:@"_composeHeaderView"] configureAccountPopUpSize];
+	}
 }
 
 - (void)MAUpdateSecurityControls {
-    [self MAUpdateSecurityControls];
+	// Do nothing, if documentEditor is no longer set.
+	// Might already have been released, or some such...
+	// Belongs to: #624.
+	if(![self valueForKey:@"_documentEditor"])
+		return;
+	
+	[self MAUpdateSecurityControls];
 }
 
-- (void)_fromHeaderDisplaySecretKeys:(NSNumber *)display {
-    [self fromHeaderDisplaySecretKeys:[display boolValue]];
+- (void)MA_updateSecurityStateInBackgroundForRecipients:(NSArray *)recipients sender:(id)sender {
+	[self MA_updateSecurityStateInBackgroundForRecipients:recipients sender:sender];
+	
+	// Do the same as _updateSecurityStateInBackgroundForRecipients and update the
+	// symmetric UI part on the main thread.
+	typeof(self) __weak weakSelf = self;
+	
+	[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+		typeof(weakSelf) __strong strongSelf = weakSelf;
+		if(!strongSelf)
+			return;
+		[strongSelf updateSymmetricButton];
+	}];
 }
 
-- (void)fromHeaderDisplaySecretKeys:(BOOL)display {
-    NSPopUpButton *popUp = [[self valueForKey:@"_composeHeaderView"] valueForKey:@"_accountPopUp"];
+- (void)updateFromAndAddSecretKeysIfNecessary:(NSNumber *)necessary {
+    BOOL display = [necessary boolValue];
+	NSPopUpButton *popUp = [[self valueForKey:@"_composeHeaderView"] valueForKey:@"_accountPopUp"];
 	NSMenu *menu = [popUp menu];
 	NSArray *menuItems = [menu itemArray];
 	GPGMailBundle *bundle = [GPGMailBundle sharedInstance];
+	
+	Class AddressAttachmentClass = NSClassFromString(@"AddressAttachment");
+	
 	// Is used to properly truncate our own menu items.
     NSMutableParagraphStyle *truncateStyle = [[NSMutableParagraphStyle alloc] init];
     [truncateStyle setLineBreakMode:NSLineBreakByTruncatingTail];
     
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-    [attributes addEntriesFromDictionary:[[[menuItems objectAtIndex:0] attributedTitle] fontAttributesInRange:NSMakeRange(0, [[[menuItems objectAtIndex:0] attributedTitle] length])]];
-	[attributes setObject:truncateStyle forKey:NSParagraphStyleAttributeName];
-	[truncateStyle release];
-    NSMenuItem *item, *parentItem, *selectedItem = [popUp selectedItem], *subItemToSelect = nil;
-	GPGKey *defaultKey = [bundle findSecretKeyByKeyHint:[[GPGOptions sharedOptions] valueInGPGConfForKey:@"default-key"]];
+    [attributes addEntriesFromDictionary:[[menuItems[0] attributedTitle] fontAttributesInRange:NSMakeRange(0, [[menuItems[0] attributedTitle] length])]];
+	attributes[NSParagraphStyleAttributeName] = truncateStyle;
+    
+	// Also use the proper styling for external addresses.
+	NSPopUpButton *fromPopup = [self valueForKey:@"_fromPopup"];
+    NSFont *font = [NSFont menuFontOfSize:[[(NSPopUpButtonCell *)[fromPopup cell] font] pointSize]];
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+    [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+    NSDictionary *externalAttributes = [[NSDictionary alloc] initWithObjectsAndKeys:
+										[AddressAttachmentClass colorForExternalDomain], NSForegroundColorAttributeName,
+                                        font, NSFontAttributeName, nil];
+	
+	
+	NSMenuItem *item, *parentItem, *selectedItem = [popUp selectedItem], *subItemToSelect = nil;
+	GPGKey *defaultKey = [bundle preferredGPGKeyForSigning];
 	BOOL useTitleFromAccount = [[GPGOptions sharedOptions] boolForKey:@"ShowAccountNameForKeysOfSameAddress"];
 	
-    // If menu items are not yet set, simply exit.
+	// If menu items are not yet set, simply exit.
     // This might happen if securityMethodDidChange notification
     // is posted before the menu items have been configured.
     if(!menuItems.count)
@@ -136,10 +329,11 @@
     
 	menu.autoenablesItems = NO;
 	
-	
 	NSUInteger count = [menuItems count], i = 0;
+	NSDictionary *currentAttributes = attributes;
+	
 	for (; i < count; i++) {
-		item = [menuItems objectAtIndex:i];
+		item = menuItems[i];
 		parentItem = [item getIvar:@"parentItem"];
 		if (parentItem) {
 			[menu removeItem:item]; // We remove all elements that represent a key.
@@ -169,29 +363,29 @@
 					
 					for (GPGKey *key in keys) {
 						NSMenuItem *subItem = nil;
-						if (i + 1 < count && (subItem = [menuItems objectAtIndex:i + 1]) && [subItem getIvar:@"parentItem"] && [subItem getIvar:@"gpgKey"] == key) {
+						if (i + 1 < count && (subItem = menuItems[i + 1]) && [subItem getIvar:@"parentItem"] && [subItem getIvar:@"gpgKey"] == key) {
 							// The next item is the item we want to create: Jump over.
 							i++;
 							index++;
 						} else {
 							NSString *title;
 							if (useTitleFromAccount) {
-								title = [NSString stringWithFormat:@"%@ (%@)", itemTitle, key.shortKeyID]; // Compose the title "Name <E-Mail> (KeyID)".
+								title = [NSString stringWithFormat:@"%@ (%@)", itemTitle, [key.keyID shortKeyID]]; // Compose the title "Name <E-Mail> (KeyID)".
 							} else {
-								title = [NSString stringWithFormat:@"%@ <%@> (%@)", key.name, email, key.shortKeyID]; // Compose the title "key.Name <E-Mail> (KeyID)".
+								title = [NSString stringWithFormat:@"%@ <%@> (%@)", key.name, email, [key.keyID shortKeyID]]; // Compose the title "key.Name <E-Mail> (KeyID)".
 							}
 							
-							NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attributes];
+							currentAttributes = [AddressAttachmentClass addressIsExternal:email] ? externalAttributes : attributes;
+							
+							NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:currentAttributes];
 
 							// Create the menu item with the given title...
 							subItem = [[NSMenuItem alloc] initWithTitle:title action:nil keyEquivalent:@""];
 							[subItem setAttributedTitle:attributedTitle];
-                            [attributedTitle release];
 							[subItem setIvar:@"gpgKey" value:key]; // GPGKey...
 							[subItem setIvar:@"parentItem" value:item]; // and set the parentItem.
 							
 							[menu insertItem:subItem atIndex:++index]; // Insert it in the "From:" menu.
-                            [subItem release];
                         }
 						if (item == selectedItem) {
 							if (key == defaultKey) {
@@ -210,9 +404,10 @@
 		}
 	}
 	
+	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+	
     // Select a valid item if needed.
     if (selectedItem.isHidden) {
-        [popUp setIvar:@"CalledFromGPGMail" value:[NSNumber numberWithBool:YES]];
 		NSUInteger index;
 		if (subItemToSelect) {
 			index = [menu indexOfItem:subItemToSelect];
@@ -220,29 +415,31 @@
 			index = [menu indexOfItem:selectedItem] + 1;
 		}
         [popUp selectItemAtIndex:index];
-        [self changeFromHeader:popUp];
+        [popUp synchronizeTitleAndSelectedItem];
+		
+		[popUp setIvar:@"CalledFromGPGMail" value:@YES];
+		[self changeFromHeader:popUp];
     }
     else if ([popUp selectedItem] != selectedItem) {
         if ((parentItem = [selectedItem getIvar:@"parentItem"])) {
             selectedItem = parentItem;
         }
-        [popUp setIvar:@"CalledFromGPGMail" value:[NSNumber numberWithBool:YES]];
         [popUp selectItem:selectedItem];
+        [popUp synchronizeTitleAndSelectedItem];
+		
+		[popUp setIvar:@"CalledFromGPGMail" value:@YES];
         [self changeFromHeader:popUp];
-    }
+    } else if (![backEnd getIvar:@"gpgKeyForSigning"]) {
+		id gpgKey = [selectedItem getIvar:@"gpgKey"];
+		if (gpgKey) {
+			[backEnd setIvar:@"gpgKeyForSigning" value:gpgKey];
+		}
+	}
 }
 
 - (void)MAChangeFromHeader:(NSPopUpButton *)sender {
     BOOL calledFromGPGMail = [[sender getIvar:@"CalledFromGPGMail"] boolValue];
-    [sender setIvar:@"CalledFromGPGMail" value:[NSNumber numberWithBool:NO]];
-    // If the newly selected item is the currently select item,
-    // just bail out.
-    // Update: this doesn't work, since the selected item of _accountPopup is of course already updated.
-//    if(!calledFromGPGMail) {
-//        NSPopUpButton *accountPopUp = [[self valueForKey:@"_composeHeaderView"] valueForKey:@"_accountPopUp"];
-//        if(sender.selectedItem == accountPopUp.selectedItem)
-//            return;
-//    }
+    [sender setIvar:@"CalledFromGPGMail" value:@NO];
     
     // Create a new NSPopUpButton with only one item and the correct title.
 	NSPopUpButton *button = [[NSPopUpButton alloc] init];
@@ -260,45 +457,39 @@
         ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod = 0;
     }
 
-	[self MAChangeFromHeader:button/*sender*/];
-    [button release];
-}
-
-- (void)resetSecurityButtons {
-    GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
-    GMSecurityControl *encryptControl = [self valueForKey:@"_encryptButton"];
-    
-    // Reset the controls if the security method changes.
-    signControl.forcedImageName = nil;
-    encryptControl.forcedImageName = nil;
-}
-
-- (void)securityMethodDidChange:(NSNotification *)notification {
-    // Reset the controls if the security method changes.
-//    [self resetSecurityButtons];
+	[self MAChangeFromHeader:button];
 }
 
 - (void)keyringUpdated:(NSNotification *)notification {
-    GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).guessedSecurityMethod;
+    // Will always be called on the main thread!.
+	if(![NSThread isMainThread]) {
+		DebugLog(@"%@: not called on main thread? What the fuck?!", NSStringFromSelector(_cmd));
+		return;
+	}
+	
+	GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).guessedSecurityMethod;
     if(((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod)
         securityMethod = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod;
-    if(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP)
-        [self performSelectorOnMainThread:@selector(_fromHeaderDisplaySecretKeys:) withObject:(id)kCFBooleanTrue waitUntilDone:NO];
+	if(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP)
+		// Calls updateSecurityControls internally, because updateFromAndAddSecretKeysIfNecessary.
+		[(HeadersEditor *)self _updateFromAndSignatureControls:nil];
+	else
+		// Explicitly call updateSecurityControls.
+		[(HeadersEditor *)self updateSecurityControls];
 }
 
 - (void)MA_updateSignButtonTooltip {
     ComposeBackEnd_GPGMail *backEnd = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]);
     
     if(![[backEnd getIvar:@"SignIsPossible"] boolValue]) {
-        NSBundle *bundle = [NSBundle bundleForClass:[GPGMailBundle class]];
         NSPopUpButton *button = [self valueForKey:@"_fromPopup"];
         NSString *sender = [button.selectedItem.title uncommentedAddress];
         
         if([sender length] == 0 && [button.itemArray count])
-            sender = [[[button.itemArray objectAtIndex:0] title] uncommentedAddress];
+            sender = [[(button.itemArray)[0] title] uncommentedAddress];
         
         GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
-        [((NSSegmentedControl *)signControl) setToolTip:[NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN", @"GPGMail", bundle, @""), sender]];
+        [((NSSegmentedControl *)signControl) setToolTip:[NSString stringWithFormat:GMLocalizedString(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN"), sender]];
     }
     else {
         [self MA_updateSignButtonTooltip];
@@ -313,34 +504,20 @@
         securityMethod = backEnd.securityMethod;
     
     if(![[backEnd getIvar:@"EncryptIsPossible"] boolValue] && securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
-        NSBundle *bundle = [NSBundle bundleForClass:[GPGMailBundle class]];
         NSArray *nonEligibleRecipients = [(ComposeBackEnd *)backEnd recipientsThatHaveNoKeyForEncryption];
         GMSecurityControl *encryptControl = [self valueForKey:@"_encryptButton"];
         NSString *toolTip = nil;
         if(![nonEligibleRecipients count])
-            toolTip = NSLocalizedStringFromTableInBundle(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS", @"GPGMail", bundle, @"");
+            toolTip = GMLocalizedString(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS");
         else {
             NSString *recipients = [nonEligibleRecipients componentsJoinedByString:@", "];
-            toolTip = [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT", @"GPGMail", bundle, @""), recipients];
+            toolTip = [NSString stringWithFormat:GMLocalizedString(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT"), recipients];
         }
         [((NSSegmentedControl *)encryptControl) setToolTip:toolTip];
     }
     else {
         [self MA_updateEncryptButtonTooltip];
     }
-}
-
-- (id)MAInit {
-	self = [self MAInit];
-    // This lock is used to prevent a SecurityMethodDidChange notification to
-    // mess with an ongoing _updateSecurityStateInBackgroundForRecipients:recipients:
-    // call.
-	NSLock *updateSecurityStateLock = [[NSLock alloc] init];
-    [self setIvar:@"SecurityStateLock" value:updateSecurityStateLock];
-    [updateSecurityStateLock release];
-	[(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] addObserver:self selector:@selector(securityMethodDidChange:) name:@"SecurityMethodDidChangeNotification" object:nil];
-	[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyringUpdated:) name:GPGMailKeyringUpdatedNotification object:nil];
-	return self;
 }
 
 - (void)MADealloc {
@@ -354,5 +531,139 @@
 }
 
 @end
+
+/* ORIGINAL SOURCE OF MAIL.APP FOR LEARING. */
+
+//- (void)configureButtonsAndPopUps {
+//    WebViewEditor *webViewEditor = [[self valueForKey:@"_documentEditor"] webViewEditor];
+//	[webViewEditor updateIgnoredWordsForHeader:NO];
+//	[webViewEditor updateSecurityControls];
+//	[webViewEditor updatePriorityPopUpMakeActive:YES];
+//
+//	ComposeBackEnd *backEnd = [self _valueForKey:@"_documentEditor"];
+//	long long messagePriority = [backEnd displayableMessagePriority];
+//
+//	if(messagePriority != 3) {
+//		if([[self valueForKey:@"_priorityPopup"] isHiddenOrHasHiddenAncestor])
+//		   [[self valueForKey:@"_composeHeaderView"] setPriorityFieldVisible:YES];
+//	}
+//
+//	[self _updateFromAndSignatureControls];
+//}
+//
+//- (void)changeHeaderField:(id)headerField {
+//	NSString *headerKey = [self _headerKeyForView:headerField];
+//	if(!headerKey)
+//		return;
+//
+//	if([self valueForKey:@"_subjectField"] != headerField) {
+//		NSString *attributedStringValue = [headerField attributedStringValue];
+//		NSString *unatomicAddress = [attributedStringValue unatomicAddresses];
+//		[[[self valueForKey:@"_documentEditor"] backEnd] setAddressList:unatomicAddress forHeader:headerKey];
+//
+//		if([self valueForKey:@"_toField"] != headerField && [self valueForKey:@"_ccField"] != headerField) {
+//			if([self valueForKey:@"_bccField"] == headerField) {
+//				[[self valueForKey:@"_documentEditor"] updateSendButtonStateInToolbar];
+//				[self updateSecurityControls];
+//				[self updatePresenceButtonState];
+//			}
+//			else
+//				return;
+//		}
+//		else {
+//			[[self valueForKey:@"_documentEditor"] updateSendButtonStateInToolbar];
+//			[self updateSecurityControls];
+//			[self updatePresenceButtonState];
+//		}
+//	}
+//}
+//
+//- (void)changeFromHeader:(id)header {
+//	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd]; // r15
+//	NSString *title = [header titleOfSelectedItem];
+//	if(title) {
+//		NSString *sender = [backEnd sender];
+//		[sender retain];
+//		[backEnd setSender:title];
+//		[self updateCcOrBccMyselfFieldWithSender:title oldSender:sender];
+//		[sender release];
+//		[self updateSecurityControls];
+//		[self updateSignatureControlOverridingExistingSignature:YES];
+//		[[self valueForKey:@"_documentEditor"] updateAttachmentStatus];
+//	}
+//	// And some more stuff which shall not be our concern currently.
+//
+//}
+//
+//- (void)updateSecurityControls {
+//	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+//	NSArray *recipients = [backEnd allRecipients];
+//	NSString *sender = [backEnd sender];
+//    NSInvocation *invocation = [NSInvocation invocationWithSelector:@selector(_updateSecurityStateInBackgroundForRecipients:sender:) target:self object1:recipients	object2:sender];
+//
+//	[WorkerThread addInvocationToQueue:invocation];
+//}
+//
+//- (void)_updateSecurityStateInBackgroundForRecipients:(id)recipients sender:(id)sender {
+//	BOOL canSignFromAnyAccount = [self canSignFromAnyAccount];
+//
+//	BOOL canSignFromAddress = NO;
+//	BOOL canEncryptFromAddress = NO;
+//	if(canSignFromAnyAccount) {
+//		ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+//		canSignFromAddress = [backEnd canSignFromAddress:sender];
+//		if(canSignFromAddress) {
+//			canEncryptFromAddress = [backEnd canEncryptForRecipients:recipients sender:sender];
+//		}
+//	}
+//	[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+//		[[self valueForKey:@"_composeHeaderView"] setSecurityFieldEnabled:canSignFromAddress];
+//		if(canSignFromAddress && canEncryptFromAddress) {
+//			if(![[self valueForKey:@"_composeHeaderView"] securityFieldVisible]) {
+//				[[self valueForKey:@"_signButton"] setImage:@"" forSegment:0];
+//				[[self valueForKey:@"_encryptButton"] setImage:@"" forSegment:0];
+//				[[self valueForKey:@"_signButton"] setEnabled:NO];
+//				[[self valueForKey:@"_encryptButton"] setEnabled:NO];
+//
+//				[[[self valueForKey:@"_documentEditor"] backEnd] setSignIfPossible:NO];
+//			}
+//			else {
+//				BOOL sign = (BOOL)[NSApp signOutgoingMessages]; // r15
+//				BOOL encrypt = (BOOL)[NSApp encryptOutgoingMessages];
+//
+//				NSImage *signImage = nil; // some image.
+//				NSImage *encryptImage = nil; // some other image.
+//				if(sign) {
+//					signImage = nil; // different image
+//				}
+//
+//				[[self valueForKey:@"_signButton"] setImage:signImage forSegment:0];
+//				[[self valueForKey:@"_signButton"] setEnabled:YES];
+//				[[[self valueForKey:@"_documentEditor"] backEnd] setSignIfPossible:sign];
+//
+//				if(!canEncryptFromAddress) {
+//					[[self valueForKey:@"_encryptButton"] setEnabled:canEncryptFromAddress];
+//					[[self valueForKey:@"_encryptButton"] setImage:encryptImage forSegment:0];
+//
+//					[[[self valueForKey:@"_documentEditor"] backEnd] setEncryptIfPossible:NO];
+//				}
+//				else {
+//					[[self valueForKey:@"_encryptButton"] setEnabled:YES];
+//
+//					NSImage *encryptImage = nil; // some image.
+//					if(encrypt)
+//						encryptImage = nil; // some other image.
+//					[[self valueForKey:@"_encryptButton"] setImage:encryptImage forSegment:0];
+//					[[[self valueForKey:@"_documentEditor"] backEnd] setEncryptIfPossible:encrypt];
+//
+//					[self _updateSignButtonTooltip];
+//					[self _updateEncryptButtonTooltip];
+//
+//					[[self valueForKey:@"_documentEditor"] encryptionStatusDidChange];
+//				}
+//			}
+//		}
+//	}];
+//}
 
 

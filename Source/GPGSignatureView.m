@@ -1,6 +1,7 @@
 #import "GPGSignatureView.h"
+#import "GPGMailBundle.h"
 
-#define localized(key) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:(key) table:@"SignatureView"]
+#define localized(key) [[GPGMailBundle bundle] localizedStringForKey:(key) value:(key) table:@"SignatureView"]
 
 
 @implementation GPGSignatureView
@@ -46,19 +47,13 @@ GPGSignatureView *_sharedInstance;
 
 
 - (NSImage *)validityImage {
-	if (!signature) return nil;
-
-	static NSArray *images = nil;
-	if (!images) {
-		images = [[NSArray alloc] initWithObjects:
-				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/ValidBadge.png"] autorelease],
-				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/InvalidBadge.png"] autorelease],
-				  nil];
+	if (![signature isKindOfClass:[GPGSignature class]]) {
+		return nil;
 	}
 	if (signature.status != 0 || signature.trust <= 1) {
-		return [images objectAtIndex:1];
+		return [NSImage imageNamed:@"InvalidBadge"];
 	} else {
-		return [images objectAtIndex:0];
+		return [NSImage imageNamed:@"ValidBadge"];
 	}
 }
 
@@ -77,7 +72,7 @@ GPGSignatureView *_sharedInstance;
             [value appendString:@")"];
     }
     
-    return [value autorelease];
+    return value;
 }
 
 - (NSString *)validityDescription {
@@ -112,22 +107,14 @@ GPGSignatureView *_sharedInstance;
 }
 
 - (NSImage *)signatureImage {
-	static NSArray *images = nil;
-	if (!images) {
-		images = [[NSArray alloc] initWithObjects:
-				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertLargeStd.png"] autorelease],
-				  [[[NSImage alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForImageResource:@"GPGCertLargeNotTrusted"]] autorelease],
-				  nil];
+	if (![signature isKindOfClass:[GPGSignature class]]) {
+		return nil;
 	}
-
-	if ([signature isKindOfClass:[GPGSignature class]]) {
-		if (signature.status != 0 || signature.trust <= 1) {
-			return [images objectAtIndex:1];
-		} else {
-			return [images objectAtIndex:0];
-		}
+	if (signature.status != 0 || signature.trust <= 1) {
+		return [NSImage imageNamed:@"CertLargeNotTrusted"];
+	} else {
+		return [NSImage imageNamed:@"CertLargeStd"];
 	}
-	return nil;
 }
 
 
@@ -135,15 +122,13 @@ GPGSignatureView *_sharedInstance;
 
 - (void)setGpgKey:(GPGKey *)value {
 	if (value != gpgKey) {
-		[gpgKey release];
-		gpgKey = [value retain];
+		gpgKey = value;
 	}
 }
 
 - (void)setSignature:(GPGSignature *)value {
 	if (value != signature) {
-		[signature release];
-		signature = [value retain];
+		signature = value;
 
 		GPGKey *key = nil;
 		if (signature) {
@@ -158,7 +143,7 @@ GPGSignatureView *_sharedInstance;
 				}
 				fingerprint = [fingerprint stringByAppendingString:@"\n"];
 				for (key in keyList) {
-					if ([[key allFingerprints] rangeOfString:fingerprint].length > 0) {
+					if ([[key allFingerprints] member:fingerprint]) {
 						goto found;
 					}
 				}
@@ -198,14 +183,14 @@ GPGSignatureView *_sharedInstance;
 		running = 1;
 		[self willChangeValueForKey:@"signatureDescriptions"];
 		[self didChangeValueForKey:@"signatureDescriptions"];
-		[NSApp beginSheet:window modalForWindow:modalWindow modalDelegate:self didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:handler];
+		[NSApp beginSheet:window modalForWindow:modalWindow modalDelegate:self didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:(__bridge void *)(handler)];
 	} else {
 		handler(NSCancelButton);
 	}
 }
 
 - (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
-	((void (^)(NSInteger result))contextInfo)(NSOKButton);
+	((__bridge void (^)(NSInteger result))contextInfo)(NSOKButton);
 }
 
 
@@ -224,15 +209,14 @@ GPGSignatureView *_sharedInstance;
 }
 
 - (NSIndexSet *)signatureIndexes {
-	return [[signatureIndexes retain] autorelease];
+	return signatureIndexes;
 }
 - (void)setSignatureIndexes:(NSIndexSet *)value {
 	if (value != signatureIndexes) {
-		[signatureIndexes release];
-		signatureIndexes = [value retain];
+		signatureIndexes = value;
 		NSUInteger index;
 		if ([value count] > 0 && (index = [value firstIndex]) < [signatures count]) {
-			self.signature = [signatures objectAtIndex:index];
+			self.signature = signatures[index];
 		} else {
 			self.signature = nil;
 		}
@@ -249,8 +233,8 @@ GPGSignatureView *_sharedInstance;
 }
 - (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize {
 	NSArray *subviews = [splitView subviews];
-	NSView *view1 = [subviews objectAtIndex:0];
-	NSView *view2 = [subviews objectAtIndex:1];
+	NSView *view1 = subviews[0];
+	NSView *view2 = subviews[1];
 	NSSize splitViewSize = [splitView frame].size;
 	NSSize size1 = [view1 frame].size;
 	NSRect frame2 = [view2 frame];
@@ -339,25 +323,17 @@ GPGSignatureView *_sharedInstance;
 
 
 @implementation GPGSignatureCertImageTransformer
-NSArray *images;
-+ (void)initialize {
-	images = [[NSArray alloc] initWithObjects:
-			  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertSmallStd.png"] autorelease],
-			  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertSmallStd_Invalid.png"] autorelease],
-			  nil];
-}
 + (Class)transformedValueClass { return [NSImage class]; }
 + (BOOL)allowsReverseTransformation { return NO; }
 - (id)transformedValue:(GPGSignature *)signature {
-	NSImage *image = nil;
-	if ([signature isKindOfClass:[GPGSignature class]]) {
-		if (signature.status != 0 || signature.trust <= 1) {
-			image = [images objectAtIndex:1];
-		} else {
-			image = [images objectAtIndex:0];
-		}
+	if (![signature isKindOfClass:[GPGSignature class]]) {
+		return nil;
 	}
-	return image;
+	if (signature.status != 0 || signature.trust <= 1) {
+		return [NSImage imageNamed:@"CertSmallStd_Invalid"];
+	} else {
+		return [NSImage imageNamed:@"CertSmallStd"];
+	}
 }
 @end
 

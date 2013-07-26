@@ -44,7 +44,7 @@
 }
 
 - (NSString *)stringByDeletingPGPExtension {
-    NSArray *PGPExtensions = [NSArray arrayWithObjects:@"pgp", @"gpg", @"asc", nil];
+    NSArray *PGPExtensions = @[@"pgp", @"gpg", @"asc"];
     NSString *extension = [self pathExtension];
     if([PGPExtensions containsObject:extension])
         return [self stringByDeletingPathExtension];
@@ -64,7 +64,7 @@
     NSMutableString *withoutAttachments = [self mutableCopy];
     
     while([matchEnumerator nextRanges] != NULL) {
-        NSString *all = nil, *name = nil;
+        __autoreleasing NSString *all = nil, __autoreleasing *name = nil;
         
         [matchEnumerator getCapturesWithReferences:@"${all}", &all, @"${name}", &name, nil];
         
@@ -74,13 +74,13 @@
         [withoutAttachments replaceOccurrencesOfString:all withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [withoutAttachments length])];
     }
     
-    return [withoutAttachments autorelease];
+    return withoutAttachments;
 }
 
 - (NSString *)SHA1 {
     unsigned char digest[CC_SHA1_DIGEST_LENGTH];
     NSData *stringBytes = [self dataUsingEncoding: NSUTF8StringEncoding];
-    if (!CC_SHA1([stringBytes bytes], [stringBytes length], digest))
+    if (!CC_SHA1([stringBytes bytes], (CC_LONG)[stringBytes length], digest))
         return nil;
     
     NSMutableString *sha1 = [NSMutableString string];

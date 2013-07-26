@@ -31,11 +31,7 @@
 #import <AppKit/AppKit.h>
 #import "NSPreferencesModule.h"
 
-@class GPGMailBundle;
-@class SUUpdater;
-@class GPGOptions;
-@class GMSpecialBox;
-
+@class GPGMailBundle, SUUpdater, GPGOptions, GMSpecialBox;
 
 @interface GPGMailPreferences : NSPreferencesModule {}
 
@@ -43,21 +39,21 @@
 - (IBAction)openFAQ:(id)sender;
 /* Open donation page. */
 - (IBAction)openDonation:(id)sender;
-/* Open contact page. */
-- (IBAction)openContact:(id)sender;
+/* Open support page. */
+- (IBAction)openSupport:(id)sender;
 
 - (IBAction)openGPGStatusHelp:(id)sender;
 
+/* Copy the version into the pasteboard */
+- (IBAction)copyVersionInfo:(id)sender;
 
-@property (readonly) NSString *copyright;
-@property (readonly) NSAttributedString *credits;
-@property (readonly) NSAttributedString *websiteLink;
-@property (readonly) GPGMailBundle *bundle;
-@property (readonly) SUUpdater *updater;
-@property (readonly) NSImage *gpgStatusImage;
-@property (readonly) NSString *gpgStatusToolTip;
-@property (readonly) NSString *gpgStatusTitle;
-@property (readonly) GPGOptions *options;
+@property (weak, readonly) NSString *copyright, *versionDescription, *gpgStatusToolTip, *gpgStatusTitle;
+@property (weak, readonly) NSAttributedString *credits, *websiteLink, *buildNumberDescription;
+@property (weak, readonly) GPGMailBundle *bundle;
+@property (weak, readonly) SUUpdater *updater;
+@property (weak, readonly) NSImage *gpgStatusImage;
+@property (weak, readonly) GPGOptions *options;
+
 
 @end
 

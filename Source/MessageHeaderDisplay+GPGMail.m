@@ -24,6 +24,7 @@
 #import "NSAttributedString+GPGMail.h"
 #import "MessageHeaderDisplay+GPGMail.h"
 #import "MessageContentController+GPGMail.h"
+#import "EmailViewController.h"
 
 @interface NSAttributedString (NSAttributedString_MoreExtensions)
 
@@ -48,7 +49,7 @@
         {
             NSRange theEffectiveRange;
             NSDictionary *theAttributes = [self attributesAtIndex:N longestEffectiveRange:&theEffectiveRange inRange:theStringRange];
-            NSTextAttachment *theAttachment = [theAttributes objectForKey:NSAttachmentAttributeName];
+            NSTextAttachment *theAttachment = theAttributes[NSAttachmentAttributeName];
             if (theAttachment != NULL)
                 [theAttachments addObject:theAttachment];
             N = theEffectiveRange.location + theEffectiveRange.length;
@@ -89,7 +90,6 @@
     // Set is an an ivar of MessageHeaderDisplay so it's released, once
     // the Message Header Display is closed.
     [self setIvar:@"AttachmentController" value:attachmentController];
-    [attachmentController release];
 }
 
 - (void)_showSignaturePanel {
@@ -98,19 +98,26 @@
         return;
     BOOL notInKeychain = NO;
     for(GPGSignature *signature in messageSigners) {
-        if(!signature.userID) {
+        if(!signature.primaryKey) {
             notInKeychain = YES;
             break;
         }
     }
     if(notInKeychain) {
-        NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
-        NSString *title = NSLocalizedStringFromTableInBundle(@"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE", @"GPGMail", gpgMailBundle, @"");
-        NSString *message = NSLocalizedStringFromTableInBundle(@"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE", @"GPGMail", gpgMailBundle, @"");
+        NSString *title = GMLocalizedString(@"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE");
+        NSString *message = GMLocalizedString(@"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE");
         
-        MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:message title:title helpTag:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:title, @"_MFShortDescription", message, @"NSLocalizedDescription", nil]];
-        NSAlert *alert = [NSAlert alertForError:error defaultButton:@"OK" alternateButton:nil otherButton:nil];
-        [alert beginSheetModalForWindow:[NSApp mainWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
+        MFError *error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:message title:title helpTag:nil userInfo:@{@"_MFShortDescription": title, @"NSLocalizedDescription": message}];
+        // NSAlert has different category methods based on the version of OS X.
+		NSAlert *alert = nil;
+		if([[NSAlert class] respondsToSelector:@selector(alertForError:defaultButton:alternateButton:otherButton:)]) {
+			alert = [NSAlert alertForError:error defaultButton:@"OK" alternateButton:nil otherButton:nil];
+		}
+		else if([[NSAlert class] respondsToSelector:@selector(alertForError:firstButton:secondButton:thirdButton:)]) {
+			alert = [NSAlert alertForError:error firstButton:@"OK" secondButton:nil thirdButton:nil];
+		}
+		
+		[alert beginSheetModalForWindow:[NSApp mainWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
         return;
     }
     GPGSignatureView *signatureView = [GPGSignatureView signatureView];
@@ -161,19 +168,18 @@
 	}
 	
     
-    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
     // Add the encrypted part to the security header.
     if(isPGPEncrypted) {
         NSImage *encryptedBadge = message.PGPDecrypted ? [NSImage imageNamed:@"NSLockUnlockedTemplate"] : [NSImage imageNamed:@"NSLockLockedTemplate"];
         NSString *linkID = message.PGPDecrypted ? nil : @"gpgmail://decrypt";
-        NSAttributedString *encryptAttachmentString = [NSAttributedString attributedStringWithAttachment:[[[NSTextAttachment alloc] init] autorelease] 
+        NSAttributedString *encryptAttachmentString = [NSAttributedString attributedStringWithAttachment:[[NSTextAttachment alloc] init] 
                                                                                                    image:encryptedBadge
                                                                                                     link:linkID];
         [securityHeader appendAttributedString:[NSAttributedString attributedStringWithString:@"\t"]];
         [securityHeader appendAttributedString:encryptAttachmentString];
         
-        NSString *encryptedString = message.PGPPartlyEncrypted ? NSLocalizedStringFromTableInBundle(@"MESSAGE_IS_PGP_PARTLY_ENCRYPTED", @"GPGMail", gpgMailBundle, @"") : 
-                                                                            NSLocalizedStringFromTableInBundle(@"MESSAGE_IS_PGP_ENCRYPTED", @"GPGMail", gpgMailBundle, @""); 
+        NSString *encryptedString = message.PGPPartlyEncrypted ? GMLocalizedString(@"MESSAGE_IS_PGP_PARTLY_ENCRYPTED") :
+                                                                            GMLocalizedString(@"MESSAGE_IS_PGP_ENCRYPTED");
         [securityHeader appendAttributedString:[NSAttributedString attributedStringWithString:[NSString stringWithFormat:@" %@", encryptedString]]];
     }
     if(isPGPSigned) {
@@ -198,18 +204,16 @@
     [securityHeader appendAttributedString:[NSAttributedString attributedStringWithString:@"\n"]];
     viewingState.headerSecurityString = securityHeader;
     
-    return [securityHeader autorelease];
+    return securityHeader;
 }
 
 - (NSAttributedString *)securityHeaderAttachmentsPartForMessage:(Message *)message {
-    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
-    
     BOOL hasEncryptedAttachments = NO;
     BOOL hasSignedAttachments = NO;
     BOOL singular = message.numberOfPGPAttachments > 1 ? NO : YES;
     
     NSMutableAttributedString *securityHeaderAttachmentsPart = [[NSMutableAttributedString alloc] init];
-    [securityHeaderAttachmentsPart appendAttributedString:[NSAttributedString attributedStringWithAttachment:[[[NSTextAttachment alloc] init] autorelease] image:[NSImage imageNamed:@"attachment_header"] link:@"gpgmail://show-attachments"]];
+    [securityHeaderAttachmentsPart appendAttributedString:[NSAttributedString attributedStringWithAttachment:[[NSTextAttachment alloc] init] image:[NSImage imageNamed:@"attachment_header"] link:@"gpgmail://show-attachments"]];
     
     
     for(MimePart *attachment in message.PGPAttachments) {
@@ -221,23 +225,23 @@
     
     if(hasEncryptedAttachments && hasSignedAttachments) {
         attachmentPart = (singular ? 
-            NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE", @"GPGMail", gpgMailBundle, @"") : 
-            NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_ENCRYPTED_TITLE", @"GPGMail", gpgMailBundle, @""));
+            GMLocalizedString(@"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE") :
+            GMLocalizedString(@"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_ENCRYPTED_TITLE"));
     }
     else if(hasEncryptedAttachments) {
         attachmentPart = (singular ? 
-            NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_ATTACHMENT_ENCRYPTED_TITLE", @"GPGMail", gpgMailBundle, @"") : 
-            NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_ATTACHMENTS_ENCRYPTED_TITLE", @"GPGMail", gpgMailBundle, @""));
+            GMLocalizedString(@"MESSAGE_SECURITY_HEADER_ATTACHMENT_ENCRYPTED_TITLE") :
+            GMLocalizedString(@"MESSAGE_SECURITY_HEADER_ATTACHMENTS_ENCRYPTED_TITLE"));
     }
     else if(hasSignedAttachments) {
         attachmentPart = (singular ? 
-            NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_TITLE", @"GPGMail", gpgMailBundle, @"") : 
-            NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE", @"GPGMail", gpgMailBundle, @""));
+            GMLocalizedString(@"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_TITLE") :
+            GMLocalizedString(@"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE"));
     }
     
-    [securityHeaderAttachmentsPart appendAttributedString:[NSAttributedString attributedStringWithString:[NSString stringWithFormat:@"%d %@", message.numberOfPGPAttachments, attachmentPart]]];
+    [securityHeaderAttachmentsPart appendAttributedString:[NSAttributedString attributedStringWithString:[NSString stringWithFormat:@"%li %@", (long)message.numberOfPGPAttachments, attachmentPart]]];
     
-    return [securityHeaderAttachmentsPart autorelease];
+    return securityHeaderAttachmentsPart;
 }
 
 - (NSAttributedString *)securityHeaderSignaturePartForMessage:(Message *)message {
@@ -245,7 +249,6 @@
     BOOL errorFound = NO;
     NSImage *signedImage = nil;
     NSSet *signatures = [NSSet setWithArray:message.PGPSignatures];
-    NSBundle *gpgMailBundle = [NSBundle bundleForClass:[GPGMailBundle class]];
     
     NSMutableAttributedString *securityHeaderSignaturePart = [[NSMutableAttributedString alloc] init];
     
@@ -257,28 +260,42 @@
     }
     errorFound = errorCode != GPGErrorNoError ? YES : NO;
     
-    NSString *titlePart = nil;
+	// Check if MacGPG2 was not found.
+	// If that's the case, don't try to append signature labels.
+	if(!errorFound) {
+		GPGErrorCode __block newErrorCode = GPGErrorNoError;
+		[[message PGPErrors] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+			if([obj isKindOfClass:[MFError class]]) {
+				if(((NSDictionary *)[(MFError *)obj userInfo])[@"VerificationErrorCode"])
+					newErrorCode = (GPGErrorCode)[((NSDictionary *)[(MFError *)obj userInfo])[@"VerificationErrorCode"] longValue];
+				*stop = YES;
+			}
+		}];
+		errorCode = newErrorCode;
+	}
+	
+	NSString *titlePart = nil;
     
     switch (errorCode) {
         case GPGErrorNoPublicKey:
-            titlePart = NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_SIGNATURE_NO_PUBLIC_KEY_TITLE", @"GPGMail", gpgMailBundle, @"");
+            titlePart = GMLocalizedString(@"MESSAGE_SECURITY_HEADER_SIGNATURE_NO_PUBLIC_KEY_TITLE");
             break;
             
         case GPGErrorCertificateRevoked:
-            titlePart = NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE", @"GPGMail", gpgMailBundle, @"");
+            titlePart = GMLocalizedString(@"MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE");
             break;
             
         case GPGErrorBadSignature:
-            titlePart = NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE", @"GPGMail", gpgMailBundle, @"");
+            titlePart = GMLocalizedString(@"MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE");
             break;
             
         default:
-            titlePart = NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE", @"GPGMail", gpgMailBundle, @"");
+            titlePart = GMLocalizedString(@"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE");
             break;
     }
     
     if(!errorFound) {
-        titlePart = NSLocalizedStringFromTableInBundle(@"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE", @"GPGMail", gpgMailBundle, @"");
+        titlePart = GMLocalizedString(@"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE");
         signedImage = [NSImage imageNamed:@"SignatureOnTemplate"];
     }
     else {
@@ -288,20 +305,23 @@
     
     if(message.PGPPartlySigned) {
 // TODO: Implement different messages for partly signed messages.
-        titlePart = NSLocalizedStringFromTableInBundle(@"MESSAGE_IS_PGP_PARTLY_SIGNED", @"GPGMail", gpgMailBundle, @"");
+        titlePart = GMLocalizedString(@"MESSAGE_IS_PGP_PARTLY_SIGNED");
     }
     
     NSSet *signerLabels = [NSSet setWithArray:[message PGPSignatureLabels]];
-    NSAttributedString *signedAttachmentString = [NSAttributedString attributedStringWithAttachment:[[[NSTextAttachment alloc] init] autorelease] 
+    NSAttributedString *signedAttachmentString = [NSAttributedString attributedStringWithAttachment:[[NSTextAttachment alloc] init] 
                                                                                               image:signedImage 
                                                                                                link:@"gpgmail://show-signature"];
     
     [securityHeaderSignaturePart appendAttributedString:signedAttachmentString];
     
-    NSString *signerLabelsString = [NSString stringWithFormat:@"%@ (%@)", titlePart, 
-                                    [[signerLabels allObjects] componentsJoinedByString:@", "]];
-    [securityHeaderSignaturePart appendAttributedString:[NSAttributedString attributedStringWithString:signerLabelsString]];
-    return [securityHeaderSignaturePart autorelease];
+    NSMutableString *signerLabelsString = [NSMutableString stringWithString:titlePart];
+	// No MacGPG2? No signer labels!
+	if(errorCode != GPGErrorNotFound && [[signerLabels allObjects] count] != 0)
+		[signerLabelsString appendFormat:@" (%@)", [[signerLabels allObjects] componentsJoinedByString:@", "]];
+    
+	[securityHeaderSignaturePart appendAttributedString:[NSAttributedString attributedStringWithString:signerLabelsString]];
+    return securityHeaderSignaturePart;
 }
 
 @end

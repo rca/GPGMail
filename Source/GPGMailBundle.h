@@ -1,7 +1,8 @@
 /* GPGMailBundle.h created by dave on Thu 29-Jun-2000 */
+/* GPGMailBundle.h re-created by Lukas Pitschl (@lukele) on Fri 14-Jun-2013 */
 
 /*
- * Copyright (c) 2000-2011, GPGTools Project Team <gpgtools-devel@lists.gpgtools.org>
+ * Copyright (c) 2000-2013, GPGTools Project Team <gpgtools-devel@lists.gpgtools.org>
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -27,67 +28,28 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <MVMailBundle.h>
-
 #import <CoreFoundation/CoreFoundation.h>
-#import <Foundation/NSDate.h>
-#import <Foundation/NSMapTable.h>
-#import <AppKit/NSNibDeclarations.h>
 #import <Libmacgpg/Libmacgpg.h>
-
-@class MessageHeaders;
-@class NSMenu;
-@class NSMutableDictionary;
-@class Message;
-@class SUUpdater;
-
-typedef void (^gpgmail_decryption_task_t)(void);
-typedef void (^gpgmail_verification_task_t)(void);
 
 extern NSString *GPGMailKeyringUpdatedNotification;
 extern NSString *gpgErrorIdentifier; // This identifier is used to set and find GPGErrorCodes in NSData.
 
+@class Message, GMUpdater, GMMessageRulesApplier, GMKeyManager;
 
-@interface GPGMailBundle : NSObject <NSToolbarDelegate, GPGControllerDelegate> {
-	NSArray *cachedPersonalKeys;
-	NSArray *cachedPublicKeys;
-	//NSDictionary *locale;
-    
-    NSSet *secretGPGKeys;
-    NSSet *publicGPGKeys;
-    NSMutableSet *allGPGKeys;
-    
-    // A serial queue which makes sure that only one pinentry
-    // password request is run at once.
-    dispatch_queue_t decryptionQueue;
-    dispatch_queue_t verificationQueue;
-    dispatch_queue_t collectingQueue;
-    dispatch_queue_t keysUpdateQueue;
-    
-    BOOL accountExistsForSigning;
-    
-    // Map which uses the email address to lookup a personal key.
-    NSDictionary *_secretGPGKeysByEmail;
-	// Map which uses the key id to lookup a private key.
-	NSDictionary *_secretGPGKeysByID;
-    // Map which uses the email address to lookup a public key.
-    NSDictionary *_publicGPGKeysByEmail;
-    // Map which uses the key id to lookup a public key.
-    NSDictionary *_publicGPGKeysByID;
-    // Contains all groups which were disabled because they contained keys
-    // which can not be used for encryption.
-    NSArray *_disabledGroups;
-    // Contains all user mapped keys which can't be used for encryption.
-    NSArray *_disabledUserMappedKeys;
-    
-    GPGErrorCode gpgStatus;
-    
-	GPGController *gpgc;
-	NSLock *updateLock;
-    
-	SUUpdater *updater;
+@interface GPGMailBundle : NSObject <NSToolbarDelegate> {
+    GMUpdater *_updater;
+    GMMessageRulesApplier *_messageRulesApplier;
     
     NSMutableArray *_bundleImages;
+    
+    dispatch_source_t _checkGPGTimer;
+	
+	GMKeyManager *_keyManager;
+	
+	BOOL accountExistsForSigning;
+    BOOL _warnedAboutMissingPrivateKeys;
+    
+	GPGErrorCode gpgStatus;
 }
 
 /**
@@ -97,127 +59,92 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 + (NSArray *)multipleInstallations;
 
 /**
- Warn the user that multiple installations were found and 
+ Warn the user that multiple installations were found and
  bail out.
  */
 + (void)showMultipleInstallationsErrorAndExit:(NSArray *)installations;
 
-// Install all methods used by GPGMail.
-- (void)_installGPGMail;
 // Load all necessary images.
 - (void)_loadImages;
-// Install the Sparkle Updater.
-- (void)_installSparkleUpdater;
+
 // Returns the bundle version.
 + (NSString *)bundleVersion;
 // Returns the string used for the x-pgp-agent message header.
 + (NSString *)agentHeader;
 
-@property BOOL usesOpenPGPToSend; // use OpenPGP to send messages
-@property BOOL usesOpenPGPToReceive; // use OpenPGP to receive messages
-
-
-@property BOOL warnedAboutMissingPrivateKeys;
-
-- (NSString *)buildNumberDescription;
-
-@property (nonatomic, retain) NSArray *disabledGroups;
-@property (nonatomic, retain) NSArray *disabledUserMappedKeys;
-@property (readonly) GPGErrorCode gpgStatus;
-@property (nonatomic, retain) NSSet *secretGPGKeys;
-@property (nonatomic, retain) NSDictionary *secretGPGKeysByEmail;
-@property (nonatomic, retain) NSSet *publicGPGKeys;
-@property (nonatomic, retain) NSDictionary *publicGPGKeysByEmail;
-@property (nonatomic, retain) NSDictionary *publicGPGKeysByID;
-@property (nonatomic, retain) NSDictionary *secretGPGKeysByID;
-@property (readonly, retain) NSSet *allGPGKeys;
-@property (readonly) GPGController *gpgc;
-
-@property (nonatomic, readonly, retain) SUUpdater *updater;
-
-@property (nonatomic, assign) BOOL accountExistsForSigning;
-
-@property (nonatomic, retain) NSMutableArray *bundleImages;
-
 - (NSString *)version;
-- (NSString *)versionDescription;
 + (BOOL)gpgMailWorks;
 - (BOOL)gpgMailWorks;
-- (BOOL)checkGPG;
 
-- (BOOL)canKeyBeUsedForEncryption:(GPGKey *)key;
-- (BOOL)canKeyBeUsedForSigning:(GPGKey *)key;
-- (id)locale;
-
-- (NSMutableSet *)publicKeyListForAddresses:(NSArray *)recipients;
-- (BOOL)canEncryptMessagesToAddress:(NSString *)address;
-- (BOOL)canSignMessagesFromAddress:(NSString *)address;
-- (NSSet *)signingKeyListForAddress:(NSString *)sender;
-- (GPGKey *)bestKeyOfUserIDs:(NSSet *)userIDs;
-
-
-// Allows to schedule decryption tasks which will block as
-// long as a second decryption task is running, but shouldn't
-// block the main thread.
-- (void)addDecryptionTask:(gpgmail_decryption_task_t)task;
 
 /**
- Allows to schedule verification tasks which will block as
- long as second verification task is running.
+ Returns the NSBundle for GPGMail.
+ It's a bit faster than [NSBundle bundleForClass:[self class]].
  */
-- (void)addVerificationTask:(gpgmail_verification_task_t)task;
++ (NSBundle *)bundle;
 
-/**
- Allows to schedule info collection tasks which will block
- as long as a second collection task is running, but shouldn't
- block the main thread.
- */
-- (void)addCollectionTask:(gpgmail_verification_task_t)task;
-
-/**
- Checks for public keys which share the same email address and returns
- a list only including the most trusted and newest key with the email address.
- */
-- (NSSet *)sanitizedPublicGPGKeys:(NSSet *)publicKeys;
-
-/**
- Checks a list of keys and returns the newest and most trusted key.
- */
-- (GPGKey *)bestKeyOfUserIDs:(NSSet *)userIDs;
-
-/**
- Returns all keys which were mapped by the user (email -> fingerprint).
- First removes all keys which can't be used for encryption and adds them to disabledUserMappedKeys.
- */
-- (NSDictionary *)userMappedKeys;
-
-/**
- Returns all groups defined in gpg.conf.
- First removes any groups where not all keys can't be used for encryption and adds them to disabledGroups.
-*/
-- (NSDictionary *)groups;
-
-/**
- Finds a key by matching one of its properties. (internally uses textForFilter which contains information for the
- key and all subkeys)
- */
-- (GPGKey *)findPublicKeyByKeyHint:(NSString *)hint;
-- (GPGKey *)findSecretKeyByKeyHint:(NSString *)hint;
-
-
-/**
- Create a map for the gpg keys which can be accessed by using
- an email address.
- All email addresses of user ids are taking into consideration.
- If duplicate emails are found, allow duplicates decides whether to discard them
- or keep them.
- */
-- (NSMutableDictionary *)emailMapForGPGKeys:(NSSet *)keys allowDuplicates:(BOOL)allowDuplicates;
 
 /**
  Return if we're running on Mountain Lion or not.
  */
 + (BOOL)isMountainLion;
+
+/**
+ Schedules a message which should have rules applied.
+ While the app is running, each message should only have rules applied
+ once. This is assured by performing the check if the message was already
+ scheduled using a serial queue. The actual applying of the rules, is performed
+ on the background.
+ */
+- (void)scheduleApplyingRulesForMessage:(Message *)message isEncrypted:(BOOL)isEncrypted;
+
+/**
+ Returns the secret key matching ID.
+ */
+- (GPGKey *)secretGPGKeyForKeyID:(NSString *)keyID;
+
+/**
+ Also includes disabled keys when looking for the secret key.
+ */
+- (GPGKey *)secretGPGKeyForKeyID:(NSString *)keyID includeDisabled:(BOOL)includeDisabled;
+
+/**
+ Returns the preferred secret GPG key.
+ User can set this via gpg.conf
+ */
+- (GPGKey *)preferredGPGKeyForSigning;
+/**
+ Returns the key matching fingerprint.
+ */
+- (GPGKey *)keyForFingerprint:(NSString *)fingerprint;
+/**
+ Checks if MacGPG2 is installed and is properly working.
+ */
+- (BOOL)checkGPG;
+
+/**
+ Returns a list of public keys matching the given addresses.
+ */
+- (NSMutableSet *)publicKeyListForAddresses:(NSArray *)recipients;
+/**
+ Returns a list of secret keys matching the given addresses.
+ */
+- (NSMutableSet *)signingKeyListForAddress:(NSString *)sender;
+/**
+ Returns whether or not a message can be encrypted to an address.
+ */
+- (BOOL)canEncryptMessagesToAddress:(NSString *)address;
+/**
+ Returns whether or not a message can be signed from a given address.
+ */
+- (BOOL)canSignMessagesFromAddress:(NSString *)address;
+
++ (NSString *)localizedStringForKey:(NSString *)key;
+
+@property (readonly) GPGErrorCode gpgStatus;
+@property (readonly, strong) NSSet *allGPGKeys;
+@property (nonatomic, assign) BOOL accountExistsForSigning;
+@property (nonatomic, strong) GMUpdater *updater;
 
 @end
 
@@ -225,3 +152,5 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 // Prevent "incomplete implementation" warning.
 + (id)sharedInstance;
 @end
+
+

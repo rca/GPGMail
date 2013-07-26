@@ -80,10 +80,10 @@
  Creates the new gpg message data which will replace the original outgoing message
  body data and sets the correct headers.
  
- shouldBePlain decides whether the returned message data is a inline gpg message or a mime
+ shouldBeMIME decides whether the returned message data is a inline gpg message or a mime
  gpg message.
  */
-- (Subdata *)_newPGPBodyDataWithEncryptedData:(NSData *)encryptedData headers:(MutableMessageHeaders *)headers shouldBeMIME:(BOOL)shouldBeMIME;
+- (Subdata *)_newPGPBodyDataWithEncryptedData:(NSData *)encryptedData headers:(MutableMessageHeaders *)headers shouldBeMIME:(BOOL)shouldBeMIME keysToAttach:(NSData *)keysToAttach;
 
 /**
  This method adds some info to the original method headers which is relevant
@@ -107,7 +107,7 @@
  different info is added to the original headers.
  forEncrypting and forSigning decide which headers are added.
  */
-- (void)_addGPGFlaggedStringsToHeaders:(NSMutableDictionary *)headers forEncrypting:(BOOL)forEncrypting forSigning:(BOOL)forSigning;
+- (void)_addGPGFlaggedStringsToHeaders:(NSMutableDictionary *)headers forEncrypting:(BOOL)forEncrypting forSigning:(BOOL)forSigning forSymmetric:(BOOL)forSymmetric;
 
 /**
  Is called whenever a recipient is added to the message and decides
@@ -176,8 +176,25 @@
 - (BOOL)messageIsBeingReplied;
 
 /**
+ Returns if the user is continuing to edit a draft.
+ */
+- (BOOL)draftIsContinued;
+
+/**
+ This hook is necessary to determine whether or not a user continues editing a draft.
+ Unfortunately the -[ComposeBackEnd type] doesn't reflect that.
+ */
+- (void)MA_configureLastDraftInformationFromHeaders:(id)headers overwrite:(BOOL)overwrite;
+
+/**
  Posts the SecurityMethodDidChange notification.
  */
 - (void)postSecurityMethodDidChangeNotification:(GPGMAIL_SECURITY_METHOD)securityMethod;
+
+/**
+ Checks the contents of a message and tries to determine, whether the sent action
+ was invoked by iCal, in which case, the message is not to be encrypted nor signed.
+ */
+- (BOOL)sentActionInvokedFromiCalWithContents:(WebComposeMessageContents *)contents;
 
 @end

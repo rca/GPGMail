@@ -26,9 +26,9 @@
 	NSDate *started;
 	NSDate *stopped;
 }
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSDate *started;
-@property (nonatomic, retain) NSDate *stopped;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSDate *started;
+@property (nonatomic, strong) NSDate *stopped;
 
 
 + (MMStopwatchItem *) itemWithName:(NSString *)name;

@@ -1,7 +1,7 @@
 /* OptionalView+GPGMail.h created by Lukas Pitschl (@lukele) on Wed 03-Aug-2011 */
 
 /*
- * Copyright (c) 2000-2011, GPGTools Project Team <gpgtools-devel@lists.gpgtools.org>
+ * Copyright (c) 2013, GPGTools Project Team <team@gpgtools.org>
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -27,15 +27,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@interface OptionalView_GPGMail : NSObject
+@interface OptionalView_GPGMail : NSView
 
 /**
  Defines the width of each optional view.
- If the OpenPGP checkbox is to be shown, the width has to be extended considering
- the size of the checkbox and text.
- 
- securityViewWidth defines the new width, which is set, as soon as the ComposeHeaderView
- nib is loaded and the OpenPGP checkbox is added.
  */
 - (double)MAWidthIncludingOptionSwitch:(BOOL)includeOptionSwitch;
 

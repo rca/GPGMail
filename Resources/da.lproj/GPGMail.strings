@@ -1,0 +1,170 @@
+/* Description of version prefixed with <Version:> */
+"VERSION: %@" = "Version: %@";
+
+/* PGP preferences panel name */
+"PGP_PREFERENCES" = "GPGMail";
+
+/* Message Error Banner messages. */
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "Kan ikke dekryptere PGP besked.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "Der er problemer med at dekryptere denne besked. Kontroller at du har en gyldig nøgle i din GPG Nøglering.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Kan ikke bekræfte PGP-meddelelsens signatur.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Der var et problem med at læse PGP signaturen til denne besked.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "PGP nøglen til denne besked er ikke i din nøglering.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Beskeden har en gyldig PGP signatur, men PGP nøglen er ikke i din nøglering. Brug GPG Nøglering til at tilføje den.";
+"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Der findes ingen information om denne PGP nøgle.";
+"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Der kendes ikke yderligere information om denne PGP nøgle, fordi den ikke er i din nøglering.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Den private nøgle til at dekryptere beskeden mangler.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Dekryptering mislykkedes på grund af en ukendt fejl!";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "En ukendt fejl opstod da beskeden blev forsøgt dekrypteret.\n\nKontakt os venligst på http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Dekryptering mislykkedes på grund af en ukendt fejl!";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "En ukendt fejl opstod da beskeden blev forsøgt dekrypteret.\n\nGPG fejlmeddelelse:\n%@\nKontakt os venligst angående denne fejl på http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Forkert nøgle brugt til at kryptere denne besked.";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Denne besked kunne ikke dekrypteres, da den forkerte offentlige nøgle blev brugt til at kryptere den.\n\nKontakt os venligst på http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Den krypterede besked er beskadiget.";
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Denne krypterede besked er beskadiget og kan ikke dekrypteres.\n\nBed afsenderen om at sende beskeden igen.";
+
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Signaturens nøgle er blevet tilbagekaldt.";
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "VIGTIGT: Den nøgle, der blev brugt til at signere denne besked, er blevet tilbagekaldt.\n\nDu bør forny nøglen med nøgle ID %@ i GPG Nøglering for at tjekke, om der er en ny nøgle tilgængelig. Hvis den nye nøgle stadig er tilbagekaldt skal du spørge afsenderen, hvorfor nøglen blev tilbagekaldt.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Nøglen til denne signatur er ikke i din GPG nøglering.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Beskeden kunne ikke bekræftes, da nøglen brugt til at signere beskeden ikke er i din GPG Nøglering.\n\nSøg efter nøglen med ID %@ i GPG Nøglering og importer den for at bekræfte meddelelsen.";
+
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "Beskedens signatur blev lavet med en algoritme, der ikke er understøttet.";
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Denne besked kune ikke bekræftes, da signaturen blev lavet med en algoritme, der ikke er understøttet.\n\nKontakt os venligst på http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "VIGTIGT: Signaturen på denne besked er ugyldig!";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "VIGTIGT: Denne besked kan være blevet ændret efter signaturen blev lavet.\n\nKontakt afsenderen for at bekræfte, at beskedens indhold passer med originalen.\n\nKontakt os på http://support.gpgtools.org, hvis du er sikker på at beskeden ikke er blevet ændret.";
+
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Bekræftelse af beskeden mislykkedes på grund af en ukendt fejl!";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "En ukendt fejl opstod da beskedens signatur blev forsøgt bekræftet.\n\nKontakt os på http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Datafejl i beskedens signatur!";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Beskedens signatur er ugyldig og kunne ikke bekræftes.\n\nKontakt os på http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Nøglen til beskedens signatur er udløbet.";
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "VIGTIGT: Nøglen, der blev brugt til at signere denne besked, er udløbet.\n\nDu kan prøve at forny nøglen med ID %@ i GPG Nøglering og spørge afsenderen, hvorfor nøglen er udløbet. ";
+
+"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Beskedens signatur er udløbet.";
+"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Signaturen er udløbet og kunne ikke bekræftes.\n\nSpørg afsenderen, hvorfor signaturen er udløbet.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d vedhæftede filer kunne ikke dekrypteres eller bekræftes.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Klik på den vedhæftede fils ikon i beskedhovedet for flere detaljer.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_TITLE" = "%d vedhæftede filer kunne ikke bekræftes.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_MESSAGE" = "Klik på den vedhæftede fils ikon i beskedhovedet for flere detaljer.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_TITLE" = "%d vedhæftede filer kunne ikke dekrypteres.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_MESSAGE" = "Klik på den vedhæftede fils ikon i beskedhovedet for flere detaljer.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_TITLE" = "%d vedhæftet fil kunne ikke bekræftes.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_MESSAGE" = "Klik på den vedhæftede fils ikon i beskedhovedet for flere detaljer.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_TITLE" = "%d vedhæftet fil kunne ikke dekrypteres.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE" = "Klik på den vedhæftede fils ikon i beskedhovedet for flere detaljer.";
+
+/* Message Error Banner Attachment messages. */
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Den private nøgle til at dekryptere den vedhæftede fil mangler.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Dekryptering mislykkedes på grund af en ukendt fejl!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "En ukendt fejl opstod, da den vedhæftede fil blev forsøgt dekrypteret.\n\nKontakt os på http://support.gpgtools.org";    
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "Dekryptering mislykkedes på grund af en ukendt fejl!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "En ukendt fejl opstod da den vedhæftede fil blev forsøgt dekrypteret.\n\nGPG fejlbesked:\n%@\nKontakt os venligst angående denne fejl på http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Den forkerte nøgle blev brugt til at kryptere denne vedhæftede fil.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Denne vedhæftede fil kunne ikke dekrypteres, da den forkerte offentlige nøgle blev brugt til at kryptere den.\n\nKontakt os på http://support.gpgtools.org";    
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Den krypterede vedhæftede fil er beskadiget.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Den krypterede vedhæftede fil er beskadiget og kan ikke dekrypteres.\n\nBed afsenderen sende beskeden igen.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Signaturens nøgle er blevet tilbagekaldt.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "VIGTIGT: Nøglen, der blev brugt til at signere denne vedhæftede fil, er blevet tilbagekaldt.\n\nDu bør forny nøglen med ID %@ i GPG Nøglering. Hvis den nye stadig er tilbagekaldt skal du spørge afsenderen, hvorfor nøglen blev tilbagekaldt.";    
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Signaturens nøgle er ikke i din GPG nøglering.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Signaturen på den vedhæftede fil kunne ikke bekræftes, da den nøgle, som blev brugt til signering, ikke er i din GPG nøglering.\n\nSøg efter nøglen med ID %@ i GPG Nøglering og importer den for at bekræfte den vedhæftede fil.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "Signaturen til den vedhæftede fil blev lavet med en algoritme, der ikke understøttes.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Denne vedhæftede fil kunne ikke bekræftes, da signaturens nøgle blev lavet med en algoritme, der ikke understøttes.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "VIGTIGT: Signaturen til den vedhæftede fil er ugyldig!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "VIGTIGT: Denne vedhæftede fil er blevet ændret efter signaturen blev lavet.\n\nKontakt afsenderen og tjek at filens indhold svarer til originalen.\n\nKontakt os på http://support.gpgtools.org, hvis du er sikker på at den vedhæftede fil ikke er blevet ændret.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Bekræftelse af beskeden mislykkedes på grund af en ukendt fejl!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "En ukendt fejl opstod, da denne vedhæftede fil blev forsøgt bekræftet.\n\nKontakt os på http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Datafejl i signaturen!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Signaturen til denne vedhæftede fil er ugyldig, og kunne ikke bekræftes.\n\nKontakt os på http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Signaturens nøgle er udløbet.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "VIGTIGT: Den nøgle, der blev brugt til at signere denne vedhæftede fil, er udløbet.\n\nDu kan prøve at forny nøglen med ID %@ i GPG Nøglering og at spørge afsenderen, hvorfor nøglen er udløbet.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Signaturen til denne vedhæftede fil er udløbet.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Signaturen til den vedhæftede fil er udløbet, og kunne ikke bekræftes.\n\nSpørg afsenderen, hvorfor signaturen er udløbet.";
+
+"MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Delvist krypteret";
+"MESSAGE_IS_PGP_PARTLY_SIGNED" = "Delvist signeret";
+"MESSAGE_IS_PGP_ENCRYPTED" = "Krypteret";
+"MESSAGE_IS_PGP_SIGNED" = "Signeret";
+"MESSAGE_IS_PGP_SIGNED_INVALID" = "Ugyldig signatur";
+
+/* Security Header signature related. */
+"MESSAGE_SECURITY_HEADER_SIGNATURE_NO_PUBLIC_KEY_TITLE" = "Signeret med ukendt nøgle";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE" = "Signeret med tilbagekaldt nøgle";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE" = "Ugyldig signatur";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE" = "Signeret";
+
+/* Security header attachments related. */
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE" = "krypteret/signeret vedhæftning";
+"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_ENCRYPTED_TITLE" = "krypterede/signerede vedhæftninger";
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_ENCRYPTED_TITLE" = "krypteret vedhæftning";
+"MESSAGE_SECURITY_HEADER_ATTACHMENTS_ENCRYPTED_TITLE" = "krypterede vedhæftninger";
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_TITLE" = "signeret vedhæftning";
+"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "signerede vedhæftninger";
+
+/* Compose Window encrypt/sign button tooltips. */
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "Denne besked kan ikke signeres, da der ikke er nogen privat nøgle til %@.\n\nTjek at der findes en privat nøgle i GPG Nøglering. Tilføj et nyt UID til en eksisterende nøgle til denne adresse hvis nødvendigt, eller opret en ny nøgle til adressen.\n\nHvis der findes en nøgle til adressen, så tjek at adressen i Mail indstillinger er korrekt og passer præcist med adressen i din nøgle.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "Denne besked kan ikke krypteres, da der ikke er nogen offentlige nøgler tilgængelige til følgende adresser: %@\n\nBrug GPG Nøglering til at finde og importere nøglerne til de adresser.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "Denne besked kan ikke krypteres. Du skal angive mindst én modtager først.";
+
+/* Message view pgp part. */
+"MESSAGE_VIEW_PGP_PART_ENCRYPTED" = "Krypteret";
+"MESSAGE_VIEW_PGP_PART_SIGNED" = "Signeret";    
+"MESSAGE_VIEW_PGP_PART" = "PGP del";
+
+/* GPGMail Preferences strings. */
+"GPG_STATUS_NO_ERROR_TITLE" = "GPGMail er klar.";
+"GPG_STATUS_NO_ERROR_TOOLTIP" = "Din MacGPG installation fungerer fejlfrit."; 
+"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 er ikke installeret. Tjek din installation.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Hent GPGTools installeringsfilen fra http://www.gpgtools.org for at installere alle GPGTools.";
+"GPG_STATUS_OTHER_ERROR_TITLE" = "Tjek din installation og konfiguration.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Hent GPGTools installeringsfilen fra http://www.gpgtools.org for at installere alle GPGTools.";
+
+/* Multiple GPGMail installations. */
+"GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Der findes flere installationer af GPGMail!";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "GPGMail har fundet flere installationer i følgende mapper, hvilket vil føre til øjeblikkeligt nedbrud:\n\n%@\n\nFjern filen GPGMail.mailbundle i en af mapperne, og genstart Mail.\n";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Slut Mail";
+
+/* Errors while trying to sign a message. */
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Signing your message failed due to defect PIN-Entry!";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "The PIN-Entry helper responsible for asking for your passphrase seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools";
+
+"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Signing your message failed due to defect GPG agent!";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "The GPG agent which is a crucial part of GPG seems to be defect on your system.\n\nTo fix this problem, re-install the newest version of GPGTools";
+
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "Signing your message failed due to GPG agent communication error!";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "It was not possible to talk to the GPG agent in order to request your passphrase.\n\nTo fix this problem, re-install the newest version of GPGTools";
+
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "Signing your message failed because an unknown error has occured";
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately we can't handle the error at this point.";
+
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Encrypting your message failed because an unknown error has occured";
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately GPGMail can't handle the error at this point.";
+
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at http://support.gpgtools.org with the following error description:\n\n%@";
+

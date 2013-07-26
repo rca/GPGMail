@@ -124,6 +124,7 @@
 		return SIGN_OFF_IMAGE;
 	if([imageName isEqualToString:SIGN_OFF_IMAGE])
 		return SIGN_ON_IMAGE;
+	return nil;
 }
 
 - (void)updateStatusFromImage:(NSImage *)image {
@@ -140,25 +141,15 @@
         if([[image name] isEqualToString:SIGN_OFF_IMAGE])
             forceSign = YES;
         
-        [backEnd setIvar:@"ForceSign" value:[NSNumber numberWithBool:forceSign]];
+        [backEnd setIvar:@"ForceSign" value:@(forceSign)];
     }
     else {
         self.forcedImageName = [[image name] isEqualToString:ENCRYPT_LOCK_UNLOCKED_IMAGE] ? ENCRYPT_LOCK_LOCKED_IMAGE : ENCRYPT_LOCK_UNLOCKED_IMAGE;
         BOOL forceEncrypt = NO;
         if([[image name] isEqualToString:ENCRYPT_LOCK_UNLOCKED_IMAGE])
             forceEncrypt = YES;
-        [backEnd setIvar:@"ForceEncrypt" value:[NSNumber numberWithBool:forceEncrypt]];
+        [backEnd setIvar:@"ForceEncrypt" value:@(forceEncrypt)];
     }
-}
-
-- (void)dealloc {
-    if(_control)
-        [_control release];
-    if(_forcedImageName)
-        [_forcedImageName release];
-    _securityTag = 0;
-    
-    [super dealloc];
 }
 
 @end

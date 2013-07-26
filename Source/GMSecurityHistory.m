@@ -36,7 +36,7 @@
 + (GPGMAIL_SECURITY_METHOD)defaultSecurityMethod {
     GPGMAIL_SECURITY_METHOD securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
     if([[GPGOptions sharedOptions] integerForKey:@"DefaultSecurityMethod"]) {
-        securityMethod = [[GPGOptions sharedOptions] integerForKey:@"DefaultSecurityMethod"];
+        securityMethod = (GPGMAIL_SECURITY_METHOD)[[GPGOptions sharedOptions] integerForKey:@"DefaultSecurityMethod"];
         DebugLog(@"Default Security Method is: %@", securityMethod != 0 && securityMethod == GPGMAIL_SECURITY_METHOD_SMIME ? @"S/MIME" : @"OpenPGP");
     }
     return securityMethod;
@@ -47,7 +47,7 @@
 	id signValue = [options valueForKey:@"SignNewEmailsByDefault"];
 	id encryptValue = [options valueForKey:@"EncryptNewEmailsByDefault"];
 	// If the values are not configured, default to not sign.
-	BOOL signDefault = NO;
+	BOOL signDefault = YES;
 	BOOL encrpytDefault = NO;
 	BOOL sign = signValue ? [signValue boolValue] : signDefault;
 	BOOL encrypt = encryptValue ? [encryptValue boolValue] : encrpytDefault;
@@ -57,7 +57,29 @@
 - (GMSecurityOptions *)bestSecurityOptionsForSender:(NSString *)sender recipients:(NSArray *)recipients signFlags:(GPGMAIL_SIGN_FLAG)signFlags 
                                           encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags {
 	
-	return [self securityOptionsFromDefaults];
+	GMSecurityOptions *defaultSecurityOptions = [self securityOptionsFromDefaults];
+	
+	BOOL canPGPSign = (signFlags & GPGMAIL_SIGN_FLAG_OPENPGP);
+    BOOL canPGPEncrypt = (encryptFlags & GPGMAIL_ENCRYPT_FLAG_OPENPGP);
+    BOOL canSMIMESign = (signFlags & GPGMAIL_SIGN_FLAG_SMIME);
+    BOOL canSMIMEEncrypt = (encryptFlags & GPGMAIL_ENCRYPT_FLAG_SMIME);
+    BOOL SMIMEKeyAvailable = canSMIMESign || canSMIMEEncrypt;
+    BOOL PGPKeyAvailable = canPGPSign || canPGPEncrypt;
+	
+	GPGMAIL_SECURITY_METHOD securityMethod = defaultSecurityOptions.securityMethod;
+	
+	// Select the security method based on the availability of keys.
+	if(SMIMEKeyAvailable && !PGPKeyAvailable)
+		securityMethod = GPGMAIL_SECURITY_METHOD_SMIME;
+	else if(PGPKeyAvailable && !SMIMEKeyAvailable)
+		securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
+	else if((SMIMEKeyAvailable && PGPKeyAvailable) || (!SMIMEKeyAvailable && !PGPKeyAvailable))
+		securityMethod = defaultSecurityOptions.securityMethod;
+		
+	GMSecurityOptions *finalSecurityOptions = [GMSecurityOptions securityOptionsWithSecurityMethod:securityMethod shouldSign:defaultSecurityOptions.shouldSign shouldEncrypt:defaultSecurityOptions.shouldEncrypt];
+	
+	return finalSecurityOptions;
+		
 	
 	/*
     GPGMAIL_SECURITY_METHOD securityMethod = 0;
@@ -232,7 +254,7 @@
 - (GMSecurityOptions *)bestSecurityOptionsForReplyToMessage:(Message *)message signFlags:(GPGMAIL_SIGN_FLAG)signFlags 
                                                encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags {
 	
-//	return [self securityOptionsFromDefaults];
+	GMSecurityOptions *defaultSecurityOptions = [self securityOptionsFromDefaults];
 	
     GPGMAIL_SECURITY_METHOD securityMethod = 0;
     BOOL canPGPSign = (signFlags & GPGMAIL_SIGN_FLAG_OPENPGP);
@@ -241,28 +263,59 @@
     BOOL canSMIMEEncrypt = (encryptFlags & GPGMAIL_ENCRYPT_FLAG_SMIME);
     BOOL canSign = NO;
     BOOL canEncrypt = NO;
-    
-    if(message.isSMIMESigned) {
-        securityMethod = GPGMAIL_SECURITY_METHOD_SMIME;
-        canSign = canSMIMESign;
-    }
-    else if(message.PGPSigned) {
-        securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
-        canSign = canPGPSign;
-    }
-    
-    if(message.isSMIMEEncrypted) {
-        securityMethod = GPGMAIL_SECURITY_METHOD_SMIME;
-        canEncrypt = canSMIMEEncrypt;
-    }
-    else if(message.PGPEncrypted) {
-        securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
-        canEncrypt = canPGPEncrypt;
-    }
-    if(!securityMethod)
-        securityMethod = [[self class] defaultSecurityMethod];
-    
+    BOOL SMIMEKeyAvailable = canSMIMESign || canSMIMEEncrypt;
+    BOOL PGPKeyAvailable = canPGPSign || canPGPEncrypt;
+	BOOL messageIsSigned = message.isSMIMESigned || message.PGPSigned;
+	BOOL messageIsEncrypted = message.isSMIMEEncrypted || message.PGPEncrypted;
+	
+	// Message is not signed, check the defaults on what to do.
+	if(!messageIsSigned && (canPGPSign || canSMIMESign)) {
+		canSign = defaultSecurityOptions.shouldSign;
+		securityMethod = canPGPSign && canSMIMESign ? defaultSecurityOptions.securityMethod : (canPGPSign ? GPGMAIL_SECURITY_METHOD_OPENPGP : GPGMAIL_SECURITY_METHOD_SMIME);
+	}
+	if(!messageIsEncrypted && (canPGPEncrypt || canSMIMEEncrypt)) {
+		canEncrypt = defaultSecurityOptions.shouldEncrypt;
+		securityMethod = canPGPSign && canSMIMESign ? defaultSecurityOptions.securityMethod : (canPGPSign ? GPGMAIL_SECURITY_METHOD_OPENPGP : GPGMAIL_SECURITY_METHOD_SMIME);
+	}
+	
+	// If there's a signing key, and the message was signed, enable signing.
+	if(messageIsSigned && (canSMIMESign || canPGPSign))
+		canSign = YES;
+	
+	// If there's a encryption key and the message was encrypted, enable encrypting.
+	if(messageIsEncrypted && (canSMIMEEncrypt || canPGPEncrypt))
+		canEncrypt = YES;
+	
+	// Keys for both methods are available
+	if(SMIMEKeyAvailable && PGPKeyAvailable) {
+		if(message.isSMIMESigned || message.isSMIMEEncrypted)
+			securityMethod = GPGMAIL_SECURITY_METHOD_SMIME;
+		else if(message.PGPEncrypted || message.PGPSigned)
+			securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
+		// Not signed or not encrypted is already handled above.
+	}
+	else if(SMIMEKeyAvailable && !PGPKeyAvailable)
+		securityMethod = GPGMAIL_SECURITY_METHOD_SMIME;
+	else if(PGPKeyAvailable && !SMIMEKeyAvailable)
+		securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
+	
     return [GMSecurityOptions securityOptionsWithSecurityMethod:securityMethod shouldSign:canSign shouldEncrypt:canEncrypt];
+}
+
+- (GMSecurityOptions *)bestSecurityOptionsForMessageDraft:(Message *)message signFlags:(GPGMAIL_SIGN_FLAG)signFlags
+                                               encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags {
+	GMSecurityOptions *defaultSecurityOptions = [self securityOptionsFromDefaults];
+	
+	GPGMAIL_SECURITY_METHOD securityMethod = defaultSecurityOptions.securityMethod;
+	// If the message was signed or encrypted, we know what security method was used
+	// and will re-use that. Otherwise, use the default setting.
+	if([message isSigned] || [message isEncrypted])
+		securityMethod = [message isSMIMEEncrypted] || [message isSMIMESigned] ? GPGMAIL_SECURITY_METHOD_SMIME : GPGMAIL_SECURITY_METHOD_OPENPGP;
+	
+	BOOL shouldSign = [message isSigned];
+	BOOL shouldEncrypt = [message isEncrypted];
+	
+	return [GMSecurityOptions securityOptionsWithSecurityMethod:securityMethod shouldSign:shouldSign shouldEncrypt:shouldEncrypt];
 }
 
 + (NSSet *)_uniqueRecipients:(NSArray *)recipients {
@@ -272,7 +325,6 @@
     for(NSString *address in recipients)
         [uniqueRecipientsMutable addObject:[address gpgNormalizedEmail]];
     NSSet *uniqueRecipients = [NSSet setWithSet:uniqueRecipientsMutable];
-    [uniqueRecipientsMutable release];
     return uniqueRecipients;
 }
 
@@ -290,50 +342,50 @@
         securityMethodHistory = [[NSMutableDictionary alloc] init];
     }
     // Building the dictionary for non existing keys.
-    if(![securityMethodHistory objectForKey:@"sign"])
+    if(!securityMethodHistory[@"sign"])
         [securityMethodHistory setValue:[NSMutableDictionary dictionary] forKey:@"sign"];
-    if(![(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender])
+    if(!((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])
         // No entry exists, initialize one.
-        [[securityMethodHistory objectForKey:@"sign"] setValue:[NSMutableDictionary dictionary] forKey:sender];
-    if(![(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey]) {
-        [[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] setValue:[NSMutableDictionary dictionary] forKey:securityMethodKey];
-        [[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] setValue:[NSNumber numberWithUnsignedInteger:0] forKey:@"DidSignCount"];
-        [[(NSMutableDictionary *)[(NSMutableDictionary *)(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] setValue:[NSNumber numberWithUnsignedInteger:0] forKey:@"DidNotSignCount"];
+        [securityMethodHistory[@"sign"] setValue:[NSMutableDictionary dictionary] forKey:sender];
+    if(!((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey]) {
+        [((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender] setValue:[NSMutableDictionary dictionary] forKey:securityMethodKey];
+        [((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey] setValue:@0U forKey:@"DidSignCount"];
+        [((NSMutableDictionary *)((NSMutableDictionary *)(NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey] setValue:@0U forKey:@"DidNotSignCount"];
     }
     // Now increase the existing one.
     // Out of frustration I gotta say this. I FUCKING HATE DICTIONARY SYNTAX IN OBJECTIVE-C! FUCKING! HATE! IT!
     NSString *countKey = didSign ? @"DidSignCount" : @"DidNotSignCount";
-    NSUInteger count = [[[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] valueForKey:countKey] unsignedIntegerValue];
+    NSUInteger count = [[((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey] valueForKey:countKey] unsignedIntegerValue];
     count++;
-    [[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] setValue:[NSNumber numberWithUnsignedInteger:count] forKey:countKey];
-    [[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] setValue:[NSNumber numberWithBool:didSign] forKey:@"DidLastSign"];
+    [((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey] setValue:@(count) forKey:countKey];
+    [((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey] setValue:@(didSign) forKey:@"DidLastSign"];
     
-    if(![(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] objectForKey:uniqueRecipients]) {
+    if(!((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey])[uniqueRecipients]) {
         // If there's not entry for sign from address to recipients, add it.
-        [(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] setObject:[NSMutableDictionary dictionary] forKey:uniqueRecipients];
-        [(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] objectForKey:uniqueRecipients] setValue:[NSNumber numberWithUnsignedInteger:0] forKey:@"DidSignCount"];
-        [(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] objectForKey:uniqueRecipients] setValue:[NSNumber numberWithUnsignedInteger:0] forKey:@"DidNotSignCount"];
+        ((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey])[uniqueRecipients] = [NSMutableDictionary dictionary];
+        [(NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey])[uniqueRecipients] setValue:@0U forKey:@"DidSignCount"];
+        [(NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey])[uniqueRecipients] setValue:@0U forKey:@"DidNotSignCount"];
     }
-    count = [[(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] objectForKey:uniqueRecipients] objectForKey:countKey] unsignedIntegerValue];
+    count = [((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey])[uniqueRecipients])[countKey] unsignedIntegerValue];
     count++;
-    [(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] objectForKey:uniqueRecipients] setObject:[NSNumber numberWithUnsignedInteger:count] forKey:countKey];
-    [(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"sign"] objectForKey:sender] objectForKey:securityMethodKey] objectForKey:uniqueRecipients] setObject:[NSNumber numberWithBool:didSign] forKey:@"DidLastSign"];
+    ((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey])[uniqueRecipients])[countKey] = @(count);
+    ((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"sign"])[sender])[securityMethodKey])[uniqueRecipients])[@"DidLastSign"] = @(didSign);
     
-    if(![securityMethodHistory objectForKey:@"encrypt"])
+    if(!securityMethodHistory[@"encrypt"])
         [securityMethodHistory setValue:[NSMutableDictionary dictionary] forKey:@"encrypt"];
-    if(![(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients])
-        [(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] setObject:[NSMutableDictionary dictionary] forKey:uniqueRecipients];
-    if(![(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients] objectForKey:securityMethodKey]) {
-        [(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients] setObject:[NSMutableDictionary dictionary] forKey:securityMethodKey]; 
-        [[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients] objectForKey:securityMethodKey] setValue:[NSNumber numberWithUnsignedInteger:0] forKey:@"DidEncryptCount"];
-        [[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients] objectForKey:securityMethodKey] setValue:[NSNumber numberWithUnsignedInteger:0] forKey:@"DidNotEncryptCount"];
+    if(!((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])
+        ((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients] = [NSMutableDictionary dictionary];
+    if(!((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])[securityMethodKey]) {
+        ((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])[securityMethodKey] = [NSMutableDictionary dictionary]; 
+        [((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])[securityMethodKey] setValue:@0U forKey:@"DidEncryptCount"];
+        [((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])[securityMethodKey] setValue:@0U forKey:@"DidNotEncryptCount"];
     }
     
     countKey = didEncrypt ? @"DidEncryptCount" : @"DidNotEncryptCount";
-    count = [[(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients] objectForKey:securityMethodKey] objectForKey:countKey] unsignedIntegerValue];
+    count = [((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])[securityMethodKey])[countKey] unsignedIntegerValue];
     count++;
-    [(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients] objectForKey:securityMethodKey] setObject:[NSNumber numberWithUnsignedInteger:count] forKey:countKey];
-    [(NSMutableDictionary *)[(NSMutableDictionary *)[(NSMutableDictionary *)[securityMethodHistory objectForKey:@"encrypt"] objectForKey:uniqueRecipients] objectForKey:securityMethodKey] setObject:[NSNumber numberWithBool:didEncrypt] forKey:@"DidLastEncrypt"];
+    ((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])[securityMethodKey])[countKey] = @(count);
+    ((NSMutableDictionary *)((NSMutableDictionary *)((NSMutableDictionary *)securityMethodHistory[@"encrypt"])[uniqueRecipients])[securityMethodKey])[@"DidLastEncrypt"] = @(didEncrypt);
     
     // Dang, this is some seriously fucking code. But if anyone knows how to do this
     // nice, please clean it up!
@@ -341,7 +393,6 @@
     
     [[GMSecurityHistoryStore sharedInstance] saveHistory:securityMethodHistory];
     
-    [securityMethodHistory release];
 }
 
 @end
@@ -361,7 +412,7 @@
 
 + (GMSecurityOptions *)securityOptionsWithSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt {
     GMSecurityOptions *securityOptions = [[GMSecurityOptions alloc] initWithSecurityMethod:securityMethod shouldSign:shouldSign shouldEncrypt:shouldEncrypt];
-    return [securityOptions autorelease];
+    return securityOptions;
 }
 
 - (NSString *)description {
@@ -374,7 +425,7 @@
 
 @interface GMSecurityHistoryStore ()
 
-@property (nonatomic, retain) NSDictionary *securityOptionsHistory;
+@property (nonatomic, strong) NSDictionary *securityOptionsHistory;
 
 @end
 
@@ -400,7 +451,7 @@
             [fileManager createDirectoryAtPath:historyStoreDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
         
         NSString *historyStorePath = [historyStoreDirectory stringByAppendingPathComponent:historyFile];
-        _storePath = [historyStorePath retain];
+        _storePath = historyStorePath;
         [self openHistoryStoreAtPath:historyStorePath];
     }
     return self;
@@ -416,11 +467,5 @@
     [NSKeyedArchiver archiveRootObject:self.securityOptionsHistory toFile:_storePath];
 }
 
-- (void)dealloc {
-    [super dealloc];
-    
-    [_storePath release];
-    [_securityOptionsHistory release];
-}
 
 @end

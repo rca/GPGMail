@@ -238,6 +238,11 @@ typedef enum {
 - (id)decryptedMessageBodyOrDataForEncryptedData:(NSData *)encryptedData encryptedInlineRange:(NSRange)encryptedRange;
 
 /**
+ Calls decryptdData: but doesn't try to further process the decrypted data if isAttachment is set to YES.
+ */
+- (id)decryptedMessageBodyOrDataForEncryptedData:(NSData *)encryptedData encryptedInlineRange:(NSRange)encryptedRange isAttachment:(BOOL)isAttachment;
+
+/**
  Verifies the passed data and sets the PGP information for the part.
  */
 - (void)verifyData:(NSData *)signedData signatureData:(NSData *)signatureData;
@@ -259,7 +264,7 @@ typedef enum {
 /**
  Is used to verify PGP/inline signatures.
  */
-- (void)_verifyPGPInlineSignatureInData:(NSData *)data range:(NSRange)signedRange;
+- (void)_verifyPGPInlineSignatureInData:(NSData *)data;
 
 /**
  Strips the PGP SIGNED markes from the part HTML string.
@@ -330,7 +335,7 @@ typedef enum {
  
  The actual encrypted data is stored in the pointer *encryptedData.
  */
-- (id)MANewEncryptedPartWithData:(NSData *)data recipients:(id)recipients encryptedData:(NSData **)encryptedData;
+- (id)MANewEncryptedPartWithData:(NSData *)data recipients:(id)recipients encryptedData:(NSData **)encryptedData NS_RETURNS_RETAINED;
 
 /**
  Like newEncryptedPartWithData (see above), this method is called from MessageWriter
@@ -342,7 +347,7 @@ typedef enum {
  Again, the mime part containing the data is returned and the signature written
  to the *signatureData pointer. 
  */
-- (id)MANewSignedPartWithData:(id)data sender:(id)sender signatureData:(id *)signatureData;
+- (id)MANewSignedPartWithData:(id)data sender:(id)sender signatureData:(id *)signatureData NS_RETURNS_RETAINED;
 
 /**
  Get the (autoreleased) data for a new PGP/Inline signed message.

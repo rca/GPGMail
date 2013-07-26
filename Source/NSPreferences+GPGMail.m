@@ -57,7 +57,7 @@
     
     // Check modules, if GPGMailPreferences is not yet in there.
     NSPreferencesModule *gpgMailPreferences = [GPGMailPreferences sharedInstance];
-    NSString *preferencesName = NSLocalizedStringFromTableInBundle(@"PGP_PREFERENCES", @"GPGMail", [NSBundle bundleForClass:[GPGMailBundle class]], "PGP preferences panel name");
+    NSString *preferencesName = GMLocalizedString(@"PGP_PREFERENCES");
     [preferences addPreferenceNamed:preferencesName owner:gpgMailPreferences];
     added = YES;
 	
@@ -92,7 +92,7 @@
         [toolbar insertItemWithItemIdentifier:preferencesName atIndex:[[toolbar items] count]];
     
     // Make sure the preferences window shows all toolbar items.
-    [preferences setIvar:@"makeAllToolbarItemsVisible" value:[NSNumber numberWithBool:YES]];
+    [preferences setIvar:@"makeAllToolbarItemsVisible" value:@YES];
     // If the preference window wasn't closed before Mail.app was shutdown
     // and the last preference module to be shown was GPGMail,
     // Mail.app doesn't show it automatically after restarting and restoring
@@ -102,7 +102,6 @@
     if(!lastSelectedItem && [lastSelectedItemIdentifier isEqualToString:preferencesName]) {
         NSToolbarItem *toolbarItem = [[NSToolbarItem alloc] initWithItemIdentifier:preferencesName];
         [preferences toolbarItemClicked:toolbarItem];
-        [toolbarItem release];
     }
     else
         [preferences toolbarItemClicked:lastSelectedItem];
@@ -112,32 +111,32 @@
     return preferences;
 }
 
-- (CGSize)sizeForWindowShowingAllToolbarItems:(NSWindow *)window {
+
+- (NSSize)sizeForWindowShowingAllToolbarItems:(NSWindow *)window {
     NSRect frame = [window frame];
-    NSToolbar *toolbar = [window toolbar];
     float width = 0.0f;
-    for(id view in [[[[toolbar valueForKey:@"_toolbarView"] subviews] objectAtIndex:0] subviews])
-        width += [(NSView *)view frame].size.width;
+	NSArray *subviews = [[[[window toolbar] valueForKey:@"_toolbarView"] subviews][0] subviews];
+    for (NSView *view in subviews) {
+        width += view.frame.size.width;
+	}
     // Add padding to fit them all.
     width += 10;
-    CGSize newSize = CGSizeMake(width, frame.size.height);
-    return newSize;
+    return NSMakeSize(width > frame.size.width ? width : frame.size.width, frame.size.height);
 }
 
-- (struct CGSize)MAWindowWillResize:(id)window toSize:(struct CGSize)toSize {
+- (NSSize)MAWindowWillResize:(id)window toSize:(NSSize)toSize {
     if(![[self getIvar:@"makeAllToolbarItemsVisible"] boolValue])
         return [self MAWindowWillResize:window toSize:toSize];
     
-    CGSize newSize = [self sizeForWindowShowingAllToolbarItems:window];
+    NSSize newSize = [self sizeForWindowShowingAllToolbarItems:window];
     [self removeIvar:@"makeAllToolbarItemsVisible"];
     return newSize;
 }
 
 - (void)resizeWindowToShowAllToolbarItems:(NSWindow *)window {
     NSRect frame = [window frame];
-    CGSize newSize = [self sizeForWindowShowingAllToolbarItems:window];
-    frame.size = NSSizeFromCGSize(newSize);
-    [self setIvar:@"makeAllToolbarItemsVisible" value:[NSNumber numberWithBool:YES]];
+    frame.size = [self sizeForWindowShowingAllToolbarItems:window];
+    [self setIvar:@"makeAllToolbarItemsVisible" value:@YES];
     [window setFrame:frame display:YES];
 }
 

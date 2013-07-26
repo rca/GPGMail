@@ -69,3 +69,9 @@
 - (NSAttributedString *)securityHeaderSignaturePartForMessage:(Message *)message;
 
 @end
+
+@interface NSAlert (NotImplemented)
+
++ (id)alertForError:(id)arg1 firstButton:(id)arg2 secondButton:(id)arg3 thirdButton:(id)arg4;
+
+@end

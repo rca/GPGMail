@@ -75,11 +75,6 @@
 - (void)hideSecurityMethodAccessoryView;
 
 /**
- Forces an update of the security controls if new keys arrive.
- */
-- (void)keyringUpdated:(NSNotification *)notification;
-
-/**
  Delegate method which is used by the security method accessory view to inform
  the delegate that the user changed the security method.
  */
@@ -90,11 +85,5 @@
  */
 - (void)MADealloc;
 
-/**
- Entry point to add the title bar accessory view.
- */
-- (void)MABackEndDidLoadInitialContent:(id)content;
-
-- (void)keyringUpdated:(NSNotification *)notification;
 
 @end

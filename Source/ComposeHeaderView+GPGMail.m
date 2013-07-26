@@ -35,6 +35,7 @@
 #import "CCLog.h"
 #import "NSObject+LPDynamicIvars.h"
 #import "ComposeBackEnd+GPGMail.h"
+#import "ComposeHeaderView.h"
 #import "ComposeHeaderView+GPGMail.h"
 
 @implementation ComposeHeaderView_GPGMail
@@ -43,18 +44,13 @@
     if(![[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"])
         return [self MAAwakeFromNib];
     ComposeBackEnd *backEnd = [(DocumentEditor *)[[((ComposeHeaderView *)self) delegate] valueForKey:@"_documentEditor"] backEnd];
-    [backEnd setIvar:@"PGPEnabled" value:[NSNumber numberWithBool:YES]];
+    [backEnd setIvar:@"PGPEnabled" value:@YES];
 
     [self MAAwakeFromNib];
 }
 
-- (CGRect)MA_calculateSecurityFrame:(CGRect)frame {
-    if([[GPGOptions sharedOptions] boolForKey:@"UseOpenPGPToSend"]) {
-        if([[self valueForKey:@"_securityOptionalView"] ivarExists:@"securityViewWidth"])
-            frame.size.width = [[[self valueForKey:@"_securityOptionalView"] getIvar:@"securityViewWidth"] floatValue];
-    }
-    CGRect newRect = [self MA_calculateSecurityFrame:frame];
-    return newRect;
-}
+/*- (CGRect)MA_calculateSecurityFrame:(CGRect)frame {
+    return [self MA_calculateSecurityFrame:frame];
+}*/
 
 @end

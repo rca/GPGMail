@@ -5,14 +5,16 @@
 //  Created by Lukas Pitschl on 08.11.11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
-#define localized(key) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:(key) table:@"SignatureView"]
-#define localizedAttachmentMessage(key) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:(key) table:@"GPGAttachment"]
+#define localized(key) [[GPGMailBundle bundle] localizedStringForKey:(key) value:(key) table:@"SignatureView"]
+#define localizedAttachmentMessage(key) [[GPGMailBundle bundle] localizedStringForKey:(key) value:(key) table:@"GPGAttachment"]
 
 #import "MimePart.h"
 #import "NSObject+LPDynamicIvars.h"
 #import "MimePart+GPGMail.h"
+#import "MFError.h"
 #import "GPGAttachmentController.h"
 #import "GPGSignatureView.h"
+#import "GPGMailBundle.h"
 
 @implementation GPGAttachmentController
 @synthesize errorImageView;
@@ -28,42 +30,40 @@
         attachments = [[NSMutableArray alloc] init];
         for(MimePart *part in attachmentParts) {
             NSMutableDictionary *attachment = [[NSMutableDictionary alloc] init];
-            [attachment setValue:[NSNumber numberWithBool:part.PGPEncrypted] forKey:@"encrypted"];
-            [attachment setValue:[NSNumber numberWithBool:part.PGPSigned] forKey:@"signed"];
+            [attachment setValue:@(part.PGPEncrypted) forKey:@"encrypted"];
+            [attachment setValue:@(part.PGPSigned) forKey:@"signed"];
             [attachment setValue:part.PGPError forKey:@"error"];
-            [attachment setValue:[part dispositionParameterForKey:@"filename"]  forKey:@"original-name"];
-            [attachment setValue:[[[part dispositionParameterForKey:@"filename"] lastPathComponent] stringByDeletingPathExtension] forKey:@"decrypted-name"];
+            [attachment setValue:[part dispositionParameterForKey:@"filename"] forKey:@"decrypted-name"];
             if(part.PGPSignatures)
-                [attachment setValue:[part.PGPSignatures objectAtIndex:0] forKey:@"signature"];
+                [attachment setValue:(part.PGPSignatures)[0] forKey:@"signature"];
             BOOL decrypted = part.PGPDecrypted;
-            [attachment setValue:[NSNumber numberWithBool:decrypted] forKey:@"decrypted"];
+            [attachment setValue:@(decrypted) forKey:@"decrypted"];
             if(!part.PGPError) {
-                [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showErrorView"];
+                [attachment setValue:@YES forKey:@"showErrorView"];
                 if(decrypted && part.PGPVerified) {
-                    [attachment setValue:[NSNumber numberWithBool:NO] forKey:@"showSignatureView"];
-                    [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showDecryptedNoSignatureView"];
+                    [attachment setValue:@NO forKey:@"showSignatureView"];
+                    [attachment setValue:@YES forKey:@"showDecryptedNoSignatureView"];
                 }
                 else if(part.PGPVerified) {
-                    [attachment setValue:[NSNumber numberWithBool:NO] forKey:@"showSignatureView"];
-                    [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showDecryptedNoSignatureView"];
+                    [attachment setValue:@NO forKey:@"showSignatureView"];
+                    [attachment setValue:@YES forKey:@"showDecryptedNoSignatureView"];
                 }
                 else if(decrypted) {
-                    [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showSignatureView"];
-                    [attachment setValue:[NSNumber numberWithBool:NO] forKey:@"showDecryptedNoSignatureView"];
+                    [attachment setValue:@YES forKey:@"showSignatureView"];
+                    [attachment setValue:@NO forKey:@"showDecryptedNoSignatureView"];
                     [attachment setValue:localizedAttachmentMessage(@"ATTACHMENT_DECRYPTED_SUCCESSFULLY_TITLE") forKey:@"decryptionSuccessTitle"];
                     [attachment setValue:localizedAttachmentMessage(@"ATTACHMENT_DECRYPTED_SUCCESSFULLY_MESSAGE") forKey:@"decryptionSuccessMessage"];
                 }
             }
             else {
-                [attachment setValue:[NSNumber numberWithBool:YES] forKey:@"showSignatureView"];
+                [attachment setValue:@YES forKey:@"showSignatureView"];
                 if(part.PGPSigned) {
-                    [attachment setValue:[NSImage imageNamed:@"certificate.tiff"] forKey:@"errorBadgeImage"];
+                    [attachment setValue:[NSImage imageNamed:@"certificate"] forKey:@"errorBadgeImage"];
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"_MFShortDescription"] forKey:@"errorTitle"];
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"NSLocalizedDescription"] forKey:@"errorMessage"];
                 }
                 else if(!decrypted) {
-                    [attachment setValue:[attachment valueForKey:@"original-name"] forKey:@"decrypted-name"];
-                    [attachment setValue:[NSImage imageNamed:@"encryption.tiff"] forKey:@"errorBadgeImage"];
+                    [attachment setValue:[NSImage imageNamed:@"encryption"] forKey:@"errorBadgeImage"];
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"_MFShortDescription"] forKey:@"errorTitle"];
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"NSLocalizedDescription"] forKey:@"errorMessage"];
                 }                
@@ -88,7 +88,6 @@
             
             
             [attachments addObject:attachment];
-            [attachment release];
         }
     }
     return self;
@@ -126,11 +125,11 @@
 }
 
 - (void)beginSheetModalForWindow:(NSWindow *)modalWindow completionHandler:(void (^)(NSInteger result))handler {
-	[NSApp beginSheet:self.window modalForWindow:modalWindow modalDelegate:self didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:handler];
+	[NSApp beginSheet:self.window modalForWindow:modalWindow modalDelegate:self didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:(__bridge void *)(handler)];
 }
 
 - (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
-	((void (^)(NSInteger result))contextInfo)(NSOKButton);
+	((__bridge void (^)(NSInteger result))contextInfo)(NSOKButton);
 }
 
 - (void)setAttachmentParts:(NSArray *)attachmentParts {
@@ -139,11 +138,10 @@
 
 - (void)setAttachmentIndexes:(NSIndexSet *)value {
 	if (value != attachmentIndexes) {
-		[attachmentIndexes release];
-		attachmentIndexes = [value retain];
+		attachmentIndexes = value;
 		NSUInteger index;
 		if ([value count] > 0 && (index = [value firstIndex]) < [attachments count]) {
-			self.currentAttachment = [attachments objectAtIndex:index];
+			self.currentAttachment = attachments[index];
             self.signature = [self.currentAttachment valueForKey:@"signature"];
 		} else {
 			self.currentAttachment = nil;
@@ -154,8 +152,7 @@
 
 - (void)setSignature:(GPGSignature *)value {
 	if (value != signature) {
-		[signature release];
-		signature = [value retain];
+		signature = value;
 		
 		GPGKey *key = nil;
 		if (signature) {
@@ -170,7 +167,7 @@
 				}
 				fingerprint = [fingerprint stringByAppendingString:@"\n"];
 				for (key in keyList) {
-					if ([[key allFingerprints] rangeOfString:fingerprint].length > 0) {
+					if ([[key allFingerprints] member:fingerprint]) {
 						goto found;
 					}
 				}
@@ -187,8 +184,12 @@
 			return nil;
 		}
 		keyPath = [keyPath substringFromIndex:10];
-        if([self respondsToSelector:NSSelectorFromString(keyPath)])
-            return [self performSelector:NSSelectorFromString(keyPath)];
+        if([self respondsToSelector:NSSelectorFromString(keyPath)]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+			return [self performSelector:NSSelectorFromString(keyPath)];
+#pragma clang diagnostic pop
+		}
         if ([signature respondsToSelector:NSSelectorFromString(keyPath)]) {
 			return [signature valueForKey:keyPath];
 		}
@@ -236,20 +237,14 @@
 
 
 - (NSImage *)validityImage {
-	if (!signature) return nil;
-	
-	static NSArray *images = nil;
-	if (!images) {
-		images = [[NSArray alloc] initWithObjects:
-				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/ValidBadge.png"] autorelease],
-				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/InvalidBadge.png"] autorelease],
-				  nil];	
+	if (![signature isKindOfClass:[GPGSignature class]]) {
+		return nil;
 	}
 	if (signature.status != 0 || signature.trust <= 1) {
-		return [images objectAtIndex:1];
+		return [NSImage imageNamed:@"InvalidBadge"];
 	} else {
-		return [images objectAtIndex:0];
-	}		
+		return [NSImage imageNamed:@"ValidBadge"];
+	}
 }
 
 - (NSString *)emailAndID {
@@ -267,7 +262,7 @@
             [value appendString:@")"];
     }
     
-    return [value autorelease];
+    return value;
 }
 
 - (NSString *)validityDescription {
@@ -302,22 +297,14 @@
 }
 
 - (NSImage *)signatureImage {
-	static NSArray *images = nil;
-	if (!images) {
-		images = [[NSArray alloc] initWithObjects: 
-				  [[[NSImage alloc] initWithContentsOfFile:@"/System/Library/Frameworks/SecurityInterface.framework/Resources/CertLargeStd.png"] autorelease],
-				  [[[NSImage alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForImageResource:@"GPGCertLargeNotTrusted"]] autorelease],
-				  nil];		
+	if (![signature isKindOfClass:[GPGSignature class]]) {
+		return nil;
 	}
-	
-	if ([signature isKindOfClass:[GPGSignature class]]) {
-		if (signature.status != 0 || signature.trust <= 1) {
-			return [images objectAtIndex:1];
-		} else {
-			return [images objectAtIndex:0];
-		}		
+	if (signature.status != 0 || signature.trust <= 1) {
+		return [NSImage imageNamed:@"CertLargeNotTrusted"];
+	} else {
+		return [NSImage imageNamed:@"CertLargeStd"];
 	}
-	return nil;
 }
 
 - (IBAction)close:(id)sender {
@@ -334,8 +321,8 @@
 }
 - (void)splitView:(NSSplitView *)splitView resizeSubviewsWithOldSize:(NSSize)oldSize {
 	NSArray *subviews = [splitView subviews];
-	NSView *view1 = [subviews objectAtIndex:0];
-	NSView *view2 = [subviews objectAtIndex:1];
+	NSView *view1 = subviews[0];
+	NSView *view2 = subviews[1];
 	NSSize splitViewSize = [splitView frame].size;
 	NSSize size1 = [view1 frame].size;
 	NSRect frame2 = [view2 frame];
@@ -357,7 +344,7 @@
 
 - (void)awakeFromNib {
     // Get attachment for row.
-    NSDictionary *attachment = [attachments objectAtIndex:0];
+    NSDictionary *attachment = attachments[0];
     if([attachment valueForKey:@"error"])
         [scrollView setBackgroundColor:[NSColor colorWithDeviceRed:1.0 green:0.9451 blue:0.6074 alpha:1.0]];
     else
@@ -430,31 +417,13 @@
 
 - (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex {
     // Get attachment for row.
-    NSDictionary *attachment = [attachments objectAtIndex:rowIndex];
+    NSDictionary *attachment = attachments[rowIndex];
     if([attachment valueForKey:@"error"])
         [scrollView setBackgroundColor:[NSColor colorWithDeviceRed:1.0 green:0.9451 blue:0.6074 alpha:1.0]];
     else
         [scrollView setBackgroundColor:[NSColor whiteColor]];
     
     return YES;
-}
-
-- (void)dealloc {
-    [attachments release];
-    attachments = nil;
-    [attachmentIndexes release];
-    attachmentIndexes = nil;
-    [currentAttachment release];
-    currentAttachment = nil;
-    [signature release];
-    signature = nil;
-    [keyList release];
-    keyList = nil;
-    [gpgKey release];
-    gpgKey = nil;
-    
-    
-    [super dealloc];
 }
 
 @end

@@ -1,0 +1,13 @@
+/* 
+ GPGAttachment.strings
+ GPGMail
+ 
+ Created by Lukas Pitschl on 03.12.11.
+ Copyright (c) 2011 __MyCompanyName__. All rights reserved.
+ */
+"SIGNATURE_ERROR_GENERAL_TITLE" = "Verifiëren van handtekening is gefaald.";
+"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "De publieke sleutel om de handtekening te verifiëren staat niet in uw keychain.\nDownload a.u.b. the publieke sleutel %@ met GPG Keychain Access.";
+"DECRYPT_ERROR_GENERAL_TITLE" = "Het ontsleutelen van de bijlage is gefaald.";
+"DECRYPT_ERROR_GENERAL_MESSAGE" = "De geheime sleutel om deze bijlage te ontsleutelen staat niet in uw keychain.";
+"ATTACHMENT_DECRYPTED_SUCCESSFULLY_TITLE" = "De bijlage is succesvol ontsleuteld.";
+"ATTACHMENT_DECRYPTED_SUCCESSFULLY_MESSAGE" = "Open een bijlage in de berichtweergave door er dubbel op te klikken.";

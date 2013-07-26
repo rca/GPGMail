@@ -34,27 +34,18 @@
 #import "Message+GPGMail.h"
 #import "GPGMailBundle.h"
 #import "ActivityMonitor.h"
-#import "BannerController.h"
 #import "MessageContentController+GPGMail.h"
 
 @implementation MessageContentController_GPGMail : NSObject
 
 - (void)decryptPGPMessage {
-    [[((MessageContentController *)self) message] setIvar:@"shouldBeDecrypting" value:[NSNumber numberWithBool:YES]];
+    [[((MessageContentController *)self) message] setIvar:@"shouldBeDecrypting" value:@YES];
     [((MessageContentController *)self) reloadCurrentMessageShouldReparseBody:YES];
 }
 
 - (void)MASetMessageToDisplay:(id)message {
-    [message setIvar:@"UserSelectedMessage" value:[NSNumber numberWithBool:YES]];
+    [message setIvar:@"UserSelectedMessage" value:@YES];
     [self MASetMessageToDisplay:message];
-}
-
-- (void)MA_backgroundLoadFinished:(MessageViewingState *)messageViewingState {
-    [self MA_backgroundLoadFinished:messageViewingState];
-    BOOL showBanner = ((MessageContentController *)self).message.shouldShowErrorBanner;
-    
-    if(((MessageContentController *)self).message && showBanner)
-        [(BannerController *)[self valueForKey:@"_bannerController"] _showCertificateBanner];
 }
 
 @end

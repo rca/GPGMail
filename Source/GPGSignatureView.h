@@ -18,7 +18,7 @@
 }
 
 //Private
-@property (retain) NSIndexSet *signatureIndexes;
+@property (strong) NSIndexSet *signatureIndexes;
 @property (readonly) GPGKey *gpgKey;
 
 - (IBAction)switchDetailView:(NSButton *)sender;
@@ -28,8 +28,8 @@
 
 
 //Public
-@property (retain) NSSet *keyList;
-@property (retain) NSArray *signatures;
+@property (strong) NSSet *keyList;
+@property (strong) NSArray *signatures;
 
 + (id)signatureView;
 

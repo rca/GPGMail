@@ -1,0 +1,170 @@
+/* Description of version prefixed with <Version:> */
+"VERSION: %@" = "Verzia: %@";
+
+/* PGP preferences panel name */
+"PGP_PREFERENCES" = "GPGMail";
+
+/* Message Error Banner messages. */
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "PGP správu nie je možné dešifrovať.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "Nastal problém s dešifrovaním tejto správy. Overte, či sa vo vašej GPG databáze nachádza správny kľúč.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Podpis PGP správy nie je možné overiť.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Nastal problém s čítaním PGP podpisu tejto správy.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "PGP kľúč pre túto správu nie je vo vašej GPG databáze.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Správa obsahuje platný PGP podpis, avšak vaša GPG databáza neobsahuje korešpondujúci PGP kľúč. Použite, prosím, program GPG Keychain Access na jeho pridanie.";
+"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Pre tento PGP kľúč nie sú dostupné žiadne informácie.";
+"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "O tomto PGP kľúči nie sú známe žiadne ďalšie informácie, pretože nie je vo vašej GPG databáze.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Chýba tajný kľúč na dešifrovanie správy.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Dešifrovanie zlyhalo pre neznámu chybu!";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Počas dešifrovania tejto správy nastala neznáma chyba.\n\nKontaktujte nás, prosím, na http://support.gpgtools.org.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Dešifrovanie zlyhalo pre neznámu chybu!";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Počas dešifrovania tejto správy nastala neznáma chyba.\n\nGPG kód chyby:\n%@\nKontaktujte nás, prosím, na http://support.gpgtools.org a vo vašej správe uveďte kód chyby.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Na zašifrovanie tejto správy bol použitý nesprávny kľúč.";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Túto správu nebolo možné dešifrovať, pretože na jej zašifrovanie bol použitý nesprávny verejný kľúč.\n\nKontaktujte nás, prosím, na http://support.gpgtools.org.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Zašifrovaná správa je poškodená.";
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Táto zašifrovaná správa je poškodená a nie je možné ju dešifrovať.\n\nPožiadajte, prosím, odosielateľa o jej opätovné zaslanie.";
+
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Podpisový kľúč bol zrušený.";
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "POZOR: Kľúč použitý na podpísanie tejto správy bol zrušený.\n\nPomocou programu GPG Keychain Access by ste mali obnoviť kľúč s identifikačným reťazcom %@, aby ste zistili, či nie je k dispozícii nový. Pokiaľ nie je, alebo bol zrušený aj ten, kontaktujte odosielateľa.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Kľúč patriaci k podpisu tejto správy sa nenachádza vo vašej GPG databáze.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Správa nemohla byť overená, pretože kľúč použitý na jej podpísanie sa nenachádza vo vašej GPG databáze.\n\nPre overenie správy vyhľadajte pomocou programu GPG Keychain Access kľúč s identifikačným reťazcom %@ a importujte ho.";
+
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "Podpis správy bol vytvorený pomocou algoritmu, ktorý nie je podporovaný.";
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Táto správa nemohla byť overená, pretože jej podpis bol vytvorený pomocou algoritmu, ktorý nie je podporovaný.\n\nKontaktujte nás, prosím, na http://support.gpgtools.org.";
+
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "POZOR: Podpis správy je neplatný!";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "POZOR: Táto správa mohla byť pozmenená po vytvorení podpisu.\n\nKontaktujte, prosím, odosielateľa, aby ste sa uistili, že obsah správy zodpovedá originálu.\n\nAk ste si istý, že správa nebola pozmenená, kontaktujte nás, prosím, na http://support.gpgtools.org.";
+
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Overovanie podpisu zlyhalo pre neznámu chybu!";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Počas overovanie podpisu tejto správy došlo k neznámej chybe.\n\nKontaktujte nás, prosím, na http://support.gpgtools.org.";
+
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Chyba informačného súboru podpisu správy.";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Podpis tejto správy je neplatný a nie je možné ho overiť.\n\nKontaktujte nás, prosím, na http://support.gpgtools.org.";
+
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Kľúč k danému podpisu správy je exspirovaný.";
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "POZOR: Kľúč použitý na podpísanie tejto správy je exspirovaný.\n\nMôžete sa pokúsiť o obnovenie kľúča s identifikačným reťazcom %@ pomocou programu GPG Keychain Access, alebo kontaktovať odosielateľa.";
+
+"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Podpis je exspirovaný.";
+"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Podpis je exspirovaný a nie je možné ho overiť.\n\nKontaktujte odosielateľa.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d príloh nebolo možné dešifrovať alebo overiť.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Pre ďalšie informácie, prosím, kliknite na ikonu prílohy v hlavičke správy.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_TITLE" = "%d príloh nebolo možné overiť.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_MESSAGE" = "Pre ďalšie informácie, prosím, kliknite na ikonu prílohy v hlavičke správy.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_TITLE" = "%d príloh nebolo možné dešifrovať.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_MESSAGE" = "Pre ďalšie informácie, prosím, kliknite na ikonu prílohy v hlavičke správy.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_TITLE" = "%d príloh nebolo možné overiť.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_MESSAGE" = "Pre ďalšie informácie, prosím, kliknite na ikonu prílohy v hlavičke správy.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_TITLE" = "%d príloh nebolo možné dešifrovať.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE" = "Pre ďalšie informácie, prosím, kliknite na ikonu prílohy v hlavičke správy.";
+
+/* Message Error Banner Attachment messages. */
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Chýba tajný kľúč na dešifrovanie prílohy.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Dešifrovanie zlyhalo pre neznámu chybu!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Počas dešifrovania tejto prílohy nastala neznáma chyba.\n\nKontaktujte nás, prosím, na http://support.gpgtools.org.";    
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "Dešifrovanie zlyhalo pre neznámu chybu!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Počas dešifrovania tejto prílohy nastala neznáma chyba.\n\nGPG kód chyby:\n%@\nKontaktujte nás, prosím, na http://support.gpgtools.org a vo vašej správe uveďte kód chyby.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Na zašifrovanie tejto prílohy bol použitý nesprávny kľúč.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Túto prílohu nebolo možné dešifrovať, pretože na jej zašifrovanie bol použitý nesprávny verejný kľúč.\n\nKontaktujte nás, prosím, na http://support.gpgtools.org.";    
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Zašifrovaná príloha je poškodená.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Táto zašifrovaná príloha je poškodená a nie je možné ju dešifrovať.\n\nPožiadajte, prosím, odosielateľa o jej opätovné zaslanie.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Podpisový kľúč bol zrušený.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "POZOR: Kľúč použitý na podpísanie tejto prílohy bol zrušený.\n\nPomocou programu GPG Keychain Access by ste mali obnoviť kľúč s identifikačným reťazcom %@, aby ste zistili, či nie je k dispozícii nový. Pokiaľ nie je, alebo bol zrušený aj ten, kontaktujte odosielateľa.";    
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Tento podpisový kľúč nie je vo vašej GPG databáze.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Príloha nemohla byť overená, pretože kľúč použitý na jej podpísanie sa nenachádza vo vašej GPG databáze.\n\nPre overenie správy vyhľadajte pomocou programu GPG Keychain Access kľúč s identifikačným reťazcom %@ a importujte ho.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "Podpis prílohy bol vytvorený pomocou algoritmu, ktorý nie je podporovaný.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Táto príloha nemohla byť overená, pretože jej podpis bol vytvorený pomocou algoritmu, ktorý nie je podporovaný.\n\nKontaktujte nás, prosím, na http://support.gpgtools.org.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "POZOR: Podpis prílohy je neplatný!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "POZOR: Táto príloha mohla byť pozmenená po vytvorení podpisu.\n\nKontaktujte, prosím, odosielateľa, aby ste sa uistili, že obsah správy zodpovedá originálu.\n\nAk ste si istý, že správa nebola pozmenená, kontaktujte nás, prosím, na http://support.gpgtools.org.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Overenie podpisu zlyhalo pre neznámu chybu!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Počas overovania tohto podpisu prílohy nastala neznáma chyba.\n\nKontaktujte nás, prosím, na http://support.gpgtools.org.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Chyba informačného súboru podpisu.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Tento podpis prílohy je neplatný a nie je možné ho overiť.\n\nKontaktujte nás, prosím, na http://support.gpgtools.org.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Kľúč k danému podpisu je exspirovaný.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "POZOR: Kľúč použitý na podpísanie tejto prílohy je exspirovaný.\n\nMôžete sa pokúsiť o obnovenie kľúča s identifikačným reťazcom %@ pomocou programu GPG Keychain Access, alebo kontaktovať odosielateľa.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Podpis prílohy je exspirovaný.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Podpis prílohy je exspirovaný a nie je možné ho overiť.\n\nKontaktujte odosielateľa.";
+
+"MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Parciálne zašifrované";
+"MESSAGE_IS_PGP_PARTLY_SIGNED" = "Parciálne podpísané";
+"MESSAGE_IS_PGP_ENCRYPTED" = "Zašifrované";
+"MESSAGE_IS_PGP_SIGNED" = "Podpísané";
+"MESSAGE_IS_PGP_SIGNED_INVALID" = "Neplatný podpis";
+
+/* Security Header signature related. */
+"MESSAGE_SECURITY_HEADER_SIGNATURE_NO_PUBLIC_KEY_TITLE" = "Podpísané neznámym kľúčom";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE" = "Podpísané zrušeným kľúčom";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE" = "Neplatný podpis";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE" = "Podpísané";
+
+/* Security header attachments related. */
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE" = "zašifrovaná/podpísaná príloha";
+"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_ENCRYPTED_TITLE" = "zašifrované/podpísané prílohy";
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_ENCRYPTED_TITLE" = "zašifrovaná príloha";
+"MESSAGE_SECURITY_HEADER_ATTACHMENTS_ENCRYPTED_TITLE" = "zašifrované prílohy";
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_TITLE" = "podpísaná príloha";
+"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "podpísané prílohy";
+
+/* Compose Window encrypt/sign button tooltips. */
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "Táto správa nemôže byť podpísaná, pretože súkromný kľúč pre %@ nie je dostupný.\n\nUistite sa, prosím, že v programe GPG Keychain Access existuje súkromný kľúč pre túto adresu. Pridajte nové UID k existujúcemu kľúču pre túto adresu, ak je to potrebné, alebo pre túto adresu vytvorte nový kľúč.\n\nAk pre túto adresu kľúč už existuje, uistite sa, že adresa v nastaveniach programu Mail je správna a presne zodpovedá adrese vášho kľúča.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "Táto správa nemôže byť zašifrovaná, pretože pre adresu %@ nie sú dostupné žiadne verejné kľúče.\n\nNa ich vyhľadanie a importovanie použite, prosím, program GPG Keychain Access.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "Táto správa nemôže byť zašifrovaná. Najskôr musíte zadať aspoň jedného adresáta.";
+
+/* Message view pgp part. */
+"MESSAGE_VIEW_PGP_PART_ENCRYPTED" = "Zašifrované";
+"MESSAGE_VIEW_PGP_PART_SIGNED" = "Podpísané";    
+"MESSAGE_VIEW_PGP_PART" = "PGP časť";
+
+/* GPGMail Preferences strings. */
+"GPG_STATUS_NO_ERROR_TITLE" = "GPGMail je pripravený.";
+"GPG_STATUS_NO_ERROR_TOOLTIP" = "Vaša MacGPG inštalácia pracuje bezchybne."; 
+"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 nie je nainštalovaný. Skontrolujte vašu inštaláciu.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Pre nainštalovanie všetkých modulov GPGTools stiahnite, prosím, inštalátor GPGTools z http://www.gpgtools.org.";
+"GPG_STATUS_OTHER_ERROR_TITLE" = "Skontrolujte vašu inštaláciu a konfiguráciu, prosím.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Pre nainštalovanie všetkých modulov GPGTools stiahnite, prosím, inštalátor GPGTools z http://www.gpgtools.org.";
+
+/* Multiple GPGMail installations. */
+"GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Boli nájdené viaceré inštalácie GPGMail!";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "GPGMail objavil viaceré inštalácie v nasledovných lokáciách, čo vedie k okamžitému ukončeniu programu:\n\n%@\n\nOdstráňte, prosím, súbor GPGMail.mailbundle z jednej z uvedených lokácií a reštartujte program Mail.\n";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Ukončiť Mail";
+
+/* Errors while trying to sign a message. */
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Signing your message failed due to defect PIN-Entry!";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "The PIN-Entry helper responsible for asking for your passphrase seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools";
+
+"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Signing your message failed due to defect GPG agent!";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "The GPG agent which is a crucial part of GPG seems to be defect on your system.\n\nTo fix this problem, re-install the newest version of GPGTools";
+
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "Signing your message failed due to GPG agent communication error!";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "It was not possible to talk to the GPG agent in order to request your passphrase.\n\nTo fix this problem, re-install the newest version of GPGTools";
+
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "Signing your message failed because an unknown error has occured";
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately we can't handle the error at this point.";
+
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Encrypting your message failed because an unknown error has occured";
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately GPGMail can't handle the error at this point.";
+
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at http://support.gpgtools.org with the following error description:\n\n%@";
+

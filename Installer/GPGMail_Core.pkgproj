@@ -7,7 +7,7 @@
 		<key>PACKAGE_FILES</key>
 		<dict>
 			<key>DEFAULT_INSTALL_LOCATION</key>
-			<string>/private/tmp/org.gpgtools/gpgmail_lml_install</string>
+			<string>/</string>
 			<key>HIERARCHY</key>
 			<dict>
 				<key>CHILDREN</key>
@@ -50,7 +50,41 @@
 						<array>
 							<dict>
 								<key>CHILDREN</key>
-								<array/>
+								<array>
+									<dict>
+										<key>CHILDREN</key>
+										<array>
+											<dict>
+												<key>CHILDREN</key>
+												<array/>
+												<key>GID</key>
+												<integer>80</integer>
+												<key>PATH</key>
+												<string>../UUID Patcher/uuid-patcher</string>
+												<key>PATH_TYPE</key>
+												<integer>1</integer>
+												<key>PERMISSIONS</key>
+												<integer>493</integer>
+												<key>TYPE</key>
+												<integer>3</integer>
+												<key>UID</key>
+												<integer>0</integer>
+											</dict>
+										</array>
+										<key>GID</key>
+										<integer>80</integer>
+										<key>PATH</key>
+										<string>GPGTools</string>
+										<key>PATH_TYPE</key>
+										<integer>0</integer>
+										<key>PERMISSIONS</key>
+										<integer>493</integer>
+										<key>TYPE</key>
+										<integer>2</integer>
+										<key>UID</key>
+										<integer>0</integer>
+									</dict>
+								</array>
 								<key>GID</key>
 								<integer>80</integer>
 								<key>PATH</key>
@@ -146,7 +180,24 @@
 							</dict>
 							<dict>
 								<key>CHILDREN</key>
-								<array/>
+								<array>
+									<dict>
+										<key>CHILDREN</key>
+										<array/>
+										<key>GID</key>
+										<integer>0</integer>
+										<key>PATH</key>
+										<string>../UUID Patcher/org.gpgtools.gpgmail.patch-uuid.plist</string>
+										<key>PATH_TYPE</key>
+										<integer>1</integer>
+										<key>PERMISSIONS</key>
+										<integer>420</integer>
+										<key>TYPE</key>
+										<integer>3</integer>
+										<key>UID</key>
+										<integer>0</integer>
+									</dict>
+								</array>
 								<key>GID</key>
 								<integer>0</integer>
 								<key>PATH</key>

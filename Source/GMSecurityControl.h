@@ -105,9 +105,9 @@ typedef enum {
  */
 - (void)updateStatusFromImage:(NSImage *)image;
 
-@property (nonatomic, retain) NSSegmentedControl *control;
+@property (nonatomic, strong) NSSegmentedControl *control;
 @property (nonatomic, assign) SECURITY_BUTTON_TAG securityTag;
-@property (nonatomic, retain) NSString *forcedImageName;
+@property (nonatomic, strong) NSString *forcedImageName;
 
 @end
 

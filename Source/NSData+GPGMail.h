@@ -68,6 +68,7 @@
  only the current part is checked for inline data and the range returned.
  */
 - (NSRange)rangeOfPGPInlineEncryptedData;
+- (NSRange)rangeOfPGPInlineSignaturesInRange:(NSRange)range;
 
 /**
  Checks if the data might contain PGP encrypted data and/or sigs
