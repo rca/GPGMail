@@ -10,10 +10,6 @@ function log {
     fi
 }
 
-function onExit {
-    exit 0
-}
-
 function gpgMailInstallPath {
     sysdir="/Library/Mail/Bundles"
     netdir="/Network/Library/Mail/Bundles"
@@ -49,7 +45,7 @@ function updatePlistWithUUIDIfNecessary {
     fi
 }
 
-function onStart {
+function patchUUIDs {
     echo "[uuid-patcher] Trying to find GPGMail bundle..."
     # Location of the GPGMail bundle
     bundlePath=$(gpgMailInstallPath)
@@ -86,13 +82,6 @@ function onStart {
 # Setting up the logfile.
 exec >> $LOGFILE 2>&1
 
-# Setup the signals to trap which will invoke
-# the onExit handler.
-trap onExit SIGHUP SIGINT SIGTERM
+patchUUIDs
 
-onStart
-
-# Sleep for approx. a year. Every user should shutdown there computer at
-# least once a year.
-sleep 31536000 &
-wait $!
+exit 0
