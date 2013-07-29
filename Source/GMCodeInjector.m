@@ -123,7 +123,10 @@
                             @"selectors": @[@"sharedPreferences",
                              @"windowWillResize:toSize:",
                              @"toolbarItemClicked:",
-                             @"showPreferencesPanelForOwner:"]}];
+                             @"showPreferencesPanelForOwner:"]},
+							@{@"class": @"MessageRouter",
+							  @"gpgMailClass": @"MessageRouter_GPGMail",
+							  @"selectors": @[@"putRulesThatWantsToHandleMessage:intoArray:colorRulesOnly:"]}];
 	
 	NSError *error = nil;
     for(NSDictionary *swizzleInfo in swizzleMap) {

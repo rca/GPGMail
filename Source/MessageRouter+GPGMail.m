@@ -1,4 +1,4 @@
-/* GMMessageRulesApplier.m created by Lukas Pitschl (@lukele) on Fri 14-Jun-2013 */
+/* MessageRouter+GPGMail.m created by Lukas Pitschl (@lukele) on Fri 29-Jul-2013 */
 
 /*
  * Copyright (c) 2000-2013, GPGTools Team <team@gpgtools.org>
@@ -27,60 +27,44 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "CCLog.h"
-#import "GMMessageRulesApplier.h"
-#import "Message+GPGMail.h"
-#import "MessageStore.h"
+#import "MessageRouter+GPGMail.h"
+#import "MessageCriterion.h"
 #import "NSObject+LPDynamicIvars.h"
+#import "NSArray+Functional.h"
+#import "MessageRule.h"
 
-@interface GMMessageRulesApplier ()
+@implementation MessageRouter_GPGMail
 
-@property (nonatomic, strong) NSMutableArray *messages;
-
-@end
-
-@implementation GMMessageRulesApplier
-
-@synthesize messages = _messages;
-
-- (id)init {
-	if(self = [super init]) {
-		_rulesQueue	= dispatch_queue_create("org.gpgmail.rules", NULL);;
-		_messages	= [[NSMutableArray alloc] init];
-	}
-	return self;
-}
-
-- (void)scheduleMessage:(Message *)message isEncrypted:(BOOL)isEncrypted {
-	id messageID = [message messageID];
-	typeof(self) __weak weakSelf = self;
++ (void)MAPutRulesThatWantsToHandleMessage:(id)message intoArray:(id)rules colorRulesOnly:(BOOL)colorRulesOnly {
+	[self MAPutRulesThatWantsToHandleMessage:message intoArray:rules colorRulesOnly:colorRulesOnly];
 	
-	// EWSMessage seems to be a special type of message related
-	// to exchange. Don't apply rules for those messages, not worth
-	// it. Don't even have a message id.
-	if([message isKindOfClass:[NSClassFromString(@"EWSMessage") class]])
+	// Not triggered by ourselves to handle encrypted and signed message related rules?
+	// Out of here!
+	if(![message getIvar:@"OnlyIncludeEncryptedAndSignedRules"])
 		return;
 	
-	dispatch_async(_rulesQueue, ^{
-		typeof(weakSelf) __strong strongSelf = weakSelf;
-		// Is it possible that messages don't have a message ID.
-		if(!messageID) {
-			DebugLog(@"[GPGMail] %@ Message has no ID! Message: %@ - Class: %@", NSStringFromSelector(_cmd), message, [message class]);
-			return;
+	// Only keep the rules which evaluate the encrypted or signed flag.
+	NSArray *encryptedOrSignedRules = [rules filter:^MessageRule *(MessageRule *rule) {
+		BOOL criteriaMatches = NO;
+		for(MessageCriterion *criterion in rule.criteria) {
+			if(criterion.criterionType == 18 || criterion.criterionType == 19) {
+				criteriaMatches = YES;
+				break;
+			}
 		}
 		
-		if(![strongSelf.messages containsObject:messageID] || isEncrypted) {
-			[strongSelf.messages addObject:messageID];
-			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-				[message setIvar:@"OnlyIncludeEncryptedAndSignedRules" value:@(YES)];
-				[[message dataSourceProxy] routeMessages:@[message] isUserAction:NO];
-			});
-		}
-	});
-}
-
-- (void)dealloc {
-	dispatch_release(_rulesQueue);
+		return criteriaMatches ? rule : nil;
+	}];
+	
+	// Usually it might be dangerous to remove all objects
+	// Remove all rules and only re-add those that are handling
+	// encrypted and|or signed messages.
+	[rules removeAllObjects];
+	[rules addObjectsFromArray:encryptedOrSignedRules];
+	
+	[message removeIvar:@"OnlyIncludeEncryptedAndSignedRules"];
+	
+	return;
 }
 
 @end
