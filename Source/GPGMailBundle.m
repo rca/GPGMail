@@ -40,6 +40,7 @@
 #import "MVMailBundle.h"
 #import "Message.h"
 #import "NSString+GPGMail.h"
+#import "NSBundle+Sandbox.h"
 
 
 @interface GPGMailBundle ()
@@ -106,7 +107,13 @@ static BOOL gpgMailWorks = NO;
 #pragma mark Init, dealloc etc.
 
 + (void)initialize {
-	// Make sure the initializer is only run once.
+    // Check the validity of the code signature.
+    if([[self bundle] ob_codeSignState] != OBCodeSignStateSignatureValid) {
+        NSRunAlertPanel(@"Someone tampered with your installation of GPGMail!", @"To keep you safe, GPGMail will not be loaded!\n\nPlease download and install the latest version of GPG Suite from https://gpgtools.org to be sure you have an original version from us!", @"", nil, nil, nil);
+        return;
+    }
+    
+    // Make sure the initializer is only run once.
     // Usually is run, for every class inheriting from
     // GPGMailBundle.
     if(self != [GPGMailBundle class])
@@ -128,7 +135,6 @@ static BOOL gpgMailWorks = NO;
     // never happens!
     if(!mvMailBundleClass)
         return;
-    
     
     if (![GPGController class]) {
 		NSRunAlertPanel([self localizedStringForKey:@"LIBMACGPG_NOT_FOUND_TITLE"], [self localizedStringForKey:@"LIBMACGPG_NOT_FOUND_MESSAGE"], nil, nil, nil);
