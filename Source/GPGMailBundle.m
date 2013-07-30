@@ -107,11 +107,13 @@ static BOOL gpgMailWorks = NO;
 #pragma mark Init, dealloc etc.
 
 + (void)initialize {
+#ifndef DEBUG
     // Check the validity of the code signature.
     if([[self bundle] ob_codeSignState] != OBCodeSignStateSignatureValid) {
         NSRunAlertPanel(@"Someone tampered with your installation of GPGMail!", @"To keep you safe, GPGMail will not be loaded!\n\nPlease download and install the latest version of GPG Suite from https://gpgtools.org to be sure you have an original version from us!", @"", nil, nil, nil);
         return;
     }
+#endif
     
     // Make sure the initializer is only run once.
     // Usually is run, for every class inheriting from
