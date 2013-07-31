@@ -61,17 +61,16 @@
 	if([message isKindOfClass:[NSClassFromString(@"EWSMessage") class]])
 		return;
 	
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		_rulesDict = [NSMutableDictionary dictionaryWithDictionary:[(GPGOptions *)[GPGOptions sharedOptions] objectForKey:@"MapOfMessagesWereRulesWereApplied"]];
+	});
+	
 	dispatch_async(_rulesQueue, ^{
 		if(!messageID)
 			return;
 		
-		static dispatch_once_t onceToken;
-		dispatch_once(&onceToken, ^{
-			_rulesDict = [NSMutableDictionary dictionaryWithDictionary:[(GPGOptions *)[GPGOptions sharedOptions] objectForKey:@"MapOfMessagesWereRulesWereApplied"]];
-		});
-
 		// Check if the rules were not already applied to this message.
-		
 		if([_rulesDict objectForKey:[(NSString *)messageID description]])
 			return;
 		
