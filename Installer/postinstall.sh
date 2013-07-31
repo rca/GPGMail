@@ -135,6 +135,17 @@ done
 ################################################################################
 
 
+# Disable Mail.app 32-bit mode if needed #######################################
+PlistBuddy=/usr/libexec/PlistBuddy
+plist=$HOME/Library/Preferences/com.apple.LaunchServices.plist
+
+if [[ "$($PlistBuddy -c "print LSArchitecturesForX86_64v2:com.apple.mail:1" "$plist")"  == "i386" ]] ;then
+    $PlistBuddy -c "set LSArchitecturesForX86_64v2:com.apple.mail:1 x86_64" "$plist"
+    killall -HUP Finder Dock
+fi
+################################################################################
+
+
 
 
 exit 0

@@ -3429,7 +3429,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT\"\nalias localizeXIB=Dependencies/GPGTools_Core/bin/localizeXIB\nignore=Dependencies/GPGTools_Core/resources/l10n_ignored_strings.txt\n\n\nlocalizeXIB -i \"$ignore\" Resources/en.lproj/GPGMailPreferences.xib ca cs da de es et fi fr gl id_ID it nb nl_NL pl pt_BR pt_PT ru sk sv tr_TR zh_CN\nlocalizeXIB -i \"$ignore\" Resources/en.lproj/GPGSignatureView.xib ca cs da de es et fi fr gl id_ID it nb nl_NL pl pt_BR pt_PT ru sk sv tr_TR zh_CN\nlocalizeXIB -i \"$ignore\" Resources/en.lproj/GPGAttachments.xib ca cs da de es et fi fr gl id_ID it nb nl_NL pl pt_BR pt_PT ru sk sv tr_TR zh_CN\n\n";
+			shellScript = "cd \"$SRCROOT\"\nalias localizeXIB=Dependencies/GPGTools_Core/bin/localizeXIB\nignore=Dependencies/GPGTools_Core/resources/l10n_ignored_strings.txt\n\n\nlocalizeXIB -i \"$ignore\" Resources/en.lproj/GPGMailPreferences.xib ca cs da de es et fi fr gl id_ID it nb nl_NL pl pt_BR pt_PT ru sk sv tr_TR zh_CN &\nlocalizeXIB -i \"$ignore\" Resources/en.lproj/GPGSignatureView.xib ca cs da de es et fi fr gl id_ID it nb nl_NL pl pt_BR pt_PT ru sk sv tr_TR zh_CN &\nlocalizeXIB -i \"$ignore\" Resources/en.lproj/GPGAttachments.xib ca cs da de es et fi fr gl id_ID it nb nl_NL pl pt_BR pt_PT ru sk sv tr_TR zh_CN\n\n# Wait for all jobs.\nwhile [[ -n \"$(jobs -r)\" ]] ;do sleep 0.2; done\n\n";
 			showEnvVarsInLog = 0;
 		};
 		30F151C51500BD4500980642 /* Fill Info.plist */ = {
@@ -3459,7 +3459,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "################################################\n# Install the bundle in ~/Library/Mail/bundles #\n################################################\n\n[[ \"0$INSTALL_GPGMAIL\" -eq 1 ]] || exit 0\n\n\nrm -r \"$HOME/Library/Mail/Bundles/$FULL_PRODUCT_NAME\"\n\n# Copy the Bundle\nmkdir -p ~/Library/Mail/Bundles/\ncp -RH \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" \"$HOME/Library/Mail/Bundles/\"\n";
+			shellScript = "################################################\n# Install the bundle in ~/Library/Mail/bundles #\n################################################\n\n[[ \"0$INSTALL_GPGMAIL\" -eq 1 ]] || exit 0\n\n\nrm -fr \"$HOME/Library/Mail/Bundles/$FULL_PRODUCT_NAME\"\n\n# Copy the Bundle\nmkdir -p ~/Library/Mail/Bundles/\ncp -RH \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" \"$HOME/Library/Mail/Bundles/\"\n";
 			showEnvVarsInLog = 0;
 		};
 		30F40BC012B76FAE002E2374 /* Make bundle */ = {
