@@ -347,7 +347,7 @@
 	
 	// isEncrypted has to be re-evaluated again, since it might contain a signed message
 	// but didn't have the key in cache, to correctly apply rules the first time around.
-	[[GPGMailBundle sharedInstance] scheduleApplyingRulesForMessage:self isEncrypted:self.isEncrypted];
+	[[GPGMailBundle sharedInstance] scheduleApplyingRulesForMessage:self isEncrypted:self.PGPEncrypted];
 }
 
 - (MFError *)errorSummaryForPGPAttachments:(NSArray *)attachments {

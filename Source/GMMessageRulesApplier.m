@@ -27,6 +27,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <Libmacgpg/Libmacgpg.h>
 #import "CCLog.h"
 #import "GMMessageRulesApplier.h"
 #import "Message+GPGMail.h"
@@ -53,7 +54,6 @@
 
 - (void)scheduleMessage:(Message *)message isEncrypted:(BOOL)isEncrypted {
 	id messageID = [message messageID];
-	typeof(self) __weak weakSelf = self;
 	
 	// EWSMessage seems to be a special type of message related
 	// to exchange. Don't apply rules for those messages, not worth
@@ -62,19 +62,31 @@
 		return;
 	
 	dispatch_async(_rulesQueue, ^{
-		typeof(weakSelf) __strong strongSelf = weakSelf;
-		// Is it possible that messages don't have a message ID.
-		if(!messageID) {
-			DebugLog(@"[GPGMail] %@ Message has no ID! Message: %@ - Class: %@", NSStringFromSelector(_cmd), message, [message class]);
+		if(!messageID)
 			return;
-		}
 		
-		if(![strongSelf.messages containsObject:messageID] || isEncrypted) {
-			[strongSelf.messages addObject:messageID];
-			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-				[message setIvar:@"OnlyIncludeEncryptedAndSignedRules" value:@(YES)];
-				[[message dataSourceProxy] routeMessages:@[message] isUserAction:NO];
-			});
+		// Check if the rules were not already applied to this message.
+		NSDictionary *rulesDict = [(GPGOptions *)[GPGOptions sharedOptions] objectForKey:@"MapOfMessagesWereRulesWereApplied"];
+		NSDictionary *mutableRulesDict = nil;
+		if(!rulesDict)
+			mutableRulesDict = [[NSDictionary dictionary] mutableCopy];
+		else
+			mutableRulesDict = [rulesDict mutableCopy];
+		
+		if([mutableRulesDict objectForKey:[NSString stringWithFormat:@"%@", messageID]])
+			return;
+		
+		// Apply the rules for the message.
+		[message setIvar:@"OnlyIncludeEncryptedAndSignedRules" value:@(YES)];
+		[[message dataSourceProxy] routeMessages:@[message] isUserAction:NO];
+		
+		// Add it to the rules dict, except if the message was encrypted and couldn't be decrypted
+		// because in that case, it's not possible to check if it was encrypted AND SIGNED.
+		BOOL saveRulesApplied = message.PGPEncrypted && !message.PGPDecrypted ? NO : YES;
+		
+		if(saveRulesApplied) {
+			[mutableRulesDict setValue:@(YES) forKey:messageID];
+			[[GPGOptions sharedOptions] setValue:mutableRulesDict forKey:@"MapOfMessagesWereRulesWereApplied"];
 		}
 	});
 }
