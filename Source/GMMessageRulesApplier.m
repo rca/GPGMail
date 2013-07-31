@@ -65,15 +65,14 @@
 		if(!messageID)
 			return;
 		
+		static dispatch_once_t onceToken;
+		dispatch_once(&onceToken, ^{
+			_rulesDict = [NSMutableDictionary dictionaryWithDictionary:[(GPGOptions *)[GPGOptions sharedOptions] objectForKey:@"MapOfMessagesWereRulesWereApplied"]];
+		});
+
 		// Check if the rules were not already applied to this message.
-		NSDictionary *rulesDict = [(GPGOptions *)[GPGOptions sharedOptions] objectForKey:@"MapOfMessagesWereRulesWereApplied"];
-		NSDictionary *mutableRulesDict = nil;
-		if(!rulesDict)
-			mutableRulesDict = [[NSDictionary dictionary] mutableCopy];
-		else
-			mutableRulesDict = [rulesDict mutableCopy];
 		
-		if([mutableRulesDict objectForKey:[NSString stringWithFormat:@"%@", messageID]])
+		if([_rulesDict objectForKey:[(NSString *)messageID description]])
 			return;
 		
 		// Apply the rules for the message.
@@ -85,8 +84,8 @@
 		BOOL saveRulesApplied = message.PGPEncrypted && !message.PGPDecrypted ? NO : YES;
 		
 		if(saveRulesApplied) {
-			[mutableRulesDict setValue:@(YES) forKey:messageID];
-			[[GPGOptions sharedOptions] setValue:mutableRulesDict forKey:@"MapOfMessagesWereRulesWereApplied"];
+			[_rulesDict setValue:@(YES) forKey:messageID];
+			[[GPGOptions sharedOptions] setValue:_rulesDict forKey:@"MapOfMessagesWereRulesWereApplied"];
 		}
 	});
 }

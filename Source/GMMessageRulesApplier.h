@@ -34,6 +34,7 @@
 @interface GMMessageRulesApplier : NSObject {
 	dispatch_queue_t _rulesQueue;
 	NSMutableArray *_messages;
+	NSMutableDictionary *_rulesDict;
 }
 
 - (id)init;
