@@ -550,7 +550,7 @@
     [topPart setBodyParameter:@"utf8" forKey:@"charset"];
     
     if(shouldSign) {
-        signedData = [topPart inlineSignedDataForData:data sender:[headers firstHeaderForKey:@"from"]];
+        signedData = [topPart inlineSignedDataForData:data sender:[headers firstAddressForKey:@"from"]];
         if (!signedData) {
             return nil;
         }
