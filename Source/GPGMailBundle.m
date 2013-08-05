@@ -117,15 +117,16 @@ static BOOL gpgMailWorks = NO;
 		return;
 	}
     
-#ifdef CODE_SIGN_CHECK
-	/* Check the validity of the code signature. */
-    if (![self bundle].isValidSigned) {
-		NSRunAlertPanel([self localizedStringForKey:@"CODE_SIGN_ERROR_TITLE"], [self localizedStringForKey:@"CODE_SIGN_ERROR_MESSAGE"], nil, nil, nil);
-        return;
-    }
-#endif
-
-    
+	/* Check the validity of the code signature.
+     * Disable for the time being, since Info.plist is part of the code signature
+     * and if a new version of OS X is released, and the UUID is added, this check
+     * will always fail.
+     * Probably not possible in the future either.
+     */
+//    if (![[self bundle] isValidSigned]) {
+//		NSRunAlertPanel([self localizedStringForKey:@"CODE_SIGN_ERROR_TITLE"], [self localizedStringForKey:@"CODE_SIGN_ERROR_MESSAGE"], nil, nil, nil);
+//        return;
+//    }
     
     // If one happens to have for any reason (like for example installed GPGMail
     // from the installer, which will reside in /Library and compiled with XCode
