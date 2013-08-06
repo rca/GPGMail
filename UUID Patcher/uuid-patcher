@@ -76,12 +76,30 @@ function patchUUIDs {
         updatePlistWithUUIDIfNecessary "$bundlePath/Contents/Info" $uuid2
     fi
 
-    echo "[uuid-patcher] Done!"
 }
+function enableBundles {
+    echo "[uuid-patcher] Enable bundles!"
+	
+	case "$(sw_vers -productVersion | cut -d . -f 2)" in
+		9) bundleCompVer=7 ;;
+		8) bundleCompVer=6 ;;
+		7) bundleCompVer=5 ;;
+		6) bundleCompVer=4 ;;
+		*) bundleCompVer=3 ;;
+	esac
+
+	defaults write com.apple.mail EnableBundles -bool YES
+	defaults write com.apple.mail BundleCompatibilityVersion -int $bundleCompVer
+}
+
 
 # Setting up the logfile.
 exec >> $LOGFILE 2>&1
 
 patchUUIDs
+enableBundles
+
+echo "[uuid-patcher] Done!"
+
 
 exit 0
