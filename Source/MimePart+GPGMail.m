@@ -650,11 +650,20 @@
     // To support exchange server modified messages, the first found octect-stream part
     // is used as data part. In case of exchange server modified messages, this part
     // is not necessarily the second immediately after the application/pgp-encrypted.
+	// The data might also be included in the application/pgp-encrypted part if available.
     MimePart *dataPart = nil;
     for(MimePart *part in [self subparts]) {
         if([part isType:@"application" subtype:@"octet-stream"])
             dataPart = part;
+		
+		// application/octet-stream still takes precedence and will overwrite
+		// the dataPart store here.
+		// In the same way, application/pgp-encrypted is only used, if no previous
+		// application/octet-stream part was found.
+		if([part isType:@"application" subtype:@"pgp-encrypted"] && !dataPart)
+			dataPart = part;
     }
+	
     MessageBody *decryptedMessageBody = nil;
     NSData *encryptedData = [dataPart bodyData];
     
@@ -1766,29 +1775,41 @@
     // exchange server, which unfortunately modifies the header.
     if([self _isExchangeServerModifiedPGPMimeEncrypted])
         return YES;
-    // Check for multipart/encrypted, protocol application/pgp-encrypted, otherwise exit!
-    if(![[[self type] lowercaseString] isEqualToString:@"multipart"] || ![[[self subtype] lowercaseString] isEqualToString:@"encrypted"])
+	// Check for multipart/encrypted, protocol application/pgp-encrypted, otherwise exit!
+    if(![self isType:@"multipart" subtype:@"encrypted"])
         return NO;
     
     if([self bodyParameterForKey:@"protocol"] != nil && ![[[self bodyParameterForKey:@"protocol"] lowercaseString] isEqualToString:@"application/pgp-encrypted"])
         return NO;
     
-    // Alright, passed. So next, subparts must be exactly 2!
-    if([(NSArray *)[self subparts] count] != 2)
-        return NO;
-    
-    MimePart *versionPart = [self subpartAtIndex:0];
-    MimePart *dataPart = [self subpartAtIndex:1];
-    
-    // Version Part is application/pgp- encrypted.
-    // Data Part is application/octet-stream OR application/pgp-signature (for FireGPG < 0.7.1)
-    if([[[versionPart type] lowercaseString] isEqualToString:@"application"] && [[[versionPart subtype] lowercaseString] isEqualToString:@"pgp-encrypted"] &&
-       [[[dataPart type] lowercaseString] isEqualToString:@"application"] && ([[[dataPart subtype] lowercaseString] isEqualToString:@"octet-stream"] ||
-                                                                              [[[dataPart subtype] lowercaseString] isEqualToString:@"pgp-signature"])) {
-           return [[versionPart bodyData] containsPGPVersionMarker:1];
-       }
-    
-    return NO;
+	// While the standard says there are to be exactly 2 child parts,
+	// there are some services like Microsoft Exchange (what a surprise)
+	// and MyMailWall which like to add parts.
+	// Also most iOS solutions are not able to create fully PGP/MIME compatible messages.
+	// So let's show some leniency for the greater good.
+	// IF we can find both parts, the version part and the data part, let's pretend
+	// like everything's fine.
+	
+	// Past me believes FireGPG < 0.7.1 included the actual encrypted data in a pgp-signature
+	// part so let's check for that as well.
+	
+	__block MimePart *versionPart = nil;
+	__block MimePart *dataPart = nil;
+	[self enumerateSubpartsWithBlock:^(MimePart *part) {
+		if([part isType:@"application" subtype:@"pgp-encrypted"]) {
+			if(!versionPart)
+				versionPart = part;
+		}
+		else if([part isType:@"application" subtype:@"octet-stream"] || [part isType:@"application" subtype:@"pgp-signature"]) {
+			if(!dataPart)
+				dataPart = part;
+		}
+	}];
+	// Should we check the version...?
+	if(versionPart && [[versionPart bodyData] containsPGPVersionMarker:1] && dataPart)
+		return YES;
+	
+	return NO;
 }
 
 - (BOOL)MAIsEncrypted {
