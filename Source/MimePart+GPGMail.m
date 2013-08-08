@@ -169,6 +169,9 @@
     // otherwise out of here!
     if(![currentMessage shouldBePGPProcessed])
         return [self MADecodeWithContext:ctx];
+	
+	
+	[self importAttachedKeyIfNeeded];
     
 	// Check if this is an exchange TNEF attachment and.
 	MimePart *tnefPart = nil;
@@ -1317,6 +1320,31 @@
     return stringEncoding;
 }
 
+
+- (void)importAttachedKeyIfNeeded {
+	GPGController *gpgc = [[GPGController alloc] init];
+	
+	[[self topPart] enumerateSubpartsWithBlock:^(MimePart *part) {
+		if ([part isType:@"application" subtype:@"pgp-keys"] && ![[part getIvar:@"pgp-keys-imported"] boolValue]) {
+			
+			NSData *unArmored = [GPGPacket unArmor:part.bodyData];
+			
+			if (unArmored) {
+				NSDictionary *keysByID = [[GPGKeyManager sharedInstance] keysByKeyID];
+				
+				[GPGPacket enumeratePacketsWithData:unArmored block:^(GPGPacket *packet, BOOL *stop) {
+					if (packet.type == GPGPublicKeyPacket && !keysByID[packet.keyID]) {
+						*stop = YES;
+						[part setIvar:@"pgp-keys-imported" value:@(YES)];
+						[gpgc importFromData:unArmored fullImport:NO];
+					}
+				}];
+			}
+		}
+	}];
+}
+
+
 #pragma mark Methods for verification
 
 - (void)verifyData:(NSData *)signedData signatureData:(NSData *)signatureData {
@@ -1491,6 +1519,13 @@
         [[self topPart] setIvar:@"MimeSigned" value:@(self.PGPSigned)];
         return;
     }
+	
+	
+	
+	[self importAttachedKeyIfNeeded];
+	
+	
+	
     
     // Set the signed status, otherwise we wouldn't be in here.
     self.PGPSigned = YES;

@@ -295,23 +295,13 @@
     // And restore the original headers.
     [(ComposeBackEnd *)self setValue:[self getIvar:@"originalCleanHeaders"] forKey:@"_cleanHeaders"];
 
-    // Signing only results in an outgoing message which can be sent
-    // out exactly as created by Mail.app. No need to further modify.
-    // Only encrypted messages have to be adjusted.
-    if(shouldPGPSign && !shouldPGPEncrypt && !shouldPGPSymmetric && !shouldCreatePGPInlineMessage) {
-        if(!isDraft)
-            [GMSecurityHistory addEntryForSender:((ComposeBackEnd *)self).sender recipients:[((ComposeBackEnd *)self) allRecipients] securityMethod:GPGMAIL_SECURITY_METHOD_OPENPGP didSign:shouldPGPSign didEncrypt:shouldPGPEncrypt];
-        return outgoingMessage;
-    }
+	
+	
+	BOOL attachKeys = [[[GPGOptions sharedOptions] valueForKey:@"AttachKeyToOutgoingMessages"] boolValue];
+	NSData *keysToAttach = nil;
 
-
-    Subdata *newBodyData = nil;
-    
-	// Check for preferences here, and set mime or plain version
-    if(!shouldCreatePGPInlineMessage) {
-		
+	if (!shouldCreatePGPInlineMessage && attachKeys) {
 		// Get the signer key and export it, so we can attach it to the message.
-		NSData *keysToAttach = nil;
 		GPGKey *key = [self getIvar:@"gpgKeyForSigning"];
 		if (key) {
 			GPGController *gpgc = [[GPGController alloc] init];
@@ -322,13 +312,27 @@
 			@catch (NSException *exception) {
 				GPGDebugLog(@"Exception during exporting keys: %@", exception);
 			}
-			@finally {
-				gpgc = nil;
-			}
 		}
+
+	}
 		
-        
-        newBodyData = [self _newPGPBodyDataWithEncryptedData:encryptedData headers:[outgoingMessage headers] shouldBeMIME:YES keysToAttach:nil /*keysToAttach*/];
+	
+    // Signing only results in an outgoing message which can be sent
+    // out exactly as created by Mail.app. No need to further modify.
+    // Only encrypted messages have to be adjusted.
+    if(shouldPGPSign && !shouldPGPEncrypt && !shouldPGPSymmetric && !shouldCreatePGPInlineMessage && keysToAttach.length == 0) {
+        if(!isDraft)
+            [GMSecurityHistory addEntryForSender:((ComposeBackEnd *)self).sender recipients:[((ComposeBackEnd *)self) allRecipients] securityMethod:GPGMAIL_SECURITY_METHOD_OPENPGP didSign:shouldPGPSign didEncrypt:shouldPGPEncrypt];
+        return outgoingMessage;
+    }
+
+	
+	
+    Subdata *newBodyData = nil;
+    
+	// Check for preferences here, and set mime or plain version
+    if(!shouldCreatePGPInlineMessage) {
+        newBodyData = [self _newPGPBodyDataWithEncryptedData:encryptedData headers:[outgoingMessage headers] shouldBeMIME:YES keysToAttach:keysToAttach];
     } else {
         newBodyData = [self _newPGPInlineBodyDataWithData:[[contents.plainText string] dataUsingEncoding:NSUTF8StringEncoding] headers:[outgoingMessage headers] shouldSign:shouldPGPInlineSign shouldEncrypt:shouldPGPInlineEncrypt];
     }
@@ -466,7 +470,7 @@
 		
 		
 		// 6. Optionally attch the OpenPGP key(s).
-		if (keysToAttach) {
+		if (keysToAttach.length > 0) {
 			keysPart = [[MimePart alloc] init];
 			[keysPart setType:@"application"];
 			[keysPart setSubtype:@"pgp-keys"];
@@ -490,7 +494,7 @@
     if(shouldBeMIME) {
         CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(versionPart), (__bridge const void *)(versionData));
         CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(dataPart), (__bridge const void *)(encryptedData));
-		if (keysToAttach) CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(keysPart), (__bridge const void *)(keysToAttach));
+		if (keysToAttach.length > 0) CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(keysPart), (__bridge const void *)(keysToAttach));
     }
 
     NSMutableDictionary *partBodyMap = (__bridge NSMutableDictionary *)partBodyMapRef;
