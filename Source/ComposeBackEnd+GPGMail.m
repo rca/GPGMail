@@ -295,37 +295,43 @@
     // And restore the original headers.
     [(ComposeBackEnd *)self setValue:[self getIvar:@"originalCleanHeaders"] forKey:@"_cleanHeaders"];
 
+	
+	
+	BOOL attachKeys = [[[GPGOptions sharedOptions] valueForKey:@"AttachKeyToOutgoingMessages"] boolValue];
+	NSData *keysToAttach = nil;
+
+	if (!shouldCreatePGPInlineMessage && attachKeys) {
+		// Get the signer key and export it, so we can attach it to the message.
+		GPGKey *key = [self getIvar:@"gpgKeyForSigning"];
+		if (key) {
+			GPGController *gpgc = [[GPGController alloc] init];
+			@try {
+				gpgc.useArmor = YES;
+				keysToAttach = [gpgc exportKeys:@[key] options:GPGExportMinimal];
+			}
+			@catch (NSException *exception) {
+				GPGDebugLog(@"Exception during exporting keys: %@", exception);
+			}
+		}
+
+	}
+		
+	
     // Signing only results in an outgoing message which can be sent
     // out exactly as created by Mail.app. No need to further modify.
     // Only encrypted messages have to be adjusted.
-    if(shouldPGPSign && !shouldPGPEncrypt && !shouldPGPSymmetric && !shouldCreatePGPInlineMessage) {
+    if(shouldPGPSign && !shouldPGPEncrypt && !shouldPGPSymmetric && !shouldCreatePGPInlineMessage && keysToAttach.length == 0) {
         if(!isDraft)
             [GMSecurityHistory addEntryForSender:((ComposeBackEnd *)self).sender recipients:[((ComposeBackEnd *)self) allRecipients] securityMethod:GPGMAIL_SECURITY_METHOD_OPENPGP didSign:shouldPGPSign didEncrypt:shouldPGPEncrypt];
         return outgoingMessage;
     }
 
-
+	
+	
     Subdata *newBodyData = nil;
     
 	// Check for preferences here, and set mime or plain version
     if(!shouldCreatePGPInlineMessage) {
-		NSData *keysToAttach = nil;
-
-		if ([[[GPGOptions sharedOptions] valueForKey:@"AttachKeyToOutgoingMessages"] boolValue]) {
-			// Get the signer key and export it, so we can attach it to the message.
-			GPGKey *key = [self getIvar:@"gpgKeyForSigning"];
-			if (key) {
-				GPGController *gpgc = [[GPGController alloc] init];
-				@try {
-					gpgc.useArmor = YES;
-					keysToAttach = [gpgc exportKeys:@[key] options:GPGExportMinimal];
-				}
-				@catch (NSException *exception) {
-					GPGDebugLog(@"Exception during exporting keys: %@", exception);
-				}
-			}
-		}
-        
         newBodyData = [self _newPGPBodyDataWithEncryptedData:encryptedData headers:[outgoingMessage headers] shouldBeMIME:YES keysToAttach:keysToAttach];
     } else {
         newBodyData = [self _newPGPInlineBodyDataWithData:[[contents.plainText string] dataUsingEncoding:NSUTF8StringEncoding] headers:[outgoingMessage headers] shouldSign:shouldPGPInlineSign shouldEncrypt:shouldPGPInlineEncrypt];
