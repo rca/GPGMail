@@ -7,6 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "TestHelpers.h"
 #import "NSData+GPGMail.h"
 
 @interface NSData_GPGMailTest : XCTestCase
@@ -20,41 +21,7 @@
 + (void)setUp {
 	[super setUp];
 	
-	[self loadGPGMail];
-}
-
-+ (NSArray *)requiredFrameworks {
-    NSArray *frameworks = @[@"/System/Library/PrivateFrameworks/CoreMessage.framework",
-                            @"/System/Library/PrivateFrameworks/IMAP.framework",
-                            @"/System/Library/Frameworks/Message.framework"];
-    if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8) {
-        frameworks = @[@"/System/Library/PrivateFrameworks/MailCore.framework",
-                       @"/System/Library/PrivateFrameworks/Mail.framework",
-                       @"/System/Library/PrivateFrameworks/MailUI.framework"];
-    }
-	return frameworks;
-}
-
-+ (void)loadFrameworks {
-	for(NSString *frameworkPath in [self requiredFrameworks])
-		[self loadBundleAtPath:frameworkPath];
-}
-
-+ (void)loadBundleAtPath:(NSString *)path {
-	NSBundle *bundle;
-	bundle = [NSBundle bundleWithPath:path];
-	
-	// Try to load the bundle but with load instead of loadAndReturnError,
-    // since that appears to reveal more information on why the bundle couldn't be loaded.
-	if(![bundle load])
-        return;
-}
-
-+ (void)loadGPGMail {
-	NSString *GPGMailPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"GPGMail" ofType:@"mailbundle" inDirectory:nil];
-	// First, load the frameworks otherwise GPGMailBundle won't load, since it depends on them.
-	[self loadFrameworks];
-	[self loadBundleAtPath:GPGMailPath];
+	[TestHelpers loadGPGMail];
 }
 
 - (NSData *)dataForResourceAtPath:(NSString *)path ofType:(NSString *)rtype {

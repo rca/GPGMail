@@ -34,6 +34,216 @@
 
 @implementation GMCodeInjector
 
++ (NSDictionary *)commonHooks {
+	return @{
+			 @"MessageHeaderDisplay": @[
+					 @"_attributedStringForSecurityHeader",
+					 @"textView:clickedOnLink:atIndex:"
+			 ],
+			 @"ComposeBackEnd": @[
+					 @"_makeMessageWithContents:isDraft:shouldSign:shouldEncrypt:shouldSkipSignature:shouldBePlainText:",
+					 @"canEncryptForRecipients:sender:",
+					 @"canSignFromAddress:",
+					 @"recipientsThatHaveNoKeyForEncryption",
+					 @"setEncryptIfPossible:",
+					 @"setSignIfPossible:",
+					 @"_saveThreadShouldCancel",
+					 @"_configureLastDraftInformationFromHeaders:overwrite:",
+					 @"sender"
+			 ],
+			 @"HeadersEditor": @[
+					 @"securityControlChanged:",
+					 @"_updateFromAndSignatureControls:",
+					 @"changeFromHeader:",
+					 @"dealloc",
+					 @"awakeFromNib",
+					 @"_updateSignButtonTooltip",
+					 @"_updateEncryptButtonTooltip",
+					 @"updateSecurityControls",
+					 @"_updateSecurityStateInBackgroundForRecipients:sender:"
+			 ],
+			 @"MailDocumentEditor": @[
+					 @"backEndDidLoadInitialContent:",
+					 @"dealloc",
+					 @"backEnd:didCancelMessageDeliveryForEncryptionError:",
+					 @"backEnd:didCancelMessageDeliveryForError:"
+			 ],
+			 @"NSWindow": @[
+					 @"toggleFullScreen:"
+			 ],
+			 @"MessageContentController": @[
+					 @"setMessageToDisplay:"
+			 ],
+			 @"BannerController": @[
+					 @"updateBannerForViewingState:"
+			 ],
+			 @"Message": @[],
+			 @"MimePart": @[
+					 @"isEncrypted",
+					 @"newEncryptedPartWithData:recipients:encryptedData:",
+					 @"newSignedPartWithData:sender:signatureData:",
+					 @"verifySignature",
+					 @"decodeWithContext:",
+					 @"decodeTextPlainWithContext:",
+					 @"decodeTextHtmlWithContext:",
+					 @"decodeApplicationOctet_streamWithContext:",
+					 @"isSigned",
+					 @"isMimeSigned",
+					 @"isMimeEncrypted",
+					 @"usesKnownSignatureProtocol",
+					 @"clearCachedDecryptedMessageBody"
+			 ],
+			 @"MimeBody": @[
+					 @"isSignedByMe",
+					 @"_isPossiblySignedOrEncrypted"
+			 ],
+			 @"MessageCriterion": @[
+					 @"_evaluateIsDigitallySignedCriterion:",
+					 @"_evaluateIsEncryptedCriterion:"
+			 ],
+			 @"Library": @[
+					 @"plistDataForMessage:subject:sender:to:dateSent:remoteID:originalMailbox:flags:mergeWithDictionary:",
+			 ],
+			 @"MailAccount": @[
+					 @"accountExistsForSigning"
+			 ],
+			 @"OptionalView": @[
+					 @"widthIncludingOptionSwitch:"
+			 ],
+			 @"NSPreferences": @[
+					 @"sharedPreferences",
+					 @"windowWillResize:toSize:",
+					 @"toolbarItemClicked:",
+					 @"showPreferencesPanelForOwner:"
+			 ],
+			 @"MessageRouter": @[
+					@"putRulesThatWantsToHandleMessage:intoArray:colorRulesOnly:"
+			 ]
+	};
+}
+
++ (NSDictionary *)hookChangesForMavericks {
+	return @{
+			 @"MessageContentController": @{
+					 @"status": @"removed"
+			 },
+			 @"MessageViewController": @{
+					 @"selectors": @[
+							 @"setRepresentedObject:"
+					 ]
+			 },
+			 @"Library": @{
+					 @"status": @"renamed",
+					 @"name": @"MFLibrary",
+					 @"selectors": @{
+							 @"replaced": @[
+									 @[
+										 @"plistDataForMessage:subject:sender:to:dateSent:remoteID:originalMailbox:flags:mergeWithDictionary:",
+										 @"plistDataForMessage:subject:sender:to:dateSent:dateReceived:dateLastViewed:remoteID:originalMailboxURLString:gmailLabels:flags:mergeWithDictionary:"
+								     ]
+							 ]
+					 },
+			 },
+			 @"EAEmailAddressParser": @{
+					 @"selectors": @[
+							 @"rawAddressFromFullAddress:"
+					 ]
+			 },
+			 @"HeaderViewController": @{
+					 @"selectors": @[
+							 @"_updateSecurityField",
+							 @"awakeFromNib"
+					 ]
+			 },
+			 @"MessageHeaderDisplay": @{
+					 @"status": @"removed"
+			 },
+			 @"MimePart": @{
+					 @"status": @"renamed",
+					 @"name": @"MCMimePart"
+			 },
+			 @"MimeBody": @{
+					 @"status": @"renamed",
+					 @"name": @"MCMimeBody"
+			 },
+			 @"Message": @{
+					 @"status": @"renamed",
+					 @"name": @"MCMessage"
+			 },
+			 @"MessageCriterion": @{
+					 @"status": @"renamed",
+					 @"name": @"MFMessageCriterion"
+			 },
+			 @"MailAccount": @{
+					 @"status": @"renamed",
+					 @"name": @"MFMailAccount"
+			 }
+	};
+}
+
++ (NSDictionary *)hooks {
+	static dispatch_once_t onceToken;
+	static NSDictionary *_hooks;
+	
+	dispatch_once(&onceToken, ^{
+		NSMutableDictionary *hooks = [[NSMutableDictionary alloc] init];
+		NSDictionary *commonHooks = [self commonHooks];
+		
+		// Make a mutable version of all the dictionary.
+		for(NSString *class in commonHooks)
+			hooks[class] = [NSMutableArray arrayWithArray:commonHooks[class]];
+		
+		if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8)
+			[self applyHookChangesForVersion:@"10.9" toHooks:hooks];
+		
+		_hooks = [NSDictionary dictionaryWithDictionary:hooks];
+	});
+	
+	return _hooks;
+}
+
++ (void)applyHookChangesForVersion:(NSString *)osxVersion toHooks:(NSMutableDictionary *)hooks {
+	NSDictionary *hookChanges;
+	if([osxVersion isEqualToString:@"10.9"])
+		hookChanges = [self hookChangesForMavericks];
+	
+	for(NSString *class in hookChanges) {
+		NSDictionary *hook = hookChanges[class];
+		
+		// Class was added.
+		if(!hooks[class]) {
+			hooks[class] = hook[@"selectors"];
+			continue;
+		}
+		// Class was removed.
+		if([hook[@"status"] isEqualToString:@"removed"]) {
+			[hooks removeObjectForKey:class];
+			continue;
+		}
+		// Selectors were updated
+		if(hook[@"selectors"]) {
+			for(NSString *action in hook[@"selectors"]) {
+				for(id selector in hook[@"selectors"][action]) {
+					if([action isEqualToString:@"added"])
+						[(NSMutableArray *)hooks[class] addObject:selector];
+					else if([action isEqualToString:@"removed"])
+						[(NSMutableArray *)hooks[class] removeObject:selector];
+					else if([action isEqualToString:@"replaced"]) {
+						[(NSMutableArray *)hooks[class] removeObject:selector[0]];
+						[(NSMutableArray *)hooks[class] addObject:selector[1]];
+					}
+				}
+			}
+		}
+		
+		// Class was renamed.
+		if([hook[@"status"] isEqualToString:@"renamed"]) {
+			hooks[hook[@"name"]] = hooks[class];
+			[hooks removeObjectForKey:class];
+		}
+	}
+}
+
 + (void)injectUsingMethodPrefix:(NSString *)prefix {
 	/**
      This method replaces all of Mail's methods which are necessary for GPGMail
@@ -48,120 +258,49 @@
      
      swizzleMap contains all classes and methods which need to be swizzled.
      */
-    NSArray *swizzleMap = @[@{@"class": @"MessageHeaderDisplay",
-                            @"gpgMailClass": @"MessageHeaderDisplay_GPGMail",
-                            @"selectors": @[@"_attributedStringForSecurityHeader",
-                             @"textView:clickedOnLink:atIndex:"]},
-                           @{@"class": @"ComposeBackEnd",
-                            @"gpgMailClass": @"ComposeBackEnd_GPGMail",
-                            @"selectors": @[@"_makeMessageWithContents:isDraft:shouldSign:shouldEncrypt:shouldSkipSignature:shouldBePlainText:",
-                             @"canEncryptForRecipients:sender:",
-                             @"canSignFromAddress:",
-                             @"recipientsThatHaveNoKeyForEncryption",
-                             @"setEncryptIfPossible:",
-                             @"setSignIfPossible:",
-                             @"_saveThreadShouldCancel",
-                             @"_configureLastDraftInformationFromHeaders:overwrite:",
-							 @"sender"]},
-                           @{@"class": @"HeadersEditor",
-                            @"gpgMailClass": @"HeadersEditor_GPGMail",
-                            @"selectors": @[@"securityControlChanged:",
-                             @"_updateFromAndSignatureControls:",
-                             @"changeFromHeader:",
-                             @"dealloc",
-                             @"awakeFromNib",
-                             @"_updateSignButtonTooltip",
-                             @"_updateEncryptButtonTooltip",
-							 @"updateSecurityControls",
-							 @"_updateSecurityStateInBackgroundForRecipients:sender:"]},
-                           @{@"class": @"MailDocumentEditor",
-                            @"gpgMailClass": @"MailDocumentEditor_GPGMail",
-                            @"selectors": @[@"backEndDidLoadInitialContent:",
-                             @"dealloc",
-                             //                             @"windowForMailFullScreen",
-                             @"backEnd:didCancelMessageDeliveryForEncryptionError:", @"backEnd:didCancelMessageDeliveryForError:"]},
-                           @{@"class": @"NSWindow",
-                            @"selectors": @[@"toggleFullScreen:"]},
-                           @{@"class": @"MessageContentController",
-                            @"gpgMailClass": @"MessageContentController_GPGMail",
-                            @"selectors": @[@"setMessageToDisplay:"]},
-                           @{@"class": @"BannerController",
-                            @"gpgMailClass": @"BannerController_GPGMail",
-                            @"selectors": @[@"updateBannerForViewingState:"]},
-                           // Messages.framework classes. Messages.framework classes can be extended using
-                           // categories. No need for a special GPGMail class.
-                           @{@"class": @"MimePart",
-                            @"selectors": @[@"isEncrypted",
-                             @"newEncryptedPartWithData:recipients:encryptedData:",
-                             @"newSignedPartWithData:sender:signatureData:",
-                             @"verifySignature",
-                             @"decodeWithContext:",
-                             @"decodeTextPlainWithContext:",
-                             @"decodeTextHtmlWithContext:",
-                             @"decodeApplicationOctet_streamWithContext:",
-                             @"isSigned",
-                             @"isMimeSigned",
-                             @"isMimeEncrypted",
-                             @"usesKnownSignatureProtocol",
-                             @"clearCachedDecryptedMessageBody"]},
-                           @{@"class": @"MimeBody",
-                            @"selectors": @[@"isSignedByMe",
-                             @"_isPossiblySignedOrEncrypted"]},
-                           @{@"class": @"MessageCriterion",
-                            @"selectors": @[@"_evaluateIsDigitallySignedCriterion:",
-                             @"_evaluateIsEncryptedCriterion:"]},
-                           @{@"class": @"Library",
-                            @"gpgMailClass": @"Library_GPGMail",
-                            @"selectors": @[@"plistDataForMessage:subject:sender:to:dateSent:dateReceived:dateLastViewed:remoteID:originalMailboxURLString:gmailLabels:flags:mergeWithDictionary:",
-                             @"plistDataForMessage:subject:sender:to:dateSent:remoteID:originalMailbox:flags:mergeWithDictionary:"]},
-                           @{@"class": @"MailAccount",
-                            @"selectors": @[@"accountExistsForSigning"]},
-						   @{@"class": @"OptionalView",
-							@"gpgMailClass": @"OptionalView_GPGMail",
-							@"selectors": @[@"widthIncludingOptionSwitch:"]},
-                           @{@"class": @"NSPreferences",
-                            @"selectors": @[@"sharedPreferences",
-                             @"windowWillResize:toSize:",
-                             @"toolbarItemClicked:",
-                             @"showPreferencesPanelForOwner:"]},
-							@{@"class": @"MessageRouter",
-							  @"gpgMailClass": @"MessageRouter_GPGMail",
-							  @"selectors": @[@"putRulesThatWantsToHandleMessage:intoArray:colorRulesOnly:"]}];
+	NSDictionary *hooks = [self hooks];
+	NSString *extensionClassSuffix = @"GPGMail";
 	
-	NSError *error = nil;
-    for(NSDictionary *swizzleInfo in swizzleMap) {
-        // If this is a non Messages.framework class, add all methods
-        // of the class referenced in gpgMailClass first.
-        Class mailClass = NSClassFromString(swizzleInfo[@"class"]);
-        if(swizzleInfo[@"gpgMailClass"]) {
-            Class gpgMailClass = NSClassFromString(swizzleInfo[@"gpgMailClass"]);
-            if(!mailClass) {
-                DebugLog(@"WARNING: Class %@ doesn't exist. GPGMail might behave weirdly!", [swizzleInfo objectForKey:@"class"]);
-                continue;
-            }
-            if(!gpgMailClass) {
-                DebugLog(@"WARNING: Class %@ doesn't exist. GPGMail might behave weirdly!", [swizzleInfo objectForKey:@"gpgMailClass"]);
-                continue;
-            }
-            [mailClass jrlp_addMethodsFromClass:gpgMailClass error:&error];
-            if(error)
-                DebugLog(@"[DEBUG] %s Error: %@", __PRETTY_FUNCTION__, error);
-            error = nil;
-        }
-        for(NSString *method in swizzleInfo[@"selectors"]) {
-            error = nil;
-            NSString *gpgMethod = [NSString stringWithFormat:@"%@%@%@", prefix, [[method substringToIndex:1] uppercaseString], [method substringFromIndex:1]];
-            [mailClass jrlp_swizzleMethod:NSSelectorFromString(method) withMethod:NSSelectorFromString(gpgMethod) error:&error];
-            if(error) {
-                error = nil;
-                // Try swizzling as class method on error.
-                [mailClass jrlp_swizzleClassMethod:NSSelectorFromString(method) withClassMethod:NSSelectorFromString(gpgMethod) error:&error];
-                if(error)
-                    DebugLog(@"[DEBUG] %s Class Error: %@", __PRETTY_FUNCTION__, error);
-            }
-        }
-    }
-    
+	NSError * __autoreleasing error = nil;
+    for(NSString *class in hooks) {
+        NSArray *selectors = hooks[class];
+		
+		Class mailClass = NSClassFromString(class);
+        if(!mailClass) {
+			DebugLog(@"WARNING: Class %@ doesn't exist. This leads to unexpected behaviour!", class);
+			continue;
+		}
+		
+		// Check if a class exists with <class>_GPGMail. If that's
+		// the case, all the methods of that class, have to be added
+		// to the original Mail or Messages class.
+		Class extensionClass = NSClassFromString([class stringByAppendingFormat:@"_%@", extensionClassSuffix]);
+		BOOL extend = extensionClass != nil ? YES : NO;
+		if(extend) {
+			if(![mailClass jrlp_addMethodsFromClass:extensionClass error:&error])
+				NSLog(@"WARNING: methods of class %@ couldn't be added to %@ - %@", extensionClass,
+					  mailClass, error);
+		}
+		
+		// And on to swizzling methods and class methods.
+		for(NSString *selectorName in selectors) {
+			error = nil;
+			NSString *extensionSelectorName = [NSString stringWithFormat:@"%@%@%@", prefix, [[selectorName substringToIndex:1] uppercaseString],
+											   [selectorName substringFromIndex:1]];
+			SEL selector = NSSelectorFromString(selectorName);
+			SEL extensionSelector = NSSelectorFromString(extensionSelectorName);
+			// First try to add as instance method.
+			[mailClass jrlp_swizzleMethod:selector withMethod:extensionSelector error:&error];
+			// If that didn't work, try to add as class method.
+			if(error) {
+				error = nil;
+				[mailClass jrlp_swizzleClassMethod:selector withClassMethod:extensionSelector error:&error];
+				if(error)
+					NSLog(@"WARNING: %@ doesn't respond to selector %@ - %@", NSStringFromClass(mailClass),
+						  NSStringFromSelector(selector), error);
+			}
+		}
+	}
 }
 
 @end

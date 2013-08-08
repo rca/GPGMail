@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1B02D70813F1E9D80032CFD1 /* GPGFlaggedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D70713F1E9D80032CFD1 /* GPGFlaggedString.m */; };
 		1B02D70A13F1E9F00032CFD1 /* NSArray+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D70913F1E9F00032CFD1 /* NSArray+Functional.m */; };
+		1B22C45D17B138390073DF81 /* cd-bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1B22C45C17B138390073DF81 /* cd-bundle.bundle */; };
+		1B22C46417B138890073DF81 /* IntegrationHooks.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B22C46317B138890073DF81 /* IntegrationHooks.m */; };
+		1B22C46717B13A250073DF81 /* TestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B22C46617B13A250073DF81 /* TestHelpers.m */; };
 		1B22E50C176A101800BBB351 /* GMKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B22E50B176A101800BBB351 /* GMKeyManager.m */; };
 		1B2341DE14FEEC8C0007EB64 /* GMSecurityMethodAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B2341DD14FEEC8C0007EB64 /* GMSecurityMethodAccessoryView.m */; };
 		1B32AFF713AF827B0072079B /* CCLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B32AFF613AF827B0072079B /* CCLog.m */; };
@@ -191,6 +194,10 @@
 		1B194B5A11CC55A80092B810 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GPGMail.strings; sourceTree = "<group>"; };
 		1B19E83F13A2AEA4002E59ED /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		1B19E84113A2AEA4002E59ED /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1B22C45C17B138390073DF81 /* cd-bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "cd-bundle.bundle"; sourceTree = "<group>"; };
+		1B22C46317B138890073DF81 /* IntegrationHooks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntegrationHooks.m; sourceTree = "<group>"; };
+		1B22C46517B13A250073DF81 /* TestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestHelpers.h; sourceTree = "<group>"; };
+		1B22C46617B13A250073DF81 /* TestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestHelpers.m; sourceTree = "<group>"; };
 		1B22E50A176A101800BBB351 /* GMKeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMKeyManager.h; sourceTree = "<group>"; };
 		1B22E50B176A101800BBB351 /* GMKeyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMKeyManager.m; sourceTree = "<group>"; };
 		1B2341DC14FEEC8C0007EB64 /* GMSecurityMethodAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMSecurityMethodAccessoryView.h; sourceTree = "<group>"; };
@@ -2892,8 +2899,11 @@
 			isa = PBXGroup;
 			children = (
 				1B8763971786035300B24BBC /* NSData+GPGMailTest.m */,
+				1B22C46317B138890073DF81 /* IntegrationHooks.m */,
 				1B876375178602B200B24BBC /* Data */,
 				1B8763631786020A00B24BBC /* Supporting Files */,
+				1B22C46517B13A250073DF81 /* TestHelpers.h */,
+				1B22C46617B13A250073DF81 /* TestHelpers.m */,
 			);
 			path = "Unit Tests";
 			sourceTree = "<group>";
@@ -2901,6 +2911,7 @@
 		1B8763631786020A00B24BBC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1B22C45C17B138390073DF81 /* cd-bundle.bundle */,
 				1B8763641786020A00B24BBC /* Unit Tests-Info.plist */,
 				1B8763651786020A00B24BBC /* InfoPlist.strings */,
 				1B87636A1786020A00B24BBC /* Unit Tests-Prefix.pch */,
@@ -3324,6 +3335,7 @@
 				1B87638C178602B200B24BBC /* PGPInlineSignatureUTF8Good.txt in Resources */,
 				1B87638A178602B200B24BBC /* PGPInlineSignatureASCIIGood.txt in Resources */,
 				1B8763671786020A00B24BBC /* InfoPlist.strings in Resources */,
+				1B22C45D17B138390073DF81 /* cd-bundle.bundle in Resources */,
 				1B876393178602B200B24BBC /* PGPSignatureBlockBad.txt in Resources */,
 				1B876390178602B200B24BBC /* PGPMessageBlockGood2.txt in Resources */,
 				1B876391178602B200B24BBC /* PGPPublicKey.txt in Resources */,
@@ -3480,6 +3492,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B8763981786035300B24BBC /* NSData+GPGMailTest.m in Sources */,
+				1B22C46717B13A250073DF81 /* TestHelpers.m in Sources */,
+				1B22C46417B138890073DF81 /* IntegrationHooks.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3865,6 +3879,10 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/LionHeaders\"/**",
+					"\"Unit Tests/cd-bundle.bundle/Contents/Resources\"",
+				);
 				INFOPLIST_FILE = "Unit Tests/Unit Tests-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3895,6 +3913,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Unit Tests/Unit Tests-Prefix.pch";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/LionHeaders\"/**",
+					"\"Unit Tests/cd-bundle.bundle/Contents/Resources\"",
+				);
 				INFOPLIST_FILE = "Unit Tests/Unit Tests-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
