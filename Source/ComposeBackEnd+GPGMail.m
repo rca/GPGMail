@@ -309,26 +309,24 @@
     
 	// Check for preferences here, and set mime or plain version
     if(!shouldCreatePGPInlineMessage) {
-		
-		// Get the signer key and export it, so we can attach it to the message.
 		NSData *keysToAttach = nil;
-		GPGKey *key = [self getIvar:@"gpgKeyForSigning"];
-		if (key) {
-			GPGController *gpgc = [[GPGController alloc] init];
-			@try {
-				gpgc.useArmor = YES;
-				keysToAttach = [gpgc exportKeys:@[key] options:GPGExportMinimal];
-			}
-			@catch (NSException *exception) {
-				GPGDebugLog(@"Exception during exporting keys: %@", exception);
-			}
-			@finally {
-				gpgc = nil;
+
+		if ([[[GPGOptions sharedOptions] valueForKey:@"AttachKeyToOutgoingMessages"] boolValue]) {
+			// Get the signer key and export it, so we can attach it to the message.
+			GPGKey *key = [self getIvar:@"gpgKeyForSigning"];
+			if (key) {
+				GPGController *gpgc = [[GPGController alloc] init];
+				@try {
+					gpgc.useArmor = YES;
+					keysToAttach = [gpgc exportKeys:@[key] options:GPGExportMinimal];
+				}
+				@catch (NSException *exception) {
+					GPGDebugLog(@"Exception during exporting keys: %@", exception);
+				}
 			}
 		}
-		
         
-        newBodyData = [self _newPGPBodyDataWithEncryptedData:encryptedData headers:[outgoingMessage headers] shouldBeMIME:YES keysToAttach:nil /*keysToAttach*/];
+        newBodyData = [self _newPGPBodyDataWithEncryptedData:encryptedData headers:[outgoingMessage headers] shouldBeMIME:YES keysToAttach:keysToAttach];
     } else {
         newBodyData = [self _newPGPInlineBodyDataWithData:[[contents.plainText string] dataUsingEncoding:NSUTF8StringEncoding] headers:[outgoingMessage headers] shouldSign:shouldPGPInlineSign shouldEncrypt:shouldPGPInlineEncrypt];
     }
@@ -466,7 +464,7 @@
 		
 		
 		// 6. Optionally attch the OpenPGP key(s).
-		if (keysToAttach) {
+		if (keysToAttach.length > 0) {
 			keysPart = [[MimePart alloc] init];
 			[keysPart setType:@"application"];
 			[keysPart setSubtype:@"pgp-keys"];
@@ -490,7 +488,7 @@
     if(shouldBeMIME) {
         CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(versionPart), (__bridge const void *)(versionData));
         CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(dataPart), (__bridge const void *)(encryptedData));
-		if (keysToAttach) CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(keysPart), (__bridge const void *)(keysToAttach));
+		if (keysToAttach.length > 0) CFDictionaryAddValue(partBodyMapRef, (__bridge const void *)(keysPart), (__bridge const void *)(keysToAttach));
     }
 
     NSMutableDictionary *partBodyMap = (__bridge NSMutableDictionary *)partBodyMapRef;
