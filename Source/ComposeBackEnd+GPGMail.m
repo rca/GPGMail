@@ -297,7 +297,7 @@
 
 	
 	
-	BOOL attachKeys = [[[GPGOptions sharedOptions] valueForKey:@"AttachKeyToOutgoingMessages"] boolValue];
+	BOOL attachKeys = shouldPGPSign && [[[GPGOptions sharedOptions] valueForKey:@"AttachKeyToOutgoingMessages"] boolValue];
 	NSData *keysToAttach = nil;
 
 	if (!shouldCreatePGPInlineMessage && attachKeys) {
@@ -332,19 +332,26 @@
     
 	// Check for preferences here, and set mime or plain version
     if(!shouldCreatePGPInlineMessage) {
-        newBodyData = [self _newPGPBodyDataWithEncryptedData:encryptedData headers:[outgoingMessage headers] shouldBeMIME:YES keysToAttach:keysToAttach];
+		
+		if (shouldPGPEncrypt || shouldPGPSymmetric) {
+			newBodyData = [self _newPGPBodyDataWithEncryptedData:encryptedData headers:[outgoingMessage headers] shouldBeMIME:YES keysToAttach:keysToAttach];
+		} else {
+			newBodyData = [self _newPGPBodyDataWithOriginalData:encryptedData headers:[outgoingMessage headers] keysToAttach:keysToAttach];
+		}
     } else {
         newBodyData = [self _newPGPInlineBodyDataWithData:[[contents.plainText string] dataUsingEncoding:NSUTF8StringEncoding] headers:[outgoingMessage headers] shouldSign:shouldPGPInlineSign shouldEncrypt:shouldPGPInlineEncrypt];
     }
 
-    // AND NOW replace the current message body with the new gpg message body.
-    // The subdata contains the range of the actual body excluding the headers
-    // but references the entrie message (NSMutableData).
-    [(_OutgoingMessageBody *)[outgoingMessage messageBody] setValue:newBodyData forKey:@"_rawData"];
-    // _rawData instance variable has to hold the NSMutableData which
-    // contains the data of the entire message including the header data.
-    // Not sure why it's done this way, but HECK it works!
-    [outgoingMessage setValue:[newBodyData valueForKey:@"_parentData"] forKey:@"_rawData"];
+	if (newBodyData) {
+		// AND NOW replace the current message body with the new gpg message body.
+		// The subdata contains the range of the actual body excluding the headers
+		// but references the entrie message (NSMutableData).
+		[(_OutgoingMessageBody *)[outgoingMessage messageBody] setValue:newBodyData forKey:@"_rawData"];
+		// _rawData instance variable has to hold the NSMutableData which
+		// contains the data of the entire message including the header data.
+		// Not sure why it's done this way, but HECK it works!
+		[outgoingMessage setValue:[newBodyData valueForKey:@"_parentData"] forKey:@"_rawData"];
+	}
     
     if(!isDraft)
         [GMSecurityHistory addEntryForSender:((ComposeBackEnd *)self).sender recipients:[((ComposeBackEnd *)self) allRecipients] securityMethod:GPGMAIL_SECURITY_METHOD_OPENPGP didSign:shouldPGPSign didEncrypt:shouldPGPEncrypt];
@@ -418,6 +425,54 @@
         [newBCCList addObject:flaggedString];
         [headers setValue:newBCCList forKey:@"bcc"];
     }
+}
+
+- (Subdata *)_newPGPBodyDataWithOriginalData:(NSData *)originalData headers:(MutableMessageHeaders *)headers keysToAttach:(NSData *)keysToAttach {
+	
+	if (keysToAttach.length == 0 || originalData.length < 100) {
+		// If originalData's length < 100: No boundarys! (Should never happen)
+		return nil;
+	}
+	
+
+	// Find the MIME boundary.
+	NSData *start = [NSData dataWithBytes:"\n--" length:3];
+	NSData *end = [NSData dataWithBytes:"--\n" length:3];
+	
+	NSRange searchRange = NSMakeRange(originalData.length - 30, 30);
+	NSRange endRange = [originalData rangeOfData:end options:NSDataSearchBackwards range:searchRange];
+	if (endRange.length == 0) {
+		return nil;
+	}
+	
+	searchRange = NSMakeRange(endRange.location - 70, 70);
+	NSRange startRange = [originalData rangeOfData:start options:NSDataSearchBackwards range:searchRange];
+	if (startRange.length == 0) {
+		return nil;
+	}
+	
+	searchRange.location = startRange.location;
+	searchRange.length = endRange.location + 3 - searchRange.location;
+	
+	NSData *bounddary = [originalData subdataWithRange:searchRange];
+	
+	
+	// Build the message.
+	NSData *headerData = [headers encodedHeadersIncludingFromSpace:NO];
+	
+	NSMutableData *mutableBodyData = [NSMutableData data];
+	[mutableBodyData appendData:headerData];
+	[mutableBodyData appendData:[originalData subdataWithRange:NSMakeRange(0, endRange.location)]];
+	[mutableBodyData appendBytes:"\nContent-Transfer-Encoding: 7bit\nContent-Type: application/pgp-keys\n\n" length:69];
+	[mutableBodyData appendData:keysToAttach];
+	[mutableBodyData appendData:bounddary];
+	
+	
+	NSRange contentRange = NSMakeRange(headerData.length, mutableBodyData.length - headerData.length);
+	Subdata *contentSubdata = [[Subdata alloc] initWithParent:mutableBodyData range:contentRange];
+	
+	return contentSubdata;
+	
 }
 
 - (Subdata *)_newPGPBodyDataWithEncryptedData:(NSData *)encryptedData headers:(MutableMessageHeaders *)headers shouldBeMIME:(BOOL)shouldBeMIME keysToAttach:(NSData *)keysToAttach {
