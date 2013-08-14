@@ -620,6 +620,9 @@
     // To really fix #624 make sure the backEnd is alive till the end of this method.
 	ComposeBackEnd_GPGMail *bself __attribute__((objc_precise_lifetime)) = self;
 	
+	if(![((ComposeBackEnd *)bself) delegate])
+		return NO;
+	
 	DebugLog(@"Recipients: %@", recipients);
     
     sender = [sender gpgNormalizedEmail];
@@ -726,6 +729,9 @@
     // To really fix #624 make sure the backEnd is alive till the end of this method.
 	ComposeBackEnd_GPGMail *bself __attribute__((objc_precise_lifetime)) = self;
 	
+	if(![((ComposeBackEnd *)bself) delegate])
+		return NO;
+
 	// If the security method is not yet set and the back end was not yet initialized,
     // check S/MIME and PGP keychains to see if either method has a key
     // for signing.
@@ -750,7 +756,10 @@
 }
 
 - (id)MARecipientsThatHaveNoKeyForEncryption {
-    GPGMAIL_SECURITY_METHOD securityMethod = self.guessedSecurityMethod;
+    if(![((ComposeBackEnd *)self) delegate])
+		return [NSArray array];
+	
+	GPGMAIL_SECURITY_METHOD securityMethod = self.guessedSecurityMethod;
     if(self.securityMethod)
         securityMethod = self.securityMethod;
     
