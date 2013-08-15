@@ -470,12 +470,8 @@
 	GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).guessedSecurityMethod;
     if(((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod)
         securityMethod = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod;
-	if(securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP)
-		// Calls updateSecurityControls internally, because updateFromAndAddSecretKeysIfNecessary.
-		[(HeadersEditor *)self _updateFromAndSignatureControls:nil];
-	else
-		// Explicitly call updateSecurityControls.
-		[(HeadersEditor *)self updateSecurityControls];
+	// It seems calling updateSecurityControls at this point is most reliable.
+	[(HeadersEditor *)self updateSecurityControls];
 }
 
 - (void)MA_updateSignButtonTooltip {
