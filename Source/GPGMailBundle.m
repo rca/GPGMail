@@ -398,7 +398,7 @@ static BOOL gpgMailWorks = NO;
 }
 
 + (NSString *)agentHeader {
-    return [NSString stringWithFormat:GPGMailAgent, [self bundleVersion]];
+    return [NSString stringWithFormat:GPGMailAgent, [self version]];
 }
 
 
