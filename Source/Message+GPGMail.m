@@ -323,14 +323,14 @@
           decryptedMessage.PGPPartlyEncrypted ? @"YES" : @"NO", decryptedMessage.PGPPartlySigned ? @"YES" : @"NO", decryptedMessage.PGPSignatures, decryptedMessage.PGPErrors);
     
     DebugLog(@"%@ Message [%@]:\n\tisEncrypted: %@, isSigned: %@,\n\tisPartlyEncrypted: %@, isPartlySigned: %@\n\tsignatures: %@\n\terrors: %@\n\tattachments: %@",
-          self, [self subject], isEncrypted ? @"YES" : @"NO", isSigned ? @"YES" : @"NO",
-          isPartlyEncrypted ? @"YES" : @"NO", isPartlySigned ? @"YES" : @"NO", signatures, errors, pgpAttachments);
+          self, [self subject], self.PGPEncrypted ? @"YES" : @"NO", self.PGPSigned ? @"YES" : @"NO",
+          self.PGPPartlyEncrypted ? @"YES" : @"NO", self.PGPPartlySigned ? @"YES" : @"NO", self.PGPSignatures, self.PGPErrors, self.PGPAttachments);
     
     // Fix the number of attachments, this time for real!
     // Uncomment once completely implemented.
-    [[self dataSourceProxy] setNumberOfAttachments:(unsigned int)numberOfAttachments isSigned:isSigned isEncrypted:isEncrypted forMessage:self];
+    [[self dataSourceProxy] setNumberOfAttachments:(unsigned int)numberOfAttachments isSigned:self.isSigned isEncrypted:self.isEncrypted forMessage:self];
     if(decryptedMessage)
-        [[decryptedMessage dataSourceProxy] setNumberOfAttachments:(unsigned int)numberOfAttachments isSigned:isSigned isEncrypted:isEncrypted forMessage:decryptedMessage];
+        [[decryptedMessage dataSourceProxy] setNumberOfAttachments:(unsigned int)numberOfAttachments isSigned:self.isSigned isEncrypted:self.isEncrypted forMessage:decryptedMessage];
     // Set PGP Info collected so this information is not overwritten.
     self.PGPInfoCollected = YES;
 }
