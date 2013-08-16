@@ -76,6 +76,14 @@
  */
 - (id)MA_makeMessageWithContents:(WebComposeMessageContents *)contents isDraft:(BOOL)isDraft shouldSign:(BOOL)shouldSign shouldEncrypt:(BOOL)shouldEncrypt shouldSkipSignature:(BOOL)shouldSkipSignature shouldBePlainText:(BOOL)shouldBePlainText;
 
+
+/**
+ Creates a new message with pgp-keys attached on it.
+ */
+- (Subdata *)_newPGPBodyDataWithOriginalData:(NSData *)originalData headers:(MutableMessageHeaders *)headers keysToAttach:(NSData *)keysToAttach;
+
+
+
 /**
  Creates the new gpg message data which will replace the original outgoing message
  body data and sets the correct headers.
