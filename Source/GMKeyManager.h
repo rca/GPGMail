@@ -50,6 +50,8 @@
 	NSDictionary *_publicKeyMap;
 	
 	NSDictionary *_groups;
+	
+	dispatch_semaphore_t _keyCacheLock;
 }
 
 /**

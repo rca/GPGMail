@@ -80,6 +80,7 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 - (id)init {
 	if(self = [super init]) {
 		[[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(keysDidChange:) name:GPGKeyManagerKeysDidChangeNotification object:nil];
+		_keyCacheLock = dispatch_semaphore_create(1);
 	}
 	
 	return self;
@@ -144,6 +145,13 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 #pragma mark - Getters for lazy key cache loading.
 
 - (NSSet *)allKeys {
+	dispatch_semaphore_wait(_keyCacheLock, DISPATCH_TIME_FOREVER);
+	// Rebuild the key cache if allSecretKeys is not yet set.
+	if(_allSecretKeys == nil)
+		[self _rebuildKeyCaches];
+	
+	dispatch_semaphore_signal(_keyCacheLock);
+	
 	return [[GPGKeyManager sharedInstance] allKeys];
 }
 
@@ -171,7 +179,7 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 - (void)rebuildSecretKeysCache {
 	NSMutableSet *allSecretKeys = [[NSMutableSet alloc]  init];
 	
-	NSSet *secretKeys = [self.allKeys filter:^id (GPGKey *key) {
+	NSSet *secretKeys = [[[GPGKeyManager sharedInstance] allKeys] filter:^id (GPGKey *key) {
 		// Only either the key or one of the subkeys has to be valid,
 		// non-expired, non-disabled, non-revoked and be used for signing.
 		// We don't care about ownerTrust, validity.
@@ -192,7 +200,7 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 }
 
 - (void)rebuildPublicKeysCache {
-	NSSet *publicKeys = [self.allKeys filter:^id (GPGKey *key) {
+	NSSet *publicKeys = [[[GPGKeyManager sharedInstance] allKeys] filter:^id (GPGKey *key) {
 		// Only either the key or one of the subkeys has to be valid,
 		// non-expired, non-disabled, non-revoked and be used for signing.
 		// We don't care about ownerTrust, validity.
@@ -373,6 +381,12 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 }
 
 - (void)rebuildKeyCaches {
+	dispatch_semaphore_wait(_keyCacheLock, DISPATCH_TIME_FOREVER);
+	[self _rebuildKeyCaches];
+	dispatch_semaphore_signal(_keyCacheLock);
+}
+
+- (void)_rebuildKeyCaches {
 	self.secretKeys = nil;
 	self.secretKeysByID = nil;
 	self.secretKeyMap = nil;
@@ -573,6 +587,8 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 	}
 	@catch (NSException *e) {
 	}
+	dispatch_release(_keyCacheLock);
+	_keyCacheLock = NULL;
 }
 
 @end
