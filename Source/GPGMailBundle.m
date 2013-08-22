@@ -57,7 +57,7 @@ NSString *GPGMailAgent = @"GPGMail %@";
 NSString *GPGMailKeyringUpdatedNotification = @"GPGMailKeyringUpdatedNotification";
 NSString *gpgErrorIdentifier = @"^~::gpgmail-error-code::~^";
 
-int GPGMailLoggingLevel = 1;
+int GPGMailLoggingLevel = 0;
 static BOOL gpgMailWorks = NO;
 
 
