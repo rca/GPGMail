@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B01AC5C17C82A77008FC246 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 1B01AC5B17C82A77008FC246 /* dsa_pub.pem */; };
 		1B02D70813F1E9D80032CFD1 /* GPGFlaggedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D70713F1E9D80032CFD1 /* GPGFlaggedString.m */; };
 		1B02D70A13F1E9F00032CFD1 /* NSArray+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D70913F1E9F00032CFD1 /* NSArray+Functional.m */; };
 		1B22C45D17B138390073DF81 /* cd-bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1B22C45C17B138390073DF81 /* cd-bundle.bundle */; };
@@ -186,6 +187,7 @@
 
 /* Begin PBXFileReference section */
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		1B01AC5B17C82A77008FC246 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		1B02D70713F1E9D80032CFD1 /* GPGFlaggedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPGFlaggedString.m; sourceTree = "<group>"; };
 		1B02D70913F1E9F00032CFD1 /* NSArray+Functional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Functional.m"; sourceTree = "<group>"; };
 		1B02D70B13F1EA1D0032CFD1 /* GPGFlaggedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPGFlaggedString.h; sourceTree = "<group>"; };
@@ -1714,6 +1716,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				1B01AC5B17C82A77008FC246 /* dsa_pub.pem */,
 				30CDB07312B2D44700F5F8B7 /* XIBs */,
 				30CDB07412B2D45900F5F8B7 /* Strings */,
 				559A80DC0838EC770052F47C /* Images */,
@@ -3374,6 +3377,7 @@
 				30E227911772057A00AD9A48 /* SymmetricEncryptionOn.pdf in Resources */,
 				301380D417567D26005948EE /* CertLargeStd.png in Resources */,
 				301380D517567D26005948EE /* CertLargeStd@2x.png in Resources */,
+				1B01AC5C17C82A77008FC246 /* dsa_pub.pem in Resources */,
 				301380DC17569815005948EE /* CertLargeNotTrusted@2x.png in Resources */,
 				301380DE17569819005948EE /* CertLargeNotTrusted.png in Resources */,
 				301380E217578133005948EE /* GPGMail.iconset in Resources */,

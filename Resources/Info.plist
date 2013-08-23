@@ -40,6 +40,8 @@
 	<string>https://gpgtools.org/releases/gpgmail/pre-appcast.xml</string>
 	<key>SUScheduledCheckInterval</key>
 	<integer>86400</integer>
+	<key>SUPublicDSAKeyFile</key>
+	<string>dsa_pub.pem</string>
 	<key>SupportedPluginCompatibilityUUIDs</key>
 	<array>
 		<string>DAFFB2B4-77BC-4C25-8CE1-2405E652D54B</string>
