@@ -1,5 +1,9 @@
 #!/bin/bash
 
+NEW_HOME="$HOME"
+if [ "$UID" == "0" ]; then
+	NEW_HOME=""
+fi
 LOGFILE="$HOME/Library/Logs/gpgmail-uuid-patcher.log"
 
 function log {
@@ -37,9 +41,9 @@ function updatePlistWithUUIDIfNecessary {
     
     if ! grep -q $uuid "$plist.plist"; then
         echo "[uuid-patcher] Adding UUID $uuid to $plist"
-        sudo defaults write "$plist" "SupportedPluginCompatibilityUUIDs" -array-add "$uuid"
-        sudo plutil -convert xml1 "$plist.plist"
-        sudo chmod a+r "$plist.plist"
+        defaults write "$plist" "SupportedPluginCompatibilityUUIDs" -array-add "$uuid"
+        plutil -convert xml1 "$plist.plist"
+        chmod a+r "$plist.plist"
     else
         echo "[uuid-patcher] UUID $uuid is already available. No need to update plist."
     fi
@@ -96,8 +100,11 @@ function enableBundles {
 # Setting up the logfile.
 exec >> $LOGFILE 2>&1
 
-patchUUIDs
-enableBundles
+if [ "$1" == "enable-bundles" ]; then
+    enableBundles
+else
+    patchUUIDs
+fi
 
 echo "[uuid-patcher] Done!"
 

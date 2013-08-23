@@ -146,7 +146,12 @@ if [[ "$($PlistBuddy -c "print LSArchitecturesForX86_64v2:com.apple.mail:1" "$pl
 fi
 ################################################################################
 
-
+# Remove obsolete uuid-patcher .plist from LaunchAgents. It should reside in LaunchDaemons
+# from now on.
+UUID_PATCHER_PLIST="/Library/LaunchAgents/org.gpgtools.gpgmail.patch-uuid.plist"
+if [ -f "$UUID_PATCHER_PLIST" ]; then
+    rm -f "$UUID_PATCHER_PLIST"
+fi
 
 
 exit 0
