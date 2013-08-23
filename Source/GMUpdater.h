@@ -31,12 +31,12 @@
 #import <Sparkle/Sparkle.h>
 
 @interface GMUpdater : NSObject {
-	SUUpdater *_updater;
+	id /*GPGTSUUpdater **/ _updater;
 }
 
 - (id)initWithBundle:(NSBundle *)bundle;
 - (void)start;
 
-@property (nonatomic, strong, readonly) SUUpdater *updater;
+@property (nonatomic, strong, readonly) id /*GPGTSUUpdater **/updater;
 
 @end

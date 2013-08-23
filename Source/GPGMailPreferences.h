@@ -31,7 +31,7 @@
 #import <AppKit/AppKit.h>
 #import "NSPreferencesModule.h"
 
-@class GPGMailBundle, SUUpdater, GPGOptions, GMSpecialBox;
+@class GPGMailBundle, GPGTSUUpdater, GPGOptions, GMSpecialBox;
 
 @interface GPGMailPreferences : NSPreferencesModule {}
 
@@ -50,7 +50,7 @@
 @property (weak, readonly) NSString *copyright, *versionDescription, *gpgStatusToolTip, *gpgStatusTitle;
 @property (weak, readonly) NSAttributedString *credits, *websiteLink, *buildNumberDescription;
 @property (weak, readonly) GPGMailBundle *bundle;
-@property (weak, readonly) SUUpdater *updater;
+@property (weak, readonly) id /*GPGTSUUpdater **/updater;
 @property (weak, readonly) NSImage *gpgStatusImage;
 @property (weak, readonly) GPGOptions *options;
 

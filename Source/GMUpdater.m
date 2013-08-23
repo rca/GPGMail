@@ -38,26 +38,26 @@
 
 - (id)initWithBundle:(NSBundle *)bundle {
 	if(self = [super init]) {
-		_updater = [SUUpdater updaterForBundle:bundle];
+		_updater = [NSClassFromString(@"GPGTSUUpdater") updaterForBundle:bundle];
 	}
 	return self;
 }
 
 - (void)start {
-	_updater.delegate = self;
+	[_updater setDelegate:self];
 	[_updater resetUpdateCycle];
 }
 
-- (NSString *)pathToRelaunchForUpdater:(SUUpdater *)updater {
+- (NSString *)pathToRelaunchForUpdater:(id /*GPGTSUUpdater **/)updater {
 	return @"/Applications/Mail.app";
 }
 
-- (BOOL)updater:(SUUpdater *)updater relaunchUsingPath:(NSString *)path arguments:(NSArray *)arguments {
+- (BOOL)updater:(id /*GPGTSUUpdater **/)updater relaunchUsingPath:(NSString *)path arguments:(NSArray *)arguments {
     [GPGTask launchGeneralTask:path withArguments:arguments];
     return YES;
 }
 
-- (NSString *)feedURLStringForUpdater:(SUUpdater *)updater {
+- (NSString *)feedURLStringForUpdater:(id /*GPGTSUUpdater **/)updater {
 	NSString *updateSourceKey = @"UpdateSource";
 	NSBundle *bundle = [GPGMailBundle bundle];
 	
