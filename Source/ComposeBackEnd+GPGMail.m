@@ -680,8 +680,11 @@
 	
 	DebugLog(@"Recipients: %@", recipients);
     
-    sender = [sender gpgNormalizedEmail];
     BOOL canSMIMEEncrypt = [(ComposeBackEnd_GPGMail *)bself MACanEncryptForRecipients:recipients sender:sender];
+    
+	// S/MIME addresses are treated in a case sensitive manner, so the normalizing (uncommenting and lowercasing)
+	// is only supposed to be done, AFTER the S/MIME canEncrypt check (#673)
+	sender = [sender gpgNormalizedEmail];
     
     DebugLog(@"Can S/MIME encrypt to recipients: %@? %@", recipients, canSMIMEEncrypt ? @"YES" : @"NO");
     
