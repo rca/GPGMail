@@ -41,7 +41,7 @@
 	return [GPGMailBundle sharedInstance];
 }
 
-- (SUUpdater *)updater {
+- (id /*GPGTSUUpdater **/)updater {
 	return [[(GPGMailBundle *)[GPGMailBundle sharedInstance] updater] updater];
 }
 
