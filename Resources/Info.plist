@@ -27,7 +27,7 @@
 	<key>BuildNumber</key>
 	<string>AUTOFILL</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © GPGTools Project Team, 2012</string>
+	<string>Copyright © GPGTools, 2013</string>
 	<key>NSPrincipalClass</key>
 	<string>GPGMailBundle</string>
 	<key>SUEnableAutomaticChecks</key>
