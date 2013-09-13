@@ -148,7 +148,7 @@
 		// Check with the key manager if an updated key is available for
 		// this signature, since auto-key-retrieve might have changed it.
 		GPGKey *newKey = [[GPGMailBundle sharedInstance] keyForFingerprint:signature.fingerprint];
-        signature.key = newKey;
+        signature.key = newKey.primaryKey;
 		NSString *email = signature.email;
         if(email) {
 			// If the sender E-Mail != signature E-Mail, we display the sender E-Mail if possible.
