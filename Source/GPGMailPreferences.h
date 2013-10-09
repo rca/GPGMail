@@ -35,12 +35,9 @@
 
 @interface GPGMailPreferences : NSPreferencesModule {}
 
-/* Open FAQ page. */
-- (IBAction)openFAQ:(id)sender;
-/* Open donation page. */
-- (IBAction)openDonation:(id)sender;
-/* Open support page. */
 - (IBAction)openSupport:(id)sender;
+- (IBAction)openDonate:(id)sender;
+- (IBAction)openKnowledgeBase:(id)sender;
 
 - (IBAction)openGPGStatusHelp:(id)sender;
 

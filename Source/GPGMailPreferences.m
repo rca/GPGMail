@@ -87,18 +87,19 @@
 	return [NSImage imageNamed:@"GPGMail"];
 }
 
-/* Open FAQ page. */
-- (IBAction)openFAQ:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://support.gpgtools.org/kb"]];
-}
-/* Open donation page. */
-- (IBAction)openDonation:(id)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://gpgtools.org/donate.html#donate-paypal"]];
-}
-/* Open contact page. */
+
+
 - (IBAction)openSupport:(id)sender {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://support.gpgtools.org/"]];
 }
+- (IBAction)openDonate:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://gpgtools.org/donate"]];
+}
+- (IBAction)openKnowledgeBase:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://support.gpgtools.org/kb"]];
+}
+
+
 
 - (IBAction)openGPGStatusHelp:(id)sender {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://support.gpgtools.org/kb/how-to/gpg-status"]];
