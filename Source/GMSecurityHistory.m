@@ -34,24 +34,23 @@
 @implementation GMSecurityHistory
 
 + (GPGMAIL_SECURITY_METHOD)defaultSecurityMethod {
-    GPGMAIL_SECURITY_METHOD securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
-    if([[GPGOptions sharedOptions] integerForKey:@"DefaultSecurityMethod"]) {
-        securityMethod = (GPGMAIL_SECURITY_METHOD)[[GPGOptions sharedOptions] integerForKey:@"DefaultSecurityMethod"];
-        DebugLog(@"Default Security Method is: %@", securityMethod != 0 && securityMethod == GPGMAIL_SECURITY_METHOD_SMIME ? @"S/MIME" : @"OpenPGP");
-    }
+	GPGMAIL_SECURITY_METHOD securityMethod = (GPGMAIL_SECURITY_METHOD)[[GPGOptions sharedOptions] integerForKey:@"DefaultSecurityMethod"];
+	if (securityMethod < 1 || securityMethod > 2) {
+		securityMethod = GPGMAIL_SECURITY_METHOD_OPENPGP;
+	}
+	DebugLog(@"Default Security Method is: %@", securityMethod == GPGMAIL_SECURITY_METHOD_SMIME ? @"S/MIME" : @"OpenPGP");
     return securityMethod;
 }
 
 - (GMSecurityOptions *)securityOptionsFromDefaults {
 	GPGOptions *options = [GPGOptions sharedOptions];
-	id signValue = [options valueForKey:@"SignNewEmailsByDefault"];
-	id encryptValue = [options valueForKey:@"EncryptNewEmailsByDefault"];
-	// If the values are not configured, default to not sign.
-	BOOL signDefault = YES;
-	BOOL encrpytDefault = NO;
-	BOOL sign = signValue ? [signValue boolValue] : signDefault;
-	BOOL encrypt = encryptValue ? [encryptValue boolValue] : encrpytDefault;
-	return [GMSecurityOptions securityOptionsWithSecurityMethod:[[self class] defaultSecurityMethod] shouldSign:sign shouldEncrypt:encrypt];
+	BOOL sign = [options boolForKey:@"SignNewEmailsByDefault"];
+	BOOL encrypt = [options boolForKey:@"EncryptNewEmailsByDefault"];
+	GPGMAIL_SECURITY_METHOD securityMethod = [[self class] defaultSecurityMethod];
+
+	return [GMSecurityOptions securityOptionsWithSecurityMethod:securityMethod
+													 shouldSign:sign
+												  shouldEncrypt:encrypt];
 }
 
 - (GMSecurityOptions *)bestSecurityOptionsForSender:(NSString *)sender recipients:(NSArray *)recipients signFlags:(GPGMAIL_SIGN_FLAG)signFlags 
