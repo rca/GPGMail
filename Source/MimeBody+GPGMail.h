@@ -30,7 +30,7 @@
 
 #import <MimeBody.h>
 
-@interface MimeBody (GPGMail)
+@interface MimeBody_GPGMail : NSObject
 
 /**
  This method is call by Mail internally and it's not exactly clear
@@ -69,5 +69,13 @@
  data armor is found in the message body.
  */
 - (BOOL)containsPGPData;
+
+@end
+
+@interface MimeBody_GPGMail (NativeMailMethod)
+
+- (GM_CAST_CLASS(Message *, id))message;
+- (NSData *)bodyData;
+- (GM_CAST_CLASS(MimePart *, id))topLevelPart;
 
 @end

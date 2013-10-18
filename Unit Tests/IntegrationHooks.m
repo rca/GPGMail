@@ -66,14 +66,15 @@
 		// Make sure the class exists.
 		XCTAssertNotNil(mailClass, @"Class %@ doesn't exist. This will lead to problems!", className);
 		// Test all the selectors.
-		for(NSString *selectorName in selectorNames) {
-			unsigned int match = 0;
-			if([TestHelpers instancesOfClass:mailClass respondToSelectorWithName:selectorName])
+		for(id selectorName in selectorNames) {
+            NSString *newSelectorName = [selectorName isKindOfClass:[NSArray class]] ? selectorName[1] : selectorName;
+            unsigned int match = 0;
+			if([TestHelpers instancesOfClass:mailClass respondToSelectorWithName:newSelectorName])
 				match += 1;
-			if([TestHelpers class:mailClass respondsToSelectorWithName:selectorName])
+			if([TestHelpers class:mailClass respondsToSelectorWithName:newSelectorName])
 				match += 1;
 			
-			XCTAssertTrue(match, @"Class %@ doesn't implement selector %@", className, selectorName);
+			XCTAssertTrue(match, @"Class %@ doesn't implement selector %@", className, newSelectorName);
 		}
 	}
 }

@@ -6,6 +6,7 @@
 //
 //
 
+#import <AppKit/AppKit.h>
 #import "TestHelpers.h"
 #import "CDMachOFile.h"
 #import "CDOCClass.h"

@@ -97,8 +97,19 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 }
 
 - (GPGKey *)keyForFingerprint:(NSString *)fingerprint {
-	GPGKey *key = [self.allKeysAndSubkeys member:fingerprint];
-	return key;
+	// If the fingerprint length is 16, we assume that a key id is given
+    // instead and search all keys.
+    GPGKey *key = nil;
+    if([fingerprint length] == 16) {
+        for(GPGKey *tempKey in self.allKeysAndSubkeys) {
+            if([[tempKey keyID] isEqualToString:fingerprint]) {
+                key = tempKey;
+                return key;
+            }
+        }
+    }
+    
+    return [self.allKeysAndSubkeys member:fingerprint];
 }
 
 - (GPGKey *)secretKeyForKeyID:(NSString *)keyID {

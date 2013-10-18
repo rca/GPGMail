@@ -7,12 +7,17 @@
 //
 
 #import "GPGTextAttachmentCell.h"
-
+#import "GPGMailBundle.h"
 
 @implementation GPGTextAttachmentCell
 
 - (BOOL)wantsToTrackMouse {
-    return NO;
+	// Apparently, Mavericks wants YES here. Mountain Lion and older wants NO.
+	// Well... whatever.
+	if([GPGMailBundle isMavericks])
+		return YES;
+	else
+		return NO;
 }
 
 @end

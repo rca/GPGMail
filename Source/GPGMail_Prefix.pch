@@ -10,3 +10,12 @@ extern int  GPGMailLoggingLevel;
 #define DebugLog(...) if (GPGMailLoggingLevel) {CCLog(__VA_ARGS__);}
 #define GMLocalizedString(key) \
 [GPGMailBundle localizedStringForKey:(key)]
+
+/**
+ * Allows to annotate methods and calls with the correct class,
+ * but uses the cast_class to be actually used.
+ * This is necessary for Mavericks, where the mail class names have been
+ * prefixed.
+ */
+#define GM_CAST_CLASS(class, cast_class) cast_class
+#define GM_MAIL_CLASS(class) [GPGMailBundle resolveMailClassFromName:class]

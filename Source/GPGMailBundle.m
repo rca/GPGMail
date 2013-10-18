@@ -38,9 +38,7 @@
 #import "GPGMailBundle.h"
 #import "GPGMailPreferences.h"
 #import "MVMailBundle.h"
-#import "Message.h"
 #import "NSString+GPGMail.h"
-
 
 @interface GPGMailBundle ()
 
@@ -59,7 +57,6 @@ NSString *gpgErrorIdentifier = @"^~::gpgmail-error-code::~^";
 
 int GPGMailLoggingLevel = 0;
 static BOOL gpgMailWorks = NO;
-
 
 #pragma mark GPGMailBundle Implementation
 
@@ -144,13 +141,14 @@ static BOOL gpgMailWorks = NO;
     // never happens!
     if(!mvMailBundleClass)
         return;
-    
 
-    
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated"
     class_setSuperclass([self class], mvMailBundleClass);
 #pragma GCC diagnostic pop
+    
+    // Initialize the bundle by swizzling methods, loading keys, ...
+    GPGMailBundle *instance = [GPGMailBundle sharedInstance];
     
     [[((MVMailBundle *)self) class] registerBundle];             // To force registering composeAccessoryView and preferences
 }
@@ -401,14 +399,39 @@ static BOOL gpgMailWorks = NO;
     return [NSString stringWithFormat:GPGMailAgent, [self version]];
 }
 
++ (Class)resolveMailClassFromName:(NSString *)name {
+    NSArray *prefixes = @[@"", @"MC", @"MF"];
+    
+    // MessageWriter is called MessageGenerator under Mavericks.
+    if([name isEqualToString:@"MessageWriter"] && !NSClassFromString(@"MessageWriter"))
+        name = @"MessageGenerator";
+    
+    __block Class resolvedClass = nil;
+    [prefixes enumerateObjectsUsingBlock:^(NSString *prefix, NSUInteger idx, BOOL *stop) {
+        NSString *modifiedName = [name copy];
+        if([prefixes containsObject:[modifiedName substringToIndex:2]])
+            modifiedName = [modifiedName substringFromIndex:2];
+        
+        NSString *className = [prefix stringByAppendingString:modifiedName];
+        resolvedClass = NSClassFromString(className);
+        if(resolvedClass)
+            *stop = YES;
+    }];
+    
+    return resolvedClass;
+}
 
 + (BOOL)isMountainLion {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wselector"
+    Class Message = [self resolveMailClassFromName:@"Message"];
     return [Message instancesRespondToSelector:@selector(dataSource)];
 #pragma clang diagnostic pop
 }
 
++ (BOOL)isMavericks {
+    return NSAppKitVersionNumber > NSAppKitVersionNumber10_8 + 1.0f;
+}
 
 + (BOOL)hasPreferencesPanel {
     // LEOPARD Invoked on +initialize. Else, invoked from +registerBundle.

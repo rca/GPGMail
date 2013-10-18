@@ -124,14 +124,6 @@
 
 + (NSDictionary *)hookChangesForMavericks {
 	return @{
-			 @"MessageContentController": @{
-					 @"status": @"removed"
-			 },
-			 @"MessageViewController": @{
-					 @"selectors": @[
-							 @"setRepresentedObject:"
-					 ]
-			 },
 			 @"Library": @{
 					 @"status": @"renamed",
 					 @"name": @"MFLibrary",
@@ -144,19 +136,24 @@
 							 ]
 					 },
 			 },
+             @"HeadersEditor": @{
+                     @"selectors": @{
+                             @"renamed": @[
+                                @[
+                                    @"_updateSignButtonTooltip",
+                                    @"_updateSignButtonToolTip"
+                                 ],
+                                @[
+                                    @"_updateEncryptButtonTooltip",
+                                    @"_updateEncryptButtonToolTip"
+                                 ]
+                             ]
+                     }
+             },
 			 @"EAEmailAddressParser": @{
 					 @"selectors": @[
 							 @"rawAddressFromFullAddress:"
 					 ]
-			 },
-			 @"HeaderViewController": @{
-					 @"selectors": @[
-							 @"_updateSecurityField",
-							 @"awakeFromNib"
-					 ]
-			 },
-			 @"MessageHeaderDisplay": @{
-					 @"status": @"removed"
 			 },
 			 @"MimePart": @{
 					 @"status": @"renamed",
@@ -177,15 +174,65 @@
 			 @"MailAccount": @{
 					 @"status": @"renamed",
 					 @"name": @"MFMailAccount"
-			 }
+			 },
+             @"MailDocumentEditor": @{
+                     @"status": @"renamed",
+                     @"name": @"DocumentEditor"
+             },
+             @"MessageRouter": @{
+                     @"status": @"renamed",
+                     @"name": @"MFMessageRouter"
+            },
+             @"MessageContentController": @{
+                     @"status": @"renamed",
+                     @"name": @"MessageViewController",
+                     @"selectors": @{
+                        @"replaced": @[
+                           @[
+                               @"setMessageToDisplay:",
+                               @"setRepresentedObject:"
+                            ]
+                        ]
+                     }
+             },
+             @"MessageHeaderDisplay": @{
+                     @"status": @"renamed",
+                     @"name": @"HeaderViewController",
+                     @"selectors": @{
+                             @"added": @[
+                                     @"_displayStringForSecurityKey",
+                                     @"textView:clickedOnCell:inRect:atIndex:",
+                                     @"_updateTextStorageWithHardInvalidation:",
+                                     @"toggleDetails:"
+                             ],
+                             @"removed": @[
+                                     @"_attributedStringForSecurityHeader",
+                                     @"textView:clickedOnLink:atIndex:"
+                             ]
+                                             
+                     }
+             },
+             @"CertificateBannerViewController": @{
+                    @"selectors": @[
+                        @"updateWantsDisplay"
+                    ]
+             },
+             @"BannerController": @{
+                     @"status": @"removed"
+             },
+             @"ConversationMember": @{
+                     @"selectors": @[
+                             @"_reloadSecurityProperties"
+                     ]
+             }
 	};
 }
 
 + (NSDictionary *)hooks {
 	static dispatch_once_t onceToken;
 	static NSDictionary *_hooks;
-	
-	dispatch_once(&onceToken, ^{
+    
+    dispatch_once(&onceToken, ^{
 		NSMutableDictionary *hooks = [[NSMutableDictionary alloc] init];
 		NSDictionary *commonHooks = [self commonHooks];
 		
@@ -194,7 +241,7 @@
 			hooks[class] = [NSMutableArray arrayWithArray:commonHooks[class]];
 		
 		/* Fix, once we can compile with stable Xcode including 10.9 SDK. */
-		if(floor(NSAppKitVersionNumber) > 1187 /*NSAppKitVersionNumber10_8*/)
+		if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8 + 1)
 			[self applyHookChangesForVersion:@"10.9" toHooks:hooks];
 		
 		_hooks = [NSDictionary dictionaryWithDictionary:hooks];
@@ -233,6 +280,10 @@
 						[(NSMutableArray *)hooks[class] removeObject:selector[0]];
 						[(NSMutableArray *)hooks[class] addObject:selector[1]];
 					}
+                    else if([action isEqualToString:@"renamed"]) {
+                        [(NSMutableArray *)hooks[class] removeObject:selector[0]];
+                        [(NSMutableArray *)hooks[class] addObject:selector];
+                    }
 				}
 			}
 		}
@@ -243,6 +294,26 @@
 			[hooks removeObjectForKey:class];
 		}
 	}
+    
+    
+}
+
++ (NSString *)legacyClassNameForName:(NSString *)className {
+    // Some classes have been renamed in Mavericks.
+    // This methods converts known classes to their counterparts in Mavericks.
+    if([@[@"MC", @"MF"] containsObject:[className substringToIndex:2]])
+        return [className substringFromIndex:2];
+    
+    if([className isEqualToString:@"DocumentEditor"])
+        return @"MailDocumentEditor";
+    
+    if([className isEqualToString:@"MessageViewController"])
+        return @"MessageContentController";
+    
+    if([className isEqualToString:@"HeaderViewController"])
+        return @"MessageHeaderDisplay";
+    
+    return className;
 }
 
 + (void)injectUsingMethodPrefix:(NSString *)prefix {
@@ -264,6 +335,9 @@
 	
 	NSError * __autoreleasing error = nil;
     for(NSString *class in hooks) {
+        NSString *oldClass = [[self class] legacyClassNameForName:class];
+        error = nil;
+        
         NSArray *selectors = hooks[class];
 		
 		Class mailClass = NSClassFromString(class);
@@ -275,7 +349,7 @@
 		// Check if a class exists with <class>_GPGMail. If that's
 		// the case, all the methods of that class, have to be added
 		// to the original Mail or Messages class.
-		Class extensionClass = NSClassFromString([class stringByAppendingFormat:@"_%@", extensionClassSuffix]);
+		Class extensionClass = NSClassFromString([oldClass stringByAppendingFormat:@"_%@", extensionClassSuffix]);
 		BOOL extend = extensionClass != nil ? YES : NO;
 		if(extend) {
 			if(![mailClass jrlp_addMethodsFromClass:extensionClass error:&error])
@@ -284,22 +358,25 @@
 		}
 		
 		// And on to swizzling methods and class methods.
-		for(NSString *selectorName in selectors) {
-			error = nil;
-			NSString *extensionSelectorName = [NSString stringWithFormat:@"%@%@%@", prefix, [[selectorName substringToIndex:1] uppercaseString],
-											   [selectorName substringFromIndex:1]];
-			SEL selector = NSSelectorFromString(selectorName);
+		for(id selectorNames in selectors) {
+            // If the selector changed from one OS X version to the other, selectorNames is an NSArray and
+            // the selector name of the GPGMail implementation is item 0 and the Mail implementation name is
+            // item 1.
+            NSString *gmSelectorName = [selectorNames isKindOfClass:[NSArray class]] ? selectorNames[0] : selectorNames;
+			NSString *mailSelectorName = [selectorNames isKindOfClass:[NSArray class]] ? selectorNames[1] : selectorNames;
+            
+            error = nil;
+			NSString *extensionSelectorName = [NSString stringWithFormat:@"%@%@%@", prefix, [[gmSelectorName substringToIndex:1] uppercaseString],
+											   [gmSelectorName substringFromIndex:1]];
+			SEL selector = NSSelectorFromString(mailSelectorName);
 			SEL extensionSelector = NSSelectorFromString(extensionSelectorName);
 			// First try to add as instance method.
-			[mailClass jrlp_swizzleMethod:selector withMethod:extensionSelector error:&error];
-			// If that didn't work, try to add as class method.
-			if(error) {
-				error = nil;
-				[mailClass jrlp_swizzleClassMethod:selector withClassMethod:extensionSelector error:&error];
-				if(error)
-					NSLog(@"WARNING: %@ doesn't respond to selector %@ - %@", NSStringFromClass(mailClass),
+			if(![mailClass jrlp_swizzleMethod:selector withMethod:extensionSelector error:&error]) {
+                // If that didn't work, try to add as class method.
+                if(![mailClass jrlp_swizzleClassMethod:selector withClassMethod:extensionSelector error:&error])
+                    NSLog(@"WARNING: %@ doesn't respond to selector %@ - %@", NSStringFromClass(mailClass),
 						  NSStringFromSelector(selector), error);
-			}
+            }
 		}
 	}
 }

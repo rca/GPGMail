@@ -54,3 +54,14 @@
 - (NSString *)stringByDeletingAttachmentsWithNames:(NSArray *)names;
 
 @end
+
+/**
+ The methods in this category are available at runtime, but might
+ have been removed in newer releases.
+ */
+
+@interface NSString (NotImplemented)
+
+- (NSString *)uncommentedAddress;
+
+@end

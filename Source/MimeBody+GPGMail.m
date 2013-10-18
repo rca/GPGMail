@@ -32,14 +32,14 @@
 #import "CCLog.h"
 #import "NSObject+LPDynamicIvars.h"
 #import "NSData+GPGMail.h"
-#import <Message.h>
-#import <MessageStore.h>
+#import "Message.h"
+#import "MessageStore.h"
 #import "MimeBody.h"
 #import "Message+GPGMail.h"
 #import "MimeBody+GPGMail.h"
 #import "MimePart+GPGMail.h"
 
-@implementation MimeBody (GPGMail)
+@implementation MimeBody_GPGMail
 
 - (BOOL)MAIsSignedByMe {
     

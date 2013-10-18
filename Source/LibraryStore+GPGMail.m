@@ -34,7 +34,7 @@
 #import "Message+GPGMail.h"
 #import "LibraryStore+GPGMail.h"
 
-@implementation LibraryStore (GPGMail)
+//@implementation LibraryStore (GPGMail)
 
 /**
  Whenever a list of messages is supposed to be displayed,
@@ -87,4 +87,4 @@
 //    return ret;
 //}
 
-@end
+//@end

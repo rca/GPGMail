@@ -70,8 +70,8 @@
     NSData *data = [self dataForResourceAtPath:@"PGPPublicKey" ofType:@"txt"];
     XCTAssertNotNil(data, @"Did not read Resource!");
     NSRange match = [data rangeOfPGPPublicKey];
-    XCTAssertEquals(21ul, match.location, @"Did not match public key!");
-    XCTAssertEquals(72ul, match.length, @"Did not match public key!");
+    XCTAssertEqual(21ul, match.location, @"Did not match public key!");
+    XCTAssertEqual(72ul, match.length, @"Did not match public key!");
 }
 
 - (void)testRangeOfPGPInlineSignaturesUTF8Good {

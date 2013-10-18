@@ -35,6 +35,9 @@
 #import "GPGMailBundle.h"
 #import "ActivityMonitor.h"
 #import "MessageContentController+GPGMail.h"
+#import "ComposeBackEnd.h"
+#import "MessageViewController.h"
+#import "HeaderViewController.h"
 
 @implementation MessageContentController_GPGMail : NSObject
 
@@ -46,6 +49,20 @@
 - (void)MASetMessageToDisplay:(id)message {
     [message setIvar:@"UserSelectedMessage" value:@YES];
     [self MASetMessageToDisplay:message];
+}
+
+/**
+  MessageContentController was renamed to MessageViewController in Mavericks.
+  The following methods only apply to Mavericks.
+ */
+- (void)MASetRepresentedObject:(id)representedObject {
+    // Reset the details hidden value, if a previous PGP processed message
+    // forced the details to be shown.
+    if([self getIvar:@"RealDetailsHidden"])
+        [self setValue:[self getIvar:@"RealDetailsHidden"] forKey:@"_detailsHidden"];
+    [[representedObject originalMessage] setIvar:@"UserSelectedMessage" value:[NSNumber numberWithBool:YES]];
+    [[representedObject originalMessage] setIvar:@"LoadingStage" value:[NSNumber numberWithBool:YES]];
+    [self MASetRepresentedObject:representedObject];
 }
 
 @end

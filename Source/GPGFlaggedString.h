@@ -53,6 +53,7 @@
     GPGFlaggedString *_uncommentedFlaggedValue;
 }
 @property (readonly, copy) NSString *string;
+@property (readonly) NSDictionary *flags;
 
 /**
  Create a new GPGFlaggedString.
@@ -61,6 +62,8 @@
  that are needed to modify the string.
  */
 - (id)initWithString:(NSString *)string flag:(NSString *)flag value:(id)value;
+
+- (id)initWithString:(NSString *)theString flags:(NSMutableDictionary *)theFlags;
 
 /**
  Sets the value for the given flag.
