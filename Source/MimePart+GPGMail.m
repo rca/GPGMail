@@ -1376,10 +1376,7 @@
 			// Yes, it's partially signed.
 			NSMutableData *signedDataWithMarkers = [NSMutableData data];
 			NSMutableSet *allSignatures = [NSMutableSet set];
-			NSString *cleartextRegex = [NSString stringWithFormat:@"(?sm)^%@\\r?\\n.*?\\r?\\n\\r?\\n(.*)\\r?\n%@",
-										PGP_SIGNED_MESSAGE_BEGIN, PGP_MESSAGE_SIGNATURE_BEGIN];
-			RKRegex *clearRKRegex = [RKRegex regexWithRegexString:cleartextRegex options:0];
-
+			
 			// Loop through all signed parts.
 			do {
 				// Append the unsigned data.
@@ -1388,14 +1385,16 @@
 				// Get signed data.
 				NSData *subData = [signedData subdataWithRange:range];
 				
-				// Verify subData and add the signatures to our set.
-				[allSignatures addObjectsFromArray:[gpgc verifySignedData:subData]];
+				// Unarmor and get cleartext.
+				NSData *cleartext = nil;
+				NSData *sigData = [GPGPacket unArmor:subData clearText:&cleartext];
 				
-				// Find the signed cleartext...
-				NSRange cleartextRange = [subData rangeOfRegex:clearRKRegex inRange:NSMakeRange(0, subData.length) capture:1];
-				if (cleartextRange.length) {
+				// Verify signature and add the GPGSignatures to our set.
+				[allSignatures addObjectsFromArray:[gpgc verifySignature:sigData originalData:cleartext]];
+				
+				if (cleartext.length) {
 					// ... and add it with markers.
-					[self addPGPPartMarkerToData:signedDataWithMarkers partData:[subData subdataWithRange:cleartextRange]];
+					[self addPGPPartMarkerToData:signedDataWithMarkers partData:cleartext];
 				}
 				
 				// Calculate new location and range.
@@ -1407,7 +1406,7 @@
 			
 			//Append trailing unsigend data.
 			[signedDataWithMarkers appendData:[signedData subdataWithRange:NSMakeRange(location, signedData.length - location)]];
-
+			
 			
 			//Replace markers.
 			NSString *verifiedContent = [[signedDataWithMarkers stringByGuessingEncodingWithHint:[self bestStringEncoding]] markupString];
