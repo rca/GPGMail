@@ -117,7 +117,7 @@
 	
 	// Now emulate what -[ComposeBackEnd sender] does internally.
 	// At least part of it.
-	MailAccount *account = [MailAccount accountContainingEmailAddress:sender];
+	MailAccount *account = [GM_MAIL_CLASS(@"MailAccount") accountContainingEmailAddress:sender];
 	// Not sure what to do in this case, so let's fall back.
 	if(!account)
 		return [self MASender];
@@ -256,7 +256,7 @@
 			
 			// The error message should be set on the current activity monitor, so we
 			// simply have to fetch it.
-			MFError *error = (MFError *)[(ActivityMonitor *)[ActivityMonitor currentMonitor] error];
+			GM_CAST_CLASS(MFError *, id) error = (MFError *)[(ActivityMonitor *)[GM_MAIL_CLASS(@"ActivityMonitor") currentMonitor] error];
 			[self performSelectorOnMainThread:@selector(didCancelMessageDeliveryForError:) withObject:error waitUntilDone:NO];
 		}
 		// Restore the clean headers so BCC is removed as well.
@@ -366,7 +366,7 @@
 	
 	BOOL fromiCal = NO;
 	for(id item in contents.attachmentsAndHtmlStrings) {
-		if([item isKindOfClass:[MessageAttachment class]]) {
+		if([item isKindOfClass:GM_MAIL_CLASS(@"MessageAttachment")]) {
 			MessageAttachment *attachment = (MessageAttachment *)item;
 			// For some non apparent reason, iCal invitations are not recognized by isCalendarInvitation anymore...
 			// so let's check for text/calendar AND isCalendarInvitation.
@@ -469,7 +469,7 @@
 	
 	
 	NSRange contentRange = NSMakeRange(headerData.length, mutableBodyData.length - headerData.length);
-	Subdata *contentSubdata = [[Subdata alloc] initWithParent:mutableBodyData range:contentRange];
+	Subdata *contentSubdata = [[GM_MAIL_CLASS(@"Subdata") alloc] initWithParent:mutableBodyData range:contentRange];
 	
 	return contentSubdata;
 	
@@ -477,7 +477,7 @@
 
 - (Subdata *)_newPGPBodyDataWithEncryptedData:(NSData *)encryptedData headers:(MutableMessageHeaders *)headers shouldBeMIME:(BOOL)shouldBeMIME keysToAttach:(NSData *)keysToAttach {
     // Now on to creating a new body and replacing the old one.
-    NSString *boundary = (NSString *)[MimeBody newMimeBoundary];
+    NSString *boundary = (NSString *)[GM_MAIL_CLASS(@"MimeBody") newMimeBoundary];
     NSData *topData;
     NSData *versionData;
     MimePart *topPart;
@@ -485,6 +485,8 @@
     MimePart *dataPart;
     MimePart *keysPart;
 	
+    Class MimePart = GM_MAIL_CLASS(@"MimePart");
+    
     if(!shouldBeMIME) {
         topPart = [[MimePart alloc] init];
         [topPart setType:@"text"];
@@ -579,7 +581,7 @@
     // First add the header data.
     [bodyData appendData:headerData];
     // Now the mime parts.
-    MessageWriter *messageWriter = [[MessageWriter alloc] init];
+    MessageWriter *messageWriter = [[GM_MAIL_CLASS(@"MessageWriter") alloc] init];
     [messageWriter appendDataForMimePart:topPart toData:bodyData withPartData:partBodyMap];
     CFRelease(partBodyMapRef);
     // Contains the range, which separates the mail headers
@@ -588,7 +590,7 @@
     // it might be the same as _rawData. But we don't need that, so, that's alright.
     NSRange contentRange = NSMakeRange([headerData length],
                                        ([bodyData length] - [headerData length]));
-    Subdata *contentSubdata = [[Subdata alloc] initWithParent:bodyData range:contentRange];
+    Subdata *contentSubdata = [[GM_MAIL_CLASS(@"Subdata") alloc] initWithParent:bodyData range:contentRange];
     return contentSubdata;
 }
 
@@ -602,14 +604,16 @@
     NSData *signedData = data;
     NSData *encryptedData = nil;
     
+	Class MimePart = [GPGMailBundle resolveMailClassFromName:@"MimePart"];
+	
     topPart = [[MimePart alloc] init];
-    topPart.type = @"text";
-    topPart.subtype = @"plain";
-    topPart.contentTransferEncoding = @"8bit";
+    [topPart setValue:@"text" forKey:@"type"];
+    [topPart setSubtype:@"plain"];
+    [topPart setContentTransferEncoding:@"8bit"];
     [topPart setBodyParameter:@"utf8" forKey:@"charset"];
     
     if(shouldSign) {
-        signedData = [topPart inlineSignedDataForData:data sender:[headers firstAddressForKey:@"from"]];
+        signedData = [(MimePart_GPGMail *)topPart inlineSignedDataForData:data sender:[headers firstAddressForKey:@"from"]];
         if (!signedData) {
             return nil;
         }
@@ -635,12 +639,15 @@
     // And also add our own special GPGMail header.
     // Create the new top part headers.
     NSMutableData *contentTypeData = [[NSMutableData alloc] initWithLength:0];
-    [contentTypeData appendData:[[NSString stringWithFormat:@"%@/%@;", [topPart type], [topPart subtype]] dataUsingEncoding:NSASCIIStringEncoding]];
+    NSString *topType = [topPart valueForKey:@"type"];
+	NSString *topSubtype = [topPart valueForKey:@"subtype"];
+	
+	[contentTypeData appendData:[[NSString stringWithFormat:@"%@/%@;", topType, topSubtype] dataUsingEncoding:NSASCIIStringEncoding]];
     for(id key in [topPart bodyParameterKeys])
         [contentTypeData appendData:[[NSString stringWithFormat:@"\n\t%@=\"%@\";", key, [topPart bodyParameterForKey:key]] dataUsingEncoding:NSASCIIStringEncoding]];
     [headers setHeader:contentTypeData forKey:@"content-type"];
     [headers setHeader:[GPGMailBundle agentHeader] forKey:@"x-pgp-agent"];
-    [headers setHeader:topPart.contentTransferEncoding forKey:@"content-transfer-encoding"];
+    [headers setHeader:[topPart contentTransferEncoding] forKey:@"content-transfer-encoding"];
     [headers removeHeaderForKey:@"content-disposition"];
     [headers removeHeaderForKey:@"from "];	
 	
@@ -662,7 +669,7 @@
     // it might be the same as _rawData. But we don't need that, so, that's alright.
     NSRange contentRange = NSMakeRange([headerData length], 
                                        ([bodyData length] - [headerData length]));
-    Subdata *contentSubdata = [[Subdata alloc] initWithParent:bodyData range:contentRange];
+    Subdata *contentSubdata = [[GM_MAIL_CLASS(@"Subdata") alloc] initWithParent:bodyData range:contentRange];
     return contentSubdata;
 }
 
@@ -799,7 +806,7 @@
     
     DebugLog(@"Can sign S/MIME from address: %@? %@", address, canSMIMESign ? @"YES" : @"NO");
     
-    BOOL canPGPSign = [[GPGMailBundle sharedInstance] canSignMessagesFromAddress:[address uncommentedAddress]];
+    BOOL canPGPSign = [[GPGMailBundle sharedInstance] canSignMessagesFromAddress:[address gpgNormalizedEmail]];
     
     DebugLog(@"Can sign PGP from address: %@? %@", address, canPGPSign ? @"YES" : @"NO");
     
@@ -826,8 +833,8 @@
 
     NSMutableArray *nonEligibleRecipients = [NSMutableArray array];
     for(NSString *recipient in [((ComposeBackEnd *)self) allRecipients]) {
-        if(![[GPGMailBundle sharedInstance] canEncryptMessagesToAddress:[recipient uncommentedAddress]])
-            [nonEligibleRecipients addObject:[recipient uncommentedAddress]];
+        if(![[GPGMailBundle sharedInstance] canEncryptMessagesToAddress:[recipient gpgNormalizedEmail]])
+            [nonEligibleRecipients addObject:[recipient gpgNormalizedEmail]];
     }
 
     return nonEligibleRecipients;

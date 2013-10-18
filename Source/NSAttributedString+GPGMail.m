@@ -11,7 +11,7 @@
 
 @implementation NSAttributedString (GPGMail)
 
-+ (NSAttributedString *)attributedStringWithAttachment:(NSTextAttachment *)attachment image:(NSImage *)image link:(NSString *)link {
++ (NSAttributedString *)attributedStringWithAttachment:(NSTextAttachment *)attachment image:(NSImage *)image link:(NSString *)link offset:(float)offset {
     GPGTextAttachmentCell *cell = [[GPGTextAttachmentCell alloc] init];
     cell.image = image;
     attachment.attachmentCell = cell;
@@ -27,12 +27,6 @@
     }
     [attachmentString addAttribute:NSCursorAttributeName value:[NSCursor arrowCursor] 
                              range:NSMakeRange(0, [attachmentString length])];
-    float offset = -1.0;
-    if([link isEqualToString:@"gpgmail://show-signature"])
-        offset = -2.0;
-    
-    if([link isEqualToString:@"gpgmail://show-attachments"])
-        offset = -3.0;
     
     [attachmentString addAttribute:NSBaselineOffsetAttributeName 
                              value:@(offset)

@@ -41,7 +41,7 @@
  A click on the icon calls the method - (BOOL)textView:clickedOnLink:atIndex: on the delegate
  of the view displaying the attributed string. 
  */
-+ (NSAttributedString *)attributedStringWithAttachment:(NSTextAttachment *)attachment image:(NSImage *)image link:(NSString *)link;
++ (NSAttributedString *)attributedStringWithAttachment:(NSTextAttachment *)attachment image:(NSImage *)image link:(NSString *)link offset:(float)offset;
 
 /**
  Returns an autoreleased attributed string based on a given string.

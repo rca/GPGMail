@@ -31,16 +31,25 @@
 #define restrict
 #import <RegexKit/RegexKit.h>
 #import <Foundation/Foundation.h>
-#import <NSString-EmailAddressString.h>
 #import "NSString+GPGMail.h"
 #import "GPGMailBundle.h"
-
-
+#import "EAEmailAddressParser.h"
 
 @implementation NSString (GPGMail)
 
 - (NSString *)gpgNormalizedEmail {
-	return [[self lowercaseString] uncommentedAddress];
+	if([self respondsToSelector:@selector(uncommentedAddress)])
+        return [[self lowercaseString] uncommentedAddress];
+    
+	// 10.7 and 10.8 have uncommentedAddress.
+	// 10.9 uses EAEmailAddressParser to perform the same operation.
+	Class AddressParser = NSClassFromString(@"EAEmailAddressParser");
+	
+    if(AddressParser)
+        return [[AddressParser rawAddressFromFullAddress:self] lowercaseString];
+    
+    NSLog(@"[GPGMail] Attention: uncommentedAddress no longer exists.");
+    return [self lowercaseString];
 }
 
 - (NSString *)stringByDeletingPGPExtension {

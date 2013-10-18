@@ -42,7 +42,7 @@
  use GPGMail's own variables to determine the signed and encrypted status of a message.
  */
 
-@interface MessageCriterion (GPGMail)
+@interface MessageCriterion_GPGMail : NSObject
 
 /**
  Return YES if either the message flags have the signed bit on

@@ -222,10 +222,10 @@
 
 - (void)fixEmptyAccountPopUpIfNecessary {
     // 1. Find the accounts to be displayed.
-    NSArray *accounts = (NSArray *)[MailAccount allEmailAddressesIncludingFullUserName:YES];
+    NSArray *accounts = (NSArray *)[GM_MAIL_CLASS(@"MailAccount") allEmailAddressesIncludingFullUserName:YES];
 	
 	// There should only be on account available, otherwise we wouldn't be here.
-	NSString *onlyAccount = [[accounts objectAtIndex:0] uncommentedAddress];
+	NSString *onlyAccount = [[accounts objectAtIndex:0] gpgNormalizedEmail];
 	BOOL multipleKeysAvailable = [[[GPGMailBundle sharedInstance] signingKeyListForAddress:onlyAccount] count] > 1;
 	
 	if(!multipleKeysAvailable)
@@ -342,7 +342,7 @@
 			
 			NSString *email = nil;
 			if (useTitleFromAccount == NO)
-				email = [itemTitle uncommentedAddress];
+				email = [itemTitle gpgNormalizedEmail];
 				
 			NSSet *keys = [bundle signingKeyListForAddress:itemTitle];
 			switch ([keys count]) {
@@ -479,10 +479,10 @@
     
     if(![[backEnd getIvar:@"SignIsPossible"] boolValue]) {
         NSPopUpButton *button = [self valueForKey:@"_fromPopup"];
-        NSString *sender = [button.selectedItem.title uncommentedAddress];
+        NSString *sender = [button.selectedItem.title gpgNormalizedEmail];
         
         if([sender length] == 0 && [button.itemArray count])
-            sender = [[(button.itemArray)[0] title] uncommentedAddress];
+            sender = [[(button.itemArray)[0] title] gpgNormalizedEmail];
         
         GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
         [((NSSegmentedControl *)signControl) setToolTip:[NSString stringWithFormat:GMLocalizedString(@"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN"), sender]];

@@ -31,7 +31,7 @@
 #import "MailAccount+GPGMail.h"
 #import "GPGMailBundle.h"
 
-@implementation MailAccount (GPGMail)
+@implementation MailAccount_GPGMail
 
 + (BOOL)MAAccountExistsForSigning {
     BOOL PGPAccountExistsForSigning = ((GPGMailBundle *)[GPGMailBundle sharedInstance]).accountExistsForSigning;

@@ -30,6 +30,7 @@
 #import "CCLog.h"
 #import "NSString-EmailAddressString.h"
 #import "GPGFlaggedString.h"
+#import "NSString+GPGMail.h"
 
 @interface GPGFlaggedString ()
 @property (copy) NSString *string;
@@ -38,7 +39,7 @@
 
 
 @implementation GPGFlaggedString
-@synthesize string;
+@synthesize string, flags;
 
 - (id)initWithString:(NSString *)theString flag:(NSString *)flag value:(id)value {
 	return [self initWithString:theString flags:[NSMutableDictionary dictionaryWithObject:value forKey:flag]];
@@ -48,7 +49,7 @@
     self = [super init];
     if (self) {
 		self.string = theString;
-		flags = theFlags;
+		flags = [theFlags mutableCopy];
     }
     return self;
 }
@@ -66,7 +67,7 @@
     // after the message is sent.
     // Only create once. The NSString uncommentedAddress behaves the same way.
     if(!_uncommentedFlaggedValue) {
-        _uncommentedFlaggedValue = [[GPGFlaggedString alloc] initWithString:[string uncommentedAddress] flags:flags];
+        _uncommentedFlaggedValue = [[GPGFlaggedString alloc] initWithString:[string gpgNormalizedEmail] flags:flags];
     }
     return _uncommentedFlaggedValue;
 }

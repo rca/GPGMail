@@ -30,14 +30,14 @@
 #import "MessageCriterion+GPGMail.h"
 #import "Message+GPGMail.h"
 
-@implementation MessageCriterion (GPGMail)
+@implementation MessageCriterion_GPGMail
 
 - (BOOL)MA_evaluateIsDigitallySignedCriterion:(Message *)message {
-    return [self MA_evaluateIsDigitallySignedCriterion:message] || message.isSigned;
+    return [self MA_evaluateIsDigitallySignedCriterion:message] || ((Message_GPGMail *)message).isSigned;
 }
 
 - (BOOL)MA_evaluateIsEncryptedCriterion:(Message *)message {
-    return [self MA_evaluateIsEncryptedCriterion:message] || message.isEncrypted;
+    return [self MA_evaluateIsEncryptedCriterion:message] || ((Message_GPGMail *)message).isEncrypted;
 }
 
 @end

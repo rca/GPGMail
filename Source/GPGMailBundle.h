@@ -88,6 +88,7 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
  Return if we're running on Mountain Lion or not.
  */
 + (BOOL)isMountainLion;
++ (BOOL)isMavericks;
 
 /**
  Schedules a message which should have rules applied.
@@ -140,6 +141,13 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 - (BOOL)canSignMessagesFromAddress:(NSString *)address;
 
 + (NSString *)localizedStringForKey:(NSString *)key;
+
+/**
+ On Mavericks most Mail classes have been prefixed.
+ This method receives the old name and tries to find the matching
+ new class.
+ */
++ (Class)resolveMailClassFromName:(NSString *)name;
 
 @property (readonly) GPGErrorCode gpgStatus;
 @property (readonly, strong) NSSet *allGPGKeys;

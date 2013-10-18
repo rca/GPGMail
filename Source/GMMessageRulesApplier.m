@@ -76,11 +76,11 @@
 		
 		// Apply the rules for the message.
 		[message setIvar:@"OnlyIncludeEncryptedAndSignedRules" value:@(YES)];
-		[[message dataSourceProxy] routeMessages:@[message] isUserAction:NO];
+		[[(Message_GPGMail *)message dataSourceProxy] routeMessages:@[message] isUserAction:NO];
 		
 		// Add it to the rules dict, except if the message was encrypted and couldn't be decrypted
 		// because in that case, it's not possible to check if it was encrypted AND SIGNED.
-		BOOL saveRulesApplied = message.PGPEncrypted && !message.PGPDecrypted ? NO : YES;
+		BOOL saveRulesApplied = [(Message_GPGMail *)message PGPEncrypted] && ![(Message_GPGMail *)message PGPDecrypted] ? NO : YES;
 		
 		if(saveRulesApplied) {
 			[_rulesDict setValue:@(YES) forKey:messageID];

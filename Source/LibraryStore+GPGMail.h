@@ -28,9 +28,10 @@
  */
 
 #import <LibraryStore.h>
-
+/*
 @interface LibraryStore (GPGMail)
 
 //- (id)MASnippetsForMessages:(id)messages;
 
 @end
+*/

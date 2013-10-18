@@ -9,6 +9,8 @@
 #import <Cocoa/Cocoa.h>
 #import "GPGSignatureView.h"
 
+@class MimePart_GPGMail;
+
 @interface GPGAttachmentController : NSWindowController <NSTableViewDelegate, NSTableViewDataSource, NSSplitViewDelegate> {
     NSImageView *__weak errorImageView;
     NSMutableArray *attachments;
@@ -45,13 +47,13 @@
  Returns the correctly signed or signature failure image, depending
  on the part status.
  */
-- (NSImage *)signedImageForPart:(MimePart *)part;
+- (NSImage *)signedImageForPart:(MimePart_GPGMail *)part;
 
 /**
  Returns the encrypted or decrypted image, depending on the part
  status.
  */
-- (NSImage *)encryptedImageForPart:(MimePart *)part;
+- (NSImage *)encryptedImageForPart:(MimePart_GPGMail *)part;
 
 @end
 

@@ -57,7 +57,7 @@
 #import "GPGMailBundle.h"
 #import "NSData-MessageAdditions.h"
 
-@implementation MimePart (GPGMail)
+@implementation MimePart_GPGMail
 
 /**
  A second attempt to finding messages including PGP data.
@@ -149,8 +149,6 @@
 // TODO: Extend to find multiple signatures and encrypted data parts, if necessary.
 - (id)MADecodeWithContext:(id)ctx {
     Message *currentMessage = [(MimeBody *)[self mimeBody] message];
-//    DebugLog(@"[DEBUG] %s enter - decoding: %@ - part: %@", __PRETTY_FUNCTION__,
-//             [currentMessage subject], self);
     
     // _calculateSnippetForMessages doesn't attempt to decode
     // attachments. That's a problem, because once a message is displayed
@@ -161,20 +159,19 @@
     // If the message is already selected when Mail.app is opened, the message doesn't seem
     // to be reparsed, but the info from _calculateSnippetForMessages is somehow reused. 
     if(![self parentPart]) {
-        ((Message *)[(MimeBody *)[self mimeBody] message]).PGPInfoCollected = NO;
+        [[[self mimeBody] message] setPGPInfoCollected:NO];
         ((MFMimeDecodeContext *)ctx).decodeTextPartsOnly = NO;
     }
         
     // Check if message should be processed (-[Message shouldBePGPProcessed])
     // otherwise out of here!
-    if(![currentMessage shouldBePGPProcessed])
+    if(![(Message_GPGMail *)currentMessage shouldBePGPProcessed])
         return [self MADecodeWithContext:ctx];
-	
 	
 	[self importAttachedKeyIfNeeded];
     
 	// Check if this is an exchange TNEF attachment and.
-	MimePart *tnefPart = nil;
+	GM_CAST_CLASS(MimePart *, id) tnefPart = nil;
 	id ret = nil;
     if(![self parentPart] && (tnefPart = [self mimePartWithTNEFAttachmentContainingSignedMessage])) {
 		MimeBody *newMessageBody = [tnefPart decodeApplicationMS_tnefWithContext:ctx];
@@ -182,11 +179,11 @@
 #warning It's no necessary, maybe even harmful to use parsedMessageWithContext here.
 		// parsedMessageWithContext should be replaced with [[newMessageBody topLevelPart] decodeWithContext:]
 		ret = [[newMessageBody topLevelPart] decodeWithContext:ctx];
-		MimePart *newTopLevel = [newMessageBody topLevelPart];
+		GM_CAST_CLASS(MimePart *, MimePart_GPGMail *) newTopLevel = [newMessageBody topLevelPart];
 		self.PGPSigned = [newTopLevel PGPSigned];
 		self.PGPError = [newTopLevel PGPError];
 		
-		[currentMessage collectPGPInformationStartingWithMimePart:self decryptedBody:newMessageBody];
+		[(Message_GPGMail *)currentMessage collectPGPInformationStartingWithMimePart:self decryptedBody:newMessageBody];
 		if(!ret)
 			ret = [self MADecodeWithContext:ctx];
 	}
@@ -195,7 +192,7 @@
         // Add PGP information from mime parts.
         ((MFMimeDecodeContext *)ctx).shouldSkipUpdatingMessageFlags = YES;
         ret = [[decryptedBody topLevelPart] decodeWithContext:ctx];
-        [currentMessage collectPGPInformationStartingWithMimePart:self decryptedBody:decryptedBody];
+        [(Message_GPGMail *)currentMessage collectPGPInformationStartingWithMimePart:self decryptedBody:decryptedBody];
         // If decryption failed, call the original method.
         if(!ret)
             ret = [self MADecodeWithContext:ctx];
@@ -214,8 +211,8 @@
     // part is NOT the top part. So at this point all the information found for the message
     // would be overwritten. To avoid this, a check is performed if the PGP info was already
     // collected. If that's the case, skip the collecting
-    if([self parentPart] == nil && !currentMessage.PGPInfoCollected) {
-		[currentMessage collectPGPInformationStartingWithMimePart:self decryptedBody:nil];
+    if([self parentPart] == nil && ![(Message_GPGMail *)currentMessage PGPInfoCollected]) {
+		[(Message_GPGMail *)currentMessage collectPGPInformationStartingWithMimePart:self decryptedBody:nil];
 	}
 
     // To remove .sig attachments, they have to be removed.
@@ -366,7 +363,7 @@
 		return nil;
 	
 	// Otherwise let's create a new message now.
-	Message *signedMessage = [Message messageWithRFC822Data:signedAttachment sanitizeData:YES];
+	Message *signedMessage = [GM_MAIL_CLASS(@"Message") messageWithRFC822Data:signedAttachment sanitizeData:YES];
 	[signedMessage setMessageInfoFromMessage:[(MimeBody *)[self mimeBody] message]];
 	MimeBody *messageBody = [signedMessage messageBodyUpdatingFlags:YES];
 	
@@ -391,14 +388,14 @@
         }
     };
     weakWalkParts = walkParts;
-	walkParts(self);
+	walkParts((MimePart *)self);
 }
 
 - (MimePart *)topPart {
     MimePart *parentPart = [self parentPart];
     MimePart *currentPart = parentPart;
     if(parentPart == nil)
-        return self;
+        return (MimePart *)self;
     
     do {
         if([currentPart parentPart] == nil)
@@ -500,7 +497,7 @@
     
     // Check if the message is PGP/MIME encrypted and the PGP info was already collected.
     // In that case, this is no encrypted attachment.
-    if([[self topPart] isPGPMimeEncrypted] && ((Message *)[(MimeBody *)[self mimeBody] message]).PGPInfoCollected)
+    if([(id)[self topPart] isPGPMimeEncrypted] && [[[self mimeBody] message] PGPInfoCollected])
         return [self MADecodeApplicationOctet_streamWithContext:ctx];
     
     BOOL mightBeEncrypted;
@@ -525,7 +522,7 @@
 
 - (BOOL)isPGPMimeEncryptedAttachment {
     // application/pgp-encrypted is also considered to be an attachment.
-    if([[self dispositionParameterForKey:@"filename"] isEqualToString:@"encrypted.asc"] || 
+    if([[self dispositionParameterForKey:@"filename"] isEqualToString:@"encrypted.asc"] ||
        [self isType:@"application" subtype:@"pgp-encrypted"])
         return YES;
     
@@ -695,7 +692,7 @@
     // top level mime part.
     if([data rangeOfData:[@"application/pgp-signature" dataUsingEncoding:NSUTF8StringEncoding] options:0 range:NSMakeRange(0, [data length])].location != NSNotFound) {
         NSMutableData *newData = [NSMutableData data];
-        NSString *boundary = (NSString *)[MimeBody newMimeBoundary];
+        NSString *boundary = (NSString *)[GM_MAIL_CLASS(@"MimeBody") newMimeBoundary];
         [newData appendData:[boundary dataUsingEncoding:NSUTF8StringEncoding]];
         [newData appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
         NSRange boundaryStart = [data rangeOfData:[@"--Apple-Mail=_" dataUsingEncoding:NSUTF8StringEncoding] options:0 range:NSMakeRange(0, [data length])];
@@ -708,7 +705,7 @@
         data = newData;
     }
 
-    Message *newMessage = [Message messageWithRFC822Data:data];
+    Message *newMessage = [GM_MAIL_CLASS(@"Message") messageWithRFC822Data:data];
     ctx.shouldSkipUpdatingMessageFlags = YES;
     // Skip PGP Processing, otherwise this ends up in an endless loop.
     // Process the message like a really encrypted message.
@@ -719,10 +716,10 @@
     // We'll save the message body for later, since it will be used to do a last
     // decodeWithContext and the output returned.
     // Fake the message flags on the decrypted message.
-    MessageBody *decryptedMimeBody = [newMessage messageBodyUpdatingFlags:YES];
+    id decryptedMimeBody = [newMessage messageBodyUpdatingFlags:YES];
     // Check if the decrypted message contains any signatures, if so it's necessary
     // to unset the attachment flag.
-    BOOL isSigned = [(MimeBody *)decryptedMimeBody containsPGPSignedData];
+    BOOL isSigned = [decryptedMimeBody containsPGPSignedData];
     // Fixes the problem where an attachment icon is shown, when a message is either encrypted or signed.
     unsigned int numberOfAttachments = [(MimePart *)[self topPart] numberOfAttachments];
     if(numberOfAttachments > 0)
@@ -732,7 +729,7 @@
     // After that set the decryptedMessage body with encrypted to yes!
     MFError *error = [[(MimeBody *)decryptedMimeBody topLevelPart] valueForKey:@"_smimeError"];
     if(error)
-        [(ActivityMonitor *)[ActivityMonitor currentMonitor] setError:error];
+        [(ActivityMonitor *)[GM_MAIL_CLASS(@"ActivityMonitor") currentMonitor] setError:error];
     [decryptedMimeBody setIvar:@"PGPEarlyAlphaFuckedUpEncrypted" value:@YES];
     self.PGPEncrypted = YES;
     self.PGPSigned = isSigned;
@@ -963,7 +960,11 @@
     if([operationError isKindOfClass:[GPGException class]])
 		userInfo[@"DecryptionErrorCode"] = @((long)((GPGException *)operationError).errorCode);
 	
-    error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:nil title:title helpTag:nil 
+    // The error domain is checked in certain occasion, so let's use the system
+    // dependent one.
+    NSString *errorDomain = [GPGMailBundle isMavericks] ? @"MCMailErrorDomain" : @"MFMessageErrorDomain";
+    
+    error = [GM_MAIL_CLASS(@"MFError") errorWithDomain:errorDomain code:1035 localizedDescription:nil title:title helpTag:nil
                             userInfo:userInfo];
     
     
@@ -1117,7 +1118,10 @@
 		if([operationError isKindOfClass:[GPGException class]])
 			userInfo[@"VerificationErrorCode"] = @((long)((GPGException *)operationError).errorCode);
 		
-		error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:nil title:title helpTag:nil
+        // The error domain is checked in certain occasion, so let's use the system
+        // dependent one.
+        NSString *errorDomain = [GPGMailBundle isMavericks] ? @"MCMailErrorDomain" : @"MFMessageErrorDomain";
+		error = [GM_MAIL_CLASS(@"MFError") errorWithDomain:errorDomain code:1036 localizedDescription:nil title:title helpTag:nil
                                 userInfo:userInfo];
 	}
     
@@ -1155,7 +1159,7 @@
     // Actually even easier than i thought at first. Instead of messageWithRFC822Data:
     // messageWithRFC822Data:sanitizeData: can be used to make the problem go away.
     // BOOYAH!
-    decryptedMessage = [Message messageWithRFC822Data:decryptedData sanitizeData:YES];
+    decryptedMessage = [GM_MAIL_CLASS(@"Message") messageWithRFC822Data:decryptedData sanitizeData:YES];
     
     // 2. Set message info from the original encrypted message.
     [decryptedMessage setMessageInfoFromMessage:[(MimeBody *)[self mimeBody] message]];
@@ -1324,7 +1328,7 @@
 - (void)importAttachedKeyIfNeeded {
 	GPGController *gpgc = [[GPGController alloc] init];
 	
-	[[self topPart] enumerateSubpartsWithBlock:^(MimePart *part) {
+	[(GM_CAST_CLASS(MimePart *, id))[self topPart] enumerateSubpartsWithBlock:^(MimePart *part) {
 		if ([part isType:@"application" subtype:@"pgp-keys"] && ![[part getIvar:@"pgp-keys-imported"] boolValue]) {
 			
 			NSData *unArmored = [GPGPacket unArmor:part.bodyData];
@@ -1358,7 +1362,7 @@
 		// This is needed because Mail converts \r\n to \n.
 		NSArray *packets = [GPGPacket packetsWithData:signatureData];
 		if ([packets count] && [((GPGPacket *)packets[0]) signatureType] == 0 && [signedData rangeOfData:[NSData dataWithBytes:"\r\n" length:2] options:0 range:NSMakeRange(0, [signedData length])].location == NSNotFound) {
-				signedData = [signedData dataByConvertingLineEndingsFromUnixToNetwork];
+				signedData = [[NSData alloc] initWithDataConvertingLineEndingsFromUnixToNetwork:signedData];
 		}
 		
         signatures = [gpgc verifySignature:signatureData originalData:signedData];
@@ -1873,7 +1877,7 @@
 }
 
 - (Message *)messageWithMessageData:(NSData *)messageData {
-    MutableMessageHeaders *headers = [[MutableMessageHeaders alloc] init];
+    MutableMessageHeaders *headers = [[GM_MAIL_CLASS(@"MutableMessageHeaders") alloc] init];
     NSMutableString *contentTypeString = [[NSMutableString alloc] init];
     [contentTypeString appendFormat:@"%@/%@", self.type, self.subtype];
     if([self bodyParameterForKey:@"charset"])
@@ -1886,7 +1890,7 @@
     [completeMessageData appendData:[headers encodedHeadersIncludingFromSpace:NO]];
     [completeMessageData appendData:messageData];
 
-    Message *message = [Message messageWithRFC822Data:completeMessageData];
+    Message *message = [GM_MAIL_CLASS(@"Message") messageWithRFC822Data:completeMessageData];
 
     return message;
 }
@@ -1902,9 +1906,8 @@
     [self enumerateSubpartsWithBlock:^(MimePart *currentPart) {
         [currentPart removeIvars];
     }];
-    [(Message *)[(MimeBody *)[self mimeBody] message] clearPGPInformation];
+    [[[self mimeBody] message] clearPGPInformation];
     [self MAClearCachedDecryptedMessageBody];
-    
 }
 
 #pragma mark Methods for creating a new message.
@@ -1941,7 +1944,7 @@
 	if (range.length > 0) {
 		// Simply set data as encryptedData to preserve the errorCode.
 		*encryptedData = data;
-		MimePart *dataPart = [[MimePart alloc] init];
+		MimePart *dataPart = [[GM_MAIL_CLASS(@"MimePart") alloc] init];
 		return dataPart;
 	}
 	
@@ -2042,7 +2045,7 @@
     // -> Therefore it's necessary to manipulate the message mime parts in
     // -> _makeMessageWithContents:
     // -> Not great, but not a big problem either (let's hope)
-    MimePart *dataPart = [[MimePart alloc] init];
+    MimePart *dataPart = [[GM_MAIL_CLASS(@"MimePart") alloc] init];
 
     [dataPart setType:@"application"];
     [dataPart setSubtype:@"octet-stream"];
@@ -2129,14 +2132,14 @@
     // But actually the signature could be created inline
     // Just the same way the pgp/signature is created and later
     // extracted.
-    MimePart *topPart = [[MimePart alloc] init];
+    MimePart *topPart = [[GM_MAIL_CLASS(@"MimePart") alloc] init];
     [topPart setType:@"multipart"];
     [topPart setSubtype:@"signed"];
     // TODO: sha1 the right algorithm?
     [topPart setBodyParameter:[NSString stringWithFormat:@"pgp-%@", hashAlgorithmName] forKey:@"micalg"];
     [topPart setBodyParameter:@"application/pgp-signature" forKey:@"protocol"];
 
-    MimePart *signaturePart = [[MimePart alloc] init];
+    MimePart *signaturePart = [[GM_MAIL_CLASS(@"MimePart") alloc] init];
     [signaturePart setType:@"application"];
     [signaturePart setSubtype:@"pgp-signature"];
     [signaturePart setBodyParameter:@"signature.asc" forKey:@"name"];
@@ -2278,7 +2281,10 @@
 		description = [description stringByAppendingFormat:GMLocalizedString(@"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE"), errorText];
 	}
 	
-	MFError *mailError = [MFError errorWithDomain:@"MFMessageErrorDomain"
+    // The error domain is checked in certain occasion, so let's use the system
+    // dependent one.
+    NSString *errorDomain = [GPGMailBundle isMavericks] ? @"MCMailErrorDomain" : @"MFMessageErrorDomain";
+	MFError *mailError = [GM_MAIL_CLASS(@"MFError") errorWithDomain:errorDomain
 											 code:1036
 							 localizedDescription:nil
 											title:title
@@ -2289,7 +2295,7 @@
     
 	// Puh, this was all but easy, to find out where the error is used.
     // Overreleasing allows to track it's path as an NSZombie in Instruments!
-    [(ActivityMonitor *)[ActivityMonitor currentMonitor] setError:mailError];
+    [(ActivityMonitor *)[GM_MAIL_CLASS(@"ActivityMonitor") currentMonitor] setError:mailError];
 }
 
 - (void)failedToEncryptForRecipients:(NSArray *)recipients gpgErrorCode:(GPGErrorCode)errorCode error:(NSException *)error {
@@ -2323,7 +2329,11 @@
 		description = [description stringByAppendingFormat:GMLocalizedString(@"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE"), errorText];
 	}
 	
-	MFError *mailError = [MFError errorWithDomain:@"MFMessageErrorDomain"
+    // The error domain is checked in certain occasion, so let's use the system
+    // dependent one.
+    NSString *errorDomain = [GPGMailBundle isMavericks] ? @"MCMailErrorDomain" : @"MFMessageErrorDomain";
+    
+	MFError *mailError = [GM_MAIL_CLASS(@"MFError") errorWithDomain:errorDomain
 											 code:1035
 							 localizedDescription:nil
 											title:title
@@ -2334,7 +2344,7 @@
     
 	// Puh, this was all but easy, to find out where the error is used.
     // Overreleasing allows to track it's path as an NSZombie in Instruments!
-    [(ActivityMonitor *)[ActivityMonitor currentMonitor] setError:mailError];
+    [(ActivityMonitor *)[GM_MAIL_CLASS(@"ActivityMonitor") currentMonitor] setError:mailError];
 }
 
 @end

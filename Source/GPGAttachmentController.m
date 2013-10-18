@@ -28,7 +28,7 @@
 - (id)initWithAttachmentParts:(NSArray *)attachmentParts {
     if(self = [super initWithWindowNibName:@"GPGAttachments"]) {
         attachments = [[NSMutableArray alloc] init];
-        for(MimePart *part in attachmentParts) {
+        for(MimePart_GPGMail *part in attachmentParts) {
             NSMutableDictionary *attachment = [[NSMutableDictionary alloc] init];
             [attachment setValue:@(part.PGPEncrypted) forKey:@"encrypted"];
             [attachment setValue:@(part.PGPSigned) forKey:@"signed"];
@@ -93,7 +93,7 @@
     return self;
 }
 
-- (NSImage *)signedImageForPart:(MimePart *)part {
+- (NSImage *)signedImageForPart:(MimePart_GPGMail *)part {
     // If the attachment has pgp signature set and no error, display the
     // signature on icon otherwise the signature off icon.
     if(!part.PGPSigned)
@@ -104,7 +104,7 @@
     return [NSImage imageNamed:@"SignatureOffTemplate"];
 }
 
-- (NSImage *)encryptedImageForPart:(MimePart *)part {
+- (NSImage *)encryptedImageForPart:(MimePart_GPGMail *)part {
     // If the attachment has decrypted set, the part has been 
     // successfully decrypted and the open lock image is returned.
     if(!part.PGPEncrypted)

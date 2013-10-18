@@ -27,6 +27,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <objc/objc-runtime.h>
 #import <Libmacgpg/Libmacgpg.h>
 #import "NSObject+LPDynamicIvars.h"
 #import "CCLog.h"
@@ -41,29 +42,34 @@
 #import "GPGMailBundle.h"
 #import "NSString+GPGMail.h"
 
-@implementation Message (GPGMail)
+
+@implementation Message_GPGMail
 
 - (void)fakeMessageFlagsIsEncrypted:(BOOL)isEncrypted isSigned:(BOOL)isSigned {
-    if(isEncrypted)
-        _messageFlags |= 0x00000008;
+    unsigned int currentMessageFlags = [[self valueForKey:@"_messageFlags"] unsignedIntValue];
+    
+	if(isEncrypted)
+        currentMessageFlags |= 0x00000008;
     if(isSigned)
-        _messageFlags |= 0x00800000;
+        currentMessageFlags |= 0x00800000;
+    
+    [self setValue:[NSNumber numberWithUnsignedInt:currentMessageFlags] forKey:@"_messageFlags"];
 }
 
 - (BOOL)isSigned {
-    return (_messageFlags & 0x00800000) || self.PGPSigned;
+    return ([[self valueForKey:@"_messageFlags"] unsignedIntValue] & 0x00800000) || self.PGPSigned;
 }
 
 - (BOOL)isEncrypted {
-    return (_messageFlags & 0x00000008) || self.PGPEncrypted;
+    return ([[self valueForKey:@"_messageFlags"] unsignedIntValue] & 0x00000008) || self.PGPEncrypted;
 }
 
 - (BOOL)isSMIMESigned {
-    return (_messageFlags & 0x00800000) && !self.PGPSigned;
+	return ([[self valueForKey:@"_messageFlags"] unsignedIntValue] & 0x00800000) && !self.PGPSigned;
 }
 
 - (BOOL)isSMIMEEncrypted {
-    return (_messageFlags & 0x00000008) && !self.PGPEncrypted;
+	return ([[self valueForKey:@"_messageFlags"] unsignedIntValue] & 0x00000008) && !self.PGPEncrypted;
 }
 
 - (void)setPGPEncrypted:(BOOL)isPGPEncrypted {
@@ -205,7 +211,7 @@
     [self setIvar:@"PGPVerified" value:@(isVerified)];
 }
 
-- (void)collectPGPInformationStartingWithMimePart:(MimePart *)topPart decryptedBody:(MimeBody *)decryptedBody {
+- (void)collectPGPInformationStartingWithMimePart:(GM_CAST_CLASS(MimePart *, id))topPart decryptedBody:(MimeBody *)decryptedBody {
     __block BOOL isEncrypted = NO;
     __block BOOL isSigned = NO;
     __block BOOL isPartlyEncrypted = NO;
@@ -226,27 +232,27 @@
     // PGP inline data or failed to decrypt. In either case, the top part
     // passed in contains all the information.
     //MimePart *informationPart = decryptedBody == nil ? topPart : [decryptedBody topLevelPart];
-    [topPart enumerateSubpartsWithBlock:^(MimePart *currentPart) {
+    [topPart enumerateSubpartsWithBlock:^(GM_CAST_CLASS(MimePart *, id) currentPart) {
         // Only set the flags for non attachment parts to support
         // plain messages with encrypted/signed attachments.
         // Otherwise those would display as signed/encrypted as well.
         if([currentPart isAttachment]) {
-            if(currentPart.PGPAttachment)
+            if([currentPart PGPAttachment])
                 [pgpAttachments addObject:currentPart];
         }
         else {
-            isEncrypted |= currentPart.PGPEncrypted;
-            isSigned |= currentPart.PGPSigned;
-            isPartlySigned |= currentPart.PGPPartlySigned;
-            isPartlyEncrypted |= currentPart.PGPPartlyEncrypted;
-            if(currentPart.PGPError)
-                [errors addObject:currentPart.PGPError];
-            if([currentPart.PGPSignatures count])
-                [signatures addObjectsFromArray:currentPart.PGPSignatures];
-            isDecrypted |= currentPart.PGPDecrypted;
+            isEncrypted |= [currentPart PGPEncrypted];
+            isSigned |= [currentPart PGPSigned];
+            isPartlySigned |= [currentPart PGPPartlySigned];
+            isPartlyEncrypted |= [currentPart PGPPartlyEncrypted];
+            if([currentPart PGPError])
+                [errors addObject:[currentPart PGPError]];
+            if([[currentPart PGPSignatures] count])
+                [signatures addObjectsFromArray:[currentPart PGPSignatures]];
+            isDecrypted |= [currentPart PGPDecrypted];
             // encrypted & signed & no error = verified.
             // not encrypted & signed & no error = verified.
-            isVerified |= currentPart.PGPSigned;
+            isVerified |= [currentPart PGPSigned];
         }
         
         // Count the number of attachments, but ignore signature.asc
@@ -264,7 +270,7 @@
     
     // This is a normal message, out of here, otherwise
     // this might break a lot of stuff.
-    if(!isSigned && !isEncrypted && ![pgpAttachments count])
+    if(!isSigned && !isEncrypted && ![pgpAttachments count] && ![errors count])
         return;
     
     if([pgpAttachments count]) {
@@ -277,22 +283,22 @@
     Message *decryptedMessage = nil;
     if(decryptedBody)
         decryptedMessage = [decryptedBody message];
-    self.PGPEncrypted = isEncrypted || [decryptedMessage PGPEncrypted];
-    self.PGPSigned = isSigned || [decryptedMessage PGPSigned];
-    self.PGPPartlyEncrypted = isPartlyEncrypted || [decryptedMessage PGPPartlyEncrypted];
-    self.PGPPartlySigned = isPartlySigned || [decryptedMessage PGPPartlySigned];
-    [signatures addObjectsFromArray:[decryptedMessage PGPSignatures]];
+    self.PGPEncrypted = isEncrypted || [(Message_GPGMail *)decryptedMessage PGPEncrypted];
+    self.PGPSigned = isSigned || [(Message_GPGMail *)decryptedMessage PGPSigned];
+    self.PGPPartlyEncrypted = isPartlyEncrypted || [(Message_GPGMail *)decryptedMessage PGPPartlyEncrypted];
+    self.PGPPartlySigned = isPartlySigned || [(Message_GPGMail *)decryptedMessage PGPPartlySigned];
+    [signatures addObjectsFromArray:[(Message_GPGMail *)decryptedMessage PGPSignatures]];
     self.PGPSignatures = signatures;
-    [errors addObjectsFromArray:[decryptedMessage PGPErrors]];
+    [errors addObjectsFromArray:[(Message_GPGMail *)decryptedMessage PGPErrors]];
     self.PGPErrors = errors;
-    [pgpAttachments addObjectsFromArray:[decryptedMessage PGPAttachments]];
+    [pgpAttachments addObjectsFromArray:[(Message_GPGMail *)decryptedMessage PGPAttachments]];
     self.PGPDecrypted = isDecrypted;
     self.PGPVerified = isVerified;
     
     [self fakeMessageFlagsIsEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];
     
 	if(decryptedMessage) {
-		[decryptedMessage fakeMessageFlagsIsEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];
+		[(Message_GPGMail *)decryptedMessage fakeMessageFlagsIsEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];
 	}
     
 	// The problem is, Mail.app would correctly apply the rules, if we didn't
@@ -306,7 +312,7 @@
 		[self applyMatchingRulesIfNecessary];
 		
     // Only for test purpose, after the correct error to be displayed should be constructed.
-    MFError *error = nil;
+    GM_CAST_CLASS(MFError *, id) error = nil;
     if([errors count])
         error = errors[0];
     else if([self.PGPAttachments count])
@@ -315,12 +321,12 @@
 	// Set the error on the activity monitor so the error banner is displayed
 	// on above the message content.
     if(error)
-        [(ActivityMonitor *)[ActivityMonitor currentMonitor] setError:error];
+        [(ActivityMonitor *)[GM_MAIL_CLASS(@"ActivityMonitor") currentMonitor] setError:error];
     
 
     DebugLog(@"%@ Decrypted Message [%@]:\n\tisEncrypted: %@, isSigned: %@,\n\tisPartlyEncrypted: %@, isPartlySigned: %@\n\tsignatures: %@\n\terrors: %@",
-          decryptedMessage, [decryptedMessage subject], decryptedMessage.PGPEncrypted ? @"YES" : @"NO", decryptedMessage.PGPSigned ? @"YES" : @"NO",
-          decryptedMessage.PGPPartlyEncrypted ? @"YES" : @"NO", decryptedMessage.PGPPartlySigned ? @"YES" : @"NO", decryptedMessage.PGPSignatures, decryptedMessage.PGPErrors);
+          decryptedMessage, [decryptedMessage subject], [(Message_GPGMail *)decryptedMessage PGPEncrypted] ? @"YES" : @"NO", [(Message_GPGMail *)decryptedMessage PGPSigned] ? @"YES" : @"NO",
+          [(Message_GPGMail *)decryptedMessage PGPPartlyEncrypted] ? @"YES" : @"NO", [(Message_GPGMail *)decryptedMessage PGPPartlySigned] ? @"YES" : @"NO", [(Message_GPGMail *)decryptedMessage PGPSignatures], [(Message_GPGMail *)decryptedMessage PGPErrors]);
     
     DebugLog(@"%@ Message [%@]:\n\tisEncrypted: %@, isSigned: %@,\n\tisPartlyEncrypted: %@, isPartlySigned: %@\n\tsignatures: %@\n\terrors: %@\n\tattachments: %@",
           self, [self subject], self.PGPEncrypted ? @"YES" : @"NO", self.PGPSigned ? @"YES" : @"NO",
@@ -330,7 +336,7 @@
     // Uncomment once completely implemented.
     [[self dataSourceProxy] setNumberOfAttachments:(unsigned int)numberOfAttachments isSigned:self.isSigned isEncrypted:self.isEncrypted forMessage:self];
     if(decryptedMessage)
-        [[decryptedMessage dataSourceProxy] setNumberOfAttachments:(unsigned int)numberOfAttachments isSigned:self.isSigned isEncrypted:self.isEncrypted forMessage:decryptedMessage];
+        [[(Message_GPGMail *)decryptedMessage dataSourceProxy] setNumberOfAttachments:(unsigned int)numberOfAttachments isSigned:self.isSigned isEncrypted:self.isEncrypted forMessage:decryptedMessage];
     // Set PGP Info collected so this information is not overwritten.
     self.PGPInfoCollected = YES;
 }
@@ -347,20 +353,20 @@
 	
 	// isEncrypted has to be re-evaluated again, since it might contain a signed message
 	// but didn't have the key in cache, to correctly apply rules the first time around.
-	[[GPGMailBundle sharedInstance] scheduleApplyingRulesForMessage:self isEncrypted:self.PGPEncrypted];
+	[[GPGMailBundle sharedInstance] scheduleApplyingRulesForMessage:(Message *)self isEncrypted:self.PGPEncrypted];
 }
 
 - (MFError *)errorSummaryForPGPAttachments:(NSArray *)attachments {
     NSUInteger verificationErrors = 0;
     NSUInteger decryptionErrors = 0;
     
-    for(MimePart *part in attachments) {
-        if(!part.PGPError)
+    for(GM_CAST_CLASS(MimePart *, id) part in attachments) {
+        if(![part PGPError])
             continue;
         
-        if([[(MFError *)part.PGPError userInfo] valueForKey:@"VerificationError"])
+        if([[(MFError *)[part PGPError] userInfo] valueForKey:@"VerificationError"])
             verificationErrors++;
-        else if([[(MFError *)part.PGPError userInfo] valueForKey:@"DecryptionError"])
+        else if([[(MFError *)[part PGPError] userInfo] valueForKey:@"DecryptionError"])
             decryptionErrors++;
     }
     
@@ -406,14 +412,17 @@
     
     title = [NSString stringWithFormat:title, totalErrors];
     
-    MFError *error = nil;
+    GM_CAST_CLASS(MFError *, id) error = nil;
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
     
     [userInfo setValue:title forKey:@"_MFShortDescription"];
     [userInfo setValue:message forKey:@"NSLocalizedDescription"];
     [userInfo setValue:@YES forKey:@"DecryptionError"];
+    // The error domain is checked in certain occasion, so let's use the system
+    // dependent one.
+    NSString *errorDomain = [GPGMailBundle isMavericks] ? @"MCMailErrorDomain" : @"MFMessageErrorDomain";
     
-    error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:errorCode localizedDescription:nil title:title helpTag:nil 
+    error = [GM_MAIL_CLASS(@"MFError") errorWithDomain:errorDomain code:errorCode localizedDescription:nil title:title helpTag:nil
                             userInfo:userInfo];
     
     return error;

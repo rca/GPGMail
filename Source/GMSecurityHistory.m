@@ -250,7 +250,7 @@
 	 */
 }
 
-- (GMSecurityOptions *)bestSecurityOptionsForReplyToMessage:(Message *)message signFlags:(GPGMAIL_SIGN_FLAG)signFlags 
+- (GMSecurityOptions *)bestSecurityOptionsForReplyToMessage:(Message_GPGMail *)message signFlags:(GPGMAIL_SIGN_FLAG)signFlags
                                                encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags {
 	
 	GMSecurityOptions *defaultSecurityOptions = [self securityOptionsFromDefaults];
@@ -301,7 +301,7 @@
     return [GMSecurityOptions securityOptionsWithSecurityMethod:securityMethod shouldSign:canSign shouldEncrypt:canEncrypt];
 }
 
-- (GMSecurityOptions *)bestSecurityOptionsForMessageDraft:(Message *)message signFlags:(GPGMAIL_SIGN_FLAG)signFlags
+- (GMSecurityOptions *)bestSecurityOptionsForMessageDraft:(Message_GPGMail *)message signFlags:(GPGMAIL_SIGN_FLAG)signFlags
                                                encryptFlags:(GPGMAIL_ENCRYPT_FLAG)encryptFlags {
 	GMSecurityOptions *defaultSecurityOptions = [self securityOptionsFromDefaults];
 	

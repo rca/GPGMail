@@ -59,7 +59,7 @@ typedef enum {
 
 @class MFMimeDecodeContext, _NSDataMessageStoreMessage;
 
-@interface MimePart (GPGMail)
+@interface MimePart_GPGMail : NSObject
 
 @property (assign) BOOL PGPEncrypted;
 @property (assign) BOOL PGPPartlyEncrypted;
@@ -369,3 +369,21 @@ typedef enum {
 
 @end
 
+@interface MimePart_GPGMail (MailMethods)
+
+- (MimeBody *)mimeBody;
+- (MimePart *)parentPart;
+- (NSData *)bodyData;
+- (id)dispositionParameterForKey:(NSString *)key;
+- (BOOL)isType:(NSString *)type subtype:(NSString *)subtype;
+- (id)bodyParameterForKey:(NSString *)key;
+- (NSArray *)subparts;
+- (id)decryptedMessageBody;
+- (void)setDispositionParameter:(id)parameter forKey:(id)key;
+- (BOOL)isAttachment;
+- (NSData *)signedData;
+- (NSString *)type;
+- (NSString *)subtype;
+- (id)contentTransferEncoding;
+
+@end

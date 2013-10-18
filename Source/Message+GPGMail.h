@@ -31,7 +31,7 @@
 #import "MimeBody.h"
 #import <Message.h>
 
-@interface Message (GPGMail)
+@interface Message_GPGMail : NSObject
 
 /**
  Mail.app uses -[Message messageFlags] to gather various internal information
@@ -57,7 +57,7 @@
 
 - (void)fakeMessageFlagsIsEncrypted:(BOOL)isEncrypted isSigned:(BOOL)isSigned;
 
-- (void)collectPGPInformationStartingWithMimePart:(MimePart *)topPart decryptedBody:(MimeBody *)decryptedBody;
+- (void)collectPGPInformationStartingWithMimePart:(GM_CAST_CLASS(MimePart *, id))topPart decryptedBody:(GM_CAST_CLASS(MimeBody *, id))decryptedBody;
 - (void)clearPGPInformation;
 
 /**
@@ -120,3 +120,12 @@
 // Prevent instance method not found.
 - (id)dataSource;
 @end
+
+@interface Message_GPGMail (MailMethods)
+
+- (id)subject;
+- (id)dataSource;
+- (id)messageStore;
+
+@end
+
