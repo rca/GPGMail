@@ -4,50 +4,19 @@
 	* defaults write org.gpgtools.gpgmail TheDefaultName TheValue
 	*/
 
-	/* Keys */
-	ChoosePersonalKeyAccordingToAccount = YES;
-	UseKeychain = NO;
-	ShowPassphrase = NO;
-
 	/* Composing */
-	AlwaysSignMessage = NO;
-	SignReplyToSignedMessage = YES;
-	SignWhenEncrypting = YES;
-	AlwaysEncryptMessage = NO;
-	EncryptReplyToEncryptedMessage = YES;
-	EncryptMessageWhenPossible = YES;
-	EncryptToSelf = YES;
-	UseABEntriesRules = YES;
-	TrustAllKeys = YES;
-	FilterOutUnusableKeys = YES;
-	OpenPGPStyleOnly = NO;
-	DisplayButtonsInComposeWindow = YES;
-	ButtonsShowState = YES;
-	UseEncapsulatedSignature = YES;
 	UseOpenPGPToSend = YES;
     OptionallyEncryptDrafts = YES;
-    UseNonMonochromeEncryptionMethodHint = YES;
-
+	EncryptNewEmailsByDefault = NO;
+	SignNewEmailsByDefault = YES;
+	UseOpenPGPInlineToSend = NO;
+	DefaultSecurityMethod = 1; /* OpenPGP */
+	
 	/* Viewing */
-	AuthenticateMessagesAutomatically = YES;
-	AuthenticateOnlyUnreadMessagesAutomatically = YES;
-	DecryptMessagesAutomatically = YES;
-	DecryptOnlyUnreadMessagesAutomatically = YES;
-	AutomaticallyShowAllInfo = NO;
-	UseOpenPGPToReceive = YES;
-
-	/* Misc */
-	DisplayedKeyIdentifiers = (name, email, comment);
-	DisplayAllUserIDs = YES;
-	DisableSMIME = NO;
+	DisableOpenPGPForReading = NO;
+	HideAllSignatureAttachments = NO;
 
 
-	/* Hidden */
-	GPGMailDebug = 0;
-	IgnorePGPPresence = NO;
-	WarnAboutMissingPrivateKeys = NO;
-	AddCustomHeaders = YES;
-    
     /* Completely disable generating snippets even if the passphrase
      * is cached.
      */
