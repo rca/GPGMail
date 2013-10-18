@@ -14,10 +14,10 @@
 	AttachKeyToOutgoingMessages = NO;
 	AllowSymmetricEncryption = NO;
 	ShowAccountNameForKeysOfSameAddress = NO;
-	DoNotEncryptToSelf = NO;
+	EncryptToSelf = YES;
 	
 	/* Viewing */
-	DisableOpenPGPForReading = NO;
+	UseOpenPGPForReading = YES;
 	HideAllSignatureAttachments = NO;
 	CreatePreviewSnippets = NO;
 

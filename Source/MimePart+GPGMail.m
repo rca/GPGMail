@@ -1951,7 +1951,7 @@
 	GPGKey *senderPublicKey = nil;
 	
 	// Split the recipients in normal and bcc recipients.
-	BOOL doNotEncryptToSelf = [[GPGOptions sharedOptions] boolForKey:@"DoNotEncryptToSelf"];
+	BOOL encryptToSelf = [[GPGOptions sharedOptions] boolForKey:@"EncryptToSelf"];
     NSMutableArray *normalRecipients = [NSMutableArray arrayWithCapacity:1];
     NSMutableArray *bccRecipients = [NSMutableArray arrayWithCapacity:1];
 	
@@ -1960,7 +1960,7 @@
         if ([recipientType isEqualTo:@"bcc"]) {
             [bccRecipients addObject:recipient];
         } else {
-			// If DoNotEncryptToSelf is enabled, don't add the sender to the recipients.
+			// If encryptToSelf is disabled, don't add the sender to the recipients.
 			// Of course this has the effect that the sent mails can't be read by the sender,
 			// but that's exactly what this option is for.
 			if ([recipientType isEqualToString:@"from"]) {
@@ -1975,7 +1975,7 @@
 					}
 				}
 				
-				if (doNotEncryptToSelf)
+				if (!encryptToSelf)
 					continue;
 				
 				// In order to fix a problem where a random key matching an address

@@ -27,8 +27,8 @@
 	defaults write org.gpgtools.common DebugLog -bool YES|NO
 
 
-* Disable OpenPGP for reading messages. *
-	defaults write org.gpgtools.gpgmail DisableOpenPGPForReading -bool YES|NO
+* Disable or enable OpenPGP for reading messages. *
+	defaults write org.gpgtools.gpgmail UseOpenPGPForReading -bool YES|NO
 
 
 * FOR DEBUGGING ONLY: Hides all signature attachments, even if they fail to verify. *
