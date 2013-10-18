@@ -11,11 +11,15 @@
 	SignNewEmailsByDefault = YES;
 	UseOpenPGPInlineToSend = NO;
 	DefaultSecurityMethod = 1; /* OpenPGP */
+	AttachKeyToOutgoingMessages = NO;
+	AllowSymmetricEncryption = NO;
+	ShowAccountNameForKeysOfSameAddress = NO;
+	DoNotEncryptToSelf = NO;
 	
 	/* Viewing */
 	DisableOpenPGPForReading = NO;
 	HideAllSignatureAttachments = NO;
-
+	CreatePreviewSnippets = NO;
 
     /* Completely disable generating snippets even if the passphrase
      * is cached.

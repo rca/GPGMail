@@ -297,7 +297,7 @@
 
 	
 	
-	BOOL attachKeys = shouldPGPSign && [[[GPGOptions sharedOptions] valueForKey:@"AttachKeyToOutgoingMessages"] boolValue];
+	BOOL attachKeys = shouldPGPSign && [[GPGOptions sharedOptions] boolForKey:@"AttachKeyToOutgoingMessages"];
 	NSData *keysToAttach = nil;
 
 	if (!shouldCreatePGPInlineMessage && attachKeys) {
