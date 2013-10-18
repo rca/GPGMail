@@ -241,7 +241,7 @@
 			hooks[class] = [NSMutableArray arrayWithArray:commonHooks[class]];
 		
 		/* Fix, once we can compile with stable Xcode including 10.9 SDK. */
-		if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8 + 1)
+		if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8)
 			[self applyHookChangesForVersion:@"10.9" toHooks:hooks];
 		
 		_hooks = [NSDictionary dictionaryWithDictionary:hooks];

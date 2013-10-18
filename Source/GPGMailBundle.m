@@ -430,7 +430,7 @@ static BOOL gpgMailWorks = NO;
 }
 
 + (BOOL)isMavericks {
-    return NSAppKitVersionNumber > NSAppKitVersionNumber10_8 + 1.0f;
+    return floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8;
 }
 
 + (BOOL)hasPreferencesPanel {
