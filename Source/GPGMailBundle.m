@@ -162,12 +162,18 @@ static BOOL gpgMailWorks = NO;
         // Load all necessary images.
         [self _loadImages];
         
-        // Register the main defaults.
-		NSDictionary *defaultsDictionary = [NSDictionary dictionaryWithContentsOfFile:[myBundle pathForResource:@"GPGMailBundle" ofType:@"defaults"]];
         
-        [[GPGOptions sharedOptions] setStandardDomain:[[GPGMailBundle bundle] bundleIdentifier]];
-		if (defaultsDictionary)
-			[[GPGOptions sharedOptions] registerDefaults:defaultsDictionary];
+        // Set domain and register the main defaults.
+        GPGOptions *options = [GPGOptions sharedOptions];
+        options.standardDomain = [GPGMailBundle bundle].bundleIdentifier;
+		NSDictionary *defaultsDictionary = [NSDictionary dictionaryWithContentsOfFile:[myBundle pathForResource:@"GPGMailBundle" ofType:@"defaults"]];
+        [(id)options registerDefaults:defaultsDictionary];
+        
+        if (![options boolForKey:@"DefaultsLoaded"]) {
+            NSRunAlertPanel([GPGMailBundle localizedStringForKey:@"NO_DEFAULTS_TITLE"], [GPGMailBundle localizedStringForKey:@"NO_DEFAULTS_MESSAGE"], nil, nil, nil);
+            NSLog(@"GPGMailBundle.defaults can't be loaded!");
+        }
+        
         
         // Configure the logging level.
         GPGMailLoggingLevel = (int)[[GPGOptions sharedOptions] integerForKey:@"DebugLog"];

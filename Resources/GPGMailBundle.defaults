@@ -25,4 +25,8 @@
      * is cached.
      */
     NeverCreatePreviewSnippets = NO;
+	
+
+	/* Used to check if this file is loaded correctly */
+	DefaultsLoaded = YES;
 }

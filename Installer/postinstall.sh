@@ -96,16 +96,15 @@ plistFramework="/System/Library/Frameworks/Message.framework/Resources/Info"
 uuid1=$(defaults read "$plistMail" "PluginCompatibilityUUID")
 uuid2=$(defaults read "$plistFramework" "PluginCompatibilityUUID")
 
-if [[ -z "$uuid1" || -z "$uuid2" ]] ;then
-    echo "No UUIDs found."
-else
-	if ! grep -q $uuid1 "${plistBundle}.plist" || ! grep -q $uuid2 "${plistBundle}.plist" ;then
-		defaults write "$plistBundle" "SupportedPluginCompatibilityUUIDs" -array-add "$uuid1"
-		defaults write "$plistBundle" "SupportedPluginCompatibilityUUIDs" -array-add "$uuid2"
-		plutil -convert xml1 "$plistBundle.plist"
-		echo "GPGMail successfully patched."
-	fi
+if [[ -n "$uuid1" ]] && ! grep -q $uuid1 "${plistBundle}.plist" ;then
+	defaults write "$plistBundle" "SupportedPluginCompatibilityUUIDs" -array-add "$uuid1"
 fi
+if [[ -n "$uuid2" ]] && ! grep -q $uuid2 "${plistBundle}.plist" ;then
+	defaults write "$plistBundle" "SupportedPluginCompatibilityUUIDs" -array-add "$uuid2"
+fi
+
+plutil -convert xml1 "$plistBundle.plist"
+chmod +r "$plistBundle.plist"
 ################################################################################
 
 
