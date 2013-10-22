@@ -486,7 +486,7 @@
 							<object class="NSButton" id="714016839">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{193, 227}, {233, 18}}</string>
+								<string key="NSFrame">{{193, 227}, {232, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="955063492"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -494,7 +494,7 @@
 								<object class="NSButtonCell" key="NSCell" id="1015833167">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">268435456</int>
-									<string key="NSContents">Encrypt New Messages By Default</string>
+									<string key="NSContents">Encrypt new messages by default</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="714016839"/>
@@ -512,7 +512,7 @@
 							<object class="NSButton" id="955063492">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{193, 207}, {213, 18}}</string>
+								<string key="NSFrame">{{193, 207}, {212, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="696331322"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -520,7 +520,7 @@
 								<object class="NSButtonCell" key="NSCell" id="1043626823">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">268435456</int>
-									<string key="NSContents">Sign New Messages By Default</string>
+									<string key="NSContents">Sign new messages by default</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="955063492"/>
