@@ -1,12 +1,12 @@
 "21.title" = "Signaturer";
 "25.title" = "OK";
-"236.title" = "Created:";
+"236.title" = "Skapad:";
 "237.title" = "namn";
 "251.title" = "Detaljer";
 "252.ibShadowedNoSelectionPlaceholder" = "Ingen signatur";
 "365.title" = "Namn:";
 "367.title" = "Nyckel";
-"369.title" = "Email:";
+"369.title" = "Epost:";
 "372.title" = "Nyckel-ID:";
 "373.title" = "Kommentar:";
 "377.title" = "Algoritm:";

@@ -5,80 +5,86 @@
 "PGP_PREFERENCES" = "GPGMail";
 
 /* Message Error Banner messages. */
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "No es pot desxifrar el missatge PGP.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "No s'ha pogut desxifrar el missatge PGP.";
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "Hi ha hagut un problema en desxifrar el missatge. Comproveu que disposa d'una clau vàlida al clauer GPG.";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "No es pot verificar la signatura PGP del missatge.";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Hi ha hagut un problema en llegir la signatura PGP del missatge.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "No s'ha pogut verificar la signatura PGP del missatge.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Mentre es llegia la signatura PGP del missatge hi ha hagut un problema ";
 "MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "La clau PGP del missatge no és al clauer.";
 "MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "El missatge té una signatura PGP vàlida, però la clau PGP no és al clauer. Empreu Accés a clauers GPG per afegir-la.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "No hi ha informació disponible per la clau PGP.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "No hi ha informació addicional coneguda sobre la clau PGP, perquè no és al clauer.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Falta la clau secreta per desxifrar el missatge.";
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "No hi ha cap clau secreta vàlida al seu clauer (%@). Cal la clau secreta per desxifrar aquest missatge.\n\nConsulti amb el remitent perquè utilitzen la clau pública correcta.\nComprovi qualsevol còpia de seguretat de la seva clau, i tracteu d'importar-la.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "S'ha produït un error desconegut en desxifrar!";
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "S'ha produït un error desconegut en desxifrar el missatge.⏎\n⏎\nContacteu amb nosaltres a http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "S'ha produït un error desconegut a l'hora de desxifrar!";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nPlease contact us at http://support.gpgtools.org";
 
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "S'ha produït un error desconegut en desxifrar!";
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "S'ha produït un error desconegut en desxifrar el missatge.⏎\n⏎\nMissatge d'error de GPG:⏎\n%@⏎\nContacteu amb nosaltres a http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Mentre es desxifrava s'ha produït un error desconegut!";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nGPG error message:\n%@\nPlease contact us, including the GPG error message, at http://support.gpgtools.org";
 
-"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "S'ha utilitzat una tecla errònia per xifrar el missatge.";
-"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "El missatge no s'ha pogut desxifrar, perquè la clau pública que s'ha utilitat per xifrar-lo és errònia.⏎\n⏎\nContacteu amb nosaltres a http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Per xifrar el missatge s'ha utilitzat una tecla errònia .";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "This message could not be decrypted, since the wrong public key was used to encrypt it.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "El missatge xifrat és danyat.";
-"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "El missatge xifrat està danyat i es pot desxifrar.⏎\n⏎\nDemani al remitent que li reenvie el missatge.";
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "El missatge xifrat està danyat i no es pot desxifrar.⏎\n⏎\nDemani al remitent que li reenvie el missatge.";
 
 "MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "S'ha revocat la clau de la signatura.";
-"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "ATENCIÓ: La clau que s'ha utilitzat per signar el missatge ha estat revocada.⏎\n⏎\nHa d'actualitzar la identitat de la clau amb %@ a l'Accés a claus GPG per comprovar si n'hi ha disponible una nova. Si la nova encara és revocada, verifique amb el remitent perquè és revocada la clau.";
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "ATENCIÓ: La clau que s'ha utilitzat per signar el missatge ha estat revocada.⏎\n⏎\nHa d'actualitzar la identitat de la clau amb %@ a l'Accés a claus GPG per comprovar si n'hi ha disponible una de nova. Si la nova encara és revocada, verifique amb el remitent perquè és revocada la clau.";
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "La clau del missatge no és al clauer GPG.";
-"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "El missatge no s'ha pogut verificar, perquè la clau que s'ha utilitzat per signar-lo no es al clauer CPG.⏎\n⏎\nCerca la clau amb identitat %@ a l'Accés a claus GPG i importa per verificar el missatge.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "El missatge no s'ha pogut verificar, perquè la clau que s'ha utilitzat per signar-lo no es al clauer CPG.⏎\n⏎\nCerca la clau amb identitat %@ a l'Accés a claus GPG i importa-la per verificar el missatge.";
 
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "La signatura del missatge s'ha fet amb un algoritme que és incompatible.";
-"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "El missatge no s'ha pogut verificar, perquè la signatura s'ha creat amb un algoritme que és incompatible.⏎\n⏎\nContacteu amb nosaltres a http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This message could not be verified, since the signature was created with an algorithm which is not supported.\n\nPlease contact us at http://support.gpgtools.org";
 
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATENCIÓ: La signatura del missatge és invàlida!";
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATENCIÓ: Després de crear la signatura, el missatge podria haver-se modificat.⏎\n⏎\nContacteu amb el remitent per assegurar-vos que el contingut  del missatge coincideix amb l'original.⏎\n⏎\nContacteu amb nosaltres a http://support.gpgtools.org si està segur que el missatge no s'ha modicat.";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATENCIO: La signatura del missatge és invàlida!";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATTENTION: This message might have been modified after the signature was created.\n\nPlease contact the sender to make sure the content of the message matches the original.\n\nPlease contact us at http://support.gpgtools.org if you're sure the message was not modified.";
 
-"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Ha hagut un error desconegut amb la verificació de la signatura del missatge!";
-"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "S'ha produït un error desconegut mentre es verificava la signatura del missatge.⏎\n⏎\nContacteu amb nosaltres a http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Mentre es verificava la signatura del missatge ha hagut un error desconegut!";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this message's signature.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Missatge d'error de les dades de la signatura!";
-"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "El missatge té una signatura invàlida i no s'ha pogut verificar.⏎\n⏎\nContacteu amb nosaltres a http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This message's signature is invalid and could not be verified.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "La clau de signatura del missatge ha caducat.";
-"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATENCIÓ: La clau que s'ha utilitzat per signar el missatge ha caducat.\n\nPot tractar d'actualitzar la Identitat de la clau %@ a l'Accés a clauers GPG i preguntar al remitent perquè ha caducat la clau.";
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATENCIÓ: La clau que s'ha utilitzat per signar el missatge ha caducat.\n\nTracteu d'actualitzar la Identitat de la clau %@ a l'Accés a clauers GPG i pregunteu al remitent perquè ha caducat la clau.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "La clau de signatura del missatge ha caducat.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "No s'ha pogut verificar la signatura perquè ha caducat.⏎\n⏎\nDemaneu al remitent perquè ha caducat la signatura.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d els fitxers adjunts no s'han desxifrat o verificat.";
-"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Feu clic a la icona del fitxer adjunt a la part del missatge de seguretat de la capçalera per obtenir més detalls.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Decrypting failed because MacGPG2 is not installed.\n\nMacGPG2 is the underlying engine which is responsible for processing your message and is thus required.\n\nPlease download MacGPG2 from https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_TITLE" = "%d els fitxers no s'han pogut comprovar.";
-"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_MESSAGE" = "Feu clic a la icona del fitxer adjunt a la part del missatge de seguretat de la capçalera per obtenir més detalls.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifying failed because MacGPG2 is not installed.\n\nMacGPG2 is the underlying engine which is responsible for processing your message and is thus required.\n\nPlease download MacGPG2 from https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_TITLE" = "%d els fitxers adjunts no s'ha desxifrat.";
-"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_MESSAGE" = "Feu clic a la icona del fitxer adjunt a la part del missatge de seguretat de la capçalera per obtenir més detalls.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "Els fitxers adjunts %d no s'han desxifrat o verificat.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Per obtenir més detalls feu clic a la icona del fitxer adjunt a la part del missatge de seguretat de la capçalera.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_TITLE" = "%d el fitxer adjunt no s'ha pogut conprovar.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_MESSAGE" = "Feu clic a la icona del fitxer adjunt a la part del missatge de seguretat de la capçalera per obtenir més detalls.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_TITLE" = "Els fitxers %d no s'han pogut comprovar.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_MESSAGE" = "Per obtenir més detalls feu clic a la icona del fitxer adjunt a la part del missatge de seguretat de la capçalera.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_TITLE" = "%d el fitxer adjunt ha produït un error.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE" = "Feu clic a la icona del fitxer adjunt a la part del missatge de seguretat de la capçalera per obtenir més detalls.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_TITLE" = "Els fitxers adjunts %d no s'ha desxifrat.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_MESSAGE" = "Per obtenir més detalls feu clic a la icona del fitxer adjunt a la part del missatge de seguretat de la capçalera.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_TITLE" = "El fitxer adjunt %d no s'ha pogut comprovar.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_MESSAGE" = "Per obtenir més detalls feu clic a la icona del fitxer adjunt a la part del missatge de seguretat de la capçalera.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_TITLE" = "El fitxer adjunt %d no s'ha desxifrat.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE" = "Per obtenir més detalls feu clic a la icona del fitxer adjunt a la part del missatge de seguretat de la capçalera.";
 
 /* Message Error Banner Attachment messages. */
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Falta la clau secreta per desxifrar el fitxer adjunt.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "No hi ha cap clau secreta vàlida al seu clauer (%@). Cal la clau secreta per desxifrar el fitxer adjunt.\n\nConsulti amb el remitent perquè utilitzen la clau pública correcta.\nComprovi qualsevol còpia de seguretat de la clau, i tracteu d'importar-la.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "S'ha produït un error desconegut en desxifrar!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "S'ha produït un error desconegut en desxifrar el fitxe adjunt.⏎\n⏎\nContacteu amb nosaltres a http://support.gpgtools.org";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Mentre es desxifrava s'ha produït un error desconegut!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while decrypting this attachment.\n\nPlease contact us at http://support.gpgtools.org";    
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "S'ha produït un error desconegut en desxifrar!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "S'ha produït un error desconegut en desxifrar el fitxer adjunt.\n\nEl missatge d'error GPG:\n%@\nContacteu amb nosaltres amb el missatge d'error GPG a http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "Mentre es desxifrava s'ha produït un error desconegut!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "An unknown error occurred while decrypting this attachment.\n\nGPG error message:\n%@\nPlease contact us, including the GPG error message, at http://support.gpgtools.org";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "S'ha utilitzat una tecla errònia per xifrar el fitxer adjunt.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "El fitxer adjunt no s'ha pogut desxifrar, ja que la clau pública que s'ha utilitzat per xifar-lo és errònia.⏎\n⏎\nContacteu amb nosaltres a http://support.gpgtools.org";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Per xifrar el fitxer adjunt s'ha utilitzat una tecla errònia.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "This attachment could not be decrypted, since the wrong public key was used to encrypt it.\n\nPlease contact us at http://support.gpgtools.org";    
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "El fitxer xifrat adjunt està danyat.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "El fitxer adjunt xifrat està danyat i no s'ha desxifrat.⏎\n⏎\nDemani al remitent que li envie el missatge de nou.";
@@ -90,22 +96,22 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "La signatura adjunta no s'ha pogut verificar, perquè la clau que s'ha usat per signar-la no és al clauer GPG.\n\nCerca la clau amb la identitat %@ a l'Accés a claus GPG i importa-la per comprovar el fitxer adjunt.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "La signatura del fitxer adjunt s'ha creat amb un algoritme que és incompatible.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "El fitxer adjunt no s'ha pogut verificar, ja que la signatura de la clau s'ha creat amb un algoritme que és incompatible.⏎\n⏎\nContacteu amb nosaltres a http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This attachment could not be verified, since the key to the signature was created with an algorithm which is not supported.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATENCIÓ: La signatura del fitxer adjunt és invàlida!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATENCIÓ: La unió podria haver-se modificat després de crear-se la signatura.⏎\n⏎\nContacteu amb el remitent i assegureu-vos que el contingut del fitxer adjunt coincideix amb l'original.⏎\n⏎\nContacteu amb nosaltres a http://support.gpgtools.org, si esteu segurs que la unió no s'ha modificat.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATTENTION: This attachment might have been modified after the signature was created.\n\nPlease contact the sender and make sure the content of the attachment matches the original.\n\nPlease contact us at http://support.gpgtools.org, if you're sure the attachment was not modified.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "S'ha produït un error desconegut en la verificació de la signatura!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "S'ha produït un error desconegut mentre es verificava la firma adjunta.⏎\n⏎\nContacteu amb nosaltres a http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this attachment signature.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "La signatura presenta dades errònies!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "La signatura del fitxer adjunt és invàlida i no s'ha pogut verificar.⏎\n⏎\nContacteu amb nosaltres a http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This attachment signature is invalid and could not be verified.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "La clau de la signatura ha caducat.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATENCIÓ: La clau que s'ha utilitzat per signar el fitxer adjunt ha caducat.\n\nTracte d'actualitzar la clau amb identitat %@ a l'Accés a claus GPG i al remitent pregunte-li perquè ha caducat la clau.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATENCIÓ: La clau que s'ha utilitzat per signar el fitxer adjunt ha caducat.\n\nTracteu d'actualitzar-la amb identitat %@ a l'Accés a claus GPG i al remitent, pregunte-li perquè ha caducat la clau.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "La signatura del fitxer adjunt ha caducat.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "La signatura del fitxer adjunt ha expirat i no s'ha pogut verificar.⏎\n⏎\nDemaneu al remitent perquè ha caducat la signatura.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "La signatura del fitxer adjunt ha caducat i no s'ha pogut verificar.⏎\n⏎\nDemaneu al remitent perquè la signatura ha caducat.";
 
 "MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Xifrat en part";
 "MESSAGE_IS_PGP_PARTLY_SIGNED" = "Signat en part";
@@ -148,23 +154,67 @@
 /* Multiple GPGMail installations. */
 "GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "S'han trobat diverses instal·lacions de GPGMail!";
 "GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "GPGMail ha detectat diverses instal·lacions en les ubicacions que donarà lloc a un error de manera immediata:\n\n%@\n\nRetireu GPGMail.mailbundle de les ubicacions i reinicieu Mail.";
-"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Sortir de Mail";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Sortiu de Mail";
+
+/* No Libmacgpg. */
+"LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg was not found";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg was not found on your system. Please install it. Find it e.g. in the GPGTools Installer on https://www.gpgtools.org.";
+
+/* Code signature invalid */
+CODE_SIGN_ERROR_TITLE = "Someone tampered with your installation of GPGMail!";
+CODE_SIGN_ERROR_MESSAGE = "To keep you safe, GPGMail will not be loaded!\n\nPlease download and install the latest version of GPG Suite from https://gpgtools.org to be sure you have an original version from us!";
+
+/* GPGMailGPGMailBundle.defaults can't be loaded */
+NO_DEFAULTS_TITLE = "Unable to load GPGMail defaults!";
+NO_DEFAULTS_MESSAGE = "GPGMail may doesn't work as expected.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org.";
 
 /* Errors while trying to sign a message. */
-"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Signing your message failed due to defect PIN-Entry!";
-"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "The PIN-Entry helper responsible for asking for your passphrase seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Per culpa d'un defecte PIN-Entry no s'ha signat el missatge!";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "L'ajudant PIN-Entry que ha demanant la contrasenya sembla tenir un problema.\n\nPer solucionar-lo, torneu a instal·lar la versió més recent de GPGTools";
 
-"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Signing your message failed due to defect GPG agent!";
-"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "The GPG agent which is a crucial part of GPG seems to be defect on your system.\n\nTo fix this problem, re-install the newest version of GPGTools";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Per culpa d'un defecte de l'agent GPG no s'ha signat el missatge!";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "L'agent GPG és una part imprescindible de GPG i té un defecte al sistema.\n\nPer solucionar el problema, torneu a instal·lar la versió més recent de GPGTools";
 
-"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "Signing your message failed due to GPG agent communication error!";
-"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "It was not possible to talk to the GPG agent in order to request your passphrase.\n\nTo fix this problem, re-install the newest version of GPGTools";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "El missatge no s'ha signat perquè ha hagut un error de comunicació amb l'agent GPG!";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "No s'ha sol·licitat la contrasenya a l'agent GPG.\n\nTorneu a instal·lar la versió més recent de GPGTools per solucionar el problema";
 
-"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "Signing your message failed because an unknown error has occured";
-"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately we can't handle the error at this point.";
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "El missatge no s'ha signat perquè ha ocorregut un error desconegut";
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Malauradament, no controlem l'error en aquest punt.";
 
-"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Encrypting your message failed because an unknown error has occured";
-"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately GPGMail can't handle the error at this point.";
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "El xifratge del missatge ha fallat perquè hi hagut un error desconegut";
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Malauradament, GPGMail no controla l'error en aquest punt.";
+
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "You entered the wrong passphrase too many times.";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Signing your message was aborted because you entered the wrong passphrase 3 times.";
 
 "CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at http://support.gpgtools.org with the following error description:\n\n%@";
 
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the message";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The message couldn't be decrypted because you cancelled the passphrase request.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the attachment";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The attachment couldn't be decrypted because you cancelled the passphrase request.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the message failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the attachment failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the message failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the attachment failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Signing your message failed due to a problem during the passphrase request";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "The PIN-Entry helper responsible for requesting your passphrase is not working properly.\n\nTo fix this problem, please download the newest version of MacGPG2 from https://gpgtools.org";
+
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Signing your message failed due to a problem in your GPGMail installation.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "To fix this problem, please download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at https://support.gpgtools.org and include the information that the xpc service is not working properly.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the message failed due to a defect PIN-Entry";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your passphrase, seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools from https://gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the attachment failed due to a defect PIN-Entry";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your passphrase, seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools from https://gpgtools.org";

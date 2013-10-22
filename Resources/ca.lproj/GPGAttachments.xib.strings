@@ -1,5 +1,5 @@
 "2.title" = "Finestra";
-"8.title" = "Accepteu";
+"8.title" = "Accepta";
 "205.title" = "Expira el:";
 "210.title" = "nom";
 "211.title" = "Detalls";
@@ -15,10 +15,10 @@
 "256.title" = "Signatura";
 "257.title" = "Creat:";
 "259.title" = "Expira:";
-"291.title" = "The signature could not be verified.";
-"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";
+"291.title" = "La signatura no s'ha verificat.";
+"293.title" = "La signatura no s'ha verificat perquè la clau pública no està en el claur.⏎\nDescarregui la clau amb Accés a clauers GPG.";
 "325.ibShadowedIsNilPlaceholder" = "La signatura no té data de caducitat";
 "353.ibShadowedIsNilPlaceholder" = "La signatura no té data de caducitat";
 "366.ibShadowedIsNilPlaceholder" = "La signatura no té data de caducitat";
-"382.title" = "The signature could not be verified.";
-"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";
+"382.title" = "La signatura no s'ha verificat.";
+"383.title" = "La signatura no s'ha verificat perquè la clau pública no està en el claur.⏎\nDescarregui la clau amb Accés a clauers GPG.";

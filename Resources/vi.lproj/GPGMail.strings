@@ -1,0 +1,220 @@
+/* Description of version prefixed with <Version:> */
+"VERSION: %@" = "Phiên bản: %@";
+
+/* PGP preferences panel name */
+"PGP_PREFERENCES" = "GPGMail";
+
+/* Message Error Banner messages. */
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "Không thể giải mã tin nhắn PGP.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "Xảy ra lỗi khi tiến hành giải mã tin nhắn này. Hã chắc rằng bạn đã có khóa hợp lệ trong phần GPG Keychain.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Không thể xác nhận chữ ký tin nhắn PGP.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Xảy ra lỗi khi đọc chữ ký PGP dành cho tin nhắn này.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "Khóa PGP dành cho tin nhắn này không nằm trong chuỗi khóa mà bạn có.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Tin nhắn này có chữ ký PGP không hợp lệ, nhưng khóa PGP này không nằm trong chuỗi khóa mà bạn có. Hãy sử dụng chuỗi khóa GPG để truy cập và thêm khóa này vào.";
+"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Không có tin tức hiện có cho khóa PGP này.";
+"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Không có thông tin bổ sung hiện có về khóa PGP này, bởi vì khóa này không nằm trong chuỗi khóa mà bạn có.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Khóa bí mật để giải mã tin nhắn hiện đã thất lạc.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Toàn bộ những khóa bí mật sau đây không được tìm thấy trong chuỗi khóa của bạn (%@). Khóa bí mật cần được xác lập để giải mã tin nhắn này.\n\nVui lòng kiểm tra lại với người gửi tin để chắc rằng họ đã sử dụng khóa công công của bạn đúng cách.\nKiểm tra lại phần sao lưu dự phòng của các chuỗi khóa của bạn, và hãy nhập lại dữ liệu về các khóa bí mật từ đó.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Giải mã thất bại và hệ thống chưa nhận định được lỗi này là gì!";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nPlease contact us at http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Việc giải mã thất bại với lỗi mà hiện hệ thống chưa rõ!";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nGPG error message:\n%@\nPlease contact us, including the GPG error message, at http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Sai mã khóa để mã hóa tin nhắn này.";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "This message could not be decrypted, since the wrong public key was used to encrypt it.\n\nPlease contact us at http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Tin nhắn mã hóa bị lỗi.";
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Tin nhắn mã hóa này đã bị lỗi hoặc không thể được giải mã.\n\nVui lòng liên hệ người gửi tin nhắn này để gửi lại tin nhắn.";
+
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Khóa chữ ký đã bị hủy";
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "CHÚ Ý: Khóa này đã được dùng nhằm gắn cho tin nhắn này đã bị hủy.\n\nBạn nên cập nhật lại khóa với chỉ số khóa %@ trong Chuỗi Khóa Truy Cập GPG để kiểm tra khóa mới hiện có. Nếu khóa mới vẫn bị hủy, hãy xác nhận với người gửi là khóa đó đã bị hủy.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Khóa dành cho chữ ký tin nhắn này không nằm trong Chuỗi Khóa GPG của bạn.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Tin nhắn không thể được xác nhận, vì khóa được dùng gắn cho tin nhắn này không tồn tại trong Chuỗi Khóa GPG của bạn.\n\nHãy tìm khóa với chỉ số %@ trong Chuỗi Khóa Truy Cập GPG và nhập vào khóa này để xác nhận tin nhắn.";
+
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "Chữ ký tin nhắn đã được tạo với dạng thuật toán hiện chưa được hỗ trợ.";
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This message could not be verified, since the signature was created with an algorithm which is not supported.\n\nPlease contact us at http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "CHÚ Ý: Phần chữ ký của tin nhắn này không hợp lệ!";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATTENTION: This message might have been modified after the signature was created.\n\nPlease contact the sender to make sure the content of the message matches the original.\n\nPlease contact us at http://support.gpgtools.org if you're sure the message was not modified.";
+
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Xác nhận chữ ký tin nhắn thất bại với lỗi chưa rõ!";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this message's signature.\n\nPlease contact us at http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Lỗi dữ liệu với chữ ký tin nhắn";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This message's signature is invalid and could not be verified.\n\nPlease contact us at http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Khóa của chữ ký tin nhắn đã hết hạn.";
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "CHÚ Ý: Khóa này đã được sử dụng làm chữ ký cho tin nhắn này đã hết hạn.\n\nBạn có thể cập nhật lại khóa này với Chỉ Số %@ trong Chuỗi Khóa Truy Cập GPG và hỏi người gửi tại sao khóa này lại hết hạn.";
+
+"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Chữ ký tin nhắn đã hết hạn.";
+"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Chữ ký đã hết hạn và không thể được xác nhận.\n\nHãy hỏi người gửi lý do vì sao chữ ký lại hết hạn.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Decrypting failed because MacGPG2 is not installed.\n\nMacGPG2 is the underlying engine which is responsible for processing your message and is thus required.\n\nPlease download MacGPG2 from https://gpgtools.org";
+
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifying failed because MacGPG2 is not installed.\n\nMacGPG2 is the underlying engine which is responsible for processing your message and is thus required.\n\nPlease download MacGPG2 from https://gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "Không thể giải mã được hoặc xác nhận được %d phần được đính kèm theo.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Vui lòng click vào biểu tượng của phần đính kèm theo trong phần an ninh của header tin nhắn để biết thêm chi tiết.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_TITLE" = "%d phần tính kèm theo không thể được xác nhận.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_MESSAGE" = "Vui lòng click vào biểu tượng của phần đính kèm theo trong phần an ninh của header tin nhắn để biết thêm chi tiết.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_TITLE" = "Không thể giải mã %d phần đính kèm theo.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_MESSAGE" = "Vui lòng click vào biểu tượng của phần đính kèm theo trong phần an ninh của header tin nhắn để biết thêm chi tiết.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_TITLE" = "Không thể giải mã %d phần đính kèm theo.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_MESSAGE" = "Vui lòng click vào biểu tượng của phần đính kèm theo trong phần an ninh của header tin nhắn để biết thêm chi tiết.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_TITLE" = "Không thể giải mã %d phần đính kèm theo.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE" = "Vui lòng click vào biểu tượng của phần đính kèm theo trong phần an ninh của header tin nhắn để biết thêm chi tiết.";
+
+/* Message Error Banner Attachment messages. */
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Bị thiếu khóa bí mật để giải mã phần tập tin đính kèm.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Toàn bộ những khóa bí mật sau đây không được tìm thấy trong chuỗi khóa của bạn (%@). Khóa bí mật cần được xác lập để giải mã tin nhắn này.\n\nVui lòng kiểm tra lại với người gửi tin để chắc rằng họ đã sử dụng khóa công cộng của bạn đúng cách.\nKiểm tra lại phần sao lưu dự phòng của các chuỗi khóa của bạn, và hãy nhập lại dữ liệu về các khóa bí mật từ đó.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Việc giải mã thất bại với lỗi chưa được biết đến!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while decrypting this attachment.\n\nPlease contact us at http://support.gpgtools.org";    
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "Giải mã thất bại và hệ thống chưa nhận định được lỗi này là gì!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "An unknown error occurred while decrypting this attachment.\n\nGPG error message:\n%@\nPlease contact us, including the GPG error message, at http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Khóa dữ liệu được dùng để mã hóa phần đính kèm này đã bị lỗi.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "This attachment could not be decrypted, since the wrong public key was used to encrypt it.\n\nPlease contact us at http://support.gpgtools.org";    
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Phần mã hóa đính kèm bị lỗi.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Phần mã hóa đính kèm đã bị hư hại và không thể được giải mã.\n\nHãy yêu cầu người gửi đến bạn tin nhắn này gửi lại một lần nữa.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Đã hủy bỏ khóa chữ ký.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "CHÚ Ý: Khóa dữ liệu để ký lên phần đính kèm này đã bị hủy.\n\nBạn nên cập nhật lại khóa này với chỉ số khóa %@ trong Chuỗi Khóa Truy Cập GPG để kiểm tra hiện có khóa nào mới không. Nếu khóa mới vẫn bị hủy, hãy kiểm tra với người gửi lý do tại sao khóa này lại bị hủy.";    
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Chữ ký khóa dữ liệu không nằm trong Chuỗi Khóa GPG của bạn.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Phần chữ ký đính kèm không thể được xác nhận, vì khóa này đã được dùng để ký không nằm trong Chuỗi Khóa GPG của bạn.\n\nTìm kiếm chỉ số khóa %@ trong Chuỗi Khóa Truy Cập GPG và nhập dữ liệu từ khóa này để xác nhận phần đính kèm này.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "Chữ ký của phần đính kèm đã đợc tạo với một thuật toán vẫn chưa được chương trình hỗ trợ.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This attachment could not be verified, since the key to the signature was created with an algorithm which is not supported.\n\nPlease contact us at http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "CHÚ Ý: Phần chữ ký đính kèm này không hợp lệ!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATTENTION: This attachment might have been modified after the signature was created.\n\nPlease contact the sender and make sure the content of the attachment matches the original.\n\nPlease contact us at http://support.gpgtools.org, if you're sure the attachment was not modified.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Xác nhận chữ ký thất bại với lỗi chưa rõ!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this attachment signature.\n\nPlease contact us at http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Dữ liệu về chữ ký bị lỗi!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This attachment signature is invalid and could not be verified.\n\nPlease contact us at http://support.gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Khóa của chữ ký đã hết hạn.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "CHÚ Ý: Khóa này đã được sử dụng làm chữ ký cho phần đính kèm này đã hết hạn.\n\nBạn có thể cập nhật lại khóa này với Chỉ Số %@ trong Chuỗi Khóa Truy Cập GPG và hỏi người gửi tại sao khóa này lại hết hạn.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Chữ ký của phần đính kèm đã hết hạn.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Chữ ký của phần đính kèm đã hết hạn và không thể được xác nhận.\n\nHãy hỏi người gửi lý do vì sao chữ ký lại hết hạn.";
+
+"MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Mã hóa từng phần";
+"MESSAGE_IS_PGP_PARTLY_SIGNED" = "Ký nhận từng phần";
+"MESSAGE_IS_PGP_ENCRYPTED" = "Đã mã hóa";
+"MESSAGE_IS_PGP_SIGNED" = "Đã ký";
+"MESSAGE_IS_PGP_SIGNED_INVALID" = "Chữ ký không hợp lệ";
+
+/* Security Header signature related. */
+"MESSAGE_SECURITY_HEADER_SIGNATURE_NO_PUBLIC_KEY_TITLE" = "Đã ký với một khóa chưa biết rõ";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE" = "Đã ký với khóa bị hủy";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE" = "Chữ ký không hợp lệ";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE" = "Đã ký";
+
+/* Security header attachments related. */
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE" = "phần đính kèm được mã hóa/đã ký";
+"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_ENCRYPTED_TITLE" = "phần đính kèm được mã hóa/đã ký";
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_ENCRYPTED_TITLE" = "phần đính kèm được mã hóa";
+"MESSAGE_SECURITY_HEADER_ATTACHMENTS_ENCRYPTED_TITLE" = "phần đính kèm được mã hóa";
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_TITLE" = "phần đính kèm đã được ký";
+"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "phần đính kèm đã được ký";
+
+/* Compose Window encrypt/sign button tooltips. */
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "Tin nhắn này không thể được ký nhận, vì hiện không có khóa dữ liệu cá nhân nào dành cho %@.\n\nXin vui lòng chắc chắn rằng khóa dữ liệu cá nhân dành cho địa chỉ này đã tồn tại trong Chuỗi Khóa Truy Cập GPG. Thêm vào một chỉ số của khóa đã tồn tại cho địa chỉ này nếu cần thiết, hoặc tạo mới một khóa cho địa chỉ này.\n\nNếu một khóa dữ liệu đã tồn tại kèm theo địa chỉ này, hãy chắc rằng địa chỉ này trong Tùy Chọn Hộp Thư là chính xác và trùng khớp với địa chỉ dành cho khóa dữ liệu.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "Tin nhắn này không thể được mã hóa, vì hiện không có khóa công cộng nào dành cho địa chỉ: %@.\n\nVui lòng sử dụng Chuỗi Khóa Truy Cập GPG để tìm kiếm và nhập dữ liệu từ các khóa dữ liệu cho những địa chỉ này.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "Tin nhắn này không thể được mã hóa. Bạn phải điền vào ít nhất là một người gửi trước tiên.";
+
+/* Message view pgp part. */
+"MESSAGE_VIEW_PGP_PART_ENCRYPTED" = "Đã mã hóa";
+"MESSAGE_VIEW_PGP_PART_SIGNED" = "Đã ký";    
+"MESSAGE_VIEW_PGP_PART" = "Phần PGP";
+
+/* GPGMail Preferences strings. */
+"GPG_STATUS_NO_ERROR_TITLE" = "GPGMail đã sẵn sàng.";
+"GPG_STATUS_NO_ERROR_TOOLTIP" = "Phần cài đặt MacGPG của bạn đang hoạt động và không có lỗi nào xuất hiện."; 
+"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 vẫn chưa được cài đặt. Vui lòng kiểm tra lại phần cài đặt.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Vui lòng tải về phần cài đặt GPGTools từ http://www.gpgtools.org để cài đặt toàn bộ phần thuộc về GPGTools.";
+"GPG_STATUS_OTHER_ERROR_TITLE" = "Vui lòng kiểm tra lại phần cài đặt và cấu hình của bạn.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Vui lòng tải về phần cài đặt GPGTools từ http://www.gpgtools.org để cài đặt toàn bộ phần thuộc về GPGTools.";
+
+/* Multiple GPGMail installations. */
+"GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Đã tìm thấy một vài phần cài đặt thuộc về GPGMail!";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "Đã phát hiện một số phần cài đặt liên quan đến GPGMail ở những địa điểm sau đây, điều này có thể tạo nên lỗi:\n\n%@\n\nVui lòng gỡ bỏ GPGMail.mailbundle ở một trong những địa điểm trên và khởi động lại Hộp Thư.\n";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Thoát Hộp Thư";
+
+/* No Libmacgpg. */
+"LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg was not found";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg was not found on your system. Please install it. Find it e.g. in the GPGTools Installer on https://www.gpgtools.org.";
+
+/* Code signature invalid */
+CODE_SIGN_ERROR_TITLE = "Someone tampered with your installation of GPGMail!";
+CODE_SIGN_ERROR_MESSAGE = "To keep you safe, GPGMail will not be loaded!\n\nPlease download and install the latest version of GPG Suite from https://gpgtools.org to be sure you have an original version from us!";
+
+/* GPGMailGPGMailBundle.defaults can't be loaded */
+NO_DEFAULTS_TITLE = "Unable to load GPGMail defaults!";
+NO_DEFAULTS_MESSAGE = "GPGMail may doesn't work as expected.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org.";
+
+/* Errors while trying to sign a message. */
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Việc thực hiện ghi chữ ký trên tin nhắn thất bại vì sai mã PIN!";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "Phần trợ giúp mã PIN đảm trách phần quản lý chuỗi mật khẩu đã bị lỗi.\n\nĐể sửa lỗi, hãy cài đặt lại phiên bản mới nhất của GPGTools";
+
+"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Việc ký nhận tin nhắn của bạn đã gặp lỗi vì mã GPG đại diện gặp sự cố!";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "GPG đại diện là một phần quan trọng trong GPG đã bị lỗi trên hệ thống của bạn.\n\nĐể sửa lỗi này, vui lòng cài đặt lại phiên bản mới nhất từ GPGTools";
+
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "Việc ký nhận vào tin nhắn của bạn gặp lỗi vì giao tiếp đại diện GPG gặp lỗi!";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "Hiện không thể trò chuyện cùng người đại diện GPG nhằm yêu cầu phần mật mã của bạn.\n\nĐể sửa lỗi này, vui lòng cài lại phiên bản nhất từ GPGTools";
+
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "Việc áp dụng chữ ký vào tin nhắn đã thất bại vì một lỗi chưa được nhận dạng đã xảy ra";
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Xin cáo lỗi, chúng tôi hiện không thể xử lý lỗi này.";
+
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Việc mã hóa tin nhắn của bạn đã thất bại vì một lỗi chưa biết đến đã xảy ra";
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Xin cáo lỗi, GPGMail hiện không thể xử lý về vấn đề lỗi này.";
+
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "You entered the wrong passphrase too many times.";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Signing your message was aborted because you entered the wrong passphrase 3 times.";
+
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at http://support.gpgtools.org with the following error description:\n\n%@";
+
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the message";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The message couldn't be decrypted because you cancelled the passphrase request.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the attachment";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The attachment couldn't be decrypted because you cancelled the passphrase request.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the message failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the attachment failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the message failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the attachment failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Signing your message failed due to a problem during the passphrase request";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "The PIN-Entry helper responsible for requesting your passphrase is not working properly.\n\nTo fix this problem, please download the newest version of MacGPG2 from https://gpgtools.org";
+
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Signing your message failed due to a problem in your GPGMail installation.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "To fix this problem, please download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at https://support.gpgtools.org and include the information that the xpc service is not working properly.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the message failed due to a defect PIN-Entry";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your passphrase, seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools from https://gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the attachment failed due to a defect PIN-Entry";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your passphrase, seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools from https://gpgtools.org";

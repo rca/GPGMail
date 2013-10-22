@@ -18,13 +18,13 @@
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Ingen av disse hemmelige nøklene ble funnet i nøkkelringen din (%@). Den hemmelige nøkkelen kreves for å dekryptere denne meldingen.\n\nVennligst sjekk med avsender om de brukte den riktige offentlige nøkkelen din.\nUndersøk eventuelt en sikkerhetskopi av nøkkelringen din, og prøv å importere den riktige hemmelige nøkkelen derfra.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Dekryptering feilet med en ukjent feil!";
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "En ukjent feil oppstod mens denne meldingen ble dekryptert.\n\nVennligst kontakt oss på http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Dekryptering feilet med ukjent feil!";
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "En ukjent feil oppstod mens denne meldingen ble dekryptert.\n\nGPG feilmelding:\n%@\nVennligst kontakt oss på http://support.gpgtools.org, og oppgi GPG feilmeldingen.";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nGPG error message:\n%@\nPlease contact us, including the GPG error message, at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Feil nøkkel benyttet for å kryptere denne meldingen.";
-"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Denne meldingen kunne ikke dekrypteres fordi feil offentlig nøkkel ble brukt for å kryptere den.\n\nVennligst kontakt oss på http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "This message could not be decrypted, since the wrong public key was used to encrypt it.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Den krypterte meldingen er skadet.";
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Denne krypterte meldingen er skadet og kunne ikke dekrypteres.\n\nVennligst be avsender om å sende meldingen på nytt.";
@@ -35,22 +35,28 @@
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Meldingen kunne ikke verifiseres fordi nøkkelen som ble brukt til å signere denne meldingen ikke finnes i din GPG-nøkkelring.\n\nSøk etter nøkkelen med ID %@ i GPG Nøkkelring og importer den for å verifisere meldingen.";
 
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "Meldingssignaturen ble laget med en algoritme som ikke er støttet.";
-"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Meldingen kunne ikke verifiseres fordi signaturen ble laget med en algoritme som ikke støttes.\n\nVennligst kontakt oss på http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This message could not be verified, since the signature was created with an algorithm which is not supported.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "MERK: Meldingssignaturen er ugyldig!";
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "MERK: Denne meldingen kan ha blitt modifisert etter at signaturen ble laget.\n\nVennligst kontakt avsender for å forsikre deg om at innholdet i meldingen stemmer overens med originalen.\n\nVennligst kontakt oss på http://support.gpgtools.org hvis du er helt sikker på at meldingen ikke har blitt modifisert.";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATTENTION: This message might have been modified after the signature was created.\n\nPlease contact the sender to make sure the content of the message matches the original.\n\nPlease contact us at http://support.gpgtools.org if you're sure the message was not modified.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Verifisering av meldingssignatur feilet med en ukjent feil!";
-"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "En ukjent feil oppstod under verifisering av denne meldingens signatur.\n\nVennligst kontakt oss på http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this message's signature.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Datafeil i meldingssignatur!";
-"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Denne meldingens signatur er ugyldig og kunne ikke verifiseres.\n\nVennligst kontakt oss på http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This message's signature is invalid and could not be verified.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Nøkkelen til meldingssignaturen er utløpt.";
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "MERK: Nøkkelen som ble brukt for å signere denne meldingen er utløpt.\n\nDu kan forsøke å oppdatere nøkkelen med ID %@ i GPG Nøkkelring og spørre avsender hvorfor nøkkelen er utløpt.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Denne melingssignaturen er utløpt.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Signaturen er utløpt og kunne ikke verifiseres.\n\nSjekk med avsender hvorfor signaturen er utløpt.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Decrypting failed because MacGPG2 is not installed.\n\nMacGPG2 is the underlying engine which is responsible for processing your message and is thus required.\n\nPlease download MacGPG2 from https://gpgtools.org";
+
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifying failed because MacGPG2 is not installed.\n\nMacGPG2 is the underlying engine which is responsible for processing your message and is thus required.\n\nPlease download MacGPG2 from https://gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d vedlegg feilet under dekryptering eller verifisering.";
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Vennligst klikk på vedleggs-ikonet i sikkerhets-delen av meldings-hodet for ytterligere detaljer.";
@@ -72,13 +78,13 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Ingen av disse hemmelige nøklene ble funnet i nøkkelringen din (%@). Den hemmelige nøkkelen kreves for å dekryptere dette vedlegget.\n\nVennligst sjekk med avsender om de brukte den riktige offentlige nøkkelen din.\nUndersøk eventuelt en sikkerhetskopi av nøkkelringen din, og prøv å importere den riktige hemmelige nøkkelen derfra.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Dekryptering feilet vmed en ukjent feil!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "En ukjent feil oppstod under dekryptering av dette vedlegget.\n\nVennligst kontakt oss på http://support.gpgtools.org";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while decrypting this attachment.\n\nPlease contact us at http://support.gpgtools.org";    
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "Dekryptering feilet med en ukjent feil!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "En ukjent feil oppstod under dekryptering av dette vedlegget.\n\nGPG feilmelding:\n%@\nVennligst kontakt oss, og inkluder GPG feilmeldingen, på http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "An unknown error occurred while decrypting this attachment.\n\nGPG error message:\n%@\nPlease contact us, including the GPG error message, at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Feil nøkkel ble benyttet for å kryptere dette vedlegget.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Dette vedlegget kunne ikke krypteres, da feil offentlig nøkkel ble benyttet for å kryptere det.\n\nVennligst kontakt oss på http://support.gpgtools.org";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "This attachment could not be decrypted, since the wrong public key was used to encrypt it.\n\nPlease contact us at http://support.gpgtools.org";    
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Det krypterte vedlegget er skadet.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Dette krypterte vedlegget er skadet og kunne ikke dekrypteres.\n\nVennligst be avsender om å sende meldingen på nytt.";
@@ -90,16 +96,16 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Vedleggets signatur kunne ikke verifiseres, fordi nøkkelen som ble brukt til å signere, ikke finnes i GPG-nøkkelringen din.\n\nSøk etter nøkkelen med ID %@ i GPG Nøkkelring og importér den for å verifisere vedlegget.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "Vedleggets signatur ble opprettet med en algoritme som ikke støttes.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Vedlegget kunne ikke verifiseres, fordi signaturens nøkkel ble opprettet med en algoritme som ikke støttes. \n\nVennligst kontakt oss på http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This attachment could not be verified, since the key to the signature was created with an algorithm which is not supported.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "MERK: Vedleggs-signaturen er ikke gyldig!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "MERK: Dette vedlegget kan ha blitt endret etter at signaturen ble opprettet.\n\nVennligst kontakt avsender for å forsikre deg om at vedlegget samsvarer med originalen.\n\nVennligst kontakt oss på http://support.gpgtools.org, hvis du er sikker på at vedlegget ikke var endret.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATTENTION: This attachment might have been modified after the signature was created.\n\nPlease contact the sender and make sure the content of the attachment matches the original.\n\nPlease contact us at http://support.gpgtools.org, if you're sure the attachment was not modified.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Signaturverifisering feilet med en ukjent feil!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "En ukjent feil oppstod under verifiseringen av dette vedleggets signatur.\n\nVennligst kontakt oss på http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this attachment signature.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Signatur-data feil!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Dette vedleggets signatur er ugydlig og kunne ikke verifiseres\n\nVennligst kontakt oss på http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This attachment signature is invalid and could not be verified.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Nøkkelens signatur er utløpt.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "MERK: Nøkkelen som ble brukt til å signere dette vedlegget er utløpt.\n\nDu kan prøve å oppdatere nøkkelen med ID %@ i GPG Nøkkelring og spør avsender hvorfor nøkkelen er utløpt.";
@@ -150,6 +156,18 @@
 "GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "GPGMail fant flere installasjoner på følgende steder som vil føre til en umiddelbar kræsj:\n\n%@\n\nVennligst fjern GPGMail.mailbundle på et av stedene og start Mail på nytt.\n";
 "GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Avslutt Mail";
 
+/* No Libmacgpg. */
+"LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg was not found";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg was not found on your system. Please install it. Find it e.g. in the GPGTools Installer on https://www.gpgtools.org.";
+
+/* Code signature invalid */
+CODE_SIGN_ERROR_TITLE = "Someone tampered with your installation of GPGMail!";
+CODE_SIGN_ERROR_MESSAGE = "To keep you safe, GPGMail will not be loaded!\n\nPlease download and install the latest version of GPG Suite from https://gpgtools.org to be sure you have an original version from us!";
+
+/* GPGMailGPGMailBundle.defaults can't be loaded */
+NO_DEFAULTS_TITLE = "Unable to load GPGMail defaults!";
+NO_DEFAULTS_MESSAGE = "GPGMail may doesn't work as expected.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org.";
+
 /* Errors while trying to sign a message. */
 "MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Signering av meldingen din feilet grunnet defekt PIN-oppføring!";
 "MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "Hjelperen til PIN-oppføringen som er ansvarlig for å be om passordet ditt ser ut til å være defekt.\n\nFor å fikse dette problemet, installer den nyeste versjonen av GPGTools på nytt.";
@@ -166,5 +184,37 @@
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Kryptering av meldingen din feilet fordi det har oppstått en ukjent feil";
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Uheldigvis kan ikke GPGMail fikse denne feilen på det nåværende tidspunkt.";
 
-"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\nSkulle problemet vedvare, vennligst kontakt oss på http://support.gpgtools.org med følgende feilbeskrivelse:\n\n%@";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "You entered the wrong passphrase too many times.";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Signing your message was aborted because you entered the wrong passphrase 3 times.";
 
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at http://support.gpgtools.org with the following error description:\n\n%@";
+
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the message";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The message couldn't be decrypted because you cancelled the passphrase request.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the attachment";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The attachment couldn't be decrypted because you cancelled the passphrase request.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the message failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the attachment failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the message failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the attachment failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Signing your message failed due to a problem during the passphrase request";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "The PIN-Entry helper responsible for requesting your passphrase is not working properly.\n\nTo fix this problem, please download the newest version of MacGPG2 from https://gpgtools.org";
+
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Signing your message failed due to a problem in your GPGMail installation.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "To fix this problem, please download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at https://support.gpgtools.org and include the information that the xpc service is not working properly.";
+
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the message failed due to a defect PIN-Entry";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your passphrase, seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools from https://gpgtools.org";
+
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the attachment failed due to a defect PIN-Entry";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your passphrase, seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools from https://gpgtools.org";

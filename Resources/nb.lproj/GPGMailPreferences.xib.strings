@@ -1,3 +1,4 @@
+"2ul-d0-5ir.title" = "Sign new messages by default";
 "698.ibShadowedToolTip" = "Søk etter nye versjoner av GPGMail automatisk.";
 "699.ibShadowedToolTip" = "Last ned nye versjoner av GPGMail automatisk.";
 "700.ibShadowedToolTip" = "Se etter oppdateringer nå.";
@@ -10,7 +11,7 @@
 "728.title" = "Skriver";
 "733.ibShadowedToolTip" = "Ofte Stilte Spørsmål.";
 "734.alternateTitle" = "Ofte Stilte Spørsmål";
-"734.title" = "FAQ/OSS";
+"734.title" = "Knowledge Base";
 "736.ibShadowedToolTip" = "Bidra hvis du liker det vi gjør.";
 "737.alternateTitle" = "Bidra hvis du liker det vi gjør";
 "737.title" = "Donér";
@@ -19,7 +20,10 @@
 "786.ibShadowedToolTip" = "Se Innstillinger -> Visning -> Forhåndsvisning av liste";
 "787.title" = "Opprett forhåndsvisning av liste";
 "834.title" = "Knapp";
+"930.ibShadowedToolTip" = "Click to copy version into clipboard.";
 "931.title" = "Versjon: xxx";
+"935.ibShadowedToolTip" = "Click to copy version into clipboard.";
 "936.title" = "Versjonsnummer:";
 "1051.ibShadowedToolTip" = "Hvis du har andre spørsmål.";
 "1053.title" = "Hjelp";
+"yJs-2y-8Cb.title" = "Encrypt new messages by default";

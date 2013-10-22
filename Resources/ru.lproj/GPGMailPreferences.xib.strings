@@ -1,3 +1,4 @@
+"2ul-d0-5ir.title" = "Sign new messages by default";
 "698.ibShadowedToolTip" = "Automatically check for new versions of GPGMail.";
 "699.ibShadowedToolTip" = "Download new versions of GPGMail automatically.";
 "700.ibShadowedToolTip" = "Check for updates now.";
@@ -10,7 +11,7 @@
 "728.title" = "Composing";
 "733.ibShadowedToolTip" = "Frequently Asked Questions.";
 "734.alternateTitle" = "Frequently Asked Questions";
-"734.title" = "FAQ";
+"734.title" = "Knowledge Base";
 "736.ibShadowedToolTip" = "Contribute if you like what we're doing.";
 "737.alternateTitle" = "Contribute if you like what we're doing";
 "737.title" = "Donate";
@@ -19,7 +20,10 @@
 "786.ibShadowedToolTip" = "See Preferences -> Viewing -> List Preview.";
 "787.title" = "Create List Preview";
 "834.title" = "Button";
+"930.ibShadowedToolTip" = "Click to copy version into clipboard.";
 "931.title" = "Version: xxx";
+"935.ibShadowedToolTip" = "Click to copy version into clipboard.";
 "936.title" = "Build: ";
 "1051.ibShadowedToolTip" = "If you've any other question.";
 "1053.title" = "Support";
+"yJs-2y-8Cb.title" = "Encrypt new messages by default";
