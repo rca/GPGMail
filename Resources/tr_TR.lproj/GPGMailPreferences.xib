@@ -133,7 +133,7 @@
 								<object class="NSButtonCell" key="NSCell" id="411323674">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">SSS</string>
+									<string key="NSContents">Knowledge Base</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<reference key="NSControlView" ref="758835818"/>
 									<int key="NSButtonFlags">-2038284288</int>

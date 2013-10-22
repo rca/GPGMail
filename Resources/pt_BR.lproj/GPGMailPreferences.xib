@@ -116,7 +116,7 @@
 									<reference key="NSControlView" ref="163650447"/>
 									<int key="NSButtonFlags">-2038284288</int>
 									<int key="NSButtonFlags2">129</int>
-									<string key="NSAlternateContents">Check for updates now</string>
+									<string key="NSAlternateContents">Verificar atualizações agora</string>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">200</int>
 									<int key="NSPeriodicInterval">25</int>
@@ -133,7 +133,7 @@
 								<object class="NSButtonCell" key="NSCell" id="411323674">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">FAQ</string>
+									<string key="NSContents">Knowledge Base</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<reference key="NSControlView" ref="758835818"/>
 									<int key="NSButtonFlags">-2038284288</int>
@@ -414,7 +414,7 @@
 								<object class="NSButtonCell" key="NSCell" id="770584249">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">131072</int>
-									<string key="NSContents">Version: xxx</string>
+									<string key="NSContents">Versão: xxx</string>
 									<object class="NSFont" key="NSSupport" id="26">
 										<string key="NSName">LucidaGrande</string>
 										<double key="NSSize">11</double>
@@ -447,7 +447,7 @@
 								<object class="NSButtonCell" key="NSCell" id="684714656">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">131072</int>
-									<string key="NSContents">Build: </string>
+									<string key="NSContents">Build:</string>
 									<reference key="NSSupport" ref="26"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="386760937"/>
@@ -471,7 +471,7 @@
 								<object class="NSButtonCell" key="NSCell" id="942140521">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">Support</string>
+									<string key="NSContents">Suporte</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<reference key="NSControlView" ref="632062900"/>
 									<int key="NSButtonFlags">-2038284288</int>
@@ -1143,7 +1143,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="632062900"/>
-						<string key="toolTip">If you've any other question.</string>
+						<string key="toolTip">Se você tiver alguma outra pergunta.</string>
 					</object>
 				</object>
 				<string key="1051.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1154,7 +1154,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="997375455"/>
-						<string key="toolTip">Automatically check for new versions of GPGMail.</string>
+						<string key="toolTip">Verifica automaticamente pelas versões do GPGMail.</string>
 					</object>
 				</object>
 				<string key="698.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1163,7 +1163,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="63115413"/>
-						<string key="toolTip">Baixa novas versões do GPGMail automaticamente.</string>
+						<string key="toolTip">Baixar novas versões do GPGMail automaticamente.</string>
 					</object>
 				</object>
 				<string key="699.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1173,7 +1173,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="163650447"/>
-						<string key="toolTip">Verifica por atualizações agora.</string>
+						<string key="toolTip">Verificar por atualizações agora.</string>
 					</object>
 				</object>
 				<string key="700.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

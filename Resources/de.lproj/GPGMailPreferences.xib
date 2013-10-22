@@ -133,7 +133,7 @@
 								<object class="NSButtonCell" key="NSCell" id="411323674">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">FAQ</string>
+									<string key="NSContents">Knowledge Base</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<reference key="NSControlView" ref="758835818"/>
 									<int key="NSButtonFlags">-2038284288</int>
@@ -494,7 +494,7 @@
 								<object class="NSButtonCell" key="NSCell" id="1015833167">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">268435456</int>
-									<string key="NSContents">Encrypt new messages by default</string>
+									<string key="NSContents">Neue E-Mails verschlüsseln</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="714016839"/>
@@ -520,7 +520,7 @@
 								<object class="NSButtonCell" key="NSCell" id="1043626823">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">268435456</int>
-									<string key="NSContents">Sign new messages by default</string>
+									<string key="NSContents">Neue E-Mails signieren</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="955063492"/>
@@ -1236,7 +1236,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="984611941"/>
-						<string key="toolTip">Click to copy version into clipboard.</string>
+						<string key="toolTip">Klicken Sie hier um die Version in die Zwischenablage zu kopieren.</string>
 					</object>
 				</object>
 				<string key="930.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1248,7 +1248,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="386760937"/>
-						<string key="toolTip">Click to copy version into clipboard.</string>
+						<string key="toolTip">Klicken Sie hier um die Version in die Zwischenablage zu kopieren.</string>
 					</object>
 				</object>
 				<string key="935.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
