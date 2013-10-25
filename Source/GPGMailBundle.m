@@ -402,7 +402,8 @@ static BOOL gpgMailWorks = NO;
 }
 
 + (NSString *)agentHeader {
-    return [NSString stringWithFormat:GPGMailAgent, [self version]];
+    NSString *header = [NSString stringWithFormat:GPGMailAgent, [(GPGMailBundle *)[GPGMailBundle sharedInstance] version]];
+    return header;
 }
 
 + (Class)resolveMailClassFromName:(NSString *)name {
