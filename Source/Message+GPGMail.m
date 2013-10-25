@@ -41,7 +41,7 @@
 #import "Message+GPGMail.h"
 #import "GPGMailBundle.h"
 #import "NSString+GPGMail.h"
-
+#import "GPGFlaggedString.h"
 
 @implementation Message_GPGMail
 
@@ -538,5 +538,14 @@
     return nil;
 }
 
+- (void)MASetMessageInfo:(id)info subjectPrefixLength:(unsigned char)subjectPrefixLength to:(id)to sender:(id)sender type:(BOOL)type dateReceivedTimeIntervalSince1970:(double)receivedDate dateSentTimeIntervalSince1970:(double)sentDate messageIDHeaderDigest:(id)messageIDHeaderDigest inReplyToHeaderDigest:(id)headerDigest dateLastViewedTimeIntervalSince1970:(double)lastViewedDate {
+	// Replace the GPGFlaggedString with an actual NSString, otherwise Drafts cannot be properly displayed
+	// in some cases, since plist decoding doesn't work.
+	NSString *newSender = sender;
+	if([sender isKindOfClass:[GPGFlaggedString class]])
+		newSender = [sender string];
+	
+	[self MASetMessageInfo:info subjectPrefixLength:subjectPrefixLength to:to sender:newSender type:type dateReceivedTimeIntervalSince1970:receivedDate dateSentTimeIntervalSince1970:sentDate messageIDHeaderDigest:messageIDHeaderDigest inReplyToHeaderDigest:headerDigest dateLastViewedTimeIntervalSince1970:lastViewedDate];
+}
 
 @end

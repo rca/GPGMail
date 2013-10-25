@@ -166,7 +166,12 @@
 			 },
 			 @"Message": @{
 					 @"status": @"renamed",
-					 @"name": @"MCMessage"
+					 @"name": @"MCMessage",
+					 @"selectors": @{
+							 @"added": @[
+									 @"setMessageInfo:subjectPrefixLength:to:sender:type:dateReceivedTimeIntervalSince1970:dateSentTimeIntervalSince1970:messageIDHeaderDigest:inReplyToHeaderDigest:dateLastViewedTimeIntervalSince1970:"
+							 ]
+					 }
 			 },
 			 @"ComposeBackEnd": @{
 					 @"selectors": @{

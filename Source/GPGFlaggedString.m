@@ -83,13 +83,14 @@
 - (BOOL)isKindOfClass:(Class)aClass {
     if(aClass == NSClassFromString(@"NSString"))
         return YES;
+	if(aClass == NSClassFromString(@"GPGFlaggedString"))
+		return YES;
     return NO;
 }
 
 - (id)forwardingTargetForSelector:(SEL)aSelector {
     return string;
 }
-
 
 @end
 
