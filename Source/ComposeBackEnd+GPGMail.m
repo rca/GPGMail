@@ -194,17 +194,15 @@
     copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
 
     [self setIvar:@"originalCleanHeaders" value:copiedCleanHeaders];
+	NSLog(@"Original clean headers: %@", [self getIvar:@"originalCleanHeaders"]);
     // If isDraft is set the cleanHeaders are an NSDictionary instead of an NSMutableDictionary.
     // Using mutableCopy they are converted into an NSMutableDictionary.
     copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
     [self setValue:copiedCleanHeaders forKey:@"_cleanHeaders"];
     
-
-	
 	// Inject the headers needed in newEncryptedPart and newSignedPart.
 	[self _addGPGFlaggedStringsToHeaders:[(ComposeBackEnd *)self cleanHeaders] forEncrypting:shouldPGPEncrypt forSigning:shouldPGPSign forSymmetric:shouldPGPSymmetric];
 
-	
     // If the message is supposed to be encrypted or signed inline,
     // GPGMail does that directly in the Compose back end, and not use
     // the message write to create it, yet, to get an OutgoingMessage to work with.
@@ -219,8 +217,6 @@
         shouldPGPEncrypt = NO;
 		shouldPGPSymmetric = NO;
     }
-	
-	
 	
 	// If we are only signing and there isn't a newline at the end of the plaintext, append it.
 	// We need this to prevent servers from doin this.
@@ -237,14 +233,17 @@
 		}
 	}
     
-	
     // Drafts store the messages with a very minor set of headers and mime types
     // not suitable for encrypted/signed messages. But fortunately, Mail.app doesn't
     // have a problem if a normal message is stored as draft, so GPGMail just needs
     // to disable the isDraft parameter, Mail.app will take care of the rest.
     OutgoingMessage *outgoingMessage = [self MA_makeMessageWithContents:contents isDraft:NO shouldSign:shouldPGPSign shouldEncrypt:shouldPGPEncrypt || shouldPGPSymmetric shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
-
 	
+	if(isDraft)
+		[[outgoingMessage headers] setHeader:@"yes" forKey:@"X-Apple-Mail-Plain-Text-Draft"];
+	
+	if(shouldPGPEncrypt || shouldPGPSign)
+		[[outgoingMessage headers] setHeader:[GPGMailBundle agentHeader] forKey:@"X-PGP-Agent"];
 	
     // If there was an error creating the outgoing message it's gonna be nil
     // and the error is stored away for later display.
