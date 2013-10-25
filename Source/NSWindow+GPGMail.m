@@ -41,12 +41,13 @@
 }
 
 - (void)positionAccessoryView:(NSView *)accessoryView {
-    NSView *themeFrame = [[self contentView] superview];
+    [self positionAccessoryView:accessoryView offset:NSMakePoint(0.0f, 0.0f)];
+}
+
+- (void)positionAccessoryView:(NSView *)accessoryView offset:(NSPoint)offset {
+	NSView *themeFrame = [[self contentView] superview];
     NSRect c = [themeFrame frame];	// c for "container"
     NSRect aV = [accessoryView frame];	// aV for "accessory view"
-    // 4 point from the top, 6.0px from the very right.
-    //NSPoint offset = NSMakePoint(6.0f, 4.0f);
-    NSPoint offset = NSMakePoint(-0.0f, -0.0f);
     
     NSRect newFrame = NSMakeRect(
                                  c.size.width - aV.size.width - offset.x,	// x position
@@ -58,10 +59,11 @@
 }
 
 - (void)centerAccessoryView:(NSView *)accessoryView {
-    NSView *themeFrame = [[self contentView] superview];
+	NSView *themeFrame = [[self contentView] superview];
     NSRect c = [themeFrame frame];	// c for "container"
     NSRect aV = [accessoryView frame];	// aV for "accessory view"
-    aV.origin.x = floorf((c.size.width - aV.size.width) / 2.0f);
+	aV.origin.x = floorf((c.size.width - aV.size.width) / 2.0f);
+	
     [accessoryView setFrame:aV];
 }
 

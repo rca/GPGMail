@@ -138,7 +138,7 @@
     // Add the accessory view to the window.
     [window addAccessoryView:self];
     // Center the view within the window.
-    [window centerAccessoryView:self];
+    [window positionAccessoryView:self offset:NSMakePoint(200.0f, 0.f)];
     // Adjust the height to match the other fullscreen mail buttons.
     NSRect frame = self.frame;
     frame.size.height = 22.0f;

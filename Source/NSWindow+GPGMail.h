@@ -43,6 +43,11 @@
 - (void)positionAccessoryView:(NSView *)accessoryView;
 
 /**
+ Positions the accessory view at the top right, but allows the set an offset.
+ */
+- (void)positionAccessoryView:(NSView *)accessoryView offset:(NSPoint)offset;
+
+/**
  Centers an accessory view horizontally in the theme frame.
  */
 - (void)centerAccessoryView:(NSView *)accessoryView;
