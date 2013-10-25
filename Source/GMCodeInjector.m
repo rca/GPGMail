@@ -49,7 +49,8 @@
 					 @"setSignIfPossible:",
 					 @"_saveThreadShouldCancel",
 					 @"_configureLastDraftInformationFromHeaders:overwrite:",
-					 @"sender"
+					 @"sender",
+					 @"outgoingMessageUsingWriter:contents:headers:isDraft:shouldBePlainText:",
 			 ],
 			 @"HeadersEditor": @[
 					 @"securityControlChanged:",
@@ -166,6 +167,16 @@
 			 @"Message": @{
 					 @"status": @"renamed",
 					 @"name": @"MCMessage"
+			 },
+			 @"ComposeBackEnd": @{
+					 @"selectors": @{
+							 @"renamed": @[
+									 @[
+										 @"outgoingMessageUsingWriter:contents:headers:isDraft:shouldBePlainText:",
+										 @"newOutgoingMessageUsingWriter:contents:headers:isDraft:shouldBePlainText:"
+									 ]
+							 ]
+					 }
 			 },
 			 @"MessageCriterion": @{
 					 @"status": @"renamed",

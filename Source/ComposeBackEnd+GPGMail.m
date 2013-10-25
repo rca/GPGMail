@@ -233,19 +233,18 @@
 		}
 	}
     
-    // Drafts store the messages with a very minor set of headers and mime types
+	// This is later checked, to determine the real isDraft value.
+	[contents setIvar:@"IsDraft" value:@(isDraft)];
+	[contents setIvar:@"ShouldEncrypt" value:@(shouldPGPEncrypt || shouldPGPInlineEncrypt)];
+	[contents setIvar:@"ShouldSign" value:@(shouldPGPSign || shouldPGPInlineSign)];
+    
+	// Drafts store the messages with a very minor set of headers and mime types
     // not suitable for encrypted/signed messages. But fortunately, Mail.app doesn't
     // have a problem if a normal message is stored as draft, so GPGMail just needs
     // to disable the isDraft parameter, Mail.app will take care of the rest.
     OutgoingMessage *outgoingMessage = [self MA_makeMessageWithContents:contents isDraft:NO shouldSign:shouldPGPSign shouldEncrypt:shouldPGPEncrypt || shouldPGPSymmetric shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
 	
-	if(isDraft)
-		[[outgoingMessage headers] setHeader:@"yes" forKey:@"X-Apple-Mail-Plain-Text-Draft"];
-	
-	if(shouldPGPEncrypt || shouldPGPSign)
-		[[outgoingMessage headers] setHeader:[GPGMailBundle agentHeader] forKey:@"X-PGP-Agent"];
-	
-    // If there was an error creating the outgoing message it's gonna be nil
+	// If there was an error creating the outgoing message it's gonna be nil
     // and the error is stored away for later display.
     if(!outgoingMessage) {
 		if (isDraft) {
@@ -379,6 +378,29 @@
 	}
 	
 	return fromiCal;
+}
+
+
+/**
+ makeMessageWithContents:isDraft:shouldSign:shouldEncrypt:shouldSkipSignature:shouldBePlainText: sets the encrpyt and sign flags
+ internal on the message write. For drafts however, these flags are not set, which leads to unencrypted, unsigned drafts.
+ Our workaround forces drafts to be encrypted and/or signed by disabling the draft setting.
+ The problem is, while that works for normal IMAP accounts, it doesn't for GMail, which creates a new message for each
+ draft if "Store drafts on server" is activated.
+ We hook into this message, to force the draft setting to be on for drafts, AFTER the encrypt and sign flags are set.
+ This way, the messages remain actual drafts, and GMail is satisfied as well and behaves as it should.
+ 
+ On Mavericks the method is called: newOutgoingMessageUsingWriter:contents:headers:isDraft:shouldBePlainText:
+ On (Mountain)Lion the method is called: outgoingMessageUsingWriter:contents:headers:isDraft:shouldBePlainText:
+ 
+ GMCodeInjector makes sure, that the correct method is overridden by our own.
+ */
+- (id)MAOutgoingMessageUsingWriter:(id)writer contents:(id)contents headers:(id)headers isDraft:(BOOL)isDraft shouldBePlainText:(BOOL)shouldBePlainText {
+	isDraft = [[contents getIvar:@"IsDraft"] boolValue];
+	[headers setHeader:[GPGMailBundle agentHeader] forKey:@"X-PGP-Agent"];
+	
+	id ret = [self MAOutgoingMessageUsingWriter:(id)writer contents:(id)contents headers:(id)headers isDraft:isDraft shouldBePlainText:(BOOL)shouldBePlainText];
+	return ret;
 }
 
 - (void)didCancelMessageDeliveryForError:(NSError *)error {
