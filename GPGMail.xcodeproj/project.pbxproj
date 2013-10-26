@@ -5471,7 +5471,7 @@
 				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					"MailHeaders/**",
-					"Dependencies/Libmacgpg/**",
+					"$(SRCROOT)/Dependencies/Libmacgpg/build/$(CONFIGURATION)",
 				);
 				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_GPGMAIL = 1;
@@ -5512,7 +5512,7 @@
 				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					"MailHeaders/**",
-					"Dependencies/Libmacgpg/**",
+					"$(SRCROOT)/Dependencies/Libmacgpg/build/$(CONFIGURATION)",
 				);
 				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
