@@ -34,23 +34,21 @@
 
 /** ONLY FOR Mavericks and then on MFLibrary. */
 + (id)MAPlistDataForMessage:(id)message subject:(id)subject sender:(id)sender to:(id)to dateSent:(id)dateSent dateReceived:(id)dateReceived dateLastViewed:(id)dateLastViewed remoteID:(id)remoteID originalMailboxURLString:(id)originalMailboxURLString gmailLabels:(id)gmailLabels flags:(long long)flags mergeWithDictionary:(id)mergeWithDictionary {
-    if([sender respondsToSelector:@selector(setValue:forFlag:)])
+    if([sender isKindOfClass:[GPGFlaggedString class]])
         sender = [(GPGFlaggedString *)sender description];
-    if([to respondsToSelector:@selector(setValue:forFlag:)])
+    if([to isKindOfClass:[GPGFlaggedString class]])
         to = [(GPGFlaggedString *)to description];
     
-    id plistData = [self MAPlistDataForMessage:message subject:subject sender:sender to:to dateSent:dateSent dateReceived:dateReceived dateLastViewed:dateLastViewed remoteID:remoteID originalMailboxURLString:originalMailboxURLString gmailLabels:gmailLabels flags:flags mergeWithDictionary:mergeWithDictionary];
-    return plistData;
+    return [self MAPlistDataForMessage:message subject:subject sender:sender to:to dateSent:dateSent dateReceived:dateReceived dateLastViewed:dateLastViewed remoteID:remoteID originalMailboxURLString:originalMailboxURLString gmailLabels:gmailLabels flags:flags mergeWithDictionary:mergeWithDictionary];
 }
 
 + (id)MAPlistDataForMessage:(id)message subject:(id)subject sender:(id)sender to:(id)to dateSent:(id)dateSent remoteID:(id)remoteID originalMailbox:(id)originalMailbox flags:(long long)flags mergeWithDictionary:(id)mergeWithDictionary {
-    if([sender respondsToSelector:@selector(setValue:forFlag:)])
+    if([sender isKindOfClass:[GPGFlaggedString class]])
         sender = [(GPGFlaggedString *)sender description];
-    if([to respondsToSelector:@selector(setValue:forFlag:)])
+    if([to isKindOfClass:[GPGFlaggedString class]])
         to = [(GPGFlaggedString *)to description];
     
-    id plistData = [self MAPlistDataForMessage:message subject:subject sender:sender to:to dateSent:dateSent remoteID:remoteID originalMailbox:originalMailbox flags:flags mergeWithDictionary:mergeWithDictionary];
-    return plistData;
+    return [self MAPlistDataForMessage:message subject:subject sender:sender to:to dateSent:dateSent remoteID:remoteID originalMailbox:originalMailbox flags:flags mergeWithDictionary:mergeWithDictionary];
 }
 
 @end
