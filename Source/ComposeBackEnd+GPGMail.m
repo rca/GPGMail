@@ -396,11 +396,15 @@
  GMCodeInjector makes sure, that the correct method is overridden by our own.
  */
 - (id)MAOutgoingMessageUsingWriter:(id)writer contents:(id)contents headers:(id)headers isDraft:(BOOL)isDraft shouldBePlainText:(BOOL)shouldBePlainText {
-	isDraft = [[contents getIvar:@"IsDraft"] boolValue];
-	[headers setHeader:[GPGMailBundle agentHeader] forKey:@"X-PGP-Agent"];
-	
-	id ret = [self MAOutgoingMessageUsingWriter:(id)writer contents:(id)contents headers:(id)headers isDraft:isDraft shouldBePlainText:(BOOL)shouldBePlainText];
-	return ret;
+	if([contents ivarExists:@"IsDraft"])
+		isDraft = [[contents getIvar:@"IsDraft"] boolValue];
+	if([[contents getIvar:@"ShouldEncrypt"] boolValue] || [[contents getIvar:@"ShouldSign"] boolValue])
+		[headers setHeader:[GPGMailBundle agentHeader] forKey:@"X-PGP-Agent"];
+	if([contents ivarExists:@"IsDraft"] && isDraft) {
+		[headers setHeader:@"com.apple.mail-draft" forKey:@"x-uniform-type-identifier"];
+		[headers setHeader:@"yes" forKey:@"x-apple-mail-plain-text-draft"];
+	}
+	return [self MAOutgoingMessageUsingWriter:writer contents:contents headers:headers isDraft:isDraft shouldBePlainText:shouldBePlainText];
 }
 
 - (void)didCancelMessageDeliveryForError:(NSError *)error {
