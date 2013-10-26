@@ -5469,7 +5469,10 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_PKGINFO_FILE = YES;
-				HEADER_SEARCH_PATHS = "MailHeaders/**";
+				HEADER_SEARCH_PATHS = (
+					"MailHeaders/**",
+					"Dependencies/Libmacgpg/**",
+				);
 				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_GPGMAIL = 1;
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
@@ -5507,7 +5510,10 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GENERATE_PKGINFO_FILE = YES;
-				HEADER_SEARCH_PATHS = "MailHeaders/**";
+				HEADER_SEARCH_PATHS = (
+					"MailHeaders/**",
+					"Dependencies/Libmacgpg/**",
+				);
 				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS)";
