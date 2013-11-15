@@ -64,7 +64,8 @@ if [ "$target" == "$homedir" ]; then
     chown "$USER:staff" "$HOME/Library/Mail"
     chown -R "$USER:staff" "$homedir"
 fi
-chmod -R 755 "$target"
+chmod 755 "$target"
+chmod -R u=rwX,go=rX "$target/$bundle"
 ################################################################################
 
 # TODO: Update for Mountain Lion!
