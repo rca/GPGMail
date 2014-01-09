@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">12F45</string>
-		<string key="IBDocument.InterfaceBuilderVersion">4510</string>
-		<string key="IBDocument.AppKitVersion">1187.40</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.SystemVersion">13B42</string>
+		<string key="IBDocument.InterfaceBuilderVersion">4514</string>
+		<string key="IBDocument.AppKitVersion">1265</string>
+		<string key="IBDocument.HIToolboxVersion">696.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">4510</string>
+			<string key="NS.object.0">4514</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSBox</string>
@@ -57,7 +57,7 @@
 									<int key="NSCellFlags2">0</int>
 									<string key="NSContents">Automatycznie sprawdzaj dostępne aktualizacje</string>
 									<object class="NSFont" key="NSSupport" id="706304668">
-										<string key="NSName">LucidaGrande</string>
+										<string key="NSName">.LucidaGrandeUI</string>
 										<double key="NSSize">13</double>
 										<int key="NSfFlags">1044</int>
 									</object>
@@ -179,7 +179,7 @@
 									<int key="NSCellFlags2">272630784</int>
 									<string key="NSContents">Aktualizacje</string>
 									<object class="NSFont" key="NSSupport" id="1059241967">
-										<string key="NSName">LucidaGrande-Bold</string>
+										<string key="NSName">.LucidaGrandeUI-Bold</string>
 										<double key="NSSize">13</double>
 										<int key="NSfFlags">2072</int>
 									</object>
@@ -204,6 +204,7 @@
 									</object>
 								</object>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+								<int key="NSTextFieldAlignmentRectInsetsVersion">1</int>
 							</object>
 							<object class="NSTextField" id="443272866">
 								<reference key="NSNextResponder" ref="782958523"/>
@@ -222,6 +223,7 @@
 									<reference key="NSTextColor" ref="326977330"/>
 								</object>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+								<int key="NSTextFieldAlignmentRectInsetsVersion">1</int>
 							</object>
 							<object class="NSButton" id="113600817">
 								<reference key="NSNextResponder" ref="782958523"/>
@@ -264,6 +266,7 @@
 									<reference key="NSTextColor" ref="326977330"/>
 								</object>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+								<int key="NSTextFieldAlignmentRectInsetsVersion">1</int>
 							</object>
 							<object class="NSTextField" id="25399615">
 								<reference key="NSNextResponder" ref="782958523"/>
@@ -286,6 +289,7 @@
 									<reference key="NSTextColor" ref="326977330"/>
 								</object>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+								<int key="NSTextFieldAlignmentRectInsetsVersion">1</int>
 							</object>
 							<object class="NSImageView" id="546540187">
 								<reference key="NSNextResponder" ref="782958523"/>
@@ -352,7 +356,7 @@
 							<object class="NSButton" id="915859109">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{193, 247}, {326, 18}}</string>
+								<string key="NSFrame">{{193, 247}, {110, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="63115413"/>
 								<string key="NSReuseIdentifierKey">_NS:717</string>
@@ -416,7 +420,7 @@
 									<int key="NSCellFlags2">131072</int>
 									<string key="NSContents">Version: xxx</string>
 									<object class="NSFont" key="NSSupport" id="26">
-										<string key="NSName">LucidaGrande</string>
+										<string key="NSName">.LucidaGrandeUI</string>
 										<double key="NSSize">11</double>
 										<int key="NSfFlags">3100</int>
 									</object>

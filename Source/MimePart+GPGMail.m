@@ -1950,6 +1950,7 @@
 	
 	BOOL symmetricEncrypt = NO;
 	BOOL doNotPublicEncrypt = NO;
+	BOOL isDraft = NO;
 	
 	GPGKey *senderPublicKey = nil;
 	
@@ -1978,6 +1979,21 @@
 					}
 				}
 				
+				
+				senderPublicKey = [[recipient valueForFlag:@"gpgKey"] primaryKey];
+
+				// Drafts are only encrypted with the senders key.
+				if ([[recipient valueForFlag:@"isDraft"] boolValue]) {
+					isDraft = YES;
+					[normalRecipients removeAllObjects];
+					[bccRecipients removeAllObjects];
+					if (!senderPublicKey) {
+						[normalRecipients addObject:recipient];
+					}
+					break;
+				}
+				
+				
 				if (!encryptToSelf)
 					continue;
 				
@@ -1985,9 +2001,7 @@
 				// is chosen for encrypt-to-self, the senderKey is queried for its
 				// public key and the from address is not added to the list of normal
 				// recipients. (#608)
-				GPGKey *signerKey = [recipient valueForFlag:@"gpgKey"];
-				if(signerKey) {
-					senderPublicKey = signerKey.primaryKey;
+				if (senderPublicKey) {
 					continue;
 				}
 			}
@@ -1997,7 +2011,7 @@
 	
 	NSMutableSet *flattenedNormalKeyList = nil, *flattenedBCCKeyList = nil;
 	
-	if (!doNotPublicEncrypt) {  // We need no keys, if only syymetric is set.
+	if (!doNotPublicEncrypt) {  // We need no keys, if only symmetric is set.
 		// Ask the mail bundle for the GPGKeys matching the email address.
 		NSMutableSet *normalKeyList = [[[GPGMailBundle sharedInstance] publicKeyListForAddresses:normalRecipients] mutableCopy];
 		if(senderPublicKey)
