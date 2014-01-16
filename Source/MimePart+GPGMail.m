@@ -467,7 +467,9 @@
     if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
         return [self MADecodeTextHtmlWithContext:ctx];
 
-    if([[self bodyData] mightContainPGPEncryptedDataOrSignatures]) {
+	NSData *bodyData = [self bodyData];
+	
+    if([bodyData mightContainPGPEncryptedDataOrSignatures]) {
         // HTML is a bit hard to decrypt, so check if the parent part, if exists is a
         // multipart/alternative.
         // If that's the case, look for a text/plain part
@@ -484,6 +486,10 @@
                 return [textPart decodeTextPlainWithContext:ctx];
             }
         }
+		
+		if ([bodyData rangeOfPGPInlineEncryptedData].length > 0 || [bodyData rangeOfPGPInlineSignatures].length > 0) {
+			return [(MimePart *)self decodeTextPlainWithContext:ctx];
+		}
     }
     
     return [self MADecodeTextHtmlWithContext:ctx];
