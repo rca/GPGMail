@@ -1195,22 +1195,31 @@
     
     BOOL (^otherDataFound)(NSData *) = ^(NSData *data) {
         unsigned char *dataBytes = (unsigned char *)[data bytes];
-        for(NSUInteger i = 0; i < [data length]; i++) {
-            if(*dataBytes != '\n' && *dataBytes != '\r')
-                return YES;
-            dataBytes++;
+		NSUInteger length = [data length];
+        for (NSUInteger i = 0; i < length; i++) {
+			switch (dataBytes[i]) {
+				case '\n':
+				case '\r':
+				case '\t':
+				case ' ':
+					break;
+				default:
+					return YES;
+			}
         }
         return NO;
     };
     
     NSData *originalData = originalPartData;
-    [partData appendData:[originalData subdataWithRange:NSMakeRange(0, encryptedRange.location)]];
-    NSData *restData = [originalData subdataWithRange:NSMakeRange(encryptedRange.location + encryptedRange.length, 
+	NSData *leadingData = [originalData subdataWithRange:NSMakeRange(0, encryptedRange.location)];
+	// Only add surrounding data, if we have plain text.
+	[partData appendData:leadingData];
+    NSData *restData = [originalData subdataWithRange:NSMakeRange(encryptedRange.location + encryptedRange.length,
                                                                   [originalData length] - encryptedRange.length - encryptedRange.location)];
     if(decryptedData) {
         // If there was data before or after the encrypted data, signal this
         // with a banner.
-        BOOL hasOtherData = (encryptedRange.location != 0) || otherDataFound(restData);
+        BOOL hasOtherData = otherDataFound(leadingData) || otherDataFound(restData);
             
         if(hasOtherData)
             [self addPGPPartMarkerToData:partData partData:decryptedData];
