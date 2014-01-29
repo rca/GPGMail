@@ -2065,7 +2065,21 @@
 					[normalRecipients removeAllObjects];
 					[bccRecipients removeAllObjects];
 					if (!senderPublicKey) {
-						[normalRecipients addObject:recipient];
+						GPGKey *key = nil;
+						for (key in [[GPGMailBundle sharedInstance] publicKeyListForAddresses:@[recipient]]) {
+							if (key.secret) {
+								break;
+							}
+						}
+						if (!key) {
+							key = [[GPGMailBundle sharedInstance] bestSecretKey];
+						}
+						if (key) {
+							[normalRecipients addObject:key];
+						} else {
+							*encryptedData = [[gpgErrorIdentifier stringByAppendingFormat:@"%i:", GMSaveClearMessage] dataUsingEncoding:NSUTF8StringEncoding];;
+							return self;
+						}
 					}
 					break;
 				}

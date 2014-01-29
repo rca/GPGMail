@@ -307,6 +307,18 @@ static BOOL gpgMailWorks = NO;
     return [_keyManager allKeys];
 }
 
+- (NSSet *)secretGPGKeys {
+    if (!gpgMailWorks) return nil;
+    
+    return [_keyManager secretKeys];
+}
+
+- (GPGKey *)bestSecretKey {
+    if (!gpgMailWorks) return nil;
+    
+    return [[_keyManager secretKeys] anyObject];
+}
+
 - (GPGKey *)secretGPGKeyForKeyID:(NSString *)keyID {
     if (!gpgMailWorks) return nil;
     

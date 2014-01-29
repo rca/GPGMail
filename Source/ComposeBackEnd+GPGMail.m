@@ -283,6 +283,9 @@
 				[self setIvar:@"cancelSaving" value:(id)kCFBooleanTrue];
 				[(MailDocumentEditor *)[(ComposeBackEnd *)self delegate] setUserSavedMessage:NO];
 			}
+		} else if (errorCode == GMSaveClearMessage) {
+			OutgoingMessage *outMessage = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:NO shouldEncrypt:NO shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
+			return outMessage;
 		}
 		[(ComposeBackEnd *)self setValue:[self getIvar:@"originalCleanHeaders"] forKey:@"_cleanHeaders"];
 		return nil;
