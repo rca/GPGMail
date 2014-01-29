@@ -128,11 +128,18 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 
 - (NSMutableSet *)publicKeyListForAddresses:(NSArray *)addresses {
     NSMutableSet *normalizedAddresses = [NSMutableSet set];
+	NSMutableSet *keys = [NSMutableSet set];
     for (NSString *address in addresses) {
-        [normalizedAddresses addObject:[address gpgNormalizedEmail]];
+		if ([address isKindOfClass:[GPGKey class]]) {
+			[keys addObject:address];
+		} else {
+			[normalizedAddresses addObject:[address gpgNormalizedEmail]];
+		}
+       
     }
-    
-    return [self keysForAddresses:[normalizedAddresses allObjects] onlySecret:NO stopOnFound:NO];
+    [keys unionSet:[self keysForAddresses:[normalizedAddresses allObjects] onlySecret:NO stopOnFound:NO]];
+	
+    return keys;
 }
 
 - (void)scheduleInitialKeyUpdate {

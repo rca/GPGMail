@@ -152,7 +152,9 @@
 	// If this message is to be saved as draft, force encryption.
     if (isDraft) {
 		// TODO: Save the users wishes and restore it when opening the mail again.
-		shouldPGPEncrypt = YES;
+		if (!shouldPGPEncrypt && [[GPGOptions sharedOptions] boolForKey:@"OptionallyEncryptDrafts"]) {
+			shouldPGPEncrypt = YES;
+		}
 		shouldPGPSign = NO;
 		shouldPGPSymmetric = NO;
     }
