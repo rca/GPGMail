@@ -233,7 +233,7 @@
 
 	// Remove all whitespaces at the end of lines.
 	if ([plainString rangeOfString:@" \n"].length > 0) {
-		RKRegex *regex = [RKRegex regexWithRegexString:@"[ \t]+\n" options:RKCompileNoOptions];
+		RKRegex *regex = [RKRegex regexWithRegexString:@"[\\s]+\n" options:RKCompileNoOptions];
 		[plainString match:regex replace:RKReplaceAll withString:@"\n"];
 	}
 	
