@@ -36,6 +36,8 @@
 #import "ActivityMonitor.h"
 #import <MFError.h>
 #import "NSData-MessageAdditions.h"
+#define restrict
+#import <RegexKit/RegexKit.h>
 
 
 @implementation ComposeBackEnd_GPGMail
@@ -218,20 +220,24 @@
 		shouldPGPSymmetric = NO;
     }
 	
+	NSMutableAttributedString *plainText = (NSMutableAttributedString *)contents.plainText;
+	NSMutableString *plainString = [plainText mutableString];
+	
 	// If we are only signing and there isn't a newline at the end of the plaintext, append it.
 	// We need this to prevent servers from doing this.
 	if (shouldPGPSign && !shouldPGPEncrypt && !shouldPGPSymmetric) {
-		NSAttributedString *plainText = contents.plainText;
-		NSString *plainString = plainText.string;
 		if ([plainString characterAtIndex:plainString.length - 1] != '\n') {
-			NSMutableAttributedString *newPlainText = [plainText mutableCopy];
-			
-			NSAttributedString *newline = [[NSAttributedString alloc] initWithString:@"\n"];
-			[newPlainText appendAttributedString:newline];
-			
-			contents.plainText = newPlainText;
+			[plainString appendString:@"\n"];
 		}
 	}
+
+	// Remove all whitespaces at the end of lines.
+	if ([plainString rangeOfString:@" \n"].length > 0) {
+		RKRegex *regex = [RKRegex regexWithRegexString:@"[ \t]+\n" options:RKCompileNoOptions];
+		[plainString match:regex replace:RKReplaceAll withString:@"\n"];
+	}
+	
+	
     
 	// This is later checked, to determine the real isDraft value.
 	[contents setIvar:@"IsDraft" value:@(isDraft)];
