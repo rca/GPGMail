@@ -90,9 +90,15 @@ defaults write "/Library/Preferences/com.apple.mail" BundleCompatibilityVersion 
 
 # Add the PluginCompatibilityUUIDs #############################################
 echo "[gpgmail] Adding PluginCompatibilityUUIDs..."
-plistBundle="$target/$bundle/Contents/Info"
-plistMail="/Applications/Mail.app/Contents/Info"
+
+# Find Mail.app
+mailLocation=$(mdfind -onlyin /Applications "kMDItemCFBundleIdentifier = com.apple.mail" | head -1)
+mailLocation=${mailLocation:-/Applications/Mail.app}
+
+# Path to the plists
+plistMail="$mailLocation/Contents/Info"
 plistFramework="/System/Library/Frameworks/Message.framework/Resources/Info"
+plistBundle="$target/$bundle/Contents/Info"
 
 uuid1=$(defaults read "$plistMail" "PluginCompatibilityUUID")
 uuid2=$(defaults read "$plistFramework" "PluginCompatibilityUUID")
