@@ -484,35 +484,35 @@
 	NSRange encryptedRange = [bodyData rangeOfPGPInlineEncryptedData];
 
 	
-	if (encryptedRange.length == 0) {
-		bodyData = [[[[NSAttributedString alloc] initWithHTML:[self bodyData] documentAttributes:nil] string] dataUsingEncoding:NSUTF8StringEncoding];
-		encryptedRange = [bodyData rangeOfPGPInlineEncryptedData];
-		if (encryptedRange.length == 0) {
-			if ([[self bodyData] mightContainPGPEncryptedDataOrSignatures]) {
-				// HTML is a bit hard to decrypt, so check if the parent part, if exists is a
-				// multipart/alternative.
-				// If that's the case, look for a text/plain part
-				MimePart *parentPart = [self parentPart];
-				MimePart *textPart = nil;
-				if(parentPart && [parentPart isType:@"multipart" subtype:@"alternative"]) {
-					for(MimePart *tmpPart in [parentPart subparts]) {
-						if([tmpPart isType:@"text" subtype:@"plain"]) {
-							textPart = tmpPart;
-							break;
-						}
-					}
-					if(textPart) {
-						return [textPart decodeTextPlainWithContext:ctx];
-					}
-				}
-				
-				if ([bodyData rangeOfPGPInlineEncryptedData].length > 0 || [bodyData rangeOfPGPInlineSignatures].length > 0) {
-					return [(MimePart *)self decodeTextPlainWithContext:ctx];
-				}
-			}
-			return [self MADecodeTextHtmlWithContext:ctx];
-		}
-	}
+//	if (encryptedRange.length == 0) {
+//		bodyData = [[[[NSAttributedString alloc] initWithHTML:[self bodyData] documentAttributes:nil] string] dataUsingEncoding:NSUTF8StringEncoding];
+//		encryptedRange = [bodyData rangeOfPGPInlineEncryptedData];
+//		if (encryptedRange.length == 0) {
+//			if ([[self bodyData] mightContainPGPEncryptedDataOrSignatures]) {
+//				// HTML is a bit hard to decrypt, so check if the parent part, if exists is a
+//				// multipart/alternative.
+//				// If that's the case, look for a text/plain part
+//				MimePart *parentPart = [self parentPart];
+//				MimePart *textPart = nil;
+//				if(parentPart && [parentPart isType:@"multipart" subtype:@"alternative"]) {
+//					for(MimePart *tmpPart in [parentPart subparts]) {
+//						if([tmpPart isType:@"text" subtype:@"plain"]) {
+//							textPart = tmpPart;
+//							break;
+//						}
+//					}
+//					if(textPart) {
+//						return [textPart decodeTextPlainWithContext:ctx];
+//					}
+//				}
+//				
+//				if ([bodyData rangeOfPGPInlineEncryptedData].length > 0 || [bodyData rangeOfPGPInlineSignatures].length > 0) {
+//					return [(MimePart *)self decodeTextPlainWithContext:ctx];
+//				}
+//			}
+//			return [self MADecodeTextHtmlWithContext:ctx];
+//		}
+//	}
 	
 	
     
