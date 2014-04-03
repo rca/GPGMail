@@ -27,22 +27,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "CertificateBannerViewController+GPGMail.h"
-#import "CertificateBannerViewController.h"
-#import "Message+GPGMail.h"
-#import "ConversationMember.h"
+#import "WebDocumentGenerator+GPGMail.h"
 #import "MUIWebDocument.h"
+#import "NSObject+LPDynamicIvars.h"
 
-@implementation CertificateBannerViewController_GPGMail
+@implementation WebDocumentGenerator_GPGMail
 
-- (void)MAUpdateWantsDisplay {
-    GM_CAST_CLASS(Message *, id) message = [[(CertificateBannerViewController *)self representedObject] originalMessage];
-    
-    // If parseError is not set, setWantsDisplay:YES will throw an exception, so let's check on that.
-    if(((Message_GPGMail *)message).PGPErrors && [(MUIWebDocument *)[(CertificateBannerViewController *)self webDocument] parseError])
-        [(CertificateBannerViewController *)self setWantsDisplay:YES];
-    else
-        [self MAUpdateWantsDisplay];
+- (void)MASetWebDocument:(MUIWebDocument *)webDocument {
+	id error = [(id)[(WebDocumentGenerator *)self message] getIvar:@"PGPMainError"];
+	[webDocument setParseError:error];
+	[self MASetWebDocument:webDocument];
 }
 
 @end

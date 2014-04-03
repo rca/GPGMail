@@ -1,7 +1,7 @@
-/* CertificateBannerViewController+GPGMail.h created by Lukas Pitschl (@lukele) on Thu 17-Oct-2013 */
+/* WebDocumentGenerator+GPGMail.h created by Lukas Pitschl (@lukele) on Thu 03-Apr-2014 */
 
 /*
- * Copyright (c) 2000-2013, GPGTools Team <team@gpgtools.org>
+ * Copyright (c) 2000-2014, GPGTools Team <team@gpgtools.org>
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,20 +28,25 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "WebDocumentGenerator.h"
+
+@class MUIWebDocument;
 
 /**
- On Mavericks the CertificateBannerViewController is responsible for displaying
- the banner which is used to present error messages related to certificates.
- 
- Note: Mavericks only. < 10.9 uses BannerController
+ On Mavericks using the ActivityMonitor to display PGP errors when displaying
+ a message in a thread does no longer work reliably.
+ [[MCActivityMonitor currentMonitor] error] might return the error which belongs to the
+ currently viewed message, but it might also return the error from some other message in the thread,
+ depending on when the request is made and what other message is parsed in that moment.
+ Mail.app creates a WebDocument for any message which is being displayed and sets the currentError
+ on the WebDocument.
+ In order for the WebDocument to always show the error belonging to the message being parsed,
+ setWebDocument of the WebDocumentGenerator is overwritten. setWebDocument is called, when the
+ message parsing has completed in is thus the right moment to overwrite the set error with the
+ appropriate error.
  */
-@interface CertificateBannerViewController_GPGMail : NSObject
+@interface WebDocumentGenerator_GPGMail : NSObject
 
-/**
- updateWantsDisplay is used by Mail to determine, whether or not the
- CertificateBannerViewController should be displayed.
- If PGPErrors is set, we'll force it to be displayed.
- */
-- (void)MAUpdateWantsDisplay;
+- (void)MASetWebDocument:(MUIWebDocument *)webDocument;
 
 @end
