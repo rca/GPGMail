@@ -228,11 +228,6 @@
                                              
                      }
              },
-             @"CertificateBannerViewController": @{
-                    @"selectors": @[
-                        @"updateWantsDisplay"
-                    ]
-             },
              @"BannerController": @{
                      @"status": @"removed"
              },
@@ -240,7 +235,12 @@
                      @"selectors": @[
                              @"_reloadSecurityProperties"
                      ]
-             }
+             },
+			 @"WebDocumentGenerator": @{
+					 @"selectors": @[
+							 @"setWebDocument:"
+					]
+			}
 	};
 }
 

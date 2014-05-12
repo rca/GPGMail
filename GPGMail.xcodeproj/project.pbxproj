@@ -69,7 +69,7 @@
 		1BB3DCCE1407F1CA00870DEB /* LibraryStore+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BB3DCCD1407F1CA00870DEB /* LibraryStore+GPGMail.m */; };
 		1BBEF49C13A9115E0037E53D /* NSSet+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BBEF49B13A9115E0037E53D /* NSSet+Functional.m */; };
 		1BC4778D1468AA4F0061120C /* GPGAttachmentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC4778C1468AA4F0061120C /* GPGAttachmentController.m */; };
-		1BD06B9B18102CF300EC9902 /* CertificateBannerViewController+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BD06B9A18102CF300EC9902 /* CertificateBannerViewController+GPGMail.m */; };
+		1BD06B9B18102CF300EC9902 /* WebDocumentGenerator+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BD06B9A18102CF300EC9902 /* WebDocumentGenerator+GPGMail.m */; };
 		1BD7D27F1765E59C00F5A266 /* MessageCriterion+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BD7D27E1765E59C00F5A266 /* MessageCriterion+GPGMail.m */; };
 		1BEA7AC51760AB5B0084B2AD /* BannerController+GPGMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEA7AC41760AB5B0084B2AD /* BannerController+GPGMail.m */; };
 		1BED92F81079529C00D22B4C /* GPGMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A806E0838E9B10052F47C /* GPGMailBundle.m */; };
@@ -300,8 +300,8 @@
 		1BC4778C1468AA4F0061120C /* GPGAttachmentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPGAttachmentController.m; sourceTree = "<group>"; };
 		1BCD9A4B13A8C6B5003024C7 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		1BCEE1E211CC051500488D19 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = SOURCE_ROOT; };
-		1BD06B9918102CF300EC9902 /* CertificateBannerViewController+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CertificateBannerViewController+GPGMail.h"; sourceTree = "<group>"; };
-		1BD06B9A18102CF300EC9902 /* CertificateBannerViewController+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CertificateBannerViewController+GPGMail.m"; sourceTree = "<group>"; };
+		1BD06B9918102CF300EC9902 /* WebDocumentGenerator+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WebDocumentGenerator+GPGMail.h"; sourceTree = "<group>"; };
+		1BD06B9A18102CF300EC9902 /* WebDocumentGenerator+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WebDocumentGenerator+GPGMail.m"; sourceTree = "<group>"; };
 		1BD7D27D1765E59C00F5A266 /* MessageCriterion+GPGMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MessageCriterion+GPGMail.h"; sourceTree = "<group>"; };
 		1BD7D27E1765E59C00F5A266 /* MessageCriterion+GPGMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MessageCriterion+GPGMail.m"; sourceTree = "<group>"; };
 		1BDAA67313EB680D00F27826 /* CODING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CODING; sourceTree = "<group>"; };
@@ -2582,7 +2582,7 @@
 			children = (
 				1B51232214093750004D0818 /* NSBezierPathAdditions */,
 				1BEA7AC41760AB5B0084B2AD /* BannerController+GPGMail.m */,
-				1BD06B9A18102CF300EC9902 /* CertificateBannerViewController+GPGMail.m */,
+				1BD06B9A18102CF300EC9902 /* WebDocumentGenerator+GPGMail.m */,
 				1B3F2F9D13E59639006A8333 /* ComposeBackEnd+GPGMail.m */,
 				1B3F2F8F13E58B70006A8333 /* ComposeHeaderView+GPGMail.m */,
 				300F29BA175F460E00C435D2 /* GMComposeKeyEventHandler.m */,
@@ -2653,7 +2653,7 @@
 			children = (
 				1B512327140937A7004D0818 /* NSBezierPathAdditions */,
 				1BEA7AC31760AB5B0084B2AD /* BannerController+GPGMail.h */,
-				1BD06B9918102CF300EC9902 /* CertificateBannerViewController+GPGMail.h */,
+				1BD06B9918102CF300EC9902 /* WebDocumentGenerator+GPGMail.h */,
 				559A80620838E8890052F47C /* ComposeBackEnd+GPGMail.h */,
 				1B3F2F8E13E58B70006A8333 /* ComposeHeaderView+GPGMail.h */,
 				300F29B9175F460E00C435D2 /* GMComposeKeyEventHandler.h */,
@@ -5042,7 +5042,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1BD06B9B18102CF300EC9902 /* CertificateBannerViewController+GPGMail.m in Sources */,
+				1BD06B9B18102CF300EC9902 /* WebDocumentGenerator+GPGMail.m in Sources */,
 				1BED92F81079529C00D22B4C /* GPGMailBundle.m in Sources */,
 				1BADCE7E176B694C009D3785 /* GMCodeInjector.m in Sources */,
 				1BED9357107957E700D22B4C /* GPGMailPreferences.m in Sources */,

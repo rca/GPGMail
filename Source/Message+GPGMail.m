@@ -320,9 +320,13 @@
     
 	// Set the error on the activity monitor so the error banner is displayed
 	// on above the message content.
-    if(error)
+    if(error) {
         [(ActivityMonitor *)[GM_MAIL_CLASS(@"ActivityMonitor") currentMonitor] setError:error];
-    
+		// On Mavericks the ActivityMonitor trick doesn't seem to work, since the currentMonitor
+		// doesn't necessarily have to belong to the current message.
+		// So we store the mainError on the message and it's later used by the CertificateBannerController thingy.
+		[self setIvar:@"PGPMainError" value:error];
+	}
 
     DebugLog(@"%@ Decrypted Message [%@]:\n\tisEncrypted: %@, isSigned: %@,\n\tisPartlyEncrypted: %@, isPartlySigned: %@\n\tsignatures: %@\n\terrors: %@",
           decryptedMessage, [decryptedMessage subject], [(Message_GPGMail *)decryptedMessage PGPEncrypted] ? @"YES" : @"NO", [(Message_GPGMail *)decryptedMessage PGPSigned] ? @"YES" : @"NO",
