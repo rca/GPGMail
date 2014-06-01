@@ -196,7 +196,6 @@
     copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
 
     [self setIvar:@"originalCleanHeaders" value:copiedCleanHeaders];
-	NSLog(@"Original clean headers: %@", [self getIvar:@"originalCleanHeaders"]);
     // If isDraft is set the cleanHeaders are an NSDictionary instead of an NSMutableDictionary.
     // Using mutableCopy they are converted into an NSMutableDictionary.
     copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
