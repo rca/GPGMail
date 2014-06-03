@@ -31,7 +31,7 @@
 #import <AppKit/AppKit.h>
 #import "NSPreferencesModule.h"
 
-@class GPGMailBundle, GPGTSUUpdater, GPGOptions, GMSpecialBox;
+@class GPGMailBundle, GPGOptions, GMSpecialBox;
 
 @interface GPGMailPreferences : NSPreferencesModule {}
 
@@ -44,12 +44,15 @@
 /* Copy the version into the pasteboard */
 - (IBAction)copyVersionInfo:(id)sender;
 
+- (IBAction)checkForUpdates:(id)sender;
+
+
 @property (weak, readonly) NSString *copyright, *versionDescription, *gpgStatusToolTip, *gpgStatusTitle;
 @property (weak, readonly) NSAttributedString *credits, *websiteLink, *buildNumberDescription;
 @property (weak, readonly) GPGMailBundle *bundle;
-@property (weak, readonly) id /*GPGTSUUpdater **/updater;
 @property (weak, readonly) NSImage *gpgStatusImage;
 @property (weak, readonly) GPGOptions *options;
+@property BOOL enableAutomaticChecks;
 
 
 @end

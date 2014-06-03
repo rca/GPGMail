@@ -6,13 +6,13 @@
 "252.ibShadowedNoSelectionPlaceholder" = "Ingen signatur";
 "365.title" = "Namn:";
 "367.title" = "Nyckel";
-"369.title" = "Epost:";
+"369.title" = "E-post:";
 "372.title" = "Nyckel-ID:";
 "373.title" = "Kommentar:";
 "377.title" = "Algoritm:";
 "378.title" = "Upphör:";
 "379.title" = "Skapad:";
-"381.title" = "Ägaransvar:";
+"381.title" = "Ägarförtroende:";
 "434.title" = "Upphör:";
 "436.title" = "Skapad:";
 "437.title" = "Signatur";

@@ -467,23 +467,91 @@
     if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
         return [self MADecodeTextHtmlWithContext:ctx];
 
-    if([[self bodyData] mightContainPGPEncryptedDataOrSignatures]) {
-        // HTML is a bit hard to decrypt, so check if the parent part, if exists is a
-        // multipart/alternative.
-        // If that's the case, look for a text/plain part
-        MimePart *parentPart = [self parentPart];
-        MimePart *textPart = nil;
-        if(parentPart && [parentPart isType:@"multipart" subtype:@"alternative"]) {
-            for(MimePart *tmpPart in [parentPart subparts]) {
-                if([tmpPart isType:@"text" subtype:@"plain"]) {
-                    textPart = tmpPart;
-                    break;
-                }
-            }
-            if(textPart) {
-                return [textPart decodeTextPlainWithContext:ctx];
-            }
-        }
+	
+	BOOL userDidSelectMessage = [[[(MimeBody *)[self mimeBody] message] getIvar:@"UserSelectedMessage"] boolValue];
+	
+    // 1. Step, check if the message was already decrypted.
+    if (self.PGPEncrypted && self.PGPDecryptedData)
+		// Inline PGP will never return the decrypted data, unless the
+		// use explicitly selected the message.
+		return self.PGPDecryptedData && userDidSelectMessage ? self.PGPDecryptedContent : [self MADecodeTextPlainWithContext:ctx];
+    
+    if (self.PGPSigned && self.PGPVerifiedContent)
+        return self.PGPVerifiedContent && userDidSelectMessage ? self.PGPVerifiedContent : [self MADecodeTextPlainWithContext:ctx];
+
+	
+	NSData *bodyData = [self bodyData];
+	NSRange encryptedRange = [bodyData rangeOfPGPInlineEncryptedData];
+
+	
+//	if (encryptedRange.length == 0) {
+//		bodyData = [[[[NSAttributedString alloc] initWithHTML:[self bodyData] documentAttributes:nil] string] dataUsingEncoding:NSUTF8StringEncoding];
+//		encryptedRange = [bodyData rangeOfPGPInlineEncryptedData];
+//		if (encryptedRange.length == 0) {
+//			if ([[self bodyData] mightContainPGPEncryptedDataOrSignatures]) {
+//				// HTML is a bit hard to decrypt, so check if the parent part, if exists is a
+//				// multipart/alternative.
+//				// If that's the case, look for a text/plain part
+//				MimePart *parentPart = [self parentPart];
+//				MimePart *textPart = nil;
+//				if(parentPart && [parentPart isType:@"multipart" subtype:@"alternative"]) {
+//					for(MimePart *tmpPart in [parentPart subparts]) {
+//						if([tmpPart isType:@"text" subtype:@"plain"]) {
+//							textPart = tmpPart;
+//							break;
+//						}
+//					}
+//					if(textPart) {
+//						return [textPart decodeTextPlainWithContext:ctx];
+//					}
+//				}
+//				
+//				if ([bodyData rangeOfPGPInlineEncryptedData].length > 0 || [bodyData rangeOfPGPInlineSignatures].length > 0) {
+//					return [(MimePart *)self decodeTextPlainWithContext:ctx];
+//				}
+//			}
+//			return [self MADecodeTextHtmlWithContext:ctx];
+//		}
+//	}
+	
+	
+    
+    if (encryptedRange.location != NSNotFound) {
+		NSData *decryptedData = [self decryptData:[bodyData subdataWithRange:encryptedRange]];
+		NSMutableData *data = [NSMutableData data];
+		
+		[data appendData:[PGP_PART_MARKER_START dataUsingEncoding:NSUTF8StringEncoding]];
+		[data appendData:decryptedData];
+		[data appendData:[PGP_PART_MARKER_END dataUsingEncoding:NSUTF8StringEncoding]];
+		
+		NSString *string = [data stringByGuessingEncodingWithHint:[self bestStringEncoding]];
+		
+		string = [self contentWithReplacedPGPMarker:string isEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];
+		
+		NSMutableData *resultData = [NSMutableData data];
+		[resultData appendData:[bodyData subdataWithRange:NSMakeRange(0, encryptedRange.location)]];
+		[resultData appendData:[string dataUsingEncoding:NSUTF8StringEncoding]];
+		
+		NSRange range;
+		range.location = encryptedRange.location + encryptedRange.length;
+		range.length = bodyData.length - range.location;
+		[resultData appendData:[bodyData subdataWithRange:range]];
+
+		NSString *content = [resultData stringByGuessingEncoding];
+		
+		
+		if (self.PGPSigned) {
+			self.PGPVerifiedContent = content;
+		}
+		if (self.PGPEncrypted) {
+			self.PGPDecryptedContent = content;
+			self.PGPDecryptedData = [content dataUsingEncoding:NSUTF8StringEncoding];
+		}
+		
+				
+		if (!userDidSelectMessage)
+			return [self MADecodeTextHtmlWithContext:ctx];
+		return content;
     }
     
     return [self MADecodeTextHtmlWithContext:ctx];
@@ -1189,22 +1257,31 @@
     
     BOOL (^otherDataFound)(NSData *) = ^(NSData *data) {
         unsigned char *dataBytes = (unsigned char *)[data bytes];
-        for(NSUInteger i = 0; i < [data length]; i++) {
-            if(*dataBytes != '\n' && *dataBytes != '\r')
-                return YES;
-            dataBytes++;
+		NSUInteger length = [data length];
+        for (NSUInteger i = 0; i < length; i++) {
+			switch (dataBytes[i]) {
+				case '\n':
+				case '\r':
+				case '\t':
+				case ' ':
+					break;
+				default:
+					return YES;
+			}
         }
         return NO;
     };
     
     NSData *originalData = originalPartData;
-    [partData appendData:[originalData subdataWithRange:NSMakeRange(0, encryptedRange.location)]];
-    NSData *restData = [originalData subdataWithRange:NSMakeRange(encryptedRange.location + encryptedRange.length, 
+	NSData *leadingData = [originalData subdataWithRange:NSMakeRange(0, encryptedRange.location)];
+	// Only add surrounding data, if we have plain text.
+	[partData appendData:leadingData];
+    NSData *restData = [originalData subdataWithRange:NSMakeRange(encryptedRange.location + encryptedRange.length,
                                                                   [originalData length] - encryptedRange.length - encryptedRange.location)];
     if(decryptedData) {
         // If there was data before or after the encrypted data, signal this
         // with a banner.
-        BOOL hasOtherData = (encryptedRange.location != 0) || otherDataFound(restData);
+        BOOL hasOtherData = otherDataFound(leadingData) || otherDataFound(restData);
             
         if(hasOtherData)
             [self addPGPPartMarkerToData:partData partData:decryptedData];
@@ -1950,6 +2027,7 @@
 	
 	BOOL symmetricEncrypt = NO;
 	BOOL doNotPublicEncrypt = NO;
+	BOOL isDraft = NO;
 	
 	GPGKey *senderPublicKey = nil;
 	
@@ -1978,6 +2056,35 @@
 					}
 				}
 				
+				
+				senderPublicKey = [[recipient valueForFlag:@"gpgKey"] primaryKey];
+
+				// Drafts are only encrypted with the senders key.
+				if ([[recipient valueForFlag:@"isDraft"] boolValue]) {
+					isDraft = YES;
+					[normalRecipients removeAllObjects];
+					[bccRecipients removeAllObjects];
+					if (!senderPublicKey) {
+						GPGKey *key = nil;
+						for (key in [[GPGMailBundle sharedInstance] publicKeyListForAddresses:@[recipient]]) {
+							if (key.secret) {
+								break;
+							}
+						}
+						if (!key) {
+							key = [[GPGMailBundle sharedInstance] bestSecretKey];
+						}
+						if (key) {
+							[normalRecipients addObject:key];
+						} else {
+							*encryptedData = [[gpgErrorIdentifier stringByAppendingFormat:@"%i:", GMSaveClearMessage] dataUsingEncoding:NSUTF8StringEncoding];;
+							return self;
+						}
+					}
+					break;
+				}
+				
+				
 				if (!encryptToSelf)
 					continue;
 				
@@ -1985,9 +2092,7 @@
 				// is chosen for encrypt-to-self, the senderKey is queried for its
 				// public key and the from address is not added to the list of normal
 				// recipients. (#608)
-				GPGKey *signerKey = [recipient valueForFlag:@"gpgKey"];
-				if(signerKey) {
-					senderPublicKey = signerKey.primaryKey;
+				if (senderPublicKey) {
 					continue;
 				}
 			}
@@ -1997,7 +2102,7 @@
 	
 	NSMutableSet *flattenedNormalKeyList = nil, *flattenedBCCKeyList = nil;
 	
-	if (!doNotPublicEncrypt) {  // We need no keys, if only syymetric is set.
+	if (!doNotPublicEncrypt) {  // We need no keys, if only symmetric is set.
 		// Ask the mail bundle for the GPGKeys matching the email address.
 		NSMutableSet *normalKeyList = [[[GPGMailBundle sharedInstance] publicKeyListForAddresses:normalRecipients] mutableCopy];
 		if(senderPublicKey)

@@ -103,4 +103,9 @@
  */
 @property (nonatomic, strong, readonly) NSSet *allKeys;
 
+/**
+ Contains all secret GPG keys available.
+ */
+@property (nonatomic, strong, readonly) NSSet *secretKeys;
+
 @end

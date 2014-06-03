@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">12F45</string>
-		<string key="IBDocument.InterfaceBuilderVersion">4510</string>
-		<string key="IBDocument.AppKitVersion">1187.40</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.SystemVersion">13C64</string>
+		<string key="IBDocument.InterfaceBuilderVersion">5053</string>
+		<string key="IBDocument.AppKitVersion">1265.19</string>
+		<string key="IBDocument.HIToolboxVersion">697.40</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">4510</string>
+			<string key="NS.object.0">5053</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSBox</string>
@@ -58,7 +58,7 @@
 									<int key="NSCellFlags2">0</int>
 									<string key="NSContents">Automatically check for updates</string>
 									<object class="NSFont" key="NSSupport" id="706304668">
-										<string key="NSName">LucidaGrande</string>
+										<string key="NSName">.LucidaGrandeUI</string>
 										<double key="NSSize">13</double>
 										<int key="NSfFlags">1044</int>
 									</object>
@@ -186,7 +186,7 @@
 									<int key="NSCellFlags2">272630784</int>
 									<string key="NSContents">Updates</string>
 									<object class="NSFont" key="NSSupport" id="1059241967">
-										<string key="NSName">LucidaGrande-Bold</string>
+										<string key="NSName">.LucidaGrandeUI-Bold</string>
 										<double key="NSSize">13</double>
 										<int key="NSfFlags">2072</int>
 									</object>
@@ -211,6 +211,7 @@
 									</object>
 								</object>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+								<int key="NSTextFieldAlignmentRectInsetsVersion">1</int>
 							</object>
 							<object class="NSTextField" id="443272866">
 								<reference key="NSNextResponder" ref="782958523"/>
@@ -230,6 +231,7 @@
 									<reference key="NSTextColor" ref="326977330"/>
 								</object>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+								<int key="NSTextFieldAlignmentRectInsetsVersion">1</int>
 							</object>
 							<object class="NSButton" id="113600817">
 								<reference key="NSNextResponder" ref="782958523"/>
@@ -273,6 +275,7 @@
 									<reference key="NSTextColor" ref="326977330"/>
 								</object>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+								<int key="NSTextFieldAlignmentRectInsetsVersion">1</int>
 							</object>
 							<object class="NSTextField" id="25399615">
 								<reference key="NSNextResponder" ref="782958523"/>
@@ -296,6 +299,7 @@
 									<reference key="NSTextColor" ref="326977330"/>
 								</object>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+								<int key="NSTextFieldAlignmentRectInsetsVersion">1</int>
 							</object>
 							<object class="NSImageView" id="546540187">
 								<reference key="NSNextResponder" ref="782958523"/>
@@ -364,7 +368,7 @@
 							<object class="NSButton" id="915859109">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{193, 247}, {212, 18}}</string>
+								<string key="NSFrame">{{193, 247}, {110, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="63115413"/>
@@ -373,7 +377,7 @@
 								<object class="NSButtonCell" key="NSCell" id="80202346">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">0</int>
-									<string key="NSContents">Optionally encrypt/sign drafts</string>
+									<string key="NSContents">Encrypt drafts</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:717</string>
 									<reference key="NSControlView" ref="915859109"/>
@@ -431,7 +435,7 @@
 									<int key="NSCellFlags2">131072</int>
 									<string key="NSContents">Version: xxx</string>
 									<object class="NSFont" key="NSSupport" id="26">
-										<string key="NSName">LucidaGrande</string>
+										<string key="NSName">.LucidaGrandeUI</string>
 										<double key="NSSize">11</double>
 										<int key="NSfFlags">3100</int>
 									</object>
@@ -648,56 +652,44 @@
 					<string key="id">mmA-oo-VQz</string>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">checkForUpdates:</string>
+						<reference key="source" ref="359798784"/>
+						<reference key="destination" ref="163650447"/>
+					</object>
+					<string key="id">F7g-Rg-fK4</string>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: updater.automaticallyChecksForUpdates</string>
+						<string key="label">value: enableAutomaticChecks</string>
 						<reference key="source" ref="997375455"/>
 						<reference key="destination" ref="359798784"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="997375455"/>
 							<reference key="NSDestination" ref="359798784"/>
-							<string key="NSLabel">value: updater.automaticallyChecksForUpdates</string>
+							<string key="NSLabel">value: enableAutomaticChecks</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">updater.automaticallyChecksForUpdates</string>
+							<string key="NSKeyPath">enableAutomaticChecks</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<string key="id">868</string>
+					<string key="id">jsS-UO-DZG</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: updater.automaticallyDownloadsUpdates</string>
+						<string key="label">value: options.SUAutomaticallyUpdate</string>
 						<reference key="source" ref="63115413"/>
 						<reference key="destination" ref="359798784"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="63115413"/>
 							<reference key="NSDestination" ref="359798784"/>
-							<string key="NSLabel">value: updater.automaticallyDownloadsUpdates</string>
+							<string key="NSLabel">value: options.SUAutomaticallyUpdate</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">updater.automaticallyDownloadsUpdates</string>
+							<string key="NSKeyPath">options.SUAutomaticallyUpdate</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<string key="id">792</string>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">target: updater</string>
-						<reference key="source" ref="163650447"/>
-						<reference key="destination" ref="359798784"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="163650447"/>
-							<reference key="NSDestination" ref="359798784"/>
-							<string key="NSLabel">target: updater</string>
-							<string key="NSBinding">target</string>
-							<string key="NSKeyPath">updater</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSSelectorName</string>
-								<string key="NS.object.0">checkForUpdates:</string>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<string key="id">726</string>
+					<string key="id">tBs-iu-tNu</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1297,6 +1289,7 @@
 					<string key="className">GPGMailPreferences</string>
 					<string key="superclassName">NSPreferencesModule</string>
 					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="checkForUpdates:">id</string>
 						<string key="copyVersionInfo:">id</string>
 						<string key="openDonate:">id</string>
 						<string key="openGPGStatusHelp:">id</string>
@@ -1304,6 +1297,10 @@
 						<string key="openSupport:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="checkForUpdates:">
+							<string key="name">checkForUpdates:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="copyVersionInfo:">
 							<string key="name">copyVersionInfo:</string>
 							<string key="candidateClassName">id</string>

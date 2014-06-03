@@ -57,6 +57,11 @@ typedef enum {
     GPG_OPERATION_VERIFICATION
 }  GPG_OPERATION;
 
+enum {
+    GMSaveClearMessage = 30754
+};
+
+
 @class MFMimeDecodeContext, _NSDataMessageStoreMessage;
 
 @interface MimePart_GPGMail : NSObject
