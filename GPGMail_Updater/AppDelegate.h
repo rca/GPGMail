@@ -4,7 +4,6 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
 	SUUpdater *updater;
-	id xxx;
 }
 - (void)terminateIfIdle;
 

@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		Mh0yeYd6zy5X38xI1CpCxyoZ07M=
+		gWpDUdJJ1m9K/4hjjFFICcu5pvM=
 		</data>
 		<key>Resources/License.txt</key>
 		<data>
@@ -175,11 +175,11 @@
 		</dict>
 		<key>Resources/dmgExtract.app/Contents/Info.plist</key>
 		<data>
-		KIbuCrnSi+KIw855trCuYj0lhQA=
+		dBF4wzkALhayGZSeZK/PmO2P0bw=
 		</data>
 		<key>Resources/dmgExtract.app/Contents/MacOS/dmgExtract</key>
 		<data>
-		D/GlGzKWKQ1Z8RzbcNMRenwTIlg=
+		2jmPDJYVskBtQAeHH/hmZ7BU2hM=
 		</data>
 		<key>Resources/dmgExtract.app/Contents/PkgInfo</key>
 		<data>
@@ -272,11 +272,11 @@
 		</dict>
 		<key>Resources/finish_installation.app/Contents/Info.plist</key>
 		<data>
-		yXHF7K/OJmiL3s4d+ZbFL1Ziw+4=
+		eT69Vpl1H+XMx6lr1d86wgRcgWA=
 		</data>
 		<key>Resources/finish_installation.app/Contents/MacOS/finish_installation</key>
 		<data>
-		QduKeIfXwfP6TNrVruo6pahhXDk=
+		+25sFFOH3kDQIAQj4q7Xe7QbgAQ=
 		</data>
 		<key>Resources/finish_installation.app/Contents/PkgInfo</key>
 		<data>
@@ -1214,7 +1214,7 @@
 		</data>
 		<key>Resources/Info.plist</key>
 		<data>
-		Mh0yeYd6zy5X38xI1CpCxyoZ07M=
+		gWpDUdJJ1m9K/4hjjFFICcu5pvM=
 		</data>
 		<key>Resources/License.txt</key>
 		<data>
@@ -1383,11 +1383,11 @@
 		</dict>
 		<key>Resources/dmgExtract.app/Contents/Info.plist</key>
 		<data>
-		KIbuCrnSi+KIw855trCuYj0lhQA=
+		dBF4wzkALhayGZSeZK/PmO2P0bw=
 		</data>
 		<key>Resources/dmgExtract.app/Contents/MacOS/dmgExtract</key>
 		<data>
-		D/GlGzKWKQ1Z8RzbcNMRenwTIlg=
+		2jmPDJYVskBtQAeHH/hmZ7BU2hM=
 		</data>
 		<key>Resources/dmgExtract.app/Contents/PkgInfo</key>
 		<data>
@@ -1480,11 +1480,11 @@
 		</dict>
 		<key>Resources/finish_installation.app/Contents/Info.plist</key>
 		<data>
-		yXHF7K/OJmiL3s4d+ZbFL1Ziw+4=
+		eT69Vpl1H+XMx6lr1d86wgRcgWA=
 		</data>
 		<key>Resources/finish_installation.app/Contents/MacOS/finish_installation</key>
 		<data>
-		QduKeIfXwfP6TNrVruo6pahhXDk=
+		+25sFFOH3kDQIAQj4q7Xe7QbgAQ=
 		</data>
 		<key>Resources/finish_installation.app/Contents/PkgInfo</key>
 		<data>
