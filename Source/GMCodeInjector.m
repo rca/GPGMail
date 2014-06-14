@@ -244,6 +244,29 @@
 	};
 }
 
++ (NSDictionary *)hookChangesForYosemite {
+    return @{
+             @"HeadersEditor": @{
+                     @"selectors": @{
+                             @"replaced": @[
+                                     @[@"updateSecurityControls",
+                                       @"_updateSecurityControls"
+                                     ],
+                                     @[
+                                       @"_updateFromAndSignatureControls:",
+                                       @"_updateFromControl"]
+                                    
+                             ],
+                             @"removed": @[
+                                     @"_updateSignButtonToolTip",
+                                     @"_updateEncryptButtonToolTip",
+                                     @"toggleDetails"
+                            ]
+                     }
+             }
+    };
+}
+
 + (NSDictionary *)hooks {
 	static dispatch_once_t onceToken;
 	static NSDictionary *_hooks;
@@ -259,7 +282,9 @@
 		/* Fix, once we can compile with stable Xcode including 10.9 SDK. */
 		if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8)
 			[self applyHookChangesForVersion:@"10.9" toHooks:hooks];
-		
+		if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9)
+            [self applyHookChangesForVersion:@"10.10" toHooks:hooks];
+        
 		_hooks = [NSDictionary dictionaryWithDictionary:hooks];
 	});
 	
@@ -270,7 +295,9 @@
 	NSDictionary *hookChanges;
 	if([osxVersion isEqualToString:@"10.9"])
 		hookChanges = [self hookChangesForMavericks];
-	
+	else if([osxVersion isEqualToString:@"10.10"])
+        hookChanges = [self hookChangesForYosemite];
+    
 	for(NSString *class in hookChanges) {
 		NSDictionary *hook = hookChanges[class];
 		
