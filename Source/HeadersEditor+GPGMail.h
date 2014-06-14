@@ -68,4 +68,6 @@
 
 - (void)updateSymmetricButton;
 
+- (void)_updateSecurityControls;
+
 @end

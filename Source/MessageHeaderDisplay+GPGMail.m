@@ -169,6 +169,31 @@
 }
 
 - (void)MA_updateTextStorageWithHardInvalidation:(BOOL)arg1 {
+    [self MA_updateTextStorageWithHardInvalidation:arg1];
+    
+    NSAttributedString *headerAttributedString = [[self performSelector:@selector(textView)] attributedString];
+    __block NSUInteger foundToHeader = 0;
+    NSMutableAttributedString *newHeaderAttributedString = [[NSMutableAttributedString alloc] init];
+    [headerAttributedString enumerateAttribute:@"HeaderKey" inRange:NSMakeRange(0, [headerAttributedString length]) options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
+        
+        [newHeaderAttributedString appendAttributedString:[headerAttributedString attributedSubstringFromRange:range]];
+        
+        if([value isEqualToString:@"to"])
+            foundToHeader = 1;
+        if(![value isEqualToString:@"to"] && foundToHeader == 1) {
+            foundToHeader = 0;
+            [newHeaderAttributedString appendAttributedString:[self MA_displayStringForSecurityKey]];
+        }
+        
+        NSLog(@"Value: %@", value);
+        NSLog(@"Range: %@", [headerAttributedString attributedSubstringFromRange:range]);
+    }];
+    
+    NSLog(@"New header string: %@", newHeaderAttributedString);
+    NSTextView *textView = [self performSelector:@selector(textView)];
+    [[textView textStorage] setAttributedString:newHeaderAttributedString];
+    
+    
     // Force details to always be shown on Mavericks for PGP processed messages.
     // Works differently on < 10.9.
     
@@ -177,10 +202,26 @@
     // so we check the PGPInfoCollected flag, to know whether or not the message
     // has already been processed. If is has, and this method is called, force _detailsHidden to be
     // false and update the details button.
+    NSLog(@"Loading Stage: %@", [message getIvar:@"LoadingStage"]);
+    NSLog(@"Loading Stage: %d", message.PGPInfoCollected);
+    NSLog(@"Loading Stage: %d", message.PGPEncrypted);
+    NSLog(@"Loading Stage: %d", message.PGPSigned);
+    
+    if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+        [self setIvar:@"RealShowDetails" value:[self valueForKey:@"_showDetails"]];
+        [self setShowDetails:1];
+    }
+    
     if(message.PGPInfoCollected && (message.PGPEncrypted || message.PGPSigned) && [message getIvar:@"LoadingStage"]) {
-        [self setIvar:@"RealDetailsHidden" value:[self valueForKey:@"_detailsHidden"]];
-        [self setValue:@(0) forKey:@"_detailsHidden"];
-        [(HeaderViewController *)self _updateDetailsButton];
+        if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+            [self setIvar:@"RealShowDetails" value:[self valueForKey:@"_showDetails"]];
+            [self setShowDetails:1];
+        }
+        else {
+            [self setIvar:@"RealDetailsHidden" value:[self valueForKey:@"_detailsHidden"]];
+            [self setValue:@(0) forKey:@"_detailsHidden"];
+            [(HeaderViewController *)self _updateDetailsButton];
+        }
         [self MA_updateTextStorageWithHardInvalidation:YES];
         return;
     }
@@ -200,8 +241,14 @@
     BOOL isPGPEncrypted = (BOOL)[message PGPEncrypted] && ![mimeBody ivarExists:@"PGPEarlyAlphaFuckedUpEncrypted"];
     BOOL hasPGPAttachments = (BOOL)[message numberOfPGPAttachments] > 0 ? YES : NO;
     
-    if(!isPGPSigned && !isPGPEncrypted && !hasPGPAttachments)
-        return [self MA_displayStringForSecurityKey];
+    if(!isPGPSigned && !isPGPEncrypted && !hasPGPAttachments) {
+        if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+            return [[NSAttributedString alloc] initWithString:@""];
+        }
+        else {
+            return [self MA_displayStringForSecurityKey];
+        }
+    }
     
     NSMutableAttributedString *displayString = [self securityHeaderForMessage:message mimeBody:mimeBody];
     
@@ -215,7 +262,7 @@
     paragraphStyle.firstLineHeadIndent = 4.0f;
     paragraphStyle.headIndent = 4.0f;
     
-    NSDictionary *attributes = @{@"HeaderKey": @"x-apple-security", NSFontAttributeName: [(HeaderViewController *)self font], NSForegroundColorAttributeName: [NSColor blackColor],
+    NSDictionary *attributes = @{@"HeaderKey": @"x-apple-security", NSFontAttributeName: [(NSTextView *)[(HeaderViewController *)self textView] font], NSForegroundColorAttributeName: [NSColor blackColor],
                                  NSParagraphStyleAttributeName: paragraphStyle};
     [displayString addAttributes:attributes range:NSMakeRange(0, [displayString length])];
     

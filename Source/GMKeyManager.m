@@ -449,7 +449,6 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 	// The secretKeyMap and publicKeyMap are based on all the previous
 	// caches, so they have to finish to be rebuilt.
 	dispatch_group_wait(cachesGroup, DISPATCH_TIME_FOREVER);
-	dispatch_release(cachesGroup);
 	
 	[self rebuildSecretKeyMapCache];
 	[self rebuildPublicKeyMapCache];
@@ -605,8 +604,6 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 	}
 	@catch (NSException *e) {
 	}
-	dispatch_release(_keyCacheLock);
-	_keyCacheLock = NULL;
 }
 
 @end

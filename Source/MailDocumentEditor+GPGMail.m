@@ -120,7 +120,13 @@
 - (void)securityMethodAccessoryView:(GMSecurityMethodAccessoryView *)accessoryView didChangeSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
     ((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).securityMethod = securityMethod;
     ((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).userDidChooseSecurityMethod = YES;
-    [[(MailDocumentEditor *)self headersEditor] updateSecurityControls];
+    if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+        [[(MailDocumentEditor *)self headersEditor] _updateSecurityControls];
+    }
+    else {
+        [[(MailDocumentEditor *)self headersEditor] updateSecurityControls];
+    }
+    
 }
 
 - (void)MADealloc {

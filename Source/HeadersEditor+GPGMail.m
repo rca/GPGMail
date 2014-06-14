@@ -292,7 +292,14 @@
 
 - (void)updateFromAndAddSecretKeysIfNecessary:(NSNumber *)necessary {
     BOOL display = [necessary boolValue];
-	NSPopUpButton *popUp = [[self valueForKey:@"_composeHeaderView"] valueForKey:@"_accountPopUp"];
+    NSPopUpButton *popUp = nil;
+    if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+        popUp = [self valueForKey:@"_fromPopup"];
+    }
+    else {
+        popUp = [[self valueForKey:@"_composeHeaderView"] valueForKey:@"_accountPopUp"];
+    }
+    
 	NSMenu *menu = [popUp menu];
 	NSArray *menuItems = [menu itemArray];
 	GPGMailBundle *bundle = [GPGMailBundle sharedInstance];
@@ -471,7 +478,12 @@
     if(((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod)
         securityMethod = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod;
 	// It seems calling updateSecurityControls at this point is most reliable.
-	[(HeadersEditor *)self updateSecurityControls];
+    if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+        [self _updateSecurityControls];
+    }
+    else {
+        [(HeadersEditor *)self updateSecurityControls];
+    }
 }
 
 - (void)MA_updateSignButtonTooltip {
