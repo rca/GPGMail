@@ -1503,7 +1503,7 @@
     self.PGPError = error;
 	// If MacGPG2 is not installed, don't flag the message as signed,
 	// since we can't know.
-    self.PGPSigned = [gpgc.error isKindOfClass:[GPGException class]] && ((GPGException *)gpgc.error).errorCode == NSNotFound ? NO : YES;
+    self.PGPSigned = [gpgc.error isKindOfClass:[GPGException class]] && ((GPGException *)gpgc.error).errorCode == GPGErrorNotFound ? NO : YES;
     self.PGPVerified = self.PGPError ? NO : YES;
     self.PGPSignatures = signatures;
     
