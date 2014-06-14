@@ -27,9 +27,13 @@
 	return frameworks;
 }
 
++ (NSString *)systemRootPath {
+	return @"/Volumes/OS X Yosemite";
+}
+
 + (void)loadFrameworks {
 	for(NSString *frameworkPath in [self requiredFrameworks])
-		[self loadBundleAtPath:frameworkPath];
+		[self loadBundleAtPath:[[TestHelpers systemRootPath] stringByAppendingString:frameworkPath]];
 }
 
 + (void)loadBundleAtPath:(NSString *)path {
@@ -61,7 +65,7 @@
 		NSString *cdPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"cd-bundle" ofType:@"bundle" inDirectory:nil];
 		[self loadBundleAtPath:cdPath];
 		
-		NSString *mailPath = @"/Applications/Mail.app/Contents/MacOS/Mail";
+		NSString *mailPath = [[TestHelpers systemRootPath] stringByAppendingString:@"/Applications/Mail.app/Contents/MacOS/Mail"];
 		
 		CDMachOFile *file = (CDMachOFile *)[NSClassFromString(@"CDFile") fileWithContentsOfFile:mailPath searchPathState:nil];
 		CDObjectiveCProcessor *processor = [[[file processorClass] alloc] initWithMachOFile:file];
