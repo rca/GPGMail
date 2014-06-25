@@ -229,11 +229,10 @@
 			[plainString appendString:@"\n"];
 		}
 	}
-
-	// Remove all whitespaces at the end of lines.
-	if ([plainString rangeOfString:@" \n"].length > 0) {
-		RKRegex *regex = [RKRegex regexWithRegexString:@"[^\\S\n]+\n" options:RKCompileNoOptions];
-		[plainString match:regex replace:RKReplaceAll withString:@"\n"];
+	if (shouldPGPSign) {
+		// Remove all whitespaces at the end of lines.
+		NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\s*$" options:NSRegularExpressionAnchorsMatchLines error:nil];
+		[regex replaceMatchesInString:plainString options:0 range:NSMakeRange(0, plainString.length) withTemplate:@""];
 	}
 	
 	
