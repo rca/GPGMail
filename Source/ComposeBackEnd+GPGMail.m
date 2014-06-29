@@ -231,8 +231,8 @@
 	}
 	if (shouldPGPSign) {
 		// Remove all whitespaces at the end of lines.
-		RKRegex *regex = [RKRegex regexWithRegexString:@"[\\t\\f\\r\\p{Z}]+$" options:RKCompileMultiline];
-		[plainString match:regex replace:RKReplaceAll withString:@""];
+		NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"[\\t\\f\\r\\p{Z}]+$" options:NSRegularExpressionAnchorsMatchLines error:nil];
+		[regex replaceMatchesInString:plainString options:0 range:NSMakeRange(0, plainString.length) withTemplate:@""];
 	}
 	
 	
