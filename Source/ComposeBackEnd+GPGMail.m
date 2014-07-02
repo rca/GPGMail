@@ -230,9 +230,20 @@
 		}
 	}
 	if (shouldPGPSign) {
-		// Remove all whitespaces at the end of lines.
-		NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"[\\t\\f\\r\\p{Z}]+$" options:NSRegularExpressionAnchorsMatchLines error:nil];
-		[regex replaceMatchesInString:plainString options:0 range:NSMakeRange(0, plainString.length) withTemplate:@""];
+		// Remove all whitespaces at the end of lines. But don't kill attachments.
+		RKRegex *regex = [RKRegex regexWithRegexString:@"[\\t\\f\\r\\p{Z}]+$" options:RKCompileMultiline];
+		RKEnumerator *rkEnum = [plainString matchEnumeratorWithRegex:regex];
+		
+		NSMutableArray *ranges = [NSMutableArray array];
+		
+		// Get all matches and reverse the order.
+		for (NSArray *match in rkEnum) {
+			[ranges insertObject:match[0] atIndex:0];
+		}
+		// Removed matched characters.
+		for (NSValue *range in ranges) {
+			[plainString replaceCharactersInRange:range.rangeValue withString:@""];
+		}
 	}
 	
 	
