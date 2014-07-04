@@ -38,7 +38,7 @@
     MCMessage *message = [(ConversationMember *)self originalMessage];
     	
 	if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
-	    //Error is set to late, so it wont be displayed :-/ but needs to be set on the ConversationMember since 10.10
+	    	//Error is set to late, so it wont be displayed :-/ but needs to be set on the ConversationMember since 10.10
 		[self setIvar:@"PGPMainError" value:[message getIvar:@"PGPMainError"]];
 	}
 	
