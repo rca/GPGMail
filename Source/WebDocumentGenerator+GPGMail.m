@@ -28,13 +28,24 @@
  */
 
 #import "WebDocumentGenerator+GPGMail.h"
+#import "ConversationMember+GPGMail.h"
 #import "MUIWebDocument.h"
 #import "NSObject+LPDynamicIvars.h"
 
 @implementation WebDocumentGenerator_GPGMail
 
 - (void)MASetWebDocument:(MUIWebDocument *)webDocument {
-	id error = [(id)[(WebDocumentGenerator *)self message] getIvar:@"PGPMainError"];
+	id error = nil;
+	
+	if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+		//message property does not anymore exist on 10.10 is now a subproperty of conversationMember property
+		error = [(id)[(ConversationMember *)[self valueForKey:@"conversationMember"] originalMessage] getIvar:@"PGPMainError"];
+	}
+	else {
+		error = [(id)[(WebDocumentGenerator *)self message] getIvar:@"PGPMainError"];
+	}
+	
+
 	[webDocument setParseError:error];
 	[self MASetWebDocument:webDocument];
 }
