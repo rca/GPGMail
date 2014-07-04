@@ -37,10 +37,10 @@
 - (void)MA_reloadSecurityProperties {
     MCMessage *message = [(ConversationMember *)self originalMessage];
     	
-	if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
-	    	//Error is set to late, so it wont be displayed :-/ but needs to be set on the ConversationMember since 10.10
-		[self setIvar:@"PGPMainError" value:[message getIvar:@"PGPMainError"]];
-	}
+    if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+        //Error is set to late, so it wont be displayed :-/ but needs to be set on the ConversationMember since 10.10
+        [self setIvar:@"PGPMainError" value:[message getIvar:@"PGPMainError"]];
+    }
 	
     if(((Message_GPGMail *)message).PGPSigned || ((Message_GPGMail *)message).PGPEncrypted) {
         [(ConversationMember *)self setIsEncrypted:((Message_GPGMail *)message).PGPEncrypted];
