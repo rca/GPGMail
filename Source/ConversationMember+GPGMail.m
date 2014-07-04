@@ -30,7 +30,6 @@
 #import "ConversationMember+GPGMail.h"
 #import "MCMessage.h"
 #import "Message+GPGMail.h"
-#import "NSObject+LPDynamicIvars.h"
 
 @implementation ConversationMember_GPGMail
 
