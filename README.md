@@ -7,11 +7,13 @@ send and receive secure, OpenPGP encrypted and signed messages.
 Updates
 -------
 
-The latest releases of GPGMail can be found on our [official website](https://gpgtools.org/gpgmail/).
+The latest releases of GPGMail can be found on our [official website](https://gpgtools.org/).
 
 For the latest news and updates check our [Twitter](https://twitter.com/gpgtools).
 
 Visit our [support page](http://support.gpgtools.org) if you have questions or need help setting up your system and using GPGMail.
+
+Localizations are done on [Transifex](https://www.transifex.com/projects/p/GPGMail/).
 
 
 Build
