@@ -34,6 +34,12 @@
 - (id)userDefaults {
     return [GPGOptions sharedOptions];
 }
+- (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)update {
+	NSArray *apps = [NSRunningApplication runningApplicationsWithBundleIdentifier:@"com.apple.mail"];
+	for (NSRunningApplication *mail in apps) {
+		[mail terminate];
+	}
+}
 
 /*- (BOOL)updater:(id / *GPGTSUUpdater * /)updater relaunchUsingPath:(NSString *)path arguments:(NSArray *)arguments {
     [GPGTask launchGeneralTask:path withArguments:arguments];
