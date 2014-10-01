@@ -433,8 +433,22 @@
 		// Mail doesn't pass in the sign status, when saving a draft, so we have to get it ourselves.
 		// For encrypt we also use the state of the button, shouldEncrypt is overriden by our own
 		// logic to always encrypt drafts if possible.
-		[headers setHeader:[[self getIvar:@"ForceEncrypt"] boolValue] ? @"YES" : @"NO" forKey:@"x-should-pgp-encrypt"];
-		[headers setHeader:[[self getIvar:@"ForceSign"] boolValue] ? @"YES" : @"NO" forKey:@"x-should-pgp-sign"];
+		BOOL shouldSign = NO;
+		BOOL shouldEncrypt = NO;
+		
+		if([self ivarExists:@"ForceSign"])
+			shouldSign = [[self getIvar:@"ForceSign"] boolValue];
+		else
+			shouldSign = [[self getIvar:@"shouldSign"] boolValue];
+		
+		if([self ivarExists:@"ForceEncrypt"])
+			shouldEncrypt = [[self getIvar:@"ForceEncrypt"] boolValue];
+		else
+			shouldEncrypt = [[self getIvar:@"shouldEncrypt"] boolValue];
+		
+		
+		[headers setHeader:shouldEncrypt ? @"YES" : @"NO" forKey:@"x-should-pgp-encrypt"];
+		[headers setHeader:shouldSign ? @"YES" : @"NO" forKey:@"x-should-pgp-sign"];
 	}
 	else {
 		[headers removeHeaderForKey:@"x-should-pgp-encrypt"];
