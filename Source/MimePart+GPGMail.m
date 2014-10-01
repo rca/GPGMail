@@ -2064,23 +2064,9 @@
 					isDraft = YES;
 					[normalRecipients removeAllObjects];
 					[bccRecipients removeAllObjects];
-					if (!senderPublicKey) {
-						GPGKey *key = nil;
-						for (key in [[GPGMailBundle sharedInstance] publicKeyListForAddresses:@[recipient]]) {
-							if (key.secret) {
-								break;
-							}
-						}
-						if (!key) {
-							key = [[GPGMailBundle sharedInstance] bestSecretKey];
-						}
-						if (key) {
-							[normalRecipients addObject:key];
-						} else {
-							*encryptedData = [[gpgErrorIdentifier stringByAppendingFormat:@"%i:", GMSaveClearMessage] dataUsingEncoding:NSUTF8StringEncoding];;
-							return self;
-						}
-					}
+					senderPublicKey = [[recipient valueForFlag:@"DraftPublicKey"] primaryKey];
+					[normalRecipients addObject:senderPublicKey];
+					
 					break;
 				}
 				

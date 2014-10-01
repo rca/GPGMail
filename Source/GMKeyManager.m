@@ -88,6 +88,23 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 
 #pragma mark - Public API
 
+- (GPGKey *)anyPersonalPublicKeyWithPreferenceAddress:(NSString *)address {
+	GPGKey *key = nil;
+	
+	// The best match would be the public key of on of our secret keys, with address
+	// as UID.
+	for(key in [self publicKeyListForAddresses:@[address]]) {
+		if(key.secret)
+			break;
+	}
+	
+	// If we don't find a key, any of our secret public key's will do.
+	if(!key)
+		key = [[self secretKeys] anyObject];
+	
+	return key;
+}
+
 - (BOOL)secretKeyExistsForAddress:(NSString *)address {
 	return [[self keysForAddresses:@[address] onlySecret:YES stopOnFound:YES] count] > 0;
 }

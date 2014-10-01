@@ -302,16 +302,10 @@ static BOOL gpgMailWorks = NO;
     return [_keyManager allKeys];
 }
 
-- (NSSet *)secretGPGKeys {
-    if (!gpgMailWorks) return nil;
+- (GPGKey *)anyPersonalPublicKeyWithPreferenceAddress:(NSString *)address {
+    if(!gpgMailWorks) return nil;
     
-    return [_keyManager secretKeys];
-}
-
-- (GPGKey *)bestSecretKey {
-    if (!gpgMailWorks) return nil;
-    
-    return [[_keyManager secretKeys] anyObject];
+    return [_keyManager anyPersonalPublicKeyWithPreferenceAddress:address];
 }
 
 - (GPGKey *)secretGPGKeyForKeyID:(NSString *)keyID {

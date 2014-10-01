@@ -99,6 +99,11 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 - (void)scheduleApplyingRulesForMessage:(Message *)message isEncrypted:(BOOL)isEncrypted;
 
 /**
+ See GMKeyManager.
+ */
+- (GPGKey *)anyPersonalPublicKeyWithPreferenceAddress:(NSString *)address;
+
+/**
  Returns the secret key matching ID.
  */
 - (GPGKey *)secretGPGKeyForKeyID:(NSString *)keyID;
@@ -150,8 +155,6 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 
 @property (readonly) GPGErrorCode gpgStatus;
 @property (readonly, strong) NSSet *allGPGKeys;
-@property (readonly, strong) NSSet *secretGPGKeys;
-@property (readonly, strong) GPGKey *bestSecretKey;
 @property (nonatomic, assign) BOOL accountExistsForSigning;
 
 @end
