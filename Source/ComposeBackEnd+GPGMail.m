@@ -449,6 +449,15 @@
 		
 		[headers setHeader:shouldEncrypt ? @"YES" : @"NO" forKey:@"x-should-pgp-encrypt"];
 		[headers setHeader:shouldSign ? @"YES" : @"NO" forKey:@"x-should-pgp-sign"];
+		
+		// MailTags seems to duplicate our mail headers, if the message is to be encrypted.
+		// This behaviour is worked around in [MCMessageGenerator _newDataForMimePart:withPartData:]
+		// by removing the duplicate mail headers.
+		// We should however only interfere, if a draft is being created, since this workaround might not be suitable
+		// for every type of message.
+		// In order for the MCMessageGenerator instance to know if a draft is being created,
+		// we add a flag to it.
+		[writer setIvar:@"IsDraft" value:@(YES)];
 	}
 	else {
 		[headers removeHeaderForKey:@"x-should-pgp-encrypt"];
