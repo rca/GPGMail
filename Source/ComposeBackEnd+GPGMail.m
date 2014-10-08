@@ -247,22 +247,24 @@
 	[contents setIvar:@"ShouldEncrypt" value:@(shouldPGPEncrypt || shouldPGPInlineEncrypt)];
 	[contents setIvar:@"ShouldSign" value:@(shouldPGPSign || shouldPGPInlineSign)];
 	
-	// If this message is saved as draft, check if we have a gpg key which belongs to the
-	// specified sender. If it's not available, try to find any secret key available.
-	GPGKey *encryptDraftPublicKey = [[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] valueForFlag:@"gpgKey"];
-	if(!encryptDraftPublicKey)
-		encryptDraftPublicKey = [[GPGMailBundle sharedInstance] anyPersonalPublicKeyWithPreferenceAddress:[[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] uncommentedAddress]];
-	// If no working public key could be found, don't encrypt the draft.
-	if(encryptDraftPublicKey) {
-		[[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] setValue:encryptDraftPublicKey forFlag:@"DraftPublicKey"];
-		// Drafts mustn't be signed, otherwise Mail creates duplicate zombie drafts again.
-		shouldPGPSign = NO;
-		shouldPGPSymmetric = NO;
-	}
-	else if(isDraft) {
-		shouldPGPEncrypt = NO;
-		shouldPGPSign = NO;
-		shouldPGPSymmetric = NO;
+	if(isDraft) {
+		// If this message is saved as draft, check if we have a gpg key which belongs to the
+		// specified sender. If it's not available, try to find any secret key available.
+		GPGKey *encryptDraftPublicKey = [[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] valueForFlag:@"gpgKey"];
+		if(!encryptDraftPublicKey)
+			encryptDraftPublicKey = [[GPGMailBundle sharedInstance] anyPersonalPublicKeyWithPreferenceAddress:[[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] uncommentedAddress]];
+		// If no working public key could be found, don't encrypt the draft.
+		if(encryptDraftPublicKey) {
+			[[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] setValue:encryptDraftPublicKey forFlag:@"DraftPublicKey"];
+			// Drafts mustn't be signed, otherwise Mail creates duplicate zombie drafts again.
+			shouldPGPSign = NO;
+			shouldPGPSymmetric = NO;
+		}
+		else {
+			shouldPGPEncrypt = NO;
+			shouldPGPSign = NO;
+			shouldPGPSymmetric = NO;
+		}
 	}
 	
 	// Drafts store the messages with a very minor set of headers and mime types
