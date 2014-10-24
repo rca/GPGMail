@@ -62,6 +62,13 @@
 - (GPGKey *)secretKeyForKeyID:(NSString *)keyID includeDisabled:(BOOL)includeDisabled;
 
 /**
+ Returns the public key to one of the available secret keys.
+ The public key to a secret key matching the passed preference address, will be returned
+ first if available. Otherwise, any secret key's public key will do.
+ */
+- (GPGKey *)anyPersonalPublicKeyWithPreferenceAddress:(NSString *)address;
+
+/**
  Return all secret keys which are available for a specified address.
  */
 - (NSMutableSet *)signingKeyListForAddress:(NSString *)address;

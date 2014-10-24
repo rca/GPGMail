@@ -41,10 +41,10 @@
 	<key>CFBundleDisplayName</key>
 	<string>GPGMail</string>
 	<key>SUFeedURL_nightly</key>
-	<string>https://nightly.gpgtools.org/releases/gpgmail_lml/appcast.xml</string>
+	<string>https://releases.gpgtools.org/nightlies/gpgmail_lml/appcast.xml</string>
 	<key>SUFeedURL_prerelease</key>
-	<string>https://nightly.gpgtools.org/releases/gpgmail_lml/pre-appcast.xml</string>
+	<string>https://nightly.gpgtools.org/releases/gpgmail/pre-appcast.xml</string>
 	<key>SUFeedURL</key>
-	<string>https://gpgtools.org/releases/gpgmail_lml/appcast.xml</string>
+	<string>https://gpgtools.org/releases/gpgmail/appcast.xml</string>
 </dict>
 </plist>

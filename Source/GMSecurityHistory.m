@@ -27,6 +27,7 @@
 
 #import <Libmacgpg/Libmacgpg.h>
 #import "CCLog.h"
+#import "MutableMessageHeaders.h"
 #import "NSString+GPGMail.h"
 #import "Message+GPGMail.h"
 #import "GMSecurityHistory.h"
@@ -311,8 +312,8 @@
 	if([message isSigned] || [message isEncrypted])
 		securityMethod = [message isSMIMEEncrypted] || [message isSMIMESigned] ? GPGMAIL_SECURITY_METHOD_SMIME : GPGMAIL_SECURITY_METHOD_OPENPGP;
 	
-	BOOL shouldSign = [message isSigned];
-	BOOL shouldEncrypt = [message isEncrypted];
+	BOOL shouldSign = [[((GM_CAST_CLASS(MutableMessageHeaders *, id))[(GM_CAST_CLASS(Message *, id))message headers]) firstHeaderForKey:@"x-should-pgp-sign"] boolValue];
+	BOOL shouldEncrypt = [[((GM_CAST_CLASS(MutableMessageHeaders *, id))[(GM_CAST_CLASS(Message *, id))message headers]) firstHeaderForKey:@"x-should-pgp-encrypt"] boolValue];
 	
 	return [GMSecurityOptions securityOptionsWithSecurityMethod:securityMethod shouldSign:shouldSign shouldEncrypt:shouldEncrypt];
 }

@@ -1503,7 +1503,7 @@
     self.PGPError = error;
 	// If MacGPG2 is not installed, don't flag the message as signed,
 	// since we can't know.
-    self.PGPSigned = [gpgc.error isKindOfClass:[GPGException class]] && ((GPGException *)gpgc.error).errorCode == NSNotFound ? NO : YES;
+    self.PGPSigned = [gpgc.error isKindOfClass:[GPGException class]] && ((GPGException *)gpgc.error).errorCode == GPGErrorNotFound ? NO : YES;
     self.PGPVerified = self.PGPError ? NO : YES;
     self.PGPSignatures = signatures;
     
@@ -2064,23 +2064,9 @@
 					isDraft = YES;
 					[normalRecipients removeAllObjects];
 					[bccRecipients removeAllObjects];
-					if (!senderPublicKey) {
-						GPGKey *key = nil;
-						for (key in [[GPGMailBundle sharedInstance] publicKeyListForAddresses:@[recipient]]) {
-							if (key.secret) {
-								break;
-							}
-						}
-						if (!key) {
-							key = [[GPGMailBundle sharedInstance] bestSecretKey];
-						}
-						if (key) {
-							[normalRecipients addObject:key];
-						} else {
-							*encryptedData = [[gpgErrorIdentifier stringByAppendingFormat:@"%i:", GMSaveClearMessage] dataUsingEncoding:NSUTF8StringEncoding];;
-							return self;
-						}
-					}
+					senderPublicKey = [[recipient valueForFlag:@"DraftPublicKey"] primaryKey];
+					[normalRecipients addObject:senderPublicKey];
+					
 					break;
 				}
 				

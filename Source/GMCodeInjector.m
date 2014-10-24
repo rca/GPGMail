@@ -240,6 +240,11 @@
 					 @"selectors": @[
 							 @"setWebDocument:"
 					]
+			},
+			 @"MCMessageGenerator": @{
+					 @"selectors": @[
+							 @"_newDataForMimePart:withPartData:"
+					 ]
 			}
 	};
 }
@@ -393,6 +398,14 @@
 		// the case, all the methods of that class, have to be added
 		// to the original Mail or Messages class.
 		Class extensionClass = NSClassFromString([oldClass stringByAppendingFormat:@"_%@", extensionClassSuffix]);
+		if(!extensionClass) {
+			// In order to correctly hook classes on older versions of OS X than 10.9, the MC and MF prefix
+			// is removed. There are however some cases, where classes where added to 10.9 which didn't exist
+			// on < 10.9. In those cases, let's try to find the class with the appropriate prefix.
+			
+			// Try to find extensions to the original classname.
+			extensionClass = NSClassFromString([class stringByAppendingFormat:@"_%@", extensionClassSuffix]);
+		}
 		BOOL extend = extensionClass != nil ? YES : NO;
 		if(extend) {
 			if(![mailClass jrlp_addMethodsFromClass:extensionClass error:&error])

@@ -152,14 +152,8 @@
     BOOL shouldPGPInlineSymmetric = NO;
 	
 	// If this message is to be saved as draft, force encryption.
-    if (isDraft) {
-		// TODO: Save the users wishes and restore it when opening the mail again.
-		if (!shouldPGPEncrypt && [[GPGOptions sharedOptions] boolForKey:@"OptionallyEncryptDrafts"]) {
-			shouldPGPEncrypt = YES;
-		}
-		shouldPGPSign = NO;
-		shouldPGPSymmetric = NO;
-    }
+    if (isDraft && !shouldPGPEncrypt && [[GPGOptions sharedOptions] boolForKey:@"OptionallyEncryptDrafts"])
+		shouldPGPEncrypt = YES;
 	
     // It might not be possible to inline encrypt drafts, since contents.text is nil.
     // Maybe it's not problem, and simply html should be used. (TODO: Figure that out.)
@@ -229,11 +223,21 @@
 			[plainString appendString:@"\n"];
 		}
 	}
-
-	// Remove all whitespaces at the end of lines.
-	if ([plainString rangeOfString:@" \n"].length > 0) {
-		RKRegex *regex = [RKRegex regexWithRegexString:@"[^\\S\n]+\n" options:RKCompileNoOptions];
-		[plainString match:regex replace:RKReplaceAll withString:@"\n"];
+	if (shouldPGPSign) {
+		// Remove all whitespaces at the end of lines. But don't kill attachments.
+		RKRegex *regex = [RKRegex regexWithRegexString:@"[\\t\\f\\r\\p{Z}]+$" options:RKCompileMultiline];
+		RKEnumerator *rkEnum = [plainString matchEnumeratorWithRegex:regex];
+		
+		NSMutableArray *ranges = [NSMutableArray array];
+		
+		// Get all matches and reverse the order.
+		for (NSArray *match in rkEnum) {
+			[ranges insertObject:match[0] atIndex:0];
+		}
+		// Removed matched characters.
+		for (NSValue *range in ranges) {
+			[plainString replaceCharactersInRange:range.rangeValue withString:@""];
+		}
 	}
 	
 	
@@ -242,7 +246,27 @@
 	[contents setIvar:@"IsDraft" value:@(isDraft)];
 	[contents setIvar:@"ShouldEncrypt" value:@(shouldPGPEncrypt || shouldPGPInlineEncrypt)];
 	[contents setIvar:@"ShouldSign" value:@(shouldPGPSign || shouldPGPInlineSign)];
-    
+	
+	if(isDraft) {
+		// If this message is saved as draft, check if we have a gpg key which belongs to the
+		// specified sender. If it's not available, try to find any secret key available.
+		GPGKey *encryptDraftPublicKey = [[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] valueForFlag:@"gpgKey"];
+		if(!encryptDraftPublicKey)
+			encryptDraftPublicKey = [[GPGMailBundle sharedInstance] anyPersonalPublicKeyWithPreferenceAddress:[[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] uncommentedAddress]];
+		// If no working public key could be found, don't encrypt the draft.
+		if(encryptDraftPublicKey) {
+			[[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] setValue:encryptDraftPublicKey forFlag:@"DraftPublicKey"];
+			// Drafts mustn't be signed, otherwise Mail creates duplicate zombie drafts again.
+			shouldPGPSign = NO;
+			shouldPGPSymmetric = NO;
+		}
+		else {
+			shouldPGPEncrypt = NO;
+			shouldPGPSign = NO;
+			shouldPGPSymmetric = NO;
+		}
+	}
+	
 	// Drafts store the messages with a very minor set of headers and mime types
     // not suitable for encrypted/signed messages. But fortunately, Mail.app doesn't
     // have a problem if a normal message is stored as draft, so GPGMail just needs
@@ -290,9 +314,6 @@
 				[self setIvar:@"cancelSaving" value:(id)kCFBooleanTrue];
 				[(MailDocumentEditor *)[(ComposeBackEnd *)self delegate] setUserSavedMessage:NO];
 			}
-		} else if (errorCode == GMSaveClearMessage) {
-			OutgoingMessage *outMessage = [self MA_makeMessageWithContents:contents isDraft:isDraft shouldSign:NO shouldEncrypt:NO shouldSkipSignature:shouldSkipSignature shouldBePlainText:shouldBePlainText];
-			return outMessage;
 		}
 		[(ComposeBackEnd *)self setValue:[self getIvar:@"originalCleanHeaders"] forKey:@"_cleanHeaders"];
 		return nil;
@@ -411,6 +432,40 @@
 	if([contents ivarExists:@"IsDraft"] && isDraft) {
 		[headers setHeader:@"com.apple.mail-draft" forKey:@"x-uniform-type-identifier"];
 		[headers setHeader:@"yes" forKey:@"x-apple-mail-plain-text-draft"];
+		// Mail doesn't pass in the sign status, when saving a draft, so we have to get it ourselves.
+		// For encrypt we also use the state of the button, shouldEncrypt is overriden by our own
+		// logic to always encrypt drafts if possible.
+		BOOL shouldSign = NO;
+		BOOL shouldEncrypt = NO;
+		
+		if([self ivarExists:@"ForceSign"])
+			shouldSign = [[self getIvar:@"ForceSign"] boolValue];
+		else
+			shouldSign = [[self getIvar:@"shouldSign"] boolValue];
+		
+		if([self ivarExists:@"ForceEncrypt"])
+			shouldEncrypt = [[self getIvar:@"ForceEncrypt"] boolValue];
+		else
+			shouldEncrypt = [[self getIvar:@"shouldEncrypt"] boolValue];
+		
+		
+		[headers setHeader:shouldEncrypt ? @"YES" : @"NO" forKey:@"x-should-pgp-encrypt"];
+		[headers setHeader:shouldSign ? @"YES" : @"NO" forKey:@"x-should-pgp-sign"];
+		
+		// MailTags seems to duplicate our mail headers, if the message is to be encrypted.
+		// This behaviour is worked around in [MCMessageGenerator _newDataForMimePart:withPartData:]
+		// by removing the duplicate mail headers.
+		// We should however only interfere, if a draft is being created, since this workaround might not be suitable
+		// for every type of message.
+		// In order for the MCMessageGenerator instance to know if a draft is being created,
+		// we add a flag to it.
+		[writer setIvar:@"IsDraft" value:@(YES)];
+	}
+	else {
+		[headers removeHeaderForKey:@"x-should-pgp-encrypt"];
+		[headers removeHeaderForKey:@"x-should-pgp-sign"];
+		[headers removeHeaderForKey:@"x-uniform-type-identifier"];
+		[headers removeHeaderForKey:@"x-apple-mail-plain-text-draft"];
 	}
 	return [self MAOutgoingMessageUsingWriter:writer contents:contents headers:headers isDraft:isDraft shouldBePlainText:shouldBePlainText];
 }
