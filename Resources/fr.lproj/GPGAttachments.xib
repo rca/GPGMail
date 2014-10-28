@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1090</int>
-		<string key="IBDocument.SystemVersion">13F34</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6245</string>
-		<string key="IBDocument.AppKitVersion">1265.21</string>
-		<string key="IBDocument.HIToolboxVersion">698.00</string>
+		<int key="IBDocument.SystemTarget">101000</int>
+		<string key="IBDocument.SystemVersion">14A389</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6250</string>
+		<string key="IBDocument.AppKitVersion">1343.14</string>
+		<string key="IBDocument.HIToolboxVersion">755.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6245</string>
+			<string key="NS.object.0">6250</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSArrayController</string>
@@ -294,6 +294,7 @@
 											<reference key="NSDocView" ref="629279109"/>
 											<reference key="NSBGColor" ref="975831586"/>
 											<int key="NScvFlags">4</int>
+											<bool key="NSAutomaticallyAdjustsContentInsets">YES</bool>
 										</object>
 										<object class="NSScroller" id="1019380391">
 											<reference key="NSNextResponder" ref="71713155"/>
@@ -303,6 +304,8 @@
 											<reference key="NSNextKeyView" ref="185690033"/>
 											<string key="NSReuseIdentifierKey">_NS:1845</string>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+											<string key="NSControlAction">_doScroller:</string>
+											<reference key="NSControlTarget" ref="71713155"/>
 											<reference key="NSTarget" ref="71713155"/>
 											<string key="NSAction">_doScroller:</string>
 											<double key="NSPercent">0.99492385786802029</double>
@@ -315,6 +318,8 @@
 											<reference key="NSNextKeyView" ref="1019380391"/>
 											<string key="NSReuseIdentifierKey">_NS:1847</string>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+											<string key="NSControlAction">_doScroller:</string>
+											<reference key="NSControlTarget" ref="71713155"/>
 											<int key="NSsFlags">1</int>
 											<reference key="NSTarget" ref="71713155"/>
 											<string key="NSAction">_doScroller:</string>
@@ -387,7 +392,7 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="812413982">
 																		<int key="NSCellFlags">68157504</int>
 																		<int key="NSCellFlags2">272761856</int>
-																		<string key="NSContents">Détails.</string>
+																		<string key="NSContents">Détails</string>
 																		<object class="NSFont" key="NSSupport" id="27">
 																			<bool key="IBIsSystemFont">YES</bool>
 																			<double key="NSSize">11</double>
@@ -586,9 +591,9 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="737784608">
 																		<int key="NSCellFlags">69206017</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string type="base64-UTF8" key="NSContents">VGhlIHNpZ25hdHVyZSBjb3VsZCBub3QgYmUgdmVyaWZpZWQgYmVjYXVzZSB0aGUgcHVibGljIGtleSBp
-cyBub3QgaW4geW91ciBrZXljaGFpbi4KUGxlYXNlIGRvd25sb2FkIHRoZSBrZXkgdXNpbmcgR1BHIEtl
-eWNoYWluIEFjY2Vzcy4</string>
+																		<string type="base64-UTF8" key="NSContents">TGEgc2lnbmF0dXJlIG4nYSBwYXMgcHUgw6p0cmUgdsOpcmlmacOpZSBjYXIgbGEgY2zDqSBwdWJsaXF1
+ZSBuZSBmYWl0IHBhcyBwYXJ0aWUgZGUgdm90cmUgdHJvdXNzZWF1IGRlIGNsw6lzLgpWZXVpbGxleiB0
+w6lsw6ljaGFyZ2VyIGxhIGNsw6kgw6AgbCdhaWRlIGRlIEdQRyBLZXljaGFpbiBBY2Nlc3MuA</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<string key="NSCellIdentifier">_NS:360</string>
 																		<reference key="NSControlView" ref="138322284"/>
@@ -609,7 +614,7 @@ eWNoYWluIEFjY2Vzcy4</string>
 																	<object class="NSTextFieldCell" key="NSCell" id="233414006">
 																		<int key="NSCellFlags">67108864</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string key="NSContents">The signature could not be verified.</string>
+																		<string key="NSContents">La signature n'a pas pu être vérifiée.</string>
 																		<reference key="NSSupport" ref="501760921"/>
 																		<string key="NSCellIdentifier">_NS:3944</string>
 																		<reference key="NSControlView" ref="463642861"/>
@@ -674,9 +679,9 @@ eWNoYWluIEFjY2Vzcy4</string>
 																	<object class="NSTextFieldCell" key="NSCell" id="376725465">
 																		<int key="NSCellFlags">69206017</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string type="base64-UTF8" key="NSContents">VGhlIHNpZ25hdHVyZSBjb3VsZCBub3QgYmUgdmVyaWZpZWQgYmVjYXVzZSB0aGUgcHVibGljIGtleSBp
-cyBub3QgaW4geW91ciBrZXljaGFpbi4KUGxlYXNlIGRvd25sb2FkIHRoZSBrZXkgdXNpbmcgR1BHIEtl
-eWNoYWluIEFjY2Vzcy4</string>
+																		<string type="base64-UTF8" key="NSContents">TGEgc2lnbmF0dXJlIG4nYSBwYXMgcHUgw6p0cmUgdsOpcmlmacOpZSBjYXIgbGEgY2zDqSBwdWJsaXF1
+ZSBuZSBmYWl0IHBhcyBwYXJ0aWUgZGUgdm90cmUgdHJvdXNzZWF1IGRlIGNsw6lzLgpWZXVpbGxleiB0
+w6lsw6ljaGFyZ2VyIGxhIGNsw6kgw6AgbCdhaWRlIGRlIEdQRyBLZXljaGFpbiBBY2Nlc3MuA</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<string key="NSCellIdentifier">_NS:360</string>
 																		<reference key="NSControlView" ref="1051878768"/>
@@ -697,7 +702,7 @@ eWNoYWluIEFjY2Vzcy4</string>
 																	<object class="NSTextFieldCell" key="NSCell" id="812424302">
 																		<int key="NSCellFlags">67108864</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string key="NSContents">The signature could not be verified.</string>
+																		<string key="NSContents">La signature n'a pas pu être vérifiée.</string>
 																		<reference key="NSSupport" ref="501760921"/>
 																		<string key="NSCellIdentifier">_NS:3944</string>
 																		<reference key="NSControlView" ref="834668756"/>
@@ -759,6 +764,7 @@ eWNoYWluIEFjY2Vzcy4</string>
 												<bytes key="NSRGB">MSAxIDEAA</bytes>
 											</object>
 											<int key="NScvFlags">4</int>
+											<bool key="NSAutomaticallyAdjustsContentInsets">YES</bool>
 										</object>
 										<object class="NSScroller" id="969351770">
 											<reference key="NSNextResponder" ref="185690033"/>
@@ -767,6 +773,8 @@ eWNoYWluIEFjY2Vzcy4</string>
 											<reference key="NSSuperview" ref="185690033"/>
 											<reference key="NSNextKeyView" ref="886986404"/>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+											<string key="NSControlAction">_doScroller:</string>
+											<reference key="NSControlTarget" ref="185690033"/>
 											<reference key="NSTarget" ref="185690033"/>
 											<string key="NSAction">_doScroller:</string>
 											<double key="NSPercent">0.9916666666666667</double>
@@ -778,6 +786,8 @@ eWNoYWluIEFjY2Vzcy4</string>
 											<reference key="NSSuperview" ref="185690033"/>
 											<reference key="NSNextKeyView" ref="811410862"/>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+											<string key="NSControlAction">_doScroller:</string>
+											<reference key="NSControlTarget" ref="185690033"/>
 											<int key="NSsFlags">1</int>
 											<reference key="NSTarget" ref="185690033"/>
 											<string key="NSAction">_doScroller:</string>
@@ -856,9 +866,11 @@ eWNoYWluIEFjY2Vzcy4</string>
 								<string key="NSColorName">textBackgroundColor</string>
 								<reference key="NSColor" ref="292877104"/>
 							</object>
-							<object class="NSColor" key="NSTextColor">
-								<int key="NSColorSpace">3</int>
-								<bytes key="NSWhite">MCAwLjgwMDAwMDAxMTkAA</bytes>
+							<object class="NSColor" key="NSTextColor" id="251878188">
+								<int key="NSColorSpace">6</int>
+								<string key="NSCatalogName">System</string>
+								<string key="NSColorName">labelColor</string>
+								<reference key="NSColor" ref="807628989"/>
 							</object>
 						</object>
 						<int key="NSBorderType">3</int>
@@ -979,10 +991,7 @@ eWNoYWluIEFjY2Vzcy4</string>
 							<string key="NSContents">Box</string>
 							<reference key="NSSupport" ref="34332591"/>
 							<reference key="NSBackgroundColor" ref="514810307"/>
-							<object class="NSColor" key="NSTextColor">
-								<int key="NSColorSpace">3</int>
-								<bytes key="NSWhite">MCAwLjgwMDAwMDAxMTkAA</bytes>
-							</object>
+							<reference key="NSTextColor" ref="251878188"/>
 						</object>
 						<int key="NSBorderType">3</int>
 						<int key="NSBoxType">2</int>
@@ -1335,7 +1344,7 @@ eWNoYWluIEFjY2Vzcy4</string>
 					<integer value="1040" key="formatterBehavior"/>
 					<integer value="3" key="timeStyle"/>
 				</dictionary>
-				<string key="NS.format">EEEE d MMMM y HH:mm:ss z</string>
+				<string key="NS.format">EEEE, d. MMMM y HH:mm:ss z</string>
 				<bool key="NS.natural">NO</bool>
 			</object>
 		</array>

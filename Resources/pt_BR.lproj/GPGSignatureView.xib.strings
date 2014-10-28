@@ -1,6 +1,6 @@
 "21.title" = "Assinaturas";
 "25.title" = "OK";
-"236.title" = "Created:";
+"236.title" = "Criado:";
 "237.title" = "nome";
 "251.title" = "Detalhes";
 "252.ibShadowedNoSelectionPlaceholder" = "Sem assinatura";
@@ -10,11 +10,11 @@
 "372.title" = "Identificador de chave:";
 "373.title" = "Comentário:";
 "377.title" = "Algoritmo:";
-"378.title" = "Vencimento:";
+"378.title" = "Expira em:";
 "379.title" = "Criado:";
-"381.title" = "Proprietário confiável:";
-"434.title" = "Vencimento:";
+"381.title" = "Confiabilidade:";
+"434.title" = "Expira em:";
 "436.title" = "Criado:";
 "437.title" = "Assinatura";
-"531.ibShadowedIsNilPlaceholder" = "Nenhum vencimento foi aplicado para esta assinatura";
-"532.ibShadowedIsNilPlaceholder" = "Nenhum vencimento foi aplicado para esta chave";
+"531.ibShadowedIsNilPlaceholder" = "Expiração não definida para esta assinatura";
+"532.ibShadowedIsNilPlaceholder" = "Expiração não definida para esta chave";

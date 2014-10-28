@@ -10,7 +10,7 @@
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Die PGP-Signatur konnte nicht überprüft werden.";
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Beim Lesen der PGP-Signatur dieser E-Mail ist ein Problem aufgetreten.";
 "MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "Der verwendete PGP-Schlüssel befindet sich nicht in Ihrem Schlüsselbund.";
-"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Die PGP-Signatur wurde erfolgreich gelesen, jedoch befindet sich der PGP-Schlüssel nicht in Ihrem Schlüsselbund. Bitte verwenden Sie GPG Schlüsselbund, um den Schlüssel hinzuzufügen.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "The message has a valid PGP signature, but the PGP key is not in your keychain. Please use GPG Keychain to add it.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Keine Informationen für diesen PGP-Schlüssel vorhanden.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Es ist leider nicht möglich, erweiterte Informationen zu diesem PGP-Schlüssel anzuzeigen, da er sich nicht in ihrem GPG Schlüsselbund befindet.";
 
@@ -30,9 +30,9 @@
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Diese Nachricht kann nicht entschlüsselt werden, da sie beschädigt ist.\n\nBitte Sie den Absender Ihnen die Nachricht erneut zu senden.";
 
 "MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Der Schlüssel dieser Signatur wurde widerrufen.";
-"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "ACHTUNG: Der Schlüssel, welcher zum Unterzeichnen dieser Nachricht verwendet wurde, wurde widerrufen!\n\nSie sollten den Schlüssel mit Key ID %@ in GPG Schlüsselbund aktualisieren. Sollte der Schlüssel immer noch widerrufen sein, suchen Sie nach einem neuen Schlüssel und fragen Sie bei dem Inhaber des Schlüssels nach, warum der Schlüssel widerrrufen wurde.";
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "ATTENTION: The key which was used to sign this message was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Der Schlüssel zu dieser Signatur befindet sich nicht im GPG Schlüsselbund.";
-"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Diese Nachricht konnte nicht verifiziert werden, weil sich der Schlüssel nicht im GPG Schlüsselbund befindet.\n\nSuchen Sie nach dem Schlüssel mit ID %@ im GPG Schlüsselbund und importieren Sie ihn um diese Nachricht zu verifizieren.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "The message could not be verified, since the key which was used to sign this message is not in your GPG Keychain.\n\nSearch for the key with ID %@ in GPG Keychain and import it to verify the message.";
 
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "Der Schlüssel zu dieser Signatur wurde mit einem nicht unterstützen Algorithmus erstellt.";
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Diese Nachricht kann nicht verifiziert werden, da der Schlüssel zu der Signatur mit einem Algorithmus erstellt wurde, welcher nicht unterstützt ist.\n\nBitte kontaktieren Sie uns auf http://support.gpgtools.org";
@@ -47,16 +47,16 @@
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Diese Nachricht konnte nicht verifiziert werden, da die keine gültigen Signatur Daten gefunden wurden.\n\nBitte kontaktieren Sie uns unter http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Schlüssel der Signatur ist abgelaufen.";
-"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ACHTUNG: Der Schlüssel, welcher verwendet wurde diese Nachricht zu unterzeichnen, ist abgelaufen.\n\nSie können versuchen den Schlüssel %@ mit GPG Schlüsselbund zu aktualisieren und informieren Sie sich beim Absender warum der Schlüssel abgelaufen ist.";
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATTENTION: The key which was used to sign this message is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Die Signatur der Nachricht ist abgelaufen.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Die Signatur der Nachricht konnte nicht verifiziert werden, da die Signatur abgelaufen ist.\n\nErkundigen Sie sich beim Absender, warum die Signatur abgelaufen ist.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 ist nicht installiert.";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Die Entschlüsselung ist fehlgeschlagen, da MacGPG2 nicht installiert ist.\n\nMacGPG2 ist das Programm welches von GPGMail zum bearbeiten Ihrer verschlüsselten und signierten Nachrichten verwendet wird. MacGPG2 muss daher installiert sein, damit GPGMail korrekt funktioniert.\n\nBitten laden Sie MacGPG2 von https://gpgtools.org herunter.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Decrypting failed because MacGPG2 is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 ist nicht installiert";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Die Verifizierung ist fehlgeschlagen, da MacGPG2 nicht installiert ist.\n\nMacGPG2 ist das Programm welches von GPGMail zum bearbeiten Ihrer verschlüsselten und signierten Nachrichten verwendet wird. MacGPG2 muss daher installiert sein, damit GPGMail korrekt funktioniert.\n\nBitten laden Sie MacGPG2 von https://gpgtools.org herunter.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifying failed because MacGPG2 is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d Anhänge konnten nicht entschlüsselt oder verifiziert werden.";
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Bitte klicken Sie im Nachrichten Kopf unter Sicherheit auf das Anhang Icon um weitere Informationen zu erhalten.";
@@ -90,10 +90,10 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Dieser Anhang kann nicht entschlüsselt werden, da er beschädigt ist.\n\nBitte Sie den Absender Ihnen den Anhang erneut zu senden.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Der Schlüssel dieser Signatur wurde widerrufen.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "ACHTUNG: Der Schlüssel, welcher zum Unterzeichnen dieses Anhangs verwendet wurde, wurde widerrufen!\n\nSie sollten den Schlüssel mit Key ID %@ in GPG Schlüsselbund aktualisieren. Sollte der Schlüssel immer noch widerrufen sein, suchen Sie nach einem neuen Schlüssel und fragen Sie bei dem Inhaber des Schlüssels nach, warum der Schlüssel widerrrufen wurde.";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "ATTENTION: The key which was used to sign this attachment was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Der Schlüssel zu dieser Signatur befindet sich nicht im GPG Schlüsselbund.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Dieser Anhang konnte nicht verifiziert werden, weil sich der Schlüssel nicht im GPG Schlüsselbund befindet.\n\nSuchen Sie nach dem Schlüssel mit ID %@ im GPG Schlüsselbund und importieren Sie ihn um diesen Anhang zu verifizieren.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "The attachment signature could not be verified, since the key which was used to sign is not in your GPG Keychain.\n\nSearch for the key with ID %@ in GPG Keychain and import it to verify the attachment.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "Der Schlüssel zu dieser Signatur wurde mit einem nicht unterstützen Algorithmus erstellt.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Dieser Anhang kann nicht verifiziert werden, da der Schlüssel zu der Signatur mit einem Algorithmus erstellt wurde, welcher nicht unterstützt ist.\n\nBitte kontaktieren Sie uns auf http://support.gpgtools.org";
@@ -108,7 +108,7 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Dieser Anhang konnte nicht verifiziert werden, da keine gültigen Signatur Daten gefunden wurden.\n\nBitte kontaktieren Sie uns unter http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Schlüssel der Signatur ist abgelaufen.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ACHTUNG: Der Schlüssel, welcher verwendet wurde diesen Anhang zu unterzeichnen, ist abgelaufen.\n\nSie können versuchen den Schlüssel %@ mit GPG Schlüsselbund zu aktualisieren und informieren Sie sich beim Absender warum der Schlüssel abgelaufen ist.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATTENTION: The key which was used to sign this attachment is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Die Signatur des Anhangs ist abgelaufen.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Die Signatur des Anhangs konnte nicht verifiziert werden, da die Signatur abgelaufen ist.\n\nErkundigen Sie sich beim Absender, warum die Signatur abgelaufen ist.";
@@ -124,6 +124,7 @@
 "MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE" = "Signiert mit widerrufenem Schlüssel";
 "MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE" = "Ungültige Signatur";
 "MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE" = "Signiert";
+"MESSAGE_SECURITY_HEADER_NO_SIGNATURE_TITLE" = "No signature found";
 
 /* Security header attachments related. */
 "MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE" = "verschlüsselter/signierter Anhang";
@@ -134,8 +135,8 @@
 "MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "signierte Anhänge";
 
 /* Compose Window encrypt/sign button tooltips. */
-"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "Diese E-Mail kann nicht signiert werden, da kein privater Schlüssel für %@ vorhanden ist.\n\nBitte verifizieren Sie, dass sich in GPG Schlüsselbund ein privater Schlüssel für diese E-Mail Adresse befindet. Fügen Sie falls notwendig eine UID mit dieser E-Mail Adresse zu einem bestehenden Schlüssel hinzu oder, erstellen Sie einen neuen Schlüssel für diese E-Mail Adresse.\n\nIst ein Schlüssel vorhanden, kontrollieren Sie bitte in den Mail Einstellungen ob Sie die zum Schlüssel passende E-Mail Adresse korrekt angegeben haben.";
-"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "Diese E-Mail kann nicht verschlüsselt werden, da für die folgenden Adressen kein öffentlicher Schlüssel vorhanden ist: %@.\n\nBitte suchen und importieren Sie die Schlüssel für diese Adressen mit GPG Schlüsselbund.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "This message can't be signed, since there's no private key for %@.\n\nPlease make sure that a private key for this address exists in GPG Keychain. Add a new UID to an existing key for this address if necessary, or create a new key for this address.\n\nIf a key for the address exists, make sure that the address in Mail Preferences is correct and exactly matches the address of your key.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "This message can't be encrypted, since there are no public keys available for the following addresses: %@.\n\nPlease use GPG Keychain to search and import the keys for those addresses.";
 "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "Diese E-Mail kann erst verschlüsselt werden, wenn Sie mindestens einen Empfänger angegeben haben.";
 
 /* Message view pgp part. */
@@ -147,9 +148,9 @@
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail läuft korrekt.";
 "GPG_STATUS_NO_ERROR_TOOLTIP" = "Ihre MacGPG Installation weist keine Fehler auf."; 
 "GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 wurde nicht gefunden.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Bitte laden Sie sich den GPGTools-Installer von http://www.gpgtools.org herunter und installieren Sie die gesamten GPGTools.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Please download and re-install GPG Suite from https://www.gpgtools.org to ensure all required components are installed.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Bitte überprüfen Sie ihre Installation und Konfiguration.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Bitte laden Sie sich den GPGTools-Installer von http://www.gpgtools.org herunter und installieren Sie die gesamten GPGTools.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Please download and re-install GPG Suite from https://www.gpgtools.org to ensure all required components are installed.";
 
 /* Multiple GPGMail installations. */
 "GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Es wurden mehrere GPGMail Installationen gefunden!";
@@ -166,7 +167,7 @@ CODE_SIGN_ERROR_MESSAGE = "To keep you safe, GPGMail will not be loaded!\n\nPlea
 
 /* GPGMailGPGMailBundle.defaults can't be loaded */
 NO_DEFAULTS_TITLE = "Unable to load GPGMail defaults!";
-NO_DEFAULTS_MESSAGE = "GPGMail may doesn't work as expected.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org.";
+NO_DEFAULTS_MESSAGE = "GPGMail is not working as expected.\n\nPlease download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at http://support.gpgtools.org.";
 
 /* Errors while trying to sign a message. */
 "MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Ihrer Nachricht konnte nicht signiert werden, da pinentry defekt ist!";
@@ -195,23 +196,23 @@ NO_DEFAULTS_MESSAGE = "GPGMail may doesn't work as expected.\n\nPlease download 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Sie haben die Entschlüsselung abgebrochen";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "Die Entschlüsselung dieses Anhangs konnte nicht abgeschlossen werden, da sie die Passwortabfrage unterbrochen haben.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "Ihre Installation von GPGTools ist beschädigt";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Das Entschlüsseln der Nachricht ist fehlgeschlagen, da Ihre GPGTools Installation beschädigt ist.\n\nBitte lade GPGTools von https://gpgtools.org herunter und installiere es erneut.\n\nSollte das Problem weiterhin auftreten, kontaktieren Sie uns bitte unter http://support.gpgtools.org und geben Sie an, dass der XPC Service nicht richtig funktioniert.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite is not working as expected";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the message failed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at http://support.gpgtools.org and include the information that the xpc service is not working properly.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "Ihre Installation von GPGTools ist beschädigt";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Das Entschlüsseln des Anhangs ist fehlgeschlagen, da Ihre GPGTools Installation beschädigt ist.\n\nBitte laden Sie GPGTools von https://gpgtools.org herunter und installiere es erneut.\n\nSollte das Problem weiterhin auftreten, kontaktieren Sie uns bitte unter http://support.gpgtools.org und geben Sie an, dass der XPC Service nicht richtig funktioniert.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite is not working as expected";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the attachment failed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at http://support.gpgtools.org and include the information that the xpc service is not working properly.";
 
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "Ihre Installation von GPGTools ist beschädigt";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Das Verifizieren der Nachricht ist fehlgeschlagen, da Ihre GPGTools Installation beschädigt ist.\n\nBitte lade GPGTools von https://gpgtools.org herunter und installiere es erneut.\n\nSollte das Problem weiterhin auftreten, kontaktieren Sie uns bitte unter http://support.gpgtools.org und geben Sie an, dass der XPC Service nicht richtig funktioniert.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite is not working as expected";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the message failed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at http://support.gpgtools.org and include the information that the xpc service is not working properly.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "Ihre Installation von GPGTools ist beschädigt";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Das Verifizieren des Anhangs ist fehlgeschlagen, da Ihre GPGTools Installation beschädigt ist.\n\nBitte lade GPGTools von https://gpgtools.org herunter und installiere es erneut.\n\nSollte das Problem weiterhin auftreten, kontaktieren Sie uns bitte unter http://support.gpgtools.org und geben Sie an, dass der XPC Service nicht richtig funktioniert.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite is not working as expected";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the attachment failed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at http://support.gpgtools.org and include the information that the xpc service is not working properly.";
 
 "MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Ihre Nachricht konnte nicht signiert werden, da die Passwortabfrage nicht funktioniert";
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "PIN-Entry, das Programm, welches für das Abfragen Ihres Passworts zuständig ist, scheint defekt zu sein.\n\nUm dieses Problem zu beheben, installieren Sie bitte die neuste Version von MacGPG2 von https://gpgtools.org";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "The PIN-Entry helper responsible for requesting your passphrase is not working properly.\n\nTo fix this problem, please download and re-install GPG Suite from https://gpgtools.org";
 
 "MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Ihre Nachricht konnte nicht signiert werden, da Ihr GPGMail beschädigt ist.";
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "Um dieses Problem zu beheben, laden Sie bitte GPGTools von https://gpgtools.org herunter und installiere es erneut.\n\nSollte das Problem weiterhin auftreten, kontaktieren Sie uns bitte unter http://support.gpgtools.org und geben Sie an, dass der XPC Service nicht richtig funktioniert.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "To fix this problem, please download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at http://support.gpgtools.org and include the information that the xpc service is not working properly.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Das Entschlüsseln der Nachricht ist fehlgeschlagen, da die Passwortabfrage nicht funktioniert.";
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "PIN-Entry, das Programm, welches für das Abfragen Ihres Passworts zuständig ist, scheint defekt zu sein.\n\nUm dieses Problem zu beheben, installieren Sie bitte die neuste Version von MacGPG2 von https://gpgtools.org";

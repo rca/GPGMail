@@ -1,4 +1,4 @@
-"2ul-d0-5ir.title" = "Signera alltid nya brev";
+"2ul-d0-5ir.title" = "Signera alltid nya meddelanden";
 "698.ibShadowedToolTip" = "Leta efter nya versioner av GPGMail automatiskt.";
 "699.ibShadowedToolTip" = "Hämta nya versioner av GPGMail automatiskt.";
 "700.ibShadowedToolTip" = "Kontrollera om det finns uppdateringar nu.";
@@ -16,9 +16,9 @@
 "737.alternateTitle" = "Bidra om du tycker om vad vi gör";
 "737.title" = "Donera";
 "744.title" = "Läsa";
-"781.title" = "Encrypt drafts";
-"786.ibShadowedToolTip" = "Se Inställningar -> Läsa -> Förhandsvisning.";
-"787.title" = "Skapa förhandsvisning";
+"781.title" = "Kryptera utkast";
+"786.ibShadowedToolTip" = "Se Inställningar -> Läsa -> Förhandsvisning i lista.";
+"787.title" = "Skapa förhandsvisning i lista";
 "834.title" = "Knapp";
 "930.ibShadowedToolTip" = "Klicka för att kopiera versionsinformation till urklipp.";
 "931.title" = "Version: xxx";
@@ -26,4 +26,4 @@
 "936.title" = "Bygge:";
 "1051.ibShadowedToolTip" = "Om du har andra frågor.";
 "1053.title" = "Support";
-"yJs-2y-8Cb.title" = "Kryptera alltid nya brev";
+"yJs-2y-8Cb.title" = "Kryptera alltid nya meddelanden";

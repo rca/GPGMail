@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1090</int>
-		<string key="IBDocument.SystemVersion">13F34</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6245</string>
-		<string key="IBDocument.AppKitVersion">1265.21</string>
-		<string key="IBDocument.HIToolboxVersion">698.00</string>
+		<int key="IBDocument.SystemTarget">101000</int>
+		<string key="IBDocument.SystemVersion">14A389</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6250</string>
+		<string key="IBDocument.AppKitVersion">1343.14</string>
+		<string key="IBDocument.HIToolboxVersion">755.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6245</string>
+			<string key="NS.object.0">6250</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSArrayController</string>
@@ -294,6 +294,7 @@
 											<reference key="NSDocView" ref="629279109"/>
 											<reference key="NSBGColor" ref="975831586"/>
 											<int key="NScvFlags">4</int>
+											<bool key="NSAutomaticallyAdjustsContentInsets">YES</bool>
 										</object>
 										<object class="NSScroller" id="1019380391">
 											<reference key="NSNextResponder" ref="71713155"/>
@@ -303,6 +304,8 @@
 											<reference key="NSNextKeyView" ref="185690033"/>
 											<string key="NSReuseIdentifierKey">_NS:1845</string>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+											<string key="NSControlAction">_doScroller:</string>
+											<reference key="NSControlTarget" ref="71713155"/>
 											<reference key="NSTarget" ref="71713155"/>
 											<string key="NSAction">_doScroller:</string>
 											<double key="NSPercent">0.99492385786802029</double>
@@ -315,6 +318,8 @@
 											<reference key="NSNextKeyView" ref="1019380391"/>
 											<string key="NSReuseIdentifierKey">_NS:1847</string>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+											<string key="NSControlAction">_doScroller:</string>
+											<reference key="NSControlTarget" ref="71713155"/>
 											<int key="NSsFlags">1</int>
 											<reference key="NSTarget" ref="71713155"/>
 											<string key="NSAction">_doScroller:</string>
@@ -479,7 +484,7 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="68258271">
 																		<int key="NSCellFlags">68157504</int>
 																		<int key="NSCellFlags2">272761856</int>
-																		<string key="NSContents">Upphör den:</string>
+																		<string key="NSContents">Går ut den:</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<reference key="NSControlView" ref="374660988"/>
 																		<reference key="NSBackgroundColor" ref="317639729"/>
@@ -759,6 +764,7 @@ bGhhbnRlcmFyZS4</string>
 												<bytes key="NSRGB">MSAxIDEAA</bytes>
 											</object>
 											<int key="NScvFlags">4</int>
+											<bool key="NSAutomaticallyAdjustsContentInsets">YES</bool>
 										</object>
 										<object class="NSScroller" id="969351770">
 											<reference key="NSNextResponder" ref="185690033"/>
@@ -767,6 +773,8 @@ bGhhbnRlcmFyZS4</string>
 											<reference key="NSSuperview" ref="185690033"/>
 											<reference key="NSNextKeyView" ref="886986404"/>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+											<string key="NSControlAction">_doScroller:</string>
+											<reference key="NSControlTarget" ref="185690033"/>
 											<reference key="NSTarget" ref="185690033"/>
 											<string key="NSAction">_doScroller:</string>
 											<double key="NSPercent">0.9916666666666667</double>
@@ -778,6 +786,8 @@ bGhhbnRlcmFyZS4</string>
 											<reference key="NSSuperview" ref="185690033"/>
 											<reference key="NSNextKeyView" ref="811410862"/>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+											<string key="NSControlAction">_doScroller:</string>
+											<reference key="NSControlTarget" ref="185690033"/>
 											<int key="NSsFlags">1</int>
 											<reference key="NSTarget" ref="185690033"/>
 											<string key="NSAction">_doScroller:</string>
@@ -856,9 +866,11 @@ bGhhbnRlcmFyZS4</string>
 								<string key="NSColorName">textBackgroundColor</string>
 								<reference key="NSColor" ref="292877104"/>
 							</object>
-							<object class="NSColor" key="NSTextColor">
-								<int key="NSColorSpace">3</int>
-								<bytes key="NSWhite">MCAwLjgwMDAwMDAxMTkAA</bytes>
+							<object class="NSColor" key="NSTextColor" id="531622437">
+								<int key="NSColorSpace">6</int>
+								<string key="NSCatalogName">System</string>
+								<string key="NSColorName">labelColor</string>
+								<reference key="NSColor" ref="807628989"/>
 							</object>
 						</object>
 						<int key="NSBorderType">3</int>
@@ -895,7 +907,7 @@ bGhhbnRlcmFyZS4</string>
 						<object class="NSTextFieldCell" key="NSCell" id="544591757">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Upphör:</string>
+							<string key="NSContents">Går ut:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="739216503"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -979,10 +991,7 @@ bGhhbnRlcmFyZS4</string>
 							<string key="NSContents">Box</string>
 							<reference key="NSSupport" ref="34332591"/>
 							<reference key="NSBackgroundColor" ref="514810307"/>
-							<object class="NSColor" key="NSTextColor">
-								<int key="NSColorSpace">3</int>
-								<bytes key="NSWhite">MCAwLjgwMDAwMDAxMTkAA</bytes>
-							</object>
+							<reference key="NSTextColor" ref="531622437"/>
 						</object>
 						<int key="NSBorderType">3</int>
 						<int key="NSBoxType">2</int>
@@ -1188,7 +1197,7 @@ bGhhbnRlcmFyZS4</string>
 						<object class="NSTextFieldCell" key="NSCell" id="356060348">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Upphör:</string>
+							<string key="NSContents">Går ut:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="844534807"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1335,7 +1344,7 @@ bGhhbnRlcmFyZS4</string>
 					<integer value="1040" key="formatterBehavior"/>
 					<integer value="3" key="timeStyle"/>
 				</dictionary>
-				<string key="NS.format">EEEE d MMMM y HH:mm:ss z</string>
+				<string key="NS.format">EEEE, d. MMMM y HH:mm:ss z</string>
 				<bool key="NS.natural">NO</bool>
 			</object>
 		</array>
@@ -1615,7 +1624,7 @@ bGhhbnRlcmFyZS4</string>
 							<string key="NSKeyPath">selection.signature.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">Signaturen är inställd att inte upphöra</string>
+								<string key="NS.object.0">Denna signatur har inget utgångsdatum</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
@@ -1643,7 +1652,7 @@ bGhhbnRlcmFyZS4</string>
 							<string key="NSKeyPath">signature.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">Signaturen är inställd att inte upphöra</string>
+								<string key="NS.object.0">Denna signatur har inget utgångsdatum</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
@@ -1723,7 +1732,7 @@ bGhhbnRlcmFyZS4</string>
 							<string key="NSKeyPath">gpgKey.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">Signaturen är inställd att inte upphöra</string>
+								<string key="NS.object.0">Denna signatur har inget utgångsdatum</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
