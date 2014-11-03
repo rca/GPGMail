@@ -33,4 +33,13 @@
 
 - (void)MA_reloadSecurityProperties;
 
+/* Selectors no longer available on Yosemite, so let's add them here
+   to shutup the compiler. Not good of course, but no better workaround
+   is known to the author.
+ */
+- (void)setIsEncrypted:(BOOL)isEncrypted;
+- (void)setIsSigned:(BOOL)isSigned;
+- (void)setSigners:(NSArray *)signers;
+- (void)setSignerNames:(NSArray *)signerNames;
+
 @end

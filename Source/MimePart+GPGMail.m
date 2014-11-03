@@ -741,11 +741,16 @@
     if([encryptedData rangeOfData:[@"Content-Type" dataUsingEncoding:NSUTF8StringEncoding] options:0 range:NSMakeRange(0, [encryptedData length])].location != NSNotFound)
         return [self decodeFuckedUpEarlyAlphaData:encryptedData context:ctx];
 
-    if([[dataPart.contentTransferEncoding lowercaseString] isEqualToString:@"base64"] && 
-       [encryptedData isValidBase64Data])
-        encryptedData = [encryptedData decodeBase64];
-    else if([[dataPart.contentTransferEncoding lowercaseString] isEqualToString:@"quoted-printable"])
-        encryptedData = [encryptedData decodeQuotedPrintableForText:YES];
+    // Yosemite seems to already do the right thing in bodyData,
+    // so no need for use to do anything. Any they've removed decodeBase64 and isValidBase64Data
+    // from NSData.
+    if(![GPGMailBundle isYosemite]) {
+        if([[dataPart.contentTransferEncoding lowercaseString] isEqualToString:@"base64"] &&
+           [encryptedData isValidBase64Data])
+            encryptedData = [encryptedData decodeBase64];
+        else if([[dataPart.contentTransferEncoding lowercaseString] isEqualToString:@"quoted-printable"])
+            encryptedData = [encryptedData decodeQuotedPrintableForText:YES];
+    }
     
     // The message is definitely encrypted, otherwise this method would never
     // be entered, so set that flag.
@@ -864,28 +869,27 @@
 	// Sometimes decryption okay is issued even though a NODATA error occured.
 	BOOL success = gpgc.decryptionOkay && !error;
 	
-	// Check if this is a clear-signed message.
-	// Conditions: decryptionOkay == YES or encrypted data has no signature packets.
-	// If decryptedData length > 0 && !decryptionOkay signature packets are expected.
-	BOOL clearSigned = gpgc.decryptionOkay || ![decryptedData hasSignaturePacketsWithSignaturePacketsExpected:decryptedData.length > 0];
-	
+    // Check if this is a non-clear-signed message.
+    // Conditions: decryptionOkay == false and encrypted data has signature packets.
+    // If decryptedData length != 0 && !decryptionOkay signature packets are expected.
+    BOOL nonClearSigned = !gpgc.decryptionOkay && [decryptedData hasSignaturePacketsWithSignaturePacketsExpected:[decryptedData length] != 0 && !gpgc.decryptionOkay];
+    
 	// Let's reset the error if the message is not clear-signed,
 	// since error will be general error.
-	if (!clearSigned) {
+	if (nonClearSigned)
 		error = nil;
-	}
 	
-	// No error for decryption? Check the signatures for errors.
-	if (!error) {
-		// Decryption succeed, so set that status.
-		self.PGPDecrypted = clearSigned;
-		error = [self errorFromGPGOperation:GPG_OPERATION_VERIFICATION controller:gpgc];
-	}
-
-	// Part is encrypted, otherwise we wouldn't come here, so
-	// set that status.
-	self.PGPEncrypted = clearSigned;
-		
+    // Part is encrypted, otherwise we wouldn't come here, so
+    // set that status.
+    self.PGPEncrypted = nonClearSigned ? NO : YES;
+    
+    // No error for decryption? Check the signatures for errors.
+    if(!error) {
+        // Decryption succeed, so set that status.
+        self.PGPDecrypted = nonClearSigned ? NO : YES;
+        error = [self errorFromGPGOperation:GPG_OPERATION_VERIFICATION controller:gpgc];
+    }
+    
 	// Signatures found, set is signed status, also store the signatures.
 	NSArray *signatures = gpgc.signatures;
 	if (signatures.count) {
@@ -914,7 +918,7 @@
     // Last, store the error itself.
     self.PGPError = error;
     
-    if (!success && clearSigned)
+    if (!success && !nonClearSigned)
         return nil;
     
     return decryptedData;

@@ -57,12 +57,13 @@
 - (void)updateSecurityMethodHighlight {
     GMSecurityMethodAccessoryView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
     ComposeBackEnd *backEnd = ((MailDocumentEditor *)self).backEnd;
+    NSDictionary *securityProperties = ((ComposeBackEnd_GPGMail *)backEnd).securityProperties;
     
 	GPGMAIL_SECURITY_METHOD oldSecurityMethod = accessoryView.securityMethod;
 	
-    BOOL shouldEncrypt = [[backEnd getIvar:@"shouldEncrypt"] boolValue];
-    BOOL shouldSign = [[backEnd getIvar:@"shouldSign"] boolValue];
-	BOOL shouldSymmetric = [[backEnd getIvar:@"shouldSymmetric"] boolValue];
+    BOOL shouldEncrypt = [securityProperties[@"shouldEncrypt"] boolValue];
+    BOOL shouldSign = [securityProperties[@"shouldSign"] boolValue];
+	BOOL shouldSymmetric = [securityProperties[@"shouldSymmetric"] boolValue];
     
     GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
     if(((ComposeBackEnd_GPGMail *)backEnd).securityMethod)
@@ -99,16 +100,24 @@
 }
 
 - (void)setupSecurityMethodHintAccessoryView {
+    GMSecurityMethodAccessoryViewController *accessoryViewController = [[GMSecurityMethodAccessoryViewController alloc] init];
     GMSecurityMethodAccessoryView *accessoryView = [[GMSecurityMethodAccessoryView alloc] init];
     accessoryView.delegate = self;
     NSWindow *window = [self valueForKey:@"_window"];
-		
-	// Not longer used: if(((MailDocumentEditor *)self).isModal || ((MailDocumentEditor *)self).possibleFullScreenViewerParent)
-    if([NSApp mainWindow].styleMask & NSFullScreenWindowMask) // Only check the mein window to detect fullscreen.
-		[accessoryView configureForFullScreenWindow:window];
-    else
-        [accessoryView configureForWindow:window];
-                                                    
+	
+//    if([GPGMailBundle isYosemite]) {
+//        [accessoryViewController configureForWindow:window];
+//        [window addTitlebarAccessoryViewController:accessoryViewController];
+//        accessoryView = accessoryViewController.securityMethodView;
+//    }
+//    else {
+        // Not longer used: if(((MailDocumentEditor *)self).isModal || ((MailDocumentEditor *)self).possibleFullScreenViewerParent)
+        if([NSApp mainWindow].styleMask & NSFullScreenWindowMask) // Only check the mein window to detect fullscreen.
+            [accessoryView configureForFullScreenWindow:window];
+        else
+            [accessoryView configureForWindow:window];
+//    }
+    
     [self setIvar:@"SecurityMethodHintAccessoryView" value:accessoryView];
 }
 

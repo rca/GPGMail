@@ -29,12 +29,22 @@
 
 #import "WebDocumentGenerator+GPGMail.h"
 #import "MUIWebDocument.h"
+#import "MCMessage.h"
+#import "GPGMailBundle.h"
+#import "ConversationMember+GPGMail.h"
 #import "NSObject+LPDynamicIvars.h"
 
 @implementation WebDocumentGenerator_GPGMail
 
 - (void)MASetWebDocument:(MUIWebDocument *)webDocument {
-	id error = [(id)[(WebDocumentGenerator *)self message] getIvar:@"PGPMainError"];
+	/* On Yosemite, the message selector no longer exists, but is encapsulated in a conversation member object. */
+    MCMessage *message = nil;
+    if([self respondsToSelector:@selector(message)])
+        message = (MCMessage *)[(id)self message];
+    else if([GPGMailBundle isYosemite]) {
+        message = [(ConversationMember *)[(WebDocumentGenerator *)self valueForKey:@"_conversationMember"] originalMessage];
+    }
+    id error = [message getIvar:@"PGPMainError"];
 	[webDocument setParseError:error];
 	[self MASetWebDocument:webDocument];
 }

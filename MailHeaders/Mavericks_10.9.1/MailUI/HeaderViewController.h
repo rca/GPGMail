@@ -4,11 +4,8 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSViewController.h"
-
-#import "HeaderLayoutManagerDelegate.h"
-#import "NSTextStorageDelegate.h"
-#import "NSTokenAttachmentDelegate.h"
+#import "HeaderLayoutManagerDelegate-Protocol.h"
+#import "NSTokenAttachmentDelegate-Protocol.h"
 
 @class HeaderLayoutManager, HeaderTextContainer, HeaderTextView, HeaderView, NSButton, NSFont, NSImageView, NSLayoutConstraint, NSMutableDictionary, NSMutableSet, NSTextAttachment, NSTextField, NSView;
 

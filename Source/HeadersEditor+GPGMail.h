@@ -69,5 +69,9 @@
 - (void)updateSymmetricButton;
 
 - (void)_updateSecurityControls;
+- (void)updateSecurityControls;
+- (NSPopUpButton *)fromPopup;
+- (void)_setVisibilityForFromView:(BOOL)visible;
 
 @end
+

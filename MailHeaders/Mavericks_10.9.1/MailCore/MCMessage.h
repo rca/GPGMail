@@ -4,12 +4,26 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSObject.h"
-
-#import "MCMessageSortingInterface.h"
-#import "NSCopying.h"
+#import "MCMessageSortingInterface-Protocol.h"
+#import "MCMessageDataSource-Protocol.h"
+#import "CDStructures.h"
 
 @class NSArray, NSData, NSMutableSet, NSSet, NSString, NSUUID;
+
+#ifndef CDSTRUCT_ACCEFCCD
+typedef struct {
+    unsigned int colorHasBeenEvaluated:1;
+    unsigned int colorWasSetManually:1;
+    unsigned int redColor:8;
+    unsigned int greenColor:8;
+    unsigned int blueColor:8;
+    unsigned int loadingBody:1;
+    unsigned int firstUnused:2;
+    unsigned int isMarkedForOverwrite:1;
+    unsigned int unused:2;
+} CDStruct_accefccd;
+#define CDSTRUCT_ACCEFCCD 1
+#endif
 
 @interface MCMessage : NSObject <MCMessageSortingInterface, NSCopying>
 {

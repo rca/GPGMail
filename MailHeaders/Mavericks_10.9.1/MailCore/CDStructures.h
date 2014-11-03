@@ -8,21 +8,6 @@
 
 #pragma mark Named Structures
 
-struct CGPoint {
-    double _field1;
-    double _field2;
-};
-
-struct CGRect {
-    struct CGPoint _field1;
-    struct CGSize _field2;
-};
-
-struct CGSize {
-    double width;
-    double height;
-};
-
 struct MCMimeEnrichedState {
     unsigned int excerptLevel:8;
     unsigned int alignment:4;
@@ -31,21 +16,21 @@ struct MCMimeEnrichedState {
     unsigned int fixed:1;
     unsigned int underline:1;
     unsigned int fontDelta:16;
-    NSString *fontFamily;
-    NSColor *color;
+/*    NSString *fontFamily;*/
+/*    NSColor *color;*/
 };
 
 struct _MCMimeEnrichedWriterCommandStackEntry {
-    id _field1;
+/*    id _field1;*/
     unsigned long long _field2;
-    id _field3;
+/*    id _field3;*/
     struct _MCMimeEnrichedWriterCommandStackEntry *_field4;
 };
 
-struct _NSRange {
+/*struct _NSRange {
     unsigned long long location;
     unsigned long long length;
-};
+};*/
 
 struct __va_list_tag {
     unsigned int _field1;
@@ -68,14 +53,14 @@ struct sasl_secret {
 #pragma mark Typedef'd Structures
 
 typedef struct {
-    id _field1;
+/*    id _field1;*/
     unsigned int :1;
     unsigned int :1;
     unsigned int :1;
     unsigned int :2;
 } CDStruct_3441fd00;
 
-typedef struct {
+/*typedef struct {
     unsigned int colorHasBeenEvaluated:1;
     unsigned int colorWasSetManually:1;
     unsigned int redColor:8;
@@ -85,7 +70,7 @@ typedef struct {
     unsigned int firstUnused:2;
     unsigned int isMarkedForOverwrite:1;
     unsigned int unused:2;
-} CDStruct_accefccd;
+} CDStruct_accefccd;*/
 
 typedef struct {
     unsigned int reserved:27;

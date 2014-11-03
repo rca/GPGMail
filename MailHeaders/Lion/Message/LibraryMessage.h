@@ -9,6 +9,7 @@
 
 @class LibraryCalendarEvent, NSString;
 
+#ifndef CDSTRUCT_329
 typedef struct {
     unsigned int reserved:26;
     unsigned int hasCustomEncoding:1;
@@ -18,6 +19,8 @@ typedef struct {
     unsigned int isHTML:1;
     unsigned int isRich:1;
 } CDStruct_3292de3e;
+#define CDSTRUCT_329 1
+#endif
 
 #import "LibraryObject-Protocol.h"
 

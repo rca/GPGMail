@@ -45,7 +45,7 @@
 }
 
 - (void)positionAccessoryView:(NSView *)accessoryView offset:(NSPoint)offset {
-	NSView *themeFrame = [[self contentView] superview];
+    NSView *themeFrame = [[self contentView] superview];
     NSRect c = [themeFrame frame];	// c for "container"
     NSRect aV = [accessoryView frame];	// aV for "accessory view"
     

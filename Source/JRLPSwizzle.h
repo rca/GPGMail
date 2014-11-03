@@ -10,4 +10,5 @@
 + (BOOL)jrlp_addClassMethod:(SEL)selector fromClass:(Class)class error:(NSError **)error;
 + (BOOL)jrlp_addMethod:(SEL)selector fromClass:(Class)class error:(NSError **)error;
 + (BOOL)jrlp_addMethodsFromClass:(Class)aClass error:(NSError **)error;
++ (BOOL)jrlp_swizzleMethod:(SEL)selector newMethodName:(SEL)newMethodName withBlock:(id)block error:(NSError **)error;
 @end

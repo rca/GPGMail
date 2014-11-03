@@ -75,6 +75,7 @@ typedef struct {
     unsigned int :2;
 } CDStruct_3441fd00;
 
+#ifndef CDStruct_accefccd
 typedef struct {
     unsigned int colorHasBeenEvaluated:1;
     unsigned int colorWasSetManually:1;
@@ -86,6 +87,8 @@ typedef struct {
     unsigned int isMarkedForOverwrite:1;
     unsigned int unused:2;
 } CDStruct_accefccd;
+#define CDStruct_accefccd 1
+#endif
 
 typedef struct {
     unsigned int reserved:27;

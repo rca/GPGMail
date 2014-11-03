@@ -42,9 +42,36 @@
 
 @implementation ComposeBackEnd_GPGMail
 
+
+- (id)MAInitCreatingDocumentEditor:(BOOL)createDocumentEditor {
+    id ret = [self MAInitCreatingDocumentEditor:createDocumentEditor];
+    
+    dispatch_queue_t securityPropertiesQueue = dispatch_queue_create("org.gpgtools.GPGMail.securityPropertiesQueue", DISPATCH_QUEUE_CONCURRENT);
+    
+    [ret setIvar:@"GMSecurityPropertiesQueue" value:CFBridgingRelease(securityPropertiesQueue)];
+    
+    return ret;
+}
+
+- (void)MASetKnowsCanSign:(BOOL)knowsCanSign {
+    // In Yosemite, this is reset if the sender changes,
+    // so let's also reset GMKnowsCanSign.
+    if(knowsCanSign == NO) {
+        [self updateSecurityProperties:@{@"GMKnowsCanSign": @NO}];
+        //[self setIvar:@"GMKnowsCanSign" value:@(NO)];
+    }
+    
+    [self MASetKnowsCanSign:knowsCanSign];
+}
+
 - (void)MASetEncryptIfPossible:(BOOL)encryptIfPossible {
-    if([self ivarExists:@"SetEncrypt"]) {
-        encryptIfPossible = [[self getIvar:@"SetEncrypt"] boolValue];
+    NSLog(@"[Main thread: %@] - Set Encrypt: %@", [NSThread isMainThread] ? @"YES" : @"NO", encryptIfPossible ? @"YES" : @"NO");
+    NSDictionary *securityProperties = self.securityProperties;
+//    if([self ivarExists:@"SetEncrypt"]) {
+//        encryptIfPossible = [[self getIvar:@"SetEncrypt"] boolValue];
+//    }
+    if(securityProperties[@"SetEncrypt"]) {
+        encryptIfPossible = [securityProperties[@"SetEncrypt"] boolValue];
     }
     
     // Force Encrypt contains the user choice.
@@ -52,27 +79,39 @@
     // displaying the correct image, so it has to
     // be reset, if ForceSign is set, otherwise the wrong
     // image could be shown.
-    if([self ivarExists:@"ForceEncrypt"]) {
-        encryptIfPossible = [[self getIvar:@"ForceEncrypt"] boolValue];
-        [self setIvar:@"SetEncrypt" value:@(encryptIfPossible)];
+//    if([self ivarExists:@"ForceEncrypt"]) {
+//        encryptIfPossible = [[self getIvar:@"ForceEncrypt"] boolValue];
+//        [self setIvar:@"SetEncrypt" value:@(encryptIfPossible)];
+//    }
+    if(securityProperties[@"ForceEncrypt"]) {
+        encryptIfPossible = [securityProperties[@"ForceEncrypt"] boolValue];
+        [self updateSecurityProperties:@{@"SetEncrypt": @(encryptIfPossible)}];
     }
     // If SetEncrypt and CanEncrypt don't match, use CanEncrypt,
     // since that's more important.
-    if(![[self getIvar:@"EncryptIsPossible"] boolValue])
+//    if(![[self getIvar:@"EncryptIsPossible"] boolValue])
+//        encryptIfPossible = NO;
+    if(![securityProperties[@"EncryptIsPossible"] boolValue])
         encryptIfPossible = NO;
     
-    [self setIvar:@"shouldEncrypt" value:@(encryptIfPossible)];
+//    [self setIvar:@"shouldEncrypt" value:@(encryptIfPossible)];
+    [self updateSecurityProperties:@{@"shouldEncrypt": @(encryptIfPossible)}];
+    
     [self MASetEncryptIfPossible:encryptIfPossible];
     [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
-	
 	
 	HeadersEditor_GPGMail *headersEditor = ((MailDocumentEditor *)[((ComposeBackEnd *)self) delegate]).headersEditor;
 	[headersEditor updateSymmetricButton];
 }
 
 - (void)MASetSignIfPossible:(BOOL)signIfPossible {
-    if([self ivarExists:@"SetSign"]) {
-        signIfPossible = [[self getIvar:@"SetSign"] boolValue];
+//    if([self ivarExists:@"SetSign"]) {
+//        signIfPossible = [[self getIvar:@"SetSign"] boolValue];
+//    }
+    NSDictionary *securityProperties = self.securityProperties;
+    NSMutableDictionary *updatedSecurityProperties = [@{} mutableCopy];
+    if(securityProperties[@"SetSign"]) {
+        signIfPossible = [securityProperties[@"SetSign"] boolValue];
     }
 
     // Force Sign contains the user choice.
@@ -80,17 +119,26 @@
     // displaying the correct image, so it has to
     // be reset, if ForceSign is set, otherwise the wrong
     // image could be shown.
-    if([self ivarExists:@"ForceSign"]) {
-        signIfPossible = [[self getIvar:@"ForceSign"] boolValue];
-        [self setIvar:@"SetSign" value:@(signIfPossible)];
+//    if([self ivarExists:@"ForceSign"]) {
+//        signIfPossible = [[self getIvar:@"ForceSign"] boolValue];
+//        [self setIvar:@"SetSign" value:@(signIfPossible)];
+//    }
+    if(securityProperties[@"ForceSign"]) {
+        signIfPossible = [securityProperties[@"ForceSign"] boolValue];
+        updatedSecurityProperties[@"SetSign"] = @(signIfPossible);
+//        [self updateSecurityProperties:@{@"SetSign": @(signIfPossible)}];
     }
     
     // If SetSign and CanSign don't match, use CanSign,
     // since that's more important.
-    if(![[self getIvar:@"SignIsPossible"] boolValue])
+//    if(![[self getIvar:@"SignIsPossible"] boolValue])
+//        signIfPossible = NO;
+    if(![securityProperties[@"SignIsPossible"] boolValue])
         signIfPossible = NO;
     
-    [self setIvar:@"shouldSign" value:@(signIfPossible)];
+    //    [self setIvar:@"shouldSign" value:@(signIfPossible)];
+    updatedSecurityProperties[@"shouldSign"] = @(signIfPossible);
+    [self updateSecurityProperties:updatedSecurityProperties];
     [self MASetSignIfPossible:signIfPossible];
     [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
 }
@@ -140,13 +188,14 @@
         return ret;
     }
 
+    NSDictionary *securityProperties = self.securityProperties;
     // The encryption part is a little tricky that's why
     // Mail.app is gonna do the heavy lifting with our GPG encryption method
     // instead of the S/MIME one.
     // After that's done, we only have to extract the encrypted part.
     BOOL shouldPGPEncrypt = shouldEncrypt;
     BOOL shouldPGPSign = shouldSign;
-	BOOL shouldPGPSymmetric = [[self getIvar:@"shouldSymmetric"] boolValue];
+	BOOL shouldPGPSymmetric = [securityProperties[@"shouldSymmetric"] boolValue];
     BOOL shouldPGPInlineSign = NO;
     BOOL shouldPGPInlineEncrypt = NO;
     BOOL shouldPGPInlineSymmetric = NO;
@@ -162,7 +211,7 @@
     
 	// If this message is a calendar event which is being sent from iCal without user interaction (ForceSign and ForceEncrypt are NOT set),
 	// it should never be encrypted nor signed.
-	if(![self ivarExists:@"ForceSign"] && ![self ivarExists:@"ForceEncrypt"] &&
+	if(!securityProperties[@"ForceSign"] && !securityProperties[@"ForceEncrypt"] &&
 	   [self sentActionInvokedFromiCalWithContents:contents]) {
 		shouldPGPEncrypt = NO;
 		shouldPGPSign = NO;
@@ -239,8 +288,6 @@
 			[plainString replaceCharactersInRange:range.rangeValue withString:@""];
 		}
 	}
-	
-	
     
 	// This is later checked, to determine the real isDraft value.
 	[contents setIvar:@"IsDraft" value:@(isDraft)];
@@ -438,15 +485,17 @@
 		BOOL shouldSign = NO;
 		BOOL shouldEncrypt = NO;
 		
-		if([self ivarExists:@"ForceSign"])
-			shouldSign = [[self getIvar:@"ForceSign"] boolValue];
+        NSDictionary *securityProperties = self.securityProperties;
+        
+		if(securityProperties[@"ForceSign"])
+			shouldSign = [securityProperties[@"ForceSign"] boolValue];
 		else
-			shouldSign = [[self getIvar:@"shouldSign"] boolValue];
+			shouldSign = [securityProperties[@"shouldSign"] boolValue];
 		
-		if([self ivarExists:@"ForceEncrypt"])
-			shouldEncrypt = [[self getIvar:@"ForceEncrypt"] boolValue];
+		if(securityProperties[@"ForceEncrypt"])
+			shouldEncrypt = [securityProperties[@"ForceEncrypt"] boolValue];
 		else
-			shouldEncrypt = [[self getIvar:@"shouldEncrypt"] boolValue];
+			shouldEncrypt = [securityProperties[@"shouldEncrypt"] boolValue];
 		
 		
 		[headers setHeader:shouldEncrypt ? @"YES" : @"NO" forKey:@"x-should-pgp-encrypt"];
@@ -808,8 +857,9 @@
     
     DebugLog(@"Can PGP encrypt to recipients: %@? %@", mutableRecipients, canPGPEncrypt ? @"YES" : @"NO");
     
-    BOOL canSMIMESign = [[bself getIvar:@"CanSMIMESign"] boolValue];
-    BOOL canPGPSign = [[bself getIvar:@"CanPGPSign"] boolValue];
+    NSDictionary *securityProperties = self.securityProperties;
+    BOOL canSMIMESign = [securityProperties[@"CanSMIMESign"] boolValue];
+    BOOL canPGPSign = [securityProperties[@"CanPGPSign"] boolValue];
     
     GPGMAIL_SIGN_FLAG signFlags = 0;
     if(canPGPSign)
@@ -876,17 +926,40 @@
         }
     }
     
-    [bself setIvar:@"SetEncrypt" value:@(securityOptions.shouldEncrypt)];
-    [bself setIvar:@"SetSign" value:@(securityOptions.shouldSign)];
-    [bself setIvar:@"EncryptIsPossible" value:@(canEncrypt)];
-    [bself setIvar:@"SignIsPossible" value:@(canSign)];
-	
-	if ([[GPGOptions sharedOptions] boolForKey:@"AllowSymmetricEncryption"]) {
-		[bself setIvar:@"SymmetricIsPossible" value:@([GPGMailBundle gpgMailWorks])];
-		// Uncomment when securityOptions.shouldSymmetric is implemented.
-		//[self setIvar:@"shouldSymmetric" value:@(securityOptions.shouldSymmetric)];
-	}
+    NSMutableDictionary *updatedSecurityProperties = [@{} mutableCopy];
     
+    updatedSecurityProperties[@"SecurityOptions"] = securityOptions;
+    // On Yosemite, there's a new method which is responsible for handling the correct
+    // button state -[HeadersEditor setMessageIsToBeEncrypted:].
+    // This method is called, after the check for canEncrypt is run.
+    // Since canEncrypt checks the preferences the user has set, SetEncrypt
+    // is set to Yes, if EncryptNewMessagesByDefault is enabled.
+    // The problem is, in that case messageIsToBeEncrypted is also set
+    // to true, even though the message can't be encrypted yet if no recipients
+    // are set. Due to that wrong state, the buttons are later not properly
+    // updated, when recipients are actually added and the test can be properly run.
+    // So if no recipients are available, we simply don't set SetEncrypt and everything
+    // should be fine. We might consider doing that on other OS X versions as well.
+    if([recipients count] > 0 || (![recipients count] && ![GPGMailBundle isYosemite]))
+        updatedSecurityProperties[@"SetEncrypt"] = @(securityOptions.shouldEncrypt);
+        //        [bself setIvar:@"SetEncrypt" value:@(securityOptions.shouldEncrypt)];
+    
+    updatedSecurityProperties[@"SetSign"] = @(securityOptions.shouldSign);
+    updatedSecurityProperties[@"EncryptIsPossible"] = @(canEncrypt);
+    updatedSecurityProperties[@"SignIsPossible"] = @(canSign);
+    
+//    [bself setIvar:@"SetSign" value:@(securityOptions.shouldSign)];
+//    [bself setIvar:@"EncryptIsPossible" value:@(canEncrypt)];
+//    [bself setIvar:@"SignIsPossible" value:@(canSign)];
+    
+    if ([[GPGOptions sharedOptions] boolForKey:@"AllowSymmetricEncryption"]) {
+        updatedSecurityProperties[@"SymmetricIsPossible"] = @([GPGMailBundle gpgMailWorks]);
+//        [bself setIvar:@"SymmetricIsPossible" value:@([GPGMailBundle gpgMailWorks])];
+            // Uncomment when securityOptions.shouldSymmetric is implemented.
+            //[self setIvar:@"shouldSymmetric" value:@(securityOptions.shouldSymmetric)];
+    }
+
+    [self updateSecurityProperties:updatedSecurityProperties];
     
     return canEncrypt;
 }
@@ -904,10 +977,28 @@
     // For some reason, we're running into zombies if we don't do
     // this.
     BOOL canSMIMESign = [bself MACanSignFromAddress:address];
+    NSMutableDictionary *updatedSecurityProperties = [@{} mutableCopy];
+    updatedSecurityProperties[@"CanSMIMESign"] = @(canSMIMESign);
     
     DebugLog(@"Can sign S/MIME from address: %@? %@", address, canSMIMESign ? @"YES" : @"NO");
     
-    BOOL canPGPSign = [[GPGMailBundle sharedInstance] canSignMessagesFromAddress:[address gpgNormalizedEmail]];
+    // In Yosemite there's a new property on the backEnd which determines if the canSignMessagesFromAddress
+    // check was already run and if so, doesn't re-run it for the same message.
+    // We will mimick that here.
+    NSDictionary *securityProperties = self.securityProperties;
+    BOOL canPGPSign = [securityProperties[@"CanPGPSign"] boolValue];
+//    if(![self ivarExists:@"GMKnowsCanSign"] || ![[self getIvar:@"GMKnowsCanSign"] boolValue]) {
+//        canPGPSign = [[GPGMailBundle sharedInstance] canSignMessagesFromAddress:[address gpgNormalizedEmail]];
+//        [bself setIvar:@"CanPGPSign" value:@(canPGPSign)];
+//        [bself setIvar:@"GMKnowsCanSign" value:@(YES)];
+//    }
+    if(!securityProperties[@"GMKnowsCanSign"] || ![securityProperties[@"GMKnowsCanSign"] boolValue]) {
+        canPGPSign = [[GPGMailBundle sharedInstance] canSignMessagesFromAddress:[address gpgNormalizedEmail]];
+        updatedSecurityProperties[@"CanPGPSign"] = @(canPGPSign);
+        updatedSecurityProperties[@"GMKnowsCanSign"] = @(YES);
+    }
+    
+    [self updateSecurityProperties:updatedSecurityProperties];
     
     DebugLog(@"Can sign PGP from address: %@? %@", address, canPGPSign ? @"YES" : @"NO");
     
@@ -916,8 +1007,6 @@
     // only Apple's implementation.
     // So to avoid this, always return YES here if the security method is not already set.
     // The correct status is stored for later lookup in canEncrypt.
-    [bself setIvar:@"CanPGPSign" value:@(canPGPSign)];
-    [bself setIvar:@"CanSMIMESign" value:@(canSMIMESign)];
     return YES;
 }
 
@@ -941,6 +1030,45 @@
     return nonEligibleRecipients;
 }
 
+- (NSDictionary *)securityProperties {
+    __block NSDictionary *_securityProperties = nil;
+    dispatch_queue_t securityPropertiesQueue = (dispatch_queue_t)CFBridgingRetain([self getIvar:@"GMSecurityPropertiesQueue"]);
+    ComposeBackEnd_GPGMail __weak *weakSelf = self;
+    dispatch_sync(securityPropertiesQueue, ^{
+        ComposeBackEnd_GPGMail __strong *strongSelf = weakSelf;
+        if(![strongSelf ivarExists:@"GMSecurityProperties"])
+            [strongSelf setIvar:@"GMSecurityProperties" value:[NSMutableDictionary new]];
+        
+        _securityProperties = [strongSelf getIvar:@"GMSecurityProperties"];
+    });
+    return _securityProperties;
+}
+
+- (void)updateSecurityProperties:(NSDictionary *)updates {
+    NSMutableDictionary *securityProperties = self.securityProperties;
+    
+    NSMutableDictionary *propertiesToUpdate = [@{} mutableCopy];
+    
+    for(id key in updates) {
+        if([updates[key] isKindOfClass:[NSNull class]])
+            [securityProperties removeObjectForKey:key];
+        else
+            propertiesToUpdate[key] = updates[key];
+    }
+    
+    [securityProperties addEntriesFromDictionary:propertiesToUpdate];
+    self.securityProperties = securityProperties;
+}
+
+- (void)setSecurityProperties:(NSDictionary *)securityProperties {
+    dispatch_queue_t securityPropertiesQueue = (dispatch_queue_t)CFBridgingRetain([self getIvar:@"GMSecurityPropertiesQueue"]);
+    ComposeBackEnd_GPGMail __weak *weakSelf = self;
+    dispatch_barrier_async(securityPropertiesQueue, ^{
+        ComposeBackEnd_GPGMail __strong *strongSelf = weakSelf;
+        [strongSelf setIvar:@"GMSecurityProperties" value:securityProperties];
+    });
+}
+
 - (BOOL)wasInitialized {
     return [[self getIvar:@"WasInitialized"] boolValue];
 }
@@ -950,19 +1078,28 @@
 }
 
 - (GPGMAIL_SECURITY_METHOD)securityMethod {
-    return [[self getIvar:@"SecurityMethod"] unsignedIntValue];
+    return [self.securityProperties[@"SecurityMethod"] unsignedIntValue];
 }
 
 - (void)setSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
-    [self setIvar:@"SecurityMethod" value:@((unsigned int)securityMethod)];
     // Reset SetSign, SetEncrypt, SignIsPossible, EncryptIsPossible, shouldSign, shouldEncrypt.
-    [self removeIvar:@"SetSign"];
-    [self removeIvar:@"SetEncrypt"];
-    [self removeIvar:@"SignIsPossible"];
-    [self removeIvar:@"EncryptIsPossible"];
-    [self removeIvar:@"shouldSign"];
-    [self removeIvar:@"shouldEncrypt"];
-    [self removeIvar:@"shouldSymmetric"];
+    [self updateSecurityProperties:@{@"SecurityMethod": @((unsigned int)securityMethod),
+                                     @"SetSign": [NSNull null],
+                                     @"SetEncrypt": [NSNull null],
+                                     @"SignIsPossible": [NSNull null],
+                                     @"EncryptIsPossible": [NSNull null],
+                                     @"shouldSign": [NSNull null],
+                                     @"shouldEncrypt": [NSNull null],
+                                     @"shouldSymmetric": [NSNull null]}];
+//    [self setIvar:@"SecurityMethod" value:@((unsigned int)securityMethod)];
+//    // Reset SetSign, SetEncrypt, SignIsPossible, EncryptIsPossible, shouldSign, shouldEncrypt.
+//    [self removeIvar:@"SetSign"];
+//    [self removeIvar:@"SetEncrypt"];
+//    [self removeIvar:@"SignIsPossible"];
+//    [self removeIvar:@"EncryptIsPossible"];
+//    [self removeIvar:@"shouldSign"];
+//    [self removeIvar:@"shouldEncrypt"];
+//    [self removeIvar:@"shouldSymmetric"];
 
 	
 	// Don't reset ForceEncrypt and ForceSign. User preference has to stick. ALWAYS!
@@ -978,20 +1115,29 @@
 }
 
 - (void)setGuessedSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
-    [self setIvar:@"GuessedSecurityMethod" value:@(securityMethod)];
-    [self removeIvar:@"SetSign"];
-    [self removeIvar:@"SetEncrypt"];
-    [self removeIvar:@"SignIsPossible"];
-    [self removeIvar:@"EncryptIsPossible"];
-    [self removeIvar:@"shouldSign"];
-    [self removeIvar:@"shouldEncrypt"];
-    [self removeIvar:@"shouldSymmetric"];
+    [self updateSecurityProperties:@{@"GuessedSecurityMethod": @((unsigned int)securityMethod),
+                                     @"SetSign": [NSNull null],
+                                     @"SetEncrypt": [NSNull null],
+                                     @"SignIsPossible": [NSNull null],
+                                     @"EncryptIsPossible": [NSNull null],
+                                     @"shouldSign": [NSNull null],
+                                     @"shouldEncrypt": [NSNull null],
+                                     @"shouldSymmetric": [NSNull null]}];
+//    [self setIvar:@"GuessedSecurityMethod" value:@(securityMethod)];
+//    [self removeIvar:@"SetSign"];
+//    [self removeIvar:@"SetEncrypt"];
+//    [self removeIvar:@"SignIsPossible"];
+//    [self removeIvar:@"EncryptIsPossible"];
+//    [self removeIvar:@"shouldSign"];
+//    [self removeIvar:@"shouldEncrypt"];
+//    [self removeIvar:@"shouldSymmetric"];
 	
 	// Don't reset ForceEncrypt and ForceSign. User preference has to stick. ALWAYS!
 }
 
 - (GPGMAIL_SECURITY_METHOD)guessedSecurityMethod {
-    return (GPGMAIL_SECURITY_METHOD)[[self getIvar:@"GuessedSecurityMethod"] unsignedIntegerValue];
+    return (GPGMAIL_SECURITY_METHOD)[self.securityProperties[@"GuessedSecurityMethod"] unsignedIntegerValue];
+//    return [[self getIvar:@"GuessedSecurityMethod"] unsignedIntegerValue];
 }
 
 - (BOOL)userDidChooseSecurityMethod {

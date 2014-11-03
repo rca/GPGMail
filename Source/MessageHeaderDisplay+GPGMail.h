@@ -72,8 +72,19 @@
 
 @end
 
+@interface MessageHeaderDisplay_GPGMail (NotImplemented)
+
+/**
+  This method no longer exists under Yosemite, but we need to make sure it's defined, otherwise
+  we'll have to deal with compiler errors.
+ */
+- (void)_updateDetailsButton;
+
+@end
+
 @interface NSAlert (NotImplemented)
 
++ (id)alertForError:(id)error defaultButton:(id)defaultButton alternateButton:(id)alternateButton otherButton:(id)otherButton;
 + (id)alertForError:(id)arg1 firstButton:(id)arg2 secondButton:(id)arg3 thirdButton:(id)arg4;
 
 

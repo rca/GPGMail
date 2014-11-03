@@ -154,6 +154,26 @@
     return [object_getClass(self) jrlp_addClassMethod:selector fromClass:class error:error];
 }
 
-
++ (BOOL)jrlp_swizzleMethod:(SEL)selector newMethodName:(SEL)newMethodName withBlock:(id)block error:(NSError **)error {
+    NSAssert(self && selector && newMethodName && block, @"Pass the correct arguments");
+    
+    if([self respondsToSelector:newMethodName])
+        return YES;
+    
+    Method origMethod = class_getInstanceMethod(self, selector);
+    
+    // Add the new method.
+    IMP impl = imp_implementationWithBlock(block);
+    if(!class_addMethod(self, newMethodName, impl, method_getTypeEncoding(origMethod))) {
+        SetNSError(error, @"Not able to swizzle method %@ on class %@", NSStringFromSelector(selector), [self className]);
+        return NO;
+    }
+    else {
+        Method newMethod = class_getInstanceMethod(self, newMethodName);
+        method_exchangeImplementations(origMethod, newMethod);
+    }
+    
+    return YES;
+}
 
 @end

@@ -42,6 +42,14 @@
 
 @end
 
+@interface GMSecurityMethodAccessoryViewController : NSTitlebarAccessoryViewController
+
+@property (nonatomic, strong) GMSecurityMethodAccessoryView *securityMethodView;
+
+- (void)configureForWindow:(NSWindow *)window;
+
+@end
+
 @interface GMSecurityMethodAccessoryView : NSView <NSMenuDelegate> {
     BOOL _fullscreen;
     BOOL _active;

@@ -253,19 +253,47 @@
     return @{
              @"HeadersEditor": @{
                      @"selectors": @{
-                             @"replaced": @[
+                             @"renamed": @[
                                      @[@"updateSecurityControls",
                                        @"_updateSecurityControls"
-                                     ],
-                                     @[
-                                       @"_updateFromAndSignatureControls:",
-                                       @"_updateFromControl"]
+                                     ]
                                     
                              ],
                              @"removed": @[
                                      @"_updateSignButtonToolTip",
                                      @"_updateEncryptButtonToolTip",
-                                     @"toggleDetails"
+                                     @"toggleDetails",
+                                     @"_updateFromAndSignatureControls:"
+                            ],
+                            @"added": @[
+                                     @"_updateFromControl",
+                                     @"setMessageIsToBeEncrypted:",
+                                     @"setMessageIsToBeSigned:",
+                                     @"setCanSign:",
+                                     @"setCanEncrypt:"
+                            ]
+                     }
+             },
+             @"ComposeBackEnd": @{
+                     @"selectors": @{
+                            @"added": @[
+                                    @"setCanSign:",
+                                    @"setKnowsCanSign:",
+                                    @"initCreatingDocumentEditor:"
+                            ]
+                     }
+             },
+             @"HeaderViewController": @{
+                     @"selectors": @{
+                            @"removed": @[
+                                @"_displayStringForSecurityKey"
+                            ]
+                     }
+             },
+             @"ConversationMember": @{
+                     @"selectors": @{
+                            @"removed": @[
+                                @"_reloadSecurityProperties"
                             ]
                      }
              }
@@ -322,8 +350,11 @@
 				for(id selector in hook[@"selectors"][action]) {
 					if([action isEqualToString:@"added"])
 						[(NSMutableArray *)hooks[class] addObject:selector];
-					else if([action isEqualToString:@"removed"])
-						[(NSMutableArray *)hooks[class] removeObject:selector];
+                    else if([action isEqualToString:@"removed"]) {
+                        NSMutableArray *tempHooks = [hooks[class] mutableCopy];
+                        [tempHooks removeObject:selector];
+                        hooks[class] = tempHooks;
+                    }
 					else if([action isEqualToString:@"replaced"]) {
 						[(NSMutableArray *)hooks[class] removeObject:selector[0]];
 						[(NSMutableArray *)hooks[class] addObject:selector[1]];
@@ -430,8 +461,8 @@
 			if(![mailClass jrlp_swizzleMethod:selector withMethod:extensionSelector error:&error]) {
                 // If that didn't work, try to add as class method.
                 if(![mailClass jrlp_swizzleClassMethod:selector withClassMethod:extensionSelector error:&error])
-                    NSLog(@"WARNING: %@ doesn't respond to selector %@ - %@", NSStringFromClass(mailClass),
-						  NSStringFromSelector(selector), error);
+                    NSLog(@"WARNING: %@ doesn't respond to selector %@", NSStringFromClass(mailClass),
+						  NSStringFromSelector(selector));
             }
 		}
 	}

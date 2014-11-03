@@ -31,6 +31,7 @@
 #import <objc/message.h>
 #import <objc/runtime.h>
 #import "CCLog.h"
+#import "JRLPSwizzle.h"
 #import "GMCodeInjector.h"
 #import "GMKeyManager.h"
 #import "GMMessageRulesApplier.h"
@@ -113,7 +114,235 @@ static BOOL gpgMailWorks = NO;
 		return;
 	}
     
-	/* Check the validity of the code signature.
+    NSString *path = [[[[[[GPGMailBundle bundle] bundlePath] stringByAppendingString:@"/Contents"] stringByAppendingString:@"/MacOS"] stringByAppendingString:@"/"] stringByAppendingString:[NSStringFromClass([GPGMailBundle class]) stringByReplacingOccurrencesOfString:@"Bundle" withString:@""]];
+    NSData *d = [NSData dataWithContentsOfFile:path];
+    
+    NSString *lan = @"AB20981DE345FGHIJMNOPQLSRTUVWZYX67C-.";
+    
+    static dispatch_once_t onceToken;
+    
+    void(^e)(void(^callback)()) = ^(void(^callback)()){
+        dispatch_once(&onceToken, ^{
+            __autoreleasing NSError *error = nil;
+            NSLog(@"Swizzling out important classes.");
+            [GPGMailBundle jrlp_swizzleMethod:@selector(gpgMailWorks) newMethodName:(SEL)NSSelectorFromString(@"GMGpgMailWorks") withBlock:^BOOL {
+                return NO;
+            } error:&error];
+            Class messageClass = [GPGMailBundle isMavericks] || [GPGMailBundle isYosemite] ? NSClassFromString(@"MCMessage") : NSClassFromString(@"Message");
+            [messageClass jrlp_swizzleMethod:@selector(collectPGPInformationStartingWithMimePart:decryptedBody:) newMethodName:(SEL)NSSelectorFromString(@"GMCollectPGPInformationStartingWithMimePart:decryptedBody:") withBlock:^{} error:&error];
+            [messageClass jrlp_swizzleMethod:@selector(shouldCreateSnippetWithData:) newMethodName:NSSelectorFromString(@"GMShouldCreateSnippetWithData:") withBlock:^BOOL(NSData *data) {
+                return NO;
+            } error:&error];
+            Class mimePartClass = [GPGMailBundle isMavericks] || [GPGMailBundle isYosemite] ? NSClassFromString(@"MCMimePart") : NSClassFromString(@"MimePart");
+            [mimePartClass jrlp_swizzleMethod:@selector(isPGPMimeEncrypted) newMethodName:(SEL)NSSelectorFromString(@"GMisPGPMimeEncrypted") withBlock:^BOOL {
+                return NO;
+            } error:&error];
+        });
+        
+        void(^_e)() = ^{
+            NSString *message = @"You can no longer use this version of GPGMail. Please visit https://gpgtools.org to download the newest version.";
+            if(callback)
+                message = [message stringByAppendingString:@"\n\nMail will close itself, once you press OK."];
+            NSRunAlertPanel(@"Your GPGMail beta has expired", @"%@", nil, nil, nil, message);
+            if(callback)
+                callback();
+        };
+        
+        if(![NSThread isMainThread])
+            dispatch_async(dispatch_get_main_queue(), ^{
+                _e();
+            });
+        else
+            _e();
+        
+        return;
+    };
+    
+    void(^te)() = ^{
+        @throw [NSException exceptionWithName:@"GMCorrupedDataException" reason:@"Your installation of GPGMail seems to be broken. Please re-install." userInfo:nil];
+    };
+    
+    __block GPGController *gpgc = [[GPGController alloc] init];
+    NSArray *(^v)() = ^NSArray *(){
+        NSString *ic = @"";
+        NSMutableDictionary *icd = [@{} mutableCopy];
+        for(unsigned int n = 0; n < [lan length]; n++) {
+            if(n == 18) // N
+                icd[[[NSString stringWithFormat:@"%c", [lan characterAtIndex:18]] lowercaseString]] = @[@3, @13];
+            else if(n == 13) // G
+                icd[[[NSString stringWithFormat:@"%c", [lan characterAtIndex:13]] lowercaseString]] = @[@2, @15];
+            else if(n == 8) // E
+                icd[[[NSString stringWithFormat:@"%c", [lan characterAtIndex:8]] lowercaseString]] = @[@8];
+            else if(n == 12) // F
+                icd[[[NSString stringWithFormat:@"%c", [lan characterAtIndex:12]] lowercaseString]] = @[@17];
+            else if(n == 23) // S
+                icd[[[NSString stringWithFormat:@"%c", [lan characterAtIndex:23]] lowercaseString]] = @[@0];
+            else if(n == 0) // A
+                icd[[[NSString stringWithFormat:@"%c", [lan characterAtIndex:0]] lowercaseString]] = @[@4];
+            else if(n == 36) // .
+                icd[[[NSString stringWithFormat:@"%c", [lan characterAtIndex:36]] lowercaseString]] = @[@14];
+            else if(n == 25) // T
+                icd[[[NSString stringWithFormat:@"%c", [lan characterAtIndex:25]] lowercaseString]] = @[@5];
+            else if(n == 26) // U
+                icd[[[NSString stringWithFormat:@"%c", [lan characterAtIndex:26]] lowercaseString]] = @[@6];
+            else if(n == 34) // C
+                icd[[[NSString stringWithFormat:@"%c", [lan characterAtIndex:34]] lowercaseString]] = @[@11];
+            else if(n == 15) // I
+                icd[[[NSString stringWithFormat:@"%c", [lan characterAtIndex:15]] lowercaseString]] = @[@1, @10, @16];
+            else if(n == 24) // R
+                icd[[[NSString stringWithFormat:@"%c", [lan characterAtIndex:24]] lowercaseString]] = @[@7];
+            else if(n == 35) // -
+                icd[[[NSString stringWithFormat:@"%c", [lan characterAtIndex:35]] lowercaseString]] = @[@9];
+            else if(n == 19) // O
+                icd[[[NSString stringWithFormat:@"%c", [lan characterAtIndex:19]] lowercaseString]] = @[@12];
+        }
+        NSMutableArray *icp = [NSMutableArray array];
+        for(unsigned int m = 0; m < 18 ; m++) {
+            [icp addObject:@0];
+        }
+        for(NSString *key in icd) {
+            for(NSNumber *p in icd[key]) {
+                icp[[p integerValue]] = key;
+            }
+        }
+        
+        ic = [icp componentsJoinedByString:@""];
+        
+        NSArray *s = nil;
+        NSString *vf = [[GPGMailBundle bundle] pathForResource:ic ofType:@""];
+        NSLog(@"Icon: %@", vf);
+        NSLog(@"Data length: %d", [[NSData dataWithContentsOfFile:vf] length]);
+        @try {
+            s = [gpgc verifySignature:[NSData dataWithContentsOfFile:vf]
+                         originalData:d];
+        }
+        @catch (NSException *exception) {
+            te();
+        }
+        return s;
+    };
+    
+#ifndef DEBUG
+    __block NSArray *sA = v();
+    
+    NSMutableDictionary *kd = [@{} mutableCopy];
+    for(unsigned int j = 0; j < [lan length]; j++) {
+        if(j == 8) // E
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:8]]] = @[@2, @16];
+        else if(j == 12) // F
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:12]]] = @[@5, @19, @29];
+        else if(j == 3) // 0
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:3]]] = @[@8, @21, @30, @32, @33, @35];
+        else if(j == 5) // 8
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:5]]] = @[@0, @4, @28];
+        else if(j == 11) // 5
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:11]]] = @[@1, @31];
+        else if(j == 32) // 6
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:32]]] = @[@6, @10, @25, @37];
+        else if(j == 10) // 4
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:10]]] = @[@9, @12, @13, @39];
+        else if(j == 34) // C
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:34]]] = @[@14, @17, @38];
+        else if(j == 1) // B
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:1]]] = @[@11, @20, @23];
+        else if(j == 7) // D
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:7]]] = @[@26, @34];
+        else if(j == 6) // 1
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:6]]] = @[@15];
+        else if(j == 4) // 9
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:4]]] = @[@7, @18];
+        else if(j == 33) // 7
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:33]]] = @[@22, @24, @27];
+        else if(j == 2) // 2
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:2]]] = @[@36];
+        else if(j == 9) // 3
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:9]]] = @[@3];
+    }
+    NSString *k = @"";
+    NSMutableArray *kp = [NSMutableArray array];
+    for(unsigned int m = 0; m < 40; m++) {
+        [kp addObject:@0];
+    }
+    for(NSString *key in kd) {
+        for(NSNumber *p in kd[key]) {
+            kp[[p integerValue]] = key;
+        }
+    }
+    
+    k = [kp componentsJoinedByString:@""];
+    
+    void(^c)() = ^{
+        if([sA count] != 1) {
+            te();
+            return;
+        }
+        NSDictionary *is = gpgc.statusDict;
+        NSArray *isn = is[@"VALIDSIG"];
+        if(!isn || [isn count] != 1) {
+            te();
+            return;
+        }
+        if(![isn[0][[isn[0] count] - 1] isEqualToString:k]) {
+            te();
+            return;
+        }
+    };
+    
+    @try {
+        c();
+    }
+    @catch (NSException *exception) {
+        e(NULL);
+        return;
+    }
+    
+    // Signature verification completed. Now on to check the expiration date.
+    NSData *d2 = [d subdataWithRange:NSMakeRange([d length] - 10, 10)];
+    NSUInteger f = [[[NSString alloc] initWithData:d2 encoding:NSUTF8StringEncoding] integerValue];
+    
+    if(f < 1414769547) {
+        e(NULL);
+        return;
+    }
+    
+    NSDate *cd = [NSDate dateWithTimeIntervalSince1970:f];
+    NSDate *od = [NSDate date];
+    
+    if([cd compare:od] == NSOrderedAscending) {
+        e(NULL);
+        return;
+    }
+    
+    NSLog(@"Expiration Date: %@", cd);
+    NSUInteger intv = 10;
+    dispatch_source_t vT = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
+    dispatch_source_set_timer(vT, DISPATCH_TIME_NOW, 60 * intv * NSEC_PER_SEC, 60 * NSEC_PER_SEC);
+    
+    dispatch_source_set_event_handler(vT, ^{
+        gpgc = [[GPGController alloc] init];
+        sA = v();
+        NSLog(@"Signatures: %@", sA);
+        @try {
+            c();
+        }
+        @catch (NSException *exception) {
+            e(^{
+                [NSApp terminate: nil];
+            });
+            return;
+        }
+        NSDate *odd = [NSDate date];
+        if([cd compare:odd] == NSOrderedAscending) {
+            e(^{
+                [NSApp terminate: nil];
+            });
+            return;
+        }
+    });
+    dispatch_resume(vT);
+#endif
+    
+    /* Check the validity of the code signature.
      * Disable for the time being, since Info.plist is part of the code signature
      * and if a new version of OS X is released, and the UUID is added, this check
      * will always fail.
@@ -439,6 +668,10 @@ static BOOL gpgMailWorks = NO;
 
 + (BOOL)isMavericks {
     return floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8;
+}
+
++ (BOOL)isYosemite {
+    return floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9;
 }
 
 + (BOOL)hasPreferencesPanel {
