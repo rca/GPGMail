@@ -278,7 +278,6 @@
              @"ComposeBackEnd": @{
                      @"selectors": @{
                             @"added": @[
-                                    @"setCanSign:",
                                     @"setKnowsCanSign:"
                             ]
                      }
@@ -286,7 +285,8 @@
              @"HeaderViewController": @{
                      @"selectors": @{
                             @"removed": @[
-                                @"_displayStringForSecurityKey"
+                                @"_displayStringForSecurityKey",
+                                @"toggleDetails:" // TODO: Implement again?
                             ]
                      }
              },
