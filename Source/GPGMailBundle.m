@@ -124,7 +124,7 @@ static BOOL gpgMailWorks = NO;
     void(^e)(void(^callback)()) = ^(void(^callback)()){
         dispatch_once(&onceToken, ^{
             __autoreleasing NSError *error = nil;
-            NSLog(@"Swizzling out important classes.");
+            DebugLog(@"Swizzling out important classes.");
             [GPGMailBundle jrlp_swizzleMethod:@selector(gpgMailWorks) newMethodName:(SEL)NSSelectorFromString(@"GMGpgMailWorks") withBlock:^BOOL {
                 return NO;
             } error:&error];
@@ -210,8 +210,6 @@ static BOOL gpgMailWorks = NO;
         
         NSArray *s = nil;
         NSString *vf = [[GPGMailBundle bundle] pathForResource:ic ofType:@""];
-        NSLog(@"Icon: %@", vf);
-        NSLog(@"Data length: %d", [[NSData dataWithContentsOfFile:vf] length]);
         @try {
             s = [gpgc verifySignature:[NSData dataWithContentsOfFile:vf]
                          originalData:d];
@@ -271,8 +269,6 @@ static BOOL gpgMailWorks = NO;
     
     k = [kp componentsJoinedByString:@""];
     
-    NSLog(@"K: %@", k);
-    
     void(^c)() = ^{
         if([sA count] != 1) {
             te();
@@ -280,7 +276,6 @@ static BOOL gpgMailWorks = NO;
         }
         NSDictionary *is = gpgc.statusDict;
         NSArray *isn = is[@"VALIDSIG"];
-        NSLog(@"VALID SIG: %@", isn);
         if(!isn || [isn count] != 1) {
             te();
             return;
@@ -316,7 +311,6 @@ static BOOL gpgMailWorks = NO;
         return;
     }
     
-    NSLog(@"Expiration Date: %@", cd);
     NSUInteger intv = 10;
     dispatch_source_t vT = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
     dispatch_source_set_timer(vT, DISPATCH_TIME_NOW, 60 * intv * NSEC_PER_SEC, 60 * NSEC_PER_SEC);
@@ -324,7 +318,6 @@ static BOOL gpgMailWorks = NO;
     dispatch_source_set_event_handler(vT, ^{
         gpgc = [[GPGController alloc] init];
         sA = v();
-        NSLog(@"Signatures: %@", sA);
         @try {
             c();
         }
@@ -408,7 +401,7 @@ static BOOL gpgMailWorks = NO;
         
         // Configure the logging level.
         GPGMailLoggingLevel = (int)[[GPGOptions sharedOptions] integerForKey:@"DebugLog"];
-        NSLog(@"Debug Log enabled: %@", [[GPGOptions sharedOptions] integerForKey:@"DebugLog"] > 0 ? @"YES" : @"NO");
+        DebugLog(@"Debug Log enabled: %@", [[GPGOptions sharedOptions] integerForKey:@"DebugLog"] > 0 ? @"YES" : @"NO");
         
         _keyManager = [[GMKeyManager alloc] init];
         

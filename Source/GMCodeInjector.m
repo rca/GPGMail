@@ -440,7 +440,7 @@
 		BOOL extend = extensionClass != nil ? YES : NO;
 		if(extend) {
 			if(![mailClass jrlp_addMethodsFromClass:extensionClass error:&error])
-				NSLog(@"WARNING: methods of class %@ couldn't be added to %@ - %@", extensionClass,
+				DebugLog(@"WARNING: methods of class %@ couldn't be added to %@ - %@", extensionClass,
 					  mailClass, error);
 		}
 		
@@ -461,7 +461,7 @@
 			if(![mailClass jrlp_swizzleMethod:selector withMethod:extensionSelector error:&error]) {
                 // If that didn't work, try to add as class method.
                 if(![mailClass jrlp_swizzleClassMethod:selector withClassMethod:extensionSelector error:&error])
-                    NSLog(@"WARNING: %@ doesn't respond to selector %@", NSStringFromClass(mailClass),
+                    DebugLog(@"WARNING: %@ doesn't respond to selector %@", NSStringFromClass(mailClass),
 						  NSStringFromSelector(selector));
             }
 		}

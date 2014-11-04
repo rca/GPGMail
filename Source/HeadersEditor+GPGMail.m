@@ -322,7 +322,6 @@
 }
 
 - (void)MA_updateSecurityStateInBackgroundForRecipients:(NSArray *)recipients sender:(id)sender {
-    NSLog(@"updateSecurityStateInBackground: recipients: %@", recipients);
     [self MA_updateSecurityStateInBackgroundForRecipients:recipients sender:sender];
 	
 	// Do the same as _updateSecurityStateInBackgroundForRecipients and update the
@@ -383,8 +382,6 @@
     // ForceEncrypt must be ignored if EncryptIsPossible is set to NO.
     if(securityProperties[@"EncryptIsPossible"])
         isToBeEncrypted = isToBeEncrypted && [securityProperties[@"EncryptIsPossible"] boolValue];
-    
-    NSLog(@"Security options: %@\nSetEncrypt: %@ - Force Encrypt: %@", securityProperties[@"SecurityOptions"], securityProperties[@"SetEncrypt"], securityProperties[@"ForceEncrypt"]);
     
     [self MASetMessageIsToBeEncrypted:isToBeEncrypted];
 }

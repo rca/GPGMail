@@ -65,7 +65,7 @@
 }
 
 - (void)MASetEncryptIfPossible:(BOOL)encryptIfPossible {
-    NSLog(@"[Main thread: %@] - Set Encrypt: %@", [NSThread isMainThread] ? @"YES" : @"NO", encryptIfPossible ? @"YES" : @"NO");
+    DebugLog(@"[Main thread: %@] - Set Encrypt: %@", [NSThread isMainThread] ? @"YES" : @"NO", encryptIfPossible ? @"YES" : @"NO");
     NSDictionary *securityProperties = self.securityProperties;
 //    if([self ivarExists:@"SetEncrypt"]) {
 //        encryptIfPossible = [[self getIvar:@"SetEncrypt"] boolValue];

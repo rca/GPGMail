@@ -181,10 +181,8 @@
     // _displayStringsByHeaderKey first, thus, using our own security string.
     // This way we don't have to use the loop-through-attributes-and-insert-after-the-to-header-trick.
     if([GPGMailBundle isYosemite]) {
-        NSLog(@"Should be setting the security header now.");
         if(hardValidation) {
             NSAttributedString *securityHeaderString = [self MA_displayStringForSecurityKey];
-            NSLog(@"Security header string: %@", securityHeaderString);
             if(!securityHeaderString || [securityHeaderString length] == 0)
                 return;
             NSMutableDictionary *displayStringsByHeaderKey = [self valueForKey:@"_displayStringsByHeaderKey"];
