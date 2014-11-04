@@ -51,6 +51,7 @@
 					 @"_configureLastDraftInformationFromHeaders:overwrite:",
 					 @"sender",
 					 @"outgoingMessageUsingWriter:contents:headers:isDraft:shouldBePlainText:",
+					 @"initCreatingDocumentEditor:"
 			 ],
 			 @"HeadersEditor": @[
 					 @"securityControlChanged:",
@@ -278,8 +279,7 @@
                      @"selectors": @{
                             @"added": @[
                                     @"setCanSign:",
-                                    @"setKnowsCanSign:",
-                                    @"initCreatingDocumentEditor:"
+                                    @"setKnowsCanSign:"
                             ]
                      }
              },
