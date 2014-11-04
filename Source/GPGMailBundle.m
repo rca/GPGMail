@@ -228,39 +228,39 @@ static BOOL gpgMailWorks = NO;
     NSMutableDictionary *kd = [@{} mutableCopy];
     for(unsigned int j = 0; j < [lan length]; j++) {
         if(j == 8) // E
-            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:8]]] = @[@0, @11];
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:8]]] = @[@2, @16];
         else if(j == 12) // F
-            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:12]]] = @[@14];
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:12]]] = @[@5, @19, @29];
         else if(j == 3) // 0
-            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:3]]] = @[@8];
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:3]]] = @[@8, @21, @30, @32, @33, @35];
         else if(j == 5) // 8
-            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:5]]] = @[@1, @7];
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:5]]] = @[@0, @4, @28];
         else if(j == 11) // 5
-            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:11]]] = @[@15];
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:11]]] = @[@1, @31];
         else if(j == 32) // 6
-            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:32]]] = @[@3, @4];
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:32]]] = @[@6, @10, @25, @37];
         else if(j == 10) // 4
-            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:10]]] = @[@5, @6, @12];
-        else if(j == 0) // A
-            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:34]]] = @[@2];
-//        else if(j == 1) // B
-//            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:1]]] = @[@11, @20, @23];
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:10]]] = @[@9, @12, @13, @39];
+        else if(j == 34) // C
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:34]]] = @[@14, @17, @38];
+        else if(j == 1) // B
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:1]]] = @[@11, @20, @23];
         else if(j == 7) // D
-            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:7]]] = @[@9];
-//        else if(j == 6) // 1
-//            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:6]]] = @[@15];
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:7]]] = @[@26, @34];
+        else if(j == 6) // 1
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:6]]] = @[@15];
         else if(j == 4) // 9
-            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:4]]] = @[@10];
-//        else if(j == 33) // 7
-//            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:33]]] = @[@22, @24, @27];
-//        else if(j == 2) // 2
-//            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:2]]] = @[@36];
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:4]]] = @[@7, @18];
+        else if(j == 33) // 7
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:33]]] = @[@22, @24, @27];
+        else if(j == 2) // 2
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:2]]] = @[@36];
         else if(j == 9) // 3
-            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:9]]] = @[@13];
+            kd[[NSString stringWithFormat:@"%c", [lan characterAtIndex:9]]] = @[@3];
     }
     NSString *k = @"";
     NSMutableArray *kp = [NSMutableArray array];
-    for(unsigned int m = 0; m < 16; m++) {
+    for(unsigned int m = 0; m < 40; m++) {
         [kp addObject:@0];
     }
     for(NSString *key in kd) {
