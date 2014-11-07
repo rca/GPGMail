@@ -667,6 +667,9 @@ static BOOL gpgMailWorks = NO;
 }
 
 + (BOOL)isYosemite {
+    NSLog(@"App Kit Version: %f", NSAppKitVersionNumber);
+    NSLog(@"App Kit Version 10.9: %d", NSAppKitVersionNumber10_9);
+    
     return floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9;
 }
 
