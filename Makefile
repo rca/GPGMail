@@ -32,9 +32,6 @@ $(UPDATER_PRODUCT): GPGMail_Updater/* GPGMail_Updater/*/* GPGMail_Updater.xcodep
 	@xcodebuild -project $(UPDATER_PROJECT).xcodeproj -target $(UPDATER_TARGET) -configuration $(CONFIG) build $(XCCONFIG)
 
 compile: $(UPDATER_PRODUCT)
-	@if [[ "${TIME_LIMIT}" != "" && "${TIME_LIMIT}" != "0" ]]; then \
-		python ./add-beta-limitation.py $(TIME_LIMIT); \
-	fi
 
 install: $(PRODUCT)
 	@echo "Installing GPGMail into $(INSTALL_ROOT)Library/Mail/Bundles"
