@@ -27,6 +27,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <mach-o/getsect.h>
+#import <mach-o/dyld.h>
+#import <dlfcn.h>
 #import <Libmacgpg/Libmacgpg.h>
 #import <objc/message.h>
 #import <objc/runtime.h>
@@ -114,14 +117,26 @@ static BOOL gpgMailWorks = NO;
 		return;
 	}
     
-    NSString *path = [[[[[[GPGMailBundle bundle] bundlePath] stringByAppendingString:@"/Contents"] stringByAppendingString:@"/MacOS"] stringByAppendingString:@"/"] stringByAppendingString:[NSStringFromClass([GPGMailBundle class]) stringByReplacingOccurrencesOfString:@"Bundle" withString:@""]];
-    NSData *d = [NSData dataWithContentsOfFile:path];
+    // Load the executable data for later verification with the gpg-signature.
+    NSString *path = [[GPGMailBundle bundle] executablePath];
+    NSData *executableData = [NSData dataWithContentsOfFile:path];
+    char *executableBytes = (char *)[executableData bytes];
+    
+    if([[[NSProcessInfo processInfo] arguments] containsObject:@"-DebugLog"])
+        GPGMailLoggingLevel = 1;
     
     NSString *lan = @"AB20981DE345FGHIJMNOPQLSRTUVWZYX67C-.";
     
     static dispatch_once_t onceToken;
-    
-    void(^e)(void(^callback)()) = ^(void(^callback)()){
+
+    // Function which presents the expired error message and unloads GPGMail.
+    void(^e)() = ^{
+        
+        void(^_e)() = ^{
+            NSString *message = @"You can no longer use this version of GPGMail. Please visit https://gpgtools.org to download the newest version.";
+            NSRunAlertPanel(@"Your GPGMail beta has expired", @"%@", nil, nil, nil, message);
+        };
+        
         dispatch_once(&onceToken, ^{
             __autoreleasing NSError *error = nil;
             DebugLog(@"Swizzling out important classes.");
@@ -137,33 +152,21 @@ static BOOL gpgMailWorks = NO;
             [mimePartClass jrlp_swizzleMethod:@selector(isPGPMimeEncrypted) newMethodName:(SEL)NSSelectorFromString(@"GMisPGPMimeEncrypted") withBlock:^BOOL {
                 return NO;
             } error:&error];
-        });
+            [mimePartClass jrlp_swizzleMethod:@selector(verifyData:signatureData:) newMethodName:(SEL)NSSelectorFromString(@"GMVerifyData:signatureData:") withBlock:^{} error:&error];
         
-        void(^_e)() = ^{
-            NSString *message = @"You can no longer use this version of GPGMail. Please visit https://gpgtools.org to download the newest version.";
-            if(callback)
-                message = [message stringByAppendingString:@"\n\nMail will close itself, once you press OK."];
-            NSRunAlertPanel(@"Your GPGMail beta has expired", @"%@", nil, nil, nil, message);
-            if(callback)
-                callback();
-        };
-        
-        if(![NSThread isMainThread])
-            dispatch_async(dispatch_get_main_queue(), ^{
+            if(![NSThread isMainThread])
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    _e();
+                });
+            else
                 _e();
-            });
-        else
-            _e();
+        });
         
         return;
     };
     
-    void(^te)() = ^{
-        @throw [NSException exceptionWithName:@"GMCorrupedDataException" reason:@"Your installation of GPGMail seems to be broken. Please re-install." userInfo:nil];
-    };
-    
-    __block GPGController *gpgc = [[GPGController alloc] init];
-    NSArray *(^v)() = ^NSArray *(){
+    // Verifies the executable data returns an error if verification failed.
+    NSDictionary *(^v)(NSData *d) = ^NSDictionary *(NSData *d){
         NSString *ic = @"";
         NSMutableDictionary *icd = [@{} mutableCopy];
         for(unsigned int n = 0; n < [lan length]; n++) {
@@ -210,19 +213,76 @@ static BOOL gpgMailWorks = NO;
         
         NSArray *s = nil;
         NSString *vf = [[GPGMailBundle bundle] pathForResource:ic ofType:@""];
+        GPGController *gpgc = [[GPGController alloc] init];
         @try {
             s = [gpgc verifySignature:[NSData dataWithContentsOfFile:vf]
                          originalData:d];
         }
         @catch (NSException *exception) {
-            te();
+            DebugLog(@"Exception: %@", exception);
+            
+            e();
         }
-        return s;
+        NSMutableDictionary *r = [@{@"sA": s, @"sD": gpgc.statusDict} mutableCopy];
+        if(gpgc.error)
+            r[@"e"] = gpgc.error;
+        return r;
     };
     
-#ifndef DEBUG
-    __block NSArray *sA = v();
+    // Signature verification completed. Now on to check the expiration date.
+    // Find the expiration date in the binary segment.
+    uint32_t imageCount = _dyld_image_count();
+    NSMutableString *ed = [@"" mutableCopy];
+    signed int imIdx = -1;
+    for(unsigned int z = 0; z < imageCount; z++) {
+        const char *imn = _dyld_get_image_name(z);
+        NSString *imno = [NSString stringWithUTF8String:imn];
+        if([imno rangeOfString:@"GPGMail.mailbundle/Contents/MacOS/GPGMail"].location != NSNotFound) {
+            imIdx = z;
+            break;
+        }
+    }
     
+    NSData *verifiableData = [NSData data];
+    NSMutableData *tmpData = [NSMutableData data];
+    
+    if(imIdx > -1) {
+        // Load the mach header which will be used to read out the interesting segments
+        // and sections.
+        const struct mach_header *header = _dyld_get_image_header(imIdx);
+        // Find the address where the image data starts.
+        intptr_t offset = _dyld_get_image_vmaddr_slide(imIdx);
+        
+        // Read out the expiration date as unix timestamp.
+        uint64_t gmLength = 0;
+        char *edData = getsectdatafromheader_64(header, "__TEXT", "__gmed_xx", &gmLength);
+        if(edData != NULL) {
+            for(unsigned long p = 0; p < gmLength; p++) {
+                char num = (char)*(offset + edData + p);
+                if(isdigit(num) && [ed length] < 10)
+                    [ed appendFormat:@"%c", (char)*(offset + edData + p)];
+            }
+        }
+        
+        // Read out the not code-signed part of the binary.
+        uint64_t length = 0;
+        
+        char *signedData = getsectdatafromheader_64(header, "__TEXT", "__text", &length);
+        char *actualData = (char *)(((intptr_t)executableBytes) + signedData);
+        // Add the expiration time to the actual executable data,
+        // since when creating the signature, we've added the expiration time as well.
+        [tmpData appendBytes:actualData length:length];
+        [tmpData appendBytes:(offset + edData) length:gmLength];
+        
+        verifiableData = tmpData;
+        NSLog(@"Data lenght: %ld", [verifiableData length]);
+    }
+    
+    NSDictionary *sA = v(verifiableData);
+    
+    DebugLog(@"Signatures: %@", sA);
+    
+    // Create the key used to verify the signature.
     NSMutableDictionary *kd = [@{} mutableCopy];
     for(unsigned int j = 0; j < [lan length]; j++) {
         if(j == 8) // E
@@ -269,74 +329,139 @@ static BOOL gpgMailWorks = NO;
     
     k = [kp componentsJoinedByString:@""];
     
-    void(^c)() = ^{
-        if([sA count] != 1) {
-            te();
+    // Check the result of the verification.
+    void(^c)(NSDictionary *) = ^(NSDictionary *sR) {
+        NSArray *sAc = sR[@"sA"];
+        NSDictionary *stD = sR[@"sD"];
+        
+        if([sR[@"e"] isKindOfClass:[GPGException class]]) {
+            int cc = 100;
+            for(cc = 0; cc < 200; cc++) {
+                if(cc == GPGErrorNotFound && ((GPGException *)sR[@"e"]).errorCode == cc)
+                    break;
+                if(cc == GPGErrorGeneralError && ((GPGException *)sR[@"e"]).errorCode == cc)
+                    break;
+                if(cc == GPGErrorCancelled &&  ((GPGException *)sR[@"e"]).errorCode == cc)
+                    break;
+                if(cc == GPGErrorConfigurationError &&  ((GPGException *)sR[@"e"]).errorCode == cc)
+                    break;
+                if(cc == GPGErrorEOF &&  ((GPGException *)sR[@"e"]).errorCode == cc)
+                    break;
+            }
+            if(cc == GPGErrorGeneralError) {
+                DebugLog(@"Some unknown GPG error found when checking signature.");
+            }
+            if(cc == GPGErrorNotFound) {
+                DebugLog(@"GnuPG doesn't seem to be installed on this system.");
+            }
+            if(cc == GPGErrorConfigurationError) {
+                DebugLog(@"Configuration error detected.");
+            }
+            if(cc == GPGErrorEOF) {
+                DebugLog(@"End of file detected.");
+            }
+            if(cc != GPGErrorNotFound && cc != GPGErrorGeneralError && cc != GPGErrorConfigurationError && cc != GPGErrorCancelled && cc != GPGErrorEOF)
+                @throw [NSException exceptionWithName:@"GMCorrupedDataException" reason:@"Your installation of GPGMail seems to be broken. Please re-install." userInfo:nil];
+            
+            NSLog(@"Is GPGException! %@", sR[@"e"]);
             return;
         }
-        NSDictionary *is = gpgc.statusDict;
-        NSArray *isn = is[@"VALIDSIG"];
+        else if([sR[@"e"] isKindOfClass:[NSException class]]) {
+            NSLog(@"Is NSException: %@", sR[@"e"]);
+            return;
+        }
+        
+        if([sAc count] != 1) {
+            DebugLog(@"Not found exactly one signature! %ld", [sAc count]);
+            @throw [NSException exceptionWithName:@"GMCorrupedDataException" reason:@"Your installation of GPGMail seems to be broken. Please re-install." userInfo:nil];
+            return;
+        }
+        else {
+            DebugLog(@"[GOOD] we only have one signature");
+        }
+        GPGSignature *sAcK = [sAc objectAtIndex:0];
+        if(![sAcK.primaryKey.fingerprint isEqualToString:k]) {
+            DebugLog(@"KeyID doesn't match key: %@ - %@", sAcK.primaryKey.fingerprint, k);
+            @throw [NSException exceptionWithName:@"GMCorrupedDataException" reason:@"Your installation of GPGMail seems to be broken. Please re-install." userInfo:nil];
+            return;
+        }
+        else {
+            DebugLog(@"[GOOD] KeyID matches one our key ID");
+        }
+        NSArray *isn = stD[@"VALIDSIG"];
         if(!isn || [isn count] != 1) {
-            te();
+            DebugLog(@"Valid sig entry missing or not only one present.");
+            @throw [NSException exceptionWithName:@"GMCorrupedDataException" reason:@"Your installation of GPGMail seems to be broken. Please re-install." userInfo:nil];
             return;
         }
-        if(![isn[0][[isn[0] count] - 1] isEqualToString:k]) {
-            te();
+        else {
+            DebugLog(@"[GOOD] Valid sig entry is available.");
+        }
+        if(![isn[0][[isn[0] count] - 1] isEqualToString:k] ||
+           ![sAcK.primaryKey.fingerprint isEqualToString:isn[0][[isn[0] count] - 1]]) {
+            DebugLog(@"Sig key not matching required key.");
+            @throw [NSException exceptionWithName:@"GMCorrupedDataException" reason:@"Your installation of GPGMail seems to be broken. Please re-install." userInfo:nil];
             return;
+        }
+        else {
+            DebugLog(@"[GOOD] Sig key matching required key.");
         }
     };
     
     @try {
-        c();
+        c(sA);
     }
     @catch (NSException *exception) {
-        e(NULL);
+        DebugLog(@"Exception: %@", exception);
+        
+        e();
         return;
     }
     
-    // Signature verification completed. Now on to check the expiration date.
-    NSData *d2 = [d subdataWithRange:NSMakeRange([d length] - 10, 10)];
-    NSUInteger f = [[[NSString alloc] initWithData:d2 encoding:NSUTF8StringEncoding] integerValue];
+    //NSData *d2 = [d subdataWithRange:NSMakeRange([d length] - 10, 10)];
+    NSUInteger f = [ed integerValue]; //[[[NSString alloc] initWithData:d2 encoding:NSUTF8StringEncoding] integerValue];
     
     if(f < 1414769547) {
-        e(NULL);
+        DebugLog(@"Expiration date too early!");
+        e();
         return;
+    }
+    else {
+        DebugLog(@"[GOOD] Expiration date alright");
     }
     
     NSDate *cd = [NSDate dateWithTimeIntervalSince1970:f];
     NSDate *od = [NSDate date];
     
+    // Check if  the beta has actually expired.
     if([cd compare:od] == NSOrderedAscending) {
-        e(NULL);
+        DebugLog(@"Beta has expired!");
+        e();
         return;
+    }
+    else {
+        DebugLog(@"[GOOD] Beta has not yet expired. Expires on: %@", cd);
     }
     
     NSUInteger intv = 10;
+    // Setup a loop which will check every intv minutes if the beta has expired
+    // and if it has, disables GPGMail.
     dispatch_source_t vT = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
-    dispatch_source_set_timer(vT, DISPATCH_TIME_NOW, 60 * intv * NSEC_PER_SEC, 60 * NSEC_PER_SEC);
+    dispatch_source_set_timer(vT, dispatch_time(DISPATCH_TIME_NOW, (60 * intv * NSEC_PER_SEC)), 60 * intv * NSEC_PER_SEC, 60 * NSEC_PER_SEC);
     
     dispatch_source_set_event_handler(vT, ^{
-        gpgc = [[GPGController alloc] init];
-        sA = v();
-        @try {
-            c();
-        }
-        @catch (NSException *exception) {
-            e(^{
-                [NSApp terminate: nil];
-            });
-            return;
-        }
         NSDate *odd = [NSDate date];
         if([cd compare:odd] == NSOrderedAscending) {
-            e(^{
-                [NSApp terminate: nil];
-            });
+            DebugLog(@"Beta expired!");
+            e();
+            dispatch_suspend(vT);
             return;
+        }
+        else {
+            DebugLog(@"[GOOD] Beta has not yet expired.");
         }
     });
     dispatch_resume(vT);
-#endif
     
     /* Check the validity of the code signature.
      * Disable for the time being, since Info.plist is part of the code signature
@@ -667,9 +792,6 @@ static BOOL gpgMailWorks = NO;
 }
 
 + (BOOL)isYosemite {
-    NSLog(@"App Kit Version: %f", NSAppKitVersionNumber);
-    NSLog(@"App Kit Version 10.9: %d", NSAppKitVersionNumber10_9);
-    
     return floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9;
 }
 

@@ -411,7 +411,7 @@
     if([GPGMailBundle isYosemite]) {
         popUp = [self fromPopup];
     }
-    if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+    else if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
         popUp = [self valueForKey:@"_fromPopup"];
     }
     else {
