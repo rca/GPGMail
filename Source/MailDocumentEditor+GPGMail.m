@@ -45,6 +45,18 @@
 
 @implementation MailDocumentEditor_GPGMail
 
+- (id)MAInitWithBackEnd:(id)backEnd {
+    /* On Yosemite, when Mail is invoked from an AppleScript the backEnd is not fully initiated at the time when the security properties queue is first used.
+       This method however is called in between, so it makes sense to setup the queue in here, if it's not already setup.
+     */
+    if(![backEnd getIvar:@"GMSecurityPropertiesQueue"]) {
+        dispatch_queue_t securityPropertiesQueue = dispatch_queue_create("org.gpgtools.GPGMail.securityPropertiesQueue", DISPATCH_QUEUE_CONCURRENT);
+        [backEnd setIvar:@"GMSecurityPropertiesQueue" value:CFBridgingRelease(securityPropertiesQueue)];
+    }
+    
+    return [self MAInitWithBackEnd:backEnd];
+}
+
 - (void)didExitFullScreen:(NSNotification *)notification {
     [self performSelectorOnMainThread:@selector(configureSecurityMethodAccessoryViewForNormalMode) withObject:nil waitUntilDone:NO];
 }

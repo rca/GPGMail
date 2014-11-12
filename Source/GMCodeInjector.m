@@ -282,6 +282,13 @@
                             ]
                      }
              },
+             @"DocumentEditor": @{
+                     @"selectors": @{
+                            @"added": @[
+                                    @"initWithBackEnd:"
+                            ]
+                     }
+             },
              @"HeaderViewController": @{
                      @"selectors": @{
                             @"removed": @[

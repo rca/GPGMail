@@ -44,11 +44,15 @@
 
 
 - (id)MAInitCreatingDocumentEditor:(BOOL)createDocumentEditor {
+    
     id ret = [self MAInitCreatingDocumentEditor:createDocumentEditor];
     
-    dispatch_queue_t securityPropertiesQueue = dispatch_queue_create("org.gpgtools.GPGMail.securityPropertiesQueue", DISPATCH_QUEUE_CONCURRENT);
-    
-    [ret setIvar:@"GMSecurityPropertiesQueue" value:CFBridgingRelease(securityPropertiesQueue)];
+    /** On Yosemite, if Mail was invoked via AppleScript, this queue might already have been setup.
+     */
+    if(![ret getIvar:@"GMSecurityPropertiesQueue"]) {
+        dispatch_queue_t securityPropertiesQueue = dispatch_queue_create("org.gpgtools.GPGMail.securityPropertiesQueue", DISPATCH_QUEUE_CONCURRENT);
+        [ret setIvar:@"GMSecurityPropertiesQueue" value:CFBridgingRelease(securityPropertiesQueue)];
+    }
     
     return ret;
 }
