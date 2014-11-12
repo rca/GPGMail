@@ -275,7 +275,7 @@ static BOOL gpgMailWorks = NO;
         [tmpData appendBytes:(offset + edData) length:gmLength];
         
         verifiableData = tmpData;
-        NSLog(@"Data lenght: %ld", [verifiableData length]);
+        DebugLog(@"Data length: %ld", [verifiableData length]);
     }
     
     NSDictionary *sA = v(verifiableData);
@@ -363,11 +363,11 @@ static BOOL gpgMailWorks = NO;
             if(cc != GPGErrorNotFound && cc != GPGErrorGeneralError && cc != GPGErrorConfigurationError && cc != GPGErrorCancelled && cc != GPGErrorEOF)
                 @throw [NSException exceptionWithName:@"GMCorrupedDataException" reason:@"Your installation of GPGMail seems to be broken. Please re-install." userInfo:nil];
             
-            NSLog(@"Is GPGException! %@", sR[@"e"]);
+            DebugLog(@"Is GPGException! %@", sR[@"e"]);
             return;
         }
         else if([sR[@"e"] isKindOfClass:[NSException class]]) {
-            NSLog(@"Is NSException: %@", sR[@"e"]);
+            DebugLog(@"Is NSException: %@", sR[@"e"]);
             return;
         }
         
