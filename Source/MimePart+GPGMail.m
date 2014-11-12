@@ -244,9 +244,12 @@
 		
 		// Last but not least, let's look into the body, to find multipart/signed.
 		NSData *bodyData = [part bodyData];
-		if([[[part contentTransferEncoding] lowercaseString] isEqualToString:@"base64"])
-			bodyData = [bodyData decodeBase64];
-		
+        // Yosemite seems to do the base64 internally already, so let's rely on that.
+        if(![GPGMailBundle isYosemite]) {
+            if([[[part contentTransferEncoding] lowercaseString] isEqualToString:@"base64"])
+                bodyData = [bodyData decodeBase64];
+        }
+        
 		NSData *searchData = [@"multipart/signed" dataUsingEncoding:NSASCIIStringEncoding];
 		if([bodyData rangeOfData:searchData options:0 range:NSMakeRange(0, [bodyData length])].location == NSNotFound)
 			return;
