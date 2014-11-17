@@ -28,6 +28,7 @@
  */
 
 #import "CCLog.h"
+#import "GPGMailBundle.h"
 #import "MailDocumentEditor.h"
 #import "MailDocumentEditor+GPGMail.h"
 #import "NSWindow+GPGMail.h"
@@ -37,7 +38,10 @@
 - (void)addAccessoryView:(NSView *)accessoryView {
     NSView *themeFrame = [[self contentView] superview];
     [self positionAccessoryView:accessoryView];
-    [themeFrame addSubview:accessoryView];
+    if([GPGMailBundle isYosemite])
+        [[(id)themeFrame titlebarView] addSubview:accessoryView];
+    else
+        [themeFrame addSubview:accessoryView];
 }
 
 - (void)positionAccessoryView:(NSView *)accessoryView {
@@ -47,6 +51,8 @@
 - (void)positionAccessoryView:(NSView *)accessoryView offset:(NSPoint)offset {
     NSView *themeFrame = [[self contentView] superview];
     NSRect c = [themeFrame frame];	// c for "container"
+    if([GPGMailBundle isYosemite])
+        c = [[(id)themeFrame titlebarView] frame];
     NSRect aV = [accessoryView frame];	// aV for "accessory view"
     
     NSRect newFrame = NSMakeRect(
