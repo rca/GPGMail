@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3033BF681A1FA90200935374 /* SparkleDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3033BF671A1FA90200935374 /* SparkleDefaults.plist */; };
 		305354DE1920E71B006C1D39 /* GPGMail.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 305354DD1920E71B006C1D39 /* GPGMail.iconset */; };
 		3053550F1920FEBC006C1D39 /* Libmacgpg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 305355051920FE97006C1D39 /* Libmacgpg.framework */; };
 		306B66CC16E8A6A600E976FD /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 306B66CB16E8A6A600E976FD /* Sparkle.framework */; };
@@ -77,6 +78,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3033BF671A1FA90200935374 /* SparkleDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = SparkleDefaults.plist; path = ../Resources/SparkleDefaults.plist; sourceTree = "<group>"; };
 		305354DD1920E71B006C1D39 /* GPGMail.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = GPGMail.iconset; path = Resources/Images/GPGMail.iconset; sourceTree = SOURCE_ROOT; };
 		305354F31920F04F006C1D39 /* Libmacgpg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Libmacgpg.framework; path = ../Libmacgpg/build/Debug/Libmacgpg.framework; sourceTree = "<group>"; };
 		305354FC1920FE97006C1D39 /* Libmacgpg.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Libmacgpg.xcodeproj; path = ../Libmacgpg/Libmacgpg.xcodeproj; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				30EE56AF16E8A6550075330E /* AppDelegate.m */,
 				30EE56B116E8A6550075330E /* MainMenu.xib */,
 				305354DD1920E71B006C1D39 /* GPGMail.iconset */,
+				3033BF671A1FA90200935374 /* SparkleDefaults.plist */,
 				30EE56A316E8A6550075330E /* Supporting Files */,
 			);
 			path = GPGMail_Updater;
@@ -285,6 +288,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				30EE56B316E8A6550075330E /* MainMenu.xib in Resources */,
+				3033BF681A1FA90200935374 /* SparkleDefaults.plist in Resources */,
 				305354DE1920E71B006C1D39 /* GPGMail.iconset in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

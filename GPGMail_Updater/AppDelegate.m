@@ -10,6 +10,10 @@
 	
 	GPGOptions *options = [GPGOptions sharedOptions];
 	options.standardDomain = @"org.gpgtools.gpgmail";
+	
+	NSDictionary *defaults = [[NSDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"SparkleDefaults" ofType:@"plist"]];
+	[options registerDefaults:defaults];
+	
 	return self;
 }
 

@@ -100,6 +100,7 @@
 		301380DC17569815005948EE /* CertLargeNotTrusted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 301380DB17569814005948EE /* CertLargeNotTrusted@2x.png */; };
 		301380DE17569819005948EE /* CertLargeNotTrusted.png in Resources */ = {isa = PBXBuildFile; fileRef = 301380DD17569819005948EE /* CertLargeNotTrusted.png */; };
 		301380E217578133005948EE /* GPGMail.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 301380E117578133005948EE /* GPGMail.iconset */; };
+		3033BF601A1FA6F700935374 /* SparkleDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3033BF5F1A1FA6F700935374 /* SparkleDefaults.plist */; };
 		3057F2EB1507C9C000FA3C0D /* Special.html in Resources */ = {isa = PBXBuildFile; fileRef = 3057F2E91507C9C000FA3C0D /* Special.html */; };
 		3066C60A17579F5900384E29 /* CertSmallStd_Invalid.png in Resources */ = {isa = PBXBuildFile; fileRef = 3066C60617579F5900384E29 /* CertSmallStd_Invalid.png */; };
 		3066C60B17579F5900384E29 /* CertSmallStd_Invalid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3066C60717579F5900384E29 /* CertSmallStd_Invalid@2x.png */; };
@@ -2202,6 +2203,7 @@
 		302FF18A175CAEC500DB03EB /* sk */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sk; path = sk.lproj/GPGAttachments.xib; sourceTree = "<group>"; };
 		302FF18B175CAEC600DB03EB /* sv */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sv; path = sv.lproj/GPGAttachments.xib; sourceTree = "<group>"; };
 		303174A013F1E0D400279CFB /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GPGSignatureView.xib.strings; sourceTree = "<group>"; };
+		3033BF5F1A1FA6F700935374 /* SparkleDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SparkleDefaults.plist; sourceTree = "<group>"; };
 		303F16261500EF92002AC36B /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GPGAttachments.xib.strings; sourceTree = "<group>"; };
 		303F16271500EF9A002AC36B /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GPGAttachments.xib.strings; sourceTree = "<group>"; };
 		305354F61920FE57006C1D39 /* GPGMail_Updater.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = GPGMail_Updater.xcodeproj; sourceTree = "<group>"; };
@@ -2470,6 +2472,7 @@
 				1BCEE1E211CC051500488D19 /* LICENSE.txt */,
 				1B56ECA816175AA8004A3ABE /* GPGMail-Entitlements.plist */,
 				300DD0D41853ADF90057B05F /* How to get the source code */,
+				3033BF5F1A1FA6F700935374 /* SparkleDefaults.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -4915,6 +4918,7 @@
 				301380D517567D26005948EE /* CertLargeStd@2x.png in Resources */,
 				1B01AC5C17C82A77008FC246 /* dsa_pub.pem in Resources */,
 				301380DC17569815005948EE /* CertLargeNotTrusted@2x.png in Resources */,
+				3033BF601A1FA6F700935374 /* SparkleDefaults.plist in Resources */,
 				301380DE17569819005948EE /* CertLargeNotTrusted.png in Resources */,
 				301380E217578133005948EE /* GPGMail.iconset in Resources */,
 				3066C60A17579F5900384E29 /* CertSmallStd_Invalid.png in Resources */,
