@@ -315,7 +315,7 @@
     
     // Add the encrypted part to the security header.
     if(isPGPEncrypted) {
-        NSImage *encryptedBadge = [message PGPDecrypted] ? [NSImage imageNamed:@"NSLockUnlockedTemplate"] : [NSImage imageNamed:@"NSLockLockedTemplate"];
+        NSImage *encryptedBadge = [NSImage imageNamed:@"NSLockLockedTemplate"];
         NSAttributedString *encryptAttachmentString = [NSAttributedString attributedStringWithAttachment:[[NSTextAttachment alloc] init]
                                                                                                    image:encryptedBadge
                                                                                                     link:nil
