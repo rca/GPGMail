@@ -12,7 +12,14 @@
 @implementation NSObject (LPDynamicIvars)
 
 - (void)setIvar:(id)key value:(id)value {
-    objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC); 
+    [self setIvar:key value:value assign:NO];
+}
+
+- (void)setIvar:(id)key value:(id)value assign:(BOOL)shouldAssign {
+    if(shouldAssign)
+        objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_ASSIGN);
+    else
+        objc_setAssociatedObject(self, (__bridge const void *)(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (id)getIvar:(id)key {

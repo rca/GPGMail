@@ -51,7 +51,12 @@
      */
     if(![ret getIvar:@"GMSecurityPropertiesQueue"]) {
         dispatch_queue_t securityPropertiesQueue = dispatch_queue_create("org.gpgtools.GPGMail.securityPropertiesQueue", DISPATCH_QUEUE_CONCURRENT);
-        [ret setIvar:@"GMSecurityPropertiesQueue" value:CFBridgingRelease(securityPropertiesQueue)];
+        if([GPGMailBundle isLion]) {
+            [ret setIvar:@"GMSecurityPropertiesQueue" value:(__bridge id)securityPropertiesQueue assign:YES];
+        }
+        else {
+            [ret setIvar:@"GMSecurityPropertiesQueue" value:CFBridgingRelease(securityPropertiesQueue)];
+        }
     }
     
     return ret;
@@ -1036,7 +1041,12 @@
 
 - (NSDictionary *)securityProperties {
     __block NSDictionary *_securityProperties = nil;
-    dispatch_queue_t securityPropertiesQueue = (dispatch_queue_t)CFBridgingRetain([self getIvar:@"GMSecurityPropertiesQueue"]);
+    dispatch_queue_t securityPropertiesQueue;
+    if([GPGMailBundle isLion])
+        securityPropertiesQueue = (__bridge dispatch_queue_t)[self getIvar:@"GMSecurityPropertiesQueue"];
+    else
+        securityPropertiesQueue = (dispatch_queue_t)CFBridgingRetain([self getIvar:@"GMSecurityPropertiesQueue"]);
+
     ComposeBackEnd_GPGMail __weak *weakSelf = self;
     dispatch_sync(securityPropertiesQueue, ^{
         ComposeBackEnd_GPGMail __strong *strongSelf = weakSelf;
@@ -1065,7 +1075,11 @@
 }
 
 - (void)setSecurityProperties:(NSDictionary *)securityProperties {
-    dispatch_queue_t securityPropertiesQueue = (dispatch_queue_t)CFBridgingRetain([self getIvar:@"GMSecurityPropertiesQueue"]);
+    dispatch_queue_t securityPropertiesQueue;
+    if([GPGMailBundle isLion])
+        securityPropertiesQueue = (__bridge dispatch_queue_t)[self getIvar:@"GMSecurityPropertiesQueue"];
+    else
+        securityPropertiesQueue = (dispatch_queue_t)CFBridgingRetain([self getIvar:@"GMSecurityPropertiesQueue"]);
     ComposeBackEnd_GPGMail __weak *weakSelf = self;
     dispatch_barrier_async(securityPropertiesQueue, ^{
         ComposeBackEnd_GPGMail __strong *strongSelf = weakSelf;

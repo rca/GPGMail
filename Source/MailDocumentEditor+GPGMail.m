@@ -51,7 +51,10 @@
      */
     if(![backEnd getIvar:@"GMSecurityPropertiesQueue"]) {
         dispatch_queue_t securityPropertiesQueue = dispatch_queue_create("org.gpgtools.GPGMail.securityPropertiesQueue", DISPATCH_QUEUE_CONCURRENT);
-        [backEnd setIvar:@"GMSecurityPropertiesQueue" value:CFBridgingRelease(securityPropertiesQueue)];
+        if([GPGMailBundle isLion])
+            [backEnd setIvar:@"GMSecurityPropertiesQueue" value:(__bridge id)securityPropertiesQueue assign:YES];
+        else
+            [backEnd setIvar:@"GMSecurityPropertiesQueue" value:CFBridgingRelease(securityPropertiesQueue)];
     }
     
     return [self MAInitWithBackEnd:backEnd];

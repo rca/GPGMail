@@ -787,6 +787,10 @@ static BOOL gpgMailWorks = NO;
 #pragma clang diagnostic pop
 }
 
++ (BOOL)isLion {
+    return floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_6;
+}
+
 + (BOOL)isMavericks {
     return floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8;
 }
