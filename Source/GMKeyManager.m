@@ -102,7 +102,7 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 	if(!key)
 		key = [[self secretKeys] anyObject];
 	
-	return key;
+	return key.primaryKey;
 }
 
 - (BOOL)secretKeyExistsForAddress:(NSString *)address {

@@ -303,25 +303,22 @@
 	[contents setIvar:@"ShouldEncrypt" value:@(shouldPGPEncrypt || shouldPGPInlineEncrypt)];
 	[contents setIvar:@"ShouldSign" value:@(shouldPGPSign || shouldPGPInlineSign)];
 	
-	if(isDraft) {
-		// If this message is saved as draft, check if we have a gpg key which belongs to the
-		// specified sender. If it's not available, try to find any secret key available.
-		GPGKey *encryptDraftPublicKey = [[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] valueForFlag:@"gpgKey"];
-		if(!encryptDraftPublicKey)
-			encryptDraftPublicKey = [[GPGMailBundle sharedInstance] anyPersonalPublicKeyWithPreferenceAddress:[[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] uncommentedAddress]];
-		// If no working public key could be found, don't encrypt the draft.
-		if(encryptDraftPublicKey) {
-			[[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] setValue:encryptDraftPublicKey forFlag:@"DraftPublicKey"];
-			// Drafts mustn't be signed, otherwise Mail creates duplicate zombie drafts again.
-			shouldPGPSign = NO;
-			shouldPGPSymmetric = NO;
-		}
-		else {
-			shouldPGPEncrypt = NO;
-			shouldPGPSign = NO;
-			shouldPGPSymmetric = NO;
-		}
-	}
+    if(isDraft) {
+        // If there's a public key available to encrypt the draft,
+        // it's encrypted, otherwise we disable encryption.
+        GPGKey *encryptDraftPublicKey = [[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] valueForFlag:@"DraftPublicKey"];
+        if(encryptDraftPublicKey) {
+            // Drafts mustn't be signed, otherwise Mail creates duplicate zombie drafts again.
+            shouldPGPSign = NO;
+            shouldPGPSymmetric = NO;
+            shouldPGPEncrypt = YES;
+        }
+        else {
+            shouldPGPEncrypt = NO;
+            shouldPGPSign = NO;
+            shouldPGPSymmetric = NO;
+        }
+    }
 	
 	// Drafts store the messages with a very minor set of headers and mime types
     // not suitable for encrypted/signed messages. But fortunately, Mail.app doesn't
@@ -567,9 +564,17 @@
 		[flaggedString setValue:key forFlag:@"gpgKey"];
 	}
 
-	if (isDraft) {
-		[flaggedString setValue:@YES forFlag:@"isDraft"];
-	}
+    if (isDraft) {
+        [flaggedString setValue:@YES forFlag:@"isDraft"];
+        // If this message is saved as draft, check if we have a gpg key which belongs to the
+        // specified sender. If it's not available, try to find any secret key available.
+        GPGKey *encryptDraftPublicKey = key.primaryKey;
+        if(!encryptDraftPublicKey)
+            encryptDraftPublicKey = [[GPGMailBundle sharedInstance] anyPersonalPublicKeyWithPreferenceAddress:[headers[@"from"] uncommentedAddress]];
+        // Store the appropriate public key to encrypt.
+        if(encryptDraftPublicKey)
+            [flaggedString setValue:encryptDraftPublicKey forFlag:@"DraftPublicKey"];
+    }
 	headers[@"from"] = flaggedString;
 	
     if (forEncrypting) {
