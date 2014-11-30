@@ -173,7 +173,7 @@ NSString *SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
 - (BOOL)enableAutomaticChecks {
 	GPGOptions *options = [GPGOptions sharedOptions];
 	if (![options boolForKey:SUEnableAutomaticChecksKey]) {
-		return false;
+		return true;
 	}
 	NSNumber *interval = [options valueForKey:SUScheduledCheckIntervalKey];
 	return !interval || interval.integerValue > 0;
