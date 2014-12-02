@@ -471,90 +471,28 @@
         return [self MADecodeTextHtmlWithContext:ctx];
 
 	
-	BOOL userDidSelectMessage = [[[(MimeBody *)[self mimeBody] message] getIvar:@"UserSelectedMessage"] boolValue];
-	
-    // 1. Step, check if the message was already decrypted.
-    if (self.PGPEncrypted && self.PGPDecryptedData)
-		// Inline PGP will never return the decrypted data, unless the
-		// use explicitly selected the message.
-		return self.PGPDecryptedData && userDidSelectMessage ? self.PGPDecryptedContent : [self MADecodeTextPlainWithContext:ctx];
-    
-    if (self.PGPSigned && self.PGPVerifiedContent)
-        return self.PGPVerifiedContent && userDidSelectMessage ? self.PGPVerifiedContent : [self MADecodeTextPlainWithContext:ctx];
-
-	
 	NSData *bodyData = [self bodyData];
-	NSRange encryptedRange = [bodyData rangeOfPGPInlineEncryptedData];
-
-	
-//	if (encryptedRange.length == 0) {
-//		bodyData = [[[[NSAttributedString alloc] initWithHTML:[self bodyData] documentAttributes:nil] string] dataUsingEncoding:NSUTF8StringEncoding];
-//		encryptedRange = [bodyData rangeOfPGPInlineEncryptedData];
-//		if (encryptedRange.length == 0) {
-//			if ([[self bodyData] mightContainPGPEncryptedDataOrSignatures]) {
-//				// HTML is a bit hard to decrypt, so check if the parent part, if exists is a
-//				// multipart/alternative.
-//				// If that's the case, look for a text/plain part
-//				MimePart *parentPart = [self parentPart];
-//				MimePart *textPart = nil;
-//				if(parentPart && [parentPart isType:@"multipart" subtype:@"alternative"]) {
-//					for(MimePart *tmpPart in [parentPart subparts]) {
-//						if([tmpPart isType:@"text" subtype:@"plain"]) {
-//							textPart = tmpPart;
-//							break;
-//						}
-//					}
-//					if(textPart) {
-//						return [textPart decodeTextPlainWithContext:ctx];
-//					}
-//				}
-//				
-//				if ([bodyData rangeOfPGPInlineEncryptedData].length > 0 || [bodyData rangeOfPGPInlineSignatures].length > 0) {
-//					return [(MimePart *)self decodeTextPlainWithContext:ctx];
-//				}
-//			}
-//			return [self MADecodeTextHtmlWithContext:ctx];
-//		}
-//	}
-	
-	
-    
-    if (encryptedRange.location != NSNotFound) {
-		NSData *decryptedData = [self decryptData:[bodyData subdataWithRange:encryptedRange]];
-		NSMutableData *data = [NSMutableData data];
-		
-		[data appendData:[PGP_PART_MARKER_START dataUsingEncoding:NSUTF8StringEncoding]];
-		[data appendData:decryptedData];
-		[data appendData:[PGP_PART_MARKER_END dataUsingEncoding:NSUTF8StringEncoding]];
-		
-		NSString *string = [data stringByGuessingEncodingWithHint:[self bestStringEncoding]];
-		
-		string = [self contentWithReplacedPGPMarker:string isEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];
-		
-		NSMutableData *resultData = [NSMutableData data];
-		[resultData appendData:[bodyData subdataWithRange:NSMakeRange(0, encryptedRange.location)]];
-		[resultData appendData:[string dataUsingEncoding:NSUTF8StringEncoding]];
-		
-		NSRange range;
-		range.location = encryptedRange.location + encryptedRange.length;
-		range.length = bodyData.length - range.location;
-		[resultData appendData:[bodyData subdataWithRange:range]];
-
-		NSString *content = [resultData stringByGuessingEncoding];
-		
-		
-		if (self.PGPSigned) {
-			self.PGPVerifiedContent = content;
-		}
-		if (self.PGPEncrypted) {
-			self.PGPDecryptedContent = content;
-			self.PGPDecryptedData = [content dataUsingEncoding:NSUTF8StringEncoding];
-		}
-		
-				
-		if (!userDidSelectMessage)
-			return [self MADecodeTextHtmlWithContext:ctx];
-		return content;
+    if([bodyData mightContainPGPEncryptedDataOrSignatures]) {
+        // HTML is a bit hard to decrypt, so check if the parent part, if exists is a
+        // multipart/alternative.
+        // If that's the case, look for a text/plain part
+        MimePart *parentPart = [self parentPart];
+        MimePart *textPart = nil;
+        if(parentPart && [parentPart isType:@"multipart" subtype:@"alternative"]) {
+            for(MimePart *tmpPart in [parentPart subparts]) {
+                if([tmpPart isType:@"text" subtype:@"plain"]) {
+                    textPart = tmpPart;
+                    break;
+                }
+            }
+            if(textPart) {
+                return [textPart decodeTextPlainWithContext:ctx];
+            }
+        }
+        
+        if ([bodyData rangeOfPGPInlineEncryptedData].length > 0 || [bodyData rangeOfPGPInlineSignatures].length > 0) {
+            return [(MimePart *)self decodeTextPlainWithContext:ctx];
+        }
     }
     
     return [self MADecodeTextHtmlWithContext:ctx];
