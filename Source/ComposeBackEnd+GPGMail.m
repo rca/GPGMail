@@ -570,7 +570,7 @@
         // specified sender. If it's not available, try to find any secret key available.
         GPGKey *encryptDraftPublicKey = key.primaryKey;
         if(!encryptDraftPublicKey)
-            encryptDraftPublicKey = [[GPGMailBundle sharedInstance] anyPersonalPublicKeyWithPreferenceAddress:[headers[@"from"] uncommentedAddress]];
+            encryptDraftPublicKey = [[GPGMailBundle sharedInstance] anyPersonalPublicKeyWithPreferenceAddress:[headers[@"from"] gpgNormalizedEmail]];
         // Store the appropriate public key to encrypt.
         if(encryptDraftPublicKey)
             [flaggedString setValue:encryptDraftPublicKey forFlag:@"DraftPublicKey"];
