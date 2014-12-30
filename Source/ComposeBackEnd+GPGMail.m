@@ -787,9 +787,9 @@
     id newlyEncryptedPart = nil;
     if(shouldEncrypt) {
         NSMutableArray *recipients = [[NSMutableArray alloc] init];
-        [recipients addObjectsFromArray:[headers headersForKey:@"to"]];
-        [recipients addObjectsFromArray:[headers headersForKey:@"cc"]];
-        [recipients addObjectsFromArray:[headers headersForKey:@"bcc"]];
+        [recipients addObjectsFromArray:[headers addressListForKey:@"to"]];
+        [recipients addObjectsFromArray:[headers addressListForKey:@"cc"]];
+        [recipients addObjectsFromArray:[headers addressListForKey:@"bcc"]];
         newlyEncryptedPart = [topPart newEncryptedPartWithData:signedData recipients:recipients encryptedData:&encryptedData];
         topData = encryptedData;
     }
