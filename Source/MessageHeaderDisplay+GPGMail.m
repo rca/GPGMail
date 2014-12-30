@@ -263,6 +263,10 @@
     paragraphStyle.headIndent = [GPGMailBundle isYosemite] ? 6.0f : 4.0f;
     
     NSFont *font = [(NSTextView *)[(HeaderViewController *)self textView] font];
+    if(!font) {
+        NSLog(@"No font info available. Would usually crash when creating the dictionary later.");
+        font = [NSFont systemFontOfSize:12.00f];
+    }
     if([GPGMailBundle isYosemite])
         font = [NSFont systemFontOfSize:12.00f];
     NSColor *color = [NSColor blackColor];
