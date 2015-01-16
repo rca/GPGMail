@@ -1,5 +1,5 @@
 OUTDIR="$1"
-ROOT="/Volumes/OS X Yosemite"
+ROOT="/"
 
 class-dump -I -H -o "$OUTDIR/MailUI" "$ROOT/Applications/Mail.app/Contents/MacOS/Mail"
 class-dump -I -H -o "$OUTDIR/EmailAddressing" "$ROOT/System/Library/PrivateFrameworks/EmailAddressing.framework/EmailAddressing" 
