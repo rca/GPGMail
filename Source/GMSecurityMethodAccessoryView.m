@@ -49,26 +49,6 @@
 
 @end
 
-@implementation GMSecurityMethodAccessoryViewController
-
-- (id)init {
-    if((self = [super initWithNibName:nil bundle:nil])) {
-        _securityMethodView = [[GMSecurityMethodAccessoryView alloc] init];
-    }
-    return self;
-}
-
-- (void)loadView {
-    self.layoutAttribute = NSLayoutAttributeRight;
-    self.view = _securityMethodView;
-}
-
-- (void)configureForWindow:(NSWindow *)window {
-    [self.securityMethodView configureForWindow:window];
-}
-
-@end
-
 @implementation GMSecurityMethodAccessoryView
 
 @synthesize popup = _popup, fullscreen = _fullscreen, active = _active, arrow = _arrow, 
@@ -412,8 +392,6 @@
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
-//    NSRect frame = NSMakeRect(0, 0, 80, 17);
-//    self.frame = frame;
     NSRect rect = [self bounds];
     rect.origin = NSMakePoint(0, 0);
     float cornerRadius = 4.0f;

@@ -146,7 +146,6 @@
             forceSign = YES;
         
         updatedSecurityProperties[@"ForceSign"] = @(forceSign);
-//        [backEnd setIvar:@"ForceSign" value:@(forceSign)];
     }
     else {
         self.forcedImageName = [[image name] isEqualToString:ENCRYPT_LOCK_UNLOCKED_IMAGE] ? ENCRYPT_LOCK_LOCKED_IMAGE : ENCRYPT_LOCK_UNLOCKED_IMAGE;
@@ -154,15 +153,9 @@
         if([[image name] isEqualToString:ENCRYPT_LOCK_UNLOCKED_IMAGE])
             forceEncrypt = YES;
         updatedSecurityProperties[@"ForceEncrypt"] = @(forceEncrypt);
-//        [backEnd setIvar:@"ForceEncrypt" value:@(forceEncrypt)];
     }
     
     [(ComposeBackEnd_GPGMail *)backEnd updateSecurityProperties:updatedSecurityProperties];
-    
-    // It looks like setImage is no longer called under Yosemite, if the user actively clicks a
-    // button, so we have to change it ourselves. (TODO: LUKE, THERE HAS TO BE A DIFFERENT WAY!)
-//    if([GPGMailBundle isYosemite])
-//        [self setImage:image forSegment:0];
 }
 
 @end

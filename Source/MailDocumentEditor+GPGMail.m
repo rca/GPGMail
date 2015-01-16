@@ -115,23 +115,14 @@
 }
 
 - (void)setupSecurityMethodHintAccessoryView {
-    GMSecurityMethodAccessoryViewController *accessoryViewController = [[GMSecurityMethodAccessoryViewController alloc] init];
     GMSecurityMethodAccessoryView *accessoryView = [[GMSecurityMethodAccessoryView alloc] init];
     accessoryView.delegate = self;
     NSWindow *window = [self valueForKey:@"_window"];
 	
-//    if([GPGMailBundle isYosemite]) {
-//        [accessoryViewController configureForWindow:window];
-//        [window addTitlebarAccessoryViewController:accessoryViewController];
-//        accessoryView = accessoryViewController.securityMethodView;
-//    }
-//    else {
-        // Not longer used: if(((MailDocumentEditor *)self).isModal || ((MailDocumentEditor *)self).possibleFullScreenViewerParent)
-        if([NSApp mainWindow].styleMask & NSFullScreenWindowMask) // Only check the mein window to detect fullscreen.
-            [accessoryView configureForFullScreenWindow:window];
-        else
-            [accessoryView configureForWindow:window];
-//    }
+   if([NSApp mainWindow].styleMask & NSFullScreenWindowMask) // Only check the mein window to detect fullscreen.
+       [accessoryView configureForFullScreenWindow:window];
+   else
+       [accessoryView configureForWindow:window];
     
     [self setIvar:@"SecurityMethodHintAccessoryView" value:accessoryView];
 }

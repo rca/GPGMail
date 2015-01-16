@@ -49,8 +49,4 @@
     [self MAAwakeFromNib];
 }
 
-/*- (CGRect)MA_calculateSecurityFrame:(CGRect)frame {
-    return [self MA_calculateSecurityFrame:frame];
-}*/
-
 @end

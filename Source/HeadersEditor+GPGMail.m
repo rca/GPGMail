@@ -72,7 +72,6 @@
 	updatedSecurityProperties[@"shouldSymmetric"] = @(newValue);
 	if (newValue != oldValue) {
         updatedSecurityProperties[@"ForceSymmetric"] = @(newValue);
-//        [backEnd setIvar:@"ForceSymmetric" value:@(newValue)];
 	}
 	
 	[self updateSymmetricButton];
