@@ -3632,7 +3632,8 @@
 				1B92856019F9A55700D540DF /* MailUI */,
 				1B92877619F9A55A00D540DF /* MailUIFW */,
 			);
-			path = Yosemite_Final;
+			name = Yosemite_Final;
+			path = Yosemite_10.10.2_14C68M;
 			sourceTree = "<group>";
 		};
 		1B92838E19F9A55600D540DF /* EmailAddressing */ = {
@@ -4870,7 +4871,7 @@
 			children = (
 				1B92838D19F9A55600D540DF /* Yosemite_Final */,
 				1BFDB139180B30DB00B677C2 /* Lion */,
-				1BFDB561180B30E000B677C2 /* Mavericks_GM */,
+				1BFDB561180B30E000B677C2 /* Mavericks */,
 				1B03125A1811488F006D451A /* NSPreferences.h */,
 				1B03125B1811488F006D451A /* NSPreferencesModule-Protocol.h */,
 				1B03125C1811488F006D451A /* NSPreferencesModule.h */,
@@ -5959,7 +5960,7 @@
 			path = Message;
 			sourceTree = "<group>";
 		};
-		1BFDB561180B30E000B677C2 /* Mavericks_GM */ = {
+		1BFDB561180B30E000B677C2 /* Mavericks */ = {
 			isa = PBXGroup;
 			children = (
 				1BFDB562180B30E000B677C2 /* EmailAddressing */,
@@ -5967,7 +5968,8 @@
 				1BFDB618180B30E100B677C2 /* MailUI */,
 				1BFDB82B180B30E400B677C2 /* MailUIFW */,
 			);
-			path = Mavericks_GM;
+			name = Mavericks;
+			path = Mavericks_10.9.5;
 			sourceTree = "<group>";
 		};
 		1BFDB562180B30E000B677C2 /* EmailAddressing */ = {
