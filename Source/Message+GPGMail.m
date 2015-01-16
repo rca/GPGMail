@@ -347,6 +347,9 @@
 }
 
 - (void)applyMatchingRulesIfNecessary {
+    // Disable this feature for the time being.
+    // We have to find a better and more reliable way to implement this.
+    return;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wselector"
 	if(![[self dataSourceProxy] respondsToSelector:@selector(routeMessages:isUserAction:)])
