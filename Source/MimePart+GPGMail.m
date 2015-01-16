@@ -217,15 +217,21 @@
 
     // To remove .sig attachments, they have to be removed.
     // from the ParsedMessage html.
-    if([ret isKindOfClass:NSClassFromString(@"ParsedMessage")] && [[self signatureAttachmentScheduledForRemoval] count]) {
-        DebugLog(@"Parsed Message without objects: %@", [((ParsedMessage *)ret).html stringByDeletingAttachmentsWithNames:[[(MimeBody *)[self mimeBody] message] getIvar:@"PGPSignatureAttachmentsToRemove"]]);
-        ((ParsedMessage *)ret).html = [((ParsedMessage *)ret).html stringByDeletingAttachmentsWithNames:[self signatureAttachmentScheduledForRemoval]];
+    if([ret isKindOfClass:[GPGMailBundle resolveMailClassFromName:@"ParsedMessage"]]) {
+        // If this is a PGP-Partitioned message, PGPPartitionedContent is set,
+        // so return that.
+        if([[[self mimeBody] message] getIvar:@"PGPPartitionedContent"] && ![self parentPart]) {
+            NSMutableString *completeHTML = [NSMutableString stringWithString:[[[self mimeBody] message] getIvar:@"PGPPartitionedContent"]];
+            if([((ParsedMessage *)ret).html length])
+                [completeHTML appendString:((ParsedMessage *)ret).html];
+            ((ParsedMessage *)ret).html = completeHTML;
+        }
+    
+        if([[self signatureAttachmentScheduledForRemoval] count]) {
+            DebugLog(@"Parsed Message without objects: %@", [((ParsedMessage *)ret).html stringByDeletingAttachmentsWithNames:[[(MimeBody *)[self mimeBody] message] getIvar:@"PGPSignatureAttachmentsToRemove"]]);
+            ((ParsedMessage *)ret).html = [((ParsedMessage *)ret).html stringByDeletingAttachmentsWithNames:[self signatureAttachmentScheduledForRemoval]];
+        }
     }
-	
-	// If this is a PGP-Partitioned message, PGPPartitionedContent is set,
-	// so return that.
-	if([self parentPart] == nil && [currentMessage getIvar:@"PGPPartitionedContent"])
-		return [currentMessage getIvar:@"PGPPartitionedContent"];
 	
     return ret;
 }
@@ -563,6 +569,13 @@
 		[[(MimeBody *)[self mimeBody] message] setIvar:@"PGPPartitionedContent" value:decryptedContent];
 		// Also reset PGPAttachment, so this is not treated as an attachment.
 		self.PGPAttachment = NO;
+        // Since the paritioned content is encrypted, we have to correctly set the status
+        // for the top level part of the message, which the paritioned content replaces.
+        ((MimePart_GPGMail *)[self topPart]).PGPEncrypted = YES;
+        if([self PGPSigned])
+            ((MimePart_GPGMail *)[self topPart]).PGPSigned = YES;
+        if([self PGPSignatures])
+            ((MimePart_GPGMail *)[self topPart]).PGPSignatures = [self PGPSignatures];
 	}
 	
     return decryptedData;
