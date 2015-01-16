@@ -355,13 +355,13 @@
 							<key>LANGUAGE</key>
 							<string>English</string>
 							<key>SECONDARY_VALUE</key>
-							<string>You need Mac OS X 10.10 or higher.</string>
+							<string>You need Mac OS X 10.7 or higher.</string>
 							<key>VALUE</key>
 							<string>This version of GPGMail can’t be installed on this computer.</string>
 						</dict>
 					</array>
 					<key>NAME</key>
-					<string>Operating System &gt;= 10.10</string>
+					<string>Operating System &gt;= 10.7</string>
 					<key>STATE</key>
 					<true/>
 				</dict>
