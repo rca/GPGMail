@@ -28,6 +28,7 @@
  */
 
 #import "WebDocumentGenerator+GPGMail.h"
+#import "ConversationMember+GPGMail.h"
 #import "MUIWebDocument.h"
 #import "MCMessage.h"
 #import "GPGMailBundle.h"
