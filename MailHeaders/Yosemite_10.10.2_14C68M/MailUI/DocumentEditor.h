@@ -4,20 +4,13 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSObject.h"
+#import "ImageResizerDelegate-Protocol.h"
+#import "MCActivityTarget-Protocol.h"
+#import "MVTerminationHandler-Protocol.h"
+#import "MailFullScreenWindowDelegate-Protocol.h"
+#import "NSTextFinderBarContainer-Protocol.h"
 
-#import "ImageResizerDelegate.h"
-#import "MCActivityTarget.h"
-#import "MVTerminationHandler.h"
-#import "MailFullScreenWindowDelegate.h"
-#import "NSAnimationDelegate.h"
-#import "NSSharingServiceDelegate.h"
-#import "NSTextFinderClient.h"
-#import "NSToolbarDelegate.h"
-#import "NSUserInterfaceValidations.h"
-#import "NSWindowDelegate.h"
-
-@class CALayer, ColorBackgroundView, ComposeBackEnd, ComposeStatusView, DeliveryFailure, EditingMessageWebView, EditingWebMessageController, HeadersEditor, LoadingOverlay, MCAttachment, MailInspectorBar, MailInspectorBarItemController, MailToolbar, MailWebViewEditor, MailWindowShadowLayer, MessageViewer, NSArray, NSButton, NSDictionary, NSMutableArray, NSMutableDictionary, NSOperation, NSOperationQueue, NSRunningApplication, NSStackView, NSString, NSTextField, NSTextFinder, NSUUID, NSView, NSView<NSTextFinderBarContainer>, NSWindow, StationerySelector, TypeAheadWindow, WebArchive;
+@class CALayer, ColorBackgroundView, ComposeBackEnd, ComposeStatusView, DeliveryFailure, EditingMessageWebView, EditingWebMessageController, HeadersEditor, LoadingOverlay, MCAttachment, MailInspectorBar, MailInspectorBarItemController, MailToolbar, MailWebViewEditor, MailWindowShadowLayer, MessageViewer, NSArray, NSButton, NSDictionary, NSMutableArray, NSMutableDictionary, NSOperation, NSOperationQueue, NSRunningApplication, NSStackView, NSString, NSTextField, NSTextFinder, NSUUID, NSView, NSWindow, StationerySelector, TypeAheadWindow, WebArchive;
 
 @interface DocumentEditor : NSObject <NSToolbarDelegate, NSSharingServiceDelegate, ImageResizerDelegate, MailFullScreenWindowDelegate, MCActivityTarget, MVTerminationHandler, NSAnimationDelegate, NSTextFinderClient, NSUserInterfaceValidations, NSWindowDelegate>
 {
@@ -197,7 +190,7 @@
 @property(retain, nonatomic) TypeAheadWindow *window; // @synthesize window=_window;
 @property(retain, nonatomic) HeadersEditor *headersEditor; // @synthesize headersEditor=_headersEditor;
 @property(retain, nonatomic) MailWebViewEditor *webViewEditor; // @synthesize webViewEditor=_webViewEditor;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 - (void)backEndHandedMessageToDevice:(id)arg1;
 - (void)setInsertionPointAtEnd;
 - (void)activityContinuationFailed;

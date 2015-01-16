@@ -4,10 +4,6 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSViewController.h"
-
-#import "NSMenuDelegate.h"
-
 @class BannerContainerViewController, ConversationMember, HeaderViewController, MessageView, MessageWebDocumentView, NSLayoutConstraint, NSPopUpButton, NSScrollView, NSString, NSTrackingArea, NSView;
 
 @interface MessageViewController : NSViewController <NSMenuDelegate>
@@ -37,7 +33,7 @@
 @property(retain, nonatomic) NSView *actionButtons; // @synthesize actionButtons=_actionButtons;
 @property(retain, nonatomic) HeaderViewController *headerViewController; // @synthesize headerViewController=_headerViewController;
 @property(retain, nonatomic) BannerContainerViewController *bannerViewController; // @synthesize bannerViewController=_bannerViewController;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 - (BOOL)validateMenuItem:(id)arg1;
 - (BOOL)validateToolbarItem:(id)arg1;
 - (void)observeValueForKeyPath:(id)arg1 ofObject:(id)arg2 change:(id)arg3 context:(void *)arg4;

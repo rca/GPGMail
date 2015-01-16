@@ -4,11 +4,6 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSObject.h"
-
-#import "NSCoding.h"
-#import "NSCopying.h"
-
 @class MUIRemoteImageCollector, NSArray, NSDictionary, NSError, NSMutableDictionary, NSString, NSURL;
 
 @interface MUIWebDocument : NSObject <NSCoding, NSCopying>
@@ -46,7 +41,7 @@
 @property(nonatomic) unsigned long long imageScale; // @synthesize imageScale=_imageScale;
 @property(nonatomic) Class webAttachmentClass; // @synthesize webAttachmentClass=_webAttachmentClass;
 @property(copy, nonatomic) NSArray *attachments; // @synthesize attachments=_attachments;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 - (id)attachmentForContentID:(id)arg1;
 - (id)description;
 - (id)_defaultDocumentHTML;

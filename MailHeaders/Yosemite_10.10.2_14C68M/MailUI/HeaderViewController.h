@@ -4,13 +4,8 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSViewController.h"
-
-#import "HeaderLayoutManagerDelegate.h"
-#import "NSDraggingSource.h"
-#import "NSMenuDelegate.h"
-#import "NSTextViewDelegate.h"
-#import "NSTokenAttachmentDelegate.h"
+#import "HeaderLayoutManagerDelegate-Protocol.h"
+#import "NSTokenAttachmentDelegate-Protocol.h"
 
 @class ConversationMember, HeaderTextContainer, HeaderTruncationAttachmentCell, NSButton, NSImageView, NSLayoutConstraint, NSMutableDictionary, NSString, NSTextAttachment, NSTextField, NSTextView, NSView;
 
@@ -42,7 +37,7 @@
 @property(readonly, nonatomic) NSTextAttachment *flagTextAttachment; // @synthesize flagTextAttachment=_flagTextAttachment;
 @property(retain, nonatomic) HeaderTruncationAttachmentCell *truncationCell; // @synthesize truncationCell=_truncationCell;
 @property(nonatomic) __weak NSView *dividerView; // @synthesize dividerView=_dividerView;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 - (id)_displayStringForTruncationCell;
 - (void)viewerPreferencesChanged:(id)arg1;
 - (void)toggleVIP:(id)arg1;

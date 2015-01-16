@@ -4,12 +4,8 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSObject.h"
-
-#import "ImageResizerDelegate.h"
-#import "MCActivityTarget.h"
-#import "NSStreamDelegate.h"
-#import "NSUserActivityDelegate.h"
+#import "ImageResizerDelegate-Protocol.h"
+#import "MCActivityTarget-Protocol.h"
 
 @class DOMNode, EditableWebMessageDocument, MCInvocationQueue, MCParsedMessage, MFMailAccount, MFMailbox, NSArray, NSInputStream, NSMutableArray, NSMutableData, NSMutableDictionary, NSMutableSet, NSNumber, NSOutputStream, NSPort, NSString, NSURL, NSUUID, NSUndoManager, NSUserActivity, StationeryController;
 
@@ -162,7 +158,7 @@
 @property(retain, nonatomic) NSURL *vcardFileForContactsUpdate; // @synthesize vcardFileForContactsUpdate=_vcardFileForContactsUpdate;
 @property(retain, nonatomic) NSNumber *uniqueID; // @synthesize uniqueID=_uniqueID;
 @property(copy, nonatomic) NSString *contentForContactsUpdate; // @synthesize contentForContactsUpdate=_contentForContactsUpdate;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 - (void)stream:(id)arg1 handleEvent:(unsigned long long)arg2;
 - (void)userActivity:(id)arg1 didReceiveInputStream:(id)arg2 outputStream:(id)arg3;
 - (void)_markForOverwrite:(id)arg1;

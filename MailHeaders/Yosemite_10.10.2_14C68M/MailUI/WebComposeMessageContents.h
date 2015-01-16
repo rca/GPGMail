@@ -4,8 +4,6 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSObject.h"
-
 @class NSAttributedString, NSDictionary, NSMutableArray, NSString, NSURL;
 
 @interface WebComposeMessageContents : NSObject
@@ -28,7 +26,7 @@
 @property(retain, nonatomic) NSString *topLevelHtmlString; // @synthesize topLevelHtmlString=_topLevelHtmlString;
 @property(retain, nonatomic) NSAttributedString *plainText; // @synthesize plainText=_plainText;
 @property(nonatomic) long long composeMode; // @synthesize composeMode=_composeMode;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 - (id)description;
 - (void)addAttachmentOrHtmlString:(id)arg1 withURL:(id)arg2;
 

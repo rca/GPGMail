@@ -4,11 +4,7 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSObject.h"
-
-#import "AccountStatusDataSourceDelegate.h"
-#import "NSStackViewDelegate.h"
-#import "NSUserInterfaceValidations.h"
+#import "AccountStatusDataSourceDelegate-Protocol.h"
 
 @class AccountStatusDataSource, ComposeHeaderRowView, DocumentEditor, MUIAddressField, NSButtonCell, NSMenu, NSMutableArray, NSPopUpButton, NSSegmentedControl, NSStackView, NSString, NSTextField, NSView;
 
@@ -90,7 +86,7 @@
 @property(retain, nonatomic) MUIAddressField *toField; // @synthesize toField=_toField;
 @property(nonatomic) BOOL hasChanges; // @synthesize hasChanges=_hasChanges;
 @property(nonatomic) __weak DocumentEditor *documentEditor; // @synthesize documentEditor=_documentEditor;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 - (void)_updateFullWidthSeparatorState;
 - (void)stackView:(id)arg1 willDetachViews:(id)arg2;
 - (void)stackView:(id)arg1 didReattachViews:(id)arg2;

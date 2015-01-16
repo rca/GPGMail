@@ -4,8 +4,6 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSObject.h"
-
 @class ConversationMember, MCActivityMonitor, MCTaskOperation, MUIWebDocument, NSMutableArray, NSOperationQueue;
 
 @interface WebDocumentGenerator : NSObject
@@ -24,7 +22,7 @@
 @property(readonly, nonatomic) __weak ConversationMember *conversationMember; // @synthesize conversationMember=_conversationMember;
 @property(readonly, nonatomic) NSOperationQueue *configurationSerialQueue; // @synthesize configurationSerialQueue=_configurationSerialQueue;
 @property(retain, nonatomic) MUIWebDocument *webDocument; // @synthesize webDocument=_webDocument;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 - (void)cancelLoad;
 - (void)_messageBodyDataBecameAvailable:(id)arg1;
 - (void)asyncLoadAllowingRemoteFetch:(BOOL)arg1 completionHandler:(id)arg2;

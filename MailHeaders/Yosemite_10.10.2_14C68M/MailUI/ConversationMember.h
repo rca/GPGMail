@@ -4,10 +4,6 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSObject.h"
-
-#import "NSCopying.h"
-
 @class Conversation, MCMessage, MCMessageBody, MCMessageHeaders, MUIWebDocument, NSArray, NSData, NSDate, NSImage, NSIndexSet, NSMutableArray, NSMutableSet, NSString, WebDocumentGenerator;
 
 @interface ConversationMember : NSObject <NSCopying>
@@ -78,7 +74,7 @@
 @property(copy, nonatomic) NSArray *messages; // @synthesize messages=_messages;
 @property(nonatomic) __weak Conversation *conversation; // @synthesize conversation=_conversation;
 @property(retain, nonatomic) MCMessageHeaders *headers; // @synthesize headers=_headers;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 - (id)messagesInSameMailboxAsOriginalMessage;
 - (BOOL)isPrimaryMessage:(id)arg1;
 - (void)unhideMessage:(id)arg1;

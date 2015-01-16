@@ -4,10 +4,9 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSObject.h"
-
-#import "MCMessageSortingInterface.h"
-#import "NSCopying.h"
+#import "CDStructures.h"
+#import "MCMessageSortingInterface-Protocol.h"
+#import "MCMessageDataSource-Protocol.h"
 
 @class NSArray, NSData, NSDictionary, NSMutableSet, NSSet, NSString, NSURL, NSUUID;
 
@@ -52,7 +51,7 @@
 @property double primitiveDateReceivedInterval; // @synthesize primitiveDateReceivedInterval=_dateReceivedInterval;
 @property double primitiveDateSentInterval; // @synthesize primitiveDateSentInterval=_dateSentInterval;
 @property BOOL primitiveMessageType; // @synthesize primitiveMessageType=_type;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 @property(readonly, copy, nonatomic) NSDictionary *remoteAttachments;
 @property(readonly, nonatomic) NSURL *imageArchiveURL;
 - (id)spotlightAttributesIncludingText:(BOOL)arg1;

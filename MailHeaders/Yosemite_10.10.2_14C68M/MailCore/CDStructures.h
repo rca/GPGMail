@@ -6,26 +6,6 @@
 
 #pragma mark Named Structures
 
-struct CGPoint {
-    double _field1;
-    double _field2;
-};
-
-struct CGRect {
-    struct CGPoint _field1;
-    struct CGSize _field2;
-};
-
-struct CGSize {
-    double width;
-    double height;
-};
-
-struct _NSRange {
-    unsigned long long location;
-    unsigned long long length;
-};
-
 struct sasl_callback {
     unsigned long long _field1;
     void *_field2;
@@ -49,13 +29,14 @@ struct sasl_secret {
 #pragma mark Typedef'd Structures
 
 typedef struct {
-    id _field1;
+//    id _field1;
     unsigned int :1;
     unsigned int :1;
     unsigned int :1;
     unsigned int :2;
 } CDStruct_3441fd00;
 
+#ifndef CDSTRUCT_ACCEFCCD
 typedef struct {
     unsigned int colorHasBeenEvaluated:1;
     unsigned int colorWasSetManually:1;
@@ -67,6 +48,8 @@ typedef struct {
     unsigned int isMarkedForOverwrite:1;
     unsigned int unused:2;
 } CDStruct_accefccd;
+#define CDSTRUCT_ACCEFCCD 1
+#endif
 
 typedef struct {
     unsigned int reserved:27;
