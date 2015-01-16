@@ -85,5 +85,6 @@
  */
 - (void)MADealloc;
 
+- (void)_updateSecurityControls;
 
 @end

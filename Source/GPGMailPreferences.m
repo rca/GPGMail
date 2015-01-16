@@ -38,6 +38,17 @@ NSString *SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
 
 @implementation GPGMailPreferences
 
+-(id)init {
+	self = [super init];
+	if (self) {
+		NSDictionary *defaults = [[NSDictionary alloc] initWithContentsOfFile:[[GPGMailBundle bundle] pathForResource:@"SparkleDefaults" ofType:@"plist"]];
+		GPGOptions *options = [GPGOptions sharedOptions];
+		[options registerDefaults:defaults];
+	}
+	
+	return self;
+}
+
 - (GPGMailBundle *)bundle {
 	return [GPGMailBundle sharedInstance];
 }
@@ -173,7 +184,7 @@ NSString *SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
 - (BOOL)enableAutomaticChecks {
 	GPGOptions *options = [GPGOptions sharedOptions];
 	if (![options boolForKey:SUEnableAutomaticChecksKey]) {
-		return false;
+		return true;
 	}
 	NSNumber *interval = [options valueForKey:SUScheduledCheckIntervalKey];
 	return !interval || interval.integerValue > 0;

@@ -55,7 +55,7 @@
 								<object class="NSButtonCell" key="NSCell" id="487618144">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">0</int>
-									<string key="NSContents">自动检查更新</string>
+									<string key="NSContents">自动检测更新</string>
 									<object class="NSFont" key="NSSupport" id="706304668">
 										<bool key="IBIsSystemFont">YES</bool>
 										<double key="NSSize">13</double>
@@ -83,7 +83,6 @@
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{193, 77}, {351, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
-								<reference key="NSNextKeyView" ref="263402944"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="283249516">
 									<int key="NSCellFlags">-2080374784</int>
@@ -111,12 +110,12 @@
 								<object class="NSButtonCell" key="NSCell" id="491452844">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">现在检查</string>
+									<string key="NSContents">现在检测</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<reference key="NSControlView" ref="163650447"/>
 									<int key="NSButtonFlags">-2038284288</int>
 									<int key="NSButtonFlags2">129</int>
-									<string key="NSAlternateContents">检查更新</string>
+									<string key="NSAlternateContents">Check for updates now</string>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">200</int>
 									<int key="NSPeriodicInterval">25</int>
@@ -139,28 +138,6 @@
 									<int key="NSButtonFlags">-2038284288</int>
 									<int key="NSButtonFlags2">129</int>
 									<string key="NSAlternateContents">经常被问及的问题</string>
-									<string key="NSKeyEquivalent"/>
-									<int key="NSPeriodicDelay">200</int>
-									<int key="NSPeriodicInterval">25</int>
-								</object>
-								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
-							</object>
-							<object class="NSButton" id="263402944">
-								<reference key="NSNextResponder" ref="782958523"/>
-								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{10, 22}, {153, 32}}</string>
-								<reference key="NSSuperview" ref="782958523"/>
-								<reference key="NSNextKeyView" ref="163650447"/>
-								<bool key="NSEnabled">YES</bool>
-								<object class="NSButtonCell" key="NSCell" id="492364953">
-									<int key="NSCellFlags">67108864</int>
-									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">捐助</string>
-									<reference key="NSSupport" ref="706304668"/>
-									<reference key="NSControlView" ref="263402944"/>
-									<int key="NSButtonFlags">-2038284288</int>
-									<int key="NSButtonFlags2">129</int>
-									<string key="NSAlternateContents">如果您喜欢我们所做的事请，请帮助我们</string>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">200</int>
 									<int key="NSPeriodicInterval">25</int>
@@ -197,7 +174,7 @@
 										<int key="NSColorSpace">6</int>
 										<string key="NSCatalogName">System</string>
 										<string key="NSColorName">controlTextColor</string>
-										<object class="NSColor" key="NSColor" id="284545059">
+										<object class="NSColor" key="NSColor" id="9980520">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MAA</bytes>
 										</object>
@@ -343,11 +320,11 @@
 											<bytes key="NSWhite">MQA</bytes>
 										</object>
 									</object>
-									<object class="NSColor" key="NSTextColor" id="613890833">
+									<object class="NSColor" key="NSTextColor" id="666243343">
 										<int key="NSColorSpace">6</int>
 										<string key="NSCatalogName">System</string>
 										<string key="NSColorName">labelColor</string>
-										<reference key="NSColor" ref="284545059"/>
+										<reference key="NSColor" ref="9980520"/>
 									</object>
 								</object>
 								<int key="NSBorderType">3</int>
@@ -420,7 +397,7 @@
 								<object class="NSButtonCell" key="NSCell" id="770584249">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">131072</int>
-									<string key="NSContents">版本: xxx</string>
+									<string key="NSContents">Version: xxx</string>
 									<object class="NSFont" key="NSSupport" id="26">
 										<bool key="IBIsSystemFont">YES</bool>
 										<double key="NSSize">11</double>
@@ -477,7 +454,7 @@
 								<object class="NSButtonCell" key="NSCell" id="942140521">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">支持</string>
+									<string key="NSContents">Support</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<reference key="NSControlView" ref="632062900"/>
 									<int key="NSButtonFlags">-2038284288</int>
@@ -500,7 +477,7 @@
 								<object class="NSButtonCell" key="NSCell" id="1015833167">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">268435456</int>
-									<string key="NSContents">以默认设置加密新信息</string>
+									<string key="NSContents">Encrypt new messages by default</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="714016839"/>
@@ -526,7 +503,7 @@
 								<object class="NSButtonCell" key="NSCell" id="1043626823">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">268435456</int>
-									<string key="NSContents">以默认设置签名新信息</string>
+									<string key="NSContents">Sign new messages by default</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="955063492"/>
@@ -557,10 +534,10 @@
 					<object class="NSFont" key="NSSupport">
 						<bool key="IBIsSystemFont">YES</bool>
 						<double key="NSSize">12</double>
-						<int key="NSfFlags">4883</int>
+						<int key="NSfFlags">787</int>
 					</object>
 					<reference key="NSBackgroundColor" ref="509650560"/>
-					<reference key="NSTextColor" ref="613890833"/>
+					<reference key="NSTextColor" ref="666243343"/>
 				</object>
 				<reference key="NSContentView" ref="782958523"/>
 				<int key="NSBorderType">0</int>
@@ -619,14 +596,6 @@
 						<reference key="destination" ref="632062900"/>
 					</object>
 					<string key="id">vFI-pm-2Op</string>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">openDonate:</string>
-						<reference key="source" ref="359798784"/>
-						<reference key="destination" ref="263402944"/>
-					</object>
-					<string key="id">mmA-oo-VQz</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -871,7 +840,6 @@
 							<reference ref="758835818"/>
 							<reference ref="263145191"/>
 							<reference ref="632062900"/>
-							<reference ref="263402944"/>
 							<reference ref="955063492"/>
 							<reference ref="997375455"/>
 							<reference ref="63115413"/>
@@ -970,14 +938,6 @@
 						<reference key="parent" ref="85714290"/>
 					</object>
 					<object class="IBObjectRecord">
-						<string key="id">736</string>
-						<reference key="object" ref="263402944"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="492364953"/>
-						</array>
-						<reference key="parent" ref="85714290"/>
-					</object>
-					<object class="IBObjectRecord">
 						<string key="id">733</string>
 						<reference key="object" ref="758835818"/>
 						<array class="NSMutableArray" key="children">
@@ -1002,11 +962,6 @@
 						<string key="id">734</string>
 						<reference key="object" ref="411323674"/>
 						<reference key="parent" ref="758835818"/>
-					</object>
-					<object class="IBObjectRecord">
-						<string key="id">737</string>
-						<reference key="object" ref="492364953"/>
-						<reference key="parent" ref="263402944"/>
 					</object>
 					<object class="IBObjectRecord">
 						<string key="id">708</string>
@@ -1134,7 +1089,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="632062900"/>
-						<string key="toolTip">如果您还有其它问题。</string>
+						<string key="toolTip">If you've any other question.</string>
 					</object>
 				</object>
 				<string key="1051.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1145,7 +1100,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="997375455"/>
-						<string key="toolTip">自动检查GPGMail的最新版本。</string>
+						<string key="toolTip">Automatically check for new versions of GPGMail.</string>
 					</object>
 				</object>
 				<string key="698.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1164,7 +1119,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="163650447"/>
-						<string key="toolTip">现在检查更新。</string>
+						<string key="toolTip">现在检测更新。</string>
 					</object>
 				</object>
 				<string key="700.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1190,16 +1145,6 @@
 				</object>
 				<string key="733.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="734.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<object class="NSMutableDictionary" key="736.IBAttributePlaceholdersKey">
-					<string key="NS.key.0">ToolTip</string>
-					<object class="IBToolTipAttribute" key="NS.object.0">
-						<string key="name">ToolTip</string>
-						<reference key="object" ref="263402944"/>
-						<string key="toolTip">如果您喜欢我们所做的事情，请帮助我们。</string>
-					</object>
-				</object>
-				<string key="736.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="737.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="743.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="744.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="780.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1228,7 +1173,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="984611941"/>
-						<string key="toolTip">点击以复制版本信息至剪贴板。</string>
+						<string key="toolTip">Click to copy version into clipboard.</string>
 					</object>
 				</object>
 				<string key="930.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1240,7 +1185,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="386760937"/>
-						<string key="toolTip">点击以复制版本信息至剪贴板。</string>
+						<string key="toolTip">Click to copy version into clipboard.</string>
 					</object>
 				</object>
 				<string key="935.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

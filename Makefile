@@ -3,7 +3,7 @@ TARGET = GPGMail
 PRODUCT = GPGMail
 UPDATER_PROJECT = GPGMail_Updater
 UPDATER_TARGET = GPGMail_Updater
-UPDATER_PRODUCT = GPGMail_Updater.app
+UPDATER_PRODUCT = build/$(CONFIG)/GPGMail_Updater.app
 MAKE_DEFAULT = Dependencies/GPGTools_Core/newBuildSystem/Makefile.default
 VPATH = build/$(CONFIG)/GPGMail.mailbundle/Contents/MacOS
 NEED_LIBMACGPG = 1
@@ -32,8 +32,6 @@ $(UPDATER_PRODUCT): GPGMail_Updater/* GPGMail_Updater/*/* GPGMail_Updater.xcodep
 	@xcodebuild -project $(UPDATER_PROJECT).xcodeproj -target $(UPDATER_TARGET) -configuration $(CONFIG) build $(XCCONFIG)
 
 compile: $(UPDATER_PRODUCT)
-
-
 
 install: $(PRODUCT)
 	@echo "Installing GPGMail into $(INSTALL_ROOT)Library/Mail/Bundles"

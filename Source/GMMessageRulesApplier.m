@@ -89,8 +89,4 @@
 	});
 }
 
-- (void)dealloc {
-	dispatch_release(_rulesQueue);
-}
-
 @end

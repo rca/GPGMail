@@ -59,4 +59,6 @@
  */
 - (void)MAToggleFullScreen:(id)sender;
 
+- (id)titlebarView;
+
 @end

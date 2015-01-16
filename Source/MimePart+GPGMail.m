@@ -217,15 +217,21 @@
 
     // To remove .sig attachments, they have to be removed.
     // from the ParsedMessage html.
-    if([ret isKindOfClass:NSClassFromString(@"ParsedMessage")] && [[self signatureAttachmentScheduledForRemoval] count]) {
-        DebugLog(@"Parsed Message without objects: %@", [((ParsedMessage *)ret).html stringByDeletingAttachmentsWithNames:[[(MimeBody *)[self mimeBody] message] getIvar:@"PGPSignatureAttachmentsToRemove"]]);
-        ((ParsedMessage *)ret).html = [((ParsedMessage *)ret).html stringByDeletingAttachmentsWithNames:[self signatureAttachmentScheduledForRemoval]];
+    if([ret isKindOfClass:[GPGMailBundle resolveMailClassFromName:@"ParsedMessage"]]) {
+        // If this is a PGP-Partitioned message, PGPPartitionedContent is set,
+        // so return that.
+        if([[[self mimeBody] message] getIvar:@"PGPPartitionedContent"] && ![self parentPart]) {
+            NSMutableString *completeHTML = [NSMutableString stringWithString:[[[self mimeBody] message] getIvar:@"PGPPartitionedContent"]];
+            if([((ParsedMessage *)ret).html length])
+                [completeHTML appendString:((ParsedMessage *)ret).html];
+            ((ParsedMessage *)ret).html = completeHTML;
+        }
+    
+        if([[self signatureAttachmentScheduledForRemoval] count]) {
+            DebugLog(@"Parsed Message without objects: %@", [((ParsedMessage *)ret).html stringByDeletingAttachmentsWithNames:[[(MimeBody *)[self mimeBody] message] getIvar:@"PGPSignatureAttachmentsToRemove"]]);
+            ((ParsedMessage *)ret).html = [((ParsedMessage *)ret).html stringByDeletingAttachmentsWithNames:[self signatureAttachmentScheduledForRemoval]];
+        }
     }
-	
-	// If this is a PGP-Partitioned message, PGPPartitionedContent is set,
-	// so return that.
-	if([self parentPart] == nil && [currentMessage getIvar:@"PGPPartitionedContent"])
-		return [currentMessage getIvar:@"PGPPartitionedContent"];
 	
     return ret;
 }
@@ -244,9 +250,12 @@
 		
 		// Last but not least, let's look into the body, to find multipart/signed.
 		NSData *bodyData = [part bodyData];
-		if([[[part contentTransferEncoding] lowercaseString] isEqualToString:@"base64"])
-			bodyData = [bodyData decodeBase64];
-		
+        // Yosemite seems to do the base64 internally already, so let's rely on that.
+        if(![GPGMailBundle isYosemite]) {
+            if([[[part contentTransferEncoding] lowercaseString] isEqualToString:@"base64"])
+                bodyData = [bodyData decodeBase64];
+        }
+        
 		NSData *searchData = [@"multipart/signed" dataUsingEncoding:NSASCIIStringEncoding];
 		if([bodyData rangeOfData:searchData options:0 range:NSMakeRange(0, [bodyData length])].location == NSNotFound)
 			return;
@@ -468,90 +477,28 @@
         return [self MADecodeTextHtmlWithContext:ctx];
 
 	
-	BOOL userDidSelectMessage = [[[(MimeBody *)[self mimeBody] message] getIvar:@"UserSelectedMessage"] boolValue];
-	
-    // 1. Step, check if the message was already decrypted.
-    if (self.PGPEncrypted && self.PGPDecryptedData)
-		// Inline PGP will never return the decrypted data, unless the
-		// use explicitly selected the message.
-		return self.PGPDecryptedData && userDidSelectMessage ? self.PGPDecryptedContent : [self MADecodeTextPlainWithContext:ctx];
-    
-    if (self.PGPSigned && self.PGPVerifiedContent)
-        return self.PGPVerifiedContent && userDidSelectMessage ? self.PGPVerifiedContent : [self MADecodeTextPlainWithContext:ctx];
-
-	
 	NSData *bodyData = [self bodyData];
-	NSRange encryptedRange = [bodyData rangeOfPGPInlineEncryptedData];
-
-	
-//	if (encryptedRange.length == 0) {
-//		bodyData = [[[[NSAttributedString alloc] initWithHTML:[self bodyData] documentAttributes:nil] string] dataUsingEncoding:NSUTF8StringEncoding];
-//		encryptedRange = [bodyData rangeOfPGPInlineEncryptedData];
-//		if (encryptedRange.length == 0) {
-//			if ([[self bodyData] mightContainPGPEncryptedDataOrSignatures]) {
-//				// HTML is a bit hard to decrypt, so check if the parent part, if exists is a
-//				// multipart/alternative.
-//				// If that's the case, look for a text/plain part
-//				MimePart *parentPart = [self parentPart];
-//				MimePart *textPart = nil;
-//				if(parentPart && [parentPart isType:@"multipart" subtype:@"alternative"]) {
-//					for(MimePart *tmpPart in [parentPart subparts]) {
-//						if([tmpPart isType:@"text" subtype:@"plain"]) {
-//							textPart = tmpPart;
-//							break;
-//						}
-//					}
-//					if(textPart) {
-//						return [textPart decodeTextPlainWithContext:ctx];
-//					}
-//				}
-//				
-//				if ([bodyData rangeOfPGPInlineEncryptedData].length > 0 || [bodyData rangeOfPGPInlineSignatures].length > 0) {
-//					return [(MimePart *)self decodeTextPlainWithContext:ctx];
-//				}
-//			}
-//			return [self MADecodeTextHtmlWithContext:ctx];
-//		}
-//	}
-	
-	
-    
-    if (encryptedRange.location != NSNotFound) {
-		NSData *decryptedData = [self decryptData:[bodyData subdataWithRange:encryptedRange]];
-		NSMutableData *data = [NSMutableData data];
-		
-		[data appendData:[PGP_PART_MARKER_START dataUsingEncoding:NSUTF8StringEncoding]];
-		[data appendData:decryptedData];
-		[data appendData:[PGP_PART_MARKER_END dataUsingEncoding:NSUTF8StringEncoding]];
-		
-		NSString *string = [data stringByGuessingEncodingWithHint:[self bestStringEncoding]];
-		
-		string = [self contentWithReplacedPGPMarker:string isEncrypted:self.PGPEncrypted isSigned:self.PGPSigned];
-		
-		NSMutableData *resultData = [NSMutableData data];
-		[resultData appendData:[bodyData subdataWithRange:NSMakeRange(0, encryptedRange.location)]];
-		[resultData appendData:[string dataUsingEncoding:NSUTF8StringEncoding]];
-		
-		NSRange range;
-		range.location = encryptedRange.location + encryptedRange.length;
-		range.length = bodyData.length - range.location;
-		[resultData appendData:[bodyData subdataWithRange:range]];
-
-		NSString *content = [resultData stringByGuessingEncoding];
-		
-		
-		if (self.PGPSigned) {
-			self.PGPVerifiedContent = content;
-		}
-		if (self.PGPEncrypted) {
-			self.PGPDecryptedContent = content;
-			self.PGPDecryptedData = [content dataUsingEncoding:NSUTF8StringEncoding];
-		}
-		
-				
-		if (!userDidSelectMessage)
-			return [self MADecodeTextHtmlWithContext:ctx];
-		return content;
+    if([bodyData mightContainPGPEncryptedDataOrSignatures]) {
+        // HTML is a bit hard to decrypt, so check if the parent part, if exists is a
+        // multipart/alternative.
+        // If that's the case, look for a text/plain part
+        MimePart *parentPart = [self parentPart];
+        MimePart *textPart = nil;
+        if(parentPart && [parentPart isType:@"multipart" subtype:@"alternative"]) {
+            for(MimePart *tmpPart in [parentPart subparts]) {
+                if([tmpPart isType:@"text" subtype:@"plain"]) {
+                    textPart = tmpPart;
+                    break;
+                }
+            }
+            if(textPart) {
+                return [textPart decodeTextPlainWithContext:ctx];
+            }
+        }
+        
+        if ([bodyData rangeOfPGPInlineEncryptedData].length > 0 || [bodyData rangeOfPGPInlineSignatures].length > 0) {
+            return [(MimePart *)self decodeTextPlainWithContext:ctx];
+        }
     }
     
     return [self MADecodeTextHtmlWithContext:ctx];
@@ -622,6 +569,13 @@
 		[[(MimeBody *)[self mimeBody] message] setIvar:@"PGPPartitionedContent" value:decryptedContent];
 		// Also reset PGPAttachment, so this is not treated as an attachment.
 		self.PGPAttachment = NO;
+        // Since the paritioned content is encrypted, we have to correctly set the status
+        // for the top level part of the message, which the paritioned content replaces.
+        ((MimePart_GPGMail *)[self topPart]).PGPEncrypted = YES;
+        if([self PGPSigned])
+            ((MimePart_GPGMail *)[self topPart]).PGPSigned = YES;
+        if([self PGPSignatures])
+            ((MimePart_GPGMail *)[self topPart]).PGPSignatures = [self PGPSignatures];
 	}
 	
     return decryptedData;
@@ -741,11 +695,16 @@
     if([encryptedData rangeOfData:[@"Content-Type" dataUsingEncoding:NSUTF8StringEncoding] options:0 range:NSMakeRange(0, [encryptedData length])].location != NSNotFound)
         return [self decodeFuckedUpEarlyAlphaData:encryptedData context:ctx];
 
-    if([[dataPart.contentTransferEncoding lowercaseString] isEqualToString:@"base64"] && 
-       [encryptedData isValidBase64Data])
-        encryptedData = [encryptedData decodeBase64];
-    else if([[dataPart.contentTransferEncoding lowercaseString] isEqualToString:@"quoted-printable"])
-        encryptedData = [encryptedData decodeQuotedPrintableForText:YES];
+    // Yosemite seems to already do the right thing in bodyData,
+    // so no need for use to do anything. Any they've removed decodeBase64 and isValidBase64Data
+    // from NSData.
+    if(![GPGMailBundle isYosemite]) {
+        if([[dataPart.contentTransferEncoding lowercaseString] isEqualToString:@"base64"] &&
+           [encryptedData isValidBase64Data])
+            encryptedData = [encryptedData decodeBase64];
+        else if([[dataPart.contentTransferEncoding lowercaseString] isEqualToString:@"quoted-printable"])
+            encryptedData = [encryptedData decodeQuotedPrintableForText:YES];
+    }
     
     // The message is definitely encrypted, otherwise this method would never
     // be entered, so set that flag.
@@ -864,28 +823,27 @@
 	// Sometimes decryption okay is issued even though a NODATA error occured.
 	BOOL success = gpgc.decryptionOkay && !error;
 	
-	// Check if this is a clear-signed message.
-	// Conditions: decryptionOkay == YES or encrypted data has no signature packets.
-	// If decryptedData length > 0 && !decryptionOkay signature packets are expected.
-	BOOL clearSigned = gpgc.decryptionOkay || ![decryptedData hasSignaturePacketsWithSignaturePacketsExpected:decryptedData.length > 0];
-	
+    // Check if this is a non-clear-signed message.
+    // Conditions: decryptionOkay == false and encrypted data has signature packets.
+    // If decryptedData length != 0 && !decryptionOkay signature packets are expected.
+    BOOL nonClearSigned = !gpgc.decryptionOkay && [decryptedData hasSignaturePacketsWithSignaturePacketsExpected:[decryptedData length] != 0 && !gpgc.decryptionOkay];
+    
 	// Let's reset the error if the message is not clear-signed,
 	// since error will be general error.
-	if (!clearSigned) {
+	if (nonClearSigned)
 		error = nil;
-	}
 	
-	// No error for decryption? Check the signatures for errors.
-	if (!error) {
-		// Decryption succeed, so set that status.
-		self.PGPDecrypted = clearSigned;
-		error = [self errorFromGPGOperation:GPG_OPERATION_VERIFICATION controller:gpgc];
-	}
-
-	// Part is encrypted, otherwise we wouldn't come here, so
-	// set that status.
-	self.PGPEncrypted = clearSigned;
-		
+    // Part is encrypted, otherwise we wouldn't come here, so
+    // set that status.
+    self.PGPEncrypted = nonClearSigned ? NO : YES;
+    
+    // No error for decryption? Check the signatures for errors.
+    if(!error) {
+        // Decryption succeed, so set that status.
+        self.PGPDecrypted = nonClearSigned ? NO : YES;
+        error = [self errorFromGPGOperation:GPG_OPERATION_VERIFICATION controller:gpgc];
+    }
+    
 	// Signatures found, set is signed status, also store the signatures.
 	NSArray *signatures = gpgc.signatures;
 	if (signatures.count) {
@@ -914,7 +872,7 @@
     // Last, store the error itself.
     self.PGPError = error;
     
-    if (!success && clearSigned)
+    if (!success && !nonClearSigned)
         return nil;
     
     return decryptedData;

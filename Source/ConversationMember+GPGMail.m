@@ -34,12 +34,13 @@
 @implementation ConversationMember_GPGMail
 
 - (void)MA_reloadSecurityProperties {
+    /* Doesn't seem to be used under Yosemite. */
     MCMessage *message = [(ConversationMember *)self originalMessage];
     if(((Message_GPGMail *)message).PGPSigned || ((Message_GPGMail *)message).PGPEncrypted) {
-        [(ConversationMember *)self setIsEncrypted:((Message_GPGMail *)message).PGPEncrypted];
-        [(ConversationMember *)self setIsSigned:((Message_GPGMail *)message).PGPSigned];
-        [(ConversationMember *)self setSigners:((Message_GPGMail *)message).PGPSignatures];
-        [(ConversationMember *)self setSignerNames:[((Message_GPGMail *)message) PGPSignatureLabels]];
+        [self setIsEncrypted:((Message_GPGMail *)message).PGPEncrypted];
+        [self setIsSigned:((Message_GPGMail *)message).PGPSigned];
+        [self setSigners:((Message_GPGMail *)message).PGPSignatures];
+        [self setSignerNames:[((Message_GPGMail *)message) PGPSignatureLabels]];
         return;
     }
     

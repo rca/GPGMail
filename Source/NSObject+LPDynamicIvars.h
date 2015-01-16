@@ -41,6 +41,15 @@
  Add a variable with value <value> to the object.
  */
 - (void)setIvar:(id)key value:(id)value;
+
+/**
+ Add a variable with value <value> to the object.
+ If shouldAssign is set to true, the value is only assigned, not retained.
+ This is for example necessary under 10.7 to store a dispatch_queue_t object
+ as associated object.
+ */
+- (void)setIvar:(id)key value:(id)value assign:(BOOL)shouldAssign;
+
 /**
  Retrieve the value for a variable.
  */

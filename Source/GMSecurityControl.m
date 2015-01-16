@@ -27,6 +27,7 @@
 
 #import "NSObject+LPDynamicIvars.h"
 #import "Message.h"
+#import "GPGMailBundle.h"
 #import "ComposeBackEnd.h"
 #import "MailDocumentEditor.h"
 #import "Message+GPGMail.h"
@@ -51,19 +52,20 @@
 
 - (void)setEnabled:(BOOL)enabled {
     ComposeBackEnd *backEnd = [(MailDocumentEditor *)[[self.control target] valueForKey:@"_documentEditor"] backEnd];
-
+    NSDictionary *securityProperties = ((ComposeBackEnd_GPGMail *)backEnd).securityProperties;
+    
     if(self.securityTag == SECURITY_BUTTON_SIGN_TAG) {
-        enabled = [[backEnd getIvar:@"SignIsPossible"] boolValue];
+        enabled = [securityProperties[@"SignIsPossible"] boolValue];
     }
     else {
-        enabled = [[backEnd getIvar:@"EncryptIsPossible"] boolValue];
+        enabled = [securityProperties[@"EncryptIsPossible"] boolValue];
         GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
         if(((ComposeBackEnd_GPGMail *)backEnd).securityMethod)
             securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).securityMethod;
         if(securityMethod == GPGMAIL_SECURITY_METHOD_SMIME) {
             // Encrypt is for some reason only possible with S/MIME
             // if signing is also possible.
-            enabled = enabled && [[backEnd getIvar:@"SignIsPossible"] boolValue];
+            enabled = enabled && [securityProperties[@"SignIsPossible"] boolValue];
         }
     }
     [self.control setEnabled:enabled];
@@ -71,6 +73,7 @@
 
 - (void)setImage:(id)image forSegment:(NSInteger)segment {
     ComposeBackEnd *backEnd = [(MailDocumentEditor *)[[((NSSegmentedControl *)self.control) target] valueForKey:@"_documentEditor"] backEnd];
+    NSDictionary *securityProperties = ((ComposeBackEnd_GPGMail *)backEnd).securityProperties;
     // forcedImageName is not nil if the user clicked on the control.
     // In that case always change the control to the forced image.
     // NEVER! ignore a user decision!
@@ -80,7 +83,7 @@
 	// Determines if the represented button could be enabled.
 	// Basically, if this is the encrypt button, and EncryptIsPossible is true,
 	// the enabled state is possible. Same goes for the sign button.
-	BOOL enabledIsPossible = self.securityTag == SECURITY_BUTTON_ENCRYPT_TAG ? [[backEnd getIvar:@"EncryptIsPossible"] boolValue] : [[backEnd getIvar:@"SignIsPossible"] boolValue];
+	BOOL enabledIsPossible = self.securityTag == SECURITY_BUTTON_ENCRYPT_TAG ? [securityProperties[@"EncryptIsPossible"] boolValue] : [securityProperties[@"SignIsPossible"] boolValue];
 	if(self.forcedImageName) {
         // The force image should always be applied, unless it's not possible,
 		// which is, when the enabled state is not possible, but the image would
@@ -97,16 +100,16 @@
     NSString *imageName = nil;
     
     if(self.securityTag == SECURITY_BUTTON_SIGN_TAG) {
-        BOOL setSign = [backEnd ivarExists:@"ForceSign"] ? [[backEnd getIvar:@"ForceSign"] boolValue] : [[backEnd getIvar:@"SetSign"] boolValue];
-        if(setSign && ![[backEnd getIvar:@"SignIsPossible"] boolValue])
+        BOOL setSign = securityProperties[@"ForceSign"] ? [securityProperties[@"ForceSign"] boolValue] : [securityProperties[@"SetSign"] boolValue];
+        if(setSign && ![securityProperties[@"SignIsPossible"] boolValue])
             setSign = NO;
         
         imageName = setSign ? SIGN_ON_IMAGE : SIGN_OFF_IMAGE;
     }
     else if(self.securityTag == SECURITY_BUTTON_ENCRYPT_TAG) {
-        BOOL setEncrypt = [backEnd ivarExists:@"ForceEncrypt"] ? [[backEnd getIvar:@"ForceEncrypt"] boolValue] : [[backEnd getIvar:@"SetEncrypt"] boolValue];
+        BOOL setEncrypt = securityProperties[@"ForceEncrypt"] ? [securityProperties[@"ForceEncrypt"] boolValue] : [securityProperties[@"SetEncrypt"] boolValue];
         
-        if(setEncrypt && ![[backEnd getIvar:@"EncryptIsPossible"] boolValue])
+        if(setEncrypt && ![securityProperties[@"EncryptIsPossible"] boolValue])
             setEncrypt = NO;
         
         imageName = setEncrypt ? ENCRYPT_LOCK_LOCKED_IMAGE : ENCRYPT_LOCK_UNLOCKED_IMAGE;
@@ -134,6 +137,7 @@
     // That's why GPGMail forces the right image to be always set regardless from what the HeadersEditor
     // wants.
     ComposeBackEnd *backEnd = [(MailDocumentEditor *)[[((NSSegmentedControl *)self.control) target] valueForKey:@"_documentEditor"] backEnd];
+    NSMutableDictionary *updatedSecurityProperties = [@{} mutableCopy];
     
     if(self.securityTag == SECURITY_BUTTON_SIGN_TAG) {
         self.forcedImageName = [[image name] isEqualToString:SIGN_OFF_IMAGE] ? SIGN_ON_IMAGE : SIGN_OFF_IMAGE;
@@ -141,15 +145,17 @@
         if([[image name] isEqualToString:SIGN_OFF_IMAGE])
             forceSign = YES;
         
-        [backEnd setIvar:@"ForceSign" value:@(forceSign)];
+        updatedSecurityProperties[@"ForceSign"] = @(forceSign);
     }
     else {
         self.forcedImageName = [[image name] isEqualToString:ENCRYPT_LOCK_UNLOCKED_IMAGE] ? ENCRYPT_LOCK_LOCKED_IMAGE : ENCRYPT_LOCK_UNLOCKED_IMAGE;
         BOOL forceEncrypt = NO;
         if([[image name] isEqualToString:ENCRYPT_LOCK_UNLOCKED_IMAGE])
             forceEncrypt = YES;
-        [backEnd setIvar:@"ForceEncrypt" value:@(forceEncrypt)];
+        updatedSecurityProperties[@"ForceEncrypt"] = @(forceEncrypt);
     }
+    
+    [(ComposeBackEnd_GPGMail *)backEnd updateSecurityProperties:updatedSecurityProperties];
 }
 
 @end

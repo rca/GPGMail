@@ -51,6 +51,7 @@
 					 @"_configureLastDraftInformationFromHeaders:overwrite:",
 					 @"sender",
 					 @"outgoingMessageUsingWriter:contents:headers:isDraft:shouldBePlainText:",
+					 @"initCreatingDocumentEditor:"
 			 ],
 			 @"HeadersEditor": @[
 					 @"securityControlChanged:",
@@ -63,12 +64,13 @@
 					 @"updateSecurityControls",
 					 @"_updateSecurityStateInBackgroundForRecipients:sender:"
 			 ],
-			 @"MailDocumentEditor": @[
+             @"MailDocumentEditor": @[
 					 @"backEndDidLoadInitialContent:",
 					 @"dealloc",
 					 @"backEnd:didCancelMessageDeliveryForEncryptionError:",
-					 @"backEnd:didCancelMessageDeliveryForError:"
-			 ],
+					 @"backEnd:didCancelMessageDeliveryForError:",
+                     @"initWithBackEnd:"
+             ],
 			 @"NSWindow": @[
 					 @"toggleFullScreen:"
 			 ],
@@ -249,6 +251,56 @@
 	};
 }
 
++ (NSDictionary *)hookChangesForYosemite {
+    return @{
+             @"HeadersEditor": @{
+                     @"selectors": @{
+                             @"renamed": @[
+                                     @[@"updateSecurityControls",
+                                       @"_updateSecurityControls"
+                                     ]
+                                    
+                             ],
+                             @"removed": @[
+                                     @"_updateSignButtonToolTip",
+                                     @"_updateEncryptButtonToolTip",
+                                     @"toggleDetails",
+                                     @"_updateFromAndSignatureControls:"
+                            ],
+                            @"added": @[
+                                     @"_updateFromControl",
+                                     @"setMessageIsToBeEncrypted:",
+                                     @"setMessageIsToBeSigned:",
+                                     @"setCanSign:",
+                                     @"setCanEncrypt:"
+                            ]
+                     }
+             },
+             @"ComposeBackEnd": @{
+                     @"selectors": @{
+                            @"added": @[
+                                    @"setKnowsCanSign:"
+                            ]
+                     }
+             },
+             @"HeaderViewController": @{
+                     @"selectors": @{
+                            @"removed": @[
+                                @"_displayStringForSecurityKey",
+                                @"toggleDetails:" // TODO: Implement again?
+                            ]
+                     }
+             },
+             @"ConversationMember": @{
+                     @"selectors": @{
+                            @"removed": @[
+                                @"_reloadSecurityProperties"
+                            ]
+                     }
+             }
+    };
+}
+
 + (NSDictionary *)hooks {
 	static dispatch_once_t onceToken;
 	static NSDictionary *_hooks;
@@ -264,7 +316,9 @@
 		/* Fix, once we can compile with stable Xcode including 10.9 SDK. */
 		if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8)
 			[self applyHookChangesForVersion:@"10.9" toHooks:hooks];
-		
+		if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9)
+            [self applyHookChangesForVersion:@"10.10" toHooks:hooks];
+        
 		_hooks = [NSDictionary dictionaryWithDictionary:hooks];
 	});
 	
@@ -275,7 +329,9 @@
 	NSDictionary *hookChanges;
 	if([osxVersion isEqualToString:@"10.9"])
 		hookChanges = [self hookChangesForMavericks];
-	
+	else if([osxVersion isEqualToString:@"10.10"])
+        hookChanges = [self hookChangesForYosemite];
+    
 	for(NSString *class in hookChanges) {
 		NSDictionary *hook = hookChanges[class];
 		
@@ -295,8 +351,11 @@
 				for(id selector in hook[@"selectors"][action]) {
 					if([action isEqualToString:@"added"])
 						[(NSMutableArray *)hooks[class] addObject:selector];
-					else if([action isEqualToString:@"removed"])
-						[(NSMutableArray *)hooks[class] removeObject:selector];
+                    else if([action isEqualToString:@"removed"]) {
+                        NSMutableArray *tempHooks = [hooks[class] mutableCopy];
+                        [tempHooks removeObject:selector];
+                        hooks[class] = tempHooks;
+                    }
 					else if([action isEqualToString:@"replaced"]) {
 						[(NSMutableArray *)hooks[class] removeObject:selector[0]];
 						[(NSMutableArray *)hooks[class] addObject:selector[1]];
@@ -382,7 +441,7 @@
 		BOOL extend = extensionClass != nil ? YES : NO;
 		if(extend) {
 			if(![mailClass jrlp_addMethodsFromClass:extensionClass error:&error])
-				NSLog(@"WARNING: methods of class %@ couldn't be added to %@ - %@", extensionClass,
+				DebugLog(@"WARNING: methods of class %@ couldn't be added to %@ - %@", extensionClass,
 					  mailClass, error);
 		}
 		
@@ -403,8 +462,8 @@
 			if(![mailClass jrlp_swizzleMethod:selector withMethod:extensionSelector error:&error]) {
                 // If that didn't work, try to add as class method.
                 if(![mailClass jrlp_swizzleClassMethod:selector withClassMethod:extensionSelector error:&error])
-                    NSLog(@"WARNING: %@ doesn't respond to selector %@ - %@", NSStringFromClass(mailClass),
-						  NSStringFromSelector(selector), error);
+                    DebugLog(@"WARNING: %@ doesn't respond to selector %@", NSStringFromClass(mailClass),
+						  NSStringFromSelector(selector));
             }
 		}
 	}

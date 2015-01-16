@@ -170,6 +170,8 @@
  */
 @property (nonatomic, assign) GPGMAIL_SECURITY_METHOD securityMethod;
 @property (nonatomic, assign) GPGMAIL_SECURITY_METHOD guessedSecurityMethod;
+@property (nonatomic, copy) NSMutableDictionary *securityProperties;
+- (void)updateSecurityProperties:(NSDictionary *)updates;
 
 /**
  Sets the flag that the user has chosen a security method.

@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import <AppKit/NSColor.h>
 #import <MFError.h>
 #import <MimePart.h>
 #import <MimeBody.h>
@@ -168,54 +169,111 @@
     [self MAToggleDetails:target];
 }
 
-- (void)MA_updateTextStorageWithHardInvalidation:(BOOL)arg1 {
-    // Force details to always be shown on Mavericks for PGP processed messages.
-    // Works differently on < 10.9.
+- (void)MA_updateTextStorageWithHardInvalidation:(BOOL)hardValidation {
+    [self MA_updateTextStorageWithHardInvalidation:hardValidation];
     
-    Message_GPGMail *message = (Message_GPGMail *)[(ConversationMember *)[(HeaderViewController *)self representedObject] originalMessage];
-    // If we set _detailsHidden too early, it's ignored as it seems,
-    // so we check the PGPInfoCollected flag, to know whether or not the message
-    // has already been processed. If is has, and this method is called, force _detailsHidden to be
-    // false and update the details button.
-    if(message.PGPInfoCollected && (message.PGPEncrypted || message.PGPSigned) && [message getIvar:@"LoadingStage"]) {
-        [self setIvar:@"RealDetailsHidden" value:[self valueForKey:@"_detailsHidden"]];
-        [self setValue:@(0) forKey:@"_detailsHidden"];
-        [(HeaderViewController *)self _updateDetailsButton];
-        [self MA_updateTextStorageWithHardInvalidation:YES];
+    // If hard validation is set, _displayStringsByHeaderKey is emptied,
+    // before readding the NSAttributedStrings for each header key.
+    // In order to insert our own security key, we'll overwrite whatever
+    // Mail itself stores under the x-apple-security key, and afterwards
+    // run _updateTextStorageWithHardInvalidation:NO.
+    // As a result, Mail will recreate the header display, but without emptying
+    // _displayStringsByHeaderKey first, thus, using our own security string.
+    // This way we don't have to use the loop-through-attributes-and-insert-after-the-to-header-trick.
+    if([GPGMailBundle isYosemite]) {
+        if(hardValidation) {
+            NSAttributedString *securityHeaderString = [self MA_displayStringForSecurityKey];
+            if(!securityHeaderString || [securityHeaderString length] == 0)
+                return;
+            NSMutableDictionary *displayStringsByHeaderKey = [self valueForKey:@"_displayStringsByHeaderKey"];
+            displayStringsByHeaderKey[@"x-apple-security"] = securityHeaderString;
+            [self MA_updateTextStorageWithHardInvalidation:NO];
+        }
+        
         return;
     }
-    
-    [self MA_updateTextStorageWithHardInvalidation:arg1];
+    else {
+        // Force details to always be shown on Mavericks for PGP processed messages.
+        // Works differently on < 10.9.
+        
+        Message_GPGMail *message = (Message_GPGMail *)[(ConversationMember *)[(HeaderViewController *)self representedObject] originalMessage];
+        // If we set _detailsHidden too early, it's ignored as it seems,
+        // so we check the PGPInfoCollected flag, to know whether or not the message
+        // has already been processed. If is has, and this method is called, force _detailsHidden to be
+        // false and update the details button.
+        
+        if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+            [self setIvar:@"RealShowDetails" value:[self valueForKey:@"_showDetails"]];
+            [self setShowDetails:1];
+        }
+        
+        if(message.PGPInfoCollected && (message.PGPEncrypted || message.PGPSigned) && [message getIvar:@"LoadingStage"]) {
+            if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+                [self setIvar:@"RealShowDetails" value:[self valueForKey:@"_showDetails"]];
+                [self setShowDetails:1];
+            }
+            else {
+                [self setIvar:@"RealDetailsHidden" value:[self valueForKey:@"_detailsHidden"]];
+                [self setValue:@(0) forKey:@"_detailsHidden"];
+                [self _updateDetailsButton];
+            }
+            [self MA_updateTextStorageWithHardInvalidation:YES];
+            return;
+        }
+        
+        [self MA_updateTextStorageWithHardInvalidation:hardValidation];
+    }
 }
 
 - (id)MA_displayStringForSecurityKey {
     GM_CAST_CLASS(MCMessage *, id) message = [(ConversationMember *)[(HeaderViewController *)self representedObject] originalMessage];
     GM_CAST_CLASS(MCMimeBody *, id) mimeBody = [(ConversationMember *)[(HeaderViewController *)self representedObject] messageBody];
     
-    if(![message shouldBePGPProcessed])
-        return [self MA_displayStringForSecurityKey];
+    if(![message shouldBePGPProcessed]) {
+        if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9)
+            return nil;
+        else
+            return [self MA_displayStringForSecurityKey];
+    }
     
     // Check the mime body, is more reliable.
     BOOL isPGPSigned = (BOOL)[message PGPSigned];
     BOOL isPGPEncrypted = (BOOL)[message PGPEncrypted] && ![mimeBody ivarExists:@"PGPEarlyAlphaFuckedUpEncrypted"];
     BOOL hasPGPAttachments = (BOOL)[message numberOfPGPAttachments] > 0 ? YES : NO;
     
-    if(!isPGPSigned && !isPGPEncrypted && !hasPGPAttachments)
-        return [self MA_displayStringForSecurityKey];
+    if(!isPGPSigned && !isPGPEncrypted && !hasPGPAttachments) {
+        if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+            return [[NSAttributedString alloc] initWithString:@""];
+        }
+        else {
+            return [self MA_displayStringForSecurityKey];
+        }
+    }
     
     NSMutableAttributedString *displayString = [self securityHeaderForMessage:message mimeBody:mimeBody];
     
     NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     paragraphStyle.baseWritingDirection = [NSParagraphStyle defaultWritingDirectionForLanguage:nil];
     paragraphStyle.alignment = NSLeftTextAlignment;
-    paragraphStyle.lineSpacing = 1.0f;
+    paragraphStyle.lineSpacing = [GPGMailBundle isYosemite] ? 0.0f : 1.0f;
     paragraphStyle.tighteningFactorForTruncation = 0.0f;
-    paragraphStyle.minimumLineHeight = 15.0f;
-    paragraphStyle.maximumLineHeight = 15.0f;
-    paragraphStyle.firstLineHeadIndent = 4.0f;
-    paragraphStyle.headIndent = 4.0f;
+    paragraphStyle.minimumLineHeight = [GPGMailBundle isYosemite] ? 0.0f : 15.0f;
+    paragraphStyle.maximumLineHeight = [GPGMailBundle isYosemite] ? 0.0f : 15.0f;
+    paragraphStyle.firstLineHeadIndent = [GPGMailBundle isYosemite] ? 6.0f : 4.0f;
+    paragraphStyle.headIndent = [GPGMailBundle isYosemite] ? 6.0f : 4.0f;
     
-    NSDictionary *attributes = @{@"HeaderKey": @"x-apple-security", NSFontAttributeName: [(HeaderViewController *)self font], NSForegroundColorAttributeName: [NSColor blackColor],
+    NSFont *font = [(NSTextView *)[(HeaderViewController *)self textView] font];
+    if(!font) {
+        NSLog(@"No font info available. Would usually crash when creating the dictionary later.");
+        font = [NSFont systemFontOfSize:12.00f];
+    }
+    if([GPGMailBundle isYosemite])
+        font = [NSFont systemFontOfSize:12.00f];
+    NSColor *color = [NSColor blackColor];
+    if([GPGMailBundle isYosemite])
+        color = [NSColor performSelector:@selector(labelColor)];
+    
+    NSDictionary *attributes = @{@"HeaderKey": @"x-apple-security", NSFontAttributeName: font, NSForegroundColorAttributeName: color,
                                  NSParagraphStyleAttributeName: paragraphStyle};
     [displayString addAttributes:attributes range:NSMakeRange(0, [displayString length])];
     
@@ -234,7 +292,7 @@
     BOOL isPGPSigned = (BOOL)[message PGPSigned];
     BOOL isPGPEncrypted = (BOOL)[message PGPEncrypted] && ![mimeBody ivarExists:@"PGPEarlyAlphaFuckedUpEncrypted"];
     
-    NSString *securityHeaderLabelKey = [GPGMailBundle isMavericks] ? @"SecurityHeaderLabel" : @"SECURITY_HEADER";
+    NSString *securityHeaderLabelKey = [GPGMailBundle isMavericks] || [GPGMailBundle isYosemite] ? @"SecurityHeaderLabel" : @"SECURITY_HEADER";
     
     NSString *indentation = @"";
     if([GPGMailBundle isMountainLion] && ![GPGMailBundle isMavericks])
@@ -248,7 +306,10 @@
     
     NSMutableString *securityHeaderString = [securityHeader mutableString];
     
-    if([GPGMailBundle isMavericks]) {
+    if([GPGMailBundle isYosemite]) {
+        [securityHeaderString appendFormat:@"%@:", [[NSBundle mainBundle] localizedStringForKey:securityHeaderLabelKey value:@"" table:@"Encryption"]];
+    }
+    else if([GPGMailBundle isMavericks]) {
         [securityHeaderString appendFormat:NSLocalizedStringFromTableInBundle(@"MessageHeaderLabelFormat", nil, [NSBundle mainBundle], @""), NSLocalizedStringFromTableInBundle(securityHeaderLabelKey, @"Encryption", [NSBundle mainBundle], @"")];
     }
     else {
@@ -258,7 +319,7 @@
     
     // Add the encrypted part to the security header.
     if(isPGPEncrypted) {
-        NSImage *encryptedBadge = [message PGPDecrypted] ? [NSImage imageNamed:@"NSLockUnlockedTemplate"] : [NSImage imageNamed:@"NSLockLockedTemplate"];
+        NSImage *encryptedBadge = [NSImage imageNamed:@"NSLockLockedTemplate"];
         NSAttributedString *encryptAttachmentString = [NSAttributedString attributedStringWithAttachment:[[NSTextAttachment alloc] init]
                                                                                                    image:encryptedBadge
                                                                                                     link:nil

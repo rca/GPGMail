@@ -26,16 +26,16 @@ struct __CFDictionary;
 
 struct internal_state;
 
-struct sasl_callback {
-    unsigned long long _field1;
-    void *_field2;
-    void *_field3;
-};
-
-struct sasl_secret {
-    unsigned long long _field1;
-    unsigned char _field2[1];
-};
+//struct sasl_callback {
+//    unsigned long long _field1;
+//    void *_field2;
+//    void *_field3;
+//};
+//
+//struct sasl_secret {
+//    unsigned long long _field1;
+//    unsigned char _field2[1];
+//};
 
 struct z_stream_s {
     char *next_in;
@@ -132,6 +132,7 @@ typedef struct {
     double _field3;
 } CDStruct_21f7855f;
 
+#ifndef CDSTRUCT_329
 typedef struct {
     unsigned int reserved:26;
     unsigned int hasCustomEncoding:1;
@@ -141,6 +142,8 @@ typedef struct {
     unsigned int isHTML:1;
     unsigned int isRich:1;
 } CDStruct_3292de3e;
+#define CDSTRUCT_329 1
+#endif
 
 typedef struct {
     int version;
@@ -153,11 +156,11 @@ typedef struct {
     int unused2;
 } CDStruct_c4d47a41;
 
-typedef struct {
+/*typedef struct {
     long long count;
     unsigned long long size;
 } CDStruct_d3e19d9e;
-
+*/
 //typedef struct {
 //    id _field1;
 //    id _field2;

@@ -33,6 +33,7 @@
 #import "CCLog.h"
 #import <MimePart.h>
 #import <MimeBody.h>
+#import "LibraryMessage.h"
 #import <MessageStore.h>
 #import <ActivityMonitor.h>
 #import "MFError.h"
@@ -346,6 +347,9 @@
 }
 
 - (void)applyMatchingRulesIfNecessary {
+    // Disable this feature for the time being.
+    // We have to find a better and more reliable way to implement this.
+    return;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wselector"
 	if(![[self dataSourceProxy] respondsToSelector:@selector(routeMessages:isUserAction:)])
@@ -550,6 +554,24 @@
 		newSender = [sender string];
 	
 	[self MASetMessageInfo:info subjectPrefixLength:subjectPrefixLength to:to sender:newSender type:type dateReceivedTimeIntervalSince1970:receivedDate dateSentTimeIntervalSince1970:sentDate messageIDHeaderDigest:messageIDHeaderDigest inReplyToHeaderDigest:headerDigest dateLastViewedTimeIntervalSince1970:lastViewedDate];
+}
+
+- (NSString *)gmDescription {
+    
+    return [NSString stringWithFormat:@"<%@: %p, library id:%lld conversationID:%lld mailbox:%@\n\t"
+                                       "MIME encrypted: %@\n\t"
+                                       "MIME signed: %@\n\t"
+                                       "was decrypted successfully: %@\n\t"
+                                       "was verified successfully: %@\n\t"
+                                       "number of pgp attachments: %d\n\t"
+                                       "number of signatures: %d\n\t"
+                                       "pgp info collected: %@>",
+                                        NSStringFromClass([self class]), self, (long long)[(id)self libraryID], (long long)[(id)self conversationID],
+                                            [[(id)self mailbox] displayName],
+            self.PGPEncrypted ? @"YES" : @"NO", self.PGPSigned ? @"YES" : @"NO",
+            self.PGPDecrypted ? @"YES" : @"NO", self.PGPVerified ? @"YES" : @"NO",
+            (unsigned int)[self.PGPAttachments count], (unsigned int)[self.PGPSignatures count],
+            self.PGPInfoCollected ? @"YES" : @"NO"];
 }
 
 @end

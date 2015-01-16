@@ -6,9 +6,11 @@
 
 
 #import "MFMessageSortingInterface-Protocol.h"
+#import "CDStructures.h"
 
 @class MFUUID, MessageStore, NSArray, NSData, NSIndexSet, NSString;
 
+#ifndef CDSTRUCT_ACCEFCCD
 typedef struct {
     unsigned int colorHasBeenEvaluated:1;
     unsigned int colorWasSetManually:1;
@@ -20,7 +22,8 @@ typedef struct {
     unsigned int isMarkedForOverwrite:1;
     unsigned int unused:2;
 } CDStruct_accefccd;
-
+#define CDSTRUCT_ACCEFCCD 1
+#endif
 
 @interface Message : NSObject <NSCopying, MFMessageSortingInterface>
 {

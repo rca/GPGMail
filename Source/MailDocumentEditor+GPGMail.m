@@ -45,6 +45,21 @@
 
 @implementation MailDocumentEditor_GPGMail
 
+- (id)MAInitWithBackEnd:(id)backEnd {
+    /* On Yosemite, when Mail is invoked from an AppleScript the backEnd is not fully initiated at the time when the security properties queue is first used.
+       This method however is called in between, so it makes sense to setup the queue in here, if it's not already setup.
+     */
+    if(![backEnd getIvar:@"GMSecurityPropertiesQueue"]) {
+        dispatch_queue_t securityPropertiesQueue = dispatch_queue_create("org.gpgtools.GPGMail.securityPropertiesQueue", DISPATCH_QUEUE_CONCURRENT);
+        if([GPGMailBundle isLion])
+            [backEnd setIvar:@"GMSecurityPropertiesQueue" value:(__bridge id)securityPropertiesQueue assign:YES];
+        else
+            [backEnd setIvar:@"GMSecurityPropertiesQueue" value:CFBridgingRelease(securityPropertiesQueue)];
+    }
+    
+    return [self MAInitWithBackEnd:backEnd];
+}
+
 - (void)didExitFullScreen:(NSNotification *)notification {
     [self performSelectorOnMainThread:@selector(configureSecurityMethodAccessoryViewForNormalMode) withObject:nil waitUntilDone:NO];
 }
@@ -57,12 +72,13 @@
 - (void)updateSecurityMethodHighlight {
     GMSecurityMethodAccessoryView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
     ComposeBackEnd *backEnd = ((MailDocumentEditor *)self).backEnd;
+    NSDictionary *securityProperties = ((ComposeBackEnd_GPGMail *)backEnd).securityProperties;
     
 	GPGMAIL_SECURITY_METHOD oldSecurityMethod = accessoryView.securityMethod;
 	
-    BOOL shouldEncrypt = [[backEnd getIvar:@"shouldEncrypt"] boolValue];
-    BOOL shouldSign = [[backEnd getIvar:@"shouldSign"] boolValue];
-	BOOL shouldSymmetric = [[backEnd getIvar:@"shouldSymmetric"] boolValue];
+    BOOL shouldEncrypt = [securityProperties[@"shouldEncrypt"] boolValue];
+    BOOL shouldSign = [securityProperties[@"shouldSign"] boolValue];
+	BOOL shouldSymmetric = [securityProperties[@"shouldSymmetric"] boolValue];
     
     GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
     if(((ComposeBackEnd_GPGMail *)backEnd).securityMethod)
@@ -102,13 +118,12 @@
     GMSecurityMethodAccessoryView *accessoryView = [[GMSecurityMethodAccessoryView alloc] init];
     accessoryView.delegate = self;
     NSWindow *window = [self valueForKey:@"_window"];
-		
-	// Not longer used: if(((MailDocumentEditor *)self).isModal || ((MailDocumentEditor *)self).possibleFullScreenViewerParent)
-    if([NSApp mainWindow].styleMask & NSFullScreenWindowMask) // Only check the mein window to detect fullscreen.
-		[accessoryView configureForFullScreenWindow:window];
-    else
-        [accessoryView configureForWindow:window];
-                                                    
+	
+   if([NSApp mainWindow].styleMask & NSFullScreenWindowMask) // Only check the mein window to detect fullscreen.
+       [accessoryView configureForFullScreenWindow:window];
+   else
+       [accessoryView configureForWindow:window];
+    
     [self setIvar:@"SecurityMethodHintAccessoryView" value:accessoryView];
 }
 
@@ -120,7 +135,13 @@
 - (void)securityMethodAccessoryView:(GMSecurityMethodAccessoryView *)accessoryView didChangeSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
     ((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).securityMethod = securityMethod;
     ((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).userDidChooseSecurityMethod = YES;
-    [[(MailDocumentEditor *)self headersEditor] updateSecurityControls];
+    if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+        [[(MailDocumentEditor *)self headersEditor] _updateSecurityControls];
+    }
+    else {
+        [[(MailDocumentEditor *)self headersEditor] updateSecurityControls];
+    }
+    
 }
 
 - (void)MADealloc {

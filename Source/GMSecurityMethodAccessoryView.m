@@ -66,6 +66,10 @@
     return self;
 }
 
+//- (BOOL)flipped {
+//    return YES;
+//}
+
 - (void)_configurePopupWithSecurityMethods:(NSArray *)methods {
     NSPopUpButton *popup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(0.0f, 0.0f, 
                                                                            self.frame.size.width, 
@@ -389,7 +393,7 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
     NSRect rect = [self bounds];
-    rect.origin = NSMakePoint(0, 0);  
+    rect.origin = NSMakePoint(0, 0);
     float cornerRadius = 4.0f;
     KBCornerType corners = self.fullscreen ? (KBTopLeftCorner | KBBottomLeftCorner | KBTopRightCorner | KBBottomRightCorner) : (KBTopRightCorner | KBBottomLeftCorner);
     NSBezierPath* path = [NSBezierPath bezierPathWithRoundedRect:rect inCorners:corners cornerRadius:cornerRadius flipped:NO];
