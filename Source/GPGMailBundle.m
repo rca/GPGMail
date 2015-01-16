@@ -34,7 +34,6 @@
 #import "GMCodeInjector.h"
 #import "GMKeyManager.h"
 #import "GMMessageRulesApplier.h"
-#import "GMUpdater.h"
 #import "GPGMailBundle.h"
 #import "GPGMailPreferences.h"
 #import "MVMailBundle.h"
@@ -61,7 +60,7 @@ static BOOL gpgMailWorks = NO;
 #pragma mark GPGMailBundle Implementation
 
 @implementation GPGMailBundle
-@synthesize accountExistsForSigning, gpgStatus, updater = _updater;
+@synthesize accountExistsForSigning, gpgStatus;
 
 
 #pragma mark Multiple Installations
@@ -183,11 +182,7 @@ static BOOL gpgMailWorks = NO;
         
         // Initiate the Message Rules Applier.
         _messageRulesApplier = [[GMMessageRulesApplier alloc] init];
-        
-        // Initiate the GPGMail Updater.
-        _updater = [[GMUpdater alloc] initWithBundle:[GPGMailBundle bundle]];
-        [_updater start];
-        
+                
         // Start the GPG checker.
         [self startGPGChecker];
         
@@ -305,6 +300,12 @@ static BOOL gpgMailWorks = NO;
     if (!gpgMailWorks) return nil;
     
     return [_keyManager allKeys];
+}
+
+- (GPGKey *)anyPersonalPublicKeyWithPreferenceAddress:(NSString *)address {
+    if(!gpgMailWorks) return nil;
+    
+    return [_keyManager anyPersonalPublicKeyWithPreferenceAddress:address];
 }
 
 - (GPGKey *)secretGPGKeyForKeyID:(NSString *)keyID {

@@ -64,8 +64,12 @@ function patchUUIDs {
     
     echo "[uuid-patcher] Found GPGMail in $bundlePath"
     
+	# Find Mail.app
+	mailLocation=$(mdfind -onlyin /Applications "kMDItemCFBundleIdentifier = com.apple.mail" | head -1)
+	mailLocation=${mailLocation:-/Applications/Mail.app}
+	
     # Fetch the Mail UUID and the Message.framework UUID
-    plistMail="/Applications/Mail.app/Contents/Info"
+    plistMail="$mailLocation/Contents/Info"
     plistFramework="/System/Library/Frameworks/Message.framework/Resources/Info"
     uuid1=$(defaults read "$plistMail" "PluginCompatibilityUUID")
     uuid2=$(defaults read "$plistFramework" "PluginCompatibilityUUID")

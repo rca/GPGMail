@@ -348,7 +348,6 @@
 
 - (NSAttributedString *)securityHeaderSignaturePartForMessage:(Message_GPGMail *)message {
     GPGErrorCode errorCode = GPGErrorNoError;
-    BOOL errorFound = NO;
     NSImage *signedImage = nil;
     NSSet *signatures = [NSSet setWithArray:message.PGPSignatures];
     
@@ -360,11 +359,10 @@
             break;
         }
     }
-    errorFound = errorCode != GPGErrorNoError ? YES : NO;
     
 	// Check if MacGPG2 was not found.
 	// If that's the case, don't try to append signature labels.
-	if(!errorFound) {
+	if(!errorCode) {
 		GPGErrorCode __block newErrorCode = GPGErrorNoError;
 		[[message PGPErrors] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 			if([obj isKindOfClass:GM_MAIL_CLASS(@"MFError")]) {
@@ -396,12 +394,14 @@
             break;
     }
     
-    if(!errorFound) {
+    if (errorCode) {
+        signedImage = [NSImage imageNamed:@"SignatureOffTemplate"];
+	} else if (signatures.count == 0) {
+        titlePart = GMLocalizedString(@"MESSAGE_SECURITY_HEADER_NO_SIGNATURE_TITLE");
+        signedImage = [NSImage imageNamed:@"SignatureOffTemplate"];
+    } else {
         titlePart = GMLocalizedString(@"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE");
         signedImage = [NSImage imageNamed:@"SignatureOnTemplate"];
-    }
-    else {
-        signedImage = [NSImage imageNamed:@"SignatureOffTemplate"];
     }
     
     

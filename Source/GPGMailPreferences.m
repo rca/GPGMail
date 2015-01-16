@@ -28,11 +28,12 @@
  */
 
 #import "GPGMailPreferences.h"
-#import <Sparkle/Sparkle.h>
 #import "GPGMailBundle.h"
-#import "GMUpdater.h"
 
 #define localized(key) [[GPGMailBundle bundle] localizedStringForKey:(key) value:(key) table:@"GPGMail"]
+
+NSString *SUEnableAutomaticChecksKey = @"SUEnableAutomaticChecks";
+NSString *SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
 
 
 @implementation GPGMailPreferences
@@ -41,9 +42,6 @@
 	return [GPGMailBundle sharedInstance];
 }
 
-- (id /*GPGTSUUpdater **/)updater {
-	return [[(GPGMailBundle *)[GPGMailBundle sharedInstance] updater] updater];
-}
 
 - (NSString *)copyright {
 	return [[GPGMailBundle bundle] infoDictionary][@"NSHumanReadableCopyright"];
@@ -170,6 +168,32 @@
 - (BOOL)isResizable {
 	return NO;
 }
+
+
+- (BOOL)enableAutomaticChecks {
+	GPGOptions *options = [GPGOptions sharedOptions];
+	if (![options boolForKey:SUEnableAutomaticChecksKey]) {
+		return false;
+	}
+	NSNumber *interval = [options valueForKey:SUScheduledCheckIntervalKey];
+	return !interval || interval.integerValue > 0;
+}
+- (void)setEnableAutomaticChecks:(BOOL)value {
+	GPGOptions *options = [GPGOptions sharedOptions];
+	[options setBool:value forKey:SUEnableAutomaticChecksKey];
+	if (value) {
+		NSNumber *interval = [options valueForKey:SUScheduledCheckIntervalKey];
+		if (interval && interval.integerValue == 0) {
+			[options setValue:nil forKey:SUScheduledCheckIntervalKey];
+		}
+	}
+}
+
+- (void)checkForUpdates:(id)sender {
+	NSString *updaterPath = @"/Library/Application Support/GPGTools/GPGMail_Updater.app/Contents/MacOS/GPGMail_Updater";
+	[GPGTask launchGeneralTask:updaterPath withArguments:@[@"checkNow"]];
+}
+
 
 @end
 

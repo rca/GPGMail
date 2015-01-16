@@ -88,6 +88,23 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 
 #pragma mark - Public API
 
+- (GPGKey *)anyPersonalPublicKeyWithPreferenceAddress:(NSString *)address {
+	GPGKey *key = nil;
+	
+	// The best match would be the public key of on of our secret keys, with address
+	// as UID.
+	for(key in [self publicKeyListForAddresses:@[address]]) {
+		if(key.secret)
+			break;
+	}
+	
+	// If we don't find a key, any of our secret public key's will do.
+	if(!key)
+		key = [[self secretKeys] anyObject];
+	
+	return key;
+}
+
 - (BOOL)secretKeyExistsForAddress:(NSString *)address {
 	return [[self keysForAddresses:@[address] onlySecret:YES stopOnFound:YES] count] > 0;
 }
@@ -128,11 +145,18 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 
 - (NSMutableSet *)publicKeyListForAddresses:(NSArray *)addresses {
     NSMutableSet *normalizedAddresses = [NSMutableSet set];
+	NSMutableSet *keys = [NSMutableSet set];
     for (NSString *address in addresses) {
-        [normalizedAddresses addObject:[address gpgNormalizedEmail]];
+		if ([address isKindOfClass:[GPGKey class]]) {
+			[keys addObject:address];
+		} else {
+			[normalizedAddresses addObject:[address gpgNormalizedEmail]];
+		}
+       
     }
-    
-    return [self keysForAddresses:[normalizedAddresses allObjects] onlySecret:NO stopOnFound:NO];
+    [keys unionSet:[self keysForAddresses:[normalizedAddresses allObjects] onlySecret:NO stopOnFound:NO]];
+	
+    return keys;
 }
 
 - (void)scheduleInitialKeyUpdate {
@@ -277,13 +301,14 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 	NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
 	NSMutableDictionary *userIDEmailMap = [[NSMutableDictionary alloc] init];
 	
-	for(GPGKey *key in _publicKeys) {
-		for(GPGUserID *userID in key.userIDs) {
+	for (GPGKey *key in _publicKeys) {
+		for (GPGUserID *userID in key.userIDs) {
 			NSString *email = [userID.email gpgNormalizedEmail];
-			if(!email)
+			if (!email || userID.validity >= GPGValidityInvalid) {
 				continue;
+			}
 			
-			if(!userIDEmailMap[email]) {
+			if (!userIDEmailMap[email]) {
 				NSMutableSet *set = [[NSMutableSet alloc] init];
 				userIDEmailMap[email] = set;
 			}
@@ -293,9 +318,9 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 	
 	// Loop through the entire map and if an email address has multiple
 	// matching user ids select the one that is best (newest or most trusted.)
-	for(NSString *email in userIDEmailMap) {
+	for (NSString *email in userIDEmailMap) {
 		NSSet *userIDs = userIDEmailMap[email];
-		if([userIDs count] == 1) {
+		if ([userIDs count] == 1) {
 			GPGKey *key = [[userIDs anyObject] primaryKey];
 			map[email] = key;
 			continue;
@@ -318,13 +343,14 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
     // a dictionary only including the most trusted and newest key with the email address.
 	NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
 	
-	for(GPGKey *key in _secretKeys) {
-		for(GPGUserID *userID in key.userIDs) {
+	for (GPGKey *key in _secretKeys) {
+		for (GPGUserID *userID in key.userIDs) {
 			NSString *email = [userID.email gpgNormalizedEmail];
-			if(!email)
+			if (!email || userID.validity >= GPGValidityInvalid) {
 				continue;
+			}
 			
-			if(!map[email]) {
+			if (!map[email]) {
 				NSMutableSet *list = [[NSMutableSet alloc] init];
 				map[email] = list;
 			}

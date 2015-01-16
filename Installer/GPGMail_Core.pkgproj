@@ -60,6 +60,22 @@
 												<key>GID</key>
 												<integer>80</integer>
 												<key>PATH</key>
+												<string>../build/Release/GPGMail_Updater.app</string>
+												<key>PATH_TYPE</key>
+												<integer>1</integer>
+												<key>PERMISSIONS</key>
+												<integer>493</integer>
+												<key>TYPE</key>
+												<integer>3</integer>
+												<key>UID</key>
+												<integer>0</integer>
+											</dict>
+											<dict>
+												<key>CHILDREN</key>
+												<array/>
+												<key>GID</key>
+												<integer>80</integer>
+												<key>PATH</key>
 												<string>../UUID Patcher/uuid-patcher</string>
 												<key>PATH_TYPE</key>
 												<integer>1</integer>
@@ -204,6 +220,22 @@
 										<integer>0</integer>
 										<key>PATH</key>
 										<string>../UUID Patcher/org.gpgtools.gpgmail.patch-uuid-user.plist</string>
+										<key>PATH_TYPE</key>
+										<integer>1</integer>
+										<key>PERMISSIONS</key>
+										<integer>420</integer>
+										<key>TYPE</key>
+										<integer>3</integer>
+										<key>UID</key>
+										<integer>0</integer>
+									</dict>
+									<dict>
+										<key>CHILDREN</key>
+										<array/>
+										<key>GID</key>
+										<integer>0</integer>
+										<key>PATH</key>
+										<string>../GPGMail_Updater/org.gpgtools.gpgmail.updater.plist</string>
 										<key>PATH_TYPE</key>
 										<integer>1</integer>
 										<key>PERMISSIONS</key>

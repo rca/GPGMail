@@ -34,10 +34,9 @@
 extern NSString *GPGMailKeyringUpdatedNotification;
 extern NSString *gpgErrorIdentifier; // This identifier is used to set and find GPGErrorCodes in NSData.
 
-@class Message, GMUpdater, GMMessageRulesApplier, GMKeyManager;
+@class Message, GMMessageRulesApplier, GMKeyManager;
 
 @interface GPGMailBundle : NSObject <NSToolbarDelegate> {
-    GMUpdater *_updater;
     GMMessageRulesApplier *_messageRulesApplier;
     
     NSMutableArray *_bundleImages;
@@ -100,6 +99,11 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 - (void)scheduleApplyingRulesForMessage:(Message *)message isEncrypted:(BOOL)isEncrypted;
 
 /**
+ See GMKeyManager.
+ */
+- (GPGKey *)anyPersonalPublicKeyWithPreferenceAddress:(NSString *)address;
+
+/**
  Returns the secret key matching ID.
  */
 - (GPGKey *)secretGPGKeyForKeyID:(NSString *)keyID;
@@ -152,7 +156,6 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 @property (readonly) GPGErrorCode gpgStatus;
 @property (readonly, strong) NSSet *allGPGKeys;
 @property (nonatomic, assign) BOOL accountExistsForSigning;
-@property (nonatomic, strong) GMUpdater *updater;
 
 @end
 

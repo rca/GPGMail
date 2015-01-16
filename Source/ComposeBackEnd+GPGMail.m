@@ -36,6 +36,8 @@
 #import "ActivityMonitor.h"
 #import <MFError.h>
 #import "NSData-MessageAdditions.h"
+#define restrict
+#import <RegexKit/RegexKit.h>
 
 
 @implementation ComposeBackEnd_GPGMail
@@ -149,15 +151,9 @@
     BOOL shouldPGPInlineEncrypt = NO;
     BOOL shouldPGPInlineSymmetric = NO;
 	
-	// If this message is to be saved as draft, shouldEncrypt and shouldSign is always false.
-    // That's why GPGMail takes the values store by clicking on the signed and encrypt icons.
-    if(isDraft) {
-		if ([[GPGOptions sharedOptions] boolForKey:@"OptionallyEncryptDrafts"]) {
-			shouldPGPSign = [[self getIvar:@"shouldSign"] boolValue];
-			shouldPGPEncrypt = [[self getIvar:@"shouldEncrypt"] boolValue];
-		}
-		shouldPGPSymmetric = NO;
-    }
+	// If this message is to be saved as draft, force encryption.
+    if (isDraft && !shouldPGPEncrypt && [[GPGOptions sharedOptions] boolForKey:@"OptionallyEncryptDrafts"])
+		shouldPGPEncrypt = YES;
 	
     // It might not be possible to inline encrypt drafts, since contents.text is nil.
     // Maybe it's not problem, and simply html should be used. (TODO: Figure that out.)
@@ -173,7 +169,7 @@
 		shouldSign = NO;
 		shouldEncrypt = NO;
 		shouldPGPSymmetric = NO;
-	}	
+	}
 	
     // At the moment for drafts signing and encrypting is disabled.
     // GPG not enabled, or neither encrypt nor sign are checked, let's get the shit out of here.
@@ -194,14 +190,13 @@
     copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
 
     [self setIvar:@"originalCleanHeaders" value:copiedCleanHeaders];
-	NSLog(@"Original clean headers: %@", [self getIvar:@"originalCleanHeaders"]);
     // If isDraft is set the cleanHeaders are an NSDictionary instead of an NSMutableDictionary.
     // Using mutableCopy they are converted into an NSMutableDictionary.
     copiedCleanHeaders = [[(ComposeBackEnd *)self cleanHeaders] mutableCopy];
     [self setValue:copiedCleanHeaders forKey:@"_cleanHeaders"];
     
 	// Inject the headers needed in newEncryptedPart and newSignedPart.
-	[self _addGPGFlaggedStringsToHeaders:[(ComposeBackEnd *)self cleanHeaders] forEncrypting:shouldPGPEncrypt forSigning:shouldPGPSign forSymmetric:shouldPGPSymmetric];
+	[self _addGPGFlaggedStringsToHeaders:[(ComposeBackEnd *)self cleanHeaders] forEncrypting:shouldPGPEncrypt forSigning:shouldPGPSign forSymmetric:shouldPGPSymmetric isDraft:isDraft];
 
     // If the message is supposed to be encrypted or signed inline,
     // GPGMail does that directly in the Compose back end, and not use
@@ -218,26 +213,60 @@
 		shouldPGPSymmetric = NO;
     }
 	
+	NSMutableAttributedString *plainText = (NSMutableAttributedString *)contents.plainText;
+	NSMutableString *plainString = [plainText mutableString];
+	
 	// If we are only signing and there isn't a newline at the end of the plaintext, append it.
-	// We need this to prevent servers from doin this.
+	// We need this to prevent servers from doing this.
 	if (shouldPGPSign && !shouldPGPEncrypt && !shouldPGPSymmetric) {
-		NSAttributedString *plainText = contents.plainText;
-		NSString *plainString = plainText.string;
 		if ([plainString characterAtIndex:plainString.length - 1] != '\n') {
-			NSMutableAttributedString *newPlainText = [plainText mutableCopy];
-			
-			NSAttributedString *newline = [[NSAttributedString alloc] initWithString:@"\n"];
-			[newPlainText appendAttributedString:newline];
-			
-			contents.plainText = newPlainText;
+			[plainString appendString:@"\n"];
 		}
 	}
+	if (shouldPGPSign) {
+		// Remove all whitespaces at the end of lines. But don't kill attachments.
+		RKRegex *regex = [RKRegex regexWithRegexString:@"[\\t\\f\\r\\p{Z}]+$" options:RKCompileMultiline];
+		RKEnumerator *rkEnum = [plainString matchEnumeratorWithRegex:regex];
+		
+		NSMutableArray *ranges = [NSMutableArray array];
+		
+		// Get all matches and reverse the order.
+		for (NSArray *match in rkEnum) {
+			[ranges insertObject:match[0] atIndex:0];
+		}
+		// Removed matched characters.
+		for (NSValue *range in ranges) {
+			[plainString replaceCharactersInRange:range.rangeValue withString:@""];
+		}
+	}
+	
+	
     
 	// This is later checked, to determine the real isDraft value.
 	[contents setIvar:@"IsDraft" value:@(isDraft)];
 	[contents setIvar:@"ShouldEncrypt" value:@(shouldPGPEncrypt || shouldPGPInlineEncrypt)];
 	[contents setIvar:@"ShouldSign" value:@(shouldPGPSign || shouldPGPInlineSign)];
-    
+	
+	if(isDraft) {
+		// If this message is saved as draft, check if we have a gpg key which belongs to the
+		// specified sender. If it's not available, try to find any secret key available.
+		GPGKey *encryptDraftPublicKey = [[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] valueForFlag:@"gpgKey"];
+		if(!encryptDraftPublicKey)
+			encryptDraftPublicKey = [[GPGMailBundle sharedInstance] anyPersonalPublicKeyWithPreferenceAddress:[[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] uncommentedAddress]];
+		// If no working public key could be found, don't encrypt the draft.
+		if(encryptDraftPublicKey) {
+			[[[(ComposeBackEnd *)self cleanHeaders] valueForKey:@"from"] setValue:encryptDraftPublicKey forFlag:@"DraftPublicKey"];
+			// Drafts mustn't be signed, otherwise Mail creates duplicate zombie drafts again.
+			shouldPGPSign = NO;
+			shouldPGPSymmetric = NO;
+		}
+		else {
+			shouldPGPEncrypt = NO;
+			shouldPGPSign = NO;
+			shouldPGPSymmetric = NO;
+		}
+	}
+	
 	// Drafts store the messages with a very minor set of headers and mime types
     // not suitable for encrypted/signed messages. But fortunately, Mail.app doesn't
     // have a problem if a normal message is stored as draft, so GPGMail just needs
@@ -403,6 +432,40 @@
 	if([contents ivarExists:@"IsDraft"] && isDraft) {
 		[headers setHeader:@"com.apple.mail-draft" forKey:@"x-uniform-type-identifier"];
 		[headers setHeader:@"yes" forKey:@"x-apple-mail-plain-text-draft"];
+		// Mail doesn't pass in the sign status, when saving a draft, so we have to get it ourselves.
+		// For encrypt we also use the state of the button, shouldEncrypt is overriden by our own
+		// logic to always encrypt drafts if possible.
+		BOOL shouldSign = NO;
+		BOOL shouldEncrypt = NO;
+		
+		if([self ivarExists:@"ForceSign"])
+			shouldSign = [[self getIvar:@"ForceSign"] boolValue];
+		else
+			shouldSign = [[self getIvar:@"shouldSign"] boolValue];
+		
+		if([self ivarExists:@"ForceEncrypt"])
+			shouldEncrypt = [[self getIvar:@"ForceEncrypt"] boolValue];
+		else
+			shouldEncrypt = [[self getIvar:@"shouldEncrypt"] boolValue];
+		
+		
+		[headers setHeader:shouldEncrypt ? @"YES" : @"NO" forKey:@"x-should-pgp-encrypt"];
+		[headers setHeader:shouldSign ? @"YES" : @"NO" forKey:@"x-should-pgp-sign"];
+		
+		// MailTags seems to duplicate our mail headers, if the message is to be encrypted.
+		// This behaviour is worked around in [MCMessageGenerator _newDataForMimePart:withPartData:]
+		// by removing the duplicate mail headers.
+		// We should however only interfere, if a draft is being created, since this workaround might not be suitable
+		// for every type of message.
+		// In order for the MCMessageGenerator instance to know if a draft is being created,
+		// we add a flag to it.
+		[writer setIvar:@"IsDraft" value:@(YES)];
+	}
+	else {
+		[headers removeHeaderForKey:@"x-should-pgp-encrypt"];
+		[headers removeHeaderForKey:@"x-should-pgp-sign"];
+		[headers removeHeaderForKey:@"x-uniform-type-identifier"];
+		[headers removeHeaderForKey:@"x-apple-mail-plain-text-draft"];
 	}
 	return [self MAOutgoingMessageUsingWriter:writer contents:contents headers:headers isDraft:isDraft shouldBePlainText:shouldBePlainText];
 }
@@ -411,18 +474,29 @@
     [(MailDocumentEditor *)[(ComposeBackEnd *)self delegate] backEnd:self didCancelMessageDeliveryForEncryptionError:error];
 }
 
-- (void)_addGPGFlaggedStringsToHeaders:(NSMutableDictionary *)headers forEncrypting:(BOOL)forEncrypting forSigning:(BOOL)forSigning forSymmetric:(BOOL)forSymmetric {
-    // To decide whether S/MIME or PGP operations should be performed on
-    // the message, different headers have to be flagged.
-    //
-    // For signing:
-    // * flag the "from" value and set the GPGKey to use.
-    //
-    // For encrypting:
-    // * temporarily add the flagged sender ("from") to the bcc recipients list,
-    //   to encrypt for self, so each message can also be decrypted by the sender.
-    //   (the "from" value is not inlucded in the recipients list passed to the encryption
-    //    method)
+- (void)_addGPGFlaggedStringsToHeaders:(NSMutableDictionary *)headers forEncrypting:(BOOL)forEncrypting forSigning:(BOOL)forSigning forSymmetric:(BOOL)forSymmetric isDraft:(BOOL)isDraft {
+	// To decide whether S/MIME or PGP operations should be performed on
+	// the message, different headers have to be flagged.
+	//
+	// F̶o̶r̶ ̶s̶i̶g̶n̶i̶n̶g̶ Always:
+	// * flag the "from" value with "gpgKey" = GPGKey.
+	//
+	// For encrypting:
+	// * temporarily add the flagged sender ("recipientType" = "from") to the bcc recipients list,
+	//   to encrypt for self, so each message can also be decrypted by the sender.
+	//   (the "from" value is not inlucded in the recipients list passed to the encryption
+	//    method)
+	//   Also flag all bcc recipients with "recipientType" = "bcc".
+	//
+	// For symmetric:
+	// * flag the "from" value with "symmetricEncrypt" = YES,
+	//   if forEncrypting isn't set flag additionally with "doNotPublicEncrypt" = YES.
+	//
+	// Is draft:
+	// * flag the "from" value with "isDraft" = YES.
+	//
+
+	
 	GPGFlaggedString *flaggedString = [headers[@"from"] flaggedStringWithFlag:@"recipientType" value:@"from"];
 	if (forSymmetric) {
 		[flaggedString setValue:@YES forFlag:@"symmetricEncrypt"];
@@ -430,15 +504,17 @@
 			[flaggedString setValue:@YES forFlag:@"doNotPublicEncrypt"];
 		}
 	}
+	GPGKey *key = [self getIvar:@"gpgKeyForSigning"];
+	if (key) {
+		[flaggedString setValue:key forFlag:@"gpgKey"];
+	}
 
-    if(forSigning) {
-		GPGKey *key = [self getIvar:@"gpgKeyForSigning"];
-		if (key) {
-			[flaggedString setValue:key forFlag:@"gpgKey"];
-		}
-    }
+	if (isDraft) {
+		[flaggedString setValue:@YES forFlag:@"isDraft"];
+	}
 	headers[@"from"] = flaggedString;
-    if(forEncrypting) {
+	
+    if (forEncrypting) {
         // Save the original bcc recipients, to restore later.
         [self setIvar:@"originalBCCRecipients" value:[headers valueForKey:@"bcc"]];
         NSMutableArray *newBCCList = [NSMutableArray array];

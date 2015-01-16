@@ -16,8 +16,8 @@
 "737.alternateTitle" = "Doceń nas, jeśli lubisz to co robimy";
 "737.title" = "Darowizna";
 "744.title" = "Trwa odczyt";
-"781.title" = "Opcjonalne szyfrowanie/podpisywanie szablony";
-"786.ibShadowedToolTip" = "Zobacz Preferencje->Widok->Lista podglądu.";
+"781.title" = "Szyfruj kopie robocze";
+"786.ibShadowedToolTip" = "Zobacz Preferencje -> Widok -> Lista Podglądu.";
 "787.title" = "Utwórz listę podglądu";
 "834.title" = "Przycisk";
 "930.ibShadowedToolTip" = "Click to copy version into clipboard.";

@@ -5,125 +5,126 @@
 "PGP_PREFERENCES" = "GPGMail";
 
 /* Message Error Banner messages. */
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "Kunde inte avkryptera PGP-meddelande.";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "Ett problem uppstod när meddelandet skulle avkrypteras. Kontrollera att du har en giltig nyckel i din GPG Nyckelhanterare.";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Kunde inte verifiera PGP meddelandesignatur.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "Kunde inte dekryptera PGP-meddelande.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "Ett problem uppstod när meddelandet skulle dekrypteras. Kontrollera att du har en giltig nyckel i din GPG-nyckelring.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Kunde inte verifiera PGP-meddelandesignatur.";
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Ett problem uppstod när PGP-signaturen i detta meddelande skulle läsas.";
 "MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "PGP-nyckeln för detta meddelande finns inte i din nyckelring.";
-"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Meddelandet har en giltig PGP-signatur, men PGP-nyckeln finns inte i din nyckelring. Använd GPG Nyckelhanterare för att lägga till den.";
-"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Ingen information är tillgänglig för denna PGP-nyckel.";
-"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Ingen ytterligare information är tillgänglig för den här PGP-nyckeln eftersom den inte finns i din nyckelring.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Meddelandet har en giltig PGP-signatur, men PGP-nyckeln finns inte i din nyckelring. Använd GPG Keychain Access för att lägga till den.";
+"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Ingen information finns tillgänglig för denna PGP-nyckel.";
+"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Ingen ytterligare information finns tillgänglig för denna PGP-nyckel eftersom den inte finns i din nyckelring.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Den privata nyckeln för att avkryptera meddelandet saknas.";
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Ingen av följande privata nycklar kunde hittas i din nyckelring (%@). Den privata nyckeln behövs för att avkryptera detta meddelande.\n\nKontrollera med avsändaren att de använt din publika nyckel korrekt.\nKontrollera en backup av din nyckelring, och försök importera den privata nyckeln därifrån.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Den privata nyckeln för att dekryptera meddelandet saknas.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Ingen av följande privata nycklar kunde hittas i din nyckelring (%@). Den privata nyckeln behövs för att dekryptera detta meddelande.\n\nKontrollera med avsändaren att de använt din rätta publika nyckel.\nKontrollera en säkerhetskopia av din nyckelring, och försök att importera den privata nyckeln därifrån.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Avkrypteringen misslyckades på grund av ett okänt fel!";
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nPlease contact us at http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Dekrypteringen misslyckades på grund av ett okänt fel!";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Ett okänt fel inträffade när detta meddelande skulle dekrypteras.\n\nKontakta oss på http://support.gpgtools.org";
 
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Avkrypteringen misslyckades på grund av ett okänt fel!";
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nGPG error message:\n%@\nPlease contact us, including the GPG error message, at http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Dekrypteringen misslyckades på grund av ett okänt fel!";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Ett okänt fel inträffade när detta meddelande skulle dekrypteras.\n\nGPG-felmeddelande:\n%@\nKontakta oss på http://support.gpgtools.org och inkludera GPG-felmeddelandet";
 
-"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Fel nyckel användes för att kryptera meddelandet.";
-"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "This message could not be decrypted, since the wrong public key was used to encrypt it.\n\nPlease contact us at http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Fel nyckel användes för att kryptera detta meddelande.";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Detta meddelande kunde inte dekrypteras eftersom fel publik nyckel användes för att kryptera det.\n\nKontakta oss på http://support.gpgtools.org";
 
-"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Det krypterade meddelandet är trasigt.";
-"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Detta krypterade meddelande är trasigt och kunde inte avkrypteras.\n\nBe avsändaren att skicka meddelandet igen.";
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Det krypterade meddelandet är skadat.";
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Detta krypterade meddelande är skadat och kunde inte dekrypteras.\n\nBe avsändaren att skicka meddelandet igen.";
 
 "MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Signaturnyckeln återkallades.";
 "MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "OBS: Nyckeln som användes för att signera detta meddelande har återkallats.\n\nDu bör uppdatera nyckeln med ID %@ i GPG Nyckelhanteraren för att se om det finns en ny. Om den nya nyckeln också är återkallad bör du kontakta avsändaren för information om varför den återkallats.";
-"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Nyckeln till detta meddelande finns inte i din GPG Nyckelring.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Nyckeln till denna meddelandesignatur finns inte i din GPG-nyckelring.";
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Detta meddelande kunde inte verifieras, eftersom nyckel som användes för att signera inte finns i din GPG nyckelring.\n\nSök efter nyckeln med ID %@ i GPG Nyckelhanterare och importera den för att verifiera meddelandet.";
 
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "Meddelandesignaturen skapades med en algoritm som inte stöds.";
-"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This message could not be verified, since the signature was created with an algorithm which is not supported.\n\nPlease contact us at http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Detta meddelande kunde inte verifieras eftersom signaturen skapades med en algoritm som inte stöds.\n\nKontakta oss på http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "OBS: Signaturen för detta meddelande är ogiltig!";
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATTENTION: This message might have been modified after the signature was created.\n\nPlease contact the sender to make sure the content of the message matches the original.\n\nPlease contact us at http://support.gpgtools.org if you're sure the message was not modified.";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "OBS: Detta meddelande kan ha ändrats efter att signaturen skapades.\n\nKontakta avsändaren för att kontrollera att meddelandets innehåll stämmer överens med originalet.\n\nKontakta oss på http://support.gpgtools.org om du är säker på att meddelandet inte ändrats.";
 
-"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Kontroll av meddelandesignaturen misslyckades på grund av ett okänt fel!";
-"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this message's signature.\n\nPlease contact us at http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Det gick inte att verifiera meddelandesignaturen pga. ett okänt fel!";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ett okänt fel inträffade när signaturen för detta meddelande skulle verifieras.\n\nKontakta oss på http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Datafel i meddelandets signatur!";
-"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This message's signature is invalid and could not be verified.\n\nPlease contact us at http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Signaturen för detta meddelande är ogiltig och kunde inte verifieras.\n\nKontakta oss på http://support.gpgtools.org";
 
-"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Meddelandesignaturens nyckel har upphört.";
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Meddelandesignaturens nyckel har gått ut.";
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "OBS: Nyckeln som använts för att signera detta meddelande har upphört.\n\nDu kan försöka med att uppdatera nyckeln med ID %@ i GPG Nyckelhanterare och fråga avsändaren varför nyckeln gått ut.";
 
-"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Meddelandesignaturen har upphört.";
-"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Signaturen har upphört och kunde inte kontrolleras.\n\nKontakta avsändaren och fråga varför signaturen upphört.";
+"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Meddelandesignaturen har gått ut.";
+"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Signaturen har gått ut och kunde inte verifieras.\n\nFråga avsändaren varför signaturen har gått ut.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Decrypting failed because MacGPG2 is not installed.\n\nMacGPG2 is the underlying engine which is responsible for processing your message and is thus required.\n\nPlease download MacGPG2 from https://gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 är inte installerat";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Dekrypteringen misslyckades eftersom MacGPG2 inte är installerat.\n\nHämta och installera om GPG Suite från https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifying failed because MacGPG2 is not installed.\n\nMacGPG2 is the underlying engine which is responsible for processing your message and is thus required.\n\nPlease download MacGPG2 from https://gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 är inte installerat";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifieringen misslyckades eftersom MacGPG2 inte är installerat.\n\nHämta och installera om GPG Suite från https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d bilagor kunde inte avkrypteras eller kontrolleras.";
-"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Klicka på bilagans ikon i meddelandets huvud för mer detaljer.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d bilagor kunde inte dekrypteras eller verifieras.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Klicka på bilageikonen i brevhuvudets säkerhetsdel för mer information.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_TITLE" = "%d bilagor kunde inte kontrolleras.";
-"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_MESSAGE" = "Klicka på bilagans ikon i meddelandets huvud för mer detaljer.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_TITLE" = "%d bilagor kunde inte verifieras.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_MESSAGE" = "Klicka på bilageikonen i brevhuvudets säkerhetsdel för mer information.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_TITLE" = "%d bilagor kunde inte avkrypteras.";
-"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_MESSAGE" = "Klicka på bilagans ikon i meddelandets huvud för mer detaljer.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_TITLE" = "%d bilagor kunde inte dekrypteras.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_MESSAGE" = "Klicka på bilageikonen i brevhuvudets säkerhetsdel för mer information.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_TITLE" = "%d bilaga kunde inte kontrolleras.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_MESSAGE" = "Klicka på bilagans ikon i meddelandets huvud för mer detaljer.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_TITLE" = "%d bilaga kunde inte verifieras.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_MESSAGE" = "Klicka på bilageikonen i brevhuvudets säkerhetsdel för mer detaljer.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_TITLE" = "%d-bilagan kunde inte avkrypteras.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE" = "Klicka på bilagans ikon i meddelandets huvud för mer detaljer.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_TITLE" = "%d bilaga kunde inte dekrypteras.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE" = "Klicka på bilageikonen i brevhuvudets säkerhetsdel för mer detaljer.";
 
 /* Message Error Banner Attachment messages. */
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Den privata nyckeln saknades vid avkryptering av bilagan.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Ingen av följande privata nycklar kunde hittas i din nyckelring (%@). Den privata nyckeln behövs för att avkryptera denna bilaga.\n\nKontrollera med avsändaren att de använt din publika nyckel korrekt.\nKontrollera en backup av din nyckelring, och försök importera den privata nyckeln därifrån.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Den privata nyckeln för dekryptering av bilagan saknas.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Ingen av följande privata nycklar kunde hittas i din nyckelring (%@). Den privata nyckeln behövs för att dekryptera denna bilaga.\n\nKontrollera med avsändaren att de använt din rätta publika nyckel.\nKontrollera en säkerhetskopia av din nyckelring, och försök att importera den privata nyckeln därifrån.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Avkrypteringen misslyckades på grund av ett okänt fel!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while decrypting this attachment.\n\nPlease contact us at http://support.gpgtools.org";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Dekrypteringen misslyckades på grund av ett okänt fel!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Ett okänt fel inträffade när denna bilaga skulle dekrypteras.\n\nKontakta oss på http://support.gpgtools.org";    
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "Avkrypteringen misslyckades på grund av ett okänt fel!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "An unknown error occurred while decrypting this attachment.\n\nGPG error message:\n%@\nPlease contact us, including the GPG error message, at http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "Dekrypteringen misslyckades på grund av ett okänt fel!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Ett okänt fel inträffade när denna bilaga skulle dekrypteras.\n\nGPG-felmeddelande:\n%@\nKontakta oss på http://support.gpgtools.org och inkludera GPG-felmeddelandet";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Fel nyckel användes vid kryptering av bilagan.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "This attachment could not be decrypted, since the wrong public key was used to encrypt it.\n\nPlease contact us at http://support.gpgtools.org";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Fel nyckel användes för att kryptera denna bilaga.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Denna bilaga kunde inte dekrypteras eftersom fel publika nyckel användes för att kryptera den.\n\nKontakta oss på http://support.gpgtools.org";    
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Den krypterade bilagan är skadad.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Den krypterade bilagan är skadad och kunde inte avkrypteras.\n\nBe avsändaren att skicka meddelandet igen.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Den krypterade bilagan är skadad och kunde inte dekrypteras.\n\nBe avsändaren att skicka meddelandet igen.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Signaturens nyckel har återkallats.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "OBS: Nyckeln som använts för att signera denna bilaga har återkallats.\n\nUppdatera nyckeln med ID %@ i GPG Nyckelhanterare för att kontrollera om ny nyckel finns tillgänglig. Om även den nya nyckeln är återkallad, kontrollera med avsändaren om varför den återkallats.";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "OBS: Nyckeln som använts för att signera denna bilaga har återkallats.\n\nUppdatera nyckeln med ID %@ i GPG Nyckelhanterare för att kontrollera om ny nyckel finns tillgänglig. Om även den nya nyckeln är återkallad, kontrollera med avsändaren om varför den återkallats.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Signaturens nyckel finns inte i din GPG nyckelring.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Bilagans signatur kunde inte verifieras, eftersom nyckel som användes för att signera inte finns i din GPG nyckelring.\n\nSök efter nyckeln med ID %@ i GPG Nyckelhanterare och importera den för att verifiera bilagan.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Signaturens nyckel finns inte i din GPG-nyckelring.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Bilagans signatur kunde inte verifieras, eftersom nyckel som användes för att signera inte finns i din GPG-nyckelring.\n\nSök efter nyckeln med ID %@ i GPG Nyckelhanterare och importera den för att verifiera bilagan.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "Bilagans signatur skapades med en algoritm som inte stöds.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This attachment could not be verified, since the key to the signature was created with an algorithm which is not supported.\n\nPlease contact us at http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Bilagan kunde inte verifieras, eftersom signaturens nyckel skapades med en algoritm som inte stöds.\n\nKontakta oss på http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "OBS: Bilagans signatur är ogiltig!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATTENTION: This attachment might have been modified after the signature was created.\n\nPlease contact the sender and make sure the content of the attachment matches the original.\n\nPlease contact us at http://support.gpgtools.org, if you're sure the attachment was not modified.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "OBS: Bilagan kan ha ändrats efter att signaruren skapades.\n\nKontakta avsändaren för att kontrollera att bilagans innehåll stämmer överens med originalet.\n\nKontakta oss på http://support.gpgtools.org om du är säker på att bilagan inte har ändrats.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Verifieringen av signaturen misslyckades på grund av ett okänt fel!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this attachment signature.\n\nPlease contact us at http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ett okänt fel inträffade när bilagans signatur skulle verifieras.\n\nKontakta oss på http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Signatur-data felaktig!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This attachment signature is invalid and could not be verified.\n\nPlease contact us at http://support.gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Bilagans signatur är ogiltig och kunde inte verifieras.\n\nKontakta oss på http://support.gpgtools.org";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Nyckeln till den här signaturen har upphört.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Signaturens nyckel har gått ut.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "OBS: Nyckeln som använts för att signera denna bilaga har gått ut.\n\nDu kan försöka att uppdatera nyckeln med ID %@ i GPG Nyckelhanterare och fråga avsändaren varför nyckeln gått ut.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Signaturen i bilagan har gått ut.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Bilagans signatur har gått ut och kan inte verifieras.\n\nFråga avsändaren varför signaturen gått ut.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Bilagans signatur har gått ut och kunde inte verifieras.\n\nFråga avsändaren varför signaturen har gått ut.";
 
-"MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Delvis krypterad";
-"MESSAGE_IS_PGP_PARTLY_SIGNED" = "Delvis signerad";
-"MESSAGE_IS_PGP_ENCRYPTED" = "Krypterad";
-"MESSAGE_IS_PGP_SIGNED" = "Signerad";
-"MESSAGE_IS_PGP_SIGNED_INVALID" = "Felaktig signatur";
+"MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Delvis krypterat";
+"MESSAGE_IS_PGP_PARTLY_SIGNED" = "Delvis signerat";
+"MESSAGE_IS_PGP_ENCRYPTED" = "Krypterat";
+"MESSAGE_IS_PGP_SIGNED" = "Signerat";
+"MESSAGE_IS_PGP_SIGNED_INVALID" = "Ogiltig signatur";
 
 /* Security Header signature related. */
 "MESSAGE_SECURITY_HEADER_SIGNATURE_NO_PUBLIC_KEY_TITLE" = "Signerad med okänd nyckel";
-"MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE" = "Signerad med en återkallad nyckel";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE" = "Signerad med återkallad nyckel";
 "MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE" = "Ogiltig signatur";
 "MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE" = "Signerad";
+"MESSAGE_SECURITY_HEADER_NO_SIGNATURE_TITLE" = "Ingen signatur hittades";
 
 /* Security header attachments related. */
 "MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE" = "krypterad/signerad bilaga";
@@ -135,86 +136,86 @@
 
 /* Compose Window encrypt/sign button tooltips. */
 "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "Detta meddelande kan inte signeras, eftersom det inte finns någon privat nyckel för %@.\n\nSe till att en privat nyckel för denna adress finns i GPG Nyckelhanterare. Lägg till en ny UID för en existerande nyckel för denna adress vid behov, eller skapa en ny nyckel för denna adress.\n\nOm en nyckel för denna adress finns, se till att den adressen är korrekt i Mail Inställningar och att den överensstämmer helt med nyckelns adress.";
-"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "Detta meddelande kan inte krypteras, eftersom det inte finns någon publik nyckel för följande adress/er: %@.\n\nAnvänd GPG Nyckelhanterare för att söka efter och importera nycklar för dessa adresser.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "Det här meddelandet kan inte krypteras, eftersom det inte finns någon publik nyckel för följande adress(er): %@.\n\nAnvänd GPG Nyckelhanterare för att söka efter och importera nycklar för dessa adresser.";
 "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "Detta meddelande kan inte krypteras. Du måste ange minst en mottagare först.";
 
 /* Message view pgp part. */
-"MESSAGE_VIEW_PGP_PART_ENCRYPTED" = "Kryperad";
-"MESSAGE_VIEW_PGP_PART_SIGNED" = "Signerad";    
+"MESSAGE_VIEW_PGP_PART_ENCRYPTED" = "Kryperat";
+"MESSAGE_VIEW_PGP_PART_SIGNED" = "Signerat";    
 "MESSAGE_VIEW_PGP_PART" = "PGP-del";
 
 /* GPGMail Preferences strings. */
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail är redo.";
 "GPG_STATUS_NO_ERROR_TOOLTIP" = "Din MacGPG2-installation fungerar utan fel."; 
-"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 är inte installerad. Kontrollera din installation.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Ladda ner GPGTools installerare från http://www.gpgtools.org för att installera alla GPGTools.";
+"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 är inte installerat. Kontrollera din installation.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Hämta och installera om GPG Suite från https://www.gpgtools.org för att försäkra dig om att alla komponenter är installerade.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Kontrollera din installation och konfiguration.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Ladda ner GPGTools installerare från http://www.gpgtools.org för att installera alla GPGTools.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Hämta och installera om GPG Suite från https://www.gpgtools.org för att försäkra dig om att alla komponenter är installerade.";
 
 /* Multiple GPGMail installations. */
-"GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Hittade fler installationer av GPGMail!";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Hittade flera installationer av GPGMail!";
 "GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "GPGMail upptäckte fler installationer på följande platser, och detta kommer att leda till omedelbar krasch:\n\n%@\n\nTa bort GPGMail.mailbundle på en av dessa platser och starta om Mail.\n";
 "GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Avsluta Mail";
 
 /* No Libmacgpg. */
-"LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg was not found";
-"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg was not found on your system. Please install it. Find it e.g. in the GPGTools Installer on https://www.gpgtools.org.";
+"LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg hittades inte";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg hittades inte på ditt system. Installera det. Du kan hitta det i GPGTools-installeraren på https://www.gpgtools.org.";
 
 /* Code signature invalid */
-CODE_SIGN_ERROR_TITLE = "Someone tampered with your installation of GPGMail!";
-CODE_SIGN_ERROR_MESSAGE = "To keep you safe, GPGMail will not be loaded!\n\nPlease download and install the latest version of GPG Suite from https://gpgtools.org to be sure you have an original version from us!";
+CODE_SIGN_ERROR_TITLE = "Någon har mixtrat med din installation av GPGMail!";
+CODE_SIGN_ERROR_MESSAGE = "För att skydda dig kommer GPGMail inte att läsas in!\n\nHämta och installera den senaste versionen av GPG Suite från https://gpgtools.org för att vara säker på att du har en version som verkligen är från oss!";
 
 /* GPGMailGPGMailBundle.defaults can't be loaded */
-NO_DEFAULTS_TITLE = "Unable to load GPGMail defaults!";
-NO_DEFAULTS_MESSAGE = "GPGMail may doesn't work as expected.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org.";
+NO_DEFAULTS_TITLE = "Kunde inte läsa in standardinställningar för GPGMail!";
+NO_DEFAULTS_MESSAGE = "GPGMail fungerar inte som väntat. \n\nHämta och installera om GPG Suite från https://gpgtools.org \n\nKontakta oss på http://support.gpgtools.org. om problemet skulle kvarstå.";
 
 /* Errors while trying to sign a message. */
-"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Det gick inte att signera ditt meddelande pga. felaktig PIN!";
-"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "PIN-inmatningens hjälpprogram som bett om din lösenordsfras verkar vara felaktig.\n\nFör att lösa detta, ominstallera den nyaste versionen av GPGTools.";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Det gick inte att signera ditt meddelande eftersom PIN-inmatningen är defekt!";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "PIN-inmatningshjälpprogrammet som ansvarar för att begära din lösenordsfras verkar vara defekt.\n\nLös detta problem genom att ominstallera den nyaste versionen av GPGTools";
 
-"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Det gick inte att signera ditt meddelande pga. en felaktig GPG-agent!";
-"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "GPG-agenten som är en nödvändig del av GPG verkar vara felaktig i ditt system.\n\nFör att lösa detta, ominstallera nyaste versionen av GPGTools.";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Det gick inte att signera ditt meddelande eftersom GPG-agenten är defekt!";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "GPG-agenten, en nödvändig del av GPG, verkar vara defekt på ditt system.\n\nLös detta problem genom att ominstallera den nyaste versionen av GPGTools";
 
-"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "Signeringen av ditt meddelande misslyckades pga. ett kommunikationsfel hos GPG-agenten! ";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "Det gick inte att signera ditt meddelande pga. ett kommunikationsfel hos GPG-agenten! ";
 "MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "Det gick inte att kommunicera med GPG-agenten för att begära din lösenordsfras.\n\nFör att lösa detta, ominstallera nyaste versionen av GPGTools.";
 
-"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "Signeringen av ditt meddelande misslyckads pga. ett okänt fel.";
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "Det gick inte att signera ditt meddelande pga. ett okänt fel.";
 "MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Tyvärr kan vi inte hantera detta fel just nu.";
 
-"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Krypteringen av ditt meddelande misslyckades pga. ett okänt fel.";
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Det gick inte att kryptera ditt meddelande pga. ett okänt fel.";
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Tyvärr kan GPGMail inte hantera detta fel just nu.";
 
-"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "You entered the wrong passphrase too many times.";
-"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Signing your message was aborted because you entered the wrong passphrase 3 times.";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "Du angav fel lösenordsfras för många gånger.";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Signeringen av ditt meddelande avbröts eftersom du angav fel lösenordsfras 3 gånger.";
 
-"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at http://support.gpgtools.org with the following error description:\n\n%@";
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nKontakta oss på https://support.gpgtools.org om problemet skulle kvarstå, med följande felbeskrivning:\n\n%@";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the message";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The message couldn't be decrypted because you cancelled the passphrase request.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Du avbröt dekrypteringen av meddelandet.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "Meddelandet kunde inte dekrypteras eftersom du avbröt begäran efter lösenordsfrasen.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the attachment";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The attachment couldn't be decrypted because you cancelled the passphrase request.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Du avbröt dekrypteringen av bilagan.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "Bilagan kunde inte dekrypteras eftersom du avbröt begäran efter lösenordsfrasen.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the message failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite fungerar inte som det ska";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Meddelandet kunde inte dekrypteras.\n\nHämta och installera om GPG Suite från https://gpgtools.org\n\nKontakta oss på http://support.gpgtools.org om problemet skulle kvarstå, och inkludera informationen att \"xpc service\" inte fungerar ordentligt.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the attachment failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite fungerar inte som det ska";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Bilagan kunde inte dekrypteras.\n\nHämta och installera om GPG Suite från https://gpgtools.org\n\nKontakta oss på http://support.gpgtools.org om problemet skulle kvarstå, och inkludera informationen att \"xpc service\" inte fungerar ordentligt.";
 
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the message failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite fungerar inte som det ska";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Meddelandet kunde inte verifieras.\n\nHämta och installera om GPG Suite från https://gpgtools.org\n\nKontakta oss på http://support.gpgtools.org om problemet skulle kvarstå, och inkludera informationen att \"xpc service\" inte fungerar ordentligt.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the attachment failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite fungerar inte som det ska";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Bilagan kunde inte verifieras.\n\nHämta och installera om GPG Suite från https://gpgtools.org\n\nKontakta oss på http://support.gpgtools.org om problemet skulle kvarstå, och inkludera informationen att \"xpc service\" inte fungerar ordentligt.";
 
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Signing your message failed due to a problem during the passphrase request";
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "The PIN-Entry helper responsible for requesting your passphrase is not working properly.\n\nTo fix this problem, please download the newest version of MacGPG2 from https://gpgtools.org";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Det gick inte att signera ditt meddelande då ett problem uppstod vid begäran efter lösenordsfrasen";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "The PIN-Entry helper responsible for requesting your passphrase is not working properly.\n\nTo fix this problem, please download and re-install GPG Suite from https://gpgtools.org";
 
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Signing your message failed due to a problem in your GPGMail installation.";
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "To fix this problem, please download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at https://support.gpgtools.org and include the information that the xpc service is not working properly.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Det gick inte att signera ditt meddelande pga. ett fel i din GPGMail-installation.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "Lös detta problem genom att hämta och installera om GPG Suite från https://gpgtools.org\n\nKontakta oss på http://support.gpgtools.org om problemet skulle kvarstå, och inkludera informationen att \"xpc service\" inte fungerar ordentligt.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the message failed due to a defect PIN-Entry";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your passphrase, seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools from https://gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Det gick inte att dekryptera meddelandet eftersom PIN-inmatningen är defekt";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "PIN-inmatningshjälpprogrammet som ansvarar för att begära din lösenordsfras verkar vara defekt.\n\nLös detta problem genom att ominstallera den nyaste versionen av GPGTools från https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the attachment failed due to a defect PIN-Entry";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your passphrase, seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools from https://gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Det gick inte att dekryptera bilagan eftersom PIN-inmatningen är defekt";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "PIN-inmatningshjälpprogrammet som ansvarar för att begära din lösenordsfras verkar vara defekt.\n\nLös detta problem genom att ominstallera den nyaste versionen av GPGTools från https://gpgtools.org";

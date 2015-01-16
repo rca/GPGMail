@@ -53,10 +53,10 @@
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Signaturen er udløbet og kunne ikke bekræftes.\n\nSpørg afsenderen, hvorfor signaturen er udløbet.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Decrypting failed because MacGPG2 is not installed.\n\nMacGPG2 is the underlying engine which is responsible for processing your message and is thus required.\n\nPlease download MacGPG2 from https://gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Dekryptering mislykkedes, fordi MacGPG2 ikke er installeret.\n\nHent og gen-installer GPG Suiten fra https://gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifying failed because MacGPG2 is not installed.\n\nMacGPG2 is the underlying engine which is responsible for processing your message and is thus required.\n\nPlease download MacGPG2 from https://gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifikationen mislykkedes, fordi MacGPG2 ikke er installeret.\n\nHent og gen-installer GPG Suiten fra https://gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d vedhæftede filer kunne ikke dekrypteres eller bekræftes.";
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Klik på den vedhæftede fils ikon i beskedhovedet for flere detaljer.";
@@ -90,7 +90,7 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Den krypterede vedhæftede fil er beskadiget og kan ikke dekrypteres.\n\nBed afsenderen sende beskeden igen.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Signaturens nøgle er blevet tilbagekaldt.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "VIGTIGT: Nøglen, der blev brugt til at signere denne vedhæftede fil, er blevet tilbagekaldt.\n\nDu bør forny nøglen med ID %@ i GPG Nøglering. Hvis den nye stadig er tilbagekaldt skal du spørge afsenderen, hvorfor nøglen blev tilbagekaldt.";    
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "VIGTIGT: Nøglen, der blev brugt til at signere denne vedhæftede fil, er blevet tilbagekaldt.\n\nDu bør forny nøglen med ID %@ i GPG Nøglering. Hvis den nye stadig er tilbagekaldt skal du spørge afsenderen, hvorfor nøglen blev tilbagekaldt.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Signaturens nøgle er ikke i din GPG nøglering.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Signaturen på den vedhæftede fil kunne ikke bekræftes, da den nøgle, som blev brugt til signering, ikke er i din GPG nøglering.\n\nSøg efter nøglen med ID %@ i GPG Nøglering og importer den for at bekræfte den vedhæftede fil.";
@@ -108,7 +108,7 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This attachment signature is invalid and could not be verified.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Signaturens nøgle er udløbet.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "VIGTIGT: Den nøgle, der blev brugt til at signere denne vedhæftede fil, er udløbet.\n\nDu kan prøve at forny nøglen med ID %@ i GPG Nøglering og at spørge afsenderen, hvorfor nøglen er udløbet.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "VIGTIGT: Nøglen, der blev brugt til at signere denne vedhæftede fil, er udløbet.\n\nDu kan prøve at forny nøglen med ID %@ i GPG Nøglering og spørge afsenderen, hvorfor nøglen er udløbet. ";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Signaturen til denne vedhæftede fil er udløbet.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Signaturen til den vedhæftede fil er udløbet, og kunne ikke bekræftes.\n\nSpørg afsenderen, hvorfor signaturen er udløbet.";
@@ -124,6 +124,7 @@
 "MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE" = "Signeret med tilbagekaldt nøgle";
 "MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE" = "Ugyldig signatur";
 "MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE" = "Signeret";
+"MESSAGE_SECURITY_HEADER_NO_SIGNATURE_TITLE" = "Ingen signatur fundet";
 
 /* Security header attachments related. */
 "MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE" = "krypteret/signeret vedhæftning";
@@ -147,9 +148,9 @@
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail er klar.";
 "GPG_STATUS_NO_ERROR_TOOLTIP" = "Din MacGPG installation fungerer fejlfrit."; 
 "GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 er ikke installeret. Tjek din installation.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Hent GPGTools installeringsfilen fra http://www.gpgtools.org for at installere alle GPGTools.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Hent og gen-installer GPG Suiten fra https://www.gpgtools.org for at sikre, at alle påkrævede komponenter er installerede.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Tjek din installation og konfiguration.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Hent GPGTools installeringsfilen fra http://www.gpgtools.org for at installere alle GPGTools.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Hent og gen-installer GPG Suiten fra https://www.gpgtools.org for at sikre, at alle påkrævede komponenter er installerede.";
 
 /* Multiple GPGMail installations. */
 "GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Der findes flere installationer af GPGMail!";
@@ -166,7 +167,7 @@ CODE_SIGN_ERROR_MESSAGE = "To keep you safe, GPGMail will not be loaded!\n\nPlea
 
 /* GPGMailGPGMailBundle.defaults can't be loaded */
 NO_DEFAULTS_TITLE = "Unable to load GPGMail defaults!";
-NO_DEFAULTS_MESSAGE = "GPGMail may doesn't work as expected.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org.";
+NO_DEFAULTS_MESSAGE = "GPGMail virker ikke som forventet.\n\nHent og gen-installer GPG Suiten fra https://gpgtools.org\n\nHvis problemet fortsætter, så kontakt os på http://support.gpgtools.org.";
 
 /* Errors while trying to sign a message. */
 "MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Underskrivning af din besked fejlede på grund af defekt PIN-kode!";
@@ -195,23 +196,23 @@ NO_DEFAULTS_MESSAGE = "GPGMail may doesn't work as expected.\n\nPlease download 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the attachment";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The attachment couldn't be decrypted because you cancelled the passphrase request.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the message failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suiten virker ikke som forventet";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Dekryptering af beskeden mislykkedes.\n\nHent og gen-installer GPG Suiten fra https://gpgtools.org\n\nHvis problemet fortsætter, så kontakt os på http://support.gpgtools.org, og skriv at xpc servicen ikke fungerer rigtigt.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the attachment failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suiten virker ikke som forventet";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Dekryptering af den vedhæftede fil mislykkedes.\n\nHent og gen-installer GPG Suiten fra https://gpgtools.org\n\nHvis problemet fortsætter, så kontakt os på http://support.gpgtools.org, og skriv at xpc servicen ikke fungerer rigtigt.";
 
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the message failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suiten virker ikke som forventet";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifikation af beskeden mislykkedes.\n\nHent og gen-installer GPG Suiten fra https://gpgtools.org\n\nHvis problemet fortsætter, så kontakt os på http://support.gpgtools.org, og skriv at xpc servicen ikke fungerer rigtigt.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "Your installation of GPGTools is broken";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the attachment failed because your installation of GPGTools is broken.\n\nPlease download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at support.gpgtools.org and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suiten virker ikke som forventet";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifikation af den vedhæftede fil mislykkedes.\n\nHent og gen-installer GPG Suiten fra https://gpgtools.org\n\nHvis problemet fortsætter, så kontakt os på http://support.gpgtools.org, og skriv at xpc servicen ikke fungerer rigtigt.";
 
 "MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Signing your message failed due to a problem during the passphrase request";
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "The PIN-Entry helper responsible for requesting your passphrase is not working properly.\n\nTo fix this problem, please download the newest version of MacGPG2 from https://gpgtools.org";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "The PIN-Entry helper responsible for requesting your passphrase is not working properly.\n\nTo fix this problem, please download and re-install GPG Suite from https://gpgtools.org";
 
 "MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Signing your message failed due to a problem in your GPGMail installation.";
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "To fix this problem, please download and re-install GPGTools from https://gpgtools.org\n\nShould this problem persist, please contact us at https://support.gpgtools.org and include the information that the xpc service is not working properly.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "For at løse problemet skal du hente og gen-installere GPG Suiten fra https://gpgtools.org\n\nHvis problemet fortsætter, så kontakt os på http://support.gpgtools.org, og skriv at xpc servicen ikke fungerer rigtigt.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the message failed due to a defect PIN-Entry";
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your passphrase, seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools from https://gpgtools.org";

@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">12F45</string>
-		<string key="IBDocument.InterfaceBuilderVersion">4510</string>
-		<string key="IBDocument.AppKitVersion">1187.40</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.SystemVersion">14A389</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6250</string>
+		<string key="IBDocument.AppKitVersion">1343.14</string>
+		<string key="IBDocument.HIToolboxVersion">755.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">4510</string>
+			<string key="NS.object.0">6250</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSBox</string>
@@ -48,7 +48,7 @@
 							<object class="NSButton" id="997375455">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{193, 97}, {348, 18}}</string>
+								<string key="NSFrame">{{193, 97}, {351, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="632062900"/>
 								<bool key="NSEnabled">YES</bool>
@@ -57,7 +57,7 @@
 									<int key="NSCellFlags2">0</int>
 									<string key="NSContents">Comprobar automáticamente si hay actualizaciones</string>
 									<object class="NSFont" key="NSSupport" id="706304668">
-										<string key="NSName">LucidaGrande</string>
+										<bool key="IBIsSystemFont">YES</bool>
 										<double key="NSSize">13</double>
 										<int key="NSfFlags">1044</int>
 									</object>
@@ -81,7 +81,7 @@
 							<object class="NSButton" id="63115413">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{193, 77}, {322, 18}}</string>
+								<string key="NSFrame">{{193, 77}, {351, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="263402944"/>
 								<bool key="NSEnabled">YES</bool>
@@ -105,7 +105,7 @@
 							<object class="NSButton" id="163650447">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{189, 36}, {115, 32}}</string>
+								<string key="NSFrame">{{189, 36}, {190, 32}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="491452844">
@@ -170,7 +170,7 @@
 							<object class="NSTextField" id="97310430">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{192, 121}, {109, 17}}</string>
+								<string key="NSFrame">{{192, 121}, {183, 17}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="758835818"/>
 								<bool key="NSEnabled">YES</bool>
@@ -179,7 +179,7 @@
 									<int key="NSCellFlags2">272630784</int>
 									<string key="NSContents">Actualizaciones</string>
 									<object class="NSFont" key="NSSupport" id="1059241967">
-										<string key="NSName">LucidaGrande-Bold</string>
+										<bool key="IBIsSystemFont">YES</bool>
 										<double key="NSSize">13</double>
 										<int key="NSfFlags">2072</int>
 									</object>
@@ -197,18 +197,19 @@
 										<int key="NSColorSpace">6</int>
 										<string key="NSCatalogName">System</string>
 										<string key="NSColorName">controlTextColor</string>
-										<object class="NSColor" key="NSColor">
+										<object class="NSColor" key="NSColor" id="224601196">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MAA</bytes>
 										</object>
 									</object>
 								</object>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+								<int key="NSTextFieldAlignmentRectInsetsVersion">1</int>
 							</object>
 							<object class="NSTextField" id="443272866">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{192, 271}, {91, 17}}</string>
+								<string key="NSFrame">{{192, 271}, {183, 17}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="714016839"/>
 								<bool key="NSEnabled">YES</bool>
@@ -222,11 +223,12 @@
 									<reference key="NSTextColor" ref="326977330"/>
 								</object>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+								<int key="NSTextFieldAlignmentRectInsetsVersion">1</int>
 							</object>
 							<object class="NSButton" id="113600817">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{193, 152}, {159, 18}}</string>
+								<string key="NSFrame">{{193, 152}, {351, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="984611941"/>
 								<bool key="NSEnabled">YES</bool>
@@ -250,7 +252,7 @@
 							<object class="NSTextField" id="696331322">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{192, 176}, {60, 17}}</string>
+								<string key="NSFrame">{{192, 176}, {183, 17}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="25399615"/>
 								<bool key="NSEnabled">YES</bool>
@@ -264,6 +266,7 @@
 									<reference key="NSTextColor" ref="326977330"/>
 								</object>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+								<int key="NSTextFieldAlignmentRectInsetsVersion">1</int>
 							</object>
 							<object class="NSTextField" id="25399615">
 								<reference key="NSNextResponder" ref="782958523"/>
@@ -277,15 +280,16 @@
 									<int key="NSCellFlags2">4195328</int>
 									<string key="NSContents">GPGMail</string>
 									<object class="NSFont" key="NSSupport">
-										<string key="NSName">LucidaGrande-Bold</string>
+										<bool key="IBIsSystemFont">YES</bool>
 										<double key="NSSize">14</double>
-										<int key="NSfFlags">16</int>
+										<int key="NSfFlags">2072</int>
 									</object>
 									<reference key="NSControlView" ref="25399615"/>
 									<reference key="NSBackgroundColor" ref="693655191"/>
 									<reference key="NSTextColor" ref="326977330"/>
 								</object>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+								<int key="NSTextFieldAlignmentRectInsetsVersion">1</int>
 							</object>
 							<object class="NSImageView" id="546540187">
 								<reference key="NSNextResponder" ref="782958523"/>
@@ -339,9 +343,11 @@
 											<bytes key="NSWhite">MQA</bytes>
 										</object>
 									</object>
-									<object class="NSColor" key="NSTextColor">
-										<int key="NSColorSpace">3</int>
-										<bytes key="NSWhite">MCAwLjgwMDAwMDAxMTkAA</bytes>
+									<object class="NSColor" key="NSTextColor" id="741049765">
+										<int key="NSColorSpace">6</int>
+										<string key="NSCatalogName">System</string>
+										<string key="NSColorName">labelColor</string>
+										<reference key="NSColor" ref="224601196"/>
 									</object>
 								</object>
 								<int key="NSBorderType">3</int>
@@ -352,7 +358,7 @@
 							<object class="NSButton" id="915859109">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{193, 247}, {238, 18}}</string>
+								<string key="NSFrame">{{193, 247}, {351, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="63115413"/>
 								<string key="NSReuseIdentifierKey">_NS:717</string>
@@ -360,7 +366,7 @@
 								<object class="NSButtonCell" key="NSCell" id="80202346">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">0</int>
-									<string key="NSContents">Si lo desea cifrar/firmar proyectos</string>
+									<string key="NSContents">Cifrar borradores</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:717</string>
 									<reference key="NSControlView" ref="915859109"/>
@@ -416,7 +422,7 @@
 									<int key="NSCellFlags2">131072</int>
 									<string key="NSContents">Version: xxx</string>
 									<object class="NSFont" key="NSSupport" id="26">
-										<string key="NSName">LucidaGrande</string>
+										<bool key="IBIsSystemFont">YES</bool>
 										<double key="NSSize">11</double>
 										<int key="NSfFlags">3100</int>
 									</object>
@@ -486,7 +492,7 @@
 							<object class="NSButton" id="714016839">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{193, 227}, {232, 18}}</string>
+								<string key="NSFrame">{{193, 227}, {351, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="955063492"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -512,7 +518,7 @@
 							<object class="NSButton" id="955063492">
 								<reference key="NSNextResponder" ref="782958523"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{193, 207}, {212, 18}}</string>
+								<string key="NSFrame">{{193, 207}, {351, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSNextKeyView" ref="696331322"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -549,15 +555,12 @@
 					<int key="NSCellFlags2">0</int>
 					<string key="NSContents"/>
 					<object class="NSFont" key="NSSupport">
-						<string key="NSName">LucidaGrande</string>
+						<bool key="IBIsSystemFont">YES</bool>
 						<double key="NSSize">12</double>
-						<int key="NSfFlags">16</int>
+						<int key="NSfFlags">4883</int>
 					</object>
 					<reference key="NSBackgroundColor" ref="509650560"/>
-					<object class="NSColor" key="NSTextColor">
-						<int key="NSColorSpace">3</int>
-						<bytes key="NSWhite">MCAwLjgwMDAwMDAxAA</bytes>
-					</object>
+					<reference key="NSTextColor" ref="741049765"/>
 				</object>
 				<reference key="NSContentView" ref="782958523"/>
 				<int key="NSBorderType">0</int>
@@ -568,7 +571,7 @@
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<bool key="usesAutoincrementingIDs">NO</bool>
-			<array class="NSMutableArray" key="connectionRecords">
+			<array key="connectionRecords">
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">preferencesView</string>
@@ -626,56 +629,44 @@
 					<string key="id">mmA-oo-VQz</string>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">checkForUpdates:</string>
+						<reference key="source" ref="359798784"/>
+						<reference key="destination" ref="163650447"/>
+					</object>
+					<string key="id">F7g-Rg-fK4</string>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: updater.automaticallyChecksForUpdates</string>
+						<string key="label">value: enableAutomaticChecks</string>
 						<reference key="source" ref="997375455"/>
 						<reference key="destination" ref="359798784"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="997375455"/>
 							<reference key="NSDestination" ref="359798784"/>
-							<string key="NSLabel">value: updater.automaticallyChecksForUpdates</string>
+							<string key="NSLabel">value: enableAutomaticChecks</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">updater.automaticallyChecksForUpdates</string>
+							<string key="NSKeyPath">enableAutomaticChecks</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<string key="id">868</string>
+					<string key="id">jsS-UO-DZG</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: updater.automaticallyDownloadsUpdates</string>
+						<string key="label">value: options.SUAutomaticallyUpdate</string>
 						<reference key="source" ref="63115413"/>
 						<reference key="destination" ref="359798784"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="63115413"/>
 							<reference key="NSDestination" ref="359798784"/>
-							<string key="NSLabel">value: updater.automaticallyDownloadsUpdates</string>
+							<string key="NSLabel">value: options.SUAutomaticallyUpdate</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">updater.automaticallyDownloadsUpdates</string>
+							<string key="NSKeyPath">options.SUAutomaticallyUpdate</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<string key="id">792</string>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">target: updater</string>
-						<reference key="source" ref="163650447"/>
-						<reference key="destination" ref="359798784"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="163650447"/>
-							<reference key="NSDestination" ref="359798784"/>
-							<string key="NSLabel">target: updater</string>
-							<string key="NSBinding">target</string>
-							<string key="NSKeyPath">updater</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSSelectorName</string>
-								<string key="NS.object.0">checkForUpdates:</string>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<string key="id">726</string>
+					<string key="id">tBs-iu-tNu</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -881,7 +872,6 @@
 							<reference ref="263145191"/>
 							<reference ref="632062900"/>
 							<reference ref="263402944"/>
-							<reference ref="714016839"/>
 							<reference ref="955063492"/>
 							<reference ref="997375455"/>
 							<reference ref="63115413"/>
@@ -889,6 +879,7 @@
 							<reference ref="97310430"/>
 							<reference ref="113600817"/>
 							<reference ref="696331322"/>
+							<reference ref="714016839"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Preferences Box</string>
@@ -1228,6 +1219,7 @@
 				<string key="834.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="9.CustomClassName">GMSpecialBox</string>
 				<dictionary class="NSMutableDictionary" key="9.IBAttributePlaceholdersKey"/>
+				<reference key="9.IBNSViewMetadataGestureRecognizers" ref="0"/>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<reference key="9.IBUserGuides" ref="0"/>
 				<string key="930.CustomClassName">NSButton_LinkCursor</string>
@@ -1261,79 +1253,11 @@
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">GMSpecialBox</string>
-					<string key="superclassName">NSBox</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GMSpecialBox.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">GPGMailPreferences</string>
-					<string key="superclassName">NSPreferencesModule</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="copyVersionInfo:">id</string>
-						<string key="openDonate:">id</string>
-						<string key="openGPGStatusHelp:">id</string>
-						<string key="openKnowledgeBase:">id</string>
-						<string key="openSupport:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="copyVersionInfo:">
-							<string key="name">copyVersionInfo:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="openDonate:">
-							<string key="name">openDonate:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="openGPGStatusHelp:">
-							<string key="name">openGPGStatusHelp:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="openKnowledgeBase:">
-							<string key="name">openKnowledgeBase:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="openSupport:">
-							<string key="name">openSupport:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GPGMailPreferences.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSButton_LinkCursor</string>
-					<string key="superclassName">NSButton</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/NSButton_LinkCursor.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSPreferencesModule</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/NSPreferencesModule.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<bool key="IBDocument.previouslyAttemptedUpgradeToXcode5">YES</bool>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
-			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
-			<real value="1070" key="NS.object.0"/>
-		</object>
-		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
 			<real value="1070" key="NS.object.0"/>
 		</object>
