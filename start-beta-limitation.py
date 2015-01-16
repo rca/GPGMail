@@ -12,7 +12,7 @@ if "GM_EXPIRATION_DATE" in os.environ:
     expirationDate = os.environ.get("GM_EXPIRATION_DATE")
 
 if not expirationDate:
-    expirationDate = datetime.now() + timedelta(minutes=10)
+    expirationDate = datetime.now() + timedelta(days=1)
 
 if isinstance(expirationDate, str):
     expirationDate = datetime.strptime(expirationDate, "%Y-%m-%d")
