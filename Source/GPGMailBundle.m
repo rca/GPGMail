@@ -788,7 +788,7 @@ static BOOL gpgMailWorks = NO;
 }
 
 + (BOOL)isLion {
-    return floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_6;
+    return floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_6 && ![self isMountainLion] && ![self isMavericks] && ![self isYosemite];
 }
 
 + (BOOL)isMavericks {
