@@ -64,12 +64,13 @@
 					 @"updateSecurityControls",
 					 @"_updateSecurityStateInBackgroundForRecipients:sender:"
 			 ],
-			 @"MailDocumentEditor": @[
+             @"MailDocumentEditor": @[
 					 @"backEndDidLoadInitialContent:",
 					 @"dealloc",
 					 @"backEnd:didCancelMessageDeliveryForEncryptionError:",
-					 @"backEnd:didCancelMessageDeliveryForError:"
-			 ],
+					 @"backEnd:didCancelMessageDeliveryForError:",
+                     @"initWithBackEnd:"
+             ],
 			 @"NSWindow": @[
 					 @"toggleFullScreen:"
 			 ],
@@ -279,13 +280,6 @@
                      @"selectors": @{
                             @"added": @[
                                     @"setKnowsCanSign:"
-                            ]
-                     }
-             },
-             @"DocumentEditor": @{
-                     @"selectors": @{
-                            @"added": @[
-                                    @"initWithBackEnd:"
                             ]
                      }
              },
