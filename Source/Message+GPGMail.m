@@ -459,7 +459,7 @@
         return NO;
     
     // Message was actively selected by the user? PGP process message.
-    if([[self getIvar:@"UserSelectedMessage"] boolValue])
+    if([self userDidActivelySelectMessageCheckingMessageOnly:YES])
         return YES;
     
     // If NeverCreatePreviewSnippets is set, return NO.
@@ -471,15 +471,37 @@
     return YES;
 }
 
+- (BOOL)userDidActivelySelectMessageCheckingMessageOnly:(BOOL)messageOnly {
+	BOOL userDidSelectMessage = NO;
+	// In some occasions this variable is not set, even though the user actively selected the message.
+	// This issue has been seen with drafts. The reason seems to be, that the message object does
+	// where the flag has been set, is not necessarily the same we're seeing in here.
+	// As it turns out, while the message object is re-created, the messageBody object remains the same.
+	// So let's check on the messageBody object as well.
+	// Lesson learned: using messageBody forces the message body to be loaded.
+	// Since we're only interested in the messageBody if it's already available, we use
+	// messageBodyIfAvailable instead.
+	// Another lesson learned: this leads to terrible problems, since the some body
+	// methods, call shouldBePGPProcessed, which in turn calls this message again.
+	// So in order to avoid a recursion, we don't check the body in all circumstances.
+	if([self getIvar:@"UserSelectedMessage"])
+		userDidSelectMessage = [[self getIvar:@"UserSelectedMessage"] boolValue];
+	else if(!messageOnly) {
+		id messageBody = [self messageBodyIfAvailable];
+		if([messageBody getIvar:@"UserSelectedMessage"])
+			userDidSelectMessage = [[messageBody getIvar:@"UserSelectedMessage"] boolValue];
+	}
+	
+	return userDidSelectMessage;
+}
+
 - (BOOL)shouldCreateSnippetWithData:(NSData *)data {
     // CreatePreviewSnippets is set? Always return true.
     DebugLog(@"Create Preview snippets: %@", [[GPGOptions sharedOptions] boolForKey:@"CreatePreviewSnippets"] ? @"YES" : @"NO");
     DebugLog(@"User Selected Message: %@", [[self getIvar:@"UserSelectedMessage"] boolValue] ? @"YES" : @"NO");
 	
-	BOOL userDidSelectMessage = [[self getIvar:@"UserSelectedMessage"] boolValue];
-	
 	// Always *create snippet* (decrypt data) if the user actively selected the message.
-	if(userDidSelectMessage)
+	if([self userDidActivelySelectMessageCheckingMessageOnly:NO])
 		return YES;
 	
 	// Since rule applying and snippet creation are connected, snippets are

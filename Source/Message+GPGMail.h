@@ -87,6 +87,11 @@
  */
 - (id)dataSourceProxy;
 
+/**
+ Returns whether the user did in fact actively select the message or not.
+ */
+- (BOOL)userDidActivelySelectMessageCheckingMessageOnly:(BOOL)messageOnly;
+
 @property (assign) BOOL PGPInfoCollected;
 @property (assign) BOOL PGPEncrypted;
 @property (assign) BOOL PGPPartlyEncrypted;
@@ -126,6 +131,8 @@
 - (id)subject;
 - (id)dataSource;
 - (id)messageStore;
+- (id)messageBody;
+- (id)messageBodyIfAvailable;
 
 @end
 

@@ -421,7 +421,7 @@
     if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
         return [self MADecodeTextPlainWithContext:ctx];
     
-	BOOL userDidSelectMessage = [[[(MimeBody *)[self mimeBody] message] getIvar:@"UserSelectedMessage"] boolValue];
+	BOOL userDidSelectMessage = [[(MimeBody *)[self mimeBody] message] userDidActivelySelectMessageCheckingMessageOnly:NO];
 	
     // 1. Step, check if the message was already decrypted.
     if(self.PGPEncrypted && self.PGPDecryptedData)

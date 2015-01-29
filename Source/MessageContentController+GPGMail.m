@@ -48,6 +48,7 @@
 
 - (void)MASetMessageToDisplay:(id)message {
     [message setIvar:@"UserSelectedMessage" value:@YES];
+	[[message messageBody] setIvar:@"UserSelectedMessage" value:@YES];
     [self MASetMessageToDisplay:message];
 }
 
@@ -64,6 +65,10 @@
         [self setValue:[self getIvar:@"RealShowDetails"] forKey:@"_showDetails"];
     
     [[representedObject originalMessage] setIvar:@"UserSelectedMessage" value:[NSNumber numberWithBool:YES]];
+	// In some occasions the message is re-created during the parsing process and the UserSelectedMessage
+	// flag is no longer available. Apparently, the messageBody however is not re-created. So set it on
+	// both objects to be save.
+	[[representedObject messageBody] setIvar:@"UserSelectedMessage" value:[NSNumber numberWithBool:YES]];
     [[representedObject originalMessage] setIvar:@"LoadingStage" value:[NSNumber numberWithBool:YES]];
     [self MASetRepresentedObject:representedObject];
 }
