@@ -39,9 +39,20 @@
 #define restrict
 #import <RegexKit/RegexKit.h>
 
-
 @implementation ComposeBackEnd_GPGMail
 
+- (BOOL)setupSecurityPropertiesQueue {
+	if(![self getIvar:@"GMSecurityPropertiesQueue"]) {
+		GMDispatchQueueObject *securityPropertiesQueue = [[GMDispatchQueueObject alloc] initWithName:"org.gpgtools.GPGMail.securityPropertiesQueue" queueAttributes:DISPATCH_QUEUE_CONCURRENT];
+		[self setIvar:@"GMSecurityPropertiesQueue" value:securityPropertiesQueue];
+	}
+	return YES;
+}
+
+- (dispatch_queue_t)securityPropertiesQueue {
+	GMDispatchQueueObject *securityPropertiesQueue = [self getIvar:@"GMSecurityPropertiesQueue"];
+	return securityPropertiesQueue.dispatchQueue;
+}
 
 - (id)MAInitCreatingDocumentEditor:(BOOL)createDocumentEditor {
     
@@ -49,15 +60,7 @@
     
     /** On Yosemite, if Mail was invoked via AppleScript, this queue might already have been setup.
      */
-    if(![ret getIvar:@"GMSecurityPropertiesQueue"]) {
-        dispatch_queue_t securityPropertiesQueue = dispatch_queue_create("org.gpgtools.GPGMail.securityPropertiesQueue", DISPATCH_QUEUE_CONCURRENT);
-        if([GPGMailBundle isLion]) {
-            [ret setIvar:@"GMSecurityPropertiesQueue" value:(__bridge id)securityPropertiesQueue assign:YES];
-        }
-        else {
-            [ret setIvar:@"GMSecurityPropertiesQueue" value:CFBridgingRelease(securityPropertiesQueue)];
-        }
-    }
+    [ret setupSecurityPropertiesQueue];
     
     return ret;
 }
@@ -1011,11 +1014,7 @@
 
 - (NSDictionary *)securityProperties {
     __block NSDictionary *_securityProperties = nil;
-    dispatch_queue_t securityPropertiesQueue;
-    if([GPGMailBundle isLion])
-        securityPropertiesQueue = (__bridge dispatch_queue_t)[self getIvar:@"GMSecurityPropertiesQueue"];
-    else
-        securityPropertiesQueue = (dispatch_queue_t)CFBridgingRetain([self getIvar:@"GMSecurityPropertiesQueue"]);
+    dispatch_queue_t securityPropertiesQueue = [self securityPropertiesQueue];
 
     ComposeBackEnd_GPGMail __weak *weakSelf = self;
     dispatch_sync(securityPropertiesQueue, ^{
@@ -1045,12 +1044,9 @@
 }
 
 - (void)setSecurityProperties:(NSDictionary *)securityProperties {
-    dispatch_queue_t securityPropertiesQueue;
-    if([GPGMailBundle isLion])
-        securityPropertiesQueue = (__bridge dispatch_queue_t)[self getIvar:@"GMSecurityPropertiesQueue"];
-    else
-        securityPropertiesQueue = (dispatch_queue_t)CFBridgingRetain([self getIvar:@"GMSecurityPropertiesQueue"]);
-    ComposeBackEnd_GPGMail __weak *weakSelf = self;
+    dispatch_queue_t securityPropertiesQueue = [self securityPropertiesQueue];
+
+	ComposeBackEnd_GPGMail __weak *weakSelf = self;
     dispatch_barrier_async(securityPropertiesQueue, ^{
         ComposeBackEnd_GPGMail __strong *strongSelf = weakSelf;
         [strongSelf setIvar:@"GMSecurityProperties" value:securityProperties];
@@ -1148,6 +1144,28 @@
 		return YES;
 	}
 	return [self MA_saveThreadShouldCancel];
+}
+
+@end
+
+@implementation GMDispatchQueueObject
+
+@synthesize dispatchQueue=_dispatchQueue;
+
+- (id)initWithName:(const char *)name queueAttributes:(dispatch_queue_attr_t)attributes {
+	if(self = [super init]) {
+		_name = [[NSString alloc] initWithCString:name encoding:NSUTF8StringEncoding];
+		_dispatchQueue = dispatch_queue_create(name, attributes);
+	}
+	return self;
+}
+
+- (dispatch_queue_t)dispatchQueue {
+	return _dispatchQueue;
+}
+
+- (void)dealloc {
+	dispatch_release(_dispatchQueue);
 }
 
 @end

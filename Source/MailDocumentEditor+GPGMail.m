@@ -48,15 +48,11 @@
 - (id)MAInitWithBackEnd:(id)backEnd {
     /* On Yosemite, when Mail is invoked from an AppleScript the backEnd is not fully initiated at the time when the security properties queue is first used.
        This method however is called in between, so it makes sense to setup the queue in here, if it's not already setup.
+	   -[GPGMail_ComposeBackEnd setupSecurityPropertiesQueues] takes care of checking whether the queue needs
+	   to be setup, so there's no need to perform a check here.
      */
-    if(![backEnd getIvar:@"GMSecurityPropertiesQueue"]) {
-        dispatch_queue_t securityPropertiesQueue = dispatch_queue_create("org.gpgtools.GPGMail.securityPropertiesQueue", DISPATCH_QUEUE_CONCURRENT);
-        if([GPGMailBundle isLion])
-            [backEnd setIvar:@"GMSecurityPropertiesQueue" value:(__bridge id)securityPropertiesQueue assign:YES];
-        else
-            [backEnd setIvar:@"GMSecurityPropertiesQueue" value:CFBridgingRelease(securityPropertiesQueue)];
-    }
-    
+    [backEnd setupSecurityPropertiesQueue];
+	
     return [self MAInitWithBackEnd:backEnd];
 }
 

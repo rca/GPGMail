@@ -35,6 +35,8 @@
 
 @interface ComposeBackEnd_GPGMail : NSObject
 
+- (BOOL)setupSecurityPropertiesQueue;
+
 /**
  Is called by Mail.app when the user clicks on the encrypt button in the
  compose window.
@@ -206,5 +208,22 @@
  was invoked by iCal, in which case, the message is not to be encrypted nor signed.
  */
 - (BOOL)sentActionInvokedFromiCalWithContents:(WebComposeMessageContents *)contents;
+
+@end
+
+/**
+ Under Lion GCD Dispatch Queues are not represented as Objective-C objects, which leads to
+ massive problems and a crash when trying to store a dispatch queue as associated objected.
+ In order to fix that issue, we simply wrap the dispatch queue in an object ourseveles.
+ Let's see how well that goes.
+ */
+@interface GMDispatchQueueObject : NSObject {
+	NSString *_name;
+	dispatch_queue_t _dispatchQueue;
+}
+
+- (id)initWithName:(const char *)name queueAttributes:(dispatch_queue_attr_t)attributes;
+
+@property (nonatomic, readonly) dispatch_queue_t dispatchQueue;
 
 @end
