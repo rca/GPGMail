@@ -1028,8 +1028,11 @@
 }
 
 - (void)updateSecurityProperties:(NSDictionary *)updates {
-    NSMutableDictionary *securityProperties = self.securityProperties;
-    
+	// We create our own copy of the securityProperties,
+	// since it's very much possible that they'll be overwritten with new
+	// ones,
+    NSMutableDictionary *securityProperties = [self.securityProperties mutableCopy];
+	
     NSMutableDictionary *propertiesToUpdate = [@{} mutableCopy];
     
     for(id key in updates) {
