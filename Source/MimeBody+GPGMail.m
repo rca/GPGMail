@@ -42,12 +42,6 @@
 @implementation MimeBody_GPGMail
 
 - (BOOL)MAIsSignedByMe {
-    
-    // Check if message should be processed (-[Message shouldBePGPProcessed] - Snippet generation check)
-    // otherwise out of here!
-    if(![[self message] shouldBePGPProcessed])
-        return [self MAIsSignedByMe];
-    
     // This method tries to check the
     // signatures internally, if some are set.
     // This results in a crash, since Mail.app
