@@ -46,7 +46,8 @@
         message = [(ConversationMember *)[(WebDocumentGenerator *)self valueForKey:@"_conversationMember"] originalMessage];
     }
     id error = [message getIvar:@"PGPMainError"];
-	[webDocument setParseError:error];
+	if(error)
+		[webDocument setParseError:error];
 	[self MASetWebDocument:webDocument];
 }
 
