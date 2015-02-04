@@ -43,6 +43,8 @@
 #import "GPGMailBundle.h"
 #import <MFError.h>
 
+static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyToEncryptedMessage";
+
 @implementation MailDocumentEditor_GPGMail
 
 - (id)MAInitWithBackEnd:(id)backEnd {
@@ -150,6 +152,85 @@
         
     }
 	[self MADealloc];
+}
+
+- (BOOL)isUnencryptedReplyToEncryptedMessageWithChecklist:(NSMutableArray *)checklist {
+	// While Mail.app internally removes objects from the checklist, we instead add one
+	// if the user explicitly told us to continue with sending.
+	// We have to handle it this way, since sendMessageAfterChecking is called for each failing
+	// check and we can't determine which one is the first call, to correctly add our own item to the checklist,
+	// and later remove it, when the check has cleared.
+	// So instead we add an item.
+	BOOL shouldWarn = NO;
+
+	ComposeBackEnd *backEnd = (ComposeBackEnd *)[(MailDocumentEditor *)self backEnd];
+	NSDictionary *securityProperties = [(ComposeBackEnd_GPGMail *)backEnd securityProperties];
+
+	BOOL isReply = [(ComposeBackEnd_GPGMail *)backEnd messageIsBeingReplied];
+	BOOL originalMessageIsEncrypted = ((Message_GPGMail *)[backEnd originalMessage]).PGPEncrypted;
+	BOOL replyShouldBeEncrypted = [(ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)self backEnd] GMEncryptIfPossible] && [securityProperties[@"shouldEncrypt"] boolValue];
+
+	if(isReply && originalMessageIsEncrypted && !replyShouldBeEncrypted && ![checklist containsObject:kUnencryptedReplyToEncryptedMessage])
+		shouldWarn = YES;
+
+	// If checklist no longer contains the unencryptedReplyToEncryptedMessage item, it means
+	// that the user decided to send the message regardless of our warning.
+	if(!shouldWarn)
+		return NO;
+
+	// Otherwise perform the check.
+	return YES;
+}
+
+- (void)displayWarningForUnencryptedReplyToEncryptedMessageUpdatingChecklist:(NSMutableArray *)checklist {
+	NSArray *recipientsMissingCertificates = [(ComposeBackEnd *)[(MailDocumentEditor *)self backEnd] recipientsThatHaveNoKeyForEncryption];
+
+	NSMutableString *recipientWarning = [NSMutableString new];
+	for(NSString *recipient in recipientsMissingCertificates) {
+		[recipientWarning appendFormat:@"- %@\n", recipient];
+	}
+
+	NSAlert *unencryptedReplyAlert = [NSAlert new];
+	[unencryptedReplyAlert setMessageText:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE"]];
+
+	NSMutableString *explanation = [NSMutableString new];
+	if([recipientsMissingCertificates count]) {
+		[explanation appendFormat:@"%@\n\n", [NSString stringWithFormat:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS"], recipientWarning]];
+	}
+	[explanation appendString:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION"]];
+
+	[unencryptedReplyAlert setInformativeText:explanation];
+	[unencryptedReplyAlert addButtonWithTitle:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_ABORT"]];
+	[unencryptedReplyAlert addButtonWithTitle:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY"]];
+	[unencryptedReplyAlert setIcon:[NSImage imageNamed:@"GPGMail"]];
+
+	id __weak weakSelf = self;
+	[unencryptedReplyAlert beginSheetModalForWindow:[(DocumentEditor *)self window] completionHandler:^(NSModalResponse returnCode) {
+		id __strong strongSelf = weakSelf;
+
+		if(returnCode == NSAlertSecondButtonReturn) {
+			// The user pressed send anyway, so add the kUnencryptedReplyToEncryptedMessage item
+			// to the checklist, so the next time around sendMessageAfterChecking: is called,
+			// we no longer check if the message is sent unencrypted.
+			[checklist addObject:kUnencryptedReplyToEncryptedMessage];
+			[strongSelf sendMessageAfterChecking:checklist];
+		}
+		else {
+			[[strongSelf headersEditor] setAGoodFirstResponder];
+		}
+	}];
+}
+
+- (void)MASendMessageAfterChecking:(NSMutableArray *)checklist {
+	// If this is an unencrypted reply to an encrypted message, display a warning
+	// to the user and simply return. The message won't be sent until the checklist is cleared.
+	// Otherwise call sendMessageAfterChecking so that Mail.app can perform its internal checks.
+	if([self isUnencryptedReplyToEncryptedMessageWithChecklist:checklist]) {
+		[self displayWarningForUnencryptedReplyToEncryptedMessageUpdatingChecklist:checklist];
+		return;
+	}
+
+	[self MASendMessageAfterChecking:checklist];
 }
 
 - (void)MABackEnd:(id)backEnd didCancelMessageDeliveryForEncryptionError:(MFError *)error {

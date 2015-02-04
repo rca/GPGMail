@@ -33,6 +33,43 @@
 #import <WebComposeMessageContents.h>
 #import "GPGConstants.h"
 
+typedef struct {
+	unsigned int type:4;
+	unsigned int composeMode:2;
+	unsigned int hadChangesBeforeSave:1;
+	unsigned int hasChanges:1;
+	unsigned int showAllHeaders:1;
+	unsigned int includeHeaders:1;
+	unsigned int isUndeliverable:1;
+	unsigned int isDeliveringMessage:1;
+	unsigned int sendWindowsFriendlyAttachments:2;
+	unsigned int contentsWasEditedByUser:1;
+	unsigned int delegateRespondsToDidChange:1;
+	unsigned int delegateRespondsToSenderDidChange:1;
+	unsigned int delegateRespondsToDidAppendMessage:1;
+	unsigned int delegateRespondsToDidSaveMessage:1;
+	unsigned int delegateRespondsToDidBeginLoad:1;
+	unsigned int delegateRespondsToDidEndLoad:1;
+	unsigned int delegateRespondsToWillCreateMessageWithHeaders:1;
+	unsigned int delegateRespondsToShouldSaveMessage:1;
+	unsigned int delegateRespondsToShouldDeliverMessage:1;
+	unsigned int delegateRespondsToDidCancelMessageDeliveryForMissingCertificatesForRecipients:1;
+	unsigned int delegateRespondsToDidCancelMessageDeliveryForEncryptionError:1;
+	unsigned int delegateRespondsToDidCancelMessageDeliveryForError:1;
+	unsigned int delegateRespondsToDidCancelMessageDeliveryForAttachmentError:1;
+	unsigned int signIfPossible:1;
+	unsigned int encryptIfPossible:1;
+	unsigned int knowsCanSign:1;
+	unsigned int canSign:1;
+	unsigned int shouldDownloadRemoteAttachments:1;
+	unsigned int overrideRemoteAttachmentsPreference:1;
+	unsigned int editorHasInitialized:1;
+	unsigned int isEditing:1;
+	unsigned int isSendFormatInitialized:1;
+	unsigned int isAppleScriptMessage:1;
+	unsigned long long encodingHint;
+} mailFlags;
+
 @interface ComposeBackEnd_GPGMail : NSObject
 
 - (BOOL)setupSecurityPropertiesQueue;
@@ -208,6 +245,18 @@
  was invoked by iCal, in which case, the message is not to be encrypted nor signed.
  */
 - (BOOL)sentActionInvokedFromiCalWithContents:(WebComposeMessageContents *)contents;
+
+/**
+ Helper method to access the encryptIfPossible flag. On OS X before Yosemite, this flag
+ is set in a _flags struct. On Yosemite, there's a bool property which is used.
+ */
+- (BOOL)GMEncryptIfPossible;
+
+/**
+ Helper method to access the signIfPossible flag. On OS X before Yosemite, this flag
+ is set in a _flags struct. On Yosemite, there's a bool property which is used.
+ */
+- (BOOL)GMSignIfPossible;
 
 @end
 

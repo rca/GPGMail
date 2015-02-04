@@ -69,7 +69,8 @@
 					 @"dealloc",
 					 @"backEnd:didCancelMessageDeliveryForEncryptionError:",
 					 @"backEnd:didCancelMessageDeliveryForError:",
-                     @"initWithBackEnd:"
+                     @"initWithBackEnd:",
+					 @"sendMessageAfterChecking:"
              ],
 			 @"NSWindow": @[
 					 @"toggleFullScreen:"

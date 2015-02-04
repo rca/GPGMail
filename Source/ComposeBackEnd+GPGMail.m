@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import "objc/runtime.h"
 #import <AppKit/AppKit.h>
 #import <OutgoingMessage.h>
 #import <_OutgoingMessageBody.h>
@@ -103,6 +104,46 @@
 	
 	HeadersEditor_GPGMail *headersEditor = ((MailDocumentEditor *)[((ComposeBackEnd *)self) delegate]).headersEditor;
 	[headersEditor updateSymmetricButton];
+}
+
+- (BOOL)GMEncryptIfPossible {
+	// On Yosemite or higher there's a property to read the encryptIfPossible flag.
+	// otherwise, we have to access the _flags struct.
+	BOOL encryptIfPossible = NO;
+	if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+		encryptIfPossible = [[self valueForKey:@"_encryptIfPossible"] boolValue];
+	}
+	else {
+		mailFlags backEndFlags;
+		Ivar flags = class_getInstanceVariable([self class], "_flags");
+
+		CFTypeRef cfSelf = CFBridgingRetain(self);
+		backEndFlags = *(mailFlags *)((uint8_t *)cfSelf + ivar_getOffset(flags));
+		encryptIfPossible = backEndFlags.encryptIfPossible;
+		CFBridgingRelease(cfSelf);
+	}
+
+	return encryptIfPossible;
+}
+
+- (BOOL)GMSignIfPossible {
+	// On Yosemite or higher there's a property to read the signIfPossible flag.
+	// otherwise, we have to access the _flags struct.
+	BOOL signIfPossible = NO;
+	if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+		signIfPossible = [[self valueForKey:@"_signIfPossible"] boolValue];
+	}
+	else {
+		mailFlags backEndFlags;
+		Ivar flags = class_getInstanceVariable([self class], "_flags");
+
+		CFTypeRef cfSelf = CFBridgingRetain(self);
+		backEndFlags = *(mailFlags *)((uint8_t *)cfSelf + ivar_getOffset(flags));
+		signIfPossible = backEndFlags.signIfPossible;
+		CFBridgingRelease(cfSelf);
+	}
+
+	return signIfPossible;
 }
 
 - (void)MASetSignIfPossible:(BOOL)signIfPossible {
