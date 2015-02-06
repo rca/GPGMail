@@ -484,13 +484,9 @@
 	// Another lesson learned: this leads to terrible problems, since the some body
 	// methods, call shouldBePGPProcessed, which in turn calls this message again.
 	// So in order to avoid a recursion, we don't check the body in all circumstances.
+	// Update. Don't check the body, it still causes recursions sometimes.
 	if([self getIvar:@"UserSelectedMessage"])
 		userDidSelectMessage = [[self getIvar:@"UserSelectedMessage"] boolValue];
-	else if(!messageOnly) {
-		id messageBody = [self messageBodyIfAvailable];
-		if([messageBody getIvar:@"UserSelectedMessage"])
-			userDidSelectMessage = [[messageBody getIvar:@"UserSelectedMessage"] boolValue];
-	}
 	
 	return userDidSelectMessage;
 }
