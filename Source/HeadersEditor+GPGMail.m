@@ -291,6 +291,7 @@
                 attributes = externalAttributes;
             NSAttributedString *title = [[NSAttributedString alloc] initWithString:account attributes:attributes];
             [[fromPopup itemAtIndex:i] setAttributedTitle:title];
+			[[fromPopup itemAtIndex:i] setRepresentedObject:account];
             i++;
         }
     }
