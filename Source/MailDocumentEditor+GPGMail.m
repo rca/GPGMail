@@ -195,12 +195,29 @@ static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyT
 
 	NSMutableString *explanation = [NSMutableString new];
 	if([recipientsMissingCertificates count]) {
-		[explanation appendFormat:@"%@\n\n", [NSString stringWithFormat:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS"], recipientWarning]];
+		NSString *missingKeysString = [GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS"];
+		if([recipientsMissingCertificates count] == 1)
+			missingKeysString = [GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR"];
+		[explanation appendFormat:@"%@\n", [NSString stringWithFormat:missingKeysString, recipientWarning]];
 	}
+
 	[explanation appendString:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION"]];
 
+	NSMutableString *solutionProposals = [NSMutableString new];
+	[solutionProposals appendString:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE"]];
+
+	if([recipientsMissingCertificates count]) {
+		[solutionProposals appendString:@"\n"];
+		if([recipientsMissingCertificates count] == 1)
+			[solutionProposals appendString:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR"]];
+		else
+			[solutionProposals appendString:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS"]];
+	}
+	[explanation appendString:solutionProposals];
+	[explanation appendString:@"\n"];
+
 	[unencryptedReplyAlert setInformativeText:explanation];
-	[unencryptedReplyAlert addButtonWithTitle:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_ABORT"]];
+	[unencryptedReplyAlert addButtonWithTitle:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL"]];
 	[unencryptedReplyAlert addButtonWithTitle:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY"]];
 	[unencryptedReplyAlert setIcon:[NSImage imageNamed:@"GPGMail"]];
 
