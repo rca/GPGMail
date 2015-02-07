@@ -190,9 +190,6 @@ static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyT
 		[recipientWarning appendFormat:@"- %@\n", recipient];
 	}
 
-	NSAlert *unencryptedReplyAlert = [NSAlert new];
-	[unencryptedReplyAlert setMessageText:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE"]];
-
 	NSMutableString *explanation = [NSMutableString new];
 	if([recipientsMissingCertificates count]) {
 		NSString *missingKeysString = [GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS"];
@@ -216,27 +213,47 @@ static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyT
 	[explanation appendString:solutionProposals];
 	[explanation appendString:@"\n"];
 
+	NSAlert *unencryptedReplyAlert = [NSAlert new];
+	[unencryptedReplyAlert setMessageText:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE"]];
 	[unencryptedReplyAlert setInformativeText:explanation];
 	[unencryptedReplyAlert addButtonWithTitle:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL"]];
 	[unencryptedReplyAlert addButtonWithTitle:[GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY"]];
 	[unencryptedReplyAlert setIcon:[NSImage imageNamed:@"GPGMail"]];
 
-	id __weak weakSelf = self;
-	[unencryptedReplyAlert beginSheetModalForWindow:[(DocumentEditor *)self window] completionHandler:^(NSModalResponse returnCode) {
-		id __strong strongSelf = weakSelf;
+	// On Mavericks and later we can use, beginSheetModalForWindow:.
+	// Before that, we have to use NSBeginAlertSheet.
+	if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8) {
+		id __weak weakSelf = self;
+		[unencryptedReplyAlert beginSheetModalForWindow:[(DocumentEditor *)self window] completionHandler:^(NSModalResponse returnCode) {
+			id __strong strongSelf = weakSelf;
 
-		if(returnCode == NSAlertSecondButtonReturn) {
-			// The user pressed send anyway, so add the kUnencryptedReplyToEncryptedMessage item
-			// to the checklist, so the next time around sendMessageAfterChecking: is called,
-			// we no longer check if the message is sent unencrypted.
-			[checklist addObject:kUnencryptedReplyToEncryptedMessage];
-			[strongSelf sendMessageAfterChecking:checklist];
-		}
-		else {
-			[[strongSelf headersEditor] setAGoodFirstResponder];
-		}
-	}];
+			if(returnCode == NSAlertSecondButtonReturn) {
+				// The user pressed send anyway, so add the kUnencryptedReplyToEncryptedMessage item
+				// to the checklist, so the next time around sendMessageAfterChecking: is called,
+				// we no longer check if the message is sent unencrypted.
+				[checklist addObject:kUnencryptedReplyToEncryptedMessage];
+				[strongSelf sendMessageAfterChecking:checklist];
+			}
+			else {
+				[[strongSelf headersEditor] setAGoodFirstResponder];
+			}
+		}];
+	}
+	else {
+		NSDictionary *contextInfo = @{@"ThingsToCheck": checklist};
+		NSBeginAlertSheet([GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE"], [GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL"], [GPGMailBundle localizedStringForKey:@"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY"], nil, [(MailDocumentEditor *)self window], self, nil, @selector(warnAboutUnecryptedReplySheetClosed:returnCode:contextInfo:), (__bridge_retained void *)contextInfo, @"%@", explanation);
+	}
 }
+
+- (void)warnAboutUnecryptedReplySheetClosed:(NSWindow *)sheet returnCode:(long long)returnCode contextInfo:(void *)contextInfo {
+	NSDictionary *_contextInfo = (__bridge_transfer NSDictionary *)contextInfo;
+	if(returnCode == NSAlertAlternateReturn) {
+		NSMutableArray *checklist = _contextInfo[@"ThingsToCheck"];
+		[checklist addObject:kUnencryptedReplyToEncryptedMessage];
+		[(MailDocumentEditor *)self sendMessageAfterChecking:checklist];
+	}
+}
+
 
 - (void)MASendMessageAfterChecking:(NSMutableArray *)checklist {
 	// If this is an unencrypted reply to an encrypted message, display a warning
