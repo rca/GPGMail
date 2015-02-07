@@ -1010,16 +1010,10 @@
     
     DebugLog(@"Can sign S/MIME from address: %@? %@", address, canSMIMESign ? @"YES" : @"NO");
     
-    // In Yosemite there's a new property on the backEnd which determines if the canSignMessagesFromAddress
-    // check was already run and if so, doesn't re-run it for the same message.
-    // We will mimick that here.
     NSDictionary *securityProperties = self.securityProperties;
-    BOOL canPGPSign = [securityProperties[@"CanPGPSign"] boolValue];
-    if(!securityProperties[@"GMKnowsCanSign"] || ![securityProperties[@"GMKnowsCanSign"] boolValue]) {
-        canPGPSign = [[GPGMailBundle sharedInstance] canSignMessagesFromAddress:[address gpgNormalizedEmail]];
-        updatedSecurityProperties[@"CanPGPSign"] = @(canPGPSign);
-        updatedSecurityProperties[@"GMKnowsCanSign"] = @(YES);
-    }
+    BOOL canPGPSign = [[GPGMailBundle sharedInstance] canSignMessagesFromAddress:[address gpgNormalizedEmail]];
+    updatedSecurityProperties[@"CanPGPSign"] = @(canPGPSign);
+    updatedSecurityProperties[@"GMKnowsCanSign"] = @(YES);
     
     [self updateSecurityProperties:updatedSecurityProperties];
     
