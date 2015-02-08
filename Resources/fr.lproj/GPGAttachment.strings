@@ -6,7 +6,7 @@
  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
  */
 "SIGNATURE_ERROR_GENERAL_TITLE" = "Vérification de la signature échouée.";
-"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "La clé publique pour vérifier la signature de ce fichier joint ne fait pas partie de votre trousseau de clés.\n\nVeuillez télécharger la clé publique %@ à l'aide de GPG Keychain Access";
+"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "The public key to verify the signature of this attachment is not in your keychain.\n\nPlease download the public key %@ using GPG Keychain.";
 "DECRYPT_ERROR_GENERAL_TITLE" = "Déchiffrement du fichier joint échoué.";
 "DECRYPT_ERROR_GENERAL_MESSAGE" = "La clé secrète pour déchiffrer ce fichier joint ne fait pas partie de votre trousseau de clés";
 "ATTACHMENT_DECRYPTED_SUCCESSFULLY_TITLE" = "Le fichier joint a été déchiffré avec succès.";

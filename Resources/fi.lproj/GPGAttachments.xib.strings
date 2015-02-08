@@ -16,9 +16,9 @@
 "257.title" = "Luotu:";
 "259.title" = "Vanhentuu:";
 "291.title" = "The signature could not be verified.";
-"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";
+"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG.";
 "325.ibShadowedIsNilPlaceholder" = "Tämä allekirjoitus ei vanhene";
 "353.ibShadowedIsNilPlaceholder" = "Tämä allekirjoitus ei vanhene";
 "366.ibShadowedIsNilPlaceholder" = "Tämä allekirjoitus ei vanhene";
 "382.title" = "The signature could not be verified.";
-"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";
+"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";

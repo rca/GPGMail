@@ -30,7 +30,7 @@
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Zašifrovaná zpráva je poškozená a nelze ji dešifrovat.\n\nObraťte se prosím na odesilatele, aby vám poslal novou kopii.";
 
 "MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Klíč podpisu byl zneplatněn.";
-"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "ATTENTION: The key which was used to sign this message was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "The key which was used to sign this message was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Klíč k tomuto podpisu zprávy není ještě v GPG Klíčence.";
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "The message could not be verified, since the key which was used to sign this message is not in your GPG Keychain.\n\nSearch for the key with ID %@ in GPG Keychain and import it to verify the message.";
 
@@ -38,7 +38,7 @@
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This message could not be verified, since the signature was created with an algorithm which is not supported.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "VÝSTRAHA: Podpis zprávy je neplatný!";
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATTENTION: This message might have been modified after the signature was created.\n\nPlease contact the sender to make sure the content of the message matches the original.\n\nPlease contact us at http://support.gpgtools.org if you're sure the message was not modified.";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "This message might have been modified after the signature was created.\n\nPlease contact the sender to make sure the content of the message matches the original.\n\nPlease contact us at\nhttp://support.gpgtools.org\nif you're sure the message was not modified.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Ověřování podpisu zprávy selhalo z důvodu výskytu neznámé chyby!";
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this message's signature.\n\nPlease contact us at http://support.gpgtools.org";
@@ -47,7 +47,7 @@
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This message's signature is invalid and could not be verified.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Platnost klíče podpisu zprávy vypršela.";
-"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATTENTION: The key which was used to sign this message is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "The key which was used to sign this message is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Platnost podpis zprávy vypršela.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Platnost podpisu vypršela a nelze ověřit.\n\nZeptejte se odesilatele proč platnost jeho podpisu vypršela.";
@@ -90,7 +90,7 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Zašifrovaná příloha je poškozena a nelze ji dešifrovat.\n\nObraťte se na odesilatele aby vám zprávu poslal znovu.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Klíč podpisu byl zneplatněn.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "ATTENTION: The key which was used to sign this attachment was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "The key which was used to sign this attachment was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Klíč podpisu není ve vaši GPG Klíčence.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "The attachment signature could not be verified, since the key which was used to sign is not in your GPG Keychain.\n\nSearch for the key with ID %@ in GPG Keychain and import it to verify the attachment.";
@@ -99,7 +99,7 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This attachment could not be verified, since the key to the signature was created with an algorithm which is not supported.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "VÝSTRAHA: Podpis přílohy je neplatný!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATTENTION: This attachment might have been modified after the signature was created.\n\nPlease contact the sender and make sure the content of the attachment matches the original.\n\nPlease contact us at http://support.gpgtools.org, if you're sure the attachment was not modified.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "This attachment might have been modified after the signature was created.\n\nPlease contact the sender and make sure the content of the attachment matches the original.\n\nPlease contact us at\nhttp://support.gpgtools.org\n if you're sure the attachment was not modified.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Ověřování podpisu se nezdařilo z důvodu výskytu neznámé chyby!";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this attachment signature.\n\nPlease contact us at http://support.gpgtools.org";
@@ -108,7 +108,7 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This attachment signature is invalid and could not be verified.\n\nPlease contact us at http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Platnost klíče podpisu vypršela.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATTENTION: The key which was used to sign this attachment is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "The key which was used to sign this attachment is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Platnost podpisu přílohy vypršela.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Platnost podpisu přílohy vypršela a nelze ho ověřit.\n\nObraťte se na odesilatele, proč platnost jeho podpisu vypršela.";
@@ -219,3 +219,13 @@ NO_DEFAULTS_MESSAGE = "GPGMail is not working as expected.\n\nPlease download an
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the attachment failed due to a defect PIN-Entry";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your passphrase, seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools from https://gpgtools.org";
+
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Attention: You're about to send an unencrypted reply to an encrypted message";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "It's not possible to encrypt your reply, because the public key for the following recipient is missing:\n\n%@";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS" = "It's not possible to encrypt your reply, because public keys for the following recipients are missing:\n\n%@";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "If you choose to proceed, your reply will be sent unencrypted. As a result, confidential information might be leaked, putting you and your recipients at risk.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nIf you really wish to send this reply unencrypted, please remove any previous correspondence included in your reply prior to sending.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Otherwise, search and import the corresponding public keys using GPG Keychain in order to send the reply encrypted.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Otherwise, search and import the the corresponding public key using GPG Keychain in order to send the reply encrypted.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Send Anyway";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Cancel";

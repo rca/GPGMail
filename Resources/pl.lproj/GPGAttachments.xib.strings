@@ -16,9 +16,9 @@
 "257.title" = "Utworzony:";
 "259.title" = "Wygasa:";
 "291.title" = "The signature could not be verified.";
-"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";
+"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG.";
 "325.ibShadowedIsNilPlaceholder" = "Nie ustawiono daty ważności dla tego podpisu";
 "353.ibShadowedIsNilPlaceholder" = "Nie ustawiono daty ważności dla tego podpisu";
 "366.ibShadowedIsNilPlaceholder" = "Nie ustawiono daty ważności dla tego podpisu";
 "382.title" = "The signature could not be verified.";
-"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain Access.";
+"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
