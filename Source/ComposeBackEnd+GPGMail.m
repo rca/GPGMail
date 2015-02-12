@@ -1152,7 +1152,12 @@
 }
 
 - (void)MA_configureLastDraftInformationFromHeaders:(id)headers overwrite:(BOOL)overwrite {
-	[self setIvar:@"DraftIsContinued" value:@YES];
+	BOOL draftIsContinued = [headers firstHeaderForKey:@"x-should-pgp-sign"] != nil || [headers firstHeaderForKey:@"x-should-pgp-encrypt"] != nil;
+	[self setIvar:@"DraftIsContinued" value:@(draftIsContinued)];
+	// If the "Send again" method is used, this method is called as well, even though it's not a draft.
+	// To really figure out if this is a draft or not, we're going to check for our own,
+	// is draft headers.
+	
 	[self MA_configureLastDraftInformationFromHeaders:headers overwrite:overwrite];
 }
 
