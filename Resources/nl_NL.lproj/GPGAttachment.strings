@@ -6,7 +6,7 @@
  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
  */
 "SIGNATURE_ERROR_GENERAL_TITLE" = "Verifiëren van handtekening is gefaald.";
-"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "De publieke sleutel om de handtekening te verifiëren staat niet in uw keychain.\nDownload a.u.b. the publieke sleutel %@ met GPG Keychain Access.";
+"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "The public key to verify the signature of this attachment is not in your keychain.\n\nPlease download the public key %@ using GPG Keychain.";
 "DECRYPT_ERROR_GENERAL_TITLE" = "Het ontsleutelen van de bijlage is gefaald.";
 "DECRYPT_ERROR_GENERAL_MESSAGE" = "De geheime sleutel om deze bijlage te ontsleutelen staat niet in uw keychain.";
 "ATTACHMENT_DECRYPTED_SUCCESSFULLY_TITLE" = "De bijlage is succesvol ontsleuteld.";

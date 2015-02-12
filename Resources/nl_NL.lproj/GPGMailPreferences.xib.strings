@@ -1,5 +1,5 @@
-"2ul-d0-5ir.title" = "Sign new messages by default";
-"698.ibShadowedToolTip" = "Automatically check for new versions of GPGMail.";
+"2ul-d0-5ir.title" = "Nieuwe berichten altijd ondertekenen";
+"698.ibShadowedToolTip" = "Controleer automatisch op nieuwe versies van GPGMail.";
 "699.ibShadowedToolTip" = "Automatisch nieuwe versies van GPGMail downloaden.";
 "700.ibShadowedToolTip" = "Controleer nu op nieuwe versies.";
 "709.title" = "GPGMail";
@@ -13,7 +13,7 @@
 "734.alternateTitle" = "Veel gestelde vragen";
 "734.title" = "Knowledge Base";
 "744.title" = "Lezen";
-"781.title" = "Encrypt drafts";
+"781.title" = "Versleutel concepten";
 "786.ibShadowedToolTip" = "Zie Voorkeuren -> weergave -> lijstvoorbeeld.";
 "787.title" = "Maak voorbeeld van lijst";
 "834.title" = "Knop";

@@ -6,7 +6,7 @@
  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
  */
 "SIGNATURE_ERROR_GENERAL_TITLE" = "No s'ha pogut verificar la signatura.";
-"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "La clau pública per verificar la signatura del fitxer adjunt no és al clauer.⏎\n⏎\nUtilitza Accés a clauers GPG per descarregar la clau pública %@ .";
+"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "The public key to verify the signature of this attachment is not in your keychain.\n\nPlease download the public key %@ using GPG Keychain.";
 "DECRYPT_ERROR_GENERAL_TITLE" = "No s'ha pogut desxifrar el fitxer adjunt.";
 "DECRYPT_ERROR_GENERAL_MESSAGE" = "La clau secreta per desxifrar el fitxer no és al clauer.";
 "ATTACHMENT_DECRYPTED_SUCCESSFULLY_TITLE" = "El fitxer adjunt s'ha desxifrat amb èxit.";

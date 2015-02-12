@@ -16,9 +16,9 @@
 "257.title" = "Opprettet:";
 "259.title" = "Utløper:";
 "291.title" = "Signaturen kunne ikke verifiseres.";
-"293.title" = "Signaturen kunne verifiseres fordi den offentlige nøkkelen ikke er i nøkkelringen din. Vennligst last ned nøkkelen ved å bruke GPG Nøkkelring.";
+"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG.";
 "325.ibShadowedIsNilPlaceholder" = "Ingen utløpsdato er satt for denne signaturen";
 "353.ibShadowedIsNilPlaceholder" = "Ingen utløpsdato er satt for denne signaturen";
 "366.ibShadowedIsNilPlaceholder" = "Ingen utløpsdato er satt for denne signaturen";
 "382.title" = "Signaturen kunne ikke verifiseres.";
-"383.title" = "Signaturen kunne verifiseres fordi den offentlige nøkkelen ikke er i nøkkelringen din. Vennligst last ned nøkkelen ved å bruke GPG Nøkkelring.";
+"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";

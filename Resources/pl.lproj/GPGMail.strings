@@ -7,9 +7,9 @@
 /* Message Error Banner messages. */
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "Nie udało się odszyfrować wiadomości PGP.";
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "Wystąpił problem z odszyfrowaniem wiadomości. Sprawdź, czy posiadasz odpowiedni klucz w Twoim pęku kluczy GPG.";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Nie udało się zweryfikować podpisu PGP wiadomości.";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Wystąpił problem z odczytaniem sygnatury PGP tej wiadomości.";
-"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "Brakuje klucza PGP dla tej wiadomości w Twoim pęku kluczy.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Nie udało się zweryfikować podpisu wiadomości PGP.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Wystąpił problem z odczytaniem podpisu PGP tej wiadomości.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "W Twoim pęku kluczy brakuje klucza PGP dla tej wiadomości.";
 "MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Wiadomość zawiera poprawny podpis PGP, jednak brakuje klucza PGP w Twoim pęku kluczy. Proszę użyj agenta GPG, aby go dodać.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Brak informacji dla tego klucza PGP.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Brak dodatkowych informacji dla tego klucza PGP. Klucz nie znajduje się w Twoim pęku kluczy.";
@@ -30,7 +30,7 @@
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Zaszyfrowana wiadomość jest uszkodzona i nie mogła ona być odszyfrowana.\n\nPoproś nadawcę tej wiadomości, aby ponownie ją wysłał.";
 
 "MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Podpis klucza został unieważniony.";
-"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "UWAGA: Klucz który został użyty do podpisania tej wiadomości został unieważniony. \n\nPowinieneś odświeżyć klucz z ID %@ w GPG Keychain, aby sprawdzić czy jest dostępny nowy klucz. Jeśli nowy klucz jest dalej unieważniony to zapytaj nadawcy czemu tak jest.";
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "The key which was used to sign this message was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Klucz do podpisu tej wiadomości nie jest w Twoim pęku klucz GPG Keychain.";
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Wiadomość nie mogła być zweryfikowana, ponieważ klucz który został użyty do podpisu tej wiadomości nie jest w Twoim pęku kluczy GPG Keychain. \n\nSzukaj klucza z ID %@ w GPG Keychain i importuj go, aby zweryfikować wiadomość.";
 
@@ -38,7 +38,7 @@
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Ta wiadomość nie mogła być zweryfikowana ponieważ podpis został utworzony algorytmem który nie jest obsługiwany.\n\nProsimy o skontaktowanie się z nami idąc do http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "UWAGA: Podpis tej wiadomości jest nieprawidłowy!";
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "UWAGA: Ta wiadomość mogła być zmodyfikowana po utworzeniu podpisu.\n\nProsimy o skontaktowanie się z nadawcą, aby upewnić się, że treść wiadomości zgadza się z oryginałem. \n\nProsimy o skontaktowanie się z nami idąc do http://support.gpgtools.org jeśli jesteś pewny, że wiadomość nie została zmodyfikowana.";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "This message might have been modified after the signature was created.\n\nPlease contact the sender to make sure the content of the message matches the original.\n\nPlease contact us at\nhttp://support.gpgtools.org\nif you're sure the message was not modified.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Nie udała się weryfikacja tego podpisu z powodu nieznanego błędu!";
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Wystąpił nieznany błąd podczas weryfikacji podpisu tej wiadomości.\n\nProsimy o skontaktowanie się z nami idąc do http://support.gpgtools.org";
@@ -47,7 +47,7 @@
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Podpis tej wiadomości jest nieprawidłowy i nie mógł być zweryfikowany.\n\nProsimy o skontaktowanie się z nami idąc do http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Podpis klucza wiadomości stracił swoją ważność.";
-"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "UWAGA: Klucz który został użyty do podpisu tej wiadomości stracił ważność. \n\nMożesz spróbować odświeżyć klucz z ID %@ w GPG Keychain i zapytać nadawcę czemu klucz ten jest już nieważny.";
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "The key which was used to sign this message is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Podpis wiadomości stracił swoją ważność.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Podpis stracił swoją ważność i nie mógł być zweryfikowany.\n\nZapytaj nadawcę czemu podpis już jest nieważny.";
@@ -90,7 +90,7 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Szyfrowany załącznik jest uszkodzony i nie mógł być odszyfrowany.\n\nProszę zapytaj nadawcę, aby wysłał Ci wiadomość ponownie.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Klucz podpisu jest unieważniony.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "UWAGA: Klucz który został użyty do podpisu tego załącznika został unieważniony. \n\nPowinieneś odświeżyć klucz z ID %@ w GPG Keychain, aby sprawdzić czy są dostępny nowy klucz. Jeśli nowy klucz jest dalej unieważniony, to zapytaj się nadawcy czemu tak jest.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "The key which was used to sign this attachment was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Klucz podpisu nie jest w Twoim GPG Keychain.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Podpis załącznika nie mógł być zweryfikowany, ponieważ klucz który został użyty do podpisu nie jest w Twoim GPG Keychain. \n\nSzukaj klucza z ID %@ w GPG Keychain i importuj go, aby zweryfikować załącznik.";
@@ -99,7 +99,7 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Załącznik nie mógł być zweryfikowany, ponieważ klucz do podpisu został utworzony algorytmem który jest nieobsługiwany.\n\nProszę skontaktuje się z nami na http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "UWAGA: Podpis załącznika jest niepoprawny!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "UWAGA: Ten załącznik mógł być zmodyfikowany po utworzeniu podpisu.\n\nProsimy o skontaktowanie się z nadawcą, aby upewnić się, że treść załącznika zgadza się z oryginałem. \n\nProsimy o skontaktowanie się z nami idąc do http://support.gpgtools.org jeśli jesteś pewny, że załącznik nie został zmodyfikowany.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "This attachment might have been modified after the signature was created.\n\nPlease contact the sender and make sure the content of the attachment matches the original.\n\nPlease contact us at\nhttp://support.gpgtools.org\n if you're sure the attachment was not modified.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Weryfikacja podpisu nieudana z powodu nieznanego błędu!";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Podczas weryfikacji podpisu załącznika wystąpił nieznany błąd. \n\nProsimy o skontaktowanie się z nami pod adresem http://support.gpgtools.org";
@@ -108,16 +108,16 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Podpis załącznika jest nieprawidłowy i tym samym nie mógł być zweryfikowany.\n\nProsimy o skontaktowanie się z nami pod adresem http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Klucz podpisu stracił już ważność.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "UWAGA: Klucz który został użyty do podpisu tego załącznika stracił swoją ważność. \n\nMożesz spróbować odświeżyć klucz z ID %@ w GPG Keychain i zapytać nadawcę czemu ten klucz jest już nieważny.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "The key which was used to sign this attachment is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Podpis załącznika stracił swoją ważność.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Podpis załącznika stracił swoją ważność i tym samym nie mógł być zweryfikowany.\n\nZapytaj nadawcę czemu podpis jest już nieważny.";
 
-"MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Częściowo Szyfrowane";
-"MESSAGE_IS_PGP_PARTLY_SIGNED" = "Częściowo Podpisane";
+"MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Częściowo szyfrowane";
+"MESSAGE_IS_PGP_PARTLY_SIGNED" = "Częściowo podpisane";
 "MESSAGE_IS_PGP_ENCRYPTED" = "Szyfrowane";
 "MESSAGE_IS_PGP_SIGNED" = "Podpisane";
-"MESSAGE_IS_PGP_SIGNED_INVALID" = "Nieprawidłowy Podpis";
+"MESSAGE_IS_PGP_SIGNED_INVALID" = "Nieprawidłowy podpis";
 
 /* Security Header signature related. */
 "MESSAGE_SECURITY_HEADER_SIGNATURE_NO_PUBLIC_KEY_TITLE" = "Podpisane nieznanym kluczem";
@@ -129,7 +129,7 @@
 /* Security header attachments related. */
 "MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE" = "szyfrowany/podpisany załącznik";
 "MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_ENCRYPTED_TITLE" = "szyfrowane/podpisane załączniki";
-"MESSAGE_SECURITY_HEADER_ATTACHMENT_ENCRYPTED_TITLE" = "szyfrowane załącznik";
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_ENCRYPTED_TITLE" = "szyfrowany załącznik";
 "MESSAGE_SECURITY_HEADER_ATTACHMENTS_ENCRYPTED_TITLE" = "szyfrowane załączniki";
 "MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_TITLE" = "podpisany załącznik";
 "MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "podpisane załączniki";
@@ -153,20 +153,20 @@
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Proszę pobierz i zainstaluj ponownie GPG Suite z https://www.gpgtools.org aby być pewnym, że masz wszystkie komponenty.";
 
 /* Multiple GPGMail installations. */
-"GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Wykryto wiele innych instalacji GPGMail!";
-"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "GPGMail wykrył wiele instalacji w następujących miejscach, które będą prowadzić do natychmiastowego błędu lub zamknięcia:\n\n%@\n\nProsimy o usunięcie GPGMail.mailbundle z jeden z tych lokalizacji, a następnie zresetowanie Maila.\n";
-"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Wyjście z Maila";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Wykryto kilka instalacji GPGMail!";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "GPGMail wykrył kilka instalacji w następujących miejscach, które będą prowadzić do natychmiastowego błędu lub zamknięcia:\n\n%@\n\nProsimy o usunięcie GPGMail.mailbundle z jeden z tych lokalizacji, a następnie zrestartowanie Maila.\n";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Zakończ Mail";
 
 /* No Libmacgpg. */
-"LIBMACGPG_NOT_FOUND_TITLE" = "Nie wykryto Libmacgpg";
-"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg nie został wykryty na Twoim systemie. Proszę zainstaluj go. Możesz go znaleźć np. w GPGTools Installer na https://www.gpgtools.org.";
+"LIBMACGPG_NOT_FOUND_TITLE" = "Nie znaleziono Libmacgpg";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg nie został znaleziony w Twoim systemie. Proszę zainstaluj go. Możesz go znaleźć np. w instalatorze GPGTools na https://www.gpgtools.org.";
 
 /* Code signature invalid */
 CODE_SIGN_ERROR_TITLE = "Ktoś majstrował przy Twojej instalacji GPGMail!";
 CODE_SIGN_ERROR_MESSAGE = "W trosce Twoje bezpieczeństwo, GPGMail nie włączy się!\n\nProszę pobierz i zainstaluj najnowszą wersję GPG Suite z https://gpgtools.org aby być pewnym, że masz oryginalną wersję pochodzącą od nas!";
 
 /* GPGMailGPGMailBundle.defaults can't be loaded */
-NO_DEFAULTS_TITLE = "Nie udało załadować się domyślnych GPGMail!";
+NO_DEFAULTS_TITLE = "Nie udałosię załadować domyślnych ustawień GPGMail!";
 NO_DEFAULTS_MESSAGE = "GPGMail nie działa tak jak powinien. \n\nProszę pobierz i zainstaluj ponownie GPG Suite z https://gpgtools.org\n\nJeśli ten problem będzie się powtarzać proszę napisz do nas na http://support.gpgtools.org";
 
 /* Errors while trying to sign a message. */
@@ -209,7 +209,7 @@ NO_DEFAULTS_MESSAGE = "GPGMail nie działa tak jak powinien. \n\nProszę pobierz
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Weryfikacja załącznika nie powiodła się.\n\nProszę pobierz i zainstaluj ponownie GPG Suite z https://gpgtools.org\n\nJeśli ten problem będzie się powtarzać, to prosimy o skontaktowanie się z nami na http://support.gpgtools.org dołączając do wiadomości informacje, że serwis xpc nie działał poprawnie.";
 
 "MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Podpisywanie Twojej wiadomości nie powiodło się z powodu problemu podczas prośby o hasło";
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "The PIN-Entry helper responsible for requesting your passphrase is not working properly.\n\nTo fix this problem, please download and re-install GPG Suite from https://gpgtools.org";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "Pomocnik PIN-Entry, który jest odpowiedzialny za pytanie o Twoje hasło nie działa poprawnie. \n\nAby naprawić ten problem, proszę pobierz i zainstaluj ponownie GPG Suite z https://gpgtools.org";
 
 "MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Podpisywanie Twojej wiadomości nie powiodło się z powodu problemu w Twojej instalacji GPGMail.";
 "MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "Aby naprawić ten problem proszę pobierz i zainstaluj ponownie GPG Suite z https://gpgtools.org\n\nJeśli ten problem będzie się powtarzać, to prosimy o skontaktowanie się z nami na http://support.gpgtools.org dołączając do wiadomości informacje, że serwis xpc nie działał poprawnie.";
@@ -219,3 +219,13 @@ NO_DEFAULTS_MESSAGE = "GPGMail nie działa tak jak powinien. \n\nProszę pobierz
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Odszyfrowywanie załącznika nie powiodło się z powodu wady PIN-Entry";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "Pomocnik PIN-Entry, który jest odpowiedzialny za pytanie o Twoje hasło nie działa poprawnie.\n\nAby naprawić ten problem, proszę zainstaluj ponownie najnowszą wersję GPGTools z https://gpgtools.org";
+
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Attention: You're about to send an unencrypted reply to an encrypted message";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "It's not possible to encrypt your reply, because the public key for the following recipient is missing:\n\n%@";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS" = "It's not possible to encrypt your reply, because public keys for the following recipients are missing:\n\n%@";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "If you choose to proceed, your reply will be sent unencrypted. As a result, confidential information might be leaked, putting you and your recipients at risk.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nIf you really wish to send this reply unencrypted, please remove any previous correspondence included in your reply prior to sending.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Otherwise, search and import the corresponding public keys using GPG Keychain in order to send the reply encrypted.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Otherwise, search and import the the corresponding public key using GPG Keychain in order to send the reply encrypted.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Send Anyway";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Cancel";
