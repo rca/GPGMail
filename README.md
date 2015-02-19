@@ -47,12 +47,9 @@ make
 ```
 
 #### Install
-Copy the GPGMail.mailbundle file from build/Releases/GPGMail.mailbundle into ~/Libray/Mail/Bundles
-and re-start Mail.app
+Copy Libmacgpg.framework from Dependencies/Libmacgpg/build/Release/ to ~/Library/Frameworks.
 
-Don't forget to install [MacGPG2](https://github.com/GPGTools/MacGPG2)
-and [Libmacgpg](https://github.com/GPGTools/Libmacgpg).  
-Enjoy your custom GPGMail!
+After that copy the GPGMail.mailbundle file from build/Releases/GPGMail.mailbundle to ~/Libray/Mail/Bundles, re-start Mail.app and enjoy.
 
 
 System Requirements
