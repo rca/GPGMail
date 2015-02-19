@@ -15,31 +15,40 @@ Visit our [support page](http://support.gpgtools.org) if you have questions or n
 
 Localizations are done on [Transifex](https://www.transifex.com/projects/p/GPGMail/).
 
+Prerequisite
+------------
+
+In order to use GPGMail you need to have GnuPG installed.
+You can either build your own version, use one from [homebrew](http://brew.sh) or find a packaged version for OS X at [gpgtools.org](https://gpgtools.org)
 
 Build
 -----
 
-### Clone the repository
+#### Clone the repository
 ```bash
 git clone https://github.com/GPGTools/GPGMail.git
 cd GPGMail
 ```
 
-### Build
+#### Grab Dependencies
+
+In order to communicate with GnuPG we use our own Objective-C framework called [Libmacgpg](https://github.com/GPGTools/Libmacgpg).
+It's necessary to clone the Libmacgpg repository first, before building GPGMail.
+
+```bash
+cd Dependencies
+git clone https://github.com/GPGTools/Libmacgpg.git
+cd ..
+```
+
+#### Build
 ```bash
 make
 ```
 
-### Install
-To copy GPGMail into Mail's Bundles folder (as root if neccessary):
-```bash
-make install
-```
-
-### More build commands
-```bash
-make help
-```
+#### Install
+Copy the GPGMail.mailbundle file from build/Releases/GPGMail.mailbundle into ~/Libray/Mail/Bundles
+and re-start Mail.app
 
 Don't forget to install [MacGPG2](https://github.com/GPGTools/MacGPG2)
 and [Libmacgpg](https://github.com/GPGTools/Libmacgpg).  
