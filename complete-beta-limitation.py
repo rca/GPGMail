@@ -3,8 +3,12 @@
 import sys
 from time import time
 import subprocess
-from macholib import MachO
-import macholib
+try:
+    from macholib import MachO
+    import macholib
+except ImportError, e:
+    print "Python library macholib is missing. Abort!"
+    sys.exit(0)
 import os
 
 KEY_ID = "85E3 8F69 046B 44C1 EC9F B07B 76D7 8F05 00D0 26C4"
