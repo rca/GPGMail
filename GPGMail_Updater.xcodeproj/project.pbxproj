@@ -308,7 +308,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source \"$SRCROOT/Makefile.config\" || exit 1\n\nPLIST=\"$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH\"\n\n/usr/libexec/PlistBuddy -c \"Set CommitHash \\\"$commitHash\\\"\" -c \"Set BuildNumber \\\"$buildNumber\\\"\" -c \"Set CFBundleVersion \\\"$build_version\\\"\" -c \"Set CFBundleShortVersionString \\\"$version\\\"\" \"$PLIST\" || exit 2\n";
+			shellScript = "source \"$SRCROOT/Makefile.config\" || exit 1\n\nPLIST=\"$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH\"\nBUILD_NUMBER=${BUILD_NUMBER:-0}\n\n/usr/libexec/PlistBuddy -c \"Set CommitHash \\\"$COMMIT_HASH\\\"\" -c \"Set BuildNumber \\\"$BUILD_NUMBER\\\"\" -c \"Set CFBundleVersion \\\"$BUILD_VERSION\\\"\" -c \"Set CFBundleShortVersionString \\\"$VERSION\\\"\" \"$PLIST\" || exit 2\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
