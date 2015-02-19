@@ -54,7 +54,7 @@ def main():
     EXECUTABLE = "%s/Contents/MacOS/GPGMail" % (PRODUCT_PATH)
     
     if not os.path.isdir(EXECUTABLE):
-        print "Failed to add expiration date - GPGMail executable doesn't exist!" % (EXECUTABLE)
+        print "Failed to add expiration date - GPGMail executable doesn't exist!"
         sys.exit(0)
 
     data = data_to_sign(EXECUTABLE)
