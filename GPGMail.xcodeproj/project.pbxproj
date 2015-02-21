@@ -94,7 +94,6 @@
 		3005018114FFE719004EB26B /* GPGMailBundle.defaults in Resources */ = {isa = PBXBuildFile; fileRef = 559A80E60838ED590052F47C /* GPGMailBundle.defaults */; };
 		3005018314FFE719004EB26B /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 30913B4512B19B3B00327FDF /* Credits.rtf */; };
 		3005018514FFE719004EB26B /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1BCEE1E211CC051500488D19 /* LICENSE.txt */; };
-		300DD0D51853ADF90057B05F /* How to get the source code in Resources */ = {isa = PBXBuildFile; fileRef = 300DD0D41853ADF90057B05F /* How to get the source code */; };
 		300F29BB175F460E00C435D2 /* GMComposeKeyEventHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 300F29BA175F460E00C435D2 /* GMComposeKeyEventHandler.m */; };
 		301380D417567D26005948EE /* CertLargeStd.png in Resources */ = {isa = PBXBuildFile; fileRef = 301380D217567D26005948EE /* CertLargeStd.png */; };
 		301380D517567D26005948EE /* CertLargeStd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 301380D317567D26005948EE /* CertLargeStd@2x.png */; };
@@ -6913,6 +6912,7 @@
 				30F40BC012B76FAE002E2374 /* Make bundle */,
 				1B9EAAAD14352F0A0063F2F1 /* Fix RegEx loader path */,
 				30F151C51500BD4500980642 /* Fill Info.plist */,
+				1B49BC7B1A98C21B000440E9 /* Copy "How to get the source code" into Resources */,
 				1BB51DD91A1023DB00784448 /* Add expiration time */,
 				30F151E21500BE8D00980642 /* Install GPGMail */,
 				1BC07F3517466697004263BB /* Copy Libmacgpg into the sandbox container */,
@@ -7107,7 +7107,6 @@
 				3066C6111757A0FC00384E29 /* MenuArrowWhite@2x.png in Resources */,
 				3066C6171757A54900384E29 /* certificate.png in Resources */,
 				3066C6181757A54900384E29 /* certificate@2x.png in Resources */,
-				300DD0D51853ADF90057B05F /* How to get the source code in Resources */,
 				3066C6221757ACCF00384E29 /* encryption.png in Resources */,
 				3066C6231757ACCF00384E29 /* encryption@2x.png in Resources */,
 			);
@@ -7128,6 +7127,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "[[ -f \"./start-beta-limitation.py\" ]] || exit 0\n\npython ./start-beta-limitation.py > \"$SRCROOT/build/EXPIRATION_DATE\"\n";
+		};
+		1B49BC7B1A98C21B000440E9 /* Copy "How to get the source code" into Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy \"How to get the source code\" into Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "HOWTO_PATH=\"./Dependencies/GPGTools_Core/resources/How to get the source code\"\n[[ -f \"$HOWTO_PATH\" ]] || exit 0\n\ncp \"$HOWTO_PATH\" \"$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/\"";
+			showEnvVarsInLog = 0;
 		};
 		1B9EAAAD14352F0A0063F2F1 /* Fix RegEx loader path */ = {
 			isa = PBXShellScriptBuildPhase;
