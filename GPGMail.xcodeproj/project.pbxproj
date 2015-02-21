@@ -7128,6 +7128,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "[[ -f \"./start-beta-limitation.py\" ]] || exit 0\n\npython ./start-beta-limitation.py > \"$SRCROOT/build/EXPIRATION_DATE\"\n";
+			showEnvVarsInLog = 0;
 		};
 		1B49BC7B1A98C21B000440E9 /* Copy "How to get the source code" into Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -7172,6 +7173,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "[[ -f \"$SRCROOT/complete-beta-limitation.py\" ]] || exit 0\n\npython \"$SRCROOT/complete-beta-limitation.py\" \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"";
+			showEnvVarsInLog = 0;
 		};
 		1BC07F3517466697004263BB /* Copy Libmacgpg into the sandbox container */ = {
 			isa = PBXShellScriptBuildPhase;
