@@ -6903,7 +6903,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55541F4C085AE6B100548474 /* Build configuration list for PBXNativeTarget "GPGMail" */;
 			buildPhases = (
-				1B102FBD1A11190B00BB632E /* ShellScript */,
+				1B102FBD1A11190B00BB632E /* Set expiration date for beta */,
 				8D5B49B1048680CD000E48DA /* Sources */,
 				30DA468812B2D5E800E20039 /* Localize XIBs */,
 				8D5B49AF048680CD000E48DA /* Resources */,
@@ -7115,13 +7115,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1B102FBD1A11190B00BB632E /* ShellScript */ = {
+		1B102FBD1A11190B00BB632E /* Set expiration date for beta */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Set expiration date for beta";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
