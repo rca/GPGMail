@@ -16,7 +16,7 @@
 "257.title" = "创建：";
 "259.title" = "有效期：";
 "291.title" = "该签名不能被验证。";
-"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG.";
+"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
 "325.ibShadowedIsNilPlaceholder" = "该签名没有设置有效期。";
 "353.ibShadowedIsNilPlaceholder" = "该签名没有设置有效期。";
 "366.ibShadowedIsNilPlaceholder" = "该签名没有设置有效期。";

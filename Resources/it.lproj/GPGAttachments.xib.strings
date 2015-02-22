@@ -16,7 +16,7 @@
 "257.title" = "Creato il:";
 "259.title" = "Scadenza:";
 "291.title" = "The signature could not be verified.";
-"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG.";
+"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
 "325.ibShadowedIsNilPlaceholder" = "Nessuna scadenza impostata su questa firma";
 "353.ibShadowedIsNilPlaceholder" = "Nessuna scadenza impostata su questa firma";
 "366.ibShadowedIsNilPlaceholder" = "Nessuna scadenza impostata su questa firma";

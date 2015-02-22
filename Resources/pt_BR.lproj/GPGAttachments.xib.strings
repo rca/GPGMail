@@ -16,7 +16,7 @@
 "257.title" = "Criado:";
 "259.title" = "Vencimento:";
 "291.title" = "The signature could not be verified.";
-"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG.";
+"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
 "325.ibShadowedIsNilPlaceholder" = "Nenhum vencimento está configurado para esta assinatura";
 "353.ibShadowedIsNilPlaceholder" = "Nenhum vencimento está configurado para esta assinatura";
 "366.ibShadowedIsNilPlaceholder" = "Nenhum vencimento está configurado para esta assinatura";

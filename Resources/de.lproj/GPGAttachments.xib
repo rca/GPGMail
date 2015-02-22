@@ -586,10 +586,9 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="737784608">
 																		<int key="NSCellFlags">69206017</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string type="base64-UTF8" key="NSContents">RGllIFNpZ25hdHVyIGRpZXNlcyBBbmhhbmdzIGtvbm50ZSBuaWNodCDDvGJlcnByw7xmdCB3ZXJkZW4s
-IGRhIGRlciDDtmZmZW50bGljaGUgU2NobMO8c3NlbCBzaWNoIG5pY2h0IGltIFNjaGzDvHNzZWxidW5k
-IGJlZmluZGV0LgpCaXR0ZSBsYWRlbiBTaWUgZGVuIMO2ZmZlbnRsaWNoZW4gU2NobMO8c3NlbCBtaXQg
-R1BHIFNjaGzDvHNzZWxidW5kIGhlcnVudGVyLg</string>
+																		<string type="base64-UTF8" key="NSContents">VGhlIHNpZ25hdHVyZSBjb3VsZCBub3QgYmUgdmVyaWZpZWQgYmVjYXVzZSB0aGUgcHVibGljIGtleSBp
+cyBub3QgaW4geW91ciBrZXljaGFpbi4KUGxlYXNlIGRvd25sb2FkIHRoZSBrZXkgdXNpbmcgR1BHIEtl
+eWNoYWluLg</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<string key="NSCellIdentifier">_NS:360</string>
 																		<reference key="NSControlView" ref="138322284"/>
@@ -602,7 +601,7 @@ R1BHIFNjaGzDvHNzZWxidW5kIGhlcnVudGVyLg</string>
 																<object class="NSTextField" id="463642861">
 																	<reference key="NSNextResponder" ref="44245670"/>
 																	<int key="NSvFlags">284</int>
-																	<string key="NSFrame">{{50, 91}, {370, 17}}</string>
+																	<string key="NSFrame">{{50, 90.999999375461243}, {370, 17}}</string>
 																	<reference key="NSSuperview" ref="44245670"/>
 																	<reference key="NSNextKeyView" ref="937110649"/>
 																	<string key="NSReuseIdentifierKey">_NS:3944</string>
@@ -675,10 +674,9 @@ R1BHIFNjaGzDvHNzZWxidW5kIGhlcnVudGVyLg</string>
 																	<object class="NSTextFieldCell" key="NSCell" id="376725465">
 																		<int key="NSCellFlags">69206017</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string type="base64-UTF8" key="NSContents">RGllIFNpZ25hdHVyIGRpZXNlcyBBbmhhbmdzIGtvbm50ZSBuaWNodCDDvGJlcnByw7xmdCB3ZXJkZW4s
-IGRhIGRlciDDtmZmZW50bGljaGUgU2NobMO8c3NlbCBzaWNoIG5pY2h0IGltIFNjaGzDvHNzZWxidW5k
-IGJlZmluZGV0LgpCaXR0ZSBsYWRlbiBTaWUgZGVuIMO2ZmZlbnRsaWNoZW4gU2NobMO8c3NlbCBtaXQg
-R1BHIFNjaGzDvHNzZWxidW5kIGhlcnVudGVyLg</string>
+																		<string type="base64-UTF8" key="NSContents">VGhlIHNpZ25hdHVyZSBjb3VsZCBub3QgYmUgdmVyaWZpZWQgYmVjYXVzZSB0aGUgcHVibGljIGtleSBp
+cyBub3QgaW4geW91ciBrZXljaGFpbi4KUGxlYXNlIGRvd25sb2FkIHRoZSBrZXkgdXNpbmcgR1BHIEtl
+eWNoYWluLg</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<string key="NSCellIdentifier">_NS:360</string>
 																		<reference key="NSControlView" ref="1051878768"/>
@@ -691,7 +689,7 @@ R1BHIFNjaGzDvHNzZWxidW5kIGhlcnVudGVyLg</string>
 																<object class="NSTextField" id="834668756">
 																	<reference key="NSNextResponder" ref="210185846"/>
 																	<int key="NSvFlags">284</int>
-																	<string key="NSFrame">{{50, 90.999999289419122}, {370, 17}}</string>
+																	<string key="NSFrame">{{50, 91}, {370, 17}}</string>
 																	<reference key="NSSuperview" ref="210185846"/>
 																	<reference key="NSNextKeyView" ref="1051878768"/>
 																	<string key="NSReuseIdentifierKey">_NS:3944</string>

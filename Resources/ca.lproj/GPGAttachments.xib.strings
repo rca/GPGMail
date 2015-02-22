@@ -16,7 +16,7 @@
 "257.title" = "Creat:";
 "259.title" = "Expira:";
 "291.title" = "La signatura no s'ha verificat.";
-"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG.";
+"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
 "325.ibShadowedIsNilPlaceholder" = "La signatura no té data de caducitat";
 "353.ibShadowedIsNilPlaceholder" = "La signatura no té data de caducitat";
 "366.ibShadowedIsNilPlaceholder" = "La signatura no té data de caducitat";

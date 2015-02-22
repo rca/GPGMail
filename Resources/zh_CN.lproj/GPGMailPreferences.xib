@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">14A389</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6250</string>
-		<string key="IBDocument.AppKitVersion">1343.14</string>
-		<string key="IBDocument.HIToolboxVersion">755.00</string>
+		<string key="IBDocument.SystemVersion">13E28</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6254</string>
+		<string key="IBDocument.AppKitVersion">1265.21</string>
+		<string key="IBDocument.HIToolboxVersion">698.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6250</string>
+			<string key="NS.object.0">6254</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSBox</string>
@@ -55,7 +55,7 @@
 								<object class="NSButtonCell" key="NSCell" id="487618144">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">0</int>
-									<string key="NSContents">自动检测更新</string>
+									<string key="NSContents">自动检查更新</string>
 									<object class="NSFont" key="NSSupport" id="706304668">
 										<bool key="IBIsSystemFont">YES</bool>
 										<double key="NSSize">13</double>
@@ -110,12 +110,12 @@
 								<object class="NSButtonCell" key="NSCell" id="491452844">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">现在检测</string>
+									<string key="NSContents">现在检查</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<reference key="NSControlView" ref="163650447"/>
 									<int key="NSButtonFlags">-2038284288</int>
 									<int key="NSButtonFlags2">129</int>
-									<string key="NSAlternateContents">Check for updates now</string>
+									<string key="NSAlternateContents">检查更新</string>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">200</int>
 									<int key="NSPeriodicInterval">25</int>
@@ -397,7 +397,7 @@
 								<object class="NSButtonCell" key="NSCell" id="770584249">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">131072</int>
-									<string key="NSContents">Version: xxx</string>
+									<string key="NSContents">版本: xxx</string>
 									<object class="NSFont" key="NSSupport" id="26">
 										<bool key="IBIsSystemFont">YES</bool>
 										<double key="NSSize">11</double>
@@ -454,7 +454,7 @@
 								<object class="NSButtonCell" key="NSCell" id="942140521">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">Support</string>
+									<string key="NSContents">支持</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<reference key="NSControlView" ref="632062900"/>
 									<int key="NSButtonFlags">-2038284288</int>
@@ -477,7 +477,7 @@
 								<object class="NSButtonCell" key="NSCell" id="1015833167">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">268435456</int>
-									<string key="NSContents">Encrypt new messages by default</string>
+									<string key="NSContents">以默认设置加密新信息</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="714016839"/>
@@ -503,7 +503,7 @@
 								<object class="NSButtonCell" key="NSCell" id="1043626823">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">268435456</int>
-									<string key="NSContents">Sign new messages by default</string>
+									<string key="NSContents">以默认设置签名新信息</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="955063492"/>
@@ -1089,7 +1089,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="632062900"/>
-						<string key="toolTip">If you've any other question.</string>
+						<string key="toolTip">如果您还有其它问题。</string>
 					</object>
 				</object>
 				<string key="1051.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1100,7 +1100,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="997375455"/>
-						<string key="toolTip">Automatically check for new versions of GPGMail.</string>
+						<string key="toolTip">自动检查GPGMail的最新版本。</string>
 					</object>
 				</object>
 				<string key="698.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1119,7 +1119,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="163650447"/>
-						<string key="toolTip">现在检测更新。</string>
+						<string key="toolTip">现在检查更新。</string>
 					</object>
 				</object>
 				<string key="700.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1173,7 +1173,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="984611941"/>
-						<string key="toolTip">Click to copy version into clipboard.</string>
+						<string key="toolTip">点击以复制版本信息至剪贴板。</string>
 					</object>
 				</object>
 				<string key="930.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1185,7 +1185,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="386760937"/>
-						<string key="toolTip">Click to copy version into clipboard.</string>
+						<string key="toolTip">点击以复制版本信息至剪贴板。</string>
 					</object>
 				</object>
 				<string key="935.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

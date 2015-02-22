@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">101000</int>
-		<string key="IBDocument.SystemVersion">14A389</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6250</string>
-		<string key="IBDocument.AppKitVersion">1343.14</string>
-		<string key="IBDocument.HIToolboxVersion">755.00</string>
+		<string key="IBDocument.SystemVersion">13E28</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6254</string>
+		<string key="IBDocument.AppKitVersion">1265.21</string>
+		<string key="IBDocument.HIToolboxVersion">698.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6250</string>
+			<string key="NS.object.0">6254</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSArrayController</string>
@@ -203,7 +203,6 @@
 											<reference key="NSDocView" ref="239260298"/>
 											<reference key="NSBGColor" ref="95189464"/>
 											<int key="NScvFlags">4</int>
-											<bool key="NSAutomaticallyAdjustsContentInsets">YES</bool>
 										</object>
 										<object class="NSScroller" id="555142705">
 											<reference key="NSNextResponder" ref="619116853"/>
@@ -213,8 +212,6 @@
 											<reference key="NSSuperview" ref="619116853"/>
 											<reference key="NSNextKeyView" ref="181122659"/>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
-											<string key="NSControlAction">_doScroller:</string>
-											<reference key="NSControlTarget" ref="619116853"/>
 											<int key="NSsFlags">1</int>
 											<reference key="NSTarget" ref="619116853"/>
 											<string key="NSAction">_doScroller:</string>
@@ -227,8 +224,6 @@
 											<reference key="NSSuperview" ref="619116853"/>
 											<reference key="NSNextKeyView" ref="294091112"/>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
-											<string key="NSControlAction">_doScroller:</string>
-											<reference key="NSControlTarget" ref="619116853"/>
 											<reference key="NSTarget" ref="619116853"/>
 											<string key="NSAction">_doScroller:</string>
 										</object>
@@ -515,7 +510,6 @@
 												<bytes key="NSRGB">MSAxIDEAA</bytes>
 											</object>
 											<int key="NScvFlags">4</int>
-											<bool key="NSAutomaticallyAdjustsContentInsets">YES</bool>
 										</object>
 										<object class="NSScroller" id="726265488">
 											<reference key="NSNextResponder" ref="294091112"/>
@@ -525,8 +519,6 @@
 											<reference key="NSSuperview" ref="294091112"/>
 											<reference key="NSNextKeyView" ref="216772841"/>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
-											<string key="NSControlAction">_doScroller:</string>
-											<reference key="NSControlTarget" ref="294091112"/>
 											<int key="NSsFlags">1</int>
 											<reference key="NSTarget" ref="294091112"/>
 											<string key="NSAction">_doScroller:</string>
@@ -539,8 +531,6 @@
 											<reference key="NSSuperview" ref="294091112"/>
 											<reference key="NSNextKeyView" ref="196574692"/>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
-											<string key="NSControlAction">_doScroller:</string>
-											<reference key="NSControlTarget" ref="294091112"/>
 											<reference key="NSTarget" ref="294091112"/>
 											<string key="NSAction">_doScroller:</string>
 										</object>
@@ -638,11 +628,9 @@
 								<string key="NSColorName">textBackgroundColor</string>
 								<reference key="NSColor" ref="756811612"/>
 							</object>
-							<object class="NSColor" key="NSTextColor" id="151765692">
-								<int key="NSColorSpace">6</int>
-								<string key="NSCatalogName">System</string>
-								<string key="NSColorName">labelColor</string>
-								<reference key="NSColor" ref="861657470"/>
+							<object class="NSColor" key="NSTextColor">
+								<int key="NSColorSpace">3</int>
+								<bytes key="NSWhite">MCAwLjgAA</bytes>
 							</object>
 						</object>
 						<int key="NSBorderType">3</int>
@@ -765,7 +753,10 @@
 							<string key="NSContents">Box</string>
 							<reference key="NSSupport" ref="377696351"/>
 							<reference key="NSBackgroundColor" ref="500057760"/>
-							<reference key="NSTextColor" ref="151765692"/>
+							<object class="NSColor" key="NSTextColor">
+								<int key="NSColorSpace">3</int>
+								<bytes key="NSWhite">MCAwLjgAA</bytes>
+							</object>
 						</object>
 						<int key="NSBorderType">3</int>
 						<int key="NSBoxType">2</int>
@@ -1107,7 +1098,7 @@
 					<integer value="1040" key="formatterBehavior"/>
 					<integer value="3" key="timeStyle"/>
 				</dictionary>
-				<string key="NS.format">EEEE, d. MMMM y HH:mm:ss z</string>
+				<string key="NS.format">EEEE, dd. MMMM y HH:mm:ss z</string>
 				<bool key="NS.natural">NO</bool>
 			</object>
 		</array>

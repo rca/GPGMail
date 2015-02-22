@@ -30,15 +30,15 @@
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Detta krypterade meddelande är skadat och kunde inte dekrypteras.\n\nBe avsändaren att skicka meddelandet igen.";
 
 "MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Signaturnyckeln återkallades.";
-"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "The key which was used to sign this message was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "Nyckeln som användes för att signera detta meddelande har återkallats.\n\nDu bör uppdatera nyckeln med ID %@ i GPG Keychain för att se om det finns en ny. Om den nya nyckeln också är återkallad bör du kontakta avsändaren för information om varför den återkallats.";
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Nyckeln till denna meddelandesignatur finns inte i din GPG-nyckelring.";
-"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Detta meddelande kunde inte verifieras, eftersom nyckel som användes för att signera inte finns i din GPG-nyckelring.\n\nSök efter nyckeln med ID %@ i GPG Keychain och importera den för att verifiera meddelandet.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Detta meddelande kunde inte verifieras, eftersom nyckeln som användes för att signera meddelandet inte finns i din GPG-nyckelring.\n\nSök efter nyckeln med ID %@ i GPG Keychain och importera den för att verifiera meddelandet.";
 
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "Meddelandesignaturen skapades med en algoritm som inte stöds.";
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Detta meddelande kunde inte verifieras eftersom signaturen skapades med en algoritm som inte stöds.\n\nKontakta oss på http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "OBS: Signaturen för detta meddelande är ogiltig!";
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "This message might have been modified after the signature was created.\n\nPlease contact the sender to make sure the content of the message matches the original.\n\nPlease contact us at\nhttp://support.gpgtools.org\nif you're sure the message was not modified.";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "Detta meddelande kan ha ändrats efter att signaturen skapades.\n\nKontakta avsändaren för att kontrollera att meddelandets innehåll stämmer överens med originalet. \n\nKontakta oss på http://support.gpgtools.org\nom du är säker på att meddelandet inte ändrats.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Det gick inte att verifiera meddelandesignaturen pga. ett okänt fel!";
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ett okänt fel inträffade när signaturen för detta meddelande skulle verifieras.\n\nKontakta oss på http://support.gpgtools.org";
@@ -47,7 +47,7 @@
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Signaturen för detta meddelande är ogiltig och kunde inte verifieras.\n\nKontakta oss på http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Meddelandesignaturens nyckel har gått ut.";
-"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "The key which was used to sign this message is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "Nyckeln som användes för att signera detta meddelande har gått ut. \n\nDu kan försöka att uppdatera nyckeln med ID %@ i GPG Keychain och fråga avsändaren varför nyckeln gått ut.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Meddelandesignaturen har gått ut.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Signaturen har gått ut och kunde inte verifieras.\n\nFråga avsändaren varför signaturen har gått ut.";
@@ -90,16 +90,16 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Den krypterade bilagan är skadad och kunde inte dekrypteras.\n\nBe avsändaren att skicka meddelandet igen.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Signaturens nyckel har återkallats.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "The key which was used to sign this attachment was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "Nyckeln som användes för att signera denna bilaga har återkallats.\n\nUppdatera nyckeln med ID %@ i GPG Keychain för att kontrollera om ny nyckel finns tillgänglig. Om även den nya nyckeln är återkallad, kontrollera med avsändaren om varför den återkallats.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Signaturens nyckel finns inte i din GPG-nyckelring.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Bilagans signatur kunde inte verifieras, eftersom nyckel som användes för att signera inte finns i din GPG-nyckelring.\n\nSök efter nyckeln med ID %@ i GPG Keychain och importera den för att verifiera bilagan.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Bilagans signatur kunde inte verifieras, eftersom nyckeln som användes för att signera inte finns i din GPG-nyckelring.\n\nSök efter nyckeln med ID %@ i GPG Keychain och importera den för att verifiera bilagan.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "Bilagans signatur skapades med en algoritm som inte stöds.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Bilagan kunde inte verifieras, eftersom signaturens nyckel skapades med en algoritm som inte stöds.\n\nKontakta oss på http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "OBS: Bilagans signatur är ogiltig!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "This attachment might have been modified after the signature was created.\n\nPlease contact the sender and make sure the content of the attachment matches the original.\n\nPlease contact us at\nhttp://support.gpgtools.org\n if you're sure the attachment was not modified.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "Bilagan kan ha ändrats efter att signaturen skapades. \n\nKontakta avsändaren för att kontrollera att bilagans innehåll stämmer överens med originalet. \n\nKontakta oss på\nhttp://support.gpgtools.org\nom du är säker på att bilagan inte har ändrats.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Verifieringen av signaturen misslyckades på grund av ett okänt fel!";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ett okänt fel inträffade när bilagans signatur skulle verifieras.\n\nKontakta oss på http://support.gpgtools.org";
@@ -108,7 +108,7 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Bilagans signatur är ogiltig och kunde inte verifieras.\n\nKontakta oss på http://support.gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Signaturens nyckel har gått ut.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "The key which was used to sign this attachment is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "Nyckeln som användes för att signera denna bilaga har gått ut. Du kan försöka att uppdatera nyckeln med ID %@ i GPG Keychain och fråga avsändaren varför nyckeln gått ut.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Signaturen i bilagan har gått ut.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Bilagans signatur har gått ut och kunde inte verifieras.\n\nFråga avsändaren varför signaturen har gått ut.";
@@ -220,12 +220,12 @@ NO_DEFAULTS_MESSAGE = "GPGMail fungerar inte som väntat. \n\nHämta och install
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Det gick inte att dekryptera bilagan eftersom PIN-inmatningen är defekt";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "PIN-inmatningshjälpprogrammet som ansvarar för att begära din lösenordsfras verkar vara defekt.\n\nLös detta problem genom att ominstallera den nyaste versionen av GPGTools från https://gpgtools.org";
 
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Attention: You're about to send an unencrypted reply to an encrypted message";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "It's not possible to encrypt your reply, because the public key for the following recipient is missing:\n\n%@";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS" = "It's not possible to encrypt your reply, because public keys for the following recipients are missing:\n\n%@";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "If you choose to proceed, your reply will be sent unencrypted. As a result, confidential information might be leaked, putting you and your recipients at risk.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nIf you really wish to send this reply unencrypted, please remove any previous correspondence included in your reply prior to sending.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Otherwise, search and import the corresponding public keys using GPG Keychain in order to send the reply encrypted.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Otherwise, search and import the the corresponding public key using GPG Keychain in order to send the reply encrypted.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Send Anyway";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Cancel";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Obs: Du kommer att skicka ett okrypterat svar på ett krypterat meddelande";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "Det är inte möjligt att kryptera ditt svar, eftersom den publika nyckeln för följande mottagare saknas:\n\n%@";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS" = "Det är inte möjligt att kryptera ditt svar, eftersom publika nycklar för följande mottagare saknas:\n\n%@";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "Om du väljer att fortsätta kommer ditt svar att skickas okrypterat. Detta kan leda till att hemlig information läcker ut, vilket kan leda till att du och dina mottagare hamnar i fara.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nOm du verkligen vill skicka detta svar okrypterat, ta bort all tidigare korrespondens från ditt svar innan du skickar det.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Sök efter och importera annars de aktuella publika nycklarna med hjälp av GPG Keychain för att skicka svaret krypterat. ";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Sök efter och importera annars den aktuella publika nyckeln med hjälp av GPG Keychain för att skicka svaret krypterat. ";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Skicka ändå";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Avbryt";
