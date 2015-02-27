@@ -308,7 +308,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source \"$SRCROOT/Makefile.config\" || exit 1\n\nPLIST=\"$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH\"\nBUILD_NUMBER=${BUILD_NUMBER:-0}\n\n/usr/libexec/PlistBuddy -c \"Set CommitHash \\\"$COMMIT_HASH\\\"\" -c \"Set BuildNumber \\\"$BUILD_NUMBER\\\"\" -c \"Set CFBundleVersion \\\"$BUILD_VERSION\\\"\" -c \"Set CFBundleShortVersionString \\\"$VERSION\\\"\" \"$PLIST\" || exit 2\n";
+			shellScript = "if [[ -d \"$DEPLOY_RESOURCES_DIR\" ]] ;then\n    source \"$DEPLOY_RESOURCES_DIR/config/versioning.sh\"\nelse\n    source \"$SRCROOT/Version.config\"\nfi\n[[ -n \"$VERSION\" ]] || { echo \"Missing Version!\"; exit 1; }\n\n\n/usr/libexec/PlistBuddy \\\n  -c \"Set CommitHash '${COMMIT_HASH:--}'\" \\\n  -c \"Set BuildNumber '${BUILD_NUMBER:-0}'\" \\\n  -c \"Set CFBundleVersion '${BUILD_VERSION:-0n}'\" \\\n  -c \"Set CFBundleShortVersionString '$VERSION'\" \\\n  \"$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH\" || exit 2\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

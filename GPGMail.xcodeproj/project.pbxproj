@@ -7142,7 +7142,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "HOWTO_PATH=\"./Dependencies/GPGTools_Core/resources/How to get the source code\"\n[[ -f \"$HOWTO_PATH\" ]] || exit 0\n\ncp \"$HOWTO_PATH\" \"$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/\"";
+			shellScript = "[[ -d \"$DEPLOY_RESOURCES_DIR\" ]] || exit 0\n \n HOWTO_PATH=\"$DEPLOY_RESOURCES_DIR/resources/How to get the source code\"\n cp \"$HOWTO_PATH\" \"$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/\"";
 			showEnvVarsInLog = 0;
 		};
 		1B9EAAAD14352F0A0063F2F1 /* Fix RegEx loader path */ = {
@@ -7202,7 +7202,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "[[ -x Dependencies/GPGTools_Core/bin/localizeXIB ]] || exit 0\n\ncd \"$SRCROOT\"\nalias localizeXIB=Dependencies/GPGTools_Core/bin/localizeXIB\nignore=Dependencies/GPGTools_Core/resources/l10n_ignored_strings.txt\n\n\nlocalizeXIB -i \"$ignore\" Resources/en.lproj/GPGMailPreferences.xib ca cs da de es et fi fr gl id_ID it nb nl_NL pl pt_BR pt_PT ru sk sv tr_TR zh_CN &\nlocalizeXIB -i \"$ignore\" Resources/en.lproj/GPGSignatureView.xib ca cs da de es et fi fr gl id_ID it nb nl_NL pl pt_BR pt_PT ru sk sv tr_TR zh_CN &\nlocalizeXIB -i \"$ignore\" Resources/en.lproj/GPGAttachments.xib ca cs da de es et fi fr gl id_ID it nb nl_NL pl pt_BR pt_PT ru sk sv tr_TR zh_CN\n\n# Wait for all jobs.\nwhile [[ -n \"$(jobs -r)\" ]] ;do sleep 0.2; done\n\n";
+			shellScript = "[[ \"$LOCALIZE\" == \"NO\" ]] && exit 0\n [[ -d \"$DEPLOY_RESOURCES_DIR\" ]] || exit 0\n \n alias localizeXIB=\"$DEPLOY_RESOURCES_DIR/bin/localizeXIB\"\n ignore=\"$DEPLOY_RESOURCES_DIR/config/l10n_ignored_strings.txt\"\n langs=\"ca cs da de es et fi fr gl id_ID it nb nl_NL pl pt_BR pt_PT ru sk sv tr_TR zh_CN\"\n sourceDir=Resources/en.lproj\n \n localizeXIB -i \"$ignore\" $sourceDir/GPGMailPreferences.xib $langs || exit 1\n localizeXIB -i \"$ignore\" $sourceDir/GPGSignatureView.xib   $langs || exit 1\n localizeXIB -i \"$ignore\" $sourceDir/GPGAttachments.xib     $langs || exit 1\n";
 			showEnvVarsInLog = 0;
 		};
 		30F151C51500BD4500980642 /* Fill Info.plist */ = {
@@ -7217,7 +7217,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source \"$SRCROOT/Makefile.config\" || exit 1\n\nPLIST=\"$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH\"\nBUILD_NUMBER=${BUILD_NUMBER:-0}\n\n/usr/libexec/PlistBuddy -c \"Set CommitHash '$COMMIT_HASH'\" -c \"Set BuildNumber '$BUILD_NUMBER'\" -c \"Set CFBundleVersion '$BUILD_VERSION'\" -c \"Set CFBundleShortVersionString '$VERSION'\" \"$PLIST\" || exit 2\n";
+			shellScript = "if [[ -d \"$DEPLOY_RESOURCES_DIR\" ]] ;then\n    source \"$DEPLOY_RESOURCES_DIR/config/versioning.sh\"\nelse\n    source \"$SRCROOT/Version.config\"\nfi\n[[ -n \"$VERSION\" ]] || { echo \"Missing Version!\"; exit 1; }\n\n\n/usr/libexec/PlistBuddy \\\n  -c \"Set CommitHash '${COMMIT_HASH:--}'\" \\\n  -c \"Set BuildNumber '${BUILD_NUMBER:-0}'\" \\\n  -c \"Set CFBundleVersion '${BUILD_VERSION:-0n}'\" \\\n  -c \"Set CFBundleShortVersionString '$VERSION'\" \\\n  \"$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH\" || exit 2\n";
 			showEnvVarsInLog = 0;
 		};
 		30F151E21500BE8D00980642 /* Install GPGMail */ = {
@@ -7247,7 +7247,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "[[ -x Dependencies/GPGTools_Core/bin/setfileicon ]] || exit 0\n\n# Set bundle bit\nSetFile -a B \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"\n\n# Set icon\n\"./Dependencies/GPGTools_Core/bin/setfileicon\" \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME/Contents/Resources/GPGMail.icns\" \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"\n";
+			shellScript = "# Set bundle bit\nSetFile -a B \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"\n\n[[ -d \"$DEPLOY_RESOURCES_DIR\" ]] || exit 0\n\n# Set icon\n\"$DEPLOY_RESOURCES_DIR/bin/setfileicon\" \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME/Contents/Resources/GPGMail.icns\" \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -7788,6 +7788,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEPLOY_RESOURCES_DIR = "$(SRCROOT)/Dependencies/DeployResources";
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Frameworks\"",
 					"$(SRCROOT)/Dependencies/Libmacgpg/build/$(CONFIGURATION)",
@@ -7845,6 +7846,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEPLOY_RESOURCES_DIR = "$(SRCROOT)/Dependencies/DeployResources";
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Frameworks\"",
 					"$(SRCROOT)/Dependencies/Libmacgpg/build/$(CONFIGURATION)",
