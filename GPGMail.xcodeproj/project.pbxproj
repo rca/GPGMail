@@ -6903,7 +6903,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55541F4C085AE6B100548474 /* Build configuration list for PBXNativeTarget "GPGMail" */;
 			buildPhases = (
-				1B102FBD1A11190B00BB632E /* Set expiration date for beta */,
 				8D5B49B1048680CD000E48DA /* Sources */,
 				30DA468812B2D5E800E20039 /* Localize XIBs */,
 				8D5B49AF048680CD000E48DA /* Resources */,
@@ -6913,7 +6912,6 @@
 				1B9EAAAD14352F0A0063F2F1 /* Fix RegEx loader path */,
 				30F151C51500BD4500980642 /* Fill Info.plist */,
 				1B49BC7B1A98C21B000440E9 /* Copy "How to get the source code" into Resources */,
-				1BB51DD91A1023DB00784448 /* Add expiration time */,
 				30F151E21500BE8D00980642 /* Install GPGMail */,
 				1BC07F3517466697004263BB /* Copy Libmacgpg into the sandbox container */,
 			);
@@ -7115,21 +7113,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1B102FBD1A11190B00BB632E /* Set expiration date for beta */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Set expiration date for beta";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "[[ -f \"./start-beta-limitation.py\" ]] || exit 0\n\npython ./start-beta-limitation.py > \"$SRCROOT/build/EXPIRATION_DATE\"\n";
-			showEnvVarsInLog = 0;
-		};
 		1B49BC7B1A98C21B000440E9 /* Copy "How to get the source code" into Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -7158,21 +7141,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "install_name_tool -change \\\n\"@executable_path/../Frameworks/RegexKit.framework/Versions/A/RegexKit\" \\\n\"@loader_path/../Frameworks/RegexKit.framework/Versions/A/RegexKit\" \\\n\"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME/Contents/MacOS/GPGMail\"\n";
-			showEnvVarsInLog = 0;
-		};
-		1BB51DD91A1023DB00784448 /* Add expiration time */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Add expiration time";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "[[ -f \"$SRCROOT/complete-beta-limitation.py\" ]] || exit 0\n\npython \"$SRCROOT/complete-beta-limitation.py\" \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\"";
 			showEnvVarsInLog = 0;
 		};
 		1BC07F3517466697004263BB /* Copy Libmacgpg into the sandbox container */ = {
@@ -7729,7 +7697,6 @@
 					"-force_flat_namespace",
 					"-undefined",
 					suppress,
-					"-Wl,-sectcreate,__TEXT,__gmed_xx,build/EXPIRATION_DATE",
 				);
 				PRODUCT_NAME = GPGMail;
 				VALID_ARCHS = "x86_64 i386";
@@ -7770,7 +7737,6 @@
 					"-force_flat_namespace",
 					"-undefined",
 					suppress,
-					"-Wl,-sectcreate,__TEXT,__gmed_xx,build/EXPIRATION_DATE",
 				);
 				PRODUCT_NAME = GPGMail;
 				VALID_ARCHS = "x86_64 i386";
