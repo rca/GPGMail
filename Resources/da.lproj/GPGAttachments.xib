@@ -601,7 +601,7 @@ A</string>
 																<object class="NSTextField" id="463642861">
 																	<reference key="NSNextResponder" ref="44245670"/>
 																	<int key="NSvFlags">284</int>
-																	<string key="NSFrame">{{50, 90.999999375461243}, {370, 17}}</string>
+																	<string key="NSFrame">{{50, 91}, {370, 17}}</string>
 																	<reference key="NSSuperview" ref="44245670"/>
 																	<reference key="NSNextKeyView" ref="937110649"/>
 																	<string key="NSReuseIdentifierKey">_NS:3944</string>
@@ -689,7 +689,7 @@ eWNoYWluLg</string>
 																<object class="NSTextField" id="834668756">
 																	<reference key="NSNextResponder" ref="210185846"/>
 																	<int key="NSvFlags">284</int>
-																	<string key="NSFrame">{{50, 91}, {370, 17}}</string>
+																	<string key="NSFrame">{{50, 90.999999663409056}, {370, 17}}</string>
 																	<reference key="NSSuperview" ref="210185846"/>
 																	<reference key="NSNextKeyView" ref="1051878768"/>
 																	<string key="NSReuseIdentifierKey">_NS:3944</string>
@@ -747,7 +747,7 @@ eWNoYWluLg</string>
 													<string key="NSFrameSize">{429, 120}</string>
 													<reference key="NSSuperview" ref="811410862"/>
 													<reference key="NSNextKeyView" ref="904803809"/>
-													<string key="NSClassName">FlippedView</string>
+													<string key="NSClassName">GPGFlippedView</string>
 												</object>
 											</array>
 											<string key="NSFrame">{{1, 1}, {429, 120}}</string>

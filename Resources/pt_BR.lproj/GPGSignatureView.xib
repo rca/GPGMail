@@ -498,7 +498,7 @@
 													<string key="NSFrameSize">{429, 120}</string>
 													<reference key="NSSuperview" ref="216772841"/>
 													<reference key="NSNextKeyView" ref="726265488"/>
-													<string key="NSClassName">FlippedView</string>
+													<string key="NSClassName">GPGFlippedView</string>
 												</object>
 											</array>
 											<string key="NSFrame">{{1, 1}, {429, 120}}</string>

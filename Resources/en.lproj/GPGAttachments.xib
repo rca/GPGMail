@@ -617,7 +617,7 @@ eWNoYWluLg</string>
 																<object class="NSTextField" id="463642861">
 																	<reference key="NSNextResponder" ref="44245670"/>
 																	<int key="NSvFlags">284</int>
-																	<string key="NSFrame">{{50, 90.999999375461243}, {370, 17}}</string>
+																	<string key="NSFrame">{{50, 91}, {370, 17}}</string>
 																	<reference key="NSSuperview" ref="44245670"/>
 																	<reference key="NSWindow"/>
 																	<reference key="NSNextKeyView" ref="937110649"/>
@@ -709,7 +709,7 @@ eWNoYWluLg</string>
 																<object class="NSTextField" id="834668756">
 																	<reference key="NSNextResponder" ref="210185846"/>
 																	<int key="NSvFlags">284</int>
-																	<string key="NSFrame">{{50, 91}, {370, 17}}</string>
+																	<string key="NSFrame">{{50, 90.999999663409056}, {370, 17}}</string>
 																	<reference key="NSSuperview" ref="210185846"/>
 																	<reference key="NSWindow"/>
 																	<reference key="NSNextKeyView" ref="1051878768"/>
@@ -771,7 +771,7 @@ eWNoYWluLg</string>
 													<reference key="NSSuperview" ref="811410862"/>
 													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="210185846"/>
-													<string key="NSClassName">FlippedView</string>
+													<string key="NSClassName">GPGFlippedView</string>
 												</object>
 											</array>
 											<string key="NSFrame">{{1, 1}, {429, 120}}</string>
@@ -2902,22 +2902,6 @@ eWNoYWluLg</string>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
-					<string key="className">FlippedView</string>
-					<string key="superclassName">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../MailHeaders/Lion/Mail/FlippedView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">FlippedView</string>
-					<string key="superclassName">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../MailHeaders/Mavericks_10.9.5/MailUI/FlippedView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">GPGAttachmentController</string>
 					<string key="superclassName">NSWindowController</string>
 					<object class="NSMutableDictionary" key="actions">
@@ -2997,12 +2981,17 @@ eWNoYWluLg</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">TopScrollView</string>
-					<string key="superclassName">NSScrollView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+					<string key="className">GPGFlippedView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="801407948">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">../Source/GPGSignatureView.h</string>
 					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TopScrollView</string>
+					<string key="superclassName">NSScrollView</string>
+					<reference key="sourceIdentifier" ref="801407948"/>
 				</object>
 			</array>
 			<array class="NSMutableArray" key="referencedPartialClassDescriptionsV3.2+">
