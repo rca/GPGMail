@@ -151,6 +151,10 @@
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Please download and re-install GPG Suite from https://www.gpgtools.org to ensure all required components are installed.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Please check your installation and configuration.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Your MacGPG installation is not working properly. Please contact us, including your GPG configuration file found in your home directory at ~/.gnupg/gpg.conf, at http://support.gpgtools.org";
+DISABLE_ENCRYPT_DRAFTS_TITLE = "ATTENTION: Disabling the option to \"Encrypt Drafts\" means, that none of your drafts will be stored in encrypted form. Even if you start a mail with Encryption enabled, as soon as you store that mail as draft, without this option enabled, it will be a draft in cleartext.";
+DISABLE_ENCRYPT_DRAFTS_MESSAGE = "This can be a security issue, if you have the option activated to \"Store drafts on server\" under Mail.app > Preferences > Accounts > Mailbox behavior > Drafts. In that case the cleartext draft ends up on the server of your mail provider. Since Mail.app automatically stores drafts of the email you are composing, this can also happen although you never actually saved a new mail as draft.\n\nUnless you really know what you are doing and have a special use case requiring unencrypted drafts, we strongly recommend to leave this option enabled.";
+DISABLE_ENCRYPT_DRAFTS_CONFIRM = "Disable encrypt drafts";
+
 
 /* Multiple GPGMail installations. */
 "GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Found multiple installations of GPGMail!";

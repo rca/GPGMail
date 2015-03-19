@@ -29,8 +29,11 @@
 
 #import "GPGMailPreferences.h"
 #import "GPGMailBundle.h"
+#import "MailAccount.h"
+#import "ExchangeAccount.h"
 
-#define localized(key) [[GPGMailBundle bundle] localizedStringForKey:(key) value:(key) table:@"GPGMail"]
+
+#define localized(key) [GPGMailBundle localizedStringForKey:key]
 
 NSString *SUEnableAutomaticChecksKey = @"SUEnableAutomaticChecks";
 NSString *SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
@@ -203,6 +206,41 @@ NSString *SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
 - (void)checkForUpdates:(id)sender {
 	NSString *updaterPath = @"/Library/Application Support/GPGTools/GPGMail_Updater.app/Contents/MacOS/GPGMail_Updater";
 	[GPGTask launchGeneralTask:updaterPath withArguments:@[@"checkNow"]];
+}
+
+
+- (BOOL)validateEncryptDrafts:(NSNumber **)value error:(NSError **)error {
+	if ([*value boolValue] == NO) {
+		NSArray *accounts = (NSArray *)[GM_MAIL_CLASS(@"MailAccount") allMailAccounts];
+		for (id account in accounts) {
+			if ([account respondsToSelector:@selector(storeDraftsOnServer)] && [account storeDraftsOnServer]) {
+				
+				NSAlert *alert = [NSAlert alertWithMessageText:localized(@"DISABLE_ENCRYPT_DRAFTS_TITLE")
+												 defaultButton:@"Cancel"
+											   alternateButton:localized(@"DISABLE_ENCRYPT_DRAFTS_CONFIRM")
+												   otherButton:nil
+									 informativeTextWithFormat:@"%@", localized(@"DISABLE_ENCRYPT_DRAFTS_MESSAGE")];
+				
+				NSWindow *window = [[NSPreferences sharedPreferences] valueForKey:@"_preferencesPanel"];
+				
+				[alert beginSheetModalForWindow:window completionHandler:^(NSModalResponse returnCode) {
+					[NSApp stopModalWithCode:returnCode];
+				}];
+				
+				if ([NSApp runModalForWindow:window] != NSAlertAlternateReturn) {
+					*value = @(YES);
+				}
+				break;
+			}
+		}
+	}
+	return YES;
+}
+- (BOOL)encryptDrafts {
+	return [self.options boolForKey:@"OptionallyEncryptDrafts"];
+}
+- (void)setEncryptDrafts:(BOOL)value {
+	[self.options setBool:value forKey:@"OptionallyEncryptDrafts"];
 }
 
 

@@ -53,6 +53,7 @@
 @property (weak, readonly) NSImage *gpgStatusImage;
 @property (weak, readonly) GPGOptions *options;
 @property BOOL enableAutomaticChecks;
+@property BOOL encryptDrafts;
 
 
 @end

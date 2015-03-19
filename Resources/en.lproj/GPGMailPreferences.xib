@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">14A389</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6250</string>
-		<string key="IBDocument.AppKitVersion">1343.14</string>
-		<string key="IBDocument.HIToolboxVersion">755.00</string>
+		<string key="IBDocument.SystemVersion">13E28</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6254</string>
+		<string key="IBDocument.AppKitVersion">1265.21</string>
+		<string key="IBDocument.HIToolboxVersion">698.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6250</string>
+			<string key="NS.object.0">6254</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSBox</string>
@@ -85,7 +85,7 @@
 								<string key="NSFrame">{{193, 77}, {351, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="163650447"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="283249516">
 									<int key="NSCellFlags">-2080374784</int>
@@ -110,6 +110,7 @@
 								<string key="NSFrame">{{189, 36}, {190, 32}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="491452844">
 									<int key="NSCellFlags">67108864</int>
@@ -195,7 +196,7 @@
 								<string key="NSFrame">{{192, 271}, {183, 17}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="714016839"/>
+								<reference key="NSNextKeyView" ref="915859109"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSTextFieldCell" key="NSCell" id="608485733">
 									<int key="NSCellFlags">68157504</int>
@@ -291,7 +292,7 @@
 								<string key="NSFrame">{{22, 191}, {128, 128}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="443272866"/>
+								<reference key="NSNextKeyView" ref="631925366"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSImageCell" key="NSCell" id="294102797">
 									<int key="NSCellFlags">134217728</int>
@@ -349,7 +350,7 @@
 								<string key="NSFrame">{{193, 247}, {351, 18}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="63115413"/>
+								<reference key="NSNextKeyView" ref="714016839"/>
 								<string key="NSReuseIdentifierKey">_NS:717</string>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="80202346">
@@ -376,7 +377,7 @@
 								<string key="NSFrame">{{192, 302}, {350, 17}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="915859109"/>
+								<reference key="NSNextKeyView" ref="443272866"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="1059606293">
@@ -465,7 +466,7 @@
 								<string key="NSFrame">{{10, 49}, {153, 32}}</string>
 								<reference key="NSSuperview" ref="782958523"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="631925366"/>
+								<reference key="NSNextKeyView" ref="63115413"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="942140521">
 									<int key="NSCellFlags">67108864</int>
@@ -555,7 +556,7 @@
 					<object class="NSFont" key="NSSupport">
 						<bool key="IBIsSystemFont">YES</bool>
 						<double key="NSSize">12</double>
-						<int key="NSfFlags">4883</int>
+						<int key="NSfFlags">787</int>
 					</object>
 					<reference key="NSBackgroundColor" ref="509650560"/>
 					<reference key="NSTextColor" ref="666243343"/>
@@ -660,23 +661,23 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: options.OptionallyEncryptDrafts</string>
+						<string key="label">value: encryptDrafts</string>
 						<reference key="source" ref="915859109"/>
 						<reference key="destination" ref="359798784"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="915859109"/>
 							<reference key="NSDestination" ref="359798784"/>
-							<string key="NSLabel">value: options.OptionallyEncryptDrafts</string>
+							<string key="NSLabel">value: encryptDrafts</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">options.OptionallyEncryptDrafts</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSConditionallySetsEnabled</string>
-								<boolean value="NO" key="NS.object.0"/>
-							</object>
+							<string key="NSKeyPath">encryptDrafts</string>
+							<dictionary key="NSOptions">
+								<boolean value="NO" key="NSConditionallySetsEnabled"/>
+								<boolean value="YES" key="NSValidatesImmediately"/>
+							</dictionary>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<string key="id">863</string>
+					<string key="id">4B9-nu-ajF</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
