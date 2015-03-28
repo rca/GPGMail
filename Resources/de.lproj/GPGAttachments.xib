@@ -586,9 +586,7 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="737784608">
 																		<int key="NSCellFlags">69206017</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string type="base64-UTF8" key="NSContents">VGhlIHNpZ25hdHVyZSBjb3VsZCBub3QgYmUgdmVyaWZpZWQgYmVjYXVzZSB0aGUgcHVibGljIGtleSBp
-cyBub3QgaW4geW91ciBrZXljaGFpbi4KUGxlYXNlIGRvd25sb2FkIHRoZSBrZXkgdXNpbmcgR1BHIEtl
-eWNoYWluLg</string>
+																		<string key="NSContents">Die Signatur dieses Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet. Bitte laden Sie den öffentlichen Schlüssel mit GPG Keychain herunter.</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<string key="NSCellIdentifier">_NS:360</string>
 																		<reference key="NSControlView" ref="138322284"/>
@@ -674,9 +672,7 @@ eWNoYWluLg</string>
 																	<object class="NSTextFieldCell" key="NSCell" id="376725465">
 																		<int key="NSCellFlags">69206017</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string type="base64-UTF8" key="NSContents">VGhlIHNpZ25hdHVyZSBjb3VsZCBub3QgYmUgdmVyaWZpZWQgYmVjYXVzZSB0aGUgcHVibGljIGtleSBp
-cyBub3QgaW4geW91ciBrZXljaGFpbi4KUGxlYXNlIGRvd25sb2FkIHRoZSBrZXkgdXNpbmcgR1BHIEtl
-eWNoYWluLg</string>
+																		<string key="NSContents">Die Signatur dieses Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet. Bitte laden Sie den öffentlichen Schlüssel mit GPG Keychain herunter.</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<string key="NSCellIdentifier">_NS:360</string>
 																		<reference key="NSControlView" ref="1051878768"/>

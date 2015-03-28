@@ -674,9 +674,9 @@ IGNsYXZlIHV0aWxpemFuZG8gR1BHIEtleWNoYWluLg</string>
 																	<object class="NSTextFieldCell" key="NSCell" id="376725465">
 																		<int key="NSCellFlags">69206017</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string type="base64-UTF8" key="NSContents">VGhlIHNpZ25hdHVyZSBjb3VsZCBub3QgYmUgdmVyaWZpZWQgYmVjYXVzZSB0aGUgcHVibGljIGtleSBp
-cyBub3QgaW4geW91ciBrZXljaGFpbi4KUGxlYXNlIGRvd25sb2FkIHRoZSBrZXkgdXNpbmcgR1BHIEtl
-eWNoYWluLg</string>
+																		<string type="base64-UTF8" key="NSContents">TGEgZmlybWEgbm8gc2UgcHVkbyB2ZXJpZmljYXIgcG9ycXVlIGxhIGNsYXZlIHDDumJsaWNhIG5vIGVz
+dMOhIGVuIHN1IGp1ZWdvIGRlIGNsYXZlcy4KUG9yIGZhdm9yIGRlc2Nhcmd1ZSBsYSBjbGF2ZSB1c2Fu
+ZG8gR1BHIEtleWNoYWluLg</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<string key="NSCellIdentifier">_NS:360</string>
 																		<reference key="NSControlView" ref="1051878768"/>
