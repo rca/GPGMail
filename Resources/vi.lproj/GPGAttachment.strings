@@ -6,7 +6,7 @@
  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
  */
 "SIGNATURE_ERROR_GENERAL_TITLE" = "Thất bại trong việc xác nhận chữ ký này.";
-"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "The public key to verify the signature of this attachment is not in your keychain.\n\nPlease download the public key %@ using GPG Keychain.";
+"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "Khóa công cộng để xác nhận chữ ký của phần đính kèm này không nằm trong chuỗi khóa của bạn. Vui lòng tải về khóa công cộng %@ sử dụng Chuỗi Khóa GPG Keychain.";
 "DECRYPT_ERROR_GENERAL_TITLE" = "Thất bại khi giải mã phần đính kèm.";
 "DECRYPT_ERROR_GENERAL_MESSAGE" = "Khóa bí mật để giải mã phần đính kèm này không nằm trong chuỗi khóa truy cập của bạn.";
 "ATTACHMENT_DECRYPTED_SUCCESSFULLY_TITLE" = "Phần đính kèm này đã được giải mã thành công.";

@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">101000</int>
-		<string key="IBDocument.SystemVersion">13E28</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6254</string>
+		<string key="IBDocument.SystemVersion">13F1066</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6751</string>
 		<string key="IBDocument.AppKitVersion">1265.21</string>
 		<string key="IBDocument.HIToolboxVersion">698.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6254</string>
+			<string key="NS.object.0">6751</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSArrayController</string>
@@ -697,7 +697,7 @@ eWNoYWluLg</string>
 																	<object class="NSTextFieldCell" key="NSCell" id="812424302">
 																		<int key="NSCellFlags">67108864</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string key="NSContents">The signature could not be verified.</string>
+																		<string key="NSContents">A sinatura non puido ser verificada.</string>
 																		<reference key="NSSupport" ref="501760921"/>
 																		<string key="NSCellIdentifier">_NS:3944</string>
 																		<reference key="NSControlView" ref="834668756"/>

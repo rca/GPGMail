@@ -10,7 +10,7 @@
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Incapaz de verificar assinatura desta mensagem PGP.";
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Houve um problema a ler a assinatura PGP desta mensagem.";
 "MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "A chave PGP para esta mensagem não se encontra no seu porta-chaves.";
-"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "The message has a valid PGP signature, but the PGP key is not in your keychain. Please use GPG Keychain to add it.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Esta mensagem tem uma assinatura PGP válida mas a chave PGP respectiva não se encontra no seu porta-chaves. Por favor adicione-a através do programa GPG Keychain.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Não existe informação disponível para esta chave PGP.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Não há informação adicional sobre esta chave PGP visto que esta não se encontra no seu porta-chaves.";
 
@@ -18,36 +18,36 @@
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Desencriptação falhou com um erro não definido!";
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Aconteceu um erro não definido enquanto se processava a desencriptação desta mensagem.\n\nPor favor contacte-nos através do website https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Desencriptação falhou com um erro não definido!";
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nGPG error message:\n%@\nPlease contact us, including the GPG error message, at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Aconteceu um erro não definido enquanto se processava a desencriptação desta mensagem.\n\nMensagem de erro GPG: %@\n\nPor favor contacte-nos através do website https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Foi usada uma chave errada para a encriptação desta mensagem.";
-"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "This message could not be decrypted, since the wrong public key was used to encrypt it.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Esta mensagem não pode ser desencriptada visto que foi usada uma chave pública incorrecta para a sua encriptação.\n\nPor favor contacte-nos através do website https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "A mensagem encriptada está incorrecta ou danificada.";
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Esta mensagem encriptada está danificada e não pode ser desencriptada.\n\nPor favor peça ao remetente para proceder ao seu reenvio. ";
 
 "MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Esta assinatura foi revogada. ";
-"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "The key which was used to sign this message was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "ATENÇÃO: A chave que foi usada para assinar esta mensagem foi revogada.\n\nDeverá actualizar a chave com \"Key ID\" %@ no programa GPG Keychain para verificar se existe uma chave mais recente. Se a nova chave ainda estiver revogada por favor verifique com o remetente a razão da revogação da chave.";
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "A chave para esta assinatura não está no seu porta-chaves GPG.";
-"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "The message could not be verified, since the key which was used to sign this message is not in your GPG Keychain.\n\nSearch for the key with ID %@ in GPG Keychain and import it to verify the message.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Esta mensagem não pode ser verificada visto que a chave que foi usada para a sua assinatura não se encontra no seu porta-chaves GPG.\n\nPor favor procure pela chave com a \"Key ID\" %@ no programa GPG Keychain e importe-a para verificar esta mensagem. ";
 
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "A assinatura desta mensagem foi criada com um algoritmo não suportado. ";
-"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This message could not be verified, since the signature was created with an algorithm which is not supported.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Esta mensagem não pode ser verificada visto que a assinatura foi criada com um algoritmo não suportado.\n\nPor favor contacte-nos através do website: https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATENÇÃO: A assinatura desta mensagem não é válida.";
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "This message might have been modified after the signature was created.\n\nPlease contact the sender to make sure the content of the message matches the original.\n\nPlease contact us at\nhttps://gpgtools.tenderapp.com/\nif you're sure the message was not modified.";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATENÇÃO: Esta mensagem poderá ter sido modificada após a sua assinatura.\n\nPor favor contacte o remetente original de modo a garantir que o conteúdo desta mensagem coincide com a original.\n\nPor favor contacte-nos no site https://gpgtools.tenderapp.com se tem a certeza de que a mensagem não foi modificada.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "A verificação da assinatura desta mensagem falhou com um erro desconhecido.";
-"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this message's signature.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ocorreu um erro desconhecido aquando da verificação da assinatura desta mensagem.\n\nPor favor contacte-nos através do site: https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Erro na assinatura desta mensagem.";
-"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This message's signature is invalid and could not be verified.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "A assinatura desta mensagem não é válida e não pode ser verificada.\n\nPor favor contacte-nos através do site: https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "A chave responsável pela assinatura desta mensagem já expirou. ";
-"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "The key which was used to sign this message is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATENÇÃO: A chave que foi usada para assinar esta mensagem já expirou.\n\nPode tentar actualizar a chave com a ID %@ através do programa GPG Keychain e perguntar ao remetente porque é que a chave utilizada expirou.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "A assinatura da mensagem expirou.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "A assinatura expirou e não pode ser verificada. \n\nPor favor pergunte ao remetente porque é que a assinatura expirou.";
@@ -78,34 +78,34 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "A desencriptação falhou com um erro desconhecido.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while decrypting this attachment.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Houve erro desconhecido aquando da desencriptação deste anexo.\n\nPor favor contacte-nos através do website: https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "A desencriptação falhou com um erro desconhecido. ";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "An unknown error occurred while decrypting this attachment.\n\nGPG error message:\n%@\nPlease contact us, including the GPG error message, at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Houve erro desconhecido aquando da desencriptação deste anexo.\n\nMensagem de erro GPG: %@\n\nPor favor contacte-nos e inclua a mensagem de erro GPG através do website https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Foi usada a chave errada para encriptar este anexo. ";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "This attachment could not be decrypted, since the wrong public key was used to encrypt it.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Este anexo não pode ser desencriptado, visto que foi usada a chave pública errada. \n\nPor favor contacte-nos através do website https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "O anexo encriptado está danificado. ";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "O anexo encriptado está danificado e não pode ser desencriptado. \n\nPor favor peça ao remetente para lhe enviar a mensagem novamente. ";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "A chave de assinatura foi revogada.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "The key which was used to sign this attachment was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "ATENÇÃO: A chave que foi usada para assinar este anexo foi revogada.\n\nDeverá actualizar a chave com a \"key ID\" %@ no programa GPG Keychain para verificar se existe alguma actualização da chave. Se a nova chave também estiver revogada, por favor verifique com o remetente a razão da sua revogação.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Esta chave de assinatura não está presente no seu porta-chaves GPG.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "The attachment signature could not be verified, since the key which was used to sign is not in your GPG Keychain.\n\nSearch for the key with ID %@ in GPG Keychain and import it to verify the attachment.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "A assinatura do anexo não pode ser verificada, visto que a chave que foi usada não está presente no seu porta-chaves GPG.\n\nPor favor procure a chave com a \"key ID\" %@ no programa GPG Keychain e importe-a correctamente para verificar o anexo.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "A assinatura do anexo foi criada através de um algoritmo não suportado.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This attachment could not be verified, since the key to the signature was created with an algorithm which is not supported.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "A assinatura do anexo não pode ser verificada, visto que a chave que foi usada foi criada através de um algoritmo não suportado.\n\nPor favor contacte-nos através do website: https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATENÇÃO: A assinatura do anexo não é válida.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "This attachment might have been modified after the signature was created.\n\nPlease contact the sender and make sure the content of the attachment matches the original.\n\nPlease contact us at\nhttps://gpgtools.tenderapp.com/\n if you're sure the attachment was not modified.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATENÇÃO: Este anexo poderá ter sido modificado após a criação da assinatura.\n\nPor favor contacte o remetente e certifique-se de que o conteúdo dos anexos corresponde ao original. \n\nPor favor contacte-nos através do website https://gpgtools.tenderapp.com\nse tiver a certeza de que o conteúdo dos anexos não foi modificado de qualquer maneira.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Falhou a verificação da assinatura, com um erro desconhecido!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this attachment signature.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Um erro desconhecido ocorreu aquando da verificação do anexo da assinatura GPG.\n\nPor favor contacte-nos através do website https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Erro nos dados da Assinatura!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This attachment signature is invalid and could not be verified.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "O anexo da assinatura GPG é inválido e não pode ser verificado.\n\nPor favor contacte-nos através do website https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "A chave da assinatura expirou.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "The key which was used to sign this attachment is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";

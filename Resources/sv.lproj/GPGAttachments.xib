@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">101000</int>
-		<string key="IBDocument.SystemVersion">13E28</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6254</string>
+		<string key="IBDocument.SystemVersion">13F1066</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6751</string>
 		<string key="IBDocument.AppKitVersion">1265.21</string>
 		<string key="IBDocument.HIToolboxVersion">698.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6254</string>
+			<string key="NS.object.0">6751</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSArrayController</string>
@@ -675,8 +675,8 @@ YWluLg</string>
 																		<int key="NSCellFlags">69206017</int>
 																		<int key="NSCellFlags2">272629760</int>
 																		<string type="base64-UTF8" key="NSContents">U2lnbmF0dXJlbiBrdW5kZSBpbnRlIHZlcmlmaWVyYXMgZWZ0ZXJzb20gZGVuIHB1Ymxpa2Egbnlja2Vs
-biBpbnRlIGZpbm5zIGkgZGluIG55Y2tlbHJpbmcuCkjDpG10YSBueWNrZWxuIG1lZCBHUEcgS2V5Y2hh
-aW4uA</string>
+biBpbnRlIGZpbm5zIGkgZGluIG55Y2tlbHJpbmcuIApIw6RtdGEgbnlja2VsbiBtZWQgR1BHIEtleWNo
+YWluLg</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<string key="NSCellIdentifier">_NS:360</string>
 																		<reference key="NSControlView" ref="1051878768"/>

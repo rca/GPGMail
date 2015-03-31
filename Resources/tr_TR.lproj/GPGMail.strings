@@ -10,7 +10,7 @@
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "PGP mesajının imzası doğrulanamıyor.";
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Mesajın PGP imzası okunamıyor.";
 "MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "Bu mesaj için gereken PGP anahtarı anahtar zincirinde yok.";
-"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "The message has a valid PGP signature, but the PGP key is not in your keychain. Please use GPG Keychain to add it.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Mesaj geçerli bir PGP imzasına sahip ancak gereken PGP anahtarına ulaşılamadı. GPG Anahtar Zincirini kullanarak söz konusu anahtarı ekleyin.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Bu PGP anahtar hakknda fikrimiz yok.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Bu anahtar hakknda baka bilgi yok nk anahtarlkta yok.";
 

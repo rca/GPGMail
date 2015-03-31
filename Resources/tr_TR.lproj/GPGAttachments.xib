@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">101000</int>
-		<string key="IBDocument.SystemVersion">13E28</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6254</string>
+		<string key="IBDocument.SystemVersion">13F1066</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6751</string>
 		<string key="IBDocument.AppKitVersion">1265.21</string>
 		<string key="IBDocument.HIToolboxVersion">698.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6254</string>
+			<string key="NS.object.0">6751</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSArrayController</string>
@@ -387,7 +387,7 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="812413982">
 																		<int key="NSCellFlags">68157504</int>
 																		<int key="NSCellFlags2">272761856</int>
-																		<string key="NSContents">Details</string>
+																		<string key="NSContents">Ayrıntılar</string>
 																		<object class="NSFont" key="NSSupport" id="27">
 																			<bool key="IBIsSystemFont">YES</bool>
 																			<double key="NSSize">11</double>
@@ -479,7 +479,7 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="68258271">
 																		<int key="NSCellFlags">68157504</int>
 																		<int key="NSCellFlags2">272761856</int>
-																		<string key="NSContents">Expires on:</string>
+																		<string key="NSContents">Son Geçerlilik:</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<reference key="NSControlView" ref="374660988"/>
 																		<reference key="NSBackgroundColor" ref="317639729"/>
@@ -551,7 +551,7 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="425856196">
 																		<int key="NSCellFlags">68157504</int>
 																		<int key="NSCellFlags2">272630784</int>
-																		<string key="NSContents">name</string>
+																		<string key="NSContents">isim</string>
 																		<object class="NSFont" key="NSSupport" id="501760921">
 																			<bool key="IBIsSystemFont">YES</bool>
 																			<double key="NSSize">13</double>
@@ -895,7 +895,7 @@ eWNoYWluLg</string>
 						<object class="NSTextFieldCell" key="NSCell" id="544591757">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Expires:</string>
+							<string key="NSContents">Son Geçerlilik:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="739216503"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -933,7 +933,7 @@ eWNoYWluLg</string>
 						<object class="NSTextFieldCell" key="NSCell" id="205118177">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Created:</string>
+							<string key="NSContents">Oluşturulma:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="624834163"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -952,7 +952,7 @@ eWNoYWluLg</string>
 						<object class="NSTextFieldCell" key="NSCell" id="1008281119">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Signature</string>
+							<string key="NSContents">İmza</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="41541811"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1150,7 +1150,7 @@ eWNoYWluLg</string>
 						<object class="NSTextFieldCell" key="NSCell" id="373280">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Ownertrust:</string>
+							<string key="NSContents">Otorite:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="211265474"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1169,7 +1169,7 @@ eWNoYWluLg</string>
 						<object class="NSTextFieldCell" key="NSCell" id="751446589">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Algorithm:</string>
+							<string key="NSContents">Algoritma:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="1054846190"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1188,7 +1188,7 @@ eWNoYWluLg</string>
 						<object class="NSTextFieldCell" key="NSCell" id="356060348">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Expires:</string>
+							<string key="NSContents">Son Geçerlilik:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="844534807"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1207,7 +1207,7 @@ eWNoYWluLg</string>
 						<object class="NSTextFieldCell" key="NSCell" id="228207610">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Created:</string>
+							<string key="NSContents">Oluşturulma:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="610054460"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1226,7 +1226,7 @@ eWNoYWluLg</string>
 						<object class="NSTextFieldCell" key="NSCell" id="540786287">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Key ID:</string>
+							<string key="NSContents">Anahtar Kimliği:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="877264115"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1245,7 +1245,7 @@ eWNoYWluLg</string>
 						<object class="NSTextFieldCell" key="NSCell" id="528727085">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Comment:</string>
+							<string key="NSContents">Yorum:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="164790008"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1264,7 +1264,7 @@ eWNoYWluLg</string>
 						<object class="NSTextFieldCell" key="NSCell" id="562734930">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">E-Mail:</string>
+							<string key="NSContents">E-Posta:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="234587586"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1283,7 +1283,7 @@ eWNoYWluLg</string>
 						<object class="NSTextFieldCell" key="NSCell" id="79929495">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Name:</string>
+							<string key="NSContents">İsim:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="348301092"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1302,7 +1302,7 @@ eWNoYWluLg</string>
 						<object class="NSTextFieldCell" key="NSCell" id="635271539">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Key</string>
+							<string key="NSContents">Anahtar</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="794873389"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1615,7 +1615,7 @@ eWNoYWluLg</string>
 							<string key="NSKeyPath">selection.signature.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">No expiration is set on this signature</string>
+								<string key="NS.object.0">Bu imza için ömür biçilmedi</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
@@ -1643,7 +1643,7 @@ eWNoYWluLg</string>
 							<string key="NSKeyPath">signature.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">No expiration is set on this signature</string>
+								<string key="NS.object.0">Bu imza için ömür biçilmedi</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
@@ -1723,7 +1723,7 @@ eWNoYWluLg</string>
 							<string key="NSKeyPath">gpgKey.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">No expiration is set on this signature</string>
+								<string key="NS.object.0">Bu imza için ömür biçilmedi</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>

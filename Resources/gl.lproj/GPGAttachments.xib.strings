@@ -15,7 +15,7 @@
 "256.title" = "Sinatura";
 "257.title" = "Creada:";
 "259.title" = "Caduca:";
-"291.title" = "The signature could not be verified.";
+"291.title" = "A sinatura non puido ser verificada.";
 "293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
 "325.ibShadowedIsNilPlaceholder" = "Esta firma non ten estabelecida a caducidade";
 "353.ibShadowedIsNilPlaceholder" = "Esta firma non ten estabelecida a caducidade";

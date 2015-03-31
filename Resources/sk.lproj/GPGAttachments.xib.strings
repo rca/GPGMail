@@ -15,10 +15,10 @@
 "256.title" = "Podpis";
 "257.title" = "Vytvorené:";
 "259.title" = "Exspirácia:";
-"291.title" = "The signature could not be verified.";
-"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
+"291.title" = "Podpis nebolo možné overiť.";
+"293.title" = "Podpis nebolo možné overiť, pretože sa vo vašej GPG databáze nenachádza zodpovedajúci verejný kľúč. Stiahnite ho, prosím, pomocou programu GPG Keychain.";
 "325.ibShadowedIsNilPlaceholder" = "Pre tento podpis nie je nastavená exspiračná lehota";
 "353.ibShadowedIsNilPlaceholder" = "Pre tento podpis nie je nastavená exspiračná lehota";
 "366.ibShadowedIsNilPlaceholder" = "Pre tento podpis nie je nastavená exspiračná lehota";
-"382.title" = "The signature could not be verified.";
-"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
+"382.title" = "Podpis nebolo možné overiť.";
+"383.title" = "Podpis nebolo možné overiť, pretože sa vo vašej GPG databáze nenachádza zodpovedajúci verejný kľúč. Stiahnite ho, prosím, pomocou programu GPG Keychain.";

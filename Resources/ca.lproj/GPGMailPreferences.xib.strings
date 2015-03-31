@@ -1,4 +1,4 @@
-"2ul-d0-5ir.title" = "Sign new messages by default";
+"2ul-d0-5ir.title" = "Signeu per defecte els nous missatges";
 "698.ibShadowedToolTip" = "Comprova automàticament si hi ha noves versions de GPGMail";
 "699.ibShadowedToolTip" = "Baixa automàticament les noves versions de GPGMail.";
 "700.ibShadowedToolTip" = "Cerca actualitzacions ara.";
@@ -11,16 +11,16 @@
 "728.title" = "Composició";
 "733.ibShadowedToolTip" = "Preguntes més freqüents.";
 "734.alternateTitle" = "Preguntes més freqüents";
-"734.title" = "Knowledge Base";
+"734.title" = "Base de coneixements";
 "744.title" = "Lectura";
 "781.title" = "Esborrany d'encriptació";
 "786.ibShadowedToolTip" = "Consulteu Preferències ->Visualització -> Previsualització de la llista.";
 "787.title" = "Crea una previsualització de la llista";
 "834.title" = "Botó";
-"930.ibShadowedToolTip" = "Click to copy version into clipboard.";
+"930.ibShadowedToolTip" = "Cliqueu per copiar la versió al porta-retalls.";
 "931.title" = "Versió: xxx";
-"935.ibShadowedToolTip" = "Click to copy version into clipboard.";
+"935.ibShadowedToolTip" = "Cliqueu per copiar la versió al porta-retalls.";
 "936.title" = "Revisió:";
 "1051.ibShadowedToolTip" = "Si té cap altra pregunta.";
 "1053.title" = "Ajuda";
-"yJs-2y-8Cb.title" = "Encrypt new messages by default";
+"yJs-2y-8Cb.title" = "Xifreu per defecte els nous missatges";

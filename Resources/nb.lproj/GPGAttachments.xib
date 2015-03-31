@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">101000</int>
-		<string key="IBDocument.SystemVersion">13E28</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6254</string>
+		<string key="IBDocument.SystemVersion">13F1066</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6751</string>
 		<string key="IBDocument.AppKitVersion">1265.21</string>
 		<string key="IBDocument.HIToolboxVersion">698.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6254</string>
+			<string key="NS.object.0">6751</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSArrayController</string>
@@ -588,7 +588,7 @@
 																		<int key="NSCellFlags2">272629760</int>
 																		<string type="base64-UTF8" key="NSContents">U2lnbmF0dXJlbiBrdW5uZSBpa2tlIHZlcmlmaXNlcmVyIGZvcmRpIGRlbiBvZmZlbnRsaWdlIG7DuGtr
 ZWxlbiBpa2tlIGVyIGRpbiBuw7hra2VscmluZy4KVmVubmxpZ3N0IGxhc3QgZGVuIG5lZCB2ZWQgw6Ug
-YnJ1a2UgR1BHIE7DuGtrZWxyaW5nLg</string>
+YnJ1a2UgR1BHIEtleWNoYWluLg</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<string key="NSCellIdentifier">_NS:360</string>
 																		<reference key="NSControlView" ref="138322284"/>
@@ -676,7 +676,7 @@ YnJ1a2UgR1BHIE7DuGtrZWxyaW5nLg</string>
 																		<int key="NSCellFlags2">272629760</int>
 																		<string type="base64-UTF8" key="NSContents">U2lnbmF0dXJlbiBrdW5uZSBpa2tlIHZlcmlmaXNlcmVyIGZvcmRpIGRlbiBvZmZlbnRsaWdlIG7DuGtr
 ZWxlbiBpa2tlIGVyIGRpbiBuw7hra2VscmluZy4KVmVubmxpZ3N0IGxhc3QgZGVuIG5lZCB2ZWQgw6Ug
-YnJ1a2UgR1BHIE7DuGtrZWxyaW5nLg</string>
+YnJ1a2UgR1BHIEtleWNoYWluLg</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<string key="NSCellIdentifier">_NS:360</string>
 																		<reference key="NSControlView" ref="1051878768"/>
@@ -1615,7 +1615,7 @@ YnJ1a2UgR1BHIE7DuGtrZWxyaW5nLg</string>
 							<string key="NSKeyPath">selection.signature.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">Denne signaturen har ingen utløpsdato</string>
+								<string key="NS.object.0">Ingen utløpsdato er satt for denne signaturen</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
@@ -1643,7 +1643,7 @@ YnJ1a2UgR1BHIE7DuGtrZWxyaW5nLg</string>
 							<string key="NSKeyPath">signature.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">Denne signaturen har ingen utløpsdato</string>
+								<string key="NS.object.0">Ingen utløpsdato er satt for denne signaturen</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
@@ -1723,7 +1723,7 @@ YnJ1a2UgR1BHIE7DuGtrZWxyaW5nLg</string>
 							<string key="NSKeyPath">gpgKey.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">Denne signaturen har ingen utløpsdato</string>
+								<string key="NS.object.0">Ingen utløpsdato er satt for denne signaturen</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>

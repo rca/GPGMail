@@ -15,10 +15,10 @@
 "256.title" = "Podpis";
 "257.title" = "Utworzony:";
 "259.title" = "Wygasa:";
-"291.title" = "The signature could not be verified.";
+"291.title" = "Podpis nie może być zweryfikowany.";
 "293.title" = "Podpis nie mógł być zweryfikowany, ponieważ klucz publiczny nie znajduje się w Twoim pęku kluczy. \nPobierz klucz używając GPG Keychain.";
 "325.ibShadowedIsNilPlaceholder" = "Nie ustawiono daty ważności dla tego podpisu";
 "353.ibShadowedIsNilPlaceholder" = "Nie ustawiono daty ważności dla tego podpisu";
 "366.ibShadowedIsNilPlaceholder" = "Nie ustawiono daty ważności dla tego podpisu";
-"382.title" = "The signature could not be verified.";
+"382.title" = "Podpis nie może być zweryfikowany.";
 "383.title" = "Podpis nie mógł być zweryfikowany, ponieważ klucz publiczny nie znajduje się w Twoim pęku kluczy. \nPobierz klucz używając GPG Keychain.";

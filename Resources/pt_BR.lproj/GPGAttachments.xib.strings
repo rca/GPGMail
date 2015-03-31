@@ -15,10 +15,10 @@
 "256.title" = "Assinatura";
 "257.title" = "Criado:";
 "259.title" = "Vencimento:";
-"291.title" = "The signature could not be verified.";
-"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
+"291.title" = "A assinatura não pode ser verificada.";
+"293.title" = "A assinatura não pode ser verificada porque a chave pública não está no seu chaveiro. \nPor favor baixe a chave usando o GPG Keychain.";
 "325.ibShadowedIsNilPlaceholder" = "Nenhum vencimento está configurado para esta assinatura";
 "353.ibShadowedIsNilPlaceholder" = "Nenhum vencimento está configurado para esta assinatura";
 "366.ibShadowedIsNilPlaceholder" = "Nenhum vencimento está configurado para esta assinatura";
-"382.title" = "The signature could not be verified.";
-"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
+"382.title" = "A assinatura não pode ser verificada.";
+"383.title" = "A assinatura não pode ser verificada porque a chave pública não está no seu chaveiro. \nPor favor baixe a chave usando o GPG Keychain.";

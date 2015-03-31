@@ -10,11 +10,11 @@
 "VALIDITY_NO_TRUST" = "This signature is not to be trusted.";
 "VALIDITY_OK" = "This signature can be trusted";
 /* Signature view key status. */
-"VALIDITY_KEY_REVOKED" = "The key of this signature was revoked.";
-"VALIDITY_SIGNATURE_EXPIRED" = "This signature is expired.";
-"VALIDITY_KEY_EXPIRED" = "The key of this signature is expired.";
-"VALIDITY_KEY_REVOKED" = "The key of this signature was revoked.";
-"VALIDITY_UNKNOWN_ALGORITHM" = "Signature was created with unknown algorithm.";
-"VALIDITY_NO_PUBLIC_KEY" = "The key of this signature is not in your keychain.";
-"VALIDITY_UNKNOWN_ERROR" = "Unknown signature error.";
+"VALIDITY_KEY_REVOKED" = "A chave da assinatura expirou.";
+"VALIDITY_SIGNATURE_EXPIRED" = "A assinatura da mensagem expirou.";
+"VALIDITY_KEY_EXPIRED" = "A chave da assinatura expirou.";
+"VALIDITY_KEY_REVOKED" = "A chave da assinatura expirou.";
+"VALIDITY_UNKNOWN_ALGORITHM" = "A assinatura desta mensagem foi criada com um algoritmo não suportado. ";
+"VALIDITY_NO_PUBLIC_KEY" = "A chave para esta assinatura não está no seu porta-chaves GPG.";
+"VALIDITY_UNKNOWN_ERROR" = "Erro nos dados da Assinatura!";
 "VALIDITY_BAD_SIGNATURE" = "This signature is invalid.";

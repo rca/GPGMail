@@ -10,7 +10,7 @@
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Tak bisa memeriksa tanda tangan pesan PGP.";
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Ada masalah saat membaca tanda tangan PGP bagi pesan ini.";
 "MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "Kunci PGP bagi pesan ini tak ada dalam keychain Anda.";
-"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Pesan memiliki tanda tangan PGP yang valid, tapi kunci PGP tak ada dalam ring kunci Anda. Harap gunakan Ring Kunci GPG untuk menambahkannya.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Pesan memiliki tanda tangan PGP yang valid, tapi kunci PGP tak ada dalam ring kunci Anda. Harap gunakan GPG Keychain untuk menambahkannya.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Tak tersedia informasi bagi kunci PGP ini.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Tak ada informasi tambahan yang diketahui tentang kunci PGP ini, karena ini tak ada dalam keychain Anda.";
 
@@ -18,44 +18,44 @@
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Tak satupun dari kunci rahasia berikut dapat ditemukan dalam ring kunci Anda (%@). Kunci rahasia diperlukan untuk mendekripsi pesan ini.\n\nPeriksalah dengan si pengirim bahwa mereka memakai kunci publik Anda yang benar.\nPeriksalah cadangan ring kunci Anda, dan cobalah mengimpor kunci rahasia dari sana.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Dekripsi gagal dengan kesalahan tak dikenal!";
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Terjadi galat yang tak dikenal ketika mendekripsi pesan ini.\n\nHarap hubungi kami pada https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Pendekripsian gagal dengan galat yang tak dikenal!";
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nGPG error message:\n%@\nPlease contact us, including the GPG error message, at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Galat yang tak dikenal terjadi ketika mendekripsi pesan ini.\n\nPesan galat GPG:\n%@\nHarap hubungi kami, sertakan pesan galat GPG, pada https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Kunci yang salah dipakai untuk mengenkripsi pesan ini.";
-"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "This message could not be decrypted, since the wrong public key was used to encrypt it.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Pesan ini tak bisa didekripsi, karena kunci publik yang salah dipakai untuk mengekripsinya.\n\nHarap hubungi kami pada https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Pesan yang terenkripsi rusak.";
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Pesan yang terenkripsi rusak dan tak bisa didekripsi.\n\nSilakan minta ke pengirim untuk mengirim ulang pesan.";
 
 "MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Kunci tanda tangan telah dicabut.";
-"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "The key which was used to sign this message was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "PERHATIAN: Kunci yang dipakai untuk menandatangani pesan ini telah dicabut.\n\nAnda mesti menyegarkan kunci dengan ID kunci %@ dalam GPG Keychain untuk memeriksa apakah tersedia yang baru. Bila yang terbaru masih dicabut, periksalah dengan pengirim mengapa kunci dicabut.";
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Kunci bagi tanda tangan pesan ini tak ada dalam Ring Kunci GPG Anda.";
-"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Pesan ini tak dapat diverifikasi, karena kunci yang dipakai untuk menandatangani pesan ini tak ada dalam Ring Kunci GPG Anda.\n\nCarilah kunci dengan ID %@ dalam Ring Kunci GPG dan imporlah untuk memverifikasi pesan.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Pesan ini tak bisa diverifikasi, karena kunci yang dipakai untuk menandatangani pesan ini tak ada dalam Ring Kunci GPG Anda.\n\nCarilah kunci dengan ID %@ dalam GPG Keychain dan imporlah untuk memverifikasi pesan.";
 
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "Tanda tangan pesan dibuat dengan algoritma yang tak didukung.";
-"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This message could not be verified, since the signature was created with an algorithm which is not supported.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Pesan ini tak bisa diverifikasi, karena tanda tangan dibuat dengan algoritma yang tak didukung.\n\nHarap hubungi kami di https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "PERHATIAN: Tanda tangan pesan ini tak valid!";
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "This message might have been modified after the signature was created.\n\nPlease contact the sender to make sure the content of the message matches the original.\n\nPlease contact us at\nhttps://gpgtools.tenderapp.com/\nif you're sure the message was not modified.";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "PERHATIAN: Pesan ini mungkin telah diubah setelah tanda tangan dibuat.\n\nHarap hubungi pengirim untuk memastikan isi pesan cocok dengan aslinya.\n\nHarap hubungi kami pada https://gpgtools.tenderapp.com bila Anda yakin bahwa pesan tak diubah.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Verifikasi tanda tangan pesan gagal dengan galat tak dikenal!";
-"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this message's signature.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Terjadi galat yang tak dikenal ketika verifikasi tanda tangan pesan ini.\n\nMohon kontak kami di https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Galat data tanda tangan pesan!";
-"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This message's signature is invalid and could not be verified.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Tanda tangan pesan ini tak valid dan tak bisa diverifikasi.\n\nHarap kontak kami di https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Kunci tanda tangan pesan kedaluarsa.";
-"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "The key which was used to sign this message is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "PERHATIAN: Kunci yang dipakai untuk menandatangani pesan ini kedaluarsa.\n\nAnda dapat mencoba menyegarkan kunci dengan ID %@ dalam GPG Keychain dan menanyakan ke pengirim mengapa kunci kedaluarsa.";
 
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Tanda tangan pesan ini kedaluarsa.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Tanda tangan kedaluarsa dan tak bisa diverifikasi.\n\nTanyakan ke pengirim mengapa tanda tangan kedaluarsa.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 tak terpasang";
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Dekripsi gagal karena MacGPG2 tak terpasang.\n\nHarap unduh dan pasang ulang GPG Suite dari https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 tak terpasang";
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifikasi gagal karena MacGPG2 tak terpasang.\n\nHarap unduh dan pasang ulang GPG Suite dari https://gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d lampiran gagal didekripsi atau diverifikasi.";
@@ -78,37 +78,37 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Tak satupun dari kunci rahasia berikut dapat ditemukan dalam ring kunci Anda (%@). Kunci rahasia diperlukan untuk mendekripsi lampiran ini.\n\nPeriksalah dengan si pengirim bahwa mereka memakai kunci publik Anda yang benar.\nPeriksalah cadangan ring kunci Anda, dan cobalah mengimpor kunci rahasia dari sana.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Dekripsi gagal dengan kesalahan tak dikenal!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while decrypting this attachment.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Terjadi galat yang tak dikenal ketika mendekripsi pesan ini.\n\nHarap hubungi kami pada https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "Dekripsi gagal dengan kesalahan tak dikenal!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "An unknown error occurred while decrypting this attachment.\n\nGPG error message:\n%@\nPlease contact us, including the GPG error message, at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Galat yang tak dikenal terjadi ketika mendekripsi pesan ini.\n\nPesan galat GPG:\n%@\nHarap hubungi kami, sertakan pesan galat GPG, pada https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Kunci yang salah dipakai untuk mengenkripsi lampiran ini.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "This attachment could not be decrypted, since the wrong public key was used to encrypt it.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Lampiran ini tak bisa didekripsi, karena kunci publik yang salah dipakai untuk mengekripsinya.\n\nHarap hubungi kami pada https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Lampiran yang terenkripsi rusak.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Lampiran yang terenkripsi rusak dan tak bisa didekripsi.\n\nSilakan minta ke pengirim untuk mengirim ulang pesan.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Kunci tanda tangan telah dicabut.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "The key which was used to sign this attachment was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "PERHATIAN: Kunci yang dipakai untuk menandatangani lampiran ini telah dicabut.\n\nAnda mesti menyegarkan kunci dengan ID kunci %@ dalam GPG Keychain untuk memeriksa apakah tersedia yang baru. Bila yang terbaru masih dicabut, periksalah dengan pengirim mengapa kunci dicabut.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Kunci tanda tangan ini tak ada dalam Ring Kunci GPG Anda.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "The attachment signature could not be verified, since the key which was used to sign is not in your GPG Keychain.\n\nSearch for the key with ID %@ in GPG Keychain and import it to verify the attachment.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Tanda tangan lampiran ini tak bisa diverifikasi, karena kunci yang dipakai untuk menandatangani tak ada dalam Ring Kunci GPG Anda.\n\nCarilah kunci dengan ID %@ dalam GPG Keychain dan imporlah untuk memverifikasi lampiran.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "Tanda tangan lampiran dibuat dengan algoritma yang tak didukung.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This attachment could not be verified, since the key to the signature was created with an algorithm which is not supported.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Lampiran ini tak bisa diverifikasi, karena kunci tanda tangan dibuat dengan algoritma yang tak didukung.\n\nHarap hubungi kami di https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "PERHATIAN: Tanda tangan lampiran ini tak valid!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "This attachment might have been modified after the signature was created.\n\nPlease contact the sender and make sure the content of the attachment matches the original.\n\nPlease contact us at\nhttps://gpgtools.tenderapp.com/\n if you're sure the attachment was not modified.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "PERHATIAN: Lampiran ini mungkin telah diubah setelah tanda tangan dibuat.\n\nHarap hubungi pengirim untuk memastikan isi lampiran cocok dengan aslinya.\n\nHarap hubungi kami pada https://gpgtools.tenderapp.com bila Anda yakin bahwa lampiran tak diubah.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Verifikasi tanda tangan gagal dengan galat tak dikenal!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this attachment signature.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Terjadi galat yang tak dikenal ketika verifikasi tanda tangan lampiran ini.\n\nMohon kontak kami di https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Galat data tanda tangan!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This attachment signature is invalid and could not be verified.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "Tanda tangan lampiran ini tak valid dan tak bisa diverifikasi.\n\nHarap kontak kami di https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Kunci dari tanda tangan ini kedaluarsa.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "The key which was used to sign this attachment is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "PERHATIAN: Kunci yang dipakai untuk menandatangani lampiran ini kedaluarsa.\n\nAnda dapat mencoba menyegarkan kunci dengan ID %@ dalam GPG Keychain dan menanyakan ke pengirim mengapa kunci kedaluarsa.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Tanda tangan lampiran ini kedaluarsa.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Tanda tangan lampiran kedaluarsa dan tak bisa diverifikasi.\n\nTanyakan ke pengirim mengapa tanda tangan kedaluarsa.";
@@ -135,8 +135,8 @@
 "MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "lampiran yang ditandatangani";
 
 /* Compose Window encrypt/sign button tooltips. */
-"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "This message can't be signed, since there's no private key for %@.\n\nPlease make sure that a private key for this address exists in GPG Keychain. Add a new UID to an existing key for this address if necessary, or create a new key for this address.\n\nIf a key for the address exists, make sure that the address in Mail Preferences is correct and exactly matches the address of your key.";
-"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "This message can't be encrypted, since there are no public keys available for the following addresses: %@.\n\nPlease use GPG Keychain to search and import the keys for those addresses.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "Pesan ini tak bisa ditandatangani, karena tak ada kunci privat bagi %@.\n\nMohon pastikan bahwa suatu kunci privat bagi alamat ini ada dalam GPG Keychain. Tambahkan suatu UID baru ke kunci yang ada bagi alamat ini bila perlu, atau buat kunci baru bagi alamat ini.\n\nBila suatu kunci bagi alamat ada, pastikan bahwa alamat dalam Preferensi Surat benar dan cocok sepenuhnya dengan alamat dari kunci Anda.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "Pesan ini tak bisa dienkripsi, karena tak tersedia kunci publik bagi alamat-alamat berikut: %@.\n\nHarap gunakan GPG Keychain untuk mencari dan mengimpor kunci-kunci bagi alamat-alamat tersebut.";
 "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "Pesan ini tak bisa dienkripsi. Anda mesti terlebih dahulu memasukkan paling tidak satu penerima.";
 
 /* Message view pgp part. */
@@ -148,9 +148,9 @@
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail siap.";
 "GPG_STATUS_NO_ERROR_TOOLTIP" = "Instalasi MacGPG Anda bekerja tanpa galat.";
 "GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 tak terpasang. Periksalah instalasi Anda.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Please download and re-install GPG Suite from https://www.gpgtools.org to ensure all required components are installed.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Harap unduh pemasang GPG Suite dari http://www.gpgtools.org untuk memasang semua GPG Suite.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Harap periksa instalasi dan konfigurasi Anda.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Please download and re-install GPG Suite from https://www.gpgtools.org to ensure all required components are installed.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Harap unduh pemasang GPG Suite dari http://www.gpgtools.org untuk memasang semua GPG Suite.";
 DISABLE_ENCRYPT_DRAFTS_TITLE = "ATTENTION: Disabling the option to \"Encrypt Drafts\" means, that none of your drafts will be stored in encrypted form. Even if you start a mail with Encryption enabled, as soon as you store that mail as draft, without this option enabled, it will be a draft in cleartext.";
 DISABLE_ENCRYPT_DRAFTS_MESSAGE = "This can be a security issue, if you have the option activated to \"Store drafts on server\" under Mail.app > Preferences > Accounts > Mailbox behavior > Drafts. In that case the cleartext draft ends up on the server of your mail provider. Since Mail.app automatically stores drafts of the email you are composing, this can also happen although you never actually saved a new mail as draft.\n\nUnless you really know what you are doing and have a special use case requiring unencrypted drafts, we strongly recommend to leave this option enabled.";
 DISABLE_ENCRYPT_DRAFTS_CONFIRM = "Disable encrypt drafts";
@@ -192,7 +192,7 @@ NO_DEFAULTS_MESSAGE = "GPGMail is not working as expected.\n\nPlease download an
 "MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "You entered the wrong passphrase too many times.";
 "MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Signing your message was aborted because you entered the wrong passphrase 3 times.";
 
-"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at https://gpgtools.tenderapp.com/ with the following error description:\n\n%@";
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nBila masalah Anda tetap bertahan, harap kontak kami pada https://gpgtools.tenderapp.com dengan deskripsi galat berikut:\n\n%@";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the message";
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The message couldn't be decrypted because you cancelled the passphrase request.";
@@ -219,7 +219,7 @@ NO_DEFAULTS_MESSAGE = "GPGMail is not working as expected.\n\nPlease download an
 "MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "To fix this problem, please download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the message failed due to a defect PIN-Entry";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your passphrase, seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools from https://gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "Pembantu PIN-Entry yang merupakan bagian penting dari GPG sepertinya rusak pada sistem Anda.\n\nUntuk memperbaiki masalah ini, pasang ulang versi terbaru dari GPG Suite";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the attachment failed due to a defect PIN-Entry";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your passphrase, seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools from https://gpgtools.org";

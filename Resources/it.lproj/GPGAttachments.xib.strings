@@ -15,10 +15,10 @@
 "256.title" = "Firma";
 "257.title" = "Creato il:";
 "259.title" = "Scadenza:";
-"291.title" = "The signature could not be verified.";
-"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
+"291.title" = "La firma non può essere verificata.";
+"293.title" = "La firma non può essere verificata perché la chiave pubblica non è nel tuo portachiavi. Per favore scarica la chiave utilizzando il programma GPG Keychain.";
 "325.ibShadowedIsNilPlaceholder" = "Nessuna scadenza impostata su questa firma";
 "353.ibShadowedIsNilPlaceholder" = "Nessuna scadenza impostata su questa firma";
 "366.ibShadowedIsNilPlaceholder" = "Nessuna scadenza impostata su questa firma";
-"382.title" = "The signature could not be verified.";
-"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
+"382.title" = "La firma non può essere verificata.";
+"383.title" = "La firma non può essere verificata perché la chiave pubblica non è nel tuo portachiavi. Per favore scarica la chiave utilizzando il programma GPG Keychain.";

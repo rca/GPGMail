@@ -6,7 +6,7 @@
  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
  */
 "SIGNATURE_ERROR_GENERAL_TITLE" = "Non foi posíbel verificar a sinatura.";
-"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "The public key to verify the signature of this attachment is not in your keychain.\n\nPlease download the public key %@ using GPG Keychain.";
+"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "A chave pública para verificar a firma deste anexo non está no seu chaveiro.\n\nDescargue a chave chave pública %@ empregando o acceso ao chaveiro GPG.";
 "DECRYPT_ERROR_GENERAL_TITLE" = "Non foi posíbel descifrar o ficheiro anexo.";
 "DECRYPT_ERROR_GENERAL_MESSAGE" = "A chave secreta para descifrar este anexo non está no seu chaveiro.";
 "ATTACHMENT_DECRYPTED_SUCCESSFULLY_TITLE" = "O ficheiro anexo foi descifrado satisfactoriamente.";

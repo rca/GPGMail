@@ -6,7 +6,7 @@
  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
  */
 "SIGNATURE_ERROR_GENERAL_TITLE" = "Overovanie podpisu zlyhalo.";
-"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "The public key to verify the signature of this attachment is not in your keychain.\n\nPlease download the public key %@ using GPG Keychain.";
+"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "Verejný kľúč na overenie podpisu tejto prílohy nie je vo vašej GPG databáze.\n\nStiahnite, prosím, predmetný verejný kľúč %@ pomocou programu GPG Keychain.";
 "DECRYPT_ERROR_GENERAL_TITLE" = "Dešifrovanie prílohy zlyhalo.";
 "DECRYPT_ERROR_GENERAL_MESSAGE" = "Tajný kľúč na dešifrovanie tejto prílohy nie je vo vašej GPG databáze.";
 "ATTACHMENT_DECRYPTED_SUCCESSFULLY_TITLE" = "Príloha bola úspešne dešifrovaná.";

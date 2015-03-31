@@ -10,7 +10,7 @@
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "PGP-viestin allekirjoitusta ei voitu varmentaa.";
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "PGP-allekirjoituksen lukeminen epäonnistui.";
 "MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "Avainrenkaassasi ei ole PGP-avainta tälle viestille.";
-"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "The message has a valid PGP signature, but the PGP key is not in your keychain. Please use GPG Keychain to add it.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Viestillä on PGP-allekirjoitus, mutta PGP-avainta ei ole avainrenkaassasi. Ole hyvä ja lisää se GPG Keychain.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Tästä PGP-avaimesta ei ole saatavilla tietoja.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Tästä PGP-avaimesta ei ole lisätietoja, koska se ei ole avainrenkaassasi.";
 
@@ -18,13 +18,13 @@
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Salauksen purkaminen epäonnistui tuntemattoman virheen takia!";
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Tuntematon virhe salausta purettaessa.\n\nOle hyvä ja ota yhteyttä meihin osoitteessa https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Salauksen purkaminen epäonnistui tuntemattoman virheen takia!";
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nGPG error message:\n%@\nPlease contact us, including the GPG error message, at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Tuntematon virhe salausta purettaessa.\n\nGPG:n virheilmoitus:\n%@\nOle hyvä ja ota yhteyttä meihin osoitteessa https://gpgtools.tenderapp.com\nLiitä mukaan myös virheilmoituksen teksti.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Tämä viesti on salattu väärällä avaimella.";
-"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "This message could not be decrypted, since the wrong public key was used to encrypt it.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Viestiä ei voitu purkaa, koska se on salattu väärällä julkisella avaimella.\n\nOle hyvä ja ota yhteyttä meihin osoitteessa https://gpgtools.tenderapp.com";
 
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Salattu viesti on vahingoittunut.";
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Tämä salattu viesti on vahingoittunut eikä sitä voida purkaa.\n\nOle hyvä ja pyydä lähettäjää lähettämään viesti uudelleen.";
@@ -89,10 +89,10 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Salattu liitetiedosto on vaurioitunut.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "This encrypted attachment is damaged and could not be decrypted.\n\nPlease ask the sender to send you the message again.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Signature key was revoked.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Allekirjoituksen avain on merkitty kumotuksi.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "The key which was used to sign this attachment was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "The signature key is not in your GPG Keychain.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Allekirjoituksen avain ei ole avainrenkaassasi.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "The attachment signature could not be verified, since the key which was used to sign is not in your GPG Keychain.\n\nSearch for the key with ID %@ in GPG Keychain and import it to verify the attachment.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "The attachment signature was created with an algorithm which is not supported.";

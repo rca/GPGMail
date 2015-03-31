@@ -6,7 +6,7 @@
  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
  */
 "SIGNATURE_ERROR_GENERAL_TITLE" = "İmzanın doğrulanması başarısız oldu.";
-"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "The public key to verify the signature of this attachment is not in your keychain.\n\nPlease download the public key %@ using GPG Keychain.";
+"SIGNATURE_ERROR_NO_PUBKEY_MESSAGE" = "İmzanın doğrulanması için gereken açık anahtar, anahtar zincirinizde değil. Lütfen %@ anahtarını GPG Anahtar Zinciri erişimini kullanarak sisteme dahil edin.";
 "DECRYPT_ERROR_GENERAL_TITLE" = "Dosya ekinin çözülmesi başarısız oldu.";
 "DECRYPT_ERROR_GENERAL_MESSAGE" = "Dosya ekinin çözülmesi için gereken gizli anahtar, anahtar zincirinizde değil.";
 "ATTACHMENT_DECRYPTED_SUCCESSFULLY_TITLE" = "Dosya ekinin çözülmesi başarılığ";

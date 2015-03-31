@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">13E28</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6254</string>
+		<string key="IBDocument.SystemVersion">13F1066</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6751</string>
 		<string key="IBDocument.AppKitVersion">1265.21</string>
 		<string key="IBDocument.HIToolboxVersion">698.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6254</string>
+			<string key="NS.object.0">6751</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSBox</string>
@@ -111,7 +111,7 @@
 								<object class="NSButtonCell" key="NSCell" id="491452844">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">Kontrolli kohe</string>
+									<string key="NSContents">Check Now</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<reference key="NSControlView" ref="163650447"/>
 									<int key="NSButtonFlags">-2038284288</int>
@@ -138,7 +138,7 @@
 									<reference key="NSControlView" ref="758835818"/>
 									<int key="NSButtonFlags">-2038284288</int>
 									<int key="NSButtonFlags2">129</int>
-									<string key="NSAlternateContents">Korduma kippuvad küsimused</string>
+									<string key="NSAlternateContents">Frequently Asked Questions</string>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">200</int>
 									<int key="NSPeriodicInterval">25</int>
@@ -155,7 +155,7 @@
 								<object class="NSTextFieldCell" key="NSCell" id="775619579">
 									<int key="NSCellFlags">68157504</int>
 									<int key="NSCellFlags2">272630784</int>
-									<string key="NSContents">Uuendused</string>
+									<string key="NSContents">Updates</string>
 									<object class="NSFont" key="NSSupport" id="1059241967">
 										<bool key="IBIsSystemFont">YES</bool>
 										<double key="NSSize">13</double>
@@ -237,7 +237,7 @@
 								<object class="NSTextFieldCell" key="NSCell" id="1023351749">
 									<int key="NSCellFlags">68157504</int>
 									<int key="NSCellFlags2">272630784</int>
-									<string key="NSContents">Lugemine</string>
+									<string key="NSContents">Reading</string>
 									<reference key="NSSupport" ref="1059241967"/>
 									<reference key="NSControlView" ref="696331322"/>
 									<reference key="NSBackgroundColor" ref="693655191"/>
@@ -370,7 +370,7 @@
 								<object class="NSButtonCell" key="NSCell" id="1059606293">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">32768</int>
-									<string key="NSContents">Nupp</string>
+									<string key="NSContents">Button</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="263145191"/>
@@ -1141,7 +1141,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="758835818"/>
-						<string key="toolTip">Korduma kippuvad küsimused.</string>
+						<string key="toolTip">Frequently Asked Questions.</string>
 					</object>
 				</object>
 				<string key="733.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
