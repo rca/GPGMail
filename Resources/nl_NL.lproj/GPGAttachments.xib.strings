@@ -15,7 +15,7 @@
 "256.title" = "Handtekening";
 "257.title" = "Gemaakt:";
 "259.title" = "Verloopt:";
-"291.title" = "The signature could not be verified.";
+"291.title" = "De handtekening kan niet geverifieerd worden.";
 "293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
 "325.ibShadowedIsNilPlaceholder" = "Er is geen verloopdatum ingesteld voor deze handtekening";
 "353.ibShadowedIsNilPlaceholder" = "Er is geen verloopdatum ingesteld voor deze handtekening.";

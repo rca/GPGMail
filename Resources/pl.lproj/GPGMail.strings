@@ -151,9 +151,9 @@
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Proszę pobierz i zainstaluj ponownie GPG Suite z https://www.gpgtools.org aby być pewnym, że masz wszystkie komponenty.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Proszę sprawdź swoją instalację oraz konfigurację.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Proszę pobierz i zainstaluj ponownie GPG Suite z https://www.gpgtools.org aby być pewnym, że masz wszystkie komponenty.";
-DISABLE_ENCRYPT_DRAFTS_TITLE = "UWAGA: Wyłączenie opcji \"Szyfruj kopie robocze\" oznacza, że żadna kopia robocza nie będzie przetrzymywana w fomie szyfrowanej. Nawet jeśli uruchomisz maila z włączonym szyfrowaniem, to tylko jak wiadomość będzie zapisana jako kopia roboczna to będzie ona widoczna w formie nieszyfrowanej.";
-DISABLE_ENCRYPT_DRAFTS_MESSAGE = "To może być problem bezpieczeństwa, jeśli masz opcję aktywowaną \"Przetrzymuj kopie roboczne na serwerze\" w Mail.app > Właściwości > Konta > Zadania Skrzynki Odbiorczej > Kopie robocze. W tym przypadku kopie robocze będą przetrzymywane na serwerze Twojego dostawcy email w formie nieszyfrowanej. Mail.app automatycznie przechowuje kopie robocze maili które tworzysz, nawet wtedy kiedy nie zapisujesz je jako kopie roboczne.\n\nJeśli wiesz co robisz i masz wyjątkową sytuację wymagającą nieszyfrowanych kopii roboczych, to zalecamy tą opcję włączyć.";
-DISABLE_ENCRYPT_DRAFTS_CONFIRM = "Wyłącz szyfrowanie kopii roboczych";
+"DISABLE_ENCRYPT_DRAFTS_TITLE" = "Warning: Disabling this option might lead to the leak of sensitive information while composing a message";
+"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, OS X Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling\"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want want to disable \"Encrypt drafts\"?";
+"DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Yes";
 
 
 /* Multiple GPGMail installations. */

@@ -5,11 +5,11 @@
 "PGP_PREFERENCES" = "GPGMail";
 
 /* Message Error Banner messages. */
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "PGP E-Mail konnte nicht entschlüsselt werden.";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "Beim Entschlüsseln dieser E-Mail ist ein Problem aufgetreten. Vergewissern Sie sich, dass in Ihrem GPG Keychain ein gültiger Schlüssel vorhanden ist.";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "PGP-Nachrichtensignatur konnte nicht überprüft werden.";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Beim Lesen der PGP-Signatur dieser E-Mail ist ein Problem aufgetreten.";
-"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "Der verwendete PGP-Schlüssel befindet sich nicht in Ihrem Schlüsselbund.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "PGP Nachricht konnte nicht entschlüsselt werden.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "Beim Entschlüsseln dieser E-Mail ist ein Problem aufgetreten. Vergewissern Sie sich, dass in GPG Keychain ein gültiger Schlüssel vorhanden ist.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Signatur der PGP-Nachrichte konnte nicht überprüft werden.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Beim Lesen der PGP-Signatur dieser Nachricht ist ein Problem aufgetreten.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "Der verwendete PGP-Schlüssel befindet sich nicht in GPG Keychain.";
 "MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Diese Nachricht hat eine gültige PGP-Signatur, der PGP-Schlüssel befindet sich jeoch nicht in Ihrem Schlüsselbund. Bitte verwenden Sie GPG Keychain, um den Schlüssel hinzuzufügen.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Keine Informationen für diesen PGP-Schlüssel vorhanden.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Es ist leider nicht möglich, erweiterte Informationen zu diesem PGP-Schlüssel anzuzeigen, da er sich nicht in ihrem GPG Keychain befindet.";
@@ -151,9 +151,9 @@
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Bitte laden Sie sich GPG Suite von https://www.gpgtools.org herunter und führen die Installation durch um sicherzustellen, dass alle Komponenten auf ihrem System installiert sind.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Bitte überprüfen Sie ihre Installation und Konfiguration.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Bitte laden Sie sich GPG Suite von https://www.gpgtools.org herunter und führen die Installation durch um sicherzustellen, dass alle Komponenten auf ihrem System installiert sind.";
-DISABLE_ENCRYPT_DRAFTS_TITLE = "ACHTUNG: Wenn sie die Option \"Encrypt Drafts\" deaktivieren, wird keiner ihrer Entwürfe in verschlüsselter Form gespeichert. Auch wenn sie eine Email mit aktivierter Verschlüsselung zu schreiben beginnen, sobald diese Email als Entwurf gespeichert wird, wird es ein Entwurf im Klartext (also unverschlüsselt) sein.";
-DISABLE_ENCRYPT_DRAFTS_MESSAGE = "This can be a security issue, if you have the option activated to \"Store drafts on server\" under Mail.app > Preferences > Accounts > Mailbox behavior > Drafts. In that case the cleartext draft ends up on the server of your mail provider. Since Mail.app automatically stores drafts of the email you are composing, this can also happen although you never actually saved a new mail as draft.\n\nUnless you really know what you are doing and have a special use case requiring unencrypted drafts, we strongly recommend to leave this option enabled.";
-DISABLE_ENCRYPT_DRAFTS_CONFIRM = "Disable encrypt drafts";
+"DISABLE_ENCRYPT_DRAFTS_TITLE" = "Warning: Disabling this option might lead to the leak of sensitive information while composing a message";
+"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, OS X Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling\"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want want to disable \"Encrypt drafts\"?";
+"DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Yes";
 
 
 /* Multiple GPGMail installations. */

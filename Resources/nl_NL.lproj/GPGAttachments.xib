@@ -697,7 +697,7 @@ eWNoYWluLg</string>
 																	<object class="NSTextFieldCell" key="NSCell" id="812424302">
 																		<int key="NSCellFlags">67108864</int>
 																		<int key="NSCellFlags2">272629760</int>
-																		<string key="NSContents">The signature could not be verified.</string>
+																		<string key="NSContents">De handtekening kan niet geverifieerd worden.</string>
 																		<reference key="NSSupport" ref="501760921"/>
 																		<string key="NSCellIdentifier">_NS:3944</string>
 																		<reference key="NSControlView" ref="834668756"/>

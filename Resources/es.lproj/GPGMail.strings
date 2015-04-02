@@ -151,9 +151,9 @@
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Por favor, descargar el instalador de GPG Suite https://gpgtools.org para instalar todos los GPG Suite.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Por favor revise su instalación y configuración.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Por favor, descargar el instalador de GPG Suite https://gpgtools.org para instalar todos los GPG Suite.";
-DISABLE_ENCRYPT_DRAFTS_TITLE = "ATENCIÓN: Deshabilitar la opción para \"Cifrar borradores\" significa que ninguno de sus borradores se almacenará en forma cifrada. Incluso si inicia un correo con el cifrado habilitado, tan pronto como almacene ese correo como borrador, sin esta opción habilitada, será un borrador en texto sin cifrar.";
-DISABLE_ENCRYPT_DRAFTS_MESSAGE = "Esto puede ser un problema de seguridad, si tiene activada la opción \"Almacenar borradores en el servidor\" bajo Mail.app > Preferencias > Cuentas > Comportamiento del buzón de correo > Borradores. En ese caso el borrador en texto sin cifrar acaba en el servidor de su proveedor de correo. Como Mail.app almacena automáticamente los borradores de los correos que está componiendo, esto también puede ocurrir aunque en realidad nunca haya guardado un correo nuevo como borrador.\n\nA menos que sepa realmente lo que está haciendo y se encuentre con un caso de uso especial que requiera borradores no cifrados, le recomendamos firmemente dejar esta opción habilitada.";
-DISABLE_ENCRYPT_DRAFTS_CONFIRM = "Deshabilitar borradores cifrados";
+"DISABLE_ENCRYPT_DRAFTS_TITLE" = "Warning: Disabling this option might lead to the leak of sensitive information while composing a message";
+"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, OS X Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling\"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want want to disable \"Encrypt drafts\"?";
+"DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Yes";
 
 
 /* Multiple GPGMail installations. */

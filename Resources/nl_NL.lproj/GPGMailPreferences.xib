@@ -431,7 +431,7 @@
 								<object class="NSButtonCell" key="NSCell" id="684714656">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">131072</int>
-									<string key="NSContents">Build: </string>
+									<string key="NSContents">Build:</string>
 									<reference key="NSSupport" ref="26"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="386760937"/>
@@ -478,7 +478,7 @@
 								<object class="NSButtonCell" key="NSCell" id="1015833167">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">268435456</int>
-									<string key="NSContents">Encrypt new messages by default</string>
+									<string key="NSContents">Encrypt nieuwe berichten standaard</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="714016839"/>
@@ -1090,7 +1090,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="632062900"/>
-						<string key="toolTip">If you've any other question.</string>
+						<string key="toolTip">Als u nog een andere vraag heeft.</string>
 					</object>
 				</object>
 				<string key="1051.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1174,7 +1174,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="984611941"/>
-						<string key="toolTip">Click to copy version into clipboard.</string>
+						<string key="toolTip">Klik om versie te kopiëren naar klembord.</string>
 					</object>
 				</object>
 				<string key="930.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1186,7 +1186,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="386760937"/>
-						<string key="toolTip">Click to copy version into clipboard.</string>
+						<string key="toolTip">Klik om versie te kopiëren naar klembord.</string>
 					</object>
 				</object>
 				<string key="935.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

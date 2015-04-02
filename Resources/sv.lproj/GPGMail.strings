@@ -151,9 +151,9 @@
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Hämta och installera om GPG Suite från https://www.gpgtools.org för att försäkra dig om att alla komponenter är installerade.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Kontrollera din installation och konfiguration.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Hämta och installera om GPG Suite från https://www.gpgtools.org för att försäkra dig om att alla komponenter är installerade.";
-DISABLE_ENCRYPT_DRAFTS_TITLE = "OBS: Att avaktivera alternativet \"Kryptera utkast\" betyder att inget av dina utkast kommer att lagras i krypterad form. Även om du börjar skriva ett meddelande med kryptering aktiverad, och meddelandet lagras som ett utkast, kommer utkastet vara i klartext med detta alternativ avaktiverat.";
-DISABLE_ENCRYPT_DRAFTS_MESSAGE = "Detta kan vara en säkerhetsrisk om du har aktiverat alternativet \"Spara utkast på servern\" i Mail.app > Inställningar > Konton > Brevlådefunktioner > Utkast. I så fall kommer utkasten att lagras i klartext på din e-postleverantörs server. Eftersom Mail.app automatiskt sparar utkast av det meddelande du skriver kan detta också hända även om du egentligen inte sparat ett nytt meddelande som ett utkast.\n\nSåvida du inte vet exakt vad du håller på med och har ett speciellt behov som kräver okrypterade utkast, så rekommenderar vi starkt att ha detta alternativ fortsatt aktiverat.";
-DISABLE_ENCRYPT_DRAFTS_CONFIRM = "Avaktivera krypterade utkast";
+"DISABLE_ENCRYPT_DRAFTS_TITLE" = "Warning: Disabling this option might lead to the leak of sensitive information while composing a message";
+"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, OS X Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling\"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want want to disable \"Encrypt drafts\"?";
+"DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Yes";
 
 
 /* Multiple GPGMail installations. */
