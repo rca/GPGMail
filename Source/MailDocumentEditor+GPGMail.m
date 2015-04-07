@@ -161,7 +161,13 @@ static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyT
 	// check and we can't determine which one is the first call, to correctly add our own item to the checklist,
 	// and later remove it, when the check has cleared.
 	// So instead we add an item.
-	BOOL shouldWarn = NO;
+
+	// If there is no checklist, we have nothing to check.
+	// If we would still check, we head an infinite loop.
+	if (!checklist) {
+		return NO;
+	}
+
 
 	ComposeBackEnd *backEnd = (ComposeBackEnd *)[(MailDocumentEditor *)self backEnd];
 	NSDictionary *securityProperties = [(ComposeBackEnd_GPGMail *)backEnd securityProperties];
@@ -170,16 +176,16 @@ static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyT
 	BOOL originalMessageIsEncrypted = ((Message_GPGMail *)[backEnd originalMessage]).PGPEncrypted;
 	BOOL replyShouldBeEncrypted = [(ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)self backEnd] GMEncryptIfPossible] && [securityProperties[@"shouldEncrypt"] boolValue];
 
-	if(isReply && originalMessageIsEncrypted && !replyShouldBeEncrypted && ![checklist containsObject:kUnencryptedReplyToEncryptedMessage])
-		shouldWarn = YES;
-
-	// If checklist no longer contains the unencryptedReplyToEncryptedMessage item, it means
+	// If checklist contains the unencryptedReplyToEncryptedMessage item, it means
 	// that the user decided to send the message regardless of our warning.
-	if(!shouldWarn)
-		return NO;
+	if(isReply && originalMessageIsEncrypted && !replyShouldBeEncrypted && ![checklist containsObject:kUnencryptedReplyToEncryptedMessage]) {
+		// Warn the user.
+		return YES;
+	}
 
-	// Otherwise perform the check.
-	return YES;
+	// Isn't a un-encrypted reply to an encrypted message or
+	// the user decided to send the message regardless of our warning
+	return NO;
 }
 
 - (void)displayWarningForUnencryptedReplyToEncryptedMessageUpdatingChecklist:(NSMutableArray *)checklist {
