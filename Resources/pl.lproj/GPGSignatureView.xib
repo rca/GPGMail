@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">101000</int>
-		<string key="IBDocument.SystemVersion">13F1066</string>
+		<string key="IBDocument.SystemVersion">13F1077</string>
 		<string key="IBDocument.InterfaceBuilderVersion">6751</string>
 		<string key="IBDocument.AppKitVersion">1265.21</string>
 		<string key="IBDocument.HIToolboxVersion">698.00</string>
@@ -52,7 +52,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{739, 696}, {486, 278}}</string>
 				<int key="NSWTFlags">1685586944</int>
-				<string key="NSWindowTitle">Podpis</string>
+				<string key="NSWindowTitle">Podpisy</string>
 				<string key="NSWindowClass">NSPanel</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
@@ -398,7 +398,7 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="312190895">
 																		<int key="NSCellFlags">68157504</int>
 																		<int key="NSCellFlags2">272761856</int>
-																		<string key="NSContents">Created:</string>
+																		<string key="NSContents">Utworzono:</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<reference key="NSControlView" ref="56396529"/>
 																		<reference key="NSBackgroundColor" ref="840157489"/>
@@ -1458,7 +1458,7 @@
 							<string key="NSKeyPath">gpgKey.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">Nie ustawiono daty ważności dla tego klucza</string>
+								<string key="NS.object.0">Nie ustawiono daty wygaśnięcia tego klucza</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
@@ -1546,7 +1546,7 @@
 							<string key="NSKeyPath">signature.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">Nie ustawiono daty ważności dla tego podpisu</string>
+								<string key="NS.object.0">Nie ustawiono daty wygaśnięcia tego podpisu</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>

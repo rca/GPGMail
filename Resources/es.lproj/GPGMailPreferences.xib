@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">13F1066</string>
+		<string key="IBDocument.SystemVersion">13F1077</string>
 		<string key="IBDocument.InterfaceBuilderVersion">6751</string>
 		<string key="IBDocument.AppKitVersion">1265.21</string>
 		<string key="IBDocument.HIToolboxVersion">698.00</string>
@@ -504,7 +504,7 @@
 								<object class="NSButtonCell" key="NSCell" id="1043626823">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">268435456</int>
-									<string key="NSContents">Sign new messages by default</string>
+									<string key="NSContents">Firmar nuevos mensajes de forma predeterminada</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="955063492"/>
@@ -1174,7 +1174,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="984611941"/>
-						<string key="toolTip">Click to copy version into clipboard.</string>
+						<string key="toolTip">Haga clic para copiar la versión en el portapapeles.</string>
 					</object>
 				</object>
 				<string key="930.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1186,7 +1186,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="386760937"/>
-						<string key="toolTip">Click to copy version into clipboard.</string>
+						<string key="toolTip">Haga clic para copiar la versión en el portapapeles.</string>
 					</object>
 				</object>
 				<string key="935.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
