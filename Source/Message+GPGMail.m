@@ -237,7 +237,9 @@
         // Only set the flags for non attachment parts to support
         // plain messages with encrypted/signed attachments.
         // Otherwise those would display as signed/encrypted as well.
-        if([currentPart isAttachment]) {
+		// application/pgp is a special case since Mail.app identifies it as an attachment, while its
+		// truly a text/plain part (legacy pgp format)
+        if([currentPart isAttachment] && ![currentPart isType:@"application" subtype:@"pgp"]) {
             if([currentPart PGPAttachment])
                 [pgpAttachments addObject:currentPart];
         }

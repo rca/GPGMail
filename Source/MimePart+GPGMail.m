@@ -197,6 +197,11 @@
         if(!ret)
             ret = [self MADecodeWithContext:ctx];
     }
+	else if([self isType:@"application" subtype:@"pgp"]) {
+		// Special case application/pgp seems to be inline PGP with a weird content type.
+		// In order to handle it, it's treated like any other text/plain message.
+		ret = [(id)self decodeTextPlainWithContext:ctx];
+	}
     else {
 		// Set a flag that this is not a PGPMimeEncrypted message
 		// and thus snippets should not be created.
