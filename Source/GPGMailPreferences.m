@@ -186,11 +186,15 @@ NSString *SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
 
 - (BOOL)enableAutomaticChecks {
 	GPGOptions *options = [GPGOptions sharedOptions];
-	if (![options boolForKey:SUEnableAutomaticChecksKey]) {
+	NSNumber *interval = [options valueForKey:SUScheduledCheckIntervalKey];
+	if (interval && interval.integerValue == 0) {
+		return false;
+	}
+	NSNumber *value = [options valueForKey:SUEnableAutomaticChecksKey];
+	if (!value) {
 		return true;
 	}
-	NSNumber *interval = [options valueForKey:SUScheduledCheckIntervalKey];
-	return !interval || interval.integerValue > 0;
+	return value.boolValue;
 }
 - (void)setEnableAutomaticChecks:(BOOL)value {
 	GPGOptions *options = [GPGOptions sharedOptions];
@@ -198,7 +202,7 @@ NSString *SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
 	if (value) {
 		NSNumber *interval = [options valueForKey:SUScheduledCheckIntervalKey];
 		if (interval && interval.integerValue == 0) {
-			[options setValue:nil forKey:SUScheduledCheckIntervalKey];
+			[options setValue:@86400 forKey:SUScheduledCheckIntervalKey];
 		}
 	}
 }
