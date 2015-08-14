@@ -11,7 +11,7 @@
 "728.title" = "Composición";
 "733.ibShadowedToolTip" = "Preguntas Frecuentes.";
 "734.alternateTitle" = "Preguntas Frecuentes";
-"734.title" = "Knowledge Base";
+"734.title" = "Base de conocimiento";
 "744.title" = "Leyendo";
 "781.title" = "Cifrar borradores";
 "786.ibShadowedToolTip" = "Consulte Preferencias -> Visualización -> Lista Preliminar";
@@ -20,7 +20,7 @@
 "930.ibShadowedToolTip" = "Haga clic para copiar la versión en el portapapeles.";
 "931.title" = "Versión: xxx";
 "935.ibShadowedToolTip" = "Haga clic para copiar la versión en el portapapeles.";
-"936.title" = "Build: ";
-"1051.ibShadowedToolTip" = "If you've any other question.";
-"1053.title" = "Support";
-"yJs-2y-8Cb.title" = "Encrypt new messages by default";
+"936.title" = "Versión:";
+"1051.ibShadowedToolTip" = "Si tiene alguna otra pregunta.";
+"1053.title" = "Soporte";
+"yJs-2y-8Cb.title" = "Cifrar nuevos mensajes por defecto";

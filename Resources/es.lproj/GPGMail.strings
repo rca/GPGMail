@@ -15,7 +15,7 @@
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "No hay información adicional para esta clave PGP, ya que no está en su llavero.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Clave secreto para descifrar el mensaje que falta.";
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Ninguna de las siguientes claves secretas (privadas) se pudo encontrar en su juego de claves (%@). La clave secreta es necesaria pra descifrar este mensaje.\n\nPor favor, compruebe con el remitente que este uso su clave pública correcta.\nCompruebe y haga copia de seguridad de su juego de claves, e intente importar la clave secreta de allí.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "¡Hubo un error desconocido durante el descifrado!";
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Ocurrió un error desconocido al descifrar este mensaje.\n\nPor favor, contacte con nosotros en https://gpgtools.tenderapp.com/";
@@ -153,8 +153,8 @@
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Por favor, descargar el instalador de GPG Suite https://gpgtools.org para instalar todos los GPG Suite.";
 "DISABLE_ENCRYPT_DRAFTS_TITLE" = "Advertencia: Deshabilitar esta opción podría llevar a la filtración de información sensible al componer un mensaje";
 "DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "Si la opción \"Almacenar borradores en el servidor\" está habilitada para sus cuentas, OS X Mail almacenará automáticamente sus borradores en su servidor de correo mientras usted está componiendo un mensaje.\nAl deshabilitar \"Cifrar borradores\", sus borradores se almacenarán en texto simple (no cifrado) de forma que cualquiera con acceso al servidor de correo podrá leerlos.\n\nSi mantiene habilitado \"Cifrar borradores\", sus borradores serán cifrados antes de ser almacenados en un servidor de correo, y sólo usted podrá leerlos.\n\n¿Aún quiere deshabilitar \"Cifrar borradores\"?";
-"DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Disable Encryption";
-"DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Cancel";
+"DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Deshabilitar cifrado";
+"DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Cancelar";
 
 
 /* Multiple GPGMail installations. */

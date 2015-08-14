@@ -153,8 +153,8 @@
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Hent og gen-installer GPG Suiten fra https://www.gpgtools.org for at sikre, at alle påkrævede komponenter er installerede.";
 "DISABLE_ENCRYPT_DRAFTS_TITLE" = "Advarsel: Hvis du slår denne indstilling fra, kan følsomme oplysninger blive lækket, mens du skriver en besked";
 "DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "Hvis indstillingen \"Opbevar udkast på serveren\" er slået til for dine konti, gemmer OS X Mail automatisk dine udkast på din mail-server, mens du skriver en besked.\nVed at slå \"Kryptér udkast\" fra vil dine udkast blive opbevaret i klartekst (ikke krypteret), så enhver med adgang til mail-serveren kan læse dem.\n\nHvis du lader \"Kryptér udkast\" være slået til, vil dine udkast blive krypteret, før de opbevares på en mail-server, og det er kun dig, der vil kunne læse dem.\n\nØnsker du stadig at slå \"Kryptér udkast\" fra?";
-"DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Disable Encryption";
-"DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Cancel";
+"DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Slå kryptering fra";
+"DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Annuller";
 
 
 /* Multiple GPGMail installations. */
