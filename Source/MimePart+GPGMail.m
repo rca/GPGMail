@@ -792,7 +792,7 @@
 	NSData *deArmoredEncryptedData = nil;
     // De-armor the message and catch any CRC-Errors.
     @try {
-        deArmoredEncryptedData = [GPGPacket unArmor:encryptedData];
+        deArmoredEncryptedData = [[GPGUnArmor unArmor:[GPGMemoryStream memoryStreamForReading:encryptedData]] readAllData];
     }
     @catch (NSException *exception) {
 		self.PGPError = [self errorForDecryptionError:exception status:nil errorText:nil];
@@ -1376,7 +1376,7 @@
 	[(GM_CAST_CLASS(MimePart *, id))[self topPart] enumerateSubpartsWithBlock:^(MimePart *part) {
 		if ([part isType:@"application" subtype:@"pgp-keys"] && ![[part getIvar:@"pgp-keys-imported"] boolValue]) {
 			
-			NSData *unArmored = [GPGPacket unArmor:part.bodyData];
+			NSData *unArmored = [[GPGUnArmor unArmor:[GPGMemoryStream memoryStreamForReading:part.bodyData]] readAllData];
 			
 			if (unArmored) {
 				NSDictionary *keysByID = [[GPGKeyManager sharedInstance] keysByKeyID];
@@ -1436,8 +1436,10 @@
 				NSData *subData = [signedData subdataWithRange:range];
 				
 				// Unarmor and get cleartext.
+				GPGMemoryStream *subDataStream = [GPGMemoryStream memoryStreamForReading:subData];
 				NSData *cleartext = nil;
-				NSData *sigData = [GPGPacket unArmor:subData clearText:&cleartext];
+				NSData *sigData = [[GPGUnArmor unArmor:subDataStream clearText:&cleartext] readAllData];
+				
 				
 				// Verify signature and add the GPGSignatures to our set.
 				[allSignatures addObjectsFromArray:[gpgc verifySignature:sigData originalData:cleartext]];
