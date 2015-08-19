@@ -476,37 +476,37 @@
 }
 
 - (id)MADecodeTextHtmlWithContext:(MFMimeDecodeContext *)ctx {
-    // Check if message should be processed (-[Message shouldBePGPProcessed] - Snippet generation check)
-    // otherwise out of here!
-    if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
-        return [self MADecodeTextHtmlWithContext:ctx];
-
+	// Check if message should be processed (-[Message shouldBePGPProcessed] - Snippet generation check)
+	// otherwise out of here!
+	if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
+		return [self MADecodeTextHtmlWithContext:ctx];
 	
+	
+	// HTML is a bit hard to decrypt, so check if the parent part,
+	// if exists is a multipart/alternative.
+	// If that's the case, look for a text/plain part, check if
+	// it contains a pgp message and decode it.
+	MimePart *parentPart = [self parentPart];
+	if (parentPart && [parentPart isType:@"multipart" subtype:@"alternative"]) {
+		for (MimePart *tmpPart in [parentPart subparts]) {
+			if ([tmpPart isType:@"text" subtype:@"plain"]) {
+				if ([tmpPart.bodyData mightContainPGPEncryptedDataOrSignatures]) {
+					return [tmpPart decodeTextPlainWithContext:ctx];
+				}
+				break;
+			}
+		}
+	}
+	
+	// Check if the HTML contains a decodeable pgp message,
+	// if that's the case decode it like plain text.
 	NSData *bodyData = [self bodyData];
-    if([bodyData mightContainPGPEncryptedDataOrSignatures]) {
-        // HTML is a bit hard to decrypt, so check if the parent part, if exists is a
-        // multipart/alternative.
-        // If that's the case, look for a text/plain part
-        MimePart *parentPart = [self parentPart];
-        MimePart *textPart = nil;
-        if(parentPart && [parentPart isType:@"multipart" subtype:@"alternative"]) {
-            for(MimePart *tmpPart in [parentPart subparts]) {
-                if([tmpPart isType:@"text" subtype:@"plain"]) {
-                    textPart = tmpPart;
-                    break;
-                }
-            }
-            if(textPart) {
-                return [textPart decodeTextPlainWithContext:ctx];
-            }
-        }
-        
-        if ([bodyData rangeOfPGPInlineEncryptedData].length > 0 || [bodyData rangeOfPGPInlineSignatures].length > 0) {
-            return [(MimePart *)self decodeTextPlainWithContext:ctx];
-        }
-    }
-    
-    return [self MADecodeTextHtmlWithContext:ctx];
+	if ([bodyData rangeOfPGPInlineEncryptedData].length > 0 || [bodyData rangeOfPGPInlineSignatures].length > 0) {
+		return [(MimePart *)self decodeTextPlainWithContext:ctx];
+	}
+	
+	
+	return [self MADecodeTextHtmlWithContext:ctx];
 }
 
 - (id)MADecodeApplicationOctet_streamWithContext:(MFMimeDecodeContext *)ctx {
