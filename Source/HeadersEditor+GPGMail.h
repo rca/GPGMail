@@ -75,3 +75,8 @@
 
 @end
 
+@interface HeadersEditor_GPGMail (MissingMethods)
+
+- (id)composeViewController;
+
+@end

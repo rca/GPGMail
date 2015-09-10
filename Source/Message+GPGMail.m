@@ -526,8 +526,10 @@
     }
     
 	for (GPGPacket *packet in packets) {
-		if (packet.type == GPGPublicKeyEncryptedSessionKeyPacket)
-            [keyIDs addObject:packet.keyID];
+		if (packet.tag == GPGPublicKeyEncryptedSessionKeyPacketTag) {
+			GPGPublicKeyEncryptedSessionKeyPacket *keyPacket = (GPGPublicKeyEncryptedSessionKeyPacket *)packet;
+			[keyIDs addObject:keyPacket.keyID];
+		}
     }
     
 	NSUInteger nrOfMatchingSecretKeys = 0;

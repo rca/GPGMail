@@ -32,6 +32,12 @@
 
 @implementation Library_GPGMail
 
+/** Only for El Capitan . */
+//+ (id)MAPlistDataForMessage:(id)arg1 dateReceived:(id)arg2 dateLastViewed:(id)arg3 remoteID:(id)arg4 gmailLabels:(id)arg5 flags:(long long)arg6 mergeWithDictionary:(id)arg7 {
+//	id ret = [self MAPlistDataForMessage:(id)arg1 dateReceived:(id)arg2 dateLastViewed:(id)arg3 remoteID:(id)arg4 gmailLabels:(id)arg5 flags:(long long)arg6 mergeWithDictionary:(id)arg7];
+//	return ret;
+//}
+
 /** ONLY FOR Mavericks and then on MFLibrary. */
 + (id)MAPlistDataForMessage:(id)message subject:(id)subject sender:(id)sender to:(id)to dateSent:(id)dateSent dateReceived:(id)dateReceived dateLastViewed:(id)dateLastViewed remoteID:(id)remoteID originalMailboxURLString:(id)originalMailboxURLString gmailLabels:(id)gmailLabels flags:(long long)flags mergeWithDictionary:(id)mergeWithDictionary {
     if([sender isKindOfClass:[GPGFlaggedString class]])

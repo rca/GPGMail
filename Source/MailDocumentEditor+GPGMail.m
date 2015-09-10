@@ -63,12 +63,25 @@ static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyT
 }
 
 - (void)configureSecurityMethodAccessoryViewForNormalMode {
-    GMSecurityMethodAccessoryView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
+	GMSecurityMethodAccessoryView *accessoryView = [self securityMethodAccessoryView]; //[self getIvar:@"SecurityMethodHintAccessoryView"];
     [accessoryView configureForWindow:[self valueForKey:@"_window"]];
 }
 
+- (void)setSecurityMethodAccessoryView:(GMSecurityMethodAccessoryView *)securityMethodAccessoryView {
+	[self setIvar:@"SecurityMethodAccessoryView" value:securityMethodAccessoryView];
+}
+
+- (GMSecurityMethodAccessoryView *)securityMethodAccessoryView {
+	if([GPGMailBundle isElCapitan]) {
+		return (GMSecurityMethodAccessoryView *)[(NSObject *)[[self window] delegate] getIvar:@"SecurityMethodAccessoryView"];
+	}
+	else {
+		return (GMSecurityMethodAccessoryView *)[self getIvar:@"SecurityMethodAccessoryView"];
+	}
+}
+
 - (void)updateSecurityMethodHighlight {
-    GMSecurityMethodAccessoryView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
+    GMSecurityMethodAccessoryView *accessoryView = [self securityMethodAccessoryView];
     ComposeBackEnd *backEnd = ((MailDocumentEditor *)self).backEnd;
     NSDictionary *securityProperties = ((ComposeBackEnd_GPGMail *)backEnd).securityProperties;
     
@@ -94,16 +107,17 @@ static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyT
 }
 
 - (void)updateSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
-    GMSecurityMethodAccessoryView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
+    GMSecurityMethodAccessoryView *accessoryView = [self securityMethodAccessoryView];
     accessoryView.securityMethod = securityMethod;
 }
 
 - (void)MABackEndDidLoadInitialContent:(id)content {
     [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didExitFullScreen:) name:@"NSWindowDidExitFullScreenNotification" object:nil];
-    
-    // Setup security method hint accessory view in top right corner of the window.
-    [self setupSecurityMethodHintAccessoryView];
-    GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).guessedSecurityMethod;
+	
+	// Setup security method hint accessory view in top right corner of the window.
+	[self setupSecurityMethodHintAccessoryView];
+	
+	GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).guessedSecurityMethod;
     if(((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).securityMethod)
         securityMethod = ((ComposeBackEnd_GPGMail *)((MailDocumentEditor *)self).backEnd).securityMethod;
     [self updateSecurityMethod:securityMethod];
@@ -113,20 +127,31 @@ static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyT
 }
 
 - (void)setupSecurityMethodHintAccessoryView {
-    GMSecurityMethodAccessoryView *accessoryView = [[GMSecurityMethodAccessoryView alloc] init];
+	// On El Capitan there's no more space on top of the title bar, so
+	// the security method accessory view is inserted as toolbar item in
+	// -[ComposeViewController toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:]
+	GMSecurityMethodAccessoryView *accessoryView = nil;
+	if([GPGMailBundle isElCapitan]) {
+		accessoryView = [self securityMethodAccessoryView];
+	}
+	else {
+		accessoryView = [[GMSecurityMethodAccessoryView alloc] init];
+	}
     accessoryView.delegate = self;
-    NSWindow *window = [self valueForKey:@"_window"];
 	
-   if([NSApp mainWindow].styleMask & NSFullScreenWindowMask) // Only check the mein window to detect fullscreen.
-       [accessoryView configureForFullScreenWindow:window];
-   else
-       [accessoryView configureForWindow:window];
-    
-    [self setIvar:@"SecurityMethodHintAccessoryView" value:accessoryView];
+	if(![GPGMailBundle isElCapitan]) {
+		NSWindow *window = [self valueForKey:@"_window"];
+		
+		if([NSApp mainWindow].styleMask & NSFullScreenWindowMask) // Only check the mein window to detect fullscreen.
+			[accessoryView configureForFullScreenWindow:window];
+		else
+			[accessoryView configureForWindow:window];
+		[self setSecurityMethodAccessoryView:accessoryView];
+	}
 }
 
 - (void)hideSecurityMethodAccessoryView {
-    GMSecurityMethodAccessoryView *accessoryView = [self getIvar:@"SecurityMethodHintAccessoryView"];
+	GMSecurityMethodAccessoryView *accessoryView = [self securityMethodAccessoryView]; //[self getIvar:@"SecurityMethodHintAccessoryView"];
     accessoryView.hidden = YES;
 }
 
@@ -241,7 +266,11 @@ static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyT
 				[strongSelf sendMessageAfterChecking:checklist];
 			}
 			else {
-				[[strongSelf headersEditor] setAGoodFirstResponder];
+				// Seems not to be necessary on El Capitan.
+				if(![GPGMailBundle isElCapitan]) {
+					[[strongSelf headersEditor] setAGoodFirstResponder];
+				}
+		
 			}
 		}];
 	}
@@ -273,20 +302,59 @@ static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyT
 	[self MASendMessageAfterChecking:checklist];
 }
 
-- (void)MABackEnd:(id)backEnd didCancelMessageDeliveryForEncryptionError:(MFError *)error {
-	if ([((NSDictionary *)error.userInfo)[@"GPGErrorCode"] integerValue] == GPGErrorCancelled) {
-		return;
-	}
-	[self MABackEnd:backEnd didCancelMessageDeliveryForEncryptionError:error];
+#warning Implement properly for El Capitan -[backEnd] methods don't exist, so we'll have to add them.
+//- (void)backEnd:(id)backEnd didCancelMessageDeliveryForEncryptionError:(MFError *)error {
+//	if ([((NSDictionary *)error.userInfo)[@"GPGErrorCode"] integerValue] == GPGErrorCancelled) {
+//		return;
+//	}
+//	NSAlert *alert = [(id)self _newAlertForMalformedAddress:@"hello@wow.com"];
+//	[[(id)self backEnd] setIsDeliveringMessage:NO];
+//	[[(id)self delegate] _cancelSendAnimation];
+//	[[(id)self delegate] restorePositionBeforeAnimation];
+//	// At this point the compose view controller has been removed, so we have to re-add it in case of an error.
+//	//[[(id)self delegate] addComposeViewController:self];
+//	[self setIvar:@"KeepAliveDueToSendFailure" value:@(YES)];
+//	[alert beginSheetModalForWindow:[(id)self window] completionHandler:^(NSModalResponse response){
+//			//			[[(id)self backEnd] setHasChanges:1];
+//			//			[[self window] makeKeyAndOrderFront:0];
+//	}];
+//	
+//	//[self MABackEnd:backEnd didCancelMessageDeliveryForEncryptionError:error];
+//}
+
+#warning Implement properly for El Capitan -[backEnd] methods don't exist, so we'll have to add them.
+//- (void)backEnd:(id)backEnd didCancelMessageDeliveryForError:(MFError *)error {
+//	if ([((NSDictionary *)error.userInfo)[@"GPGErrorCode"] integerValue] == GPGErrorCancelled) {
+//		return;
+//	}
+//	//[self MABackEnd:backEnd didCancelMessageDeliveryForError:error];
+//}
+
+- (void)MABackEndDidSaveMessage:(id)arg1 result:(long long)arg2 {
+	[self MABackEndDidSaveMessage:arg1 result:arg2];
 }
 
-- (void)MABackEnd:(id)backEnd didCancelMessageDeliveryForError:(MFError *)error {
-	if ([((NSDictionary *)error.userInfo)[@"GPGErrorCode"] integerValue] == GPGErrorCancelled) {
-		return;
+- (void)MABackEndDidAppendMessageToOutbox:(id)arg1 result:(long long)arg2 {
+	[self MABackEndDidAppendMessageToOutbox:arg1 result:arg2];
+	if(arg2 == 0) {
+		[[self window] makeKeyAndOrderFront:0];
 	}
-	[self MABackEnd:backEnd didCancelMessageDeliveryForError:error];
 }
 
+- (void)MASetDelegate:(id)delegate {
+	[self MASetDelegate:delegate];
+}
 
+- (id)MA_newAppendToOutboxFailedAlert {
+	return [self MA_newAppendToOutboxFailedAlert];
+}
+
+- (void)MAForceClose {
+	[self MAForceClose];
+}
+
+- (void)MAViewWillClose {
+	[self MAViewWillClose];
+}
 
 @end

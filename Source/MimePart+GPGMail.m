@@ -693,7 +693,12 @@
 	
     MessageBody *decryptedMessageBody = nil;
     NSData *encryptedData = [dataPart bodyData];
-    
+	
+	// If encrytedData is nil, rangeOfData returns 0 instead of NSNotFound.
+	// Makes sense probably.
+	if(!encryptedData)
+		return nil;
+	
     // Check if the data part contains the Content-Type string.
     // If so, this is a message which was created by a very early alpha
     // of GPGMail 2.0 which sent out completely corrupted messages.
@@ -804,13 +809,18 @@
 	__block NSString *decryptKey = nil;
 	
 	[GPGPacket enumeratePacketsWithData:deArmoredEncryptedData block:^(GPGPacket *packet, BOOL *stop) {
-		GPGKey *key = [[GPGMailBundle sharedInstance] secretGPGKeyForKeyID:packet.keyID includeDisabled:YES];
+		if(packet.tag != GPGPublicKeyEncryptedSessionKeyPacketTag) {
+			return;
+		}
+		
+		GPGPublicKeyEncryptedSessionKeyPacket *keyPacket = (GPGPublicKeyEncryptedSessionKeyPacket *)packet;
+		GPGKey *key = [[GPGMailBundle sharedInstance] secretGPGKeyForKeyID:keyPacket.keyID includeDisabled:YES];
 		if (key) {
 			decryptKey = [key description];
 			*stop = YES;
 		}
 	}];
-	
+
 	
 	GPGController *gpgc = [[GPGController alloc] init];
 	NSData *decryptedData = nil;
@@ -1377,7 +1387,7 @@
 				NSDictionary *keysByID = [[GPGKeyManager sharedInstance] keysByKeyID];
 				
 				[GPGPacket enumeratePacketsWithData:unArmored block:^(GPGPacket *packet, BOOL *stop) {
-					if (packet.type == GPGPublicKeyPacket && !keysByID[packet.keyID]) {
+					if (packet.tag == GPGPublicKeyPacketTag && !keysByID[((GPGPublicKeyPacket *)packet).keyID]) {
 						*stop = YES;
 						[part setIvar:@"pgp-keys-imported" value:@(YES)];
 						[gpgc importFromData:unArmored fullImport:NO];
@@ -1401,8 +1411,13 @@
 		// If the signature is type 0x00 and the text doesn't contain a \r\n, convert \n to \r\n.
 		// This is needed because Mail converts \r\n to \n.
 		NSArray *packets = [GPGPacket packetsWithData:signatureData];
-		if ([packets count] && [((GPGPacket *)packets[0]) signatureType] == 0 && [signedData rangeOfData:[NSData dataWithBytes:"\r\n" length:2] options:0 range:NSMakeRange(0, [signedData length])].location == NSNotFound) {
-				signedData = [[NSData alloc] initWithDataConvertingLineEndingsFromUnixToNetwork:signedData];
+		if([packets count]) {
+			GPGSignaturePacket *packet = packets[0];
+			if(packet.tag == GPGSignaturePacketTag && packet.type == 0) {
+				if([signedData rangeOfData:[NSData dataWithBytes:"\r\n" length:2] options:0 range:NSMakeRange(0, [signedData length])].location == NSNotFound) {
+					signedData = [[NSData alloc] initWithDataConvertingLineEndingsFromUnixToNetwork:signedData];
+				}
+			}
 		}
 		
         signatures = [gpgc verifySignature:signatureData originalData:signedData];

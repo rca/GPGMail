@@ -28,7 +28,7 @@
 }
 
 + (NSString *)systemRootPath {
-	return @"/Volumes/OS X Yosemite";
+	return @"/";
 }
 
 + (void)loadFrameworks {

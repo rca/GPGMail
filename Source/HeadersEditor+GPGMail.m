@@ -58,7 +58,7 @@
 
 
 - (void)symmetricEncryptClicked:(id)sender {
-	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+	ComposeBackEnd *backEnd = [GPGMailBundle backEndFromObject:self];
     NSDictionary *securityProperties = ((ComposeBackEnd_GPGMail *)backEnd).securityProperties;
     NSMutableDictionary *updatedSecurityProperties = [@{} mutableCopy];
 
@@ -82,7 +82,7 @@
 	if (![[self getIvar:@"AllowSymmetricEncryption"] boolValue]) {
 		return;
 	}
-	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+	ComposeBackEnd *backEnd = [GPGMailBundle backEndFromObject:self];
     NSDictionary *securityProperties = ((ComposeBackEnd_GPGMail *)backEnd).securityProperties;
     NSMutableDictionary *updatedSecurityProperties = [@{} mutableCopy];
 
@@ -242,7 +242,7 @@
     
     // If any luck, the security option should be known by now.
     // It's not, but it still works as assumed.
-    ComposeBackEnd *backEnd = [(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd];
+    ComposeBackEnd *backEnd = [GPGMailBundle backEndFromObject:self];
     GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
     if(((ComposeBackEnd_GPGMail *)backEnd).securityMethod)
         securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).securityMethod;
@@ -315,8 +315,15 @@
 	// Belongs to: #624.
     // MailApp seems to call S in Yosemite to cancel previous updates.
     // That's highly interesting!.
-	if(![self valueForKey:@"_documentEditor"])
-		return;
+	// DocumentEditor no longer exists in El Capitan. Seems to have been replaced by ComposeViewController.
+	if([GPGMailBundle isElCapitan]) {
+		if([self respondsToSelector:@selector(composeViewController)] && ![self composeViewController])
+			return;
+	}
+	else {
+		if(![self valueForKey:@"_documentEditor"])
+			return;
+	}
 	
 	[self MAUpdateSecurityControls];
 }
@@ -344,7 +351,7 @@
     // this canSign property. Since canSignFromAddress always returns true in GPGMail,
     // because otherwise, canEncrypt would not always be evaluated, we have
     // to set the real value here, which is contained in SignIsPossible.
-    ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+    ComposeBackEnd *backEnd = [GPGMailBundle backEndFromObject:self];
     NSDictionary *securityProperties = ((ComposeBackEnd_GPGMail *)backEnd).securityProperties;
     if(securityProperties[@"SignIsPossible"])
         canSign = [securityProperties[@"SignIsPossible"] boolValue];
@@ -353,7 +360,7 @@
 
 - (void)MASetCanEncrypt:(BOOL)canEncrypt {
     // Only on Yosemite. See MASetCanSign for explanation.
-    ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+    ComposeBackEnd *backEnd = [GPGMailBundle backEndFromObject:self];
     NSDictionary *securityProperties = ((ComposeBackEnd_GPGMail *)backEnd).securityProperties;
     if(securityProperties[@"EncryptIsPossible"])
         canEncrypt = [securityProperties[@"EncryptIsPossible"] boolValue];
@@ -365,7 +372,7 @@
     // On Yosemite, the encrypt and sign button states are no longer directly set
     // in _updateSecurityStateInBackgroundForRecipients, but instead in setMessageIsToBeEncrypted.
     // So we set our preferred state in here.
-    ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+    ComposeBackEnd *backEnd = [GPGMailBundle backEndFromObject:self];
     NSDictionary *securityProperties = ((ComposeBackEnd_GPGMail *)backEnd).securityProperties;
     
     // It's possible that SetEncrypt is set to true, since that only reflects the defaults
@@ -390,7 +397,7 @@
     // On Yosemite, the encrypt and sign button states are no longer directly set
     // in _updateSecurityStateInBackgroundForRecipients, but instead in setMessageIsToBeSigned.
     // So we set our preferred state in here.
-    ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+    ComposeBackEnd *backEnd = [GPGMailBundle backEndFromObject:self];
     NSDictionary *securityProperties = ((ComposeBackEnd_GPGMail *)backEnd).securityProperties;
     
     if(securityProperties[@"SetSign"])
@@ -532,7 +539,7 @@
 		}
 	}
 	
-	ComposeBackEnd *backEnd = [[self valueForKey:@"_documentEditor"] backEnd];
+	ComposeBackEnd *backEnd = [GPGMailBundle backEndFromObject:self];
 	
     // Select a valid item if needed.
     if (selectedItem.isHidden) {
@@ -591,14 +598,15 @@
         [button addItemWithTitle:(parentItem ? parentItem : item).title];
     
     // Set the selected key in the back-end.
-	[[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd] setIvar:@"gpgKeyForSigning" value:[item getIvar:@"gpgKey"]];
+	ComposeBackEnd *backEnd = [GPGMailBundle backEndFromObject:self];
+	[backEnd setIvar:@"gpgKeyForSigning" value:[item getIvar:@"gpgKey"]];
     
     // Only reset the status if this method is called from a user generated event.
     // Otherwise there's a notification loop, because the security method is set and reset again 
     // and again.
     // Also don't reset it, if the user chose the security method beforehand.
-    if(!calledFromGPGMail && !((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).userDidChooseSecurityMethod) {
-        ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod = 0;
+    if(!calledFromGPGMail && !((ComposeBackEnd_GPGMail *)backEnd).userDidChooseSecurityMethod) {
+        ((ComposeBackEnd_GPGMail *)backEnd).securityMethod = 0;
     }
 
 	[self MAChangeFromHeader:button];
@@ -611,9 +619,10 @@
 		return;
 	}
 	
-	GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).guessedSecurityMethod;
-    if(((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod)
-        securityMethod = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]).securityMethod;
+	ComposeBackEnd *backEnd = [GPGMailBundle backEndFromObject:self];
+	GPGMAIL_SECURITY_METHOD securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).guessedSecurityMethod;
+    if(((ComposeBackEnd_GPGMail *)backEnd).securityMethod)
+        securityMethod = ((ComposeBackEnd_GPGMail *)backEnd).securityMethod;
 	// It seems calling updateSecurityControls at this point is most reliable.
     if([GPGMailBundle isYosemite]) {
         [self _updateSecurityControls];
@@ -627,7 +636,7 @@
     // This method is currently only used on Yosemite, since Apple
     // switched to a ValueTransformer which is not really adequate for
     // our more advanced tool tips.
-    ComposeBackEnd_GPGMail *backEnd = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]);
+    ComposeBackEnd_GPGMail *backEnd = [GPGMailBundle backEndFromObject:self];
     GPGMAIL_SECURITY_METHOD securityMethod = backEnd.securityMethod;
     if(securityMethod == 0)
         securityMethod = backEnd.guessedSecurityMethod;
@@ -658,7 +667,7 @@
     // [[[self signButton] control] setToolTip:@"Whatever we want to be written here."];
     // The binding listens to messageIsToBeEncrypted and messageIsToBeSigned, so maybe we should as well.
     
-    ComposeBackEnd_GPGMail *backEnd = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]);
+    ComposeBackEnd_GPGMail *backEnd = [GPGMailBundle backEndFromObject:self];
     if(backEnd.securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP) {
         NSString *signToolTip = [self signButtonToolTip];
         GMSecurityControl *signControl = [self valueForKey:@"_signButton"];
@@ -670,7 +679,7 @@
 }
 
 - (NSString *)encryptButtonToolTip {
-    ComposeBackEnd_GPGMail *backEnd = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]);
+    ComposeBackEnd_GPGMail *backEnd = [GPGMailBundle backEndFromObject:self];
     NSDictionary *securityProperties = ((ComposeBackEnd_GPGMail *)backEnd).securityProperties;
     
     NSString *toolTip = @"";
@@ -689,7 +698,7 @@
 }
 
 - (NSString *)signButtonToolTip {
-    ComposeBackEnd_GPGMail *backEnd = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]);
+    ComposeBackEnd_GPGMail *backEnd = [GPGMailBundle backEndFromObject:self];
     NSDictionary *securityProperties = ((ComposeBackEnd_GPGMail *)backEnd).securityProperties;
     
     NSString *toolTip = @"";
@@ -708,7 +717,7 @@
 }
 
 - (void)MA_updateEncryptButtonTooltip {
-    ComposeBackEnd_GPGMail *backEnd = ((ComposeBackEnd_GPGMail *)[(MailDocumentEditor *)[self valueForKey:@"_documentEditor"] backEnd]);
+    ComposeBackEnd_GPGMail *backEnd = [GPGMailBundle backEndFromObject:self];
     
     GPGMAIL_SECURITY_METHOD securityMethod = backEnd.guessedSecurityMethod;
     if(backEnd.securityMethod)
@@ -722,6 +731,14 @@
     else {
         [self MA_updateEncryptButtonTooltip];
     }
+}
+
+- (void)MA_addressFieldChanged {
+	[self MA_addressFieldChanged];
+}
+
+- (void)MAChangeHeaderField:(id)arg1 {
+	[self MAChangeHeaderField:arg1];
 }
 
 - (void)MADealloc {

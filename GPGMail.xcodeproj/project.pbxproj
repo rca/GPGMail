@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B00D9051B5440F800DBDCD7 /* ElCapitan_10.11_Beta3 in Resources */ = {isa = PBXBuildFile; fileRef = 1B00D9041B5440F800DBDCD7 /* ElCapitan_10.11_Beta3 */; };
+		1B00D9071B544C0300DBDCD7 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B00D9061B544C0300DBDCD7 /* WebKit.framework */; };
 		1B01AC5C17C82A77008FC246 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 1B01AC5B17C82A77008FC246 /* dsa_pub.pem */; };
 		1B02D70813F1E9D80032CFD1 /* GPGFlaggedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D70713F1E9D80032CFD1 /* GPGFlaggedString.m */; };
 		1B02D70A13F1E9F00032CFD1 /* NSArray+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D70913F1E9F00032CFD1 /* NSArray+Functional.m */; };
@@ -128,6 +130,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1B00D9021B5434F100DBDCD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1B06268F1746992B00E51308 /* Libmacgpg.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1BE88B391B47D7F900A812B6;
+			remoteInfo = NewUnitTests;
+		};
 		1B0626A91746998D00E51308 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1B06268F1746992B00E51308 /* Libmacgpg.xcodeproj */;
@@ -195,6 +204,8 @@
 
 /* Begin PBXFileReference section */
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		1B00D9041B5440F800DBDCD7 /* ElCapitan_10.11_Beta3 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ElCapitan_10.11_Beta3; sourceTree = "<group>"; };
+		1B00D9061B544C0300DBDCD7 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		1B01AC5B17C82A77008FC246 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		1B02D70713F1E9D80032CFD1 /* GPGFlaggedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPGFlaggedString.m; sourceTree = "<group>"; };
 		1B02D70913F1E9F00032CFD1 /* NSArray+Functional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Functional.m"; sourceTree = "<group>"; };
@@ -3474,6 +3485,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B00D9071B544C0300DBDCD7 /* WebKit.framework in Frameworks */,
 				30E75A671731A7F900C9E391 /* Libmacgpg.framework in Frameworks */,
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
 				559A81330838EEFD0052F47C /* Security.framework in Frameworks */,
@@ -3506,6 +3518,7 @@
 		089C1671FE841209C02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1B00D9061B544C0300DBDCD7 /* WebKit.framework */,
 				1B19E83F13A2AEA4002E59ED /* AppKit.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
 				1BCD9A4B13A8C6B5003024C7 /* CoreFoundation.framework */,
@@ -3554,8 +3567,9 @@
 				1B0626AA1746998D00E51308 /* Libmacgpg.framework */,
 				1B0626AC1746998D00E51308 /* UnitTest.octest */,
 				1B0626AE1746998D00E51308 /* org.gpgtools.Libmacgpg.xpc */,
-				1B0626B01746998D00E51308 /* installerHelper */,
 				1B0626B21746998D00E51308 /* LeakFinder.app */,
+				1B0626B01746998D00E51308 /* GPGTools.app */,
+				1B00D9031B5434F100DBDCD7 /* NewUnitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4871,6 +4885,7 @@
 		1BFDB138180B30DB00B677C2 /* MailHeaders */ = {
 			isa = PBXGroup;
 			children = (
+				1B00D9041B5440F800DBDCD7 /* ElCapitan_10.11_Beta3 */,
 				1B92838D19F9A55600D540DF /* Yosemite_Final */,
 				1BFDB139180B30DB00B677C2 /* Lion */,
 				1BFDB561180B30E000B677C2 /* Mavericks */,
@@ -6991,6 +7006,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		1B00D9031B5434F100DBDCD7 /* NewUnitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = NewUnitTests.xctest;
+			remoteRef = 1B00D9021B5434F100DBDCD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		1B0626AA1746998D00E51308 /* Libmacgpg.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -7012,10 +7034,10 @@
 			remoteRef = 1B0626AD1746998D00E51308 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		1B0626B01746998D00E51308 /* installerHelper */ = {
+		1B0626B01746998D00E51308 /* GPGTools.app */ = {
 			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = installerHelper;
+			fileType = wrapper.application;
+			path = GPGTools.app;
 			remoteRef = 1B0626AF1746998D00E51308 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -7102,6 +7124,7 @@
 				30E227901772057A00AD9A48 /* SymmetricEncryptionOff.pdf in Resources */,
 				3066C60D17579F5900384E29 /* CertSmallStd@2x.png in Resources */,
 				3066C6101757A0FC00384E29 /* MenuArrowWhite.png in Resources */,
+				1B00D9051B5440F800DBDCD7 /* ElCapitan_10.11_Beta3 in Resources */,
 				3066C6111757A0FC00384E29 /* MenuArrowWhite@2x.png in Resources */,
 				3066C6171757A54900384E29 /* certificate.png in Resources */,
 				3066C6181757A54900384E29 /* certificate@2x.png in Resources */,
@@ -7170,7 +7193,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "[[ \"$LOCALIZE\" == \"NO\" ]] && exit 0\n [[ -d \"$DEPLOY_RESOURCES_DIR\" ]] || exit 0\n \n alias localizeXIB=\"$DEPLOY_RESOURCES_DIR/bin/localizeXIB\"\n ignore=\"$DEPLOY_RESOURCES_DIR/config/l10n_ignored_strings.txt\"\n langs=\"ca cs da de es et fi fr gl id_ID it nb nl_NL pl pt_BR pt_PT ru sk sv tr_TR zh_CN\"\n sourceDir=Resources/en.lproj\n \n localizeXIB -i \"$ignore\" $sourceDir/GPGMailPreferences.xib $langs || exit 1\n localizeXIB -i \"$ignore\" $sourceDir/GPGSignatureView.xib   $langs || exit 1\n localizeXIB -i \"$ignore\" $sourceDir/GPGAttachments.xib     $langs || exit 1\n";
+			shellScript = "[[ \"$LOCALIZE\" == \"NO\" ]] && exit 0\n [[ -d \"$DEPLOY_RESOURCES_DIR\" ]] || exit 0\n \n localizeXIB=\"$DEPLOY_RESOURCES_DIR/bin/localizeXIB\"\n ignore=\"$DEPLOY_RESOURCES_DIR/config/l10n_ignored_strings.txt\"\n langs=\"ca cs da de es et fi fr gl id_ID it nb nl_NL pl pt_BR pt_PT ru sk sv tr_TR zh_CN\"\n sourceDir=Resources/en.lproj\n \n \"$localizeXIB\" -i \"$ignore\" $sourceDir/GPGMailPreferences.xib $langs || exit 1\n \"$localizeXIB\" -i \"$ignore\" $sourceDir/GPGSignatureView.xib   $langs || exit 1\n \"$localizeXIB\" -i \"$ignore\" $sourceDir/GPGAttachments.xib     $langs || exit 1\n";
 			showEnvVarsInLog = 0;
 		};
 		30F151C51500BD4500980642 /* Fill Info.plist */ = {
@@ -7671,6 +7694,8 @@
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_POSTPROCESSING = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -7699,6 +7724,7 @@
 					suppress,
 				);
 				PRODUCT_NAME = GPGMail;
+				STRIP_STYLE = "non-global";
 				VALID_ARCHS = "x86_64 i386";
 				WRAPPER_EXTENSION = mailbundle;
 			};
@@ -7715,8 +7741,9 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEPLOYMENT_POSTPROCESSING = NO;
+				DEPLOYMENT_POSTPROCESSING = YES;
 				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Source/GPGMail_Prefix.pch;
@@ -7739,6 +7766,8 @@
 					suppress,
 				);
 				PRODUCT_NAME = GPGMail;
+				SEPARATE_STRIP = NO;
+				STRIP_STYLE = "non-global";
 				VALID_ARCHS = "x86_64 i386";
 				WRAPPER_EXTENSION = mailbundle;
 			};
@@ -7753,6 +7782,10 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				DEPLOY_RESOURCES_DIR = "$(SRCROOT)/Dependencies/DeployResources";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7787,6 +7820,7 @@
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(HOME)/Library/Containers/com.apple.mail/Data/Library/Frameworks $(HOME)/Library/Frameworks /Library/Frameworks";
@@ -7811,6 +7845,10 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				DEPLOY_RESOURCES_DIR = "$(SRCROOT)/Dependencies/DeployResources";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7846,6 +7884,7 @@
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LD_RUNPATH_SEARCH_PATHS = "/Library/Frameworks $(HOME)/Library/Frameworks $(HOME)/Library/Containers/com.apple.mail/Data/Library/Frameworks";

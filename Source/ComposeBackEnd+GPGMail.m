@@ -18,7 +18,7 @@
 #import <NSString-NSStringUtils.h>
 #import <MutableMessageHeaders.h>
 #import <MailNotificationCenter.h>
-#import <ComposeBackEnd.h>
+#import "ElCapitan_10.11_Beta3/MailUI/ComposeBackEnd.h"
 #import "MailAccount.h"
 #import "MessageAttachment.h"
 #import "CCLog.h"
@@ -40,6 +40,9 @@
 #define restrict
 #import <RegexKit/RegexKit.h>
 
+#define MAIL_SELF ((ComposeBackEnd *)self)
+
+
 @implementation ComposeBackEnd_GPGMail
 
 - (BOOL)setupSecurityPropertiesQueue {
@@ -53,6 +56,16 @@
 - (dispatch_queue_t)securityPropertiesQueue {
 	GMDispatchQueueObject *securityPropertiesQueue = [self getIvar:@"GMSecurityPropertiesQueue"];
 	return securityPropertiesQueue.dispatchQueue;
+}
+
+- (id)MAInit {
+	id ret = [self MAInit];
+	
+	/** On El Capitan initCreatingDocumentEditor no longer exists, instead we'll setup our securityPropertiesQueue in init.
+	 */
+	[ret setupSecurityPropertiesQueue];
+	
+	return ret;
 }
 
 - (id)MAInitCreatingDocumentEditor:(BOOL)createDocumentEditor {
@@ -100,10 +113,34 @@
     [self updateSecurityProperties:@{@"shouldEncrypt": @(encryptIfPossible)}];
     
     [self MASetEncryptIfPossible:encryptIfPossible];
-    [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
 	
-	HeadersEditor_GPGMail *headersEditor = ((MailDocumentEditor *)[((ComposeBackEnd *)self) delegate]).headersEditor;
-	[headersEditor updateSymmetricButton];
+	
+	id documentEditor = nil;
+	if([GPGMailBundle isElCapitan]) {
+#warning call updateSecurityMethodHighlight on the appropriate object for El Capitan.
+		//documentEditor = (MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) documentEditor];
+		[[MAIL_SELF delegate] updateSecurityMethodHighlight];
+	}
+	else {
+		documentEditor = (MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate];
+	}
+//	if([GPGMailBundle isElCapitan]) {
+//		[(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) documentEditor] updateSecurityMethodHighlight];
+//	}
+//	else {
+//		[(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
+//	}
+
+#warning clean up and implement properly once functionality has been restored on El Capitan.
+	if(![GPGMailBundle isElCapitan]) {
+		[documentEditor updateSecurityMethodHighlight];
+//		[documentEditor updateSymmetricButton];
+	}
+	
+//	[(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
+	
+//	HeadersEditor_GPGMail *headersEditor = ((MailDocumentEditor *)[((ComposeBackEnd *)self) delegate]).headersEditor;
+//	[headersEditor updateSymmetricButton];
 }
 
 - (BOOL)GMEncryptIfPossible {
@@ -171,7 +208,14 @@
     updatedSecurityProperties[@"shouldSign"] = @(signIfPossible);
     [self updateSecurityProperties:updatedSecurityProperties];
     [self MASetSignIfPossible:signIfPossible];
-    [(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
+	if([GPGMailBundle isElCapitan]) {
+#warning call updateSecurityMethodHighlight on the appropriate object for El Capitan.
+		[[MAIL_SELF delegate] updateSecurityMethodHighlight];
+		//[(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) composeViewController] updateSecurityMethodHighlight];
+	}
+	else {
+		[(MailDocumentEditor_GPGMail *)[((ComposeBackEnd *)self) delegate] updateSecurityMethodHighlight];
+	}
 }
 
 - (id)MASender {
@@ -351,6 +395,11 @@
 	// If there was an error creating the outgoing message it's gonna be nil
     // and the error is stored away for later display.
     if(!outgoingMessage) {
+//		GM_CAST_CLASS(MFError *, id) error = (MFError *)[(ActivityMonitor *)[GM_MAIL_CLASS(@"ActivityMonitor") currentMonitor] error];
+//		[MAIL_SELF setSaveThreadCancelFlag:YES];
+//		dispatch_async(dispatch_get_main_queue(), ^{
+//			[[MAIL_SELF delegate] reportDeliveryFailure:error];
+//		});
 		if (isDraft) {
 			// Cancel saving to prevent the default error message.
 			[self setIvar:@"cancelSaving" value:(id)kCFBooleanTrue];
@@ -384,6 +433,14 @@
 		}
 		
 		if (errorCode == GPGErrorCancelled) {
+//			GM_CAST_CLASS(MFError *, id) error = (MFError *)[(ActivityMonitor *)[GM_MAIL_CLASS(@"ActivityMonitor") currentMonitor] error];
+//			[MAIL_SELF setSaveThreadCancelFlag:YES];
+//			dispatch_async(dispatch_get_main_queue(), ^{
+//				[[MAIL_SELF delegate] reportDeliveryFailure:error];
+//			});
+			
+			
+			
 			if (isDraft) {
 				// If the user cancel the signing, we cancel the saving and mark the message as unsaved.
 				[self setIvar:@"cancelSaving" value:(id)kCFBooleanTrue];
@@ -1188,7 +1245,31 @@
 	return [self MA_saveThreadShouldCancel];
 }
 
+- (void)MA_backgroundAppendEnded:(NSDictionary *)arg1 {
+	NSMutableDictionary *someInfo = [arg1 mutableCopy];
+	if([GPGMailBundle isElCapitan])
+		someInfo[@"ResultCode"] = @(0);
+	
+	[self MA_backgroundAppendEnded:someInfo];
+}
+
+- (BOOL)MADelegateRespondsToDidAppendMessage {
+	BOOL ret = [self MADelegateRespondsToDidAppendMessage];
+	return ret;
+}
+
+- (id)MADelegate {
+	id ret = [self MADelegate];
+	return ret;
+}
+
+- (void)MASetAddressList:(id)arg1 forHeader:(id)arg2 {
+	[self MASetAddressList:arg1 forHeader:arg2];
+}
+
 @end
+
+#undef MAIL_SELF
 
 @implementation GMDispatchQueueObject
 

@@ -1,4 +1,4 @@
-/* GMCodeInjector.m created by Lukas Pitschl (@lukele) on Fri 14-Jun-2013 */
+	/* GMCodeInjector.m created by Lukas Pitschl (@lukele) on Fri 14-Jun-2013 */
 
 /*
  * Copyright (c) 2000-2013, GPGTools Team <team@gpgtools.org>
@@ -31,6 +31,12 @@
 #import "GPGMail_Prefix.pch"
 #import "JRLPSwizzle.h"
 #import "GMCodeInjector.h"
+#import "GPGMailBundle.h"
+#import <AppKit/AppKit.h>
+
+#ifndef NSAppKitVersionNumber10_10
+#define NSAppKitVersionNumber10_10 1343
+#endif
 
 @implementation GMCodeInjector
 
@@ -151,7 +157,11 @@
                                     @"_updateEncryptButtonTooltip",
                                     @"_updateEncryptButtonToolTip"
                                  ]
-                             ]
+                             ],
+							 @"added": @[
+									 @"_addressFieldChanged",
+									 @"changeHeaderField:"
+									 ]
                      }
              },
 			 @"EAEmailAddressParser": @{
@@ -183,7 +193,11 @@
 										 @"outgoingMessageUsingWriter:contents:headers:isDraft:shouldBePlainText:",
 										 @"newOutgoingMessageUsingWriter:contents:headers:isDraft:shouldBePlainText:"
 									 ]
-							 ]
+							 ],
+							 @"added": @[
+									 @"_backgroundAppendEnded:",
+									 @"setAddressList:forHeader:"
+							]
 					 }
 			 },
 			 @"MessageCriterion": @{
@@ -248,7 +262,38 @@
 					 @"selectors": @[
 							 @"_newDataForMimePart:withPartData:"
 					 ]
-			}
+			},
+			@"MUITokenAddressField": @{
+				@"selectors": @[
+					@"tokenFieldCell:setUpTokenAttachmentCell:forRepresentedObject:"
+				]
+			},
+			@"MUIAddressTokenAttachmentCell": @{
+				@"selectors": @[
+					@"tokenBackgroundColor",
+					@"tokenForegroundColor",
+					@"drawInteriorWithFrame:inView:",
+					@"cellSizeForBounds:"
+				]
+			},
+			 @"MUITokenAddress": @{
+					 @"selectors": @[
+							 @"initWithAddress:isRecent:contact:",
+							 @"formattedAddress",
+							 @"_getRecordFromAddress",
+							 @"getRecordFromAddress"
+							 ]
+					 },
+			 @"MUIAddressField": @{
+					 @"selectors": @[
+							 @"_tokenFieldCommitedEditing:",
+							 @"tokenField:shouldAddObjects:atIndex:",
+							 @"addresses",
+							 @"setAddresses:",
+							 @"setTokenValue:",
+							 ]
+					 }
+			 
 	};
 }
 
@@ -302,6 +347,85 @@
     };
 }
 
++ (NSDictionary *)hookChangesForElCapitan {
+	return @{
+		@"ComposeBackEnd": @{
+			@"selectors": @{
+				@"added": @[
+					@"init",
+					@"delegateRespondsToDidAppendMessage",
+					@"delegate"
+				],
+				@"removed": @[
+						@"initCreatingDocumentEditor:"
+						]
+			}
+		},
+		@"OptionalView": @{
+				@"status": @"removed"
+		},
+		@"MFMessageRouter": @{
+				@"selectors": @{
+						@"removed": @[
+								@"putRulesThatWantsToHandleMessage:intoArray:colorRulesOnly:"
+								]
+						}
+				},
+		@"MFLibrary": @{
+				@"selectors": @{
+						@"renamed": @[
+								@[@"plistDataForMessage:subject:sender:to:dateSent:dateReceived:dateLastViewed:remoteID:originalMailboxURLString:gmailLabels:flags:mergeWithDictionary:",
+								@"plistDataForMessage:dateReceived:dateLastViewed:remoteID:gmailLabels:flags:mergeWithDictionary:"]
+								]
+						}
+				},
+		@"ComposeWindowController": @{
+				@"selectors": @[
+						@"toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:",
+						@"showSheetForAlert:completion:",
+						@"dealloc",
+						@"_sendAnimationCompleted",
+						@"_performSendAnimation",
+						@"_cancelSendAnimation",
+						@"setShouldCloseWindowWhenAnimationCompletes:",
+						@"windowDidResignKey:",
+						@"composeViewControllerShouldClose:",
+						@"windowWillClose:",
+						@"animationDidEnd:",
+						@"composeViewControllerDidSend:",
+						@"_tabBarView:performSendAnimationOfTabBarViewItem:",
+						@"selectedTabBarViewItemAfterClosingCurrentTabInTabBarView:",
+//						@"toolbarDefaultItemIdentifiers:",
+//						@"toolbarAllowedItemIdentifiers:"
+				]
+		},
+		@"MailToolbar": @{
+				@"selectors": @[
+						@"_plistForToolbarWithIdentifier:"
+						]
+				},
+		@"DocumentEditor": @{
+				@"status": @"renamed",
+				@"name": @"ComposeViewController",
+				@"selectors": @{
+					@"added": @[
+						@"backEndDidAppendMessageToOutbox:result:",
+						@"backEndDidSaveMessage:result:",
+						@"_newAppendToOutboxFailedAlert",
+						@"setDelegate:",
+						@"forceClose",
+						@"viewWillClose"
+					]
+				}
+		},
+		@"DeliveryFailure": @{
+			@"selectors": @[
+				@"reportError:"
+			]
+		}
+	};
+}
+
 + (NSDictionary *)hooks {
 	static dispatch_once_t onceToken;
 	static NSDictionary *_hooks;
@@ -319,7 +443,9 @@
 			[self applyHookChangesForVersion:@"10.9" toHooks:hooks];
 		if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9)
             [self applyHookChangesForVersion:@"10.10" toHooks:hooks];
-        
+		if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_10)
+			[self applyHookChangesForVersion:@"10.11" toHooks:hooks];
+		
 		_hooks = [NSDictionary dictionaryWithDictionary:hooks];
 	});
 	
@@ -332,7 +458,9 @@
 		hookChanges = [self hookChangesForMavericks];
 	else if([osxVersion isEqualToString:@"10.10"])
         hookChanges = [self hookChangesForYosemite];
-    
+    else if([osxVersion isEqualToString:@"10.11"])
+		hookChanges = [self hookChangesForElCapitan];
+	
 	for(NSString *class in hookChanges) {
 		NSDictionary *hook = hookChanges[class];
 		
@@ -350,8 +478,9 @@
 		if(hook[@"selectors"]) {
 			for(NSString *action in hook[@"selectors"]) {
 				for(id selector in hook[@"selectors"][action]) {
-					if([action isEqualToString:@"added"])
+					if([action isEqualToString:@"added"]) {
 						[(NSMutableArray *)hooks[class] addObject:selector];
+					}
                     else if([action isEqualToString:@"removed"]) {
                         NSMutableArray *tempHooks = [hooks[class] mutableCopy];
                         [tempHooks removeObject:selector];
@@ -363,7 +492,7 @@
 					}
                     else if([action isEqualToString:@"renamed"]) {
                         [(NSMutableArray *)hooks[class] removeObject:selector[0]];
-                        [(NSMutableArray *)hooks[class] addObject:selector];
+                        [(NSMutableArray *)hooks[class] addObject:selector[1]];
                     }
 				}
 			}
@@ -384,8 +513,8 @@
     // This methods converts known classes to their counterparts in Mavericks.
     if([@[@"MC", @"MF"] containsObject:[className substringToIndex:2]])
         return [className substringFromIndex:2];
-    
-    if([className isEqualToString:@"DocumentEditor"])
+	
+	if([className isEqualToString:@"DocumentEditor"])
         return @"MailDocumentEditor";
     
     if([className isEqualToString:@"MessageViewController"])
@@ -393,7 +522,10 @@
     
     if([className isEqualToString:@"HeaderViewController"])
         return @"MessageHeaderDisplay";
-    
+	
+	if([GPGMailBundle isElCapitan] && [className isEqualToString:@"ComposeViewController"])
+		return @"MailDocumentEditor";
+	
     return className;
 }
 
@@ -421,6 +553,7 @@
         
         NSArray *selectors = hooks[class];
 		
+		NSString *klass = class;
 		Class mailClass = NSClassFromString(class);
         if(!mailClass) {
 			DebugLog(@"WARNING: Class %@ doesn't exist. This leads to unexpected behaviour!", class);

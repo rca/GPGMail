@@ -4,10 +4,6 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSError.h"
-
-#import "NSAlertDelegate.h"
-
 @class NSMutableDictionary, NSString;
 
 @interface MCError : NSError <NSAlertDelegate>
@@ -19,7 +15,7 @@
 + (id)errorWithDomain:(id)arg1 code:(long long)arg2 localizedDescription:(id)arg3 title:(id)arg4 helpTag:(id)arg5 userInfo:(id)arg6;
 + (id)errorWithDomain:(id)arg1 code:(long long)arg2 localizedDescription:(id)arg3;
 + (id)messageTraceableStringForError:(id)arg1;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 - (BOOL)alertShowHelp:(id)arg1;
 - (void)useGenericDescription:(id)arg1;
 - (void)setShortDescription:(id)arg1;

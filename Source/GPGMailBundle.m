@@ -42,6 +42,358 @@
 #import "GPGMailPreferences.h"
 #import "MVMailBundle.h"
 #import "NSString+GPGMail.h"
+#import "GMSecurityControl.h"
+#import "HeadersEditor+GPGMail.h"
+#import "DocumentEditor.h"
+#import "GMSecurityMethodAccessoryView.h"
+#import "MCError.h"
+
+#ifndef NSAppKitVersionNumber10_10
+#define NSAppKitVersionNumber10_10 1343
+#endif
+
+@interface DeliveryFailure_GPGMail : NSObject
+@end
+
+@implementation DeliveryFailure_GPGMail
+
+- (void)MAReportError:(MCError *)error {
+    error = [GM_MAIL_CLASS(@"MFError") errorWithDomain:[error domain] code:1038 localizedDescription:nil title:[error localizedDescription] helpTag:nil
+                                              userInfo:[error userInfo]];
+    [self MAReportError:error];
+}
+
+@end
+
+@interface MailToolbar_GPGMail : NSObject
+@end
+
+@implementation MailToolbar_GPGMail
+
++ (id)MA_plistForToolbarWithIdentifier:(id)arg1 {
+    id ret = [self MA_plistForToolbarWithIdentifier:arg1];
+    
+    if(![arg1 isEqualToString:@"ComposeWindow"])
+        return ret;
+    
+    NSMutableDictionary *configuration = [ret mutableCopy];
+    NSMutableArray *defaultSet = [configuration[@"default set"] mutableCopy];
+    [defaultSet addObject:@"toggleSecurityMethod:"];
+    [configuration setObject:defaultSet forKey:@"default set"];
+    
+    return configuration;
+}
+
+@end
+
+
+#import "NSObject+LPDynamicIvars.m"
+@interface ComposeWindowController_GPGMail : NSObject
+
+@end
+
+@interface ComposeWindowController_GPGMail (NotImplemented)
+
+- (id)contentViewController;
+- (id)windowTransformAnimation;
+- (void)cancelAnimation;
+- (void)setSendAnimationCancelled:(BOOL)cancelled;
+
+@end
+
+@implementation ComposeWindowController_GPGMail
+
+- (id)MAToolbarAllowedItemIdentifiers:(id)arg1 {
+    id ret = [self MAToolbarAllowedItemIdentifiers:arg1];
+    
+    return ret;
+}
+
+- (id)MAToolbarDefaultItemIdentifiers:(id)toolbar {
+    id defaultItemIdentifiers = [self MAToolbarDefaultItemIdentifiers:toolbar];
+    
+    // Appening the security method identifier to toggle between OpenPGP and S/MIME.
+    NSMutableArray *identifiers = [defaultItemIdentifiers mutableCopy];
+    [identifiers addObject:@"toggleSecurityMethod:"];
+    
+    return identifiers;
+}
+
+- (id)MAToolbar:(id)arg1 itemForItemIdentifier:(id)arg2 willBeInsertedIntoToolbar:(BOOL)arg3 {
+    id ret = nil;
+    
+    if(![arg2 isEqualToString:@"toggleSecurityMethod:"]) {
+       ret = [self MAToolbar:arg1 itemForItemIdentifier:arg2 willBeInsertedIntoToolbar:arg3];
+    }
+    else {
+        // The delegate of GMSecurityMethodAccessoryView will be the current composeViewController.
+        // At this point it's however not yet set on the ComposeWindowController, so once the
+        // compose view controller is ready, it will set if self up as delegate.
+        GMSecurityMethodAccessoryView *securityMethodAccessoryView = [[GMSecurityMethodAccessoryView alloc] init];
+        
+        [self setIvar:@"SecurityMethodAccessoryView" value:securityMethodAccessoryView];
+        
+        ret = [[NSToolbarItem alloc] initWithItemIdentifier:arg2];
+        [ret setView:securityMethodAccessoryView];
+        [ret setMinSize:NSMakeSize(100, 23)];
+        [ret setTarget:nil];
+    }
+    
+    return ret;
+}
+
+- (void)showSheetForAlert:(id)arg1 completion:(id)arg2 {
+    [self showSheetForAlert:arg1 completion:arg2];
+}
+
+- (void)MADealloc {
+    [self MADealloc];
+}
+
+- (void)MA_sendAnimationCompleted {
+    [self MA_sendAnimationCompleted];
+}
+
+- (void)MA_performSendAnimation {
+    // Store the the current frame position, to restore it in case of an error.
+    NSPoint currentOrigin = [(id)self window].frame.origin;
+    [self setIvar:@"WindowFrameOriginBeforeAnimation" value:@{@"X": @(currentOrigin.x), @"Y": @(currentOrigin.y)}];
+    [self MA_performSendAnimation];
+}
+
+- (void)restorePositionBeforeAnimation {
+    NSDictionary *originBeforeAnimation = [self getIvar:@"WindowFrameOriginBeforeAnimation"];
+    if(!originBeforeAnimation)
+        return;
+    [self removeIvar:@"WindowFrameOriginBeforeAnimation"];
+    [[(id)self window] setFrameOrigin:NSMakePoint([originBeforeAnimation[@"X"] floatValue], [originBeforeAnimation[@"Y"] floatValue])];
+}
+
+- (void)MA_cancelSendAnimation {
+    id window = [(id)self window];
+    if([window isKindOfClass:NSClassFromString(@"FullScreenModalCapableWindow")]) {
+        [[window windowTransformAnimation] cancelAnimation];
+    }
+    [self setSendAnimationCancelled:YES];
+
+    [self MA_cancelSendAnimation];
+}
+- (void)MASetShouldCloseWindowWhenAnimationCompletes:(BOOL)shouldClose {
+    // On El Capitan we might have to force set NO here.
+    // Otherwise it's not possible to show the user a custom error message,
+    // if there was a problem processing the message with gpg.
+    shouldClose = NO;
+    [self MASetShouldCloseWindowWhenAnimationCompletes:shouldClose];
+}
+
+- (void)MAWindowDidResignKey:(id)arg1 {
+    [self MAWindowDidResignKey:arg1];
+}
+
+- (void)MAComposeViewControllerShouldClose:(id)arg1 {
+    [self MAComposeViewControllerShouldClose:arg1];
+}
+
+- (void)MAWindowWillClose:(id)arg1 {
+    [self MAWindowWillClose:arg1];
+}
+
+- (void)MAAnimationDidEnd:(id)arg1 {
+    [self MAAnimationDidEnd:arg1];
+}
+
+- (void)MAComposeViewControllerDidSend:(id)arg1 {
+    [self MAComposeViewControllerDidSend:arg1];
+}
+
+#warning REMOVE THIS CODE AND PROPERLY IMPLEMENT IT. OTHERWISE WE WILL BREAK THE FUTURE TAB BAR CODE.
+- (void)MA_tabBarView:(id)arg1 performSendAnimationOfTabBarViewItem:(id)arg2 {
+    // This is ugly as fuck, but for the time being it has to do.
+    // We simply don't do anything with the tabBarViewItem or the view controller, since we might still need it
+    // and only run the animations.
+    [[(id)self window] invalidateRestorableState];
+    [(id)self _performSendAnimation];
+    return;
+//    
+//    // We pass nil in order to prevent the tab bar item to be destryed.
+//    // Otherwise, in case of a gpg processing error, the message will throw an exception
+//    // if the user tries to send the message again.
+//    id dummyTabViewItem = [[NSClassFromString(@"ComposeTabViewItem") alloc] initWithIdentifier:@"GPGMailDummyTabView"];
+//    //[dummyTabViewItem setViewController:[[NSClassFromString(@"ComposeViewController") alloc] init]];
+//    //[arg2 setViewController:dummyTabViewItem];
+//    [self MA_tabBarView:arg1 performSendAnimationOfTabBarViewItem:dummyTabViewItem];
+
+}
+
+- (id)MASelectedTabBarViewItemAfterClosingCurrentTabInTabBarView:(id)arg1 {
+    id ret = [self MASelectedTabBarViewItemAfterClosingCurrentTabInTabBarView:arg1];
+    return ret;
+}
+
+@end
+
+
+
+@interface MUITokenAddressField_GPGMail : NSObject
+@end
+
+@implementation MUITokenAddressField_GPGMail
+
+- (id)MATokenFieldCell:(id)arg1 setUpTokenAttachmentCell:(id)arg2 forRepresentedObject:(id)arg3 {
+    id result = [self MATokenFieldCell:arg1 setUpTokenAttachmentCell:arg2 forRepresentedObject:arg3];
+    
+    return result;
+}
+
+@end
+
+@interface MUIAddressTokenAttachmentCell_GPGMail : NSObject
+
+- (struct CGRect)pullDownRectForBounds:(struct CGRect)arg1;
+
+@end
+
+@implementation MUIAddressTokenAttachmentCell_GPGMail
+
+- (id)MATokenBackgroundColor {
+    id result = [self MATokenBackgroundColor];
+    
+    if([((id)self) cellAttribute:NSCellHighlighted] != 0)
+        return [NSColor greenColor];
+    
+    return [NSColor brownColor];
+}
+
+- (id)MATokenForegroundColor {
+    id result = [self MATokenForegroundColor];
+    
+    if([((id)self) cellAttribute:NSCellHighlighted] != 0)
+        return [NSColor greenColor];
+    
+    return result;
+}
+
+/**
+ Defines the width of the address token. In order to fit our custom accessory view
+ in there, we'll extend the size of it by the width of the accessory view and a wanted padding.
+ */
+- (struct CGSize)MACellSizeForBounds:(struct CGRect)arg1 {
+    NSSize cellSize = [self MACellSizeForBounds:arg1];
+    
+    return NSMakeSize(cellSize.width + 10, cellSize.height);
+}
+
+- (void)MADrawInteriorWithFrame:(struct CGRect)arg1 inView:(id)arg2 {
+    [self MADrawInteriorWithFrame:arg1 inView:arg2];
+    // When hovering over an address bar and not the token address field itself, the inView seems to be a different target.
+    // We'll have to find out which one, so our token accessory is always shown and not only when actively hovering over the token address field.
+    NSLog(@"In View: %@", arg2);
+    if([arg2 isKindOfClass:NSClassFromString(@"MUITokenAddressField")] ||
+       [arg2 isKindOfClass:NSClassFromString(@"MUITokenAddressTextView")] ||
+       [arg2 isKindOfClass:NSClassFromString(@"NSTokenTextView")]) {
+        NSRect bounds = [self pullDownRectForBounds:arg1];
+        [[NSImage imageNamed:@"NSTokenPopDownArrow"] drawInRect:NSMakeRect(bounds.origin.x-10, bounds.origin.y, bounds.size.width, bounds.size.height) fromRect:NSMakeRect(0, 0, 9, 6) operation:NSCompositeSourceAtop fraction:1 respectFlipped:YES hints:nil];
+    }
+}
+
+@end
+
+#import "GPGFlaggedString.h"
+
+@interface MUITokenAddress_GPGMail : NSObject
+@end
+
+@implementation MUITokenAddress_GPGMail
+
+- (id)MAInitWithAddress:(id)arg1 isRecent:(BOOL)arg2 contact:(id)arg3 {
+    id ret = [self MAInitWithAddress:arg1 isRecent:arg2 contact:arg3];
+    return ret;
+}
+
+- (id)MAFormattedAddress {
+    id address = [self MAFormattedAddress];
+    
+    // Add our custom field to the returned formatted address, if any is available.
+    if([self getIvar:@"AssociatedGPGKey"]) {
+        address = [[GPGFlaggedString alloc] initWithString:address flag:@"AssociatedGPGKey" value:[self getIvar:@"AssociatedGPGKey"]];
+    }
+    
+    return address;
+}
+
+- (void)MA_getRecordFromAddress {
+    [self MA_getRecordFromAddress];
+}
+
+- (void)MAGetRecordFromAddress {
+    [self MAGetRecordFromAddress];
+}
+
+
+@end
+
+@interface MUIAddressField_GPGMail : NSObject
+- (void)setTokenValue:(id)tokenValue;
+- (id)tokenValue;
+- (void)_tokenFieldCommittedEditing:(id)tokenField;
+
+@end
+
+@implementation MUIAddressField_GPGMail
+
+/* Is called when the user exits the "To" Field (for example).
+ * The MUIAddressField can contain one or more addresses.
+ */
+- (void)MA_tokenFieldCommitedEditing:(id)arg1 {
+    // The token value contains all the MUITokenAddress(es), so this is a good point, to add the AssociatedGPGKey information
+    // to the MUITokenAdd
+    
+    
+    
+    
+    [self MA_tokenFieldCommitedEditing:arg1];
+}
+
+/* This method is called, when a complete address has been entered.
+   It might be the best place to kick off our key search in the background.
+ */
+- (id)MATokenField:(id)arg1 shouldAddObjects:(id)arg2 atIndex:(unsigned long long)arg3 {
+    NSMutableArray *objects = [NSMutableArray array];
+    for(id tokenAddress in arg2) {
+        [tokenAddress setIvar:@"AssociatedGPGKey" value:@"This is some string I wish to receive in ComposeBackEnd"];
+        [objects addObject:tokenAddress];
+    }
+    
+    id ret = [self MATokenField:arg1 shouldAddObjects:objects atIndex:arg3];
+    
+    // Unfortunately, this method is called after the HeadersEditor receives a address change KVO notification
+    // from an MUIAddressField.
+    // So in order for the HeadersEditor and in turn then the ComposeBackEnd receives our GPGFlaggedString with
+    // the associated gpg key information, we'll force another changeFromHeader call (which updates the header information of the
+    // ComposeBackEnd.
+    [self _tokenFieldCommittedEditing:arg1];
+    [((id)self) setTokenValue:[((id)self) tokenValue]];
+    
+    
+    return ret;
+}
+
+- (id)MAAddresses {
+    id ret = [self MAAddresses];
+    
+    return ret;
+}
+
+- (void)MASetAddresses:(id)addresses {
+    [self MASetAddresses:addresses];
+}
+
+- (void)MASetTokenValue:(id)tokenValue {
+    [self MASetTokenValue:tokenValue];
+}
+
+@end
+
 
 @interface GPGMailBundle ()
 
@@ -180,6 +532,7 @@ static BOOL gpgMailWorks = NO;
         
         // Configure the logging level.
         GPGMailLoggingLevel = (int)[[GPGOptions sharedOptions] integerForKey:@"DebugLog"];
+        GPGMailLoggingLevel = 1;
         DebugLog(@"Debug Log enabled: %@", [[GPGOptions sharedOptions] integerForKey:@"DebugLog"] > 0 ? @"YES" : @"NO");
         
         _keyManager = [[GMKeyManager alloc] init];
@@ -453,6 +806,10 @@ static BOOL gpgMailWorks = NO;
     return floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9;
 }
 
++ (BOOL)isElCapitan {
+    return floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_10;
+}
+
 + (BOOL)hasPreferencesPanel {
     // LEOPARD Invoked on +initialize. Else, invoked from +registerBundle.
 	return YES;
@@ -466,5 +823,24 @@ static BOOL gpgMailWorks = NO;
 	return GMLocalizedString(@"PGP_PREFERENCES");
 }
 
++ (id)backEndFromObject:(id)object {
+    id backEnd = nil;
+    if([object isKindOfClass:[GPGMailBundle resolveMailClassFromName:@"HeadersEditor"]]) {
+        if([GPGMailBundle isElCapitan])
+            backEnd = [[object composeViewController] backEnd];
+        else
+            backEnd = [[object valueForKey:@"_documentEditor"] backEnd];
+    }
+    else if([object isKindOfClass:[GMSecurityControl class]]) {
+        if([GPGMailBundle isElCapitan])
+            backEnd = [[object composeViewController] backEnd];
+        else
+            backEnd = [[object valueForKey:@"_documentEditor"] backEnd];
+    }
+    
+    //NSAssert(backEnd != nil, @"Couldn't find a way to access the ComposeBackEnd");
+    
+    return backEnd;
+}
 
 @end

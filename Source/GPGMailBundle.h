@@ -90,6 +90,7 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
 + (BOOL)isMavericks;
 + (BOOL)isYosemite;
 + (BOOL)isLion;
++ (BOOL)isElCapitan;
 
 /**
  Schedules a message which should have rules applied.
@@ -154,6 +155,11 @@ extern NSString *gpgErrorIdentifier; // This identifier is used to set and find 
  new class.
  */
 + (Class)resolveMailClassFromName:(NSString *)name;
+
+/**
+ Returns the ComposeBackEnd which is linked to a given object.
+ */
++ (id)backEndFromObject:(id)object;
 
 @property (readonly) GPGErrorCode gpgStatus;
 @property (readonly, strong) NSSet *allGPGKeys;
