@@ -4,17 +4,17 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSObject.h"
-
-#import "ImageResizerDelegate.h"
-#import "MCActivityTarget.h"
-#import "MFScriptingMessage.h"
-#import "NSStreamDelegate.h"
-#import "NSUserActivityDelegate.h"
+//#import "NSObject.h"
+//
+//#import "ImageResizerDelegate.h"
+//#import "MCActivityTarget.h"
+//#import "MFScriptingMessage.h"
+//#import "NSStreamDelegate.h"
+//#import "NSUserActivityDelegate.h"
 
 @class DOMHTMLDocument, DOMNode, EditableWebMessageDocument, MCInvocationQueue, MCMessage, MCMessageBody, MCMessageHeaders, MCParsedMessage, MFDeliveryAccount, MFMailAccount, MFMailbox, NSArray, NSFont, NSInputStream, NSMutableArray, NSMutableData, NSMutableDictionary, NSMutableSet, NSNumber, NSOutputStream, NSPort, NSScriptObjectSpecifier, NSString, NSUUID, NSUndoManager, NSUserActivity, Signature, StationeryController;
 
-@interface ComposeBackEnd : NSObject <MFScriptingMessage, ImageResizerDelegate, MCActivityTarget, NSStreamDelegate, NSUserActivityDelegate>
+@interface ComposeBackEnd : NSObject //<MFScriptingMessage, ImageResizerDelegate, MCActivityTarget, NSStreamDelegate, NSUserActivityDelegate>
 {
     id _delegate;
     StationeryController *_stationeryController;
@@ -156,7 +156,7 @@
 @property(nonatomic) BOOL signIfPossible; // @synthesize signIfPossible=_signIfPossible;
 @property(nonatomic) BOOL includeHeaders; // @synthesize includeHeaders=_includeHeaders;
 @property(retain, nonatomic) NSNumber *uniqueID; // @synthesize uniqueID=_uniqueID;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 - (void)stream:(id)arg1 handleEvent:(unsigned long long)arg2;
 - (void)userActivity:(id)arg1 didReceiveInputStream:(id)arg2 outputStream:(id)arg3;
 - (void)_markForOverwrite:(id)arg1;

@@ -18,7 +18,7 @@
 #import <NSString-NSStringUtils.h>
 #import <MutableMessageHeaders.h>
 #import <MailNotificationCenter.h>
-#import "ElCapitan_10.11_Beta3/MailUI/ComposeBackEnd.h"
+#import "ElCapitan_10.11_Beta6/MailUI/ComposeBackEnd.h"
 #import "MailAccount.h"
 #import "MessageAttachment.h"
 #import "CCLog.h"
