@@ -262,37 +262,37 @@
 					 @"selectors": @[
 							 @"_newDataForMimePart:withPartData:"
 					 ]
-			},
-			@"MUITokenAddressField": @{
-				@"selectors": @[
-					@"tokenFieldCell:setUpTokenAttachmentCell:forRepresentedObject:"
-				]
-			},
-			@"MUIAddressTokenAttachmentCell": @{
-				@"selectors": @[
-					@"tokenBackgroundColor",
-					@"tokenForegroundColor",
-					@"drawInteriorWithFrame:inView:",
-					@"cellSizeForBounds:"
-				]
-			},
-			 @"MUITokenAddress": @{
-					 @"selectors": @[
-							 @"initWithAddress:isRecent:contact:",
-							 @"formattedAddress",
-							 @"_getRecordFromAddress",
-							 @"getRecordFromAddress"
-							 ]
-					 },
-			 @"MUIAddressField": @{
-					 @"selectors": @[
-							 @"_tokenFieldCommitedEditing:",
-							 @"tokenField:shouldAddObjects:atIndex:",
-							 @"addresses",
-							 @"setAddresses:",
-							 @"setTokenValue:",
-							 ]
-					 }
+			}//,
+//			@"MUITokenAddressField": @{
+//				@"selectors": @[
+//					@"tokenFieldCell:setUpTokenAttachmentCell:forRepresentedObject:"
+//				]
+//			},
+//			@"MUIAddressTokenAttachmentCell": @{
+//				@"selectors": @[
+//					@"tokenBackgroundColor",
+//					@"tokenForegroundColor",
+//					@"drawInteriorWithFrame:inView:",
+//					@"cellSizeForBounds:"
+//				]
+//			},
+//			 @"MUITokenAddress": @{
+//					 @"selectors": @[
+//							 @"initWithAddress:isRecent:contact:",
+//							 @"formattedAddress",
+//							 @"_getRecordFromAddress",
+//							 @"getRecordFromAddress"
+//							 ]
+//					 },
+//			 @"MUIAddressField": @{
+//					 @"selectors": @[
+//							 @"_tokenFieldCommitedEditing:",
+//							 @"tokenField:shouldAddObjects:atIndex:",
+//							 @"addresses",
+//							 @"setAddresses:",
+//							 @"setTokenValue:",
+//							 ]
+//					 }
 			 
 	};
 }
