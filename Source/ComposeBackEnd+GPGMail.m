@@ -408,13 +408,16 @@
 			// The error message should be set on the current activity monitor, so we
 			// simply have to fetch it.
 			GM_CAST_CLASS(MFError *, id) error = (MFError *)[(ActivityMonitor *)[GM_MAIL_CLASS(@"ActivityMonitor") currentMonitor] error];
+			[self setIvar:@"CreationError" value:error];
 			[self performSelectorOnMainThread:@selector(didCancelMessageDeliveryForError:) withObject:error waitUntilDone:NO];
 		}
 		// Restore the clean headers so BCC is removed as well.
 		[(ComposeBackEnd *)self setValue:[self getIvar:@"originalCleanHeaders"] forKey:@"_cleanHeaders"];
         return nil;
 	}
-
+	else {
+		[self removeIvar:@"CreationError"];
+	}
     // Fetch the encrypted data from the body data.
     NSData *encryptedData = [((_OutgoingMessageBody *)[outgoingMessage messageBody]) rawData];
 	
@@ -1247,7 +1250,7 @@
 
 - (void)MA_backgroundAppendEnded:(NSDictionary *)arg1 {
 	NSMutableDictionary *someInfo = [arg1 mutableCopy];
-	if([GPGMailBundle isElCapitan])
+	if([GPGMailBundle isElCapitan] && [self ivarExists:@"CreationError"])
 		someInfo[@"ResultCode"] = @(0);
 	
 	[self MA_backgroundAppendEnded:someInfo];
