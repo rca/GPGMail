@@ -42,6 +42,13 @@
 	<integer>86400</integer>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
+	<key>GMOSXVersions</key>
+	<array>
+		<string>10.7</string>
+		<string>10.8</string>
+		<string>10.9</string>
+		<string>10.10</string>
+	</array>
 	<key>SupportedPluginCompatibilityUUIDs</key>
 	<array>
 		<string>60D52D22-7491-4CA7-95BA-88215BD88F8E</string>
