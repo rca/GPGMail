@@ -476,37 +476,37 @@
 }
 
 - (id)MADecodeTextHtmlWithContext:(MFMimeDecodeContext *)ctx {
-    // Check if message should be processed (-[Message shouldBePGPProcessed] - Snippet generation check)
-    // otherwise out of here!
-    if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
-        return [self MADecodeTextHtmlWithContext:ctx];
-
+	// Check if message should be processed (-[Message shouldBePGPProcessed] - Snippet generation check)
+	// otherwise out of here!
+	if(![[(MimeBody *)[self mimeBody] message] shouldBePGPProcessed])
+		return [self MADecodeTextHtmlWithContext:ctx];
 	
+	
+	// HTML is a bit hard to decrypt, so check if the parent part,
+	// if exists is a multipart/alternative.
+	// If that's the case, look for a text/plain part, check if
+	// it contains a pgp message and decode it.
+	MimePart *parentPart = [self parentPart];
+	if (parentPart && [parentPart isType:@"multipart" subtype:@"alternative"]) {
+		for (MimePart *tmpPart in [parentPart subparts]) {
+			if ([tmpPart isType:@"text" subtype:@"plain"]) {
+				if ([tmpPart.bodyData mightContainPGPEncryptedDataOrSignatures]) {
+					return [tmpPart decodeTextPlainWithContext:ctx];
+				}
+				break;
+			}
+		}
+	}
+	
+	// Check if the HTML contains a decodeable pgp message,
+	// if that's the case decode it like plain text.
 	NSData *bodyData = [self bodyData];
-    if([bodyData mightContainPGPEncryptedDataOrSignatures]) {
-        // HTML is a bit hard to decrypt, so check if the parent part, if exists is a
-        // multipart/alternative.
-        // If that's the case, look for a text/plain part
-        MimePart *parentPart = [self parentPart];
-        MimePart *textPart = nil;
-        if(parentPart && [parentPart isType:@"multipart" subtype:@"alternative"]) {
-            for(MimePart *tmpPart in [parentPart subparts]) {
-                if([tmpPart isType:@"text" subtype:@"plain"]) {
-                    textPart = tmpPart;
-                    break;
-                }
-            }
-            if(textPart) {
-                return [textPart decodeTextPlainWithContext:ctx];
-            }
-        }
-        
-        if ([bodyData rangeOfPGPInlineEncryptedData].length > 0 || [bodyData rangeOfPGPInlineSignatures].length > 0) {
-            return [(MimePart *)self decodeTextPlainWithContext:ctx];
-        }
-    }
-    
-    return [self MADecodeTextHtmlWithContext:ctx];
+	if ([bodyData rangeOfPGPInlineEncryptedData].length > 0 || [bodyData rangeOfPGPInlineSignatures].length > 0) {
+		return [(MimePart *)self decodeTextPlainWithContext:ctx];
+	}
+	
+	
+	return [self MADecodeTextHtmlWithContext:ctx];
 }
 
 - (id)MADecodeApplicationOctet_streamWithContext:(MFMimeDecodeContext *)ctx {
@@ -797,7 +797,7 @@
 	NSData *deArmoredEncryptedData = nil;
     // De-armor the message and catch any CRC-Errors.
     @try {
-        deArmoredEncryptedData = [GPGPacket unArmor:encryptedData];
+        deArmoredEncryptedData = [[GPGUnArmor unArmor:[GPGMemoryStream memoryStreamForReading:encryptedData]] readAllData];
     }
     @catch (NSException *exception) {
 		self.PGPError = [self errorForDecryptionError:exception status:nil errorText:nil];
@@ -1381,7 +1381,7 @@
 	[(GM_CAST_CLASS(MimePart *, id))[self topPart] enumerateSubpartsWithBlock:^(MimePart *part) {
 		if ([part isType:@"application" subtype:@"pgp-keys"] && ![[part getIvar:@"pgp-keys-imported"] boolValue]) {
 			
-			NSData *unArmored = [GPGPacket unArmor:part.bodyData];
+			NSData *unArmored = [[GPGUnArmor unArmor:[GPGMemoryStream memoryStreamForReading:part.bodyData]] readAllData];
 			
 			if (unArmored) {
 				NSDictionary *keysByID = [[GPGKeyManager sharedInstance] keysByKeyID];
@@ -1441,8 +1441,10 @@
 				NSData *subData = [signedData subdataWithRange:range];
 				
 				// Unarmor and get cleartext.
+				GPGMemoryStream *subDataStream = [GPGMemoryStream memoryStreamForReading:subData];
 				NSData *cleartext = nil;
-				NSData *sigData = [GPGPacket unArmor:subData clearText:&cleartext];
+				NSData *sigData = [[GPGUnArmor unArmor:subDataStream clearText:&cleartext] readAllData];
+				
 				
 				// Verify signature and add the GPGSignatures to our set.
 				[allSignatures addObjectsFromArray:[gpgc verifySignature:sigData originalData:cleartext]];
