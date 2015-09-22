@@ -53,13 +53,18 @@
 
 @synthesize popup = _popup, fullscreen = _fullscreen, active = _active, arrow = _arrow, 
             nonFullScreenFrame = _nonFullScreenFrame, securityMethod = _securityMethod,
-            delegate = _delegate, label = _label, attributedTitlesCache = _attributedTitlesCache;
+            delegate = _delegate, label = _label, attributedTitlesCache = _attributedTitlesCache, style = _style;
 
 - (id)init {
+	return [self initWithStyle:GMSecurityMethodAccessoryViewStyleWindowAccessory];
+}
+
+- (id)initWithStyle:(GMSecurityMethodAccessoryViewStyle)style {
     self = [super initWithFrame:NSMakeRect(0.0f, 0.0f, GMSMA_DEFAULT_WIDTH, GMSMA_DEFAULT_HEIGHT)];
     if(self) {
         self.autoresizingMask = NSViewMinYMargin | NSViewMinXMargin;
         _attributedTitlesCache = [NSMapTable mapTableWithStrongToStrongObjects];
+		_style = style;
         [self _configurePopupWithSecurityMethods:@[@"OpenPGP", @"S/MIME"]];
         [self _configureArrow];
     }
@@ -111,7 +116,9 @@
     [self addSubview:popup];
     
     self.popup = popup;
-    
+	if(self.style == GMSecurityMethodAccessoryViewStyleToolbarItem)
+		self.popup.menu.font = [NSFont systemFontOfSize:18.f];
+	
     // Update the label value and center it.
     [self updateAndCenterLabelForItem:nil];
 }
@@ -133,7 +140,9 @@
     [self addSubview:imageView];
     
     self.arrow = imageView;
-    
+	NSRect arrowFrame = self.arrow.frame;
+	arrowFrame.origin.y = 6.0f;
+	self.arrow.frame = arrowFrame;
 }
 
 - (void)configureForFullScreenWindow:(NSWindow *)window {
@@ -396,7 +405,9 @@
     rect.origin = NSMakePoint(0, 0);
     float cornerRadius = 4.0f;
     KBCornerType corners = self.fullscreen ? (KBTopLeftCorner | KBBottomLeftCorner | KBTopRightCorner | KBBottomRightCorner) : (KBTopRightCorner | KBBottomLeftCorner);
-    NSBezierPath* path = [NSBezierPath bezierPathWithRoundedRect:rect inCorners:corners cornerRadius:cornerRadius flipped:NO];
+	if(self.style == GMSecurityMethodAccessoryViewStyleToolbarItem)
+		corners = (KBTopLeftCorner | KBBottomLeftCorner | KBTopRightCorner | KBBottomRightCorner);
+	NSBezierPath* path = [NSBezierPath bezierPathWithRoundedRect:rect inCorners:corners cornerRadius:cornerRadius flipped:NO];
     
     NSGradient *gradient = nil;
     NSColor *strokeColor = nil;

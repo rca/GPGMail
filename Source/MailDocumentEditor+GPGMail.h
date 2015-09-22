@@ -93,11 +93,6 @@
 
 @interface MailDocumentEditor_GPGMail (NotImplemented)
 
-- (NSWindow *)window;
-- (void)_cancelSendAnimation;
-- (NSAlert *)_newAppendToOutboxFailedAlert;
-- (NSAlert *)_newAlertForMalformedAddress:(NSString *)email;
-- (void)restorePositionBeforeAnimation;
-- (void)addComposeViewController:(id)controller;
+- (id)delegate;
 
 @end

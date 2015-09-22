@@ -42,6 +42,8 @@
 #import "ComposeBackEnd+GPGMail.h"
 #import "GPGMailBundle.h"
 #import <MFError.h>
+#import "ComposeWindowController+GPGMail.h"
+#import "ComposeViewController.h"
 
 static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyToEncryptedMessage";
 
@@ -73,7 +75,7 @@ static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyT
 
 - (GMSecurityMethodAccessoryView *)securityMethodAccessoryView {
 	if([GPGMailBundle isElCapitan]) {
-		return (GMSecurityMethodAccessoryView *)[(NSObject *)[[self window] delegate] getIvar:@"SecurityMethodAccessoryView"];
+		return (GMSecurityMethodAccessoryView *)[(NSObject *)[[((MailDocumentEditor *)self) window] delegate] getIvar:@"SecurityMethodAccessoryView"];
 	}
 	else {
 		return (GMSecurityMethodAccessoryView *)[self getIvar:@"SecurityMethodAccessoryView"];
@@ -112,7 +114,9 @@ static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyT
 }
 
 - (void)MABackEndDidLoadInitialContent:(id)content {
-    [(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didExitFullScreen:) name:@"NSWindowDidExitFullScreenNotification" object:nil];
+	if(![GPGMailBundle isElCapitan]) {
+		[(NSNotificationCenter *)[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didExitFullScreen:) name:@"NSWindowDidExitFullScreenNotification" object:nil];
+	}
 	
 	// Setup security method hint accessory view in top right corner of the window.
 	[self setupSecurityMethodHintAccessoryView];
@@ -302,59 +306,62 @@ static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyT
 	[self MASendMessageAfterChecking:checklist];
 }
 
-#warning Implement properly for El Capitan -[backEnd] methods don't exist, so we'll have to add them.
-//- (void)backEnd:(id)backEnd didCancelMessageDeliveryForEncryptionError:(MFError *)error {
-//	if ([((NSDictionary *)error.userInfo)[@"GPGErrorCode"] integerValue] == GPGErrorCancelled) {
-//		return;
-//	}
-//	NSAlert *alert = [(id)self _newAlertForMalformedAddress:@"hello@wow.com"];
-//	[[(id)self backEnd] setIsDeliveringMessage:NO];
-//	[[(id)self delegate] _cancelSendAnimation];
-//	[[(id)self delegate] restorePositionBeforeAnimation];
-//	// At this point the compose view controller has been removed, so we have to re-add it in case of an error.
-//	//[[(id)self delegate] addComposeViewController:self];
-//	[self setIvar:@"KeepAliveDueToSendFailure" value:@(YES)];
-//	[alert beginSheetModalForWindow:[(id)self window] completionHandler:^(NSModalResponse response){
-//			//			[[(id)self backEnd] setHasChanges:1];
-//			//			[[self window] makeKeyAndOrderFront:0];
-//	}];
-//	
-//	//[self MABackEnd:backEnd didCancelMessageDeliveryForEncryptionError:error];
-//}
-
-#warning Implement properly for El Capitan -[backEnd] methods don't exist, so we'll have to add them.
-//- (void)backEnd:(id)backEnd didCancelMessageDeliveryForError:(MFError *)error {
-//	if ([((NSDictionary *)error.userInfo)[@"GPGErrorCode"] integerValue] == GPGErrorCancelled) {
-//		return;
-//	}
-//	//[self MABackEnd:backEnd didCancelMessageDeliveryForError:error];
-//}
-
-- (void)MABackEndDidSaveMessage:(id)arg1 result:(long long)arg2 {
-	[self MABackEndDidSaveMessage:arg1 result:arg2];
+- (void)restoreComposerView {
+	ComposeBackEnd *backEnd = ((MailDocumentEditor *)self).backEnd;
+	[backEnd setIsDeliveringMessage:NO];
+	[(ComposeWindowController_GPGMail *)[self delegate] restorePositionBeforeAnimation];
 }
 
-- (void)MABackEndDidAppendMessageToOutbox:(id)arg1 result:(long long)arg2 {
-	[self MABackEndDidAppendMessageToOutbox:arg1 result:arg2];
-	if(arg2 == 0) {
-		[[self window] makeKeyAndOrderFront:0];
+- (BOOL)backEnd:(id)backEnd handleDeliveryError:(MFError *)error {
+	
+	NSNumber *errorCode = ((NSDictionary *)error.userInfo)[@"GPGErrorCode"];
+	// If the pinentry dialog was cancelled, there's no need to show any error.
+	// Simply let the user continue editing.
+	if(errorCode && [errorCode integerValue] == GPGErrorCancelled) {
+		if([GPGMailBundle isElCapitan]) {
+			// Cancel the send animation, the window is gone and can't be restored.
+			[(ComposeWindowController_GPGMail *)[self delegate] cancelSendAnimation];
+		}
+		return NO;
+	}
+	
+	return YES;
+}
+
+- (void)MABackEnd:(id)backEnd didCancelMessageDeliveryForEncryptionError:(MFError *)error {
+	if([self backEnd:backEnd handleDeliveryError:error])
+		[self MABackEnd:backEnd didCancelMessageDeliveryForEncryptionError:error];
+	
+	if([GPGMailBundle isElCapitan])
+		[self restoreComposerView];
+}
+
+- (void)MABackEnd:(id)backEnd didCancelMessageDeliveryForError:(MFError *)error {
+	if([self backEnd:backEnd handleDeliveryError:error])
+		[self MABackEnd:backEnd didCancelMessageDeliveryForEncryptionError:error];
+
+	if([GPGMailBundle isElCapitan])
+		[self restoreComposerView];
+}
+
+- (void)MABackEndDidAppendMessageToOutbox:(id)backEnd result:(long long)result {
+	[self MABackEndDidAppendMessageToOutbox:backEnd result:result];
+	// If result == 3 the message was successfully sent, and now it's time to really dismiss the tab,
+	// in order to free the resources, Mail wanted to free as soon as it started the send animation.
+	// Unfortunately, if let it do that at the point of the send animation, there's no way we could
+	// display an error.
+	if(result == 3) {
+		[self setIvar:@"GMAllowReleaseOfTabBarViewItem" value:@(YES)];
+		[[self delegate] composeViewControllerDidSend:self];
+		[self removeIvar:@"GMAllowReleaseOfTabBarViewItem"];
 	}
 }
 
 - (void)MASetDelegate:(id)delegate {
 	[self MASetDelegate:delegate];
-}
-
-- (id)MA_newAppendToOutboxFailedAlert {
-	return [self MA_newAppendToOutboxFailedAlert];
-}
-
-- (void)MAForceClose {
-	[self MAForceClose];
-}
-
-- (void)MAViewWillClose {
-	[self MAViewWillClose];
+	// Store the delegate as associated object, otherwise Mail.app releases it to soon (when performing the send animation.)!
+	// Will be automatically released, when the ComposeViewController is released.
+	[self setIvar:@"GMDelegate" value:delegate];
 }
 
 @end

@@ -279,55 +279,56 @@ NSString *SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
 
 @implementation GMSpecialBox
 - (void)showSpecial {
-	if (displayed || working) return;	
-	working = YES;
-
-	if (!viewPositions) {
-		viewPositions = [[NSMapTable alloc] initWithKeyOptions:NSMapTableZeroingWeakMemory valueOptions:NSMapTableStrongMemory capacity:10];
-	}
-	
-	NSSize size = self.bounds.size;
-	srandom((unsigned int)time(NULL));
-
-	webView = [[WebView alloc] initWithFrame:NSMakeRect(0, 0, size.width, size.height)];
-	webView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-	webView.drawsBackground = NO;
-	webView.UIDelegate = self;
-	webView.editingDelegate = self;
-
-	
-	[NSAnimationContext beginGrouping];
-	[[NSAnimationContext currentContext] setDuration:2.0f];
-	[NSAnimationContext currentContext].completionHandler = ^{
-		[self addSubview:webView];
-        
-		[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[[GPGMailBundle bundle] URLForResource:@"Special" withExtension:@"html"]]];
-		displayed = YES;
-		working = NO;
-	};
-	
-	for (NSView *view in [self.contentView subviews]) {
-		NSRect frame = view.frame;
-		
-		if (!positionsFilled) {
-			[viewPositions setObject:[NSValue valueWithRect:frame] forKey:view];
-		}
-		
-		long angle = (random() % 360);	
-		
-		double x = (size.width + frame.size.width) / 2 * sin(angle * M_PI / 180) * 1.5;
-		double y = (size.height + frame.size.height) / 2 * cos(angle * M_PI / 180) * 1.5;
-		
-		x += (size.width - frame.size.width) / 2;
-		y += (size.height - frame.size.height) / 2;
-		
-		frame.origin.x = x;
-		frame.origin.y = y;
-		
-		[(NSView *)[view animator] setFrame:frame];
-	}
-	positionsFilled = YES;
-	[NSAnimationContext endGrouping];
+	return;
+//	if (displayed || working) return;	
+//	working = YES;
+//
+//	if (!viewPositions) {
+//		viewPositions = [[NSMapTable alloc] initWithKeyOptions:NSMapTableZeroingWeakMemory valueOptions:NSMapTableStrongMemory capacity:10];
+//	}
+//	
+//	NSSize size = self.bounds.size;
+//	srandom((unsigned int)time(NULL));
+//
+//	webView = [[WebView alloc] initWithFrame:NSMakeRect(0, 0, size.width, size.height)];
+//	webView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+//	webView.drawsBackground = NO;
+//	webView.UIDelegate = self;
+//	webView.editingDelegate = self;
+//
+//	
+//	[NSAnimationContext beginGrouping];
+//	[[NSAnimationContext currentContext] setDuration:2.0f];
+//	[NSAnimationContext currentContext].completionHandler = ^{
+//		[self addSubview:webView];
+//        
+//		[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[[GPGMailBundle bundle] URLForResource:@"Special" withExtension:@"html"]]];
+//		displayed = YES;
+//		working = NO;
+//	};
+//	
+//	for (NSView *view in [self.contentView subviews]) {
+//		NSRect frame = view.frame;
+//		
+//		if (!positionsFilled) {
+//			[viewPositions setObject:[NSValue valueWithRect:frame] forKey:view];
+//		}
+//		
+//		long angle = (random() % 360);	
+//		
+//		double x = (size.width + frame.size.width) / 2 * sin(angle * M_PI / 180) * 1.5;
+//		double y = (size.height + frame.size.height) / 2 * cos(angle * M_PI / 180) * 1.5;
+//		
+//		x += (size.width - frame.size.width) / 2;
+//		y += (size.height - frame.size.height) / 2;
+//		
+//		frame.origin.x = x;
+//		frame.origin.y = y;
+//		
+//		[(NSView *)[view animator] setFrame:frame];
+//	}
+//	positionsFilled = YES;
+//	[NSAnimationContext endGrouping];
 }
 - (void)hideSpecial {
 	if (!displayed || working) return;

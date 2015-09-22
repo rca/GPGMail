@@ -34,6 +34,12 @@
 #define GMSMA_DEFAULT_WIDTH 80.0f
 #define GMSMA_FULLSCREEN_HEIGHT 22.0f
 
+typedef NS_ENUM(NSInteger, GMSecurityMethodAccessoryViewStyle) {
+	GMSecurityMethodAccessoryViewStyleToolbarItem,
+	GMSecurityMethodAccessoryViewStyleWindowAccessory
+};
+
+
 @class GMSecurityMethodAccessoryView;
 
 @protocol GMSecurityMethodAccessoryViewDelegate <NSObject>
@@ -46,7 +52,8 @@
     BOOL _fullscreen;
     BOOL _active;
     GPGMAIL_SECURITY_METHOD _securityMethod;
-    
+	GMSecurityMethodAccessoryViewStyle _style;
+	
     id <GMSecurityMethodAccessoryViewDelegate> __weak _delegate;
     
     NSRect _nonFullScreenFrame;
@@ -60,8 +67,10 @@
 @property (nonatomic, assign) GPGMAIL_SECURITY_METHOD securityMethod;
 @property (nonatomic, assign) BOOL active;
 @property (nonatomic, weak) id <GMSecurityMethodAccessoryViewDelegate> delegate;
+@property (nonatomic, assign) GMSecurityMethodAccessoryViewStyle style;
 
 - (id)init;
+- (id)initWithStyle:(GMSecurityMethodAccessoryViewStyle)style;
 
 /**
  Configures the popup menu with the given security methods.

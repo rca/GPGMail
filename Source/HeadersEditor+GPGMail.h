@@ -75,7 +75,7 @@
 
 @end
 
-@interface HeadersEditor_GPGMail (MissingMethods)
+@interface HeadersEditor_GPGMail (NotImplemented)
 
 - (id)composeViewController;
 

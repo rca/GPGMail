@@ -733,14 +733,6 @@
     }
 }
 
-- (void)MA_addressFieldChanged {
-	[self MA_addressFieldChanged];
-}
-
-- (void)MAChangeHeaderField:(id)arg1 {
-	[self MAChangeHeaderField:arg1];
-}
-
 - (void)MADealloc {
     @try {
         [(MailNotificationCenter *)[NSClassFromString(@"MailNotificationCenter") defaultCenter] removeObserver:self];

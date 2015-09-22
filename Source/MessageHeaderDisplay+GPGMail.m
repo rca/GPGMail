@@ -62,6 +62,10 @@
     return [self MATextView:textView clickedOnCell:cell inRect:rect atIndex:index];
 }
 
+- (NSWindow *)modalWindow {
+	NSWindow *window = [GPGMailBundle isElCapitan] ? [[(id)self view] window] : [NSApp mainWindow];
+	return window;
+}
 
 - (void)_showAttachmentsPanel {
     NSArray *pgpAttachments = nil;
@@ -72,7 +76,8 @@
     
     GPGAttachmentController *attachmentController = [[GPGAttachmentController alloc] initWithAttachmentParts:pgpAttachments];
     attachmentController.keyList = [[GPGMailBundle sharedInstance] allGPGKeys];
-    [attachmentController beginSheetModalForWindow:[NSApp mainWindow] completionHandler:^(NSInteger result) {
+	
+	[attachmentController beginSheetModalForWindow:[self modalWindow] completionHandler:^(NSInteger result) {
     }];
     // Set is an an ivar of MessageHeaderDisplay so it's released, once
     // the Message Header Display is closed.
@@ -107,13 +112,13 @@
 			alert = [NSAlert alertForError:error firstButton:@"OK" secondButton:nil thirdButton:nil];
 		}
 		
-		[alert beginSheetModalForWindow:[NSApp mainWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
+		[alert beginSheetModalForWindow:[self modalWindow] modalDelegate:self didEndSelector:nil contextInfo:nil];
         return;
     }
     GPGSignatureView *signatureView = [GPGSignatureView signatureView];
     signatureView.keyList = [[GPGMailBundle sharedInstance] allGPGKeys];
-    signatureView.signatures = messageSigners; 
-    [signatureView beginSheetModalForWindow:[NSApp mainWindow] completionHandler:^(NSInteger result) {
+    signatureView.signatures = messageSigners;
+	[signatureView beginSheetModalForWindow:[self modalWindow] completionHandler:^(NSInteger result) {
 //        DebugLog(@"Signature panel was closed: %d", result);
     }];
 }
