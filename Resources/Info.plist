@@ -44,6 +44,7 @@
 	<string>dsa_pub.pem</string>
 	<key>GMOSXVersions</key>
 	<array>
+		<string>10.11</string>
 		<string>10.7</string>
 		<string>10.8</string>
 		<string>10.9</string>
