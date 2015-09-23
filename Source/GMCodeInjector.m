@@ -362,7 +362,7 @@
 			[self applyHookChangesForVersion:@"10.9" toHooks:hooks];
 		if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9)
             [self applyHookChangesForVersion:@"10.10" toHooks:hooks];
-		if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_10)
+		if(floor(NSAppKitVersionNumber) >= 1404)
 			[self applyHookChangesForVersion:@"10.11" toHooks:hooks];
 
 		_hooks = [NSDictionary dictionaryWithDictionary:hooks];

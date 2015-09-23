@@ -4,12 +4,12 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "MUIWebDocumentViewDelegate.h"
-#import "NSTextFieldDelegate.h"
+//#import "MUIWebDocumentViewDelegate.h"
+//#import "NSTextFieldDelegate.h"
 
 @class ComposeDraft, MUIAddressField, MUIWebDocumentView, NSArray, NSButton, NSPopUpButton, NSStackView, NSString, NSTextField;
 
-@interface ComposeViewController : NSViewController <MUIWebDocumentViewDelegate, NSTextFieldDelegate>
+@interface ComposeViewController : NSViewController //<MUIWebDocumentViewDelegate, NSTextFieldDelegate>
 {
     long long _toState;
     long long _ccState;
@@ -89,7 +89,7 @@
 @property(retain, nonatomic) NSStackView *headerStackView; // @synthesize headerStackView=_headerStackView;
 @property(copy, nonatomic) NSArray *deliveryAccounts; // @synthesize deliveryAccounts=_deliveryAccounts;
 @property(copy, nonatomic) NSArray *fromAddresses; // @synthesize fromAddresses=_fromAddresses;
-- (void).cxx_destruct;
+//- (void).cxx_destruct;
 - (void)controlTextDidChange:(id)arg1;
 - (void)objectDidEndEditing:(id)arg1;
 - (void)objectDidBeginEditing:(id)arg1;
