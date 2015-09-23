@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1B00D9051B5440F800DBDCD7 /* ElCapitan_10.11_Beta6 in Resources */ = {isa = PBXBuildFile; fileRef = 1B00D9041B5440F800DBDCD7 /* ElCapitan_10.11_Beta6 */; };
 		1B00D9071B544C0300DBDCD7 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B00D9061B544C0300DBDCD7 /* WebKit.framework */; };
 		1B01AC5C17C82A77008FC246 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 1B01AC5B17C82A77008FC246 /* dsa_pub.pem */; };
 		1B02D70813F1E9D80032CFD1 /* GPGFlaggedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D70713F1E9D80032CFD1 /* GPGFlaggedString.m */; };
@@ -199,7 +198,6 @@
 
 /* Begin PBXFileReference section */
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		1B00D9041B5440F800DBDCD7 /* ElCapitan_10.11_Beta6 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ElCapitan_10.11_Beta6; sourceTree = "<group>"; };
 		1B00D9061B544C0300DBDCD7 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		1B01AC5B17C82A77008FC246 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		1B02D70713F1E9D80032CFD1 /* GPGFlaggedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPGFlaggedString.m; sourceTree = "<group>"; };
@@ -4887,7 +4885,6 @@
 		1BFDB138180B30DB00B677C2 /* MailHeaders */ = {
 			isa = PBXGroup;
 			children = (
-				1B00D9041B5440F800DBDCD7 /* ElCapitan_10.11_Beta6 */,
 				1B92838D19F9A55600D540DF /* Yosemite_Final */,
 				1BFDB139180B30DB00B677C2 /* Lion */,
 				1BFDB561180B30E000B677C2 /* Mavericks */,
@@ -7119,7 +7116,6 @@
 				30E227901772057A00AD9A48 /* SymmetricEncryptionOff.pdf in Resources */,
 				3066C60D17579F5900384E29 /* CertSmallStd@2x.png in Resources */,
 				3066C6101757A0FC00384E29 /* MenuArrowWhite.png in Resources */,
-				1B00D9051B5440F800DBDCD7 /* ElCapitan_10.11_Beta6 in Resources */,
 				3066C6111757A0FC00384E29 /* MenuArrowWhite@2x.png in Resources */,
 				3066C6171757A54900384E29 /* certificate.png in Resources */,
 				3066C6181757A54900384E29 /* certificate@2x.png in Resources */,
