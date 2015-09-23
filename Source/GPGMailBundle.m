@@ -60,6 +60,7 @@ NSString *GPGMailSwizzledMethodPrefix = @"MA";
 NSString *GPGMailAgent = @"GPGMail %@";
 NSString *GPGMailKeyringUpdatedNotification = @"GPGMailKeyringUpdatedNotification";
 NSString *gpgErrorIdentifier = @"^~::gpgmail-error-code::~^";
+static NSString * const kExpiredCheckKey = @"__gme__";
 
 int GPGMailLoggingLevel = 0;
 static BOOL gpgMailWorks = NO;
@@ -120,7 +121,10 @@ static BOOL gpgMailWorks = NO;
 		return;
 	}
     
-    
+    // Start the beta expired check.
+    if([GPGMailBundle isElCapitan] && [self betaExpired]) {
+        return;
+    }
     
     /* Check the validity of the code signature.
      * Disable for the time being, since Info.plist is part of the code signature
@@ -191,7 +195,10 @@ static BOOL gpgMailWorks = NO;
         
         // Initiate the Message Rules Applier.
         _messageRulesApplier = [[GMMessageRulesApplier alloc] init];
-                
+        
+        if([GPGMailBundle isElCapitan])
+            [self runBetaHasExpiredCheck];
+        
         // Start the GPG checker.
         [self startGPGChecker];
         
@@ -203,6 +210,84 @@ static BOOL gpgMailWorks = NO;
 	}
     
 	return self;
+}
+
++ (BOOL)betaExpired {
+    NSDictionary *gme = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kExpiredCheckKey];
+    NSString *build = [GPGMailBundle bundleBuildNumber];
+    if(!gme || !gme[build])
+        return NO;
+    
+    NSArray *e = gme[build];
+    if([e count] != 2)
+        return NO;
+    
+    if([e[0] boolValue])
+        return YES;
+    
+    return NO;
+}
+        
+- (void)runBetaHasExpiredCheck {
+    NSDictionary *gme = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kExpiredCheckKey];
+    BOOL shouldCheck = NO;
+    if(!gme) {
+        shouldCheck = YES;
+        gme = @{};
+    }
+    NSString *build = [GPGMailBundle bundleBuildNumber];
+    if(gme && !gme[build])
+        shouldCheck = YES;
+    
+    if([gme[build] isKindOfClass:[NSArray class]]) {
+        NSArray *e = gme[build];
+        NSCalendar *c = [NSCalendar currentCalendar];
+        NSDateComponents *dateComponent = [[NSDateComponents alloc] init];
+        dateComponent.weekOfYear = 1;
+        
+        NSDate *d = [NSDate dateWithTimeIntervalSince1970:[e[1] doubleValue]];
+        NSDate *w = [c dateByAddingComponents:dateComponent toDate:d options:NSCalendarWrapComponents];
+        
+        NSDate *t = [NSDate date];
+        NSComparisonResult r = [t compare:w];
+        if(r == NSOrderedDescending || r == NSOrderedSame) {
+            shouldCheck = YES;
+        }
+        else
+            shouldCheck = NO;
+    }
+    if(shouldCheck) {
+        NSURL *url = [NSURL URLWithString:@"https://gpgtools.org/api/beta-check"];
+        NSDictionary *info = @{@"build-number": build, @"version": [GPGMailBundle bundleVersion]};
+        
+        NSData *json = [NSJSONSerialization dataWithJSONObject:info options:0 error:nil];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+        request.HTTPMethod = @"POST";
+        request.HTTPBody = json;
+        
+        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            // We can simply ignore errors. If an error occurs, the check will be performed the next
+            // time Mail.app is launched.
+            if(!error) {
+                id result = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                BOOL expired = [(NSNumber *)[result valueForKey:@"expired"] boolValue];
+                NSMutableDictionary *gmen = [gme mutableCopy];
+                NSArray *e = @[@(expired), @([[NSDate date] timeIntervalSince1970])];
+                [gmen setObject:e forKey:build];
+                [[NSUserDefaults standardUserDefaults] setValue:gmen forKey:kExpiredCheckKey];
+                // Display warning dialog if the beta has expired.
+                if(expired) {
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(8 * NSEC_PER_SEC)),
+                        dispatch_get_main_queue(), ^{
+                            NSString *message = @"Please download the newest version from\nhttps://gpgtools.org\n\nGPGMail will continue working until you quit Mail.app";
+                            NSRunAlertPanel(@"Your GPGMail beta has expired", @"%@", nil, nil, nil, message);
+                        }
+                    );
+                }
+            }
+        }];
+        [task resume];
+    }
 }
 
 - (void)dealloc {
@@ -409,7 +494,7 @@ static BOOL gpgMailWorks = NO;
     return [[[GPGMailBundle bundle] infoDictionary] valueForKey:@"CFBundleVersion"];
 }
 
-+ (NSNumber *)bundleBuildNumber {
++ (NSString *)bundleBuildNumber {
     return [[[GPGMailBundle bundle] infoDictionary] valueForKey:@"BuildNumber"];
 }
 
