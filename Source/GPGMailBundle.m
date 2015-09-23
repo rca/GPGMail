@@ -46,10 +46,6 @@
 #import "DocumentEditor.h"
 #import "GMSecurityControl.h"
 
-#ifndef NSAppKitVersionNumber10_10
-#define NSAppKitVersionNumber10_10 1343
-#endif
-
 @interface GPGMailBundle ()
 
 @property GPGErrorCode gpgStatus;
@@ -465,7 +461,12 @@ static BOOL gpgMailWorks = NO;
 }
 
 + (BOOL)isElCapitan {
-    return floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_10;
+    NSProcessInfo *info = [NSProcessInfo processInfo];
+    if(![info respondsToSelector:@selector(isOperatingSystemAtLeastVersion:)])
+        return NO;
+    
+    NSOperatingSystemVersion requiredVersion = {10,11,0};
+    return [info isOperatingSystemAtLeastVersion:requiredVersion];
 }
 
 + (BOOL)hasPreferencesPanel {
