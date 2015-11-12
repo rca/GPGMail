@@ -506,13 +506,13 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 
 - (GPGKey *)findKeyByHint:(NSString *)hint onlySecret:(BOOL)onlySecret {
     GPGKey *foundKey = nil;
-	if (!hint) {
+	if (hint.length == 0) {
         return nil;
 	}
 	
     NSSet *keys = onlySecret ? _secretKeys : _publicKeys;
     for (GPGKey *key in keys) {
-        if ([key.textForFilter rangeOfString:hint].location != NSNotFound) {
+        if ([key.textForFilter rangeOfString:hint options:NSCaseInsensitiveSearch].location != NSNotFound) {
             foundKey = key;
 			for (GPGKey *subkey in key.subkeys) {
 				if ([subkey.textForFilter rangeOfString:hint].location != NSNotFound) {
@@ -522,6 +522,20 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
             break;
         }
     }
+	
+	if (foundKey && (hint.length & 7) == 0 && [foundKey.fingerprint rangeOfString:hint].location == NSNotFound) {
+		// Only check subkey fingerprints if a key is found and the hint looks like a keyID/fingerprint and the hint is not in the key's fingerprint.
+		
+		for (GPGKey *subkey in foundKey.subkeys) {
+			if ([subkey.fingerprint rangeOfString:hint options:NSCaseInsensitiveSearch | NSAnchoredSearch].location != NSNotFound) {
+				foundKey = subkey;
+				break;
+			}
+		}
+	}
+	
+	
+	
     return foundKey;
 }
 
