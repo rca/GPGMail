@@ -506,13 +506,19 @@ publicKeyMap = _publicKeyMap, groups = _groups, allSecretKeys = _allSecretKeys, 
 
 - (GPGKey *)findKeyByHint:(NSString *)hint onlySecret:(BOOL)onlySecret {
     GPGKey *foundKey = nil;
-    if(!hint)
+	if (!hint) {
         return nil;
-    
+	}
+	
     NSSet *keys = onlySecret ? _secretKeys : _publicKeys;
     for (GPGKey *key in keys) {
-        if([key.textForFilter rangeOfString:hint].location != NSNotFound) {
+        if ([key.textForFilter rangeOfString:hint].location != NSNotFound) {
             foundKey = key;
+			for (GPGKey *subkey in key.subkeys) {
+				if ([subkey.textForFilter rangeOfString:hint].location != NSNotFound) {
+					foundKey = subkey;
+				}
+			}
             break;
         }
     }
