@@ -2037,7 +2037,7 @@
 				}
 				
 				
-				senderPublicKey = [[recipient valueForFlag:@"gpgKey"] primaryKey];
+				senderPublicKey = [recipient valueForFlag:@"gpgKey"];
 
 				// Drafts are only encrypted with the senders key.
 				if ([[recipient valueForFlag:@"isDraft"] boolValue]) {
@@ -2150,7 +2150,10 @@
 			[self failedToSignForSender:sender gpgErrorCode:1 error:nil];
 			return nil;
 		}
-	}	
+	}
+	if (keyForSigning.canSign == NO && keyForSigning.primaryKey != keyForSigning) {
+		keyForSigning = keyForSigning.primaryKey;
+	}
 	
     GPGController *gpgc = [[GPGController alloc] init];
     gpgc.useArmor = YES;
