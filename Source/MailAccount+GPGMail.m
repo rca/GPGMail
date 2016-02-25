@@ -30,6 +30,12 @@
 #import <MailAccount.h>
 #import "MailAccount+GPGMail.h"
 #import "GPGMailBundle.h"
+#import <objc/runtime.h>
+#import "MessageRouter+GPGMail.h"
+#import "GMCodeInjector.h"
+
+
+static NSString *GPGMailSwizzledMethodPrefix = @"MA";
 
 @implementation MailAccount_GPGMail
 
@@ -39,6 +45,37 @@
         return YES;
     
     return [self MAAccountExistsForSigning];
+}
+
+
++(void)MACompleteDeferredAccountInitialization{
+    /*
+     *  MFMessageRouter will load rules in its +initialization method -- which is inadvertently called during injection.
+     *  Because Rules often include mailbox information this try to load mailboxes prior to accounts being loaded, leading
+     *  to undetermined effects.
+     *
+     *  A further conflict occur with MailTags because MailTags will swizzle the loading of rules and a deadlock may occur
+     *  ( a race condition as far as I can tell )
+     *
+     *  The resolution to this situation is to defer code injection until after Account initialization is complete.
+     *  When GPGMail is loaded, it swizzles the completeDeferredAccountInitialization -- which then performs the
+     *  injection for MessageRouter methods
+     *
+     */
+    
+    [self MACompleteDeferredAccountInitialization];
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        // read the accounts to make sure they are in memory.
+        NSDictionary * deferredHooks = @{
+                                         @"MessageRouter": @[
+                                                 @"putRulesThatWantsToHandleMessage:intoArray:colorRulesOnly:"
+                                                 ]
+                                         };
+        [GMCodeInjector injectUsingMethodPrefix:GPGMailSwizzledMethodPrefix hooks:deferredHooks];
+    });
+    
 }
 
 @end
