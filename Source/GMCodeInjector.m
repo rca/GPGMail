@@ -110,7 +110,8 @@
 					 @"plistDataForMessage:subject:sender:to:dateSent:remoteID:originalMailbox:flags:mergeWithDictionary:",
 			 ],
 			 @"MailAccount": @[
-					 @"accountExistsForSigning"
+					 @"accountExistsForSigning",
+                     @"completeDeferredAccountInitialization"
 			 ],
 			 @"OptionalView": @[
 					 @"widthIncludingOptionSwitch:"
@@ -120,9 +121,6 @@
 					 @"windowWillResize:toSize:",
 					 @"toolbarItemClicked:",
 					 @"showPreferencesPanelForOwner:"
-			 ],
-			 @"MessageRouter": @[
-					@"putRulesThatWantsToHandleMessage:intoArray:colorRulesOnly:"
 			 ]
 	};
 }
@@ -447,8 +445,9 @@
     return className;
 }
 
-+ (void)injectUsingMethodPrefix:(NSString *)prefix {
-	/**
+
++ (void)injectUsingMethodPrefix:(NSString *)prefix hooks:(NSDictionary*)hooks{
+    /**
      This method replaces all of Mail's methods which are necessary for GPGMail
      to work correctly.
      
@@ -461,63 +460,67 @@
      
      swizzleMap contains all classes and methods which need to be swizzled.
      */
-	NSDictionary *hooks = [self hooks];
-	NSString *extensionClassSuffix = @"GPGMail";
-	
-	NSError * __autoreleasing error = nil;
+    
+    NSString *extensionClassSuffix = @"GPGMail";
+    
+    NSError * __autoreleasing error = nil;
     for(NSString *class in hooks) {
         NSString *oldClass = [[self class] legacyClassNameForName:class];
         error = nil;
         
         NSArray *selectors = hooks[class];
-		
-		Class mailClass = NSClassFromString(class);
+        
+        Class mailClass = NSClassFromString(class);
         if(!mailClass) {
-			DebugLog(@"WARNING: Class %@ doesn't exist. This leads to unexpected behaviour!", class);
-			continue;
-		}
-		
-		// Check if a class exists with <class>_GPGMail. If that's
-		// the case, all the methods of that class, have to be added
-		// to the original Mail or Messages class.
-		Class extensionClass = NSClassFromString([oldClass stringByAppendingFormat:@"_%@", extensionClassSuffix]);
-		if(!extensionClass) {
-			// In order to correctly hook classes on older versions of OS X than 10.9, the MC and MF prefix
-			// is removed. There are however some cases, where classes where added to 10.9 which didn't exist
-			// on < 10.9. In those cases, let's try to find the class with the appropriate prefix.
-			
-			// Try to find extensions to the original classname.
-			extensionClass = NSClassFromString([class stringByAppendingFormat:@"_%@", extensionClassSuffix]);
-		}
-		BOOL extend = extensionClass != nil ? YES : NO;
-		if(extend) {
-			if(![mailClass jrlp_addMethodsFromClass:extensionClass error:&error])
-				DebugLog(@"WARNING: methods of class %@ couldn't be added to %@ - %@", extensionClass,
-					  mailClass, error);
-		}
-		
-		// And on to swizzling methods and class methods.
-		for(id selectorNames in selectors) {
+            DebugLog(@"WARNING: Class %@ doesn't exist. This leads to unexpected behaviour!", class);
+            continue;
+        }
+        
+        // Check if a class exists with <class>_GPGMail. If that's
+        // the case, all the methods of that class, have to be added
+        // to the original Mail or Messages class.
+        Class extensionClass = NSClassFromString([oldClass stringByAppendingFormat:@"_%@", extensionClassSuffix]);
+        if(!extensionClass) {
+            // In order to correctly hook classes on older versions of OS X than 10.9, the MC and MF prefix
+            // is removed. There are however some cases, where classes where added to 10.9 which didn't exist
+            // on < 10.9. In those cases, let's try to find the class with the appropriate prefix.
+            
+            // Try to find extensions to the original classname.
+            extensionClass = NSClassFromString([class stringByAppendingFormat:@"_%@", extensionClassSuffix]);
+        }
+        BOOL extend = extensionClass != nil ? YES : NO;
+        if(extend) {
+            if(![mailClass jrlp_addMethodsFromClass:extensionClass error:&error])
+                DebugLog(@"WARNING: methods of class %@ couldn't be added to %@ - %@", extensionClass,
+                         mailClass, error);
+        }
+        
+        // And on to swizzling methods and class methods.
+        for(id selectorNames in selectors) {
             // If the selector changed from one OS X version to the other, selectorNames is an NSArray and
             // the selector name of the GPGMail implementation is item 0 and the Mail implementation name is
             // item 1.
             NSString *gmSelectorName = [selectorNames isKindOfClass:[NSArray class]] ? selectorNames[0] : selectorNames;
-			NSString *mailSelectorName = [selectorNames isKindOfClass:[NSArray class]] ? selectorNames[1] : selectorNames;
+            NSString *mailSelectorName = [selectorNames isKindOfClass:[NSArray class]] ? selectorNames[1] : selectorNames;
             
             error = nil;
-			NSString *extensionSelectorName = [NSString stringWithFormat:@"%@%@%@", prefix, [[gmSelectorName substringToIndex:1] uppercaseString],
-											   [gmSelectorName substringFromIndex:1]];
-			SEL selector = NSSelectorFromString(mailSelectorName);
-			SEL extensionSelector = NSSelectorFromString(extensionSelectorName);
-			// First try to add as instance method.
-			if(![mailClass jrlp_swizzleMethod:selector withMethod:extensionSelector error:&error]) {
+            NSString *extensionSelectorName = [NSString stringWithFormat:@"%@%@%@", prefix, [[gmSelectorName substringToIndex:1] uppercaseString],
+                                               [gmSelectorName substringFromIndex:1]];
+            SEL selector = NSSelectorFromString(mailSelectorName);
+            SEL extensionSelector = NSSelectorFromString(extensionSelectorName);
+            // First try to add as instance method.
+            if(![mailClass jrlp_swizzleMethod:selector withMethod:extensionSelector error:&error]) {
                 // If that didn't work, try to add as class method.
                 if(![mailClass jrlp_swizzleClassMethod:selector withClassMethod:extensionSelector error:&error])
                     DebugLog(@"WARNING: %@ doesn't respond to selector %@", NSStringFromClass(mailClass),
-						  NSStringFromSelector(selector));
+                             NSStringFromSelector(selector));
             }
-		}
-	}
+        }
+    }
+}
+
++ (void)injectUsingMethodPrefix:(NSString *)prefix {
+    [self injectUsingMethodPrefix:prefix hooks:[self hooks]];
 }
 
 @end

@@ -32,6 +32,7 @@
 @interface GMCodeInjector : NSObject
 
 + (void)injectUsingMethodPrefix:(NSString *)prefix;
++ (void)injectUsingMethodPrefix:(NSString *)prefix hooks:(NSDictionary*)hooks;
 + (NSDictionary *)hooks;
 
 @end
