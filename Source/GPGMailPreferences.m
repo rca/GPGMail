@@ -169,13 +169,6 @@ NSString *SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://gpgtools.tenderapp.com/kb/how-to/gpg-status"]];
 }
 
-- (IBAction)copyVersionInfo:(id)sender {
-	NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
-	[pasteboard clearContents];
-	NSString *string = [NSString stringWithFormat:@"%@\n%@", self.versionDescription, self.buildNumberDescription.string];
-	[pasteboard writeObjects:@[string]];
-}
-
 
 - (void)willBeDisplayed {
 	[[GPGMailBundle sharedInstance] checkGPG];
@@ -323,11 +316,6 @@ NSString *SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
 @end
 
 
-@implementation NSButton_LinkCursor
-- (void)resetCursorRects {
-	[self addCursorRect:[self bounds] cursor:[NSCursor pointingHandCursor]];
-}
-@end
 
 @implementation GMSpecialBox
 - (void)showSpecial {
