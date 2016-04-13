@@ -59,6 +59,9 @@
 @end
 
 
+@interface NSButton_LinkCursor : NSButton
+@end
+
 @interface GMSpecialBox : NSBox {
 	NSMapTable *viewPositions;
 	BOOL working;

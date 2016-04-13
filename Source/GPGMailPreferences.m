@@ -103,53 +103,23 @@ NSString *SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
 
 
 - (IBAction)openSupport:(id)sender {
-	BOOL success = NO;
-	
-	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
-		success = [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"x-apple.systempreferences:org.gpgtools.gpgpreferences?report"]];
-	} else {
-		// Find GPGPreferences.prefPane.
-		NSString *path = @"/Library/PreferencePanes/GPGPreferences.prefPane";
-		if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
-			struct passwd *pw = getpwuid(getuid());
-			if (pw) {
-				NSString *home = [NSString stringWithUTF8String:pw->pw_dir];
-				path = [home stringByAppendingPathComponent:path];
-			}
-			if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
-				path = nil;
-			}
+	// Find gpgPrefLauncher inside of GPGPreferences.prefPane.
+	NSString *path = @"/Library/PreferencePanes/GPGPreferences.prefPane/Contents/Resources/gpgPrefLauncher";
+	if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+		struct passwd *pw = getpwuid(getuid());
+		if (pw) {
+			NSString *home = [NSString stringWithUTF8String:pw->pw_dir];
+			path = [home stringByAppendingPathComponent:path];
 		}
-		
-		if (path) {
-			// Apple Event to open GPGPreferences and show "Rend Report" tab.
-			NSAppleEventDescriptor *event = [NSAppleEventDescriptor appleEventWithEventClass:kCoreEventClass
-																					 eventID:kAEOpenDocuments
-																			targetDescriptor:nil
-																					returnID:kAutoGenerateReturnID
-																			   transactionID:kAnyTransactionID];
-			
-			NSAppleEventDescriptor *file = [NSAppleEventDescriptor descriptorWithDescriptorType:typeFileURL
-																						   data:[[NSString stringWithFormat:@"file://%@", path] UTF8Data]];
-			NSAppleEventDescriptor *fileList = [NSAppleEventDescriptor listDescriptor];
-			[fileList insertDescriptor:file atIndex:0];
-			[event setParamDescriptor:fileList forKeyword:keyDirectObject];
-			
-			[event setParamDescriptor:[NSAppleEventDescriptor descriptorWithString:@"report"] forKeyword:keyAESearchText];
-			
-			@try {
-				// Launch System Preferences and send the Apple Event.
-				success = !![[NSWorkspace sharedWorkspace] launchApplicationAtURL:[NSURL fileURLWithPath:@"/Applications/System Preferences.app"]
-																		  options:0
-																	configuration:@{NSWorkspaceLaunchConfigurationAppleEvent: event}
-																			error:nil];
-			}
-			@catch (NSException *exception) {
-				success = NO;
-			}
+		if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+			path = nil;
 		}
 	}
 	
+	BOOL success = NO;
+	if (path) {
+		success = [GPGTask launchGeneralTask:path withArguments:@[@"report"] wait:YES];
+	}
 	
 	if (!success) {
 		// Alternative if GPGPreferences could not be launched.
@@ -316,6 +286,11 @@ NSString *SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
 @end
 
 
+@implementation NSButton_LinkCursor
+- (void)resetCursorRects {
+	[self addCursorRect:[self bounds] cursor:[NSCursor pointingHandCursor]];
+}
+@end
 
 @implementation GMSpecialBox
 - (void)showSpecial {
