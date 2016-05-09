@@ -41,10 +41,6 @@
 
 - (IBAction)openGPGStatusHelp:(id)sender;
 
-/* Copy the version into the pasteboard */
-- (IBAction)copyVersionInfo:(id)sender;
-
-- (IBAction)checkForUpdates:(id)sender;
 
 
 @property (weak, readonly) NSString *copyright, *versionDescription, *gpgStatusToolTip, *gpgStatusTitle;
@@ -52,9 +48,7 @@
 @property (weak, readonly) GPGMailBundle *bundle;
 @property (weak, readonly) NSImage *gpgStatusImage;
 @property (weak, readonly) GPGOptions *options;
-@property BOOL enableAutomaticChecks;
 @property BOOL encryptDrafts;
-
 
 @end
 

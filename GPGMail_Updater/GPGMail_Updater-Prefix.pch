@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'GPGMail_Updater' target in the 'GPGMail_Updater' project
-//
-
-#ifdef __OBJC__
-	#import <Cocoa/Cocoa.h>
-#endif
