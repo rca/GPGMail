@@ -383,7 +383,14 @@
 		
 		// Class was added.
 		if(!hooks[class]) {
-			hooks[class] = hook[@"selectors"];
+			// This check is necessary on older systems. 10.10+ has an additional check for nil value.
+			// If hook[selectors] is nil, it would call removeObjectForKey instead of setObject:forKey.
+			// Interestingly enough, this is done in the arclite implementation of the sdk this code is compiled on.
+			// Setting hook[class] to hook[selectors] would crash on previous version if the code was compiled on 10.9 or lower
+			// since no nil check was added in the arclite implementation of setObject:forKeyedSubscript:
+			if(hook[@"selectors"]) {
+				hooks[class] = hook[@"selectors"];
+			}
 			continue;
 		}
 		// Class was removed.
