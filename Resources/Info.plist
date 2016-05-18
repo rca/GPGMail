@@ -30,18 +30,6 @@
 	<string>Copyright © GPGTools, 2013</string>
 	<key>NSPrincipalClass</key>
 	<string>GPGMailBundle</string>
-	<key>SUEnableAutomaticChecks</key>
-	<true/>
-	<key>SUFeedURL</key>
-	<string>https://gpgtools.org/releases/gpgmail/appcast.xml</string>
-	<key>SUFeedURL_nightly</key>
-	<string>https://releases.gpgtools.org/nightlies/gpgmail_lml/appcast.xml</string>
-	<key>SUFeedURL_prerelease</key>
-	<string>https://gpgtools.org/releases/gpgmail/pre-appcast.xml</string>
-	<key>SUScheduledCheckInterval</key>
-	<integer>86400</integer>
-	<key>SUPublicDSAKeyFile</key>
-	<string>dsa_pub.pem</string>
 	<key>GMOSXVersions</key>
 	<array>
 		<string>10.11</string>
