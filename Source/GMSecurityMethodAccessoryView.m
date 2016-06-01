@@ -34,59 +34,76 @@
 #import "NSBezierPath_KBAdditions.h"
 #import "NSWindow+GPGMail.h"
 #import "GMSecurityMethodAccessoryView.h"
+#import "GPGMailBundle.h"
 
 @interface GMSecurityMethodAccessoryView ()
-
-
 @property (nonatomic, assign) BOOL fullscreen;
 @property (nonatomic, assign) NSRect nonFullScreenFrame;
 
-@property (nonatomic, strong) NSPopUpButton *popup;
 @property (nonatomic, strong) NSImageView *arrow;
 @property (nonatomic, strong) NSTextField *label;
 
 @property (nonatomic, strong) NSMapTable *attributedTitlesCache;
 
+
+// cell defined as NSPopUpButtonCell to need no casts.
+@property NSPopUpButtonCell *cell;
+
 @end
 
-@implementation GMSecurityMethodAccessoryView
 
-@synthesize popup = _popup, fullscreen = _fullscreen, active = _active, arrow = _arrow, 
+
+@interface GMSecurityMethodAccessoryCell : NSPopUpButtonCell
+@end
+@implementation GMSecurityMethodAccessoryCell
+- (void)selectItem:(__unused NSMenuItem *)item {
+	// Do not select the menu item when the user clicks on it, only notify the delegate.
+	// -setSecurityMethod: changes the selection.
+}
+@end
+
+
+@implementation GMSecurityMethodAccessoryView
+@synthesize fullscreen = _fullscreen, active = _active, arrow = _arrow,
             nonFullScreenFrame = _nonFullScreenFrame, securityMethod = _securityMethod,
             delegate = _delegate, label = _label, attributedTitlesCache = _attributedTitlesCache, style = _style;
+@dynamic cell;
+
++ (Class)cellClass {
+	return [GMSecurityMethodAccessoryCell class];
+}
 
 - (id)init {
 	return [self initWithStyle:GMSecurityMethodAccessoryViewStyleWindowAccessory];
 }
 
 - (id)initWithStyle:(GMSecurityMethodAccessoryViewStyle)style {
-    self = [super initWithFrame:NSMakeRect(0.0f, 0.0f, GMSMA_DEFAULT_WIDTH, GMSMA_DEFAULT_HEIGHT)];
-    if(self) {
-        self.autoresizingMask = NSViewMinYMargin | NSViewMinXMargin;
-        _attributedTitlesCache = [NSMapTable mapTableWithStrongToStrongObjects];
-		_style = style;
-        [self _configurePopupWithSecurityMethods:@[@"OpenPGP", @"S/MIME"]];
-        [self _configureArrow];
-    }
+	self = [super initWithFrame:NSMakeRect(0.0f, 0.0f, GMSMA_DEFAULT_WIDTH, GMSMA_DEFAULT_HEIGHT) pullsDown:NO];
+	if (!self) {
+		return nil;
+	}
+	
+	
+	self.autoresizingMask = NSViewMinYMargin | NSViewMinXMargin;
+	
+	// The arrow is hidden, since it's strangely aligned by default.
+	// GPGMail adds its own.
+	self.cell.arrowPosition = NSPopUpNoArrow;
+	
+	_attributedTitlesCache = [NSMapTable mapTableWithStrongToStrongObjects];
+	_style = style;
+	[self _configurePopupWithSecurityMethods:@[@"OpenPGP", @"S/MIME"]];
+	[self _configureArrow];
+	
     return self;
 }
 
-//- (BOOL)flipped {
-//    return YES;
-//}
+- (BOOL)isFlipped {
+	return NO;
+}
 
 - (void)_configurePopupWithSecurityMethods:(NSArray *)methods {
-    NSPopUpButton *popup = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(0.0f, 0.0f, 
-                                                                           self.frame.size.width, 
-                                                                           self.frame.size.height) pullsDown:NO];
-    // The arrow is hidden, since it's strangely aligned by default.
-    // GPGMail adds its own.
-    [[popup cell] setArrowPosition:NSPopUpNoArrow];
-    [popup setAutoresizingMask:NSViewMinYMargin];
-    // Make the popup border transparent.
-    [popup setBordered:NO]; 
-    
-    NSMenu *menu = popup.menu;
+    NSMenu *menu = self.menu;
     menu.autoenablesItems = NO;
     menu.delegate = self;
     
@@ -97,9 +114,6 @@
         item.tag = [methods indexOfObject:method] == 0 ? GPGMAIL_SECURITY_METHOD_OPENPGP : GPGMAIL_SECURITY_METHOD_SMIME;
         item.keyEquivalent = [methods indexOfObject:method] == 0 ? @"p" : @"s";
         item.keyEquivalentModifierMask = NSCommandKeyMask | NSAlternateKeyMask;
-        // Store the actual title to only display it when the menu is open.
-        [item setIvar:@"Title" value:method];
-        item.title = @"";
     }
     
     // Add the initial label.
@@ -111,26 +125,16 @@
     
     [self addSubview:label];
     self.label = label;
-    
-    // Add the popup as subview.
-    [self addSubview:popup];
-    
-    self.popup = popup;
-	if(self.style == GMSecurityMethodAccessoryViewStyleToolbarItem)
-		self.popup.menu.font = [NSFont systemFontOfSize:18.f];
+
+	
+	if (self.style == GMSecurityMethodAccessoryViewStyleToolbarItem) {
+		self.menu.font = [NSFont systemFontOfSize:18.f];
+	}
 	
     // Update the label value and center it.
     [self updateAndCenterLabelForItem:nil];
-}
-
-- (void)changeSecurityMethod:(id)sender {
-    // Only tell the delegate if the current method is not the new method.
-    if(self.securityMethod == [sender tag])
-        return;
     
-    [self.delegate securityMethodAccessoryView:self didChangeSecurityMethod:(GPGMAIL_SECURITY_METHOD)[sender tag]];
 }
-
 - (void)_configureArrow {
     NSImage *arrow = [NSImage imageNamed:@"MenuArrowWhite"];
     NSImageView *imageView = [[NSImageView alloc] initWithFrame:NSMakeRect(60.0f, 4.0f, arrow.size.width, arrow.size.height)];
@@ -148,91 +152,80 @@
 - (void)configureForFullScreenWindow:(NSWindow *)window {
     DebugLog(@"Enter fullscreen: move security method accessory view");
     self.fullscreen = YES;
+	
     // Add the accessory view to the window.
     [window addAccessoryView:self];
+	
     // Center the view within the window.
     [window positionAccessoryView:self offset:NSMakePoint(200.0f, 0.f)];
+	
     // Adjust the height to match the other fullscreen mail buttons.
     NSRect frame = self.frame;
-    frame.size.height = 22.0f;
+    frame.size.height = GMSMA_FULLSCREEN_HEIGHT;
     // Align it vertically to match the other mail buttons.
     frame.origin.y = frame.origin.y - 16.0f;
     self.frame = frame;
-    
-    // Adjust the height of the popup.
-    self.popup.frame = NSMakeRect(0.0f, 0.0f, self.frame.size.width, GMSMA_FULLSCREEN_HEIGHT);
-    self.popup.menu.font = [NSFont systemFontOfSize:12.f];
-    [self.popup setNeedsDisplay];
-    
+	
+	// Center the arrow vertically.
+	NSRect arrowFrame = self.arrow.frame;
+	arrowFrame.origin.y = 6.0f;
+	self.arrow.frame = arrowFrame;
+
+	// Set optimal font size.
+    self.menu.font = [NSFont systemFontOfSize:12.f];
+	
+	self.needsDisplay = YES;
     [self updateAndCenterLabelForItem:nil];
-    
-    NSRect arrowFrame = self.arrow.frame;
-    arrowFrame.origin.y = 6.0f;
-    self.arrow.frame = arrowFrame;
 }
 
 - (void)configureForWindow:(NSWindow *)window {
     DebugLog(@"Exit fullscreen: re-add security method accessory view");
     self.fullscreen = NO;
+	
     [self removeFromSuperview];
-    
-    NSRect arrowFrame = self.arrow.frame;
-    arrowFrame.origin.y = 4.0f;
-    self.arrow.frame = arrowFrame;
-    
+	
+	// Add the accessory view to the window.
+	[window addAccessoryView:self];
+	
+	// Adjust the height to the default value.
     NSRect frame = self.frame;
-    frame.size.height = 17.0f;
+    frame.size.height = GMSMA_DEFAULT_HEIGHT;
     self.frame = frame;
-    self.hidden = NO;
-    
-    // Adjust the height of the popup.
-    self.popup.frame = NSMakeRect(0.0f, 0.0f, self.frame.size.width, GMSMA_DEFAULT_HEIGHT);
-    self.popup.menu.font = [NSFont systemFontOfSize:10.f];
-    [self.popup setNeedsDisplay];
-    
+	
+	// Center the arrow vertically.
+	NSRect arrowFrame = self.arrow.frame;
+	arrowFrame.origin.y = 4.0f;
+	self.arrow.frame = arrowFrame;
+	
+	// Set optimal font size.
+    self.menu.font = [NSFont systemFontOfSize:10.f];
+	
+	self.needsDisplay = YES;
     [self updateAndCenterLabelForItem:nil];
-    
-    [window addAccessoryView:self];
+}
+
+- (void)changeSecurityMethod:(NSMenuItem *)sender {
+	// Only tell the delegate if the current method is not the new method.
+	if (self.securityMethod == sender.tag) {
+		return;
+	}
+	
+	[self.delegate securityMethodAccessoryView:self didChangeSecurityMethod:(GPGMAIL_SECURITY_METHOD)sender.tag];
 }
 
 - (void)setSecurityMethod:(GPGMAIL_SECURITY_METHOD)securityMethod {
-    if(securityMethod == self.securityMethod)
+	if (securityMethod == self.securityMethod) {
         return;
-    
+	}
+	
     _securityMethod = securityMethod;
     // Update the selection and center the menu title again.
-    [self.popup selectItemAtIndex:securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? 0 : 1];
+    [self selectItemAtIndex:securityMethod == GPGMAIL_SECURITY_METHOD_OPENPGP ? 0 : 1];
     [self updateAndCenterLabelForItem:nil];
-    [self setNeedsDisplay:YES];
+    self.needsDisplay = YES;
 }
 
 #pragma mark - NSMenuDelegate is repsonsible for adjusting the color of the menu titles.
-
-- (void)menuWillOpen:(NSMenu *)menu {
-    for(NSMenuItem *item in menu.itemArray) {
-        NSString *title = [item getIvar:@"Title"];
-        if(title)
-            item.attributedTitle = [self attributedTitle:title highlight:YES];
-    }
-}
-
-- (void)menuDidClose:(NSMenu *)menu {
-    for(NSMenuItem *item in menu.itemArray) {
-        item.attributedTitle = nil;
-        item.title = @""; // [self attributedTitle:item.title highlight:YES];
-    }
-}
-
-- (void)menu:(NSMenu *)menu willHighlightItem:(NSMenuItem *)item {
-    for(NSMenuItem *citem in menu.itemArray) {
-        if(item != citem)
-            citem.attributedTitle = [self attributedTitle:citem.title highlight:NO];
-        else
-            citem.attributedTitle = [self attributedTitle:citem.title highlight:YES];
-    }
-    [self updateAndCenterLabelForItem:item];
-    
-}
 
 - (NSAttributedString *)attributedTitle:(NSString *)title highlight:(BOOL)highlight {
     // Title must never be nil!
@@ -284,9 +277,21 @@
 }
 
 - (void)updateAndCenterLabelForItem:(NSMenuItem *)item {
-    item = item != nil ? item : self.popup.selectedItem;
+    item = item != nil ? item : self.selectedItem;
     
-    NSString *title = [item getIvar:@"Title"];
+	NSString *title = item.title;
+	
+	
+	// Set the string for accessibility.
+	NSString *accessibilityLabel = [NSString stringWithFormat:[GPGMailBundle localizedStringForKey:@"ACCESSIBILITY_SECURITY_METHOD_POPUP_LABEL"], title];
+	if ([self.cell respondsToSelector:@selector(setAccessibilityLabel:)]) {
+		[self.cell setValue:accessibilityLabel forKey:@"accessibilityLabel"];
+	} else {
+		[self.cell accessibilitySetOverrideValue:accessibilityLabel forAttribute:@"AXTitle"];
+	}
+	
+	
+	
     NSAttributedString *attributedTitle = [self attributedTitle:title highlight:YES];
     self.label.attributedStringValue = attributedTitle;
     // Adjust the label frame to fit the text.
@@ -397,16 +402,21 @@
 
 - (void)setActive:(BOOL)active {
     _active = active;
-    [self setNeedsDisplay:YES];
+	self.needsDisplay = YES;
 }
 
-- (void)drawRect:(NSRect)dirtyRect {
+- (void)drawRect:(__unused NSRect)dirtyRect {
     NSRect rect = [self bounds];
     rect.origin = NSMakePoint(0, 0);
     float cornerRadius = 4.0f;
-    KBCornerType corners = self.fullscreen ? (KBTopLeftCorner | KBBottomLeftCorner | KBTopRightCorner | KBBottomRightCorner) : (KBTopRightCorner | KBBottomLeftCorner);
-	if(self.style == GMSecurityMethodAccessoryViewStyleToolbarItem)
+	KBCornerType corners;
+	
+	if (self.fullscreen || self.style == GMSecurityMethodAccessoryViewStyleToolbarItem) {
 		corners = (KBTopLeftCorner | KBBottomLeftCorner | KBTopRightCorner | KBBottomRightCorner);
+	} else {
+		corners = (KBTopRightCorner | KBBottomLeftCorner);
+	}
+	
 	NSBezierPath* path = [NSBezierPath bezierPathWithRoundedRect:rect inCorners:corners cornerRadius:cornerRadius flipped:NO];
     
     NSGradient *gradient = nil;

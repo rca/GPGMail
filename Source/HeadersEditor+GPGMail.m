@@ -157,6 +157,19 @@
 	
 	
 	
+	// VoiceOver uses the accessibilityDescription of NSImage for the encrypt and sign buttons, if there is no other text for accessibility.
+	// The lock-images have a default of "lock" and "unlocked lock". (NSLockLockedTemplate and NSLockUnlockedTemplate)
+	NSImage *signOnImage = [NSImage imageNamed:@"SignatureOnTemplate"];
+	if (signOnImage) {
+		[signOnImage setAccessibilityDescription:[GPGMailBundle localizedStringForKey:@"ACCESSIBILITY_SIGN_ON_IMAGE"]];
+	}
+	NSImage *signOffImage = [NSImage imageNamed:@"SignatureOffTemplate"];
+	if (signOffImage) {
+		[signOffImage setAccessibilityDescription:[GPGMailBundle localizedStringForKey:@"ACCESSIBILITY_SIGN_OFF_IMAGE"]];
+	}
+	
+	
+	
 	GMSecurityControl *signControl = [[GMSecurityControl alloc] initWithControl:[self valueForKey:@"_signButton"] tag:SECURITY_BUTTON_SIGN_TAG];
     [self setValue:signControl forKey:@"_signButton"];
     

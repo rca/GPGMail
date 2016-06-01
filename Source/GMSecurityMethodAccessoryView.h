@@ -48,7 +48,7 @@ typedef NS_ENUM(NSInteger, GMSecurityMethodAccessoryViewStyle) {
 
 @end
 
-@interface GMSecurityMethodAccessoryView : NSView <NSMenuDelegate> {
+@interface GMSecurityMethodAccessoryView : NSPopUpButton <NSMenuDelegate> {
     BOOL _fullscreen;
     BOOL _active;
     GPGMAIL_SECURITY_METHOD _securityMethod;
@@ -57,7 +57,6 @@ typedef NS_ENUM(NSInteger, GMSecurityMethodAccessoryViewStyle) {
     id <GMSecurityMethodAccessoryViewDelegate> __weak _delegate;
     
     NSRect _nonFullScreenFrame;
-    NSPopUpButton *_popup;
     NSImageView *_arrow;
     NSTextField *_label;
     
@@ -81,7 +80,7 @@ typedef NS_ENUM(NSInteger, GMSecurityMethodAccessoryViewStyle) {
  Is called if the user changes the selection of the popup.
  Calls the delegate to act on it.
  */
-- (void)changeSecurityMethod:(id)sender;
+- (void)changeSecurityMethod:(NSMenuItem *)sender;
 
 /**
  Configures the custom arrow.
