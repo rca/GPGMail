@@ -496,6 +496,25 @@
 	return fromiCal;
 }
 
+- (BOOL)GMShouldDownloadRemoteAttachments {
+	// On Yosemite or higher there's a property to read the shouldDownloadRemoteAttachments flag.
+	// otherwise, we have to access the _flags struct.
+	BOOL shouldDownloadRemoteAttachments = NO;
+	if(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_9) {
+		shouldDownloadRemoteAttachments = [[self valueForKey:@"_shouldDownloadRemoteAttachments"] boolValue];
+	}
+	else {
+		mailFlags backEndFlags;
+		Ivar flags = class_getInstanceVariable([self class], "_flags");
+		
+		CFTypeRef cfSelf = CFBridgingRetain(self);
+		backEndFlags = *(mailFlags *)((uint8_t *)cfSelf + ivar_getOffset(flags));
+		shouldDownloadRemoteAttachments = backEndFlags.shouldDownloadRemoteAttachments;
+		CFBridgingRelease(cfSelf);
+	}
+	
+	return shouldDownloadRemoteAttachments;
+}
 
 /**
  makeMessageWithContents:isDraft:shouldSign:shouldEncrypt:shouldSkipSignature:shouldBePlainText: sets the encrpyt and sign flags
@@ -518,6 +537,14 @@
 		[headers setHeader:[GPGMailBundle agentHeader] forKey:@"X-PGP-Agent"];
 	if([contents ivarExists:@"IsDraft"] && isDraft) {
 		[headers setHeader:@"com.apple.mail-draft" forKey:@"x-uniform-type-identifier"];
+
+
+		// Prevent hang on 10.10 when restoring drafts.
+		// Mail on 10.10 needs the "x-apple-mail-remote-attachments" header in every draft mail.
+		// See: https://gpgtools.lighthouseapp.com/projects/65764-gpgmail/tickets/871
+		[headers setHeader:self.GMShouldDownloadRemoteAttachments ? @"YES" : @"NO" forKey:@"x-apple-mail-remote-attachments"];
+
+
 		// Mail doesn't pass in the sign status, when saving a draft, so we have to get it ourselves.
 		// For encrypt we also use the state of the button, shouldEncrypt is overriden by our own
 		// logic to always encrypt drafts if possible.
