@@ -44,6 +44,7 @@
 #import <MFError.h>
 #import "ComposeWindowController+GPGMail.h"
 #import "ComposeViewController.h"
+#import "ComposeWindowController.h"
 
 static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyToEncryptedMessage";
 
@@ -310,6 +311,11 @@ static const NSString *kUnencryptedReplyToEncryptedMessage = @"unencryptedReplyT
 	ComposeBackEnd *backEnd = ((MailDocumentEditor *)self).backEnd;
 	[backEnd setIsDeliveringMessage:NO];
 	[(ComposeWindowController_GPGMail *)[self delegate] restorePositionBeforeAnimation];
+	
+	ComposeWindowController *windowController = [self delegate];
+	ComposeViewController *viewController = (id)[windowController contentViewController];
+	HeadersEditor *editor = [viewController valueForKey:@"headersEditor"];
+	[editor setValue:viewController forKey:@"composeViewController"];
 }
 
 - (BOOL)backEnd:(id)backEnd handleDeliveryError:(MFError *)error {

@@ -4,10 +4,6 @@
  *     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2012 by Steve Nygard.
  */
 
-#import "NSWindowController.h"
-
-#import "NSToolbarDelegate.h"
-#import "NSWindowDelegate.h"
 
 @class ComposeDraft, ComposeViewController, NSString;
 
@@ -17,7 +13,6 @@
 }
 
 @property(readonly, nonatomic) ComposeViewController *viewController; // @synthesize viewController=_viewController;
-- (void).cxx_destruct;
 - (id)toolbarAllowedItemIdentifiers:(id)arg1;
 - (id)toolbarDefaultItemIdentifiers:(id)arg1;
 - (id)toolbar:(id)arg1 itemForItemIdentifier:(id)arg2 willBeInsertedIntoToolbar:(BOOL)arg3;
@@ -30,12 +25,6 @@
 - (void)_composeWindowControllerCommonInit;
 - (id)initWithCoder:(id)arg1;
 - (id)initWithWindow:(id)arg1;
-
-// Remaining properties
-@property(readonly, copy) NSString *debugDescription;
-@property(readonly, copy) NSString *description;
-@property(readonly) unsigned long long hash;
-@property(readonly) Class superclass;
 
 @end
 
