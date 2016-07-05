@@ -55,7 +55,7 @@
 								<object class="NSButtonCell" key="NSCell" id="411323674">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">Knowledge Base</string>
+									<string key="NSContents">База знаний</string>
 									<object class="NSFont" key="NSSupport" id="706304668">
 										<bool key="IBIsSystemFont">YES</bool>
 										<double key="NSSize">13</double>
@@ -64,7 +64,7 @@
 									<reference key="NSControlView" ref="758835818"/>
 									<int key="NSButtonFlags">-2038284288</int>
 									<int key="NSButtonFlags2">129</int>
-									<string key="NSAlternateContents">Frequently Asked Questions</string>
+									<string key="NSAlternateContents">Часто задаваемые вопросы</string>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">200</int>
 									<int key="NSPeriodicInterval">25</int>
@@ -81,7 +81,7 @@
 								<object class="NSTextFieldCell" key="NSCell" id="775619579">
 									<int key="NSCellFlags">68157504</int>
 									<int key="NSCellFlags2">272630784</int>
-									<string key="NSContents">Updates</string>
+									<string key="NSContents">Обновления</string>
 									<object class="NSFont" key="NSSupport" id="1059241967">
 										<bool key="IBIsSystemFont">YES</bool>
 										<double key="NSSize">13</double>
@@ -120,7 +120,7 @@
 								<object class="NSTextFieldCell" key="NSCell" id="608485733">
 									<int key="NSCellFlags">68157504</int>
 									<int key="NSCellFlags2">272630784</int>
-									<string key="NSContents">Composing</string>
+									<string key="NSContents">Составление</string>
 									<reference key="NSSupport" ref="1059241967"/>
 									<reference key="NSControlView" ref="443272866"/>
 									<reference key="NSBackgroundColor" ref="693655191"/>
@@ -139,12 +139,12 @@
 								<object class="NSButtonCell" key="NSCell" id="377024234">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">0</int>
-									<string key="NSContents">Create List Preview</string>
+									<string key="NSContents">Создание списка предпросмотра</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<reference key="NSControlView" ref="113600817"/>
 									<int key="NSButtonFlags">1211912448</int>
 									<int key="NSButtonFlags2">2</int>
-									<object class="NSCustomResource" key="NSNormalImage" id="910275598">
+									<object class="NSCustomResource" key="NSNormalImage" id="988466384">
 										<string key="NSClassName">NSImage</string>
 										<string key="NSResourceName">NSSwitch</string>
 									</object>
@@ -168,7 +168,7 @@
 								<object class="NSTextFieldCell" key="NSCell" id="1023351749">
 									<int key="NSCellFlags">68157504</int>
 									<int key="NSCellFlags2">272630784</int>
-									<string key="NSContents">Reading</string>
+									<string key="NSContents">Чтение</string>
 									<reference key="NSSupport" ref="1059241967"/>
 									<reference key="NSControlView" ref="696331322"/>
 									<reference key="NSBackgroundColor" ref="693655191"/>
@@ -281,7 +281,7 @@
 									<reference key="NSControlView" ref="915859109"/>
 									<int key="NSButtonFlags">1211912448</int>
 									<int key="NSButtonFlags2">2</int>
-									<reference key="NSNormalImage" ref="910275598"/>
+									<reference key="NSNormalImage" ref="988466384"/>
 									<reference key="NSAlternateImage" ref="34556240"/>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
@@ -301,7 +301,7 @@
 								<object class="NSButtonCell" key="NSCell" id="1059606293">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">32768</int>
-									<string key="NSContents">Button</string>
+									<string key="NSContents">Кнопка</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="263145191"/>
@@ -328,7 +328,7 @@
 								<object class="NSButtonCell" key="NSCell" id="942140521">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">Support</string>
+									<string key="NSContents">Report Problem</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<reference key="NSControlView" ref="632062900"/>
 									<int key="NSButtonFlags">-2038284288</int>
@@ -351,13 +351,13 @@
 								<object class="NSButtonCell" key="NSCell" id="1015833167">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">268435456</int>
-									<string key="NSContents">Encrypt new messages by default</string>
+									<string key="NSContents">Шифрование новых сообщений по умолчанию</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="714016839"/>
 									<int key="NSButtonFlags">1211912448</int>
 									<int key="NSButtonFlags2">2</int>
-									<reference key="NSNormalImage" ref="910275598"/>
+									<reference key="NSNormalImage" ref="988466384"/>
 									<reference key="NSAlternateImage" ref="34556240"/>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
@@ -377,13 +377,13 @@
 								<object class="NSButtonCell" key="NSCell" id="1043626823">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">268435456</int>
-									<string key="NSContents">Sign new messages by default</string>
+									<string key="NSContents">Регистрация новых сообщений по умолчанию</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<string key="NSCellIdentifier">_NS:9</string>
 									<reference key="NSControlView" ref="955063492"/>
 									<int key="NSButtonFlags">1211912448</int>
 									<int key="NSButtonFlags2">2</int>
-									<reference key="NSNormalImage" ref="910275598"/>
+									<reference key="NSNormalImage" ref="988466384"/>
 									<reference key="NSAlternateImage" ref="34556240"/>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
@@ -455,7 +455,7 @@
 									<reference key="NSControlView" ref="36679776"/>
 									<int key="NSButtonFlags">1211912448</int>
 									<int key="NSButtonFlags2">2</int>
-									<reference key="NSNormalImage" ref="910275598"/>
+									<reference key="NSNormalImage" ref="988466384"/>
 									<reference key="NSAlternateImage" ref="34556240"/>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
@@ -479,7 +479,7 @@
 									<reference key="NSControlView" ref="750257658"/>
 									<int key="NSButtonFlags">1211912448</int>
 									<int key="NSButtonFlags2">2</int>
-									<reference key="NSNormalImage" ref="910275598"/>
+									<reference key="NSNormalImage" ref="988466384"/>
 									<reference key="NSAlternateImage" ref="34556240"/>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
@@ -1167,7 +1167,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="632062900"/>
-						<string key="toolTip">If you've any other question.</string>
+						<string key="toolTip">Если у вас другой вопрос.</string>
 					</object>
 				</object>
 				<string key="1051.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1188,7 +1188,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="758835818"/>
-						<string key="toolTip">Frequently Asked Questions.</string>
+						<string key="toolTip">Часто задаваемые вопросы.</string>
 					</object>
 				</object>
 				<string key="733.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1202,7 +1202,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="113600817"/>
-						<string key="toolTip">See Preferences -&gt; Viewing -&gt; List Preview.</string>
+						<string key="toolTip">Смотри Настройки -&gt; Просмотр -&gt; Предпросмотр списка.</string>
 					</object>
 				</object>
 				<string key="786.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

@@ -15,7 +15,7 @@
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Er is geen extra informatie bekend over deze PGP-sleutel, omdat ze niet in je sleutelbos zit.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Geheime sleutel om dit bericht te ontsleutelen ontbreekt.";
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Geen van de onderstaande geheime sleutels staat in uw keychain(%@). Een geheime sleutel is nodig om het bericht te ontsleutelen.\n\nControleer of de juiste publieke sleutel gebruikt heeft is; of controleer de backup van uw GPG Sleutelbos. ";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Ontsleutelen mislukt om een onbekende reden!";
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Er is een onbekende fout opgetreden tijdens het ontsleutelen van dit bericht.\n\nNeem contact met ons op via https://gpgtools.tenderapp.com";
@@ -75,7 +75,7 @@
 
 /* Message Error Banner Attachment messages. */
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Geheime sleutel om de bijlage te ontsleutelen ontbreekt.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Geen van de onderstaande geheime sleutels staat in uw keychain(%@). Een geheime sleutel is nodig om de bijlage te ontsleutelen.\n\nControleer of de juiste publieke sleutel gebruikt heeft is; of controleer de backup van uw keychain. ";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Ontsleutelen mislukt om een onbekende reden!";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Er is een onbekende fout opgetreden bij het ontsleutelen van deze bijlage.\n\nNeem contact met ons op via https://gpgtools.tenderapp.com";
@@ -135,9 +135,9 @@
 "MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "ondertekende bijlagen";
 
 /* Compose Window encrypt/sign button tooltips. */
-"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "Dit bericht kan niet worden ondertekend, omdat er geen geheime sleutel is voor %@.\n\nZorg ervoor dat een geheime sleutel voor dit adres aanwezig is in GPG Keychain. Vorg een nieuwe UID toe aan een bestaande sleutel indien nodig of maak een nieuwe sleutel aan voor dit adres.\n\nAls er een sleutel bestaat voor dit adres, zorg ervoor dat het adres in Mail Voorkeuren goed is en exact overeen komt met het adres van je sleutel.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "This message can't be signed, since there's no secret key for %@.\n\nPlease make sure that a secret key for this address exists in GPG Keychain. Add a new User ID to an existing key for this address if necessary, or create a new key for this address.\n\nIf a key for the address exists, make sure that the address in Mail.app > Preferences > Accounts is correct and exactly matches the address of your key.";
 "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "Dit bericht kan niet worden versleuteld, omdat er geen publieke sleutels beschikbaar zijn voor de volgende adressen: %@.\n\nGebruik GPG Keychain om die adressen te zoeken en te importeren.";
-"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "Dit bericht kan niet worden versleuteld. Voer ten minste een ontvanger in.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "Dit bericht kan niet worden versleuteld. Voer ten minste één ontvanger in.";
 
 /* Message view pgp part. */
 "MESSAGE_VIEW_PGP_PART_ENCRYPTED" = "Versleuteld";
@@ -151,9 +151,9 @@
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Download het GPG Suite installatieprogramma van http://www.gpgtools.org om alle GPG Suite te installeren.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Controleer je installatie en instellingen.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Download het GPG Suite installatieprogramma van http://www.gpgtools.org om alle GPG Suite te installeren.";
-"DISABLE_ENCRYPT_DRAFTS_TITLE" = "Warning: Disabling this option might lead to the leak of sensitive information while composing a message";
+"DISABLE_ENCRYPT_DRAFTS_TITLE" = "Waarschuwing: het uitzetten van deze optie kan er toe leiden dat er gevoelige informatie gelekt wordt tijdens het opstellen van een bericht.";
 "DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, OS X Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling\"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want want to disable \"Encrypt drafts\"?";
-"DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Disable Encryption";
+"DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Versleuteling uit";
 "DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Cancel";
 
 
@@ -164,73 +164,80 @@
 
 /* No Libmacgpg. */
 "LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg niet gevonden";
-"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg was not found on your system. Please install it. Find it e.g. in the GPGTools Installer on https://www.gpgtools.org.";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg is niet gevonden op uw systeem en moet geinstalleerd worden. De GPGTools op https://www.gpgtools.org, is een van de mogelijkheden daarvoor.";
 
 /* Code signature invalid */
 CODE_SIGN_ERROR_TITLE = "Iemand heeft geknoeid met uw installatie van GPGMail!";
-CODE_SIGN_ERROR_MESSAGE = "To keep you safe, GPGMail will not be loaded!\n\nPlease download and install the latest version of GPG Suite from https://gpgtools.org to be sure you have an original version from us!";
+CODE_SIGN_ERROR_MESSAGE = "To keep you safe, GPGMail will not be loaded!\n\nPlease re-install GPG Suite from https://gpgtools.org to be sure you have an original version from us!";
 
 /* GPGMailGPGMailBundle.defaults can't be loaded */
 NO_DEFAULTS_TITLE = "Niet in staat om de standaard instellingen van GPGMail te laden!";
-NO_DEFAULTS_MESSAGE = "GPGMail is not working as expected.\n\nPlease download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at https://gpgtools.tenderapp.com/.";
+NO_DEFAULTS_MESSAGE = "GPGMail werkt niet naar behoren.\n\nDownload en her-installeer de meest recente versie van de GPG Suite van https://gpgtools.org.\n\nMocht dat het probleem niet oplossen; neem dan contact up met https://gpgtools.tenderapp.com/.";
 
 /* Errors while trying to sign a message. */
-"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Signing your message failed due to defect PIN-Entry!";
-"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "The PIN-Entry helper responsible for asking for your passphrase seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Het ondertekenen van uw bericht was niet mogelijk vanwege een probleem met het invoeren van de PIN!";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "The PIN-Entry helper responsible for asking for your password seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
 
-"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Signing your message failed due to defect GPG agent!";
-"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "The GPG agent which is a crucial part of GPG seems to be defect on your system.\n\nTo fix this problem, re-install the newest version of GPGTools";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Het ondertekenen van uw bericht is niet gelukt vanwege een probleem met de GPG-Agent utility.";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "The GPG agent which is a crucial part of GPG seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
 
-"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "Signing your message failed due to GPG agent communication error!";
-"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "It was not possible to talk to the GPG agent in order to request your passphrase.\n\nTo fix this problem, re-install the newest version of GPGTools";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "Het ondertekenen van het bericht is niet gelukt omdat er een probleem was met de communicatie met de `GPG Agent' utility.";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "It was not possible to talk to the GPG agent in order to request your password.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
 
-"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "Signing your message failed because an unknown error has occured";
-"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately we can't handle the error at this point.";
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "Het ondertekenen van uw bericht is niet gelukt vanwege een niet verder gespecificeerde fout.";
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Helaas kan de fout die opgetreden is niet meer gecorrigeerd worden.";
 
-"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Encrypting your message failed because an unknown error has occured";
-"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately GPGMail can't handle the error at this point.";
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Het versleutelen van uw bericht is niet gelukt vanwege een niet verder gespecificeerde fout.";
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Helaas kan GPGMail de fout die is opgetreden niet meer corrigeren.";
 
-"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "You entered the wrong passphrase too many times.";
-"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Signing your message was aborted because you entered the wrong passphrase 3 times.";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "You entered the wrong password too many times.";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Signing your message was aborted because you entered the wrong password 3 times.";
 
-"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at https://gpgtools.tenderapp.com/ with the following error description:\n\n%@";
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nMocht dit probleem zichzelf niet oplossen: neem dan contact op met https://gpgtools.tenderapp.com/ en geef de onderstaande foutmelding door:\n\n%@";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the message";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The message couldn't be decrypted because you cancelled the passphrase request.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Het ontsleutelen van het bericht is afgebroken.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The message couldn't be decrypted because you cancelled the password request.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the attachment";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The attachment couldn't be decrypted because you cancelled the passphrase request.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Het ontsleutelen van de bijlage is afgebroken.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The attachment couldn't be decrypted because you cancelled the password request.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite werkt niet zoals verwacht";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the message failed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the message failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite werkt niet zoals verwacht";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the attachment failed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the attachment failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
 
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite werkt niet zoals verwacht";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the message failed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the message failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite werkt niet zoals verwacht";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the attachment failed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the attachment failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
 
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Signing your message failed due to a problem during the passphrase request";
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "The PIN-Entry helper responsible for requesting your passphrase is not working properly.\n\nTo fix this problem, please download and re-install GPG Suite from https://gpgtools.org";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Signing your message failed due to a problem during the password request";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "The PIN-Entry helper responsible for requesting your password is not working properly.\n\nTo fix this problem, please re-install GPG Suite from https://gpgtools.org.";
 
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Signing your message failed due to a problem in your GPGMail installation.";
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "To fix this problem, please download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Het ondertekenen van het bericht is niet gelukt door een probleem met de GPGMail installatie.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "To fix this problem, please re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the message failed due to a defect PIN-Entry";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your passphrase, seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools from https://gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Het ontsleutelen van het bericht is niet gelukt vanwege een probleem met de PIN Invoer.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your password, seems to be defect.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the attachment failed due to a defect PIN-Entry";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your passphrase, seems to be defect.\n\nTo fix this problem, re-install the newest version of GPGTools from https://gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Het ontsleutelen van de bijlage is niet gelukt vanwege een probleem met de PIN Invoer.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your password, seems to be defect.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
 
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Attention: You're about to send an unencrypted reply to an encrypted message";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "It's not possible to encrypt your reply, because the public key for the following recipient is missing:\n\n%@";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS" = "It's not possible to encrypt your reply, because public keys for the following recipients are missing:\n\n%@";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "If you choose to proceed, your reply will be sent unencrypted. As a result, confidential information might be leaked, putting you and your recipients at risk.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nIf you really wish to send this reply unencrypted, please remove any previous correspondence included in your reply prior to sending.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Otherwise, search and import the corresponding public keys using GPG Keychain in order to send the reply encrypted.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Otherwise, search and import the the corresponding public key using GPG Keychain in order to send the reply encrypted.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Send Anyway";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Attentie: U staat op het punt om een NIET versleuteld antwoord te sturen op een bericht dat wel versleuteld was.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "Het is niet mogelijk om het antwoord te versleutelen omdat er geen publieke sleutel beschikbaar is voor:\n\n%@ ";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS" = "Het is niet mogelijk om het antwoord te versleutelen omdat er geen publieke sleutels beschikbaar zijn voor:\n\n%@ ";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "Uw antwoord zal NIET versleuteld verstuurd worden als U verder gaat. Dat kan tot gevolg hebben dat vertrouwelijke informatie lekt; met alle risico's van dien voor U en de ontvangers van het bericht.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nAls U werkelijk dit bericht onversleuteld wil versturen; overweeg dan ten minste alle voorgaande correspondentie welke ook in dit bericht staat uit uw antwoord te verwijderen.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Of, gebruik GPG Keychain om de ontbrekende publieke sleutels te zoeken en/of te importeren. Dan kan het antwoord wel versleuteld verstuurd worden.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Of, gebruik GPG Keychain om de ontbrekende publieke sleutels te zoeken en/of te importeren. Dan kan het antwoord wel versleuteld verstuurd worden.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Verstuur alsnog";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Cancel";
+
+
+/* Accessibility */
+ACCESSIBILITY_SECURITY_METHOD_POPUP_LABEL = "Security method: %@";
+ACCESSIBILITY_SIGN_ON_IMAGE = "Sign";
+ACCESSIBILITY_SIGN_OFF_IMAGE = "Don't sign";
+

@@ -135,7 +135,7 @@
 "MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "podpisane załączniki";
 
 /* Compose Window encrypt/sign button tooltips. */
-"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "Ta wiadomość nie może być podpisana, ponieważ nie ma klucza prywatnego dla %@. \n\nProsimy o upewnienie się, że klucz prywatny dla tego adresu istnieje w GPG Keychain. Dodaj nowy UID do istniejącego klucza dla tego adresu jeśli to konieczne, lub stwórz nowy klucz dla tego adresu. \n\nJeśli klucz dla tego adresu istnieje, to upewnij się, że adres we Właściwościach Maila jest prawidłowy i dokładnie zgadza się z adresem Twojego klucza.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "This message can't be signed, since there's no secret key for %@.\n\nPlease make sure that a secret key for this address exists in GPG Keychain. Add a new User ID to an existing key for this address if necessary, or create a new key for this address.\n\nIf a key for the address exists, make sure that the address in Mail.app > Preferences > Accounts is correct and exactly matches the address of your key.";
 "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "Ta wiadomość nie może być zaszyfrowana, ponieważ nie ma żadnych kluczy publicznych dla tych adresów: %@. \n\nUżyj GPG Keychain, aby szukać i importować klucze dla tych adresów.";
 "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "Ta wiadomość nie może być zaszyfrowana. Najpierw musisz wprowadzić przynajmniej jednego odbiorcę.";
 
@@ -153,8 +153,8 @@
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Proszę pobierz i zainstaluj ponownie GPG Suite z https://www.gpgtools.org aby być pewnym, że masz wszystkie komponenty.";
 "DISABLE_ENCRYPT_DRAFTS_TITLE" = "UWAGA: Wyłączenie tej opcji może powodować wycieki poufnych informacji podczas tworzenia nowej wiadomości";
 "DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, OS X Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling\"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want want to disable \"Encrypt drafts\"?";
-"DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Disable Encryption";
-"DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Cancel";
+"DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Wyłącz szyfrowanie";
+"DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Anuluj";
 
 
 /* Multiple GPGMail installations. */
@@ -168,7 +168,7 @@
 
 /* Code signature invalid */
 CODE_SIGN_ERROR_TITLE = "Ktoś majstrował przy Twojej instalacji GPGMail!";
-CODE_SIGN_ERROR_MESSAGE = "W trosce Twoje bezpieczeństwo, GPGMail nie włączy się!\n\nProszę pobierz i zainstaluj najnowszą wersję GPG Suite z https://gpgtools.org aby być pewnym, że masz oryginalną wersję pochodzącą od nas!";
+CODE_SIGN_ERROR_MESSAGE = "To keep you safe, GPGMail will not be loaded!\n\nPlease re-install GPG Suite from https://gpgtools.org to be sure you have an original version from us!";
 
 /* GPGMailGPGMailBundle.defaults can't be loaded */
 NO_DEFAULTS_TITLE = "Nie udałosię załadować domyślnych ustawień GPGMail!";
@@ -176,13 +176,13 @@ NO_DEFAULTS_MESSAGE = "GPGMail nie działa tak jak powinien. \n\nProszę pobierz
 
 /* Errors while trying to sign a message. */
 "MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Podpisywanie Twojej wiadomości nie powiodło się z powodu wady PIN-Entry!";
-"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "Pomocnik PIN-Entry, który jest odpowiedzialny za pytanie o Twoje hasło nie działa poprawnie.\n\nAby naprawić ten problem, proszę zainstaluj ponownie najnowszą wersję GPG Suite";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "The PIN-Entry helper responsible for asking for your password seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
 
 "MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Podpisywanie Twojej wiadomości nie powiodło się z powodu defektu agenta GPG!";
-"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "Agent GPG, który jest istotną częścią GPG wydaje się mieć defekt na Twoim systemie.\n\nAby rozwiązać ten problem, zainstaluj ponownie najnowszą wersję GPG Suite.";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "The GPG agent which is a crucial part of GPG seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
 
 "MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "Podpisywanie Twojej wiadomości nie powiodło się z powodu błędu komunikacji agenta GPG.";
-"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "Nie było możliwe, aby porozumieć się z agentem GPG w celu poproszenia o Twoje hasło.\n\nAby rozwiązać ten problem, zainstaluj ponownie najnowszą wersję GPG Suite.";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "It was not possible to talk to the GPG agent in order to request your password.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
 
 "MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "Podpisywanie Twojej wiadomości nie powiodło się z powodu nieznanego błędu";
 "MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Niestety w tym momencie nie jesteśmy w stanie poradzić sobie z tym błędem.";
@@ -190,40 +190,40 @@ NO_DEFAULTS_MESSAGE = "GPGMail nie działa tak jak powinien. \n\nProszę pobierz
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Szyfrowanie Twojej wiadomości nie powiodło się z powodu nieznanego błędu";
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Niestety w tym momencie GPGMail nie może poradzić sobie z tym błędem.";
 
-"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "Wpisałeś złe hasło zbyt wiele razy.";
-"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Podpisanie Twojej wiadomości zostało przerwane ponieważ wprowadziłeś błędne hasło 3 razy.";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "You entered the wrong password too many times.";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Signing your message was aborted because you entered the wrong password 3 times.";
 
 "CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nJeśli ten problem będzie się powtarzać, prosimy o skontaktowanie się z nami pod adresem https://gpgtools.tenderapp.com/ z następującym opisem błędu: \n\n%@";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Przerwałeś odszyfrowywanie wiadomości";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "Wiadomość nie mogła być odszyfrowana, ponieważ anulowałeś pytanie o hasło.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The message couldn't be decrypted because you cancelled the password request.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Przerwałeś odszyfrowywanie załącznika";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "Załącznik nie mógł być odszyfrowany, ponieważ anulowałeś pytanie o hasło.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The attachment couldn't be decrypted because you cancelled the password request.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite nie działa tak jak powinno.";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Odszyfrowanie wiadomości nie powiodło się. \n\nProszę pobierz i zainstaluj ponownie GPG Suite z https://gpgtools.org \n\nJeśli ten problem będzie się powtarzać, to prosimy o skontaktowanie się z nami na https://gpgtools.tenderapp.com/ dołączając do wiadomości informacje, że serwis xpc nie działa poprawnie.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the message failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite nie działa tak jak powinno.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Odszyfrowanie załącznika nie powiodło się. \n\nProszę pobierz i zainstaluj ponownie GPG Suite z https://gpgtools.org\n\nJeśli ten problem będzie się powtarzać, to prosimy o skontaktowanie się z nami pod adresem https://gpgtools.tenderapp.com/ dołączając do wiadomości informacje, że serwis xpc nie działa poprawnie.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the attachment failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
 
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite nie działa tak jak powinno.";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Weryfikacja wiadomości nie powiodła się. \n\nProsimy o pobranie i ponowną instalację GPG Suite z https://gpgtools.org \n\nJeśli problem ten będzie się powtarzać, to prosimy o skontaktowanie się z nami pod adresem https://gpgtools.tenderapp.com/ dołączając do wiadomości informacje, że serwis xpc nie działał poprawnie.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the message failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite nie działa tak jak powinno.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Weryfikacja załącznika nie powiodła się.\n\nProszę pobierz i zainstaluj ponownie GPG Suite z https://gpgtools.org\n\nJeśli ten problem będzie się powtarzać, to prosimy o skontaktowanie się z nami na https://gpgtools.tenderapp.com dołączając do wiadomości informacje, że serwis xpc nie działał poprawnie.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the attachment failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
 
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Podpisywanie Twojej wiadomości nie powiodło się z powodu problemu podczas prośby o hasło";
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "Pomocnik PIN-Entry, który jest odpowiedzialny za pytanie o Twoje hasło nie działa poprawnie. \n\nAby naprawić ten problem, proszę pobierz i zainstaluj ponownie GPG Suite z https://gpgtools.org";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Signing your message failed due to a problem during the password request";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "The PIN-Entry helper responsible for requesting your password is not working properly.\n\nTo fix this problem, please re-install GPG Suite from https://gpgtools.org.";
 
 "MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Podpisywanie Twojej wiadomości nie powiodło się z powodu problemu w Twojej instalacji GPGMail.";
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "Aby naprawić ten problem prosimy o pobranie i ponowne zainstalowanie GPG Suite z https://gpgtools.org \n\nJeśli problem ten będzie się powtarzać, to prosimy o skontaktowanie się z nami pod adresem https://gpgtools.tenderapp.com/ dołączając do wiadomości informacje, że serwis xpc nie działał poprawnie.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "To fix this problem, please re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Odszyfrowywanie wiadomości nie powiodło się z powodu wady PIN-Entry";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "Pomocnik PIN-Entry, który jest odpowiedzialny za pytanie o Twoje hasło nie działa poprawnie. \n\nAby naprawić ten problem, proszę pobierz i zainstaluj ponownie GPG Suite z https://gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your password, seems to be defect.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Odszyfrowywanie załącznika nie powiodło się z powodu wady PIN-Entry";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "Pomocnik PIN-Entry, który jest odpowiedzialny za pytanie o Twoje hasło nie działa poprawnie. \n\nAby naprawić ten problem, proszę pobierz i zainstaluj ponownie GPG Suite z https://gpgtools.org";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "The PIN-Entry helper responsible for requesting your password, seems to be defect.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
 
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Uwaga: Zamierzasz wysłać nieszyfrowaną odpowiedź dla wiadomości która była szyfrowana";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "Nie jest możliwe zaszyfrowanie Twojej odpowiedzi, ponieważ brakuje klucza publicznego dla następującego nadawcy:\n\n%@";
@@ -234,3 +234,10 @@ NO_DEFAULTS_MESSAGE = "GPGMail nie działa tak jak powinien. \n\nProszę pobierz
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "W przeciwnym razie, szukaj i zaimportuj odpowiednie klucze publiczne za pomocą GPG Keychain w celu wysłania szyfrowanej odpowiedzi.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Wyślij każdym razie";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Anuluj";
+
+
+/* Accessibility */
+ACCESSIBILITY_SECURITY_METHOD_POPUP_LABEL = "Security method: %@";
+ACCESSIBILITY_SIGN_ON_IMAGE = "Sign";
+ACCESSIBILITY_SIGN_OFF_IMAGE = "Don't sign";
+

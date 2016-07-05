@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">101000</int>
-		<string key="IBDocument.SystemVersion">13E28</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6254</string>
+		<string key="IBDocument.SystemVersion">13F34</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6751</string>
 		<string key="IBDocument.AppKitVersion">1265.21</string>
 		<string key="IBDocument.HIToolboxVersion">698.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6254</string>
+			<string key="NS.object.0">6751</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSArrayController</string>
@@ -52,7 +52,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{739, 696}, {486, 278}}</string>
 				<int key="NSWTFlags">1685586944</int>
-				<string key="NSWindowTitle">Signatures</string>
+				<string key="NSWindowTitle">Подписи</string>
 				<string key="NSWindowClass">NSPanel</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
@@ -296,7 +296,7 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="580566675">
 																		<int key="NSCellFlags">68157504</int>
 																		<int key="NSCellFlags2">272761856</int>
-																		<string key="NSContents">Details</string>
+																		<string key="NSContents">Подробности</string>
 																		<object class="NSFont" key="NSSupport" id="27">
 																			<bool key="IBIsSystemFont">YES</bool>
 																			<double key="NSSize">11</double>
@@ -398,7 +398,7 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="312190895">
 																		<int key="NSCellFlags">68157504</int>
 																		<int key="NSCellFlags2">272761856</int>
-																		<string key="NSContents">Created:</string>
+																		<string key="NSContents">Создано:</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<reference key="NSControlView" ref="56396529"/>
 																		<reference key="NSBackgroundColor" ref="840157489"/>
@@ -473,7 +473,7 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="565027076">
 																		<int key="NSCellFlags">68157504</int>
 																		<int key="NSCellFlags2">272630784</int>
-																		<string key="NSContents">name</string>
+																		<string key="NSContents">имя</string>
 																		<object class="NSFont" key="NSSupport">
 																			<bool key="IBIsSystemFont">YES</bool>
 																			<double key="NSSize">13</double>
@@ -667,7 +667,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="903256746">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Expires:</string>
+							<string key="NSContents">Истекает:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="1057822734"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -705,7 +705,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="911546990">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Created:</string>
+							<string key="NSContents">Создано:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="740890524"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -724,7 +724,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="303803202">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Signature</string>
+							<string key="NSContents">Подпись</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="247826412"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -925,7 +925,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="850049249">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Ownertrust:</string>
+							<string key="NSContents">Доверенные:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="917820100"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -944,7 +944,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="762435387">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Algorithm:</string>
+							<string key="NSContents">Алгоритм:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="762998989"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -963,7 +963,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="63468053">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Expires:</string>
+							<string key="NSContents">Истекает:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="443949026"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -982,7 +982,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="260303321">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Created:</string>
+							<string key="NSContents">Создано:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="974215630"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -1020,7 +1020,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="493753270">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Comment:</string>
+							<string key="NSContents">Комментарий:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="210362693"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -1058,7 +1058,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="252837181">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Name:</string>
+							<string key="NSContents">Имя:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="902006385"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -1077,7 +1077,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="850669489">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Key</string>
+							<string key="NSContents">Ключ</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="946932878"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -1230,7 +1230,7 @@
 							<string key="NSKeyPath">selection.name</string>
 							<dictionary key="NSOptions">
 								<boolean value="NO" key="NSAllowsEditingMultipleValuesSelection"/>
-								<string key="NSNoSelectionPlaceholder">No signature</string>
+								<string key="NSNoSelectionPlaceholder">Нет подписи</string>
 							</dictionary>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
@@ -1458,7 +1458,7 @@
 							<string key="NSKeyPath">gpgKey.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">No expiration is set on this key</string>
+								<string key="NS.object.0">На этой подписим ключе не установлен срок действия</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
@@ -1546,7 +1546,7 @@
 							<string key="NSKeyPath">signature.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">No expiration is set on this signature</string>
+								<string key="NS.object.0">На этой подписи не установлен срок действия</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>

@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">101000</int>
-		<string key="IBDocument.SystemVersion">13E28</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6254</string>
+		<string key="IBDocument.SystemVersion">13F34</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6751</string>
 		<string key="IBDocument.AppKitVersion">1265.21</string>
 		<string key="IBDocument.HIToolboxVersion">698.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6254</string>
+			<string key="NS.object.0">6751</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSArrayController</string>
@@ -601,7 +601,7 @@ eWNoYWluLg</string>
 																<object class="NSTextField" id="463642861">
 																	<reference key="NSNextResponder" ref="44245670"/>
 																	<int key="NSvFlags">284</int>
-																	<string key="NSFrame">{{50, 91}, {370, 17}}</string>
+																	<string key="NSFrame">{{50, 91}, {370, 16.999999527012726}}</string>
 																	<reference key="NSSuperview" ref="44245670"/>
 																	<reference key="NSNextKeyView" ref="937110649"/>
 																	<string key="NSReuseIdentifierKey">_NS:3944</string>
@@ -689,7 +689,7 @@ eWNoYWluLg</string>
 																<object class="NSTextField" id="834668756">
 																	<reference key="NSNextResponder" ref="210185846"/>
 																	<int key="NSvFlags">284</int>
-																	<string key="NSFrame">{{50, 90.999999289419122}, {370, 17}}</string>
+																	<string key="NSFrame">{{50, 91}, {370, 17}}</string>
 																	<reference key="NSSuperview" ref="210185846"/>
 																	<reference key="NSNextKeyView" ref="1051878768"/>
 																	<string key="NSReuseIdentifierKey">_NS:3944</string>
@@ -812,7 +812,7 @@ eWNoYWluLg</string>
 							<object class="NSButtonCell" key="NSCell" id="678747285">
 								<int key="NSCellFlags">67108864</int>
 								<int key="NSCellFlags2">134217728</int>
-								<string key="NSContents">OK</string>
+								<string key="NSContents">好</string>
 								<reference key="NSSupport" ref="34332591"/>
 								<string key="NSCellIdentifier">_NS:687</string>
 								<reference key="NSControlView" ref="886986404"/>
@@ -1150,7 +1150,7 @@ eWNoYWluLg</string>
 						<object class="NSTextFieldCell" key="NSCell" id="373280">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Ownertrust:</string>
+							<string type="base64-UTF8" key="NSContents">CuaJgOacieiAheS/oeS7u++8mg</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="211265474"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1226,7 +1226,7 @@ eWNoYWluLg</string>
 						<object class="NSTextFieldCell" key="NSCell" id="540786287">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">密匙ID：</string>
+							<string key="NSContents">密钥 ID：</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="877264115"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1302,7 +1302,7 @@ eWNoYWluLg</string>
 						<object class="NSTextFieldCell" key="NSCell" id="635271539">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">密匙</string>
+							<string key="NSContents">密钥</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="794873389"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>

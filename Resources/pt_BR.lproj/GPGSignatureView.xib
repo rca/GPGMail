@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">101000</int>
-		<string key="IBDocument.SystemVersion">13E28</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6254</string>
+		<string key="IBDocument.SystemVersion">13F34</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6751</string>
 		<string key="IBDocument.AppKitVersion">1265.21</string>
 		<string key="IBDocument.HIToolboxVersion">698.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6254</string>
+			<string key="NS.object.0">6751</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSArrayController</string>
@@ -398,7 +398,7 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="312190895">
 																		<int key="NSCellFlags">68157504</int>
 																		<int key="NSCellFlags2">272761856</int>
-																		<string key="NSContents">Criado:</string>
+																		<string key="NSContents">Criação:</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<reference key="NSControlView" ref="56396529"/>
 																		<reference key="NSBackgroundColor" ref="840157489"/>
@@ -667,7 +667,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="903256746">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Expira em:</string>
+							<string key="NSContents">Vencimento:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="1057822734"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -705,7 +705,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="911546990">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Criado:</string>
+							<string key="NSContents">Criação:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="740890524"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -925,7 +925,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="850049249">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Confiabilidade:</string>
+							<string key="NSContents">Confiança de Propriedade:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="917820100"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -963,7 +963,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="63468053">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Expira em:</string>
+							<string key="NSContents">Vencimento:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="443949026"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -982,7 +982,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="260303321">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Criado:</string>
+							<string key="NSContents">Criação:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="974215630"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -1001,7 +1001,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="826714815">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Identificador de chave:</string>
+							<string key="NSContents">ID da Chave:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="1001246090"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -1039,7 +1039,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="78130997">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">E-Mail:</string>
+							<string key="NSContents">E-mail:</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="635132357"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -1230,7 +1230,7 @@
 							<string key="NSKeyPath">selection.name</string>
 							<dictionary key="NSOptions">
 								<boolean value="NO" key="NSAllowsEditingMultipleValuesSelection"/>
-								<string key="NSNoSelectionPlaceholder">Sem assinatura</string>
+								<string key="NSNoSelectionPlaceholder">Nenhuma assinatura</string>
 							</dictionary>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
@@ -1458,7 +1458,7 @@
 							<string key="NSKeyPath">gpgKey.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">Expiração não definida para esta chave</string>
+								<string key="NS.object.0">Não há vencimento definido para esta chave</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
@@ -1546,7 +1546,7 @@
 							<string key="NSKeyPath">signature.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">Expiração não definida para esta assinatura</string>
+								<string key="NS.object.0">Não há vencimento definido para esta assinatura</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>

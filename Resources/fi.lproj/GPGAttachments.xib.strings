@@ -15,10 +15,10 @@
 "256.title" = "Allekirjoitus";
 "257.title" = "Luotu:";
 "259.title" = "Vanhentuu:";
-"291.title" = "The signature could not be verified.";
-"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
+"291.title" = "Allekirjoitusta ei pystytty todentamaan.";
+"293.title" = "Allekirjoitusta ei pystytty todentamaan, koska avainta ei löytynyt avainrenkaastasi.\nOle hyvä ja lataa avain GPG Keychain-sovelluksella.";
 "325.ibShadowedIsNilPlaceholder" = "Tämä allekirjoitus ei vanhene";
 "353.ibShadowedIsNilPlaceholder" = "Tämä allekirjoitus ei vanhene";
 "366.ibShadowedIsNilPlaceholder" = "Tämä allekirjoitus ei vanhene";
-"382.title" = "The signature could not be verified.";
-"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
+"382.title" = "Allekirjoitusta ei pystytty todentamaan.";
+"383.title" = "Allekirjoitusta ei pystytty todentamaan, koska avainta ei löytynyt avainrenkaastasi.\nOle hyvä ja lataa avain GPG Keychain-sovelluksella.";

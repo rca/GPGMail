@@ -7,14 +7,14 @@
  
  Defines the strings used in the signature view.
  */
-"VALIDITY_NO_TRUST" = "This signature is not to be trusted.";
-"VALIDITY_OK" = "This signature can be trusted";
+"VALIDITY_NO_TRUST" = "Этой подписи не следует доверять.";
+"VALIDITY_OK" = "Доверенная подпись";
 /* Signature view key status. */
-"VALIDITY_KEY_REVOKED" = "The key of this signature was revoked.";
-"VALIDITY_SIGNATURE_EXPIRED" = "This signature is expired.";
-"VALIDITY_KEY_EXPIRED" = "The key of this signature is expired.";
-"VALIDITY_KEY_REVOKED" = "The key of this signature was revoked.";
-"VALIDITY_UNKNOWN_ALGORITHM" = "Signature was created with unknown algorithm.";
-"VALIDITY_NO_PUBLIC_KEY" = "The key of this signature is not in your keychain.";
-"VALIDITY_UNKNOWN_ERROR" = "Unknown signature error.";
-"VALIDITY_BAD_SIGNATURE" = "This signature is invalid.";
+"VALIDITY_KEY_REVOKED" = "Ключ этой подписи был аннулирован.";
+"VALIDITY_SIGNATURE_EXPIRED" = "Дата этой подписи истекла.";
+"VALIDITY_KEY_EXPIRED" = "Ключ этой подписи истек.";
+"VALIDITY_KEY_REVOKED" = "Ключ этой подписи был аннулирован.";
+"VALIDITY_UNKNOWN_ALGORITHM" = "Подпись была создана неизвестным алгоритмом.";
+"VALIDITY_NO_PUBLIC_KEY" = "Ключ этой подписи отсутствует в вашем Keychain.";
+"VALIDITY_UNKNOWN_ERROR" = "Неизвестная ошибка подписи.";
+"VALIDITY_BAD_SIGNATURE" = "Эта подпись недействительна.";

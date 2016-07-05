@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">101000</int>
-		<string key="IBDocument.SystemVersion">13E28</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6254</string>
+		<string key="IBDocument.SystemVersion">13F34</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6751</string>
 		<string key="IBDocument.AppKitVersion">1265.21</string>
 		<string key="IBDocument.HIToolboxVersion">698.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6254</string>
+			<string key="NS.object.0">6751</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSArrayController</string>
@@ -398,7 +398,7 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="312190895">
 																		<int key="NSCellFlags">68157504</int>
 																		<int key="NSCellFlags2">272761856</int>
-																		<string key="NSContents">Created:</string>
+																		<string key="NSContents">创建于：</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<reference key="NSControlView" ref="56396529"/>
 																		<reference key="NSBackgroundColor" ref="840157489"/>
@@ -565,7 +565,7 @@
 							<object class="NSButtonCell" key="NSCell" id="350612729">
 								<int key="NSCellFlags">67108864</int>
 								<int key="NSCellFlags2">134217728</int>
-								<string key="NSContents">OK</string>
+								<string key="NSContents">好</string>
 								<reference key="NSSupport" ref="377696351"/>
 								<reference key="NSControlView" ref="196574692"/>
 								<int key="NSButtonFlags">-2038284288</int>
@@ -705,7 +705,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="911546990">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">创建：</string>
+							<string key="NSContents">创建于：</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="740890524"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -925,7 +925,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="850049249">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Ownertrust:</string>
+							<string key="NSContents">所有者信任：</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="917820100"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -982,7 +982,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="260303321">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">创建：</string>
+							<string key="NSContents">创建于：</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="974215630"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -1001,7 +1001,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="826714815">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">密匙ID：</string>
+							<string key="NSContents">密钥 ID：</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="1001246090"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -1077,7 +1077,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="850669489">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">密匙</string>
+							<string key="NSContents">密钥</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="946932878"/>
 							<reference key="NSBackgroundColor" ref="840157489"/>
@@ -1458,7 +1458,7 @@
 							<string key="NSKeyPath">gpgKey.expirationDate</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSNullPlaceholder</string>
-								<string key="NS.object.0">该密匙没有设置有效期</string>
+								<string key="NS.object.0">该密钥没有设置有效期</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>

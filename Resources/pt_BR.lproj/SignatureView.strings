@@ -15,6 +15,6 @@
 "VALIDITY_KEY_EXPIRED" = "A chave desta assinatura está vencida.";
 "VALIDITY_KEY_REVOKED" = "A chave desta assinatura foi revogada.";
 "VALIDITY_UNKNOWN_ALGORITHM" = "Esta assinatura foi criada com um algoritmo desconhecido.";
-"VALIDITY_NO_PUBLIC_KEY" = "A chave desta assinatura não está no seu chaveiro.";
+"VALIDITY_NO_PUBLIC_KEY" = "A chave desta assinatura não está nas suas chaves.";
 "VALIDITY_UNKNOWN_ERROR" = "Erro de assinatura desconhecido.";
 "VALIDITY_BAD_SIGNATURE" = "Esta assinatura é inválida.";

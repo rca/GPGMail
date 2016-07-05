@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">101000</int>
-		<string key="IBDocument.SystemVersion">13E28</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6254</string>
+		<string key="IBDocument.SystemVersion">13F34</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6751</string>
 		<string key="IBDocument.AppKitVersion">1265.21</string>
 		<string key="IBDocument.HIToolboxVersion">698.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6254</string>
+			<string key="NS.object.0">6751</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSArrayController</string>
@@ -479,7 +479,7 @@
 																	<object class="NSTextFieldCell" key="NSCell" id="68258271">
 																		<int key="NSCellFlags">68157504</int>
 																		<int key="NSCellFlags2">272761856</int>
-																		<string key="NSContents">Expire le:</string>
+																		<string key="NSContents">Expire le :</string>
 																		<reference key="NSSupport" ref="26"/>
 																		<reference key="NSControlView" ref="374660988"/>
 																		<reference key="NSBackgroundColor" ref="317639729"/>
@@ -601,7 +601,7 @@ Y2zDqSBhdmVjIEdQRyBLZXljaGFpbi4</string>
 																<object class="NSTextField" id="463642861">
 																	<reference key="NSNextResponder" ref="44245670"/>
 																	<int key="NSvFlags">284</int>
-																	<string key="NSFrame">{{50, 91}, {370, 17}}</string>
+																	<string key="NSFrame">{{50, 91}, {370, 16.999999527012726}}</string>
 																	<reference key="NSSuperview" ref="44245670"/>
 																	<reference key="NSNextKeyView" ref="937110649"/>
 																	<string key="NSReuseIdentifierKey">_NS:3944</string>
@@ -689,7 +689,7 @@ Y2zDqSBhdmVjIEdQRyBLZXljaGFpbi4</string>
 																<object class="NSTextField" id="834668756">
 																	<reference key="NSNextResponder" ref="210185846"/>
 																	<int key="NSvFlags">284</int>
-																	<string key="NSFrame">{{50, 90.999999289419122}, {370, 17}}</string>
+																	<string key="NSFrame">{{50, 91}, {370, 17}}</string>
 																	<reference key="NSSuperview" ref="210185846"/>
 																	<reference key="NSNextKeyView" ref="1051878768"/>
 																	<string key="NSReuseIdentifierKey">_NS:3944</string>
@@ -1169,7 +1169,7 @@ Y2zDqSBhdmVjIEdQRyBLZXljaGFpbi4</string>
 						<object class="NSTextFieldCell" key="NSCell" id="751446589">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Algorithme:</string>
+							<string key="NSContents">Algorithme :</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="1054846190"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1226,7 +1226,7 @@ Y2zDqSBhdmVjIEdQRyBLZXljaGFpbi4</string>
 						<object class="NSTextFieldCell" key="NSCell" id="540786287">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Identification de la clé:</string>
+							<string key="NSContents">ID de la clé :</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="877264115"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1245,7 +1245,7 @@ Y2zDqSBhdmVjIEdQRyBLZXljaGFpbi4</string>
 						<object class="NSTextFieldCell" key="NSCell" id="528727085">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Commentaire:</string>
+							<string key="NSContents">Commentaire :</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="164790008"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1264,7 +1264,7 @@ Y2zDqSBhdmVjIEdQRyBLZXljaGFpbi4</string>
 						<object class="NSTextFieldCell" key="NSCell" id="562734930">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">E-Mail:</string>
+							<string key="NSContents">Courriel :</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="234587586"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>
@@ -1283,7 +1283,7 @@ Y2zDqSBhdmVjIEdQRyBLZXljaGFpbi4</string>
 						<object class="NSTextFieldCell" key="NSCell" id="79929495">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">71435264</int>
-							<string key="NSContents">Nom:</string>
+							<string key="NSContents">Nom :</string>
 							<reference key="NSSupport" ref="27"/>
 							<reference key="NSControlView" ref="348301092"/>
 							<reference key="NSBackgroundColor" ref="317639729"/>

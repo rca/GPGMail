@@ -55,7 +55,7 @@
 								<object class="NSButtonCell" key="NSCell" id="411323674">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">Base de conhecimento</string>
+									<string key="NSContents">Perguntas Frequentes</string>
 									<object class="NSFont" key="NSSupport" id="706304668">
 										<bool key="IBIsSystemFont">YES</bool>
 										<double key="NSSize">13</double>
@@ -64,7 +64,7 @@
 									<reference key="NSControlView" ref="758835818"/>
 									<int key="NSButtonFlags">-2038284288</int>
 									<int key="NSButtonFlags2">129</int>
-									<string key="NSAlternateContents">Perguntas frequentes</string>
+									<string key="NSAlternateContents">FAQ</string>
 									<string key="NSKeyEquivalent"/>
 									<int key="NSPeriodicDelay">200</int>
 									<int key="NSPeriodicInterval">25</int>
@@ -120,7 +120,7 @@
 								<object class="NSTextFieldCell" key="NSCell" id="608485733">
 									<int key="NSCellFlags">68157504</int>
 									<int key="NSCellFlags2">272630784</int>
-									<string key="NSContents">Escrever</string>
+									<string key="NSContents">Redação</string>
 									<reference key="NSSupport" ref="1059241967"/>
 									<reference key="NSControlView" ref="443272866"/>
 									<reference key="NSBackgroundColor" ref="693655191"/>
@@ -139,12 +139,12 @@
 								<object class="NSButtonCell" key="NSCell" id="377024234">
 									<int key="NSCellFlags">-2080374784</int>
 									<int key="NSCellFlags2">0</int>
-									<string key="NSContents">Criar lista de pre-visualização</string>
+									<string key="NSContents">Criar Pré-visualização da Lista</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<reference key="NSControlView" ref="113600817"/>
 									<int key="NSButtonFlags">1211912448</int>
 									<int key="NSButtonFlags2">2</int>
-									<object class="NSCustomResource" key="NSNormalImage" id="55731521">
+									<object class="NSCustomResource" key="NSNormalImage" id="927566442">
 										<string key="NSClassName">NSImage</string>
 										<string key="NSResourceName">NSSwitch</string>
 									</object>
@@ -281,7 +281,7 @@
 									<reference key="NSControlView" ref="915859109"/>
 									<int key="NSButtonFlags">1211912448</int>
 									<int key="NSButtonFlags2">2</int>
-									<reference key="NSNormalImage" ref="55731521"/>
+									<reference key="NSNormalImage" ref="927566442"/>
 									<reference key="NSAlternateImage" ref="34556240"/>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
@@ -328,7 +328,7 @@
 								<object class="NSButtonCell" key="NSCell" id="942140521">
 									<int key="NSCellFlags">67108864</int>
 									<int key="NSCellFlags2">134217728</int>
-									<string key="NSContents">Suporte</string>
+									<string key="NSContents">Report Problem</string>
 									<reference key="NSSupport" ref="706304668"/>
 									<reference key="NSControlView" ref="632062900"/>
 									<int key="NSButtonFlags">-2038284288</int>
@@ -357,7 +357,7 @@
 									<reference key="NSControlView" ref="714016839"/>
 									<int key="NSButtonFlags">1211912448</int>
 									<int key="NSButtonFlags2">2</int>
-									<reference key="NSNormalImage" ref="55731521"/>
+									<reference key="NSNormalImage" ref="927566442"/>
 									<reference key="NSAlternateImage" ref="34556240"/>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
@@ -383,7 +383,7 @@
 									<reference key="NSControlView" ref="955063492"/>
 									<int key="NSButtonFlags">1211912448</int>
 									<int key="NSButtonFlags2">2</int>
-									<reference key="NSNormalImage" ref="55731521"/>
+									<reference key="NSNormalImage" ref="927566442"/>
 									<reference key="NSAlternateImage" ref="34556240"/>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
@@ -455,7 +455,7 @@
 									<reference key="NSControlView" ref="36679776"/>
 									<int key="NSButtonFlags">1211912448</int>
 									<int key="NSButtonFlags2">2</int>
-									<reference key="NSNormalImage" ref="55731521"/>
+									<reference key="NSNormalImage" ref="927566442"/>
 									<reference key="NSAlternateImage" ref="34556240"/>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
@@ -479,7 +479,7 @@
 									<reference key="NSControlView" ref="750257658"/>
 									<int key="NSButtonFlags">1211912448</int>
 									<int key="NSButtonFlags2">2</int>
-									<reference key="NSNormalImage" ref="55731521"/>
+									<reference key="NSNormalImage" ref="927566442"/>
 									<reference key="NSAlternateImage" ref="34556240"/>
 									<string key="NSAlternateContents"/>
 									<string key="NSKeyEquivalent"/>
@@ -1167,7 +1167,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="632062900"/>
-						<string key="toolTip">Se você tiver alguma outra pergunta.</string>
+						<string key="toolTip">Se você tiver alguma outra dúvida.</string>
 					</object>
 				</object>
 				<string key="1051.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1188,7 +1188,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="758835818"/>
-						<string key="toolTip">Perguntas frequentes.</string>
+						<string key="toolTip">FAQ</string>
 					</object>
 				</object>
 				<string key="733.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1202,7 +1202,7 @@
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
 						<reference key="object" ref="113600817"/>
-						<string key="toolTip">Veja Preferências -&gt; Visualização -&gt; Visualização da lista.</string>
+						<string key="toolTip">Consulte Preferências &gt; Visualização &gt; Pré-visualização da Lista.</string>
 					</object>
 				</object>
 				<string key="786.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
