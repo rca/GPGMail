@@ -55,6 +55,6 @@ After that copy the GPGMail.mailbundle file from build/Releases/GPGMail.mailbund
 System Requirements
 -------------------
 
-* Mac OS X >= 10.7
+* Mac OS X >= 10.9
 * Libmacgpg
 * GnuPG
