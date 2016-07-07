@@ -175,7 +175,7 @@ NO_DEFAULTS_TITLE = "Unable to load GPGMail defaults!";
 NO_DEFAULTS_MESSAGE = "GPGMail is not working as expected.\n\nPlease download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at https://gpgtools.tenderapp.com/.";
 
 /* Errors while trying to sign a message. */
-"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "pinentry is broken!";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Signing your message failed due to a broken pinentry!";
 "MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "pinentry, the tool responsible for asking for your password, seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
 
 "MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Signing your message failed due to defect GPG agent!";
