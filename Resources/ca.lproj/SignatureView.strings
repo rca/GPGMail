@@ -7,7 +7,7 @@
  
  Defines the strings used in the signature view.
  */
-"VALIDITY_NO_TRUST" = "La signatura no és de fiar.";
+"VALIDITY_NO_TRUST" = "La signatura no és fiable.";
 "VALIDITY_OK" = "La signatura és fiable.";
 /* Signature view key status. */
 "VALIDITY_KEY_REVOKED" = "La clau de la signatura ha estat revocada.";
