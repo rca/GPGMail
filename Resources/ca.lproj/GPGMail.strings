@@ -195,49 +195,49 @@ NO_DEFAULTS_MESSAGE = "GPG Suite no funciona com deuria.\n\nTona a baixar i rein
 
 "CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nSi el problema persisteix, contacteu amb nosaltres a https://gpgtools.tenderapp.com amb la descripció d'error:\n\n%@";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the message";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The message couldn't be decrypted because you cancelled the password request.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Ha interromput el desxifrat del missatge";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "El missatge no s'ha desxifrar perquè ha cancel·lat la sol·licitud de contrasenya.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the attachment";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The attachment couldn't be decrypted because you cancelled the password request.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Ha interromput el desxifrar del fitxer adjunt";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "El fitxer adjunt no s'ha desxifrat perquè ha cancel·lat la sol·licitud de contrasenya.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite no funciona com deuria";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the message failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Ha fallat el procés de desxifratge del missatges.\n\nReinstal·leu GPG Suite des de https://gpgtools.org.\n\nSi el problema persisteix, contacteu amb nosaltres a https://gpgtools.tenderapp.com/ i incloga la informació al voltant que el servei xpc no funciona bé.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite no funciona com deuria";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the attachment failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Ha fallat el procés de desxifratge del fitxer adjunt.\n\nReinstal·leu GPG Suite des de https://gpgtools.org.\n\nSi el problema persisteix, contacteu amb nosaltres a https://gpgtools.tenderapp.com/ i incloga la informació al voltant que el servei xpc no funciona bé.";
 
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite no funciona com deuria";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the message failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "La verificació del missatge ha fallat.\n\nReinstal·leu GPG Suite des de https://gpgtools.org.\n\nSi el problema persisteix, contacteu amb nosaltres a https://gpgtools.tenderapp.com/ i incloga la informació al voltant que el servei xpc no funciona bé.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite no funciona com deuria";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the attachment failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "La verificació del fitxer adjunt ha fallat.\n\nReinstal·leu GPG Suite des de https://gpgtools.org.\n\nSi el problema persisteix, contacteu amb nosaltres a https://gpgtools.tenderapp.com/ i incloga la informació al voltant que el servei xpc no funciona bé.";
 
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Signing your message failed due to a problem during the password request";
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "pinentry, the tool responsible for asking for your password, is not working properly.\n\nTo fix this problem, please re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Hi hagut un problema durant la sol·licitud de la contrasenya i per axiò la signatura del missatge ha fallat";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "pinentry, l'eina responsable de demanar la contrasenya, sembla que s'ha fet malbé.\n\nPer corregir el problema, reinstal·leu GPG Suite des de https://gpgtools.org.";
 
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Signing your message failed due to a problem in your GPGMail installation.";
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "To fix this problem, please re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Lasignatura del missatges ha falltat perquè hi ha un problema en la instal·lació GPGMail";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "Per corregir el problema, reinstal·le GPG Suite des de https://gpgtools.org.\n\nSi el problema persisteix, contacteu amb nosaltres a https://gpgtools.tenderapp.com/ i incloga la informació al voltant que el servei xpc no funciona bé.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the message failed due to a broken pinentry";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, the tool responsible for asking for your password, seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "pinentry s'ha fet malbé, i per axiò ha fallat el desxifrat del fitxer adjunt";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, l'eina responsable de demanar la contrasenya, sembla que s'ha fet malbé.\n\nPer corregir el problema, reinstal·leu GPG Suite des de https://gpgtools.org.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the attachment failed due to a defect pinentry";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, the tool responsible for asking for your password, seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "pinentry és defectuós i per això ha fallat el desxifrat del fitxer adjunt";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, l'eina responsable de demanar la contrasenya, sembla que s'ha fet malbé.\n\nPer corregir el problema, reinstal·leu GPG Suite des de https://gpgtools.org.";
 
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Attention: You're about to send an unencrypted reply to an encrypted message";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "It's not possible to encrypt your reply, because the public key for the following recipient is missing:\n\n%@";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS" = "It's not possible to encrypt your reply, because public keys for the following recipients are missing:\n\n%@";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "If you choose to proceed, your reply will be sent unencrypted. As a result, confidential information might be leaked, putting you and your recipients at risk.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nIf you really wish to send this reply unencrypted, please remove any previous correspondence included in your reply prior to sending.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Otherwise, search and import the corresponding public keys using GPG Keychain in order to send the reply encrypted.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Otherwise, search and import the the corresponding public key using GPG Keychain in order to send the reply encrypted.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Igualment envia";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Atenció: Està a punt d'enviar una resposta no xifrada en un missatge xifrat";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "És impossible xifrar la resposta, perquè la clau pública per al següent receptor és ausent:\n\n%@";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS" = "És impossible xifrar la resposta, perquè les claus públiques per als següents receptors són ausents:\n\n%@";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "Si elegiu continuar, la resposta s'enviarà sense xifrar. El resultat serà que es filtrarà informació confidencia, i tant vostè com els receptors estaran en risc.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nSi realment vol enviar la resposta sense xifrar, elimine qualsevol comunicació prèvia inclosa en la resposta abans d'enviar-la.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "D'altra manera, cerque i importe les clasu públiques que corresponguen, i utilitze GPG Keychain per enviar la resposta xifrada.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "D'altra manera, cerque i importe la clau pública que corresponga, i utilitze GPG Keychain per enviar la resposta xifrada.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Envia igualment";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Cancel·la";
 
 
 /* Accessibility */
-ACCESSIBILITY_SECURITY_METHOD_POPUP_LABEL = "Security method: %@";
-ACCESSIBILITY_SIGN_ON_IMAGE = "Sign";
-ACCESSIBILITY_SIGN_OFF_IMAGE = "Don't sign";
+ACCESSIBILITY_SECURITY_METHOD_POPUP_LABEL = "Mètode de seguretat: %@";
+ACCESSIBILITY_SIGN_ON_IMAGE = "Signeu";
+ACCESSIBILITY_SIGN_OFF_IMAGE = "No signeu";
 
