@@ -533,8 +533,6 @@
 - (id)MAOutgoingMessageUsingWriter:(id)writer contents:(id)contents headers:(id)headers isDraft:(BOOL)isDraft shouldBePlainText:(BOOL)shouldBePlainText {
 	if([contents ivarExists:@"IsDraft"])
 		isDraft = [[contents getIvar:@"IsDraft"] boolValue];
-	if([[contents getIvar:@"ShouldEncrypt"] boolValue] || [[contents getIvar:@"ShouldSign"] boolValue])
-		[headers setHeader:[GPGMailBundle agentHeader] forKey:@"X-PGP-Agent"];
 	if([contents ivarExists:@"IsDraft"] && isDraft) {
 		[headers setHeader:@"com.apple.mail-draft" forKey:@"x-uniform-type-identifier"];
 
@@ -788,7 +786,6 @@
     for(id key in [topPart bodyParameterKeys])
         [contentTypeData appendData:[[NSString stringWithFormat:@"\n\t%@=\"%@\";", key, [topPart bodyParameterForKey:key]] dataUsingEncoding:NSASCIIStringEncoding]];
     [headers setHeader:contentTypeData forKey:@"content-type"];
-    [headers setHeader:[GPGMailBundle agentHeader] forKey:@"x-pgp-agent"];
     [headers setHeader:@"7bit" forKey:@"content-transfer-encoding"];
     [headers removeHeaderForKey:@"content-disposition"];
     [headers removeHeaderForKey:@"from "];
@@ -870,7 +867,6 @@
     for(id key in [topPart bodyParameterKeys])
         [contentTypeData appendData:[[NSString stringWithFormat:@"\n\t%@=\"%@\";", key, [topPart bodyParameterForKey:key]] dataUsingEncoding:NSASCIIStringEncoding]];
     [headers setHeader:contentTypeData forKey:@"content-type"];
-    [headers setHeader:[GPGMailBundle agentHeader] forKey:@"x-pgp-agent"];
     [headers setHeader:[topPart contentTransferEncoding] forKey:@"content-transfer-encoding"];
     [headers removeHeaderForKey:@"content-disposition"];
     [headers removeHeaderForKey:@"from "];	
