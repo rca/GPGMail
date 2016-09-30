@@ -14,8 +14,8 @@
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "No hi ha informació disponible per la clau PGP.";
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "No hi ha informació addicional coneguda sobre la clau PGP, perquè no és al clauer.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Falta la clau secreta per desxifrar el missatge.";
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "No hi ha cap clau secreta vàlida al seu clauer (%@). Cal la clau secreta per desxifrar el missatge.\n\nConsulti amb el remitent perquè utilitzen la clau pública correcta.\nComprovi qualsevol còpia de seguretat de la clau, i tracteu d'importar-la.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Falta la clau privada per desxifrar el missatge.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "No hi ha cap clau privada vàlida al seu clauer (%@). Cal la clau secreta per desxifrar el missatge.\n\nConsulti amb el remitent perquè utilitzen la clau pública correcta.\nComprovi qualsevol còpia de seguretat de la clau, i tracteu d'importar-la.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "S'ha produït un error desconegut a l'hora de desxifrar!";
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Ha ocorregut un error desconegut al desxifrar el missatge.\n\nContacteu amb nosaltres a https://gpgtools.tenderapp.com/";
@@ -26,7 +26,7 @@
 "MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "No heu utilitzat la clau correcta per xifrar el missatge .";
 "MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "El missatge no s'ha desxifrat, perquè s'utilitzat una clau pública errònia per xifrar-lo.\n\nContacteu amb nosaltres a https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "El missatge xifrat és danyat.";
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "El missatge xifrat està danyat.";
 "MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "El missatge xifrat està danyat i no es pot desxifrar.⏎\n⏎\nDemani al remitent que li reenvie el missatge.";
 
 "MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "S'ha revocat la clau de la signatura.";
@@ -74,8 +74,8 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE" = "Per obtenir més detalls feu clic a la icona del fitxer adjunt que es troba a la capçalera de seguretat del missatge.";
 
 /* Message Error Banner Attachment messages. */
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Falta la clau secreta per desxifrar el fitxer adjunt.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "No hi ha cap clau secreta vàlida al seu clauer (%@). Cal la clau secreta per desxifrar el fitxer adjunt.\n\nConsulti amb el remitent perquè utilitzen la clau pública correcta.\nComprovi qualsevol còpia de seguretat de la clau, i tracteu d'importar-la.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Falta la clau privada per desxifrar el fitxer adjunt.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "No hi ha cap clau privada vàlida al seu clauer (%@). Cal la clau privada per desxifrar el fitxer adjunt.\n\nConsulti amb el remitent perquè utilitzen la clau pública correcta.\nComprovi qualsevol còpia de seguretat de la clau, i tracteu d'importar-la.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Mentre es desxifrava s'ha produït un error desconegut!";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Ha ocorregut un error desconegut al desxifrar el fitxer adjunt.\n\nContacteu amb nosaltres a https://gpgtools.tenderapp.com/";
@@ -84,10 +84,10 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Ha ocorregut un error desconegut al desxifrar el fitxer adjunt.\n\nMissatge d'error GPG:\n%@\n\nContacteu amb nosaltres i inclogueu el missatge d'error GPG a https://gpgtools.tenderapp.com/";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Per xifrar el fitxer adjunt s'ha utilitzat una clau errònia.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "El fitxer adjunt no s'ha desxifrat, perquè s'ha utilitzat una clau errònia per xifrar-lo.\n\nContacteu amb nosaltres a https://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "El fitxer adjunt no s'ha desxifrat, perquè s'ha utilitzat una clau pública errònia per xifrar-lo.\n\nContacteu amb nosaltres a https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "El fitxer adjunt xifrat és danyat.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "El fitxer adjunt xifrat és danyat i no s'ha desxifrat.\n\nDemani al remitent que li envie el missatge de nou.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "El fitxer adjunt xifrat està danyat.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "El fitxer adjunt xifrat està danyat i no s'ha desxifrat.\n\nDemani al remitent que li envie el missatge de nou.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "S'ha revocat la clau de la signatura.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "La clau que s'ha usat per signat aquest fitxer adjunt s'ha revocat.\n\nHa d'actualitzar la identitat de la clau amb %@ a GPG Keychain per comprovar si hi ha disponible una nova versió. Si la nova versió també està revocada, verifique amb el remitent perquè s'ha revocat la clau.";
@@ -148,11 +148,11 @@
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail està llest.";
 "GPG_STATUS_NO_ERROR_TOOLTIP" = "La instal·lació de MacGPG treballa sense cap error.";
 "GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 no s'ha instal·lat. Verifiqueu la instal·lació.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Descarregeu l'instal·lador de GPG Suite a http://www.gpgtools.org per instal·lar totes les eines de GPG Suite.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Baixeu l'instal·lador de GPG Suite a https://www.gpgtools.org per instal·lar totes les eines de GPG Suite.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Reviseu la instal·lació i la configuració.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Descarregeu l'instal·lador de GPG Suite a http://www.gpgtools.org per instal·lar totes les eines de GPG Suite.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Baixeu l'instal·lador de GPG Suite a https://www.gpgtools.org per instal·lar totes les eines de GPG Suite.";
 "DISABLE_ENCRYPT_DRAFTS_TITLE" = "Advertència: Si deshabiliteu aquesta opció llevareu la filtació d'informació sensible a l'escriure un missatge";
-"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "Si l'opció \"Enmagatzema esborranys al servidor\" és habilitada per als comptes, Mail enmargatzemarà automàticament els esborranys al servidor de correu mentre vostè escriu un missatge.\nSi deshabilita \"Xifrar esborranys\", els esborranys s'emmagatzemaran en text simple (no xifrat) de manera que qualsevol amb accés al servidor de correu els llegirà.\n\nSi manteniu habilitat \"Xifrar esborranys\", els esborranys seran xifrats abans d'emmagatzemar-se en un servidor de correu, i només vosté els llegirà.\n\nEncara vol deshabilitat \"Xifrar esborranys\"?";
+"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "Si l'opció \"Enmagatzema esborranys al servidor\" està habilitada per als comptes, Mail enmargatzemarà automàticament els esborranys al servidor de correu mentre vostè escriu un missatge.\nSi deshabilita \"Xifrar esborranys\", els esborranys s'emmagatzemaran en text simple (no xifrat) de manera que qualsevol amb accés al servidor de correu els llegirà.\n\nSi manteniu habilitat \"Xifrar esborranys\", els esborranys seran xifrats abans d'emmagatzemar-se en un servidor de correu, i només vosté els llegirà.\n\nEncara vol deshabilitat \"Xifrar esborranys\"?";
 "DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Inhabilita el xifratge";
 "DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Cancel·la";
 
@@ -172,7 +172,7 @@ CODE_SIGN_ERROR_MESSAGE = "Per mantenir-lo segur, GPGMail no es carregarà!\n\nR
 
 /* GPGMailGPGMailBundle.defaults can't be loaded */
 NO_DEFAULTS_TITLE = "No s'ha carregat la configuració predeterminada de GPGMail!";
-NO_DEFAULTS_MESSAGE = "GPG Suite no funciona com deuria.\n\nTona a baixar i reinstal·la GPG Suite des de https://gpgtools.org\n\nSi el problema continua, contacteu amb nosaltres a https://gpgtools.tenderapp.com.";
+NO_DEFAULTS_MESSAGE = "GPG Suite no funciona com deuria.\n\nBaixeu i reinstal·leu GPG Suite des de https://gpgtools.org\n\nSi el problema continua, contacteu amb nosaltres a https://gpgtools.tenderapp.com/.";
 
 /* Errors while trying to sign a message. */
 "MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "La signatura del missatge ha fallat perquè pinentry s'ha fet malbé!";
@@ -216,21 +216,21 @@ NO_DEFAULTS_MESSAGE = "GPG Suite no funciona com deuria.\n\nTona a baixar i rein
 "MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Hi hagut un problema durant la sol·licitud de la contrasenya i per axiò la signatura del missatge ha fallat";
 "MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "pinentry, l'eina responsable de demanar la contrasenya, sembla que s'ha fet malbé.\n\nPer corregir el problema, reinstal·leu GPG Suite des de https://gpgtools.org.";
 
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Lasignatura del missatges ha falltat perquè hi ha un problema en la instal·lació GPGMail";
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "Per corregir el problema, reinstal·le GPG Suite des de https://gpgtools.org.\n\nSi el problema persisteix, contacteu amb nosaltres a https://gpgtools.tenderapp.com/ i incloga la informació al voltant que el servei xpc no funciona bé.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "La signatura del missatges ha falltat perquè hi ha un problema en la instal·lació de GPGMail.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "Per corregir el problema, reinstal·leu GPG Suite des de https://gpgtools.org.\n\nSi el problema persisteix, contacteu amb nosaltres a https://gpgtools.tenderapp.com/ i incloga la informació al voltant que el servei xpc no funciona bé.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "pinentry s'ha fet malbé, i per axiò ha fallat el desxifrat del fitxer adjunt";
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, l'eina responsable de demanar la contrasenya, sembla que s'ha fet malbé.\n\nPer corregir el problema, reinstal·leu GPG Suite des de https://gpgtools.org.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "pinentry és defectuós i per això ha fallat el desxifrat del fitxer adjunt";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "pinentry està defectuós, i per això ha fallat el desxifrat del fitxer adjunt";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, l'eina responsable de demanar la contrasenya, sembla que s'ha fet malbé.\n\nPer corregir el problema, reinstal·leu GPG Suite des de https://gpgtools.org.";
 
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Atenció: Està a punt d'enviar una resposta no xifrada en un missatge xifrat";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "És impossible xifrar la resposta, perquè la clau pública per al següent receptor és ausent:\n\n%@";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS" = "És impossible xifrar la resposta, perquè les claus públiques per als següents receptors són ausents:\n\n%@";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "Si elegiu continuar, la resposta s'enviarà sense xifrar. El resultat serà que es filtrarà informació confidencia, i tant vostè com els receptors estaran en risc.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "Si elegiu continuar, la resposta s'enviarà sense xifrar. El resultat serà que es filtrarà informació confidencial, i tant vostè com els receptors estaran en risc.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nSi realment vol enviar la resposta sense xifrar, elimine qualsevol comunicació prèvia inclosa en la resposta abans d'enviar-la.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "D'altra manera, cerque i importe les clasu públiques que corresponguen, i utilitze GPG Keychain per enviar la resposta xifrada.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "D'altra manera, cerque i importe les claus públiques que corresponguen, i utilitze GPG Keychain per enviar la resposta xifrada.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "D'altra manera, cerque i importe la clau pública que corresponga, i utilitze GPG Keychain per enviar la resposta xifrada.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Envia igualment";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Cancel·la";

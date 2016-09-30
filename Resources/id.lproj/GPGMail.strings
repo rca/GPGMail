@@ -135,7 +135,7 @@
 "MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "lampiran yang ditandatangani";
 
 /* Compose Window encrypt/sign button tooltips. */
-"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "This message can't be signed, since there's no secret key for %@.\n\nPlease make sure that a secret key for this address exists in GPG Keychain. Add a new User ID to an existing key for this address if necessary, or create a new key for this address.\n\nIf a key for the address exists, make sure that the address in Mail.app > Preferences > Accounts is correct and exactly matches the address of your key.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "Pesan ini tak bisa ditandatangani, karena tidak ada kunci rahasia untuk %@.\n\nHarap pastikan bahwa suatu kunci rahasia untuk alamat ini ada dalam GPG Keychain. Tambahkan suatu ID Pengguna baru ke kunci yang ada bagi alamat ini bila perlu, atau buat kunci baru untuk alamat ini.\n\nBila suatu kunci bagi alamat ada, pastikan bahwa alamat dalam Mail.app > Preferensi > Akun benar dan persis cocok dengan alamat dari kunci Anda.";
 "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "Pesan ini tak bisa dienkripsi, karena tak tersedia kunci publik bagi alamat-alamat berikut: %@.\n\nHarap gunakan GPG Keychain untuk mencari dan mengimpor kunci-kunci bagi alamat-alamat tersebut.";
 "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "Pesan ini tak bisa dienkripsi. Anda mesti terlebih dahulu memasukkan paling tidak satu penerima.";
 
@@ -168,21 +168,21 @@
 
 /* Code signature invalid */
 CODE_SIGN_ERROR_TITLE = "Seseorang meretas instalasi GPGMail Anda!";
-CODE_SIGN_ERROR_MESSAGE = "To keep you safe, GPGMail will not be loaded!\n\nPlease re-install GPG Suite from https://gpgtools.org to be sure you have an original version from us!";
+CODE_SIGN_ERROR_MESSAGE = "Agar Anda tetap aman, GPGMail tidak akan dimuat!\n\nHarap pasang ulang Keluarga GPG dari https://gpgtools.org agar yakin bahwa Anda punya versi asli dari kami!";
 
 /* GPGMailGPGMailBundle.defaults can't be loaded */
 NO_DEFAULTS_TITLE = "Tidak bisa memuat parameter baku GPGMail!";
-NO_DEFAULTS_MESSAGE = "GPGMail is not working as expected.\n\nPlease download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at https://gpgtools.tenderapp.com/.";
+NO_DEFAULTS_MESSAGE = "GPGMail tidak bekerja seperti yang diharapkan.\n\nHarap unduh dan pasang ulang Keluarga GPG dari https://gpgtools.org\n\nApabila masalah ini tetap ada, harap hubungi kami di https://gpgtools.tenderapp.com/.";
 
 /* Errors while trying to sign a message. */
-"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Signing your message failed due to a broken pinentry!";
-"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "pinentry, the tool responsible for asking for your password, seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Menandatangani pesan Anda gagal karena pinentry yang rusak!";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "pinentry, alat yang bertanggung jawab meminta kata sandi Anda, tampaknya rusak.\n\nUntuk memperbaiki masalah ini, pasang ulang Keluarga GPG dari https://gpgtools.org.";
 
 "MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Penandatanganan pesan Anda gagal karena agen GPG yang rusak!";
-"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "The GPG agent which is a crucial part of GPG seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "Agen GPG yang merupakan bagian penting dari GPG tampaknya rusak.\n\nUntuk memperbaiki masalah ini, pasang ulang Keluarga GPG dari https://gpgtools.org.";
 
 "MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "Penandatanganan pesan Anda gagal karena galat komunikasi agen GPG!";
-"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "It was not possible to talk to the GPG agent in order to request your password.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "Tidak mungkin berbicara dengan agen GPG untuk meminta kata sandi Anda.\n\nUntuk memperbaiki masalah ini, pasang ulang Keluarga GPG dari https://gpgtools.org.";
 
 "MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "Penandatanganan pesan Anda gagal karena galat yang tak dikenal telah terjadi";
 "MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Sayang sekali kami tak bisa menangani galat pada titik ini.";
@@ -202,42 +202,42 @@ NO_DEFAULTS_MESSAGE = "GPGMail is not working as expected.\n\nPlease download an
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "Lampiran tak bisa didekripsi karena Anda membatalkan permintaan sandi.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "Keluarga GPG tidak bekerja seperti yang diharapkan";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the message failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Mendekripsi pesan gagal.\n\nHarap pasang ulang Keluarga GPG dari https://gpgtools.org\n\nApabila masalah ini tetap ada, harap hubungi kami di https://gpgtools.tenderapp.com/ dan sertakan informasi bahwa layanan xpc tidak bekerja dengan benar.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "Keluarga GPG tidak bekerja seperti yang diharapkan";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the attachment failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Mendekripsi lampiran gagal.\n\nHarap pasang ulang Keluarga GPG dari https://gpgtools.org\n\nApabila masalah ini tetap ada, harap hubungi kami di https://gpgtools.tenderapp.com/ dan sertakan informasi bahwa layanan xpc tidak bekerja dengan benar.";
 
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "Keluarga GPG tidak bekerja seperti yang diharapkan";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the message failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifikasi pesan gagal.\n\nHarap pasang ulang Keluarga GPG dari https://gpgtools.org\n\nApabila masalah ini tetap ada, harap hubungi kami di https://gpgtools.tenderapp.com/ dan sertakan informasi bahwa layanan xpc tidak bekerja dengan benar.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "Keluarga GPG tidak bekerja seperti yang diharapkan";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the attachment failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifikasi lampiran gagal.\n\nHarap pasang ulang Keluarga GPG dari https://gpgtools.org\n\nApabila masalah ini tetap ada, harap hubungi kami di https://gpgtools.tenderapp.com/ dan sertakan informasi bahwa layanan xpc tidak bekerja dengan benar.";
 
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Signing your message failed due to a problem during the password request";
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "pinentry, the tool responsible for asking for your password, is not working properly.\n\nTo fix this problem, please re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Menandatangani pesan Anda gagal karena masalah selama permintaan kata sandi";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "pinentry, alat yang bertanggung jawab meminta kata sandi Anda, tidak bekerja dengan benar.\n\nUntuk memperbaiki masalah ini, harap pasang ulang Keluarga GPG dari https://gpgtools.org.";
 
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Signing your message failed due to a problem in your GPGMail installation.";
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "To fix this problem, please re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Menandatangani pesan Anda gagal karena masalah dalam instalasi GPGMail Anda.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "Untuk memperbaiki masalah ini, harap pasang ulang Keluarga GPG dari https://gpgtools.org\n\nApabila masalah ini tetap ada, harap hubungi kami di https://gpgtools.tenderapp.com/ dan sertakan informasi bahwa layanan xpc tidak bekerja dengan benar.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the message failed due to a broken pinentry";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, the tool responsible for asking for your password, seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Dekripsi pesan gagal karena pinentry yang rusak!";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, alat yang bertanggung jawab meminta kata sandi Anda, tampaknya rusak.\n\nUntuk memperbaiki masalah ini, pasang ulang Keluarga GPG dari https://gpgtools.org.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the attachment failed due to a defect pinentry";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, the tool responsible for asking for your password, seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Dekripsi lampiran gagal karena pinentry yang rusak";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, alat yang bertanggung jawab meminta kata sandi Anda, tampaknya rusak.\n\nUntuk memperbaiki masalah ini, pasang ulang Keluarga GPG dari https://gpgtools.org.";
 
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Attention: You're about to send an unencrypted reply to an encrypted message";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "It's not possible to encrypt your reply, because the public key for the following recipient is missing:\n\n%@";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS" = "It's not possible to encrypt your reply, because public keys for the following recipients are missing:\n\n%@";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "If you choose to proceed, your reply will be sent unencrypted. As a result, confidential information might be leaked, putting you and your recipients at risk.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nIf you really wish to send this reply unencrypted, please remove any previous correspondence included in your reply prior to sending.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Otherwise, search and import the corresponding public keys using GPG Keychain in order to send the reply encrypted.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Otherwise, search and import the the corresponding public key using GPG Keychain in order to send the reply encrypted.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Perhatian: Anda akan mengirim suatu jawaban tak terenkripsi ke suatu pesan yang terenkripsi";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "Tidak mungkin mengenkripsi jawaban Anda, karena kunci publik bagi penerima berikut hilang:\n\n%@";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS" = "Tidak mungkin mengenkripsi jawaban Anda, karena kunci publik bagi penerima berikut hilang:\n\n%@";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "Bila Anda memilih untuk melanjutkan, jawaban Anda akan dikirim tak terenkripsi. Akibatnya, informasi konfidensial mungkin bocor, menyebabkan risiko bagi Anda dan penerima surat Anda.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nBila Anda memang hendak mengirim jawaban ini tak terenkripsi, harap hapus semua korespondensi terdahulu yang disertakan dalam jawaban Anda sebelum mengirim.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Bila tidak, cari dan impor kunci publik yang terkait memakai GPG Keychain agar mengirim jawaban terenkripsi.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Bila tidak, cari dan impor kunci publik yang terkait memakai GPG Keychain agar mengirim jawaban terenkripsi.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Kirim Saja";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Batal";
 
 
 /* Accessibility */
-ACCESSIBILITY_SECURITY_METHOD_POPUP_LABEL = "Security method: %@";
-ACCESSIBILITY_SIGN_ON_IMAGE = "Sign";
-ACCESSIBILITY_SIGN_OFF_IMAGE = "Don't sign";
+ACCESSIBILITY_SECURITY_METHOD_POPUP_LABEL = "Metoda keamanan: %@";
+ACCESSIBILITY_SIGN_ON_IMAGE = "Tandatangani";
+ACCESSIBILITY_SIGN_OFF_IMAGE = "Jangan tandatangani";
 

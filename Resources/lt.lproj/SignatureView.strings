@@ -7,14 +7,14 @@
  
  Defines the strings used in the signature view.
  */
-"VALIDITY_NO_TRUST" = "This signature is not to be trusted.";
-"VALIDITY_OK" = "This signature can be trusted";
+"VALIDITY_NO_TRUST" = "Šiuo parašu negalima pasitikėti.";
+"VALIDITY_OK" = "Šiuo parašu galima pasitikėti";
 /* Signature view key status. */
-"VALIDITY_KEY_REVOKED" = "The key of this signature was revoked.";
-"VALIDITY_SIGNATURE_EXPIRED" = "This signature is expired.";
-"VALIDITY_KEY_EXPIRED" = "The key of this signature is expired.";
-"VALIDITY_KEY_REVOKED" = "The key of this signature was revoked.";
-"VALIDITY_UNKNOWN_ALGORITHM" = "Signature was created with unknown algorithm.";
-"VALIDITY_NO_PUBLIC_KEY" = "The key of this signature is not in your keychain.";
-"VALIDITY_UNKNOWN_ERROR" = "Unknown signature error.";
-"VALIDITY_BAD_SIGNATURE" = "This signature is invalid.";
+"VALIDITY_KEY_REVOKED" = "Šio parašo raktas buvo panaikintas.";
+"VALIDITY_SIGNATURE_EXPIRED" = "Šis parašas nebegalioja.";
+"VALIDITY_KEY_EXPIRED" = "Šio parašo raktas nebegalioja.";
+"VALIDITY_KEY_REVOKED" = "Šio parašo raktas buvo panaikintas.";
+"VALIDITY_UNKNOWN_ALGORITHM" = "Parašas buvo sukurtas su nežinomu algoritmu.";
+"VALIDITY_NO_PUBLIC_KEY" = "Šio parašo raktas nėra jūsų raktinėje.";
+"VALIDITY_UNKNOWN_ERROR" = "Nežinoma parašo klaida.";
+"VALIDITY_BAD_SIGNATURE" = "Šis parašas yra neteisingas.";

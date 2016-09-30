@@ -7,9 +7,9 @@
 "365.title" = "Name:";
 "367.title" = "Key";
 "369.title" = "E-Mail:";
-"372.title" = "Key ID:";
-"373.title" = "Comment:";
-"377.title" = "Algorithm:";
+"372.title" = "Rakto ID:";
+"373.title" = "Komentaras:";
+"377.title" = "Algoritmas:";
 "378.title" = "Expires:";
 "379.title" = "Created:";
 "381.title" = "Ownertrust:";

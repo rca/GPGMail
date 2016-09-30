@@ -38,7 +38,7 @@
 "MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Esta mensagem não pôde ser verificada porque a assinatura foi criada com um algoritmo incompatível.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
 
 "MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATENÇÃO: a assinatura desta mensagem é inválida.";
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "Esta mensagem pode ter sido modificada depois da criação da assinatura.\n\nContate o remetente para assegurar-se de que o conteúdo da mensagem corresponda ao original.\n\nCaso tenha certeza de que a mensagem não foi modificada,\ncontate o suporte em\nhttps://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "Esta mensagem pode ter sido modificada depois da criação da assinatura.\n\nContate o remetente para assegurar-se de que o conteúdo da mensagem corresponda ao original.\n\nCaso tenha certeza de que a mensagem não foi modificada,\ncontate o suporte em https://gpgtools.tenderapp.com/";
 
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "A verificação da assinatura da mensagem falhou com erro desconhecido.";
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ocorreu um erro desconhecido ao verificar a assinatura desta mensagem.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
@@ -99,7 +99,7 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Este anexo não pôde ser verificado porque a chave de assinatura foi criada com um algoritmo incompatível.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATENÇÃO: a assinatura do anexo é inválida.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "Este anexo pode ter sido modificado depois da criação da assinatura.\n\nContate o remetente para assegurar-se de que o conteúdo do anexo corresponda ao original.\n\nCaso tenha certeza de que o anexo não foi modificado,\ncontate o suporte em\nhttps://gpgtools.tenderapp.com/";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "Este anexo pode ter sido modificado depois da criação da assinatura.\n\nContate o remetente para assegurar-se de que o conteúdo do anexo corresponda ao original.\n\nCaso tenha certeza de que o anexo não foi modificado,\ncontate o suporte em https://gpgtools.tenderapp.com/";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "A verificação da assinatura falhou com erro desconhecido.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ocorreu um erro desconhecido ao verificar a assinatura deste anexo.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
@@ -159,11 +159,11 @@
 
 /* Multiple GPGMail installations. */
 "GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Várias instalações do GPGMail foram encontradas.";
-"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "O GPGMail encontrou várias instalações nas seguintes localizações (o que levará a uma falha imediata):\n\n%@\n\nRemova o GPGMail.mailbundle de uma das localizações e reinicie o Mail.";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "O GPGMail encontrou várias instalações nos seguintes locais (o que levará a uma falha imediata):\n\n%@\n\nRemova o GPGMail.mailbundle de um dos locais e reinicie o Mail.";
 "GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Encerrar Mail";
 
 /* No Libmacgpg. */
-"LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg Não Encontrado";
+"LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg não encontrado.";
 "LIBMACGPG_NOT_FOUND_MESSAGE" = "O Libmacgpg não foi encontrado no sistema. Reinstale a GPG Suite de https://www.gpgtools.org.";
 
 /* Code signature invalid */
