@@ -196,8 +196,8 @@ static BOOL gpgMailWorks = NO;
         // Initiate the Message Rules Applier.
         _messageRulesApplier = [[GMMessageRulesApplier alloc] init];
         
-        if([GPGMailBundle isElCapitan])
-            [self runBetaHasExpiredCheck];
+//        if([GPGMailBundle isElCapitan])
+//            [self runBetaHasExpiredCheck];
         
         // Start the GPG checker.
         [self startGPGChecker];
