@@ -4,6 +4,12 @@ GPGMail
 GPGMail is a plugin for OS X's Mail.app, which let's you  
 send and receive secure, OpenPGP encrypted and signed messages.
 
+Important
+-------
+
+GPGMail currently doesn't support macOS Sierra (10.12). We're actively working on it.
+Follow us on [Twitter](https://twitter.com/gpgtools) for updates.
+
 Updates
 -------
 
@@ -55,6 +61,6 @@ After that copy the GPGMail.mailbundle file from build/Releases/GPGMail.mailbund
 System Requirements
 -------------------
 
-* Mac OS X >= 10.9
+* Mac OS X >= 10.9 (macOS Sierra is not yet supported!)
 * Libmacgpg
 * GnuPG
