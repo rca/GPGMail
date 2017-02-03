@@ -45,6 +45,7 @@
 #import "HeadersEditor+GPGMail.h"
 #import "DocumentEditor.h"
 #import "GMSecurityControl.h"
+#import "GPGLocalizationBundle.h"
 
 @interface GPGMailBundle ()
 
@@ -207,6 +208,10 @@ static BOOL gpgMailWorks = NO;
         
         // Inject the plugin code.
         [GMCodeInjector injectUsingMethodPrefix:GPGMailSwizzledMethodPrefix];
+        
+        // Change class of the GPGMail-Bundle to allow better localization.
+        // For more details see GPGNSBundle -localizedStringForKey:value:table:
+        object_setClass(myBundle, [GPGLocalizationBundle class]);
 	}
     
 	return self;
