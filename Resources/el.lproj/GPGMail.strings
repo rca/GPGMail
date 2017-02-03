@@ -1,35 +1,35 @@
 /* Description of version prefixed with <Version:> */
-"VERSION: %@" = "Versija: %@";
+"VERSION: %@" = "Έκδοση: %@";
 
 /* PGP preferences panel name */
 "PGP_PREFERENCES" = "GPGMail";
 
 /* Message Error Banner messages. */
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "Unable to decrypt PGP message.";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "There was a problem decrypting this message. Verify that you have a valid key in your GPG Keychain.";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Unable to verify PGP message signature.";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "There was a problem reading the PGP signature for this message.";
-"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "PGP key for this message is not in your keychain.";
-"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "The message has a valid PGP signature, but the PGP key is not in your keychain. Please use GPG Keychain to add it.";
-"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "No information is available for this PGP key.";
-"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "No additional information is known about this PGP key, because it's not in your keychain.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "Δεν ήταν δυνατή η αποκρυπτογράφηση του PGP μηνύματος.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "Εμφανίστηκε πρόβλημα κατά την αποκρυπτογράφηση του μηνύματος. Βεβαιωθείτε πως διαθέτετε ένα έγκυρο κλειδί στο GPG Keychain σας.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Δεν ήταν δυνατή η επαλήθευση της PGP υπογραφής του μηνύματος.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Εμφανίστηκε πρόβλημα κατά την ανάγνωση της PGP υπογραφής του μηνύματος.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "Το PGP κλειδί για το μήνυμα δε βρίσκεται στα διαθέσιμα κλειδιά σας.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Το μήνυμα έχει έγκυρη PGP υπογραφή, αλλά το PGP κλειδί δε βρίσκεται στα διαθέσιμα κλειδιά σας. Παρακαλώ χρησιμοποιήστε το GPG Keychain για να το προσθέσετε.";
+"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Δεν υπάρχουν διαθέσιμες πληροφορίες γι' αυτό το PGP κλειδί.";
+"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Δεν υπάρχουν επιπλέον διαθέσιμες πληφοροφίες γι' αυτό το PGP κλειδί, επειδή δεν είναι στα διαθέσιμα κλειδιά σας.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Secret key to decrypt the message is missing.";
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Iššifravimas nepavyko dėl nežinomos klaidos!";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Decryption failed with unknown error!";
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Iššifravimas nepavyko dėl nežinomos klaidos!";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Decryption failed with unknown error!";
 "MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "An unknown error occurred while decrypting this message.\n\nGPG error message:\n%@\nPlease contact us, including the GPG error message, at https://gpgtools.tenderapp.com/";
 
 "MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Wrong key used to encrypt this message.";
 "MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "This message could not be decrypted, since the wrong public key was used to encrypt it.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Užšifruotas laiškas yra pažeistas.";
-"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Šis užšifruotas laiškas yra pažeistas ir negali būti iššifruotas.\n\nPaprašykite siuntėjo, kad laišką persiųstų iš naujo.";
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "The encrypted message is damaged.";
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "This encrypted message is damaged and could not be decrypted.\n\nPlease ask the sender to re-send the message.";
 
-"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Parašo raktas buvo panaikintas.";
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Signature key was revoked.";
 "MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "The key which was used to sign this message was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "The key to this message signature is not in your GPG Keychain.";
 "MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "The message could not be verified, since the key which was used to sign this message is not in your GPG Keychain.\n\nSearch for the key with ID %@ in GPG Keychain and import it to verify the message.";
@@ -43,7 +43,7 @@
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "Verification of message signature failed with unknown error!";
 "MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this message's signature.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Laiško parašo duomenų klaida!";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Message signature data error!";
 "MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This message's signature is invalid and could not be verified.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
 
 "MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Message signature's key is expired.";
@@ -52,10 +52,10 @@
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "The message signature is expired.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "The signature is expired and could not be verified.\n\nAsk the sender why the signature is expired.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "Nėra įdiegta MacGPG2";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Decrypting failed because MacGPG2 is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "Nėra įdiegta MacGPG2";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifying failed because MacGPG2 is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d attachments failed to decrypt or verify.";
@@ -74,22 +74,22 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE" = "Please click on the attachment icon in the message header security part for further details.";
 
 /* Message Error Banner Attachment messages. */
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Trūksta slapto rakto, skirto priedo iššifravimui.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Secret key to decrypt the attachment is missing.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Iššifravimas nepavyko dėl nežinomos klaidos!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Decryption failed with unknown error!";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while decrypting this attachment.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "Iššifravimas nepavyko dėl nežinomos klaidos!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "Decryption failed with unknown error!";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "An unknown error occurred while decrypting this attachment.\n\nGPG error message:\n%@\nPlease contact us, including the GPG error message, at https://gpgtools.tenderapp.com/";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Wrong key used to encrypt this attachment.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "This attachment could not be decrypted, since the wrong public key was used to encrypt it.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "Užšifruotas priedas yra pažeistas.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "The encrypted attachment is damaged.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "This encrypted attachment is damaged and could not be decrypted.\n\nPlease ask the sender to send you the message again.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Parašo raktas buvo panaikintas.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Signature key was revoked.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "The key which was used to sign this attachment was revoked.\n\nYou should refresh the key with key ID %@ in GPG Keychain to check if a new one is available. If the new one is still revoked, check with the sender why the key was revoked.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "The signature key is not in your GPG Keychain.";
@@ -98,16 +98,16 @@
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "The attachment signature was created with an algorithm which is not supported.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "This attachment could not be verified, since the key to the signature was created with an algorithm which is not supported.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "DĖMESIO: Priedo parašas yra neteisingas!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATTENTION: The attachment signature is invalid!";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "This attachment might have been modified after the signature was created.\n\nPlease contact the sender and make sure the content of the attachment matches the original.\n\nPlease contact us at\nhttps://gpgtools.tenderapp.com/\n if you're sure the attachment was not modified.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Signature verification failed with unknown error!";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "An unknown error occurred while verifying this attachment signature.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Parašo duomenų klaida!";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Signature data error!";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "This attachment signature is invalid and could not be verified.\n\nPlease contact us at https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "Parašo rakto galiojimas yra pasibaigęs.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "The key of the signature is expired.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "The key which was used to sign this attachment is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "The signature of the attachment is expired.";
@@ -116,15 +116,15 @@
 "MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Partly Encrypted";
 "MESSAGE_IS_PGP_PARTLY_SIGNED" = "Partly Signed";
 "MESSAGE_IS_PGP_ENCRYPTED" = "Encrypted";
-"MESSAGE_IS_PGP_SIGNED" = "Pasirašytas";
+"MESSAGE_IS_PGP_SIGNED" = "Signed";
 "MESSAGE_IS_PGP_SIGNED_INVALID" = "Invalid Signature";
 
 /* Security Header signature related. */
 "MESSAGE_SECURITY_HEADER_SIGNATURE_NO_PUBLIC_KEY_TITLE" = "Signed with unknown key";
 "MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE" = "Signed with revoked key";
-"MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE" = "Neteisingas parašas";
-"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE" = "Pasirašytas";
-"MESSAGE_SECURITY_HEADER_NO_SIGNATURE_TITLE" = "Parašas nerastas";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE" = "Invalid signature";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE" = "Signed";
+"MESSAGE_SECURITY_HEADER_NO_SIGNATURE_TITLE" = "No signature found";
 
 /* Security header attachments related. */
 "MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE" = "encrypted/signed attachment";
@@ -141,7 +141,7 @@
 
 /* Message view pgp part. */
 "MESSAGE_VIEW_PGP_PART_ENCRYPTED" = "Encrypted";
-"MESSAGE_VIEW_PGP_PART_SIGNED" = "Pasirašytas";
+"MESSAGE_VIEW_PGP_PART_SIGNED" = "Signed";
 "MESSAGE_VIEW_PGP_PART" = "PGP part";
 
 /* GPGMail Preferences strings. */

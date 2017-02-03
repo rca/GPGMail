@@ -20,5 +20,5 @@
 "325.ibShadowedIsNilPlaceholder" = "Esta firma non ten estabelecida a caducidade";
 "353.ibShadowedIsNilPlaceholder" = "Esta firma non ten estabelecida a caducidade";
 "366.ibShadowedIsNilPlaceholder" = "Esta firma non ten estabelecida a caducidade";
-"382.title" = "The signature could not be verified.";
+"382.title" = "A sinatura non puido ser verificada.";
 "383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";

@@ -3352,6 +3352,18 @@
 		30A7AEA21756727200746C29 /* YellowDot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "YellowDot@2x.png"; sourceTree = "<group>"; };
 		30A7AEA41756728400746C29 /* GreenDot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GreenDot@2x.png"; sourceTree = "<group>"; };
 		30A7AEA61756728A00746C29 /* RedDot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RedDot@2x.png"; sourceTree = "<group>"; };
+		30A8AC411E447B26007E67B0 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/GPGAttachment.strings; sourceTree = "<group>"; };
+		30A8AC421E447B26007E67B0 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/GPGMail.strings; sourceTree = "<group>"; };
+		30A8AC431E447B26007E67B0 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/SignatureView.strings; sourceTree = "<group>"; };
+		30A8AC491E447B57007E67B0 /* fa_IR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa_IR; path = fa_IR.lproj/GPGAttachment.strings; sourceTree = "<group>"; };
+		30A8AC4A1E447B57007E67B0 /* fa_IR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa_IR; path = fa_IR.lproj/GPGMail.strings; sourceTree = "<group>"; };
+		30A8AC4B1E447B57007E67B0 /* fa_IR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa_IR; path = fa_IR.lproj/SignatureView.strings; sourceTree = "<group>"; };
+		30A8AC4D1E447B61007E67B0 /* fa_IR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fa_IR"; path = "fa_IR.lproj/GPGSignatureView.strings"; sourceTree = "<group>"; };
+		30A8AC4E1E447B66007E67B0 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/GPGSignatureView.strings; sourceTree = "<group>"; };
+		30A8AC501E447B6A007E67B0 /* fa_IR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fa_IR"; path = "fa_IR.lproj/GPGMailPreferences.strings"; sourceTree = "<group>"; };
+		30A8AC511E447B6B007E67B0 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/GPGMailPreferences.strings; sourceTree = "<group>"; };
+		30A8AC531E447B6F007E67B0 /* fa_IR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fa_IR"; path = "fa_IR.lproj/GPGAttachments.strings"; sourceTree = "<group>"; };
+		30A8AC541E447B75007E67B0 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/GPGAttachments.strings; sourceTree = "<group>"; };
 		30C37B6514FFE65400649F0B /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = fr; path = fr.lproj/Credits.rtf; sourceTree = "<group>"; };
 		30C37B6714FFE65400649F0B /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/GPGMailPreferences.strings; sourceTree = "<group>"; };
 		30C37C0014FFE67300649F0B /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = sv; path = sv.lproj/Credits.rtf; sourceTree = "<group>"; };
@@ -6892,6 +6904,8 @@
 				vi,
 				Base,
 				nl,
+				el,
+				fa_IR,
 			);
 			mainGroup = 089C166AFE841209C02AAC07 /* GPGMail */;
 			projectDirPath = "";
@@ -7236,6 +7250,8 @@
 				3082A8A71D2BA87A00AB864A /* oc */,
 				3082A8B01D2BA89300AB864A /* vi */,
 				3044C6E31D33A03400F500B8 /* nl */,
+				30A8AC421E447B26007E67B0 /* el */,
+				30A8AC4A1E447B57007E67B0 /* fa_IR */,
 			);
 			name = GPGMail.strings;
 			sourceTree = "<group>";
@@ -7275,6 +7291,8 @@
 				3082A8AD1D2BA88100AB864A /* oc */,
 				3082A8B61D2BA89A00AB864A /* vi */,
 				3044C6EC1D33A04700F500B8 /* nl */,
+				30A8AC4D1E447B61007E67B0 /* fa_IR */,
+				30A8AC4E1E447B66007E67B0 /* el */,
 			);
 			name = GPGSignatureView.xib;
 			sourceTree = "<group>";
@@ -7306,6 +7324,8 @@
 				3082A8A51D2BA87A00AB864A /* oc */,
 				3082A8AE1D2BA89300AB864A /* vi */,
 				3044C6E01D33A03400F500B8 /* nl */,
+				30A8AC411E447B26007E67B0 /* el */,
+				30A8AC491E447B57007E67B0 /* fa_IR */,
 			);
 			name = GPGAttachment.strings;
 			sourceTree = "<group>";
@@ -7337,6 +7357,8 @@
 				3082A8AB1D2BA88100AB864A /* oc */,
 				3082A8B41D2BA89A00AB864A /* vi */,
 				3044C6EE1D33A05000F500B8 /* nl */,
+				30A8AC531E447B6F007E67B0 /* fa_IR */,
+				30A8AC541E447B75007E67B0 /* el */,
 			);
 			name = GPGAttachments.xib;
 			path = Resources;
@@ -7369,6 +7391,8 @@
 				3082A8AA1D2BA87A00AB864A /* oc */,
 				3082A8B31D2BA89300AB864A /* vi */,
 				3044C6E81D33A03400F500B8 /* nl */,
+				30A8AC431E447B26007E67B0 /* el */,
+				30A8AC4B1E447B57007E67B0 /* fa_IR */,
 			);
 			name = SignatureView.strings;
 			sourceTree = "<group>";
@@ -7408,6 +7432,8 @@
 				3082A8AC1D2BA88100AB864A /* oc */,
 				3082A8B51D2BA89A00AB864A /* vi */,
 				3044C6ED1D33A04B00F500B8 /* nl */,
+				30A8AC501E447B6A007E67B0 /* fa_IR */,
+				30A8AC511E447B6B007E67B0 /* el */,
 			);
 			name = GPGMailPreferences.xib;
 			sourceTree = "<group>";

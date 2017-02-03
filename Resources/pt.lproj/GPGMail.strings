@@ -5,239 +5,239 @@
 "PGP_PREFERENCES" = "GPGMail";
 
 /* Message Error Banner messages. */
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "Incapaz de desencriptar a mensagem PGP.";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "Houve um problema na desencriptação desta mensagem. Por favor verifique que tem uma chave válida no seu porta-chaves GPG.";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Incapaz de verificar assinatura desta mensagem PGP.";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Houve um problema a ler a assinatura PGP desta mensagem.";
-"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "A chave PGP para esta mensagem não se encontra no seu porta-chaves.";
-"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "Esta mensagem tem uma assinatura PGP válida mas a chave PGP respectiva não se encontra no seu porta-chaves. Por favor adicione-a através do programa GPG Keychain.";
-"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Não existe informação disponível para esta chave PGP.";
-"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Não há informação adicional sobre esta chave PGP visto que esta não se encontra no seu porta-chaves.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_TITLE" = "Não foi possível decriptografar a mensagem PGP.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_MESSAGE" = "Houve um problema ao decriptografar esta mensagem. Verifique se você tem uma chave válida no GPG Keychain.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_TITLE" = "Não foi possível verificar a assinatura PGP da mensagem.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_MESSAGE" = "Houve um problema ao ler a assinatura PGP desta mensagem.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_TITLE" = "A chave PGP desta mensagem não está nas suas chaves.";
+"MESSAGE_BANNER_PGP_VERIFY_NOT_IN_KEYCHAIN_ERROR_MESSAGE" = "A mensagem tem uma assinatura PGP válida, mas a chave PGP não está nas suas chaves. Use o GPG Keychain para adicioná-la.";
+"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_TITLE" = "Não há informações disponíveis sobre esta chave PGP.";
+"MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Não há informações adicionais sobre esta chave PGP porque ela não está nas suas chaves.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Não se encontrou a chave secreta para desencriptar esta mensagem.";
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Falta a chave secreta para decriptografar esta mensagem.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Nenhuma das seguintes chaves secretas foi encontrada nas suas chaves (%@). A chave secreta é necessária para decriptografar esta mensagem.\n\nVerifique se o remetente usou a sua chave publica correta.\nTente importar a chave secreta a partir de um backup das chaves.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Desencriptação falhou com um erro não definido!";
-"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Aconteceu um erro não definido enquanto se processava a desencriptação desta mensagem.\n\nPor favor contacte-nos através do website https://gpgtools.tenderapp.com";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "A decriptografia falhou com erro desconhecido.";
+"MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Ocorreu um erro desconhecido ao decriptografar esta mensagem.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "Desencriptação falhou com um erro não definido!";
-"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Aconteceu um erro não definido enquanto se processava a desencriptação desta mensagem.\n\nMensagem de erro GPG: %@\n\nPor favor contacte-nos através do website https://gpgtools.tenderapp.com";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_TITLE" = "A decriptografia falhou com erro desconhecido.";
+"MESSAGE_BANNER_PGP_DECRYPT_GENERAL_ERROR_MESSAGE" = "Ocorreu um erro desconhecido ao decriptografar esta mensagem.\n\nMensagem de erro GPG:\n%@\nInclua a mensagem de erro GPG ao contatar o suporte em https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Foi usada uma chave errada para a encriptação desta mensagem.";
-"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Esta mensagem não pode ser desencriptada visto que foi usada uma chave pública incorrecta para a sua encriptação.\n\nPor favor contacte-nos através do website https://gpgtools.tenderapp.com";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "A chave errada foi usada para criptografar esta mensagem.";
+"MESSAGE_BANNER_PGP_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Esta mensagem não pôde ser decriptografada porque a chave pública errada foi usada para criptografá-la.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "A mensagem encriptada está incorrecta ou danificada.";
-"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Esta mensagem encriptada está danificada e não pode ser desencriptada.\n\nPor favor peça ao remetente para proceder ao seu reenvio. ";
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "A mensagem criptografada está danificada.";
+"MESSAGE_BANNER_PGP_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "Esta mensagem criptografada está danificada e não pôde ser decriptografada.\n\nPeça ao remetente para reenviar a mensagem.";
 
-"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "Esta assinatura foi revogada. ";
-"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "ATENÇÃO: A chave que foi usada para assinar esta mensagem foi revogada.\n\nDeverá actualizar a chave com \"Key ID\" %@ no programa GPG Keychain para verificar se existe uma chave mais recente. Se a nova chave ainda estiver revogada por favor verifique com o remetente a razão da revogação da chave.";
-"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "A chave para esta assinatura não está no seu porta-chaves GPG.";
-"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "Esta mensagem não pode ser verificada visto que a chave que foi usada para a sua assinatura não se encontra no seu porta-chaves GPG.\n\nPor favor procure pela chave com a \"Key ID\" %@ no programa GPG Keychain e importe-a para verificar esta mensagem. ";
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "A chave de assinatura foi revogada.";
+"MESSAGE_BANNER_PGP_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "A chave usada para assinar esta mensagem foi revogada.\n\nAtualize a chave com o ID %@ no GPG Keychain para verificar se uma nova chave está disponível. Se a chave continuar revogada, verifique o motivo com o remetente.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_TITLE" = "A chave de assinatura desta mensagem não está no GPG Keychain.";
+"MESSAGE_BANNER_PGP_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "A mensagem não pôde ser verificada porque a chave usada para assiná-la não está no GPG Keychain.\n\nBusque a chave com o ID %@ no GPG Keychain e importe-a para verificar a mensagem.";
 
-"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "A assinatura desta mensagem foi criada com um algoritmo não suportado. ";
-"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Esta mensagem não pode ser verificada visto que a assinatura foi criada com um algoritmo não suportado.\n\nPor favor contacte-nos através do website: https://gpgtools.tenderapp.com";
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_TITLE" = "A assinatura da mensagem foi criada com um algoritmo incompatível.";
+"MESSAGE_BANNER_PGP_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Esta mensagem não pôde ser verificada porque a assinatura foi criada com um algoritmo incompatível.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATENÇÃO: A assinatura desta mensagem não é válida.";
-"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATENÇÃO: Esta mensagem poderá ter sido modificada após a sua assinatura.\n\nPor favor contacte o remetente original de modo a garantir que o conteúdo desta mensagem coincide com a original.\n\nPor favor contacte-nos no site https://gpgtools.tenderapp.com se tem a certeza de que a mensagem não foi modificada.";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATENÇÃO: a assinatura desta mensagem é inválida.";
+"MESSAGE_BANNER_PGP_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "Esta mensagem pode ter sido modificada depois da criação da assinatura.\n\nContate o remetente para assegurar-se de que o conteúdo da mensagem corresponda ao original.\n\nCaso tenha certeza de que a mensagem não foi modificada,\ncontate o suporte em https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "A verificação da assinatura desta mensagem falhou com um erro desconhecido.";
-"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ocorreu um erro desconhecido aquando da verificação da assinatura desta mensagem.\n\nPor favor contacte-nos através do site: https://gpgtools.tenderapp.com";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_TITLE" = "A verificação da assinatura da mensagem falhou com erro desconhecido.";
+"MESSAGE_BANNER_PGP_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ocorreu um erro desconhecido ao verificar a assinatura desta mensagem.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Erro na assinatura desta mensagem.";
-"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "A assinatura desta mensagem não é válida e não pode ser verificada.\n\nPor favor contacte-nos através do site: https://gpgtools.tenderapp.com";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Erro nos dados de assinatura da mensagem.";
+"MESSAGE_BANNER_PGP_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "A assinatura desta mensagem é inválida e não pôde ser verificada.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "A chave responsável pela assinatura desta mensagem já expirou. ";
-"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "ATENÇÃO: A chave que foi usada para assinar esta mensagem já expirou.\n\nPode tentar actualizar a chave com a ID %@ através do programa GPG Keychain e perguntar ao remetente porque é que a chave utilizada expirou.";
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "A chave de assinatura da mensagem está vencida.";
+"MESSAGE_BANNER_PGP_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "A chave usada para assinar esta mensagem está vencida.\n\nAtualize a chave com o ID %@ no GPG Keychain e pergunte ao remetente porque a chave está vencida.";
 
-"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "A assinatura da mensagem expirou.";
-"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "A assinatura expirou e não pode ser verificada. \n\nPor favor pergunte ao remetente porque é que a assinatura expirou.";
+"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "A assinatura da mensagem está vencida.";
+"MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "A assinatura está vencida e não pôde ser verificada.\n\nPergunte ao remetente porque a assinatura está vencida.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Decrypting failed because MacGPG2 is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "O MacGPG2 não está instalado";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "A decriptografia falhou porque o MacGPG2 não está instalado.\n\nTransfira e reinstale a GPG Suite de https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 is not installed";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifying failed because MacGPG2 is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "O MacGPG2 não está instalado";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "A verificação falhou porque o MacGPG2 não está instalado.\n\nTransfira e reinstale a GPG Suite de https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "Os anexos %d não puderam ser desencriptados ou verificados.";
-"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Por favor clique no icon de anexo, na parte de segurança do cabeçalho  da mensagem para mais detalhes. ";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d anexos não puderam ser decriptografados ou verificados.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Clique no ícone do anexo na parte de segurança do cabeçalho da mensagem para obter mais detalhes.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_TITLE" = "Os anexos %d não puderam ser verificados.";
-"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_MESSAGE" = "Por favor clique no ícone de anexo presente no cabeçalho da mensagem, segmento de segurança, para mais detalhes.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_TITLE" = "%d anexos não puderam ser verificados.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_VERIFY_ERROR_MESSAGE" = "Clique no ícone do anexo na parte de segurança do cabeçalho da mensagem para obter mais detalhes.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_TITLE" = "Falhou a desencriptação de %d anexos.";
-"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_MESSAGE" = "Por favor clique no ícone de anexo presente no cabeçalho da mensagem, segmento de segurança, para mais detalhes.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_TITLE" = "%d anexos não puderam ser decriptografados.";
+"MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_ERROR_MESSAGE" = "Clique no ícone do anexo na parte de segurança do cabeçalho da mensagem para obter mais detalhes.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_TITLE" = "Falhou a verificação de %d anexos.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_MESSAGE" = "Por favor clique no ícone de anexo presente no cabeçalho da mensagem, segmento de segurança, para mais detalhes.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_TITLE" = "%d anexo não pôde ser verificado.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_MESSAGE" = "Clique no ícone do anexo na parte de segurança do cabeçalho da mensagem para obter mais detalhes.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_TITLE" = "Falhou a desencriptação de %d anexos.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE" = "Por favor clique no ícone de anexo presente no cabeçalho da mensagem, segmento de segurança, para mais detalhes.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_TITLE" = "%d anexo não pôde ser decriptografado.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_MESSAGE" = "Clique no ícone do anexo na parte de segurança do cabeçalho da mensagem para obter mais detalhes.";
 
 /* Message Error Banner Attachment messages. */
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "A chave secreta necessária para desencriptar o anexo não se encontra presente.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Falta a chave secreta para decriptografar o anexo.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Nenhuma das seguintes chaves secretas foi encontrada nas suas chaves (%@). A chave secreta é necessária para decriptografar este anexo.\n\nVerifique se o remetente usou a sua chave publica correta.\nTente importar a chave secreta a partir de um backup das chaves.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "A desencriptação falhou com um erro desconhecido.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Houve erro desconhecido aquando da desencriptação deste anexo.\n\nPor favor contacte-nos através do website: https://gpgtools.tenderapp.com";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "A decriptografia falhou com erro desconhecido.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Ocorreu um erro desconhecido ao decriptografar este anexo.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "A desencriptação falhou com um erro desconhecido. ";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Houve erro desconhecido aquando da desencriptação deste anexo.\n\nMensagem de erro GPG: %@\n\nPor favor contacte-nos e inclua a mensagem de erro GPG através do website https://gpgtools.tenderapp.com";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_TITLE" = "A decriptografia falhou com erro desconhecido.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_GENERAL_ERROR_MESSAGE" = "Ocorreu um erro desconhecido ao decriptografar este anexo.\n\nMensagem de erro GPG:\n%@\nInclua a mensagem de erro GPG ao contatar o suporte em https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "Foi usada a chave errada para encriptar este anexo. ";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Este anexo não pode ser desencriptado, visto que foi usada a chave pública errada. \n\nPor favor contacte-nos através do website https://gpgtools.tenderapp.com";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_TITLE" = "A chave errada foi usada para criptografar este anexo.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_WRONG_SECKEY_ERROR_MESSAGE" = "Este anexo não pôde ser decriptografado porque a chave pública errada foi usada para criptografá-lo.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "O anexo encriptado está danificado. ";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "O anexo encriptado está danificado e não pode ser desencriptado. \n\nPor favor peça ao remetente para lhe enviar a mensagem novamente. ";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_TITLE" = "O anexo criptografado está danificado.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_CORRUPTED_DATA_ERROR_MESSAGE" = "O anexo criptografado está danificado e não pôde ser decriptografado.\n\nPeça ao remetente para enviar a mensagem novamente.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_TITLE" = "A chave de assinatura foi revogada.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "ATENÇÃO: A chave que foi usada para assinar este anexo foi revogada.\n\nDeverá actualizar a chave com a \"key ID\" %@ no programa GPG Keychain para verificar se existe alguma actualização da chave. Se a nova chave também estiver revogada, por favor verifique com o remetente a razão da sua revogação.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_REVOKED_CERTIFICATE_ERROR_MESSAGE" = "A chave usada para assinar este anexo foi revogada.\n\nAtualize a chave com o ID %@ no GPG Keychain para verificar se uma nova chave está disponível. Se a chave continuar revogada, verifique o motivo com o remetente.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "Esta chave de assinatura não está presente no seu porta-chaves GPG.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "A assinatura do anexo não pode ser verificada, visto que a chave que foi usada não está presente no seu porta-chaves GPG.\n\nPor favor procure a chave com a \"key ID\" %@ no programa GPG Keychain e importe-a correctamente para verificar o anexo.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_TITLE" = "A chave de assinatura não está no GPG Keychain.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_NO_PUBKEY_ERROR_MESSAGE" = "A assinatura do anexo não pôde ser verificada porque a chave usada para assiná-lo não está no GPG Keychain.\n\nBusque a chave com o ID %@ no GPG Keychain e importe-a para verificar o anexo.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "A assinatura do anexo foi criada através de um algoritmo não suportado.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "A assinatura do anexo não pode ser verificada, visto que a chave que foi usada foi criada através de um algoritmo não suportado.\n\nPor favor contacte-nos através do website: https://gpgtools.tenderapp.com";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_TITLE" = "A assinatura do anexo foi criada com um algoritmo incompatível.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ALGORITHM_ERROR_MESSAGE" = "Este anexo não pôde ser verificado porque a chave de assinatura foi criada com um algoritmo incompatível.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATENÇÃO: A assinatura do anexo não é válida.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "ATENÇÃO: Este anexo poderá ter sido modificado após a criação da assinatura.\n\nPor favor contacte o remetente e certifique-se de que o conteúdo dos anexos corresponde ao original. \n\nPor favor contacte-nos através do website https://gpgtools.tenderapp.com\nse tiver a certeza de que o conteúdo dos anexos não foi modificado de qualquer maneira.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_TITLE" = "ATENÇÃO: a assinatura do anexo é inválida.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_BAD_SIGNATURE_ERROR_MESSAGE" = "Este anexo pode ter sido modificado depois da criação da assinatura.\n\nContate o remetente para assegurar-se de que o conteúdo do anexo corresponda ao original.\n\nCaso tenha certeza de que o anexo não foi modificado,\ncontate o suporte em https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "Falhou a verificação da assinatura, com um erro desconhecido!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Um erro desconhecido ocorreu aquando da verificação do anexo da assinatura GPG.\n\nPor favor contacte-nos através do website https://gpgtools.tenderapp.com";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_TITLE" = "A verificação da assinatura falhou com erro desconhecido.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SYSTEM_ERROR_MESSAGE" = "Ocorreu um erro desconhecido ao verificar a assinatura deste anexo.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Erro nos dados da Assinatura!";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "O anexo da assinatura GPG é inválido e não pode ser verificado.\n\nPor favor contacte-nos através do website https://gpgtools.tenderapp.com";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_TITLE" = "Erro nos dados de assinatura.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_CORRUPTED_DATA_ERROR_MESSAGE" = "A assinatura deste anexo é inválida e não pôde ser verificada.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "A chave da assinatura expirou.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "The key which was used to sign this attachment is expired.\n\nYou can try to refresh the key with ID %@ in GPG Keychain and ask the sender why the key is expired.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_TITLE" = "A chave da assinatura está vencida.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_KEY_EXPIRED_ERROR_MESSAGE" = "A chave usada para assinar este anexo está vencida.\n\nAtualize a chave com o ID %@ no GPG Keychain e pergunte ao remetente porque a chave está vencida.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "The signature of the attachment is expired.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "The attachment signature is expired and could not be verified.\n\nAsk the sender why the signature is expired.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "A assinatura do anexo está vencida.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "A assinatura do anexo está vencida e não pôde ser verificada.\n\nPergunte ao remetente porque a assinatura está vencida.";
 
-"MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Partly Encrypted";
-"MESSAGE_IS_PGP_PARTLY_SIGNED" = "Partly Signed";
-"MESSAGE_IS_PGP_ENCRYPTED" = "Encrypted";
-"MESSAGE_IS_PGP_SIGNED" = "Signed";
-"MESSAGE_IS_PGP_SIGNED_INVALID" = "Invalid Signature";
+"MESSAGE_IS_PGP_PARTLY_ENCRYPTED" = "Parcialmente Criptografada";
+"MESSAGE_IS_PGP_PARTLY_SIGNED" = "Parcialmente Assinada";
+"MESSAGE_IS_PGP_ENCRYPTED" = "Criptografada";
+"MESSAGE_IS_PGP_SIGNED" = "Assinada";
+"MESSAGE_IS_PGP_SIGNED_INVALID" = "Assinatura Inválida";
 
 /* Security Header signature related. */
-"MESSAGE_SECURITY_HEADER_SIGNATURE_NO_PUBLIC_KEY_TITLE" = "Signed with unknown key";
-"MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE" = "Signed with revoked key";
-"MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE" = "Invalid signature";
-"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE" = "Signed";
-"MESSAGE_SECURITY_HEADER_NO_SIGNATURE_TITLE" = "No signature found";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_NO_PUBLIC_KEY_TITLE" = "Assinada com chave desconhecida";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_REVOKED_TITLE" = "Assinada com chave revogada";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_BAD_TITLE" = "Assinatura inválida";
+"MESSAGE_SECURITY_HEADER_SIGNATURE_TITLE" = "Assinada";
+"MESSAGE_SECURITY_HEADER_NO_SIGNATURE_TITLE" = "Nenhuma assinatura encontrada";
 
 /* Security header attachments related. */
-"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE" = "encrypted/signed attachment";
-"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_ENCRYPTED_TITLE" = "encrypted/signed attachments";
-"MESSAGE_SECURITY_HEADER_ATTACHMENT_ENCRYPTED_TITLE" = "encrypted attachment";
-"MESSAGE_SECURITY_HEADER_ATTACHMENTS_ENCRYPTED_TITLE" = "encrypted attachments";
-"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_TITLE" = "signed attachment";
-"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "signed attachments";
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_ENCRYPTED_TITLE" = "anexo criptografado/assinado";
+"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_ENCRYPTED_TITLE" = "anexos criptografados/assinados";
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_ENCRYPTED_TITLE" = "anexo criptografado";
+"MESSAGE_SECURITY_HEADER_ATTACHMENTS_ENCRYPTED_TITLE" = "anexos criptografados";
+"MESSAGE_SECURITY_HEADER_ATTACHMENT_SIGNED_TITLE" = "anexo assinado";
+"MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "anexos assinados";
 
 /* Compose Window encrypt/sign button tooltips. */
-"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "This message can't be signed, since there's no secret key for %@.\n\nPlease make sure that a secret key for this address exists in GPG Keychain. Add a new User ID to an existing key for this address if necessary, or create a new key for this address.\n\nIf a key for the address exists, make sure that the address in Mail.app > Preferences > Accounts is correct and exactly matches the address of your key.";
-"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "This message can't be encrypted, since there are no public keys available for the following addresses: %@.\n\nPlease use GPG Keychain to search and import the keys for those addresses.";
-"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "This message can't be encrypted. You have to enter at least one recipient first.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "Esta mensagem não pode ser assinada porque %@ não tem uma chave secreta.\n\nCertifique-se de que este endereço possua uma chave secreta no GPG Keychain. Se necessário, adicione um novo ID de Usuário a uma chave existente deste endereço ou crie uma nova chave para este endereço.\n\nSe este endereço tiver uma chave, certifique-se de que o endereço em Mail > Preferências > Contas esteja correto e corresponda exatamente ao endereço da chave.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "Esta mensagem não pode ser criptografada porque não há chaves públicas para os seguintes endereços: %@.\n\nUse o GPG Keychain para buscar e importar as chaves desses endereços.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "Esta mensagem não pode ser criptografada. Você deve digitar ao menos um destinatário primeiro.";
 
 /* Message view pgp part. */
-"MESSAGE_VIEW_PGP_PART_ENCRYPTED" = "Encrypted";
-"MESSAGE_VIEW_PGP_PART_SIGNED" = "Signed";
-"MESSAGE_VIEW_PGP_PART" = "PGP part";
+"MESSAGE_VIEW_PGP_PART_ENCRYPTED" = "Criptografada";
+"MESSAGE_VIEW_PGP_PART_SIGNED" = "Assinada";
+"MESSAGE_VIEW_PGP_PART" = "Parte PGP";
 
 /* GPGMail Preferences strings. */
-"GPG_STATUS_NO_ERROR_TITLE" = "GPGMail is ready.";
-"GPG_STATUS_NO_ERROR_TOOLTIP" = "Your MacGPG installation is working with no errors.";
-"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 is not installed. Check your installation.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Please download and re-install GPG Suite from https://www.gpgtools.org to ensure all required components are installed.";
-"GPG_STATUS_OTHER_ERROR_TITLE" = "Please check your installation and configuration.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Please download and re-install GPG Suite from https://www.gpgtools.org to ensure all required components are installed.";
-"DISABLE_ENCRYPT_DRAFTS_TITLE" = "Warning: Disabling this option might lead to the leak of sensitive information while composing a message";
-"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, OS X Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling\"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want want to disable \"Encrypt drafts\"?";
-"DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Disable Encryption";
-"DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Cancel";
+"GPG_STATUS_NO_ERROR_TITLE" = "O GPGMail está pronto.";
+"GPG_STATUS_NO_ERROR_TOOLTIP" = "A instalação do MacGPG está funcionando sem erros.";
+"GPG_STATUS_NOT_FOUND_TITLE" = "O MacGPG2 não está instalado. Verifique a instalação.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Para garantir a instalação de todos os componentes necessários, transfira e reinstale a GPG Suite de https://www.gpgtools.org.";
+"GPG_STATUS_OTHER_ERROR_TITLE" = "Verifique a instalação e configuração.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Para garantir a instalação de todos os componentes necessários, transfira e reinstale a GPG Suite de https://www.gpgtools.org.";
+"DISABLE_ENCRYPT_DRAFTS_TITLE" = "Aviso: se você desativar esta opção, informações confidenciais poderão ser vazadas ao redigir uma mensagem.";
+"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "Se a opção “Armazenar mensagens de rascunho no servidor” estiver ativada nas contas, o Mail armazenará os rascunhos no servidor automaticamente enquanto você estiver redigindo uma mensagem.\nAo desativar a opção “Criptografar rascunhos”, eles serão salvos em texto simples (não criptografado) e qualquer um com acesso ao servidor poderá lê-los.\n\nSe você mantiver a opção “Criptografar rascunhos” ativada, eles serão criptografados antes de ser armazenados no servidor e somente você poderá lê-los.\n\nAinda deseja desativar a criptografia de rascunhos?";
+"DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Desativar Criptografia";
+"DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Cancelar";
 
 
 /* Multiple GPGMail installations. */
-"GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Found multiple installations of GPGMail!";
-"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "GPGMail detected multiple installations in the following locations which will lead to an immediate crash:\n\n%@\n\nPlease remove the GPGMail.mailbundle in one of the locations and restart Mail.\n";
-"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Quit Mail";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_TITLE" = "Várias instalações do GPGMail foram encontradas.";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_MESSAGE" = "O GPGMail encontrou várias instalações nos seguintes locais (o que levará a uma falha imediata):\n\n%@\n\nRemova o GPGMail.mailbundle de um dos locais e reinicie o Mail.";
+"GPGMAIL_MULTIPLE_INSTALLATIONS_BUTTON" = "Encerrar Mail";
 
 /* No Libmacgpg. */
-"LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg was not found";
-"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg was not found on your system. Please install it. Find it e.g. in the GPGTools Installer on https://www.gpgtools.org.";
+"LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg não encontrado.";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "O Libmacgpg não foi encontrado no sistema. Reinstale a GPG Suite de https://www.gpgtools.org.";
 
 /* Code signature invalid */
-CODE_SIGN_ERROR_TITLE = "Someone tampered with your installation of GPGMail!";
-CODE_SIGN_ERROR_MESSAGE = "To keep you safe, GPGMail will not be loaded!\n\nPlease re-install GPG Suite from https://gpgtools.org to be sure you have an original version from us!";
+CODE_SIGN_ERROR_TITLE = "Alguém adulterou a instalação do GPGMail!";
+CODE_SIGN_ERROR_MESSAGE = "Para manter sua segurança, o GPGMail não será carregado.\n\nPara certificar-se de que você possui a versão original, reinstale a GPG Suite de https://gpgtools.org.";
 
 /* GPGMailGPGMailBundle.defaults can't be loaded */
-NO_DEFAULTS_TITLE = "Unable to load GPGMail defaults!";
-NO_DEFAULTS_MESSAGE = "GPGMail is not working as expected.\n\nPlease download and re-install GPG Suite from https://gpgtools.org\n\nShould this problem persist, please contact us at https://gpgtools.tenderapp.com/.";
+NO_DEFAULTS_TITLE = "Não foi possível carregar os padrões do GPGMail.";
+NO_DEFAULTS_MESSAGE = "O GPGMail não está funcionando devidamente.\n\nTransfira e reinstale a GPG Suite de https://gpgtools.org\n\nSe o problema persistir, contate o suporte em https://gpgtools.tenderapp.com/";
 
 /* Errors while trying to sign a message. */
-"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Signing your message failed due to a broken pinentry!";
-"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "pinentry, the tool responsible for asking for your password, seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "A assinatura da mensagem falhou devido a um defeito no pinentry.";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "O pinentry (ferramenta responsável por solicitar sua senha) parece estar com defeito.\n\nPara corrigir este problema, reinstale a GPG Suite de https://gpgtools.org.";
 
-"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Signing your message failed due to defect GPG agent!";
-"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "The GPG agent which is a crucial part of GPG seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "A assinatura da mensagem falhou devido a um defeito do agente GPG.";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "O agente GPG (parte crucial do GPG) parece estar com defeito.\n\nPara corrigir este problema, reinstale a GPG Suite de https://gpgtools.org.";
 
-"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "Signing your message failed due to GPG agent communication error!";
-"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "It was not possible to talk to the GPG agent in order to request your password.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "A assinatura da mensagem falhou devido a um erro de comunicação do agente GPG.";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "Não foi possível comunicar-se com o agente GPG para solicitar sua senha.\n\nPara corrigir este problema, reinstale a GPG Suite de https://gpgtools.org.";
 
-"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "Signing your message failed because an unknown error has occured";
-"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately we can't handle the error at this point.";
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "A assinatura da mensagem falhou devido a um erro desconhecido.";
+"MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Infelizmente, não é possível lidar com o erro no momento.";
 
-"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Encrypting your message failed because an unknown error has occured";
-"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Unfortunately GPGMail can't handle the error at this point.";
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "A criptografia da mensagem falhou devido a um erro desconhecido.";
+"MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Infelizmente, o GPGMail não pode lidar com o erro no momento.";
 
-"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "You entered the wrong password too many times.";
-"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Signing your message was aborted because you entered the wrong password 3 times.";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "Você digitou a senha errada muitas vezes.";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "A assinatura da mensagem foi anulada porque você digitou a senha errada 3 vezes.";
 
-"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nShould your problem persist, please contact us at https://gpgtools.tenderapp.com/ with the following error description:\n\n%@";
+"CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nSe o problema persistir, inclua a seguinte mensagem de erro ao contatar o suporte em https://gpgtools.tenderapp.com/\n\n%@";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the message";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The message couldn't be decrypted because you cancelled the password request.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Você cancelou a decriptografia da mensagem.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "A mensagem não pôde ser decriptografada porque você cancelou a solicitação da senha.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "You aborted the decryption of the attachment";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The attachment couldn't be decrypted because you cancelled the password request.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Você cancelou a decriptografia do anexo.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "O anexo não pôde ser decriptografado porque você cancelou a solicitação da senha.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite is not working as expected";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the message failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "A GPG Suite não está funcionando devidamente.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "A decriptação da mensagem falhou.\n\nReinstale a GPG Suite de https://gpgtools.org.\n\nSe o problema persistir, informe o funcionamento indevido do serviço xpc ao contatar o suporte em https://gpgtools.tenderapp.com/.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite is not working as expected";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the attachment failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "A GPG Suite não está funcionando devidamente.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "A decriptação do anexo falhou.\n\nReinstale a GPG Suite de https://gpgtools.org.\n\nSe o problema persistir, informe o funcionamento indevido do serviço xpc ao contatar o suporte em https://gpgtools.tenderapp.com/.";
 
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite is not working as expected";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the message failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "A GPG Suite não está funcionando devidamente.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "A verificação da mensagem falhou.\n\nReinstale a GPG Suite de https://gpgtools.org.\n\nSe o problema persistir, informe o funcionamento indevido do serviço xpc ao contatar o suporte em https://gpgtools.tenderapp.com/.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite is not working as expected";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the attachment failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "A GPG Suite não está funcionando devidamente.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "A verificação do anexo falhou.\n\nReinstale a GPG Suite de https://gpgtools.org.\n\nSe o problema persistir, informe o funcionamento indevido do serviço xpc ao contatar o suporte em https://gpgtools.tenderapp.com/.";
 
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Signing your message failed due to a problem during the password request";
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "pinentry, the tool responsible for asking for your password, is not working properly.\n\nTo fix this problem, please re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "A assinatura da mensagem falhou devido a um problema durante a solicitação da senha.";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "O pinentry (ferramenta responsável por solicitar sua senha) não está funcionando corretamente.\n\nPara corrigir este problema, reinstale a GPG Suite de https://gpgtools.org.";
 
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Signing your message failed due to a problem in your GPGMail installation.";
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "To fix this problem, please re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "A assinatura da mensagem falhou devido a um problema na instalação do GPGMail.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "Para corrigir este problema, reinstale a GPG Suite de https://gpgtools.org.\n\nSe o problema persistir, informe o funcionamento indevido do serviço xpc ao contatar o suporte em https://gpgtools.tenderapp.com/.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the message failed due to a broken pinentry";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, the tool responsible for asking for your password, seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "A decriptação da mensagem falhou devido a um defeito no pinentry.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "O pinentry (ferramenta responsável por solicitar sua senha) parece estar com defeito.\n\nPara corrigir este problema, reinstale a GPG Suite de https://gpgtools.org.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the attachment failed due to a defect pinentry";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, the tool responsible for asking for your password, seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "A decriptação do anexo falhou devido a um defeito no pinentry.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "O pinentry (ferramenta responsável por solicitar sua senha) parece estar com defeito.\n\nPara corrigir este problema, reinstale a GPG Suite de https://gpgtools.org.";
 
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Attention: You're about to send an unencrypted reply to an encrypted message";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "It's not possible to encrypt your reply, because the public key for the following recipient is missing:\n\n%@";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS" = "It's not possible to encrypt your reply, because public keys for the following recipients are missing:\n\n%@";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "If you choose to proceed, your reply will be sent unencrypted. As a result, confidential information might be leaked, putting you and your recipients at risk.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nIf you really wish to send this reply unencrypted, please remove any previous correspondence included in your reply prior to sending.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Otherwise, search and import the corresponding public keys using GPG Keychain in order to send the reply encrypted.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Otherwise, search and import the the corresponding public key using GPG Keychain in order to send the reply encrypted.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Send Anyway";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Cancel";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Atenção: você está prestes a enviar uma resposta não criptografada a uma mensagem criptografada.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "Não é possível criptografar a resposta porque falta a chave pública do seguinte destinatário:\n\n%@";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS" = "Não é possível criptografar a resposta porque faltam as chaves públicas dos seguintes destinatários:\n\n%@";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "Se você optar por prosseguir, a resposta será enviada sem criptografia. Como consequência, informações confidenciais poderão ser vazadas, colocando você e os destinatários em risco.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nCaso realmente deseje enviar a resposta sem criptografia, remova correspondências anteriores incluídas na mensagem antes de enviá-la.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Para enviar a resposta criptografada, busque e importe as chaves públicas correspondentes no GPG Keychain.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Para enviar a resposta criptografada, busque e importe a chave pública correspondente no GPG Keychain.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Enviar Mesmo Assim";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Cancelar";
 
 
 /* Accessibility */
-ACCESSIBILITY_SECURITY_METHOD_POPUP_LABEL = "Security method: %@";
-ACCESSIBILITY_SIGN_ON_IMAGE = "Sign";
-ACCESSIBILITY_SIGN_OFF_IMAGE = "Don't sign";
+ACCESSIBILITY_SECURITY_METHOD_POPUP_LABEL = "Método de segurança: %@";
+ACCESSIBILITY_SIGN_ON_IMAGE = "Assinar";
+ACCESSIBILITY_SIGN_OFF_IMAGE = "Não Assinar";
 

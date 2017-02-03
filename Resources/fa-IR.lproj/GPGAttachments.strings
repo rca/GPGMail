@@ -1,0 +1,123 @@
+
+/* Class = "NSWindow"; title = "Window"; ObjectID = "2"; */
+"2.title" = "Window";
+
+/* Class = "NSButtonCell"; title = "OK"; ObjectID = "8"; */
+"8.title" = "OK";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "67"; */
+"67.title" = "Text Cell";
+
+/* Class = "NSTextFieldCell"; title = "expirationDate"; ObjectID = "204"; */
+"204.title" = "expirationDate";
+
+/* Class = "NSTextFieldCell"; title = "Expires on:"; ObjectID = "205"; */
+"205.title" = "Expires on:";
+
+/* Class = "NSTextFieldCell"; title = "validityDescription"; ObjectID = "208"; */
+"208.title" = "validityDescription";
+
+/* Class = "NSTextFieldCell"; title = "emailAndID"; ObjectID = "209"; */
+"209.title" = "emailAndID";
+
+/* Class = "NSTextFieldCell"; title = "name"; ObjectID = "210"; */
+"210.title" = "name";
+
+/* Class = "NSTextFieldCell"; title = "Details"; ObjectID = "211"; */
+"211.title" = "Details";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "215"; */
+"215.title" = "Box";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "221"; */
+"221.title" = "Box";
+
+/* Class = "NSTextFieldCell"; title = "Key"; ObjectID = "239"; */
+"239.title" = "Key";
+
+/* Class = "NSTextFieldCell"; title = "Name:"; ObjectID = "240"; */
+"240.title" = "Name:";
+
+/* Class = "NSTextFieldCell"; title = "E-Mail:"; ObjectID = "241"; */
+"241.title" = "E-Mail:";
+
+/* Class = "NSTextFieldCell"; title = "Comment:"; ObjectID = "242"; */
+"242.title" = "Comment:";
+
+/* Class = "NSTextFieldCell"; title = "Key ID:"; ObjectID = "243"; */
+"243.title" = "Key ID:";
+
+/* Class = "NSTextFieldCell"; title = "Created:"; ObjectID = "244"; */
+"244.title" = "Created:";
+
+/* Class = "NSTextFieldCell"; title = "Expires:"; ObjectID = "245"; */
+"245.title" = "Expires:";
+
+/* Class = "NSTextFieldCell"; title = "Algorithm:"; ObjectID = "246"; */
+"246.title" = "Algorithm:";
+
+/* Class = "NSTextFieldCell"; title = "Ownertrust:"; ObjectID = "247"; */
+"247.title" = "Ownertrust:";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.name"; ObjectID = "248"; */
+"248.title" = "gpgKey.name";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.email"; ObjectID = "249"; */
+"249.title" = "gpgKey.email";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.comment"; ObjectID = "250"; */
+"250.title" = "gpgKey.comment";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.keyID"; ObjectID = "251"; */
+"251.title" = "gpgKey.keyID";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.creationDate"; ObjectID = "252"; */
+"252.title" = "gpgKey.creationDate";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.expirationDate"; ObjectID = "253"; */
+"253.title" = "gpgKey.expirationDate";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.algorithm"; ObjectID = "254"; */
+"254.title" = "gpgKey.algorithm";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.ownerTrust"; ObjectID = "255"; */
+"255.title" = "gpgKey.ownerTrust";
+
+/* Class = "NSTextFieldCell"; title = "Signature"; ObjectID = "256"; */
+"256.title" = "Signature";
+
+/* Class = "NSTextFieldCell"; title = "Created:"; ObjectID = "257"; */
+"257.title" = "Created:";
+
+/* Class = "NSTextFieldCell"; title = "signature.creationDate"; ObjectID = "258"; */
+"258.title" = "signature.creationDate";
+
+/* Class = "NSTextFieldCell"; title = "Expires:"; ObjectID = "259"; */
+"259.title" = "Expires:";
+
+/* Class = "NSTextFieldCell"; title = "signature.expirationDate"; ObjectID = "260"; */
+"260.title" = "signature.expirationDate";
+
+/* Class = "NSTextFieldCell"; title = "The signature could not be verified."; ObjectID = "291"; */
+"291.title" = "The signature could not be verified.";
+
+/* Class = "NSTextFieldCell"; title = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain."; ObjectID = "293"; */
+"293.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";
+
+/* Class = "NSTextFieldCell"; title = " "; ObjectID = "300"; */
+"300.title" = " ";
+
+/* Class = "IBBindingConnection"; ibShadowedIsNilPlaceholder = "No expiration is set on this signature"; ObjectID = "325"; */
+"325.ibShadowedIsNilPlaceholder" = "No expiration is set on this signature";
+
+/* Class = "IBBindingConnection"; ibShadowedIsNilPlaceholder = "No expiration is set on this signature"; ObjectID = "353"; */
+"353.ibShadowedIsNilPlaceholder" = "No expiration is set on this signature";
+
+/* Class = "IBBindingConnection"; ibShadowedIsNilPlaceholder = "No expiration is set on this signature"; ObjectID = "366"; */
+"366.ibShadowedIsNilPlaceholder" = "No expiration is set on this signature";
+
+/* Class = "NSTextFieldCell"; title = "The signature could not be verified."; ObjectID = "382"; */
+"382.title" = "The signature could not be verified.";
+
+/* Class = "NSTextFieldCell"; title = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain."; ObjectID = "383"; */
+"383.title" = "The signature could not be verified because the public key is not in your keychain.\nPlease download the key using GPG Keychain.";

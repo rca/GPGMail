@@ -18,7 +18,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="2" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -40,13 +40,13 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowHeight="14" id="27">
-                                            <rect key="frame" x="0.0" y="0.0" width="444" height="65"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="454" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn editable="NO" width="2" minWidth="2" maxWidth="3.4028234663852886e+38" id="66">
+                                                <tableColumn editable="NO" width="10" minWidth="2" maxWidth="3.4028234663852886e+38" id="66">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -87,7 +87,7 @@
                                                         <binding destination="264" name="value" keyPath="arrangedObjects.secondIcon" id="394"/>
                                                     </connections>
                                                 </tableColumn>
-                                                <tableColumn editable="NO" width="8" minWidth="1" maxWidth="1000" id="296">
+                                                <tableColumn editable="NO" width="10" minWidth="1" maxWidth="1000" id="296">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -129,7 +129,7 @@
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="28">
+                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="28">
                                     <rect key="frame" x="1" y="51" width="444" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -162,7 +162,7 @@
                                                             </connections>
                                                         </imageView>
                                                         <textField verticalHuggingPriority="750" id="290">
-                                                            <rect key="frame" x="50" y="91" width="370" height="17"/>
+                                                            <rect key="frame" x="50" y="90.999999663409056" width="370" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
                                                             <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="The signature could not be verified." id="291">
                                                                 <font key="font" metaFont="systemBold"/>
@@ -206,7 +206,7 @@ Please download the key using GPG Keychain.</string>
                                                             </connections>
                                                         </imageView>
                                                         <textField verticalHuggingPriority="750" id="379">
-                                                            <rect key="frame" x="50" y="91" width="370" height="17"/>
+                                                            <rect key="frame" x="50" y="91" width="370" height="16.999999663409053"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
                                                             <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="The signature could not be verified." id="382">
                                                                 <font key="font" metaFont="systemBold"/>
@@ -656,8 +656,8 @@ DQ
                 <string>error</string>
             </declaredKeys>
             <connections>
-                <binding destination="-2" name="contentArray" keyPath="attachments" id="270"/>
                 <binding destination="-2" name="selectionIndexes" keyPath="attachmentIndexes" id="307"/>
+                <binding destination="-2" name="contentArray" keyPath="attachments" id="270"/>
             </connections>
         </arrayController>
         <dateFormatter dateStyle="full" timeStyle="long" id="323"/>

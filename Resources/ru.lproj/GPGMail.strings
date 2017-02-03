@@ -135,7 +135,7 @@
 "MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "подписанные вложения";
 
 /* Compose Window encrypt/sign button tooltips. */
-"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "This message can't be signed, since there's no secret key for %@.\n\nPlease make sure that a secret key for this address exists in GPG Keychain. Add a new User ID to an existing key for this address if necessary, or create a new key for this address.\n\nIf a key for the address exists, make sure that the address in Mail.app > Preferences > Accounts is correct and exactly matches the address of your key.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "Это сообщение не возможно подписать, так как отсутствует секретный ключ для %@.\n\nПожалуйста проверьте, что ключ для этого адреса на самом деле существует в ключевой связке GPG. Добавить новый идентификатор пользователя в существующий ключ для этого адреса, если это необходимо, или создайте новый ключ для этого адреса.\n\nЕсли ключ этого адреса существует, убедитесь, что адрес в почтовом клиенте > настройки> учетные записи правильный и точно совпадает с адресом вашего ключа.";
 "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "Это сообщение не может быть зашифровано, так как нет никаких открытых ключей, доступных для следующих адресов: %@.\n\nПожалуйста, используйте GPG Keychain для поиска и импорта ключей для этих адресов.";
 "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "Это сообщение не может быть зашифровано. Вы должны ввести хотя бы одного получателя в первую очередь.";
 
@@ -168,21 +168,21 @@
 
 /* Code signature invalid */
 CODE_SIGN_ERROR_TITLE = "Кто-то вмешался в вашу установку GPGMail!";
-CODE_SIGN_ERROR_MESSAGE = "To keep you safe, GPGMail will not be loaded!\n\nPlease re-install GPG Suite from https://gpgtools.org to be sure you have an original version from us!";
+CODE_SIGN_ERROR_MESSAGE = "Для вашей защиты GPGMail не будет загружен!\n\nПожалуйста переустановите GPG Suite из https://gpgtools.org, чтобы бы была оригинальная версия то нас! ";
 
 /* GPGMailGPGMailBundle.defaults can't be loaded */
 NO_DEFAULTS_TITLE = "Невозможно загрузить стандартные настройки GPGMail!";
 NO_DEFAULTS_MESSAGE = "GPGMail не работает, как ожидалось.\n\nПожалуйста, скачайте и установите GPG Suite с https://gpgtools.org\n\nЕсли эта проблема не устранена, пожалуйста, свяжитесь с нами https://gpgtools.tenderapp.com/.";
 
 /* Errors while trying to sign a message. */
-"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Signing your message failed due to a broken pinentry!";
-"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "pinentry, the tool responsible for asking for your password, seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_TITLE" = "Подписка вашего сообщения не удалась из-за повреждённого кода";
+"MESSAGE_SIGNING_ERROR_NO_PINENTRY_DESCRIPTION" = "Pinentry, инструмент ответственный за запрос вашего пароля, кажется, сломан.\n\nЧтобы исправить эту проблему, переустановите GPG Suite с сайта https://gpgtools.org.";
 
 "MESSAGE_SIGNING_ERROR_NO_AGENT_TITLE" = "Подписание ваше сообщение не удалось из-за неисправности GPG агента!";
-"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "The GPG agent which is a crucial part of GPG seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_SIGNING_ERROR_NO_AGENT_DESCRIPTION" = "Агент GPG, критический элемент всего GPG, кажется, сломан.\n\nЧтобы исправить эту проблему, переустановите GPG Suite с сайта https://gpgtools.org.";
 
 "MESSAGE_SIGNING_ERROR_AGENT_ERROR_TITLE" = "Подписание ваше сообщение не удалось из-за ошибки связи GPG агента!";
-"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "It was not possible to talk to the GPG agent in order to request your password.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_SIGNING_ERROR_AGENT_ERROR_DESCRIPTION" = "Не возможно связаться с агентом GPG, чтобы запросить ваш пароль.\n\nЧтобы исправить эту проблему, переустановите GPG Suite с сайта https://gpgtools.org.";
 
 "MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_TITLE" = "Не удалось подписать ваше сообщение, потому что произошла неизвестная ошибка";
 "MESSAGE_SIGNING_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "К сожалению, мы не можем обработать ошибку в этой точке.";
@@ -190,40 +190,40 @@ NO_DEFAULTS_MESSAGE = "GPGMail не работает, как ожидалось.
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Не удалось зашифровать сообщение, потому что произошла неизвестная ошибка";
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "К сожалению, GPGMail не может обработать ошибку в этой точке.";
 
-"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "You entered the wrong password too many times.";
-"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Signing your message was aborted because you entered the wrong password 3 times.";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "Вы ввели неправильный пароль слишком много раз.";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Подписка вашего сообщения была остановлена, так как вы 3 раза ввели неправильный пароль.";
 
 "CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\n\nЕсли ваша проблема не устранена, пожалуйста, свяжитесь с нами https://gpgtools.tenderapp.com/ со следующим описанием ошибки:\n\n%@";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Вы прервали расшифровку сообщения";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The message couldn't be decrypted because you cancelled the password request.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "Сообщение не было расшифровано, так как вы сбросили запрос пароля.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Вы прервали расшифровку вложния";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The attachment couldn't be decrypted because you cancelled the password request.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "Вложение не было расшифровано, так как вы сбросили запрос пароля.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite не работает, как ожидалось";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the message failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Расшифровка сообщения не удалась.\n\nПожалуйста переустановите GPG Suite с сайта https://gpgtools.org.\n\nЕсли эта проблема останется, свяжитесь с нами через сайт https://gpgtools.tenderapp.com/ прикрепя информацию, что xpc-сервис не работает как надо. ";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite не работает, как ожидалось";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the attachment failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Расшифровка вложения не удалась.\n\nПожалуйста переустановите GPG Suite с сайта https://gpgtools.org.\n\nЕсли эта проблема останется, свяжитесь с нами через сайт https://gpgtools.tenderapp.com/ прикрепя информацию, что xpc-сервис не работает как надо. ";
 
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite не работает, как ожидалось";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the message failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Проверка сообщения не удалась.\n\nПожалуйста переустановите GPG Suite с сайта https://gpgtools.org.\n\nЕсли эта проблема останется, свяжитесь с нами через сайт https://gpgtools.tenderapp.com/ прикрепя информацию, что xpc-сервис не работает как надо. ";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite не работает, как ожидалось";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the attachment failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Проверка вложения не удалась.\n\nПожалуйста переустановите GPG Suite с сайта https://gpgtools.org.\n\nЕсли эта проблема останется, свяжитесь с нами через сайт https://gpgtools.tenderapp.com/ прикрепя информацию, что xpc-сервис не работает как надо. ";
 
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Signing your message failed due to a problem during the password request";
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "pinentry, the tool responsible for asking for your password, is not working properly.\n\nTo fix this problem, please re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Подписка вашего сообщения не удалась из-за возникшей во время запроса пароля проблемы ";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "Pinentry, инструмент ответственный за запрос вашего пароля, кажется, работает не в штатном режиме.\n\nЧтобы исправить эту проблему, переустановите GPG Suite с сайта https://gpgtools.org.";
 
 "MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Невозможно подписать сообщение из-за проблем с установкой GPGMail.";
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "To fix this problem, please re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "Чтобы исправить эту неполадку, переустановите GPG Suite с сайта https://gpgtools.org.\n\nЕсли эта проблема останется, свяжитесь с нами через сайт https://gpgtools.tenderapp.com/ прикрепя информацию, что xpc-сервис не работает как надо.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the message failed due to a broken pinentry";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, the tool responsible for asking for your password, seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Расшифровка прикреплённого файла не удалась из-за повреждённого кода";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "Pinentry, инструмент ответственный за запрос вашего пароля, кажется, сломан.\n\nЧтобы исправить эту проблему, переустановите GPG Suite с сайта https://gpgtools.org.";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the attachment failed due to a defect pinentry";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, the tool responsible for asking for your password, seems to be broken.\n\nTo fix this problem, re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Расшифровка прикреплённого файла не удалась из-за дефектного кода";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "Pinentry, инструмент ответственный за запрос вашего пароля, кажется, сломан.\n\nЧтобы исправить эту проблему, переустановите GPG Suite с сайта https://gpgtools.org.";
 
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Внимание: Вы собираетесь отправить незашифрованный ответ на шифрованное сообщение";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "Невозможно зашифровать ваш ответ, потому что открытый ключ для следующего получателя отсутствует:\n\n%@";
@@ -237,7 +237,7 @@ NO_DEFAULTS_MESSAGE = "GPGMail не работает, как ожидалось.
 
 
 /* Accessibility */
-ACCESSIBILITY_SECURITY_METHOD_POPUP_LABEL = "Security method: %@";
-ACCESSIBILITY_SIGN_ON_IMAGE = "Sign";
-ACCESSIBILITY_SIGN_OFF_IMAGE = "Don't sign";
+ACCESSIBILITY_SECURITY_METHOD_POPUP_LABEL = "метод защиты: %@";
+ACCESSIBILITY_SIGN_ON_IMAGE = "подписать";
+ACCESSIBILITY_SIGN_OFF_IMAGE = "не подписывать";
 

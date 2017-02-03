@@ -7,8 +7,8 @@
  
  Defines the strings used in the signature view.
  */
-"VALIDITY_NO_TRUST" = "Deze handtekening kan niet vertrouwd worden.";
-"VALIDITY_OK" = "Deze handtekening kan niet vertrouwd worden";
+"VALIDITY_NO_TRUST" = "Deze handtekening is niet te vertrouwen.";
+"VALIDITY_OK" = "Deze handtekening is te vertrouwen";
 /* Signature view key status. */
 "VALIDITY_KEY_REVOKED" = "De sleutel voor deze handtekening is ingetrokken.";
 "VALIDITY_SIGNATURE_EXPIRED" = "De handtekening is verlopen.";
