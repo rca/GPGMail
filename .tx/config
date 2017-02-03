@@ -1,6 +1,6 @@
 [main]
 host = https://www.transifex.com
-lang_map = pt_PT:pt
+lang_map = pt_BR:pt
  
 [GPGMail.general]
 file_filter = Resources/<lang>.lproj/GPGMail.strings

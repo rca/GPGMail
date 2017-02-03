@@ -3215,7 +3215,7 @@
 		302FF15A175CAE6C00DB03EB /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/GPGSignatureView.strings; sourceTree = "<group>"; };
 		302FF15B175CAE6C00DB03EB /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/GPGSignatureView.strings; sourceTree = "<group>"; };
 		302FF15C175CAE6D00DB03EB /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/GPGSignatureView.strings; sourceTree = "<group>"; };
-		302FF15D175CAE6E00DB03EB /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt_BR; path = pt_BR.lproj/GPGSignatureView.strings; sourceTree = "<group>"; };
+		302FF15D175CAE6E00DB03EB /* pt_PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt_PT; path = pt_PT.lproj/GPGSignatureView.strings; sourceTree = "<group>"; };
 		302FF15E175CAE7000DB03EB /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/GPGSignatureView.strings; sourceTree = "<group>"; };
 		302FF160175CAE7200DB03EB /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/GPGSignatureView.strings; sourceTree = "<group>"; };
 		302FF161175CAE7400DB03EB /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/GPGSignatureView.strings; sourceTree = "<group>"; };
@@ -3233,7 +3233,7 @@
 		302FF16F175CAEA300DB03EB /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/GPGMailPreferences.strings; sourceTree = "<group>"; };
 		302FF170175CAEA400DB03EB /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/GPGMailPreferences.strings; sourceTree = "<group>"; };
 		302FF172175CAEA600DB03EB /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/GPGMailPreferences.strings; sourceTree = "<group>"; };
-		302FF173175CAEA600DB03EB /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt_BR; path = pt_BR.lproj/GPGMailPreferences.strings; sourceTree = "<group>"; };
+		302FF173175CAEA600DB03EB /* pt_PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt_PT; path = pt_PT.lproj/GPGMailPreferences.strings; sourceTree = "<group>"; };
 		302FF174175CAEA700DB03EB /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/GPGMailPreferences.strings; sourceTree = "<group>"; };
 		302FF175175CAEA900DB03EB /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/GPGMailPreferences.strings; sourceTree = "<group>"; };
 		302FF176175CAEAA00DB03EB /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/GPGMailPreferences.strings; sourceTree = "<group>"; };
@@ -3244,7 +3244,7 @@
 		302FF17B175CAEB300DB03EB /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/GPGAttachments.strings; sourceTree = "<group>"; };
 		302FF17C175CAEB500DB03EB /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/GPGAttachments.strings; sourceTree = "<group>"; };
 		302FF17D175CAEB500DB03EB /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/GPGAttachments.strings; sourceTree = "<group>"; };
-		302FF17E175CAEB700DB03EB /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt_BR; path = pt_BR.lproj/GPGAttachments.strings; sourceTree = "<group>"; };
+		302FF17E175CAEB700DB03EB /* pt_PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt_PT; path = pt_PT.lproj/GPGAttachments.strings; sourceTree = "<group>"; };
 		302FF180175CAEB900DB03EB /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/GPGAttachments.strings; sourceTree = "<group>"; };
 		302FF181175CAEBC00DB03EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/GPGAttachments.strings; sourceTree = "<group>"; };
 		302FF182175CAEBD00DB03EB /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/GPGAttachments.strings; sourceTree = "<group>"; };
@@ -3329,9 +3329,9 @@
 		30A5EC49175CACC90023E231 /* pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/GPGAttachment.strings; sourceTree = "<group>"; };
 		30A5EC4B175CACC90023E231 /* pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/GPGMail.strings; sourceTree = "<group>"; };
 		30A5EC4E175CACC90023E231 /* pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/SignatureView.strings; sourceTree = "<group>"; };
-		30A5EC4F175CACD10023E231 /* pt_BR */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pt_BR; path = pt_BR.lproj/GPGAttachment.strings; sourceTree = "<group>"; };
-		30A5EC51175CACD10023E231 /* pt_BR */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pt_BR; path = pt_BR.lproj/GPGMail.strings; sourceTree = "<group>"; };
-		30A5EC54175CACD10023E231 /* pt_BR */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pt_BR; path = pt_BR.lproj/SignatureView.strings; sourceTree = "<group>"; };
+		30A5EC4F175CACD10023E231 /* pt_PT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pt_PT; path = pt_PT.lproj/GPGAttachment.strings; sourceTree = "<group>"; };
+		30A5EC51175CACD10023E231 /* pt_PT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pt_PT; path = pt_PT.lproj/GPGMail.strings; sourceTree = "<group>"; };
+		30A5EC54175CACD10023E231 /* pt_PT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pt_PT; path = pt_PT.lproj/SignatureView.strings; sourceTree = "<group>"; };
 		30A5EC55175CACD50023E231 /* pt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/GPGAttachment.strings; sourceTree = "<group>"; };
 		30A5EC57175CACD50023E231 /* pt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/GPGMail.strings; sourceTree = "<group>"; };
 		30A5EC5A175CACD50023E231 /* pt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/SignatureView.strings; sourceTree = "<group>"; };
@@ -6882,7 +6882,7 @@
 				id,
 				nb,
 				pl,
-				pt_BR,
+				pt_PT,
 				pt,
 				ru,
 				sk,
@@ -7225,7 +7225,7 @@
 				30A5EC39175CACB90023E231 /* it */,
 				30A5EC3F175CACBE0023E231 /* nb */,
 				30A5EC4B175CACC90023E231 /* pl */,
-				30A5EC51175CACD10023E231 /* pt_BR */,
+				30A5EC51175CACD10023E231 /* pt_PT */,
 				30A5EC57175CACD50023E231 /* pt */,
 				30A5EC5D175CACDA0023E231 /* ru */,
 				30A5EC63175CACDF0023E231 /* sk */,
@@ -7261,7 +7261,7 @@
 				302FF15A175CAE6C00DB03EB /* sk */,
 				302FF15B175CAE6C00DB03EB /* ru */,
 				302FF15C175CAE6D00DB03EB /* pt */,
-				302FF15D175CAE6E00DB03EB /* pt_BR */,
+				302FF15D175CAE6E00DB03EB /* pt_PT */,
 				302FF15E175CAE7000DB03EB /* pl */,
 				302FF160175CAE7200DB03EB /* nb */,
 				302FF161175CAE7400DB03EB /* it */,
@@ -7295,7 +7295,7 @@
 				30A5EC37175CACB90023E231 /* it */,
 				30A5EC3D175CACBE0023E231 /* nb */,
 				30A5EC49175CACC90023E231 /* pl */,
-				30A5EC4F175CACD10023E231 /* pt_BR */,
+				30A5EC4F175CACD10023E231 /* pt_PT */,
 				30A5EC55175CACD50023E231 /* pt */,
 				30A5EC5B175CACDA0023E231 /* ru */,
 				30A5EC61175CACDF0023E231 /* sk */,
@@ -7321,7 +7321,7 @@
 				302FF17B175CAEB300DB03EB /* tr */,
 				302FF17C175CAEB500DB03EB /* ru */,
 				302FF17D175CAEB500DB03EB /* pt */,
-				302FF17E175CAEB700DB03EB /* pt_BR */,
+				302FF17E175CAEB700DB03EB /* pt_PT */,
 				302FF180175CAEB900DB03EB /* id */,
 				302FF181175CAEBC00DB03EB /* fr */,
 				302FF182175CAEBD00DB03EB /* da */,
@@ -7358,7 +7358,7 @@
 				30A5EC3C175CACB90023E231 /* it */,
 				30A5EC42175CACBE0023E231 /* nb */,
 				30A5EC4E175CACC90023E231 /* pl */,
-				30A5EC54175CACD10023E231 /* pt_BR */,
+				30A5EC54175CACD10023E231 /* pt_PT */,
 				30A5EC5A175CACD50023E231 /* pt */,
 				30A5EC60175CACDA0023E231 /* ru */,
 				30A5EC66175CACDF0023E231 /* sk */,
@@ -7397,7 +7397,7 @@
 				302FF16F175CAEA300DB03EB /* it */,
 				302FF170175CAEA400DB03EB /* nb */,
 				302FF172175CAEA600DB03EB /* pl */,
-				302FF173175CAEA600DB03EB /* pt_BR */,
+				302FF173175CAEA600DB03EB /* pt_PT */,
 				302FF174175CAEA700DB03EB /* pt */,
 				302FF175175CAEA900DB03EB /* ru */,
 				302FF176175CAEAA00DB03EB /* sk */,
