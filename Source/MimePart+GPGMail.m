@@ -1890,8 +1890,16 @@
 	
 	__block MimePart *versionPart = nil;
 	__block MimePart *dataPart = nil;
-	[self enumerateSubpartsWithBlock:^(MimePart *part) {
+    // It appears that Avast antivirus doesn't like the pre-amble of PGP/MIME message, which is
+    // often placed before the application/pgp-encrypted part, and creates a second application/pgp-encrypted
+    // part, using that pre-amble.
+    // Unfortunately this moves the PGP/MIME version marker from the first version part, to the second and causes
+    // the old check to fail, which only assumed one version part. Now each version part is checked
+    // for the PGP/MIME version marker.
+    __block NSMutableArray *versionParts = [[NSMutableArray alloc] init];
+    [self enumerateSubpartsWithBlock:^(MimePart *part) {
 		if([part isType:@"application" subtype:@"pgp-encrypted"]) {
+            [versionParts addObject:part];
 			if(!versionPart)
 				versionPart = part;
 		}
@@ -1900,8 +1908,16 @@
 				dataPart = part;
 		}
 	}];
+
+    BOOL hasVersion = NO;
+    for(MimePart *part in versionParts) {
+        if([[part bodyData] containsPGPVersionMarker:1]) {
+            hasVersion = YES;
+            break;
+        }
+    }
 	// Should we check the version...?
-	if(versionPart && [[versionPart bodyData] containsPGPVersionMarker:1] && dataPart)
+	if(versionPart && hasVersion && dataPart)
 		return YES;
 	
 	return NO;
