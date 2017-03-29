@@ -109,7 +109,7 @@
 
 - (NSRange)rangeOfPGPInlineEncryptedData {
     // Use the regular expression to ignore all signatures contained in a reply.
-    NSString *messageRegex = [NSString stringWithFormat:@"(?sm)(^%@\\r?\\n(.*?)\\r?\\n%@)", 
+    NSString *messageRegex = [NSString stringWithFormat:@"(?sm)(^%@\\s*\\r?\\s*\\n(.*?)\\r?\\s*\\n\\s*%@)",
                                 PGP_MESSAGE_BEGIN, PGP_MESSAGE_END];
     NSRange match = NSMakeRange(NSNotFound, 0);
     if([self length] == 0)
