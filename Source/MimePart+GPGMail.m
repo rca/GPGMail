@@ -1865,11 +1865,62 @@
     return applicationPGPEncrypted != nil;
 }
 
+- (BOOL)_isDraftThatHasBeenReEncryptedWithoutBeingDecrypted {
+	// Problem:
+	//
+	//   When a user continues composing a draft, the draft should always be automatically
+	//   decrypted, so that the detail that the draft is encrypted is invisible to the user.
+	//   Under some circumstances, the automated decryption of the draft fails.
+	//   If at the same time Mail's autosave of drafts kicks in, the still encrypted draft,
+	//   is saved again as a multipart/related message with a text/html part for the actual contents
+	//   and two attachments: the PGP/MIME application/pgp-encrypted version part and the encrypted.asc
+	//   data part.
+	//   Now if the user tries to continue working on the draft, GPGMail no longer recognizes
+	//   the draft as PGP/MIME encrypted, and fails to properly decrypt it.
+	//
+	// Solution:
+	//
+	//   The solution is to teach GPGMail the structure of those falsely encrypted not automatically decrypted
+	//   drafts, in order to recognize that it should still treat them as normal PGP/MIME encrypted messages.
+	//   In order to do that, the following facts have to be true:
+	//
+	//   - Must have a multipart/related part
+	//   - Must have an application/pgp-encrypted attachment
+	//   - Must have an application/octet-stream attachment with filename set to encrypted.asc
+	//
+	if(![[self topPart] isType:@"multipart" subtype:@"related"]) {
+		return NO;
+	}
+
+	__block MimePart *versionPart = nil;
+	__block MimePart *dataPart = nil;
+	__block MimePart *htmlPart = nil;
+	[(MimePart_GPGMail *)[self topPart] enumerateSubpartsWithBlock:^(MimePart *mimePart) {
+		if([mimePart isType:@"application" subtype:@"pgp-encrypted"]) {
+			versionPart = mimePart;
+			return;
+		}
+		if([mimePart isType:@"application" subtype:@"octet-stream"] && [[[mimePart dispositionParameterForKey:@"filename"] lowercaseString] isEqualToString:@"encrypted.asc"]) {
+			dataPart = mimePart;
+			return;
+		}
+		if([mimePart isType:@"text" subtype:@"html"]) {
+			htmlPart = mimePart;
+			return;
+		}
+	}];
+
+	return versionPart && dataPart && htmlPart;
+}
+
 - (BOOL)isPGPMimeEncrypted {
     // Special case for PGP/MIME encrypted emails, which were sent through an
     // exchange server, which unfortunately modifies the header.
     if([self _isExchangeServerModifiedPGPMimeEncrypted])
         return YES;
+	if([self _isDraftThatHasBeenReEncryptedWithoutBeingDecrypted])
+		return YES;
+
 	// Check for multipart/encrypted, protocol application/pgp-encrypted, otherwise exit!
     if(![self isType:@"multipart" subtype:@"encrypted"])
         return NO;
