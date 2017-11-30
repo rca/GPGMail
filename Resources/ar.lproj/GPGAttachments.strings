@@ -5,9 +5,9 @@
 "211.title" = "Details";
 "239.title" = "Key";
 "240.title" = "Name:";
-"241.title" = "E-Mail:";
+"241.title" = "Email:";
 "242.title" = "Comment:";
-"243.title" = "Key ID:";
+"243.title" = "Fingerprint:";
 "244.title" = "Created:";
 "245.title" = "Expires:";
 "246.title" = "Algorithm:";

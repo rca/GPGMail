@@ -15,7 +15,7 @@
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Não há informações adicionais sobre esta chave PGP porque ela não está nas suas chaves.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Falta a chave secreta para decriptografar esta mensagem.";
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Nenhuma das seguintes chaves secretas foi encontrada nas suas chaves (%@). A chave secreta é necessária para decriptografar esta mensagem.\n\nVerifique se o remetente usou a sua chave publica correta.\nTente importar a chave secreta a partir de um backup das chaves.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Nenhuma das seguintes chaves secretas foi encontrada nas suas chaves (%@). A chave secreta é necessária para decriptografar esta mensagem.\n\nVerifique se o remetente usou a sua chave pública correta.\n\nTente importar a chave secreta a partir de um backup das chaves.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "A decriptografia falhou com erro desconhecido.";
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Ocorreu um erro desconhecido ao decriptografar esta mensagem.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
@@ -52,11 +52,11 @@
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "A assinatura da mensagem está vencida.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "A assinatura está vencida e não pôde ser verificada.\n\nPergunte ao remetente porque a assinatura está vencida.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "O MacGPG2 não está instalado";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "A decriptografia falhou porque o MacGPG2 não está instalado.\n\nTransfira e reinstale a GPG Suite de https://gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG is not installed";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Decrypting failed because MacGPG is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "O MacGPG2 não está instalado";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "A verificação falhou porque o MacGPG2 não está instalado.\n\nTransfira e reinstale a GPG Suite de https://gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG is not installed";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifying failed because MacGPG is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d anexos não puderam ser decriptografados ou verificados.";
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Clique no ícone do anexo na parte de segurança do cabeçalho da mensagem para obter mais detalhes.";
@@ -75,7 +75,7 @@
 
 /* Message Error Banner Attachment messages. */
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Falta a chave secreta para decriptografar o anexo.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Nenhuma das seguintes chaves secretas foi encontrada nas suas chaves (%@). A chave secreta é necessária para decriptografar este anexo.\n\nVerifique se o remetente usou a sua chave publica correta.\nTente importar a chave secreta a partir de um backup das chaves.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Nenhuma das seguintes chaves secretas foi encontrada nas suas chaves (%@). A chave secreta é necessária para decriptografar este anexo.\n\nVerifique se o remetente usou a sua chave pública correta.\nTente importar a chave secreta a partir de um backup das chaves.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "A decriptografia falhou com erro desconhecido.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Ocorreu um erro desconhecido ao decriptografar este anexo.\n\nContate o suporte em https://gpgtools.tenderapp.com/";
@@ -147,12 +147,12 @@
 /* GPGMail Preferences strings. */
 "GPG_STATUS_NO_ERROR_TITLE" = "O GPGMail está pronto.";
 "GPG_STATUS_NO_ERROR_TOOLTIP" = "A instalação do MacGPG está funcionando sem erros.";
-"GPG_STATUS_NOT_FOUND_TITLE" = "O MacGPG2 não está instalado. Verifique a instalação.";
+"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG is not installed. Check your installation.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Para garantir a instalação de todos os componentes necessários, transfira e reinstale a GPG Suite de https://www.gpgtools.org.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Verifique a instalação e configuração.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Para garantir a instalação de todos os componentes necessários, transfira e reinstale a GPG Suite de https://www.gpgtools.org.";
 "DISABLE_ENCRYPT_DRAFTS_TITLE" = "Aviso: se você desativar esta opção, informações confidenciais poderão ser vazadas ao redigir uma mensagem.";
-"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "Se a opção “Armazenar mensagens de rascunho no servidor” estiver ativada nas contas, o Mail armazenará os rascunhos no servidor automaticamente enquanto você estiver redigindo uma mensagem.\nAo desativar a opção “Criptografar rascunhos”, eles serão salvos em texto simples (não criptografado) e qualquer um com acesso ao servidor poderá lê-los.\n\nSe você mantiver a opção “Criptografar rascunhos” ativada, eles serão criptografados antes de ser armazenados no servidor e somente você poderá lê-los.\n\nAinda deseja desativar a criptografia de rascunhos?";
+"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, macOS Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling \"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want to disable \"Encrypt drafts\"?";
 "DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Desativar Criptografia";
 "DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Cancelar";
 
@@ -164,7 +164,7 @@
 
 /* No Libmacgpg. */
 "LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg não encontrado.";
-"LIBMACGPG_NOT_FOUND_MESSAGE" = "O Libmacgpg não foi encontrado no sistema. Reinstale a GPG Suite de https://www.gpgtools.org.";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg was not found on your system. Please download and install GPG Suite from https://www.gpgtools.org.";
 
 /* Code signature invalid */
 CODE_SIGN_ERROR_TITLE = "Alguém adulterou a instalação do GPGMail!";
@@ -225,7 +225,7 @@ NO_DEFAULTS_MESSAGE = "O GPGMail não está funcionando devidamente.\n\nTransfir
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "A decriptação do anexo falhou devido a um defeito no pinentry.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "O pinentry (ferramenta responsável por solicitar sua senha) parece estar com defeito.\n\nPara corrigir este problema, reinstale a GPG Suite de https://gpgtools.org.";
 
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Atenção: você está prestes a enviar uma resposta não criptografada a uma mensagem criptografada.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Atenção: você está prestes a enviar uma resposta sem criptografia a uma mensagem criptografada.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "Não é possível criptografar a resposta porque falta a chave pública do seguinte destinatário:\n\n%@";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_MISSING_KEYS" = "Não é possível criptografar a resposta porque faltam as chaves públicas dos seguintes destinatários:\n\n%@";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "Se você optar por prosseguir, a resposta será enviada sem criptografia. Como consequência, informações confidenciais poderão ser vazadas, colocando você e os destinatários em risco.";
@@ -234,6 +234,16 @@ NO_DEFAULTS_MESSAGE = "O GPGMail não está funcionando devidamente.\n\nTransfir
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Para enviar a resposta criptografada, busque e importe a chave pública correspondente no GPG Keychain.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Enviar Mesmo Assim";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Cancelar";
+
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_TITLE" = "Atenção: você está prestes a encaminhar uma versão decriptografada de uma mensagem criptografada.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "Não é possível criptografar a mensagem prestes a ser encaminhada porque falta a chave pública do seguinte destinatário:\n\n%@";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_MISSING_KEYS" = "Não é possível criptografar a mensagem prestes a ser encaminhada porque faltam as chaves públicas dos seguintes destinatários:\n\n%@";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_EXPLANATION" = "Se você optar por prosseguir, a mensagem prestes a ser encaminhada será enviada sem criptografia. Como consequência, informações confidenciais poderão ser vazadas, colocando você e os destinatários em risco.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Para encaminhar uma versão criptografada da mensagem, busque e importe as chaves públicas correspondentes no GPG Keychain.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Para encaminhar uma versão criptografada da mensagem, busque e importe a chave pública correspondente no GPG Keychain.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Encaminhar Mesmo Assim";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Cancelar";
+
 
 
 /* Accessibility */

@@ -15,7 +15,7 @@
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Der kendes ikke yderligere information om denne PGP nøgle, fordi den ikke er i din nøglering.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Den private nøgle til at dekryptere beskeden mangler.";
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Ingen af de følgende hemmelige nøgler findes i din nøglering (%@). Den hemmelige nøgle er nødvendig for at dekryptere denne besked.\n\nTjek med afsenderen at den rigtige offentlige nøgle er brugt.\nTjek en backup af din nøglering, og prøv at importere den hemmelige nøgle derfra.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Ingen af de følgende hemmelige nøgler findes i din nøglering (%@). Den hemmelige nøgle er nødvendig for at dekryptere denne besked.\n\nTjek med afsenderen, at de har brugt din rigtige offentlige nøgle.\nTjek en backup af din nøglering, og prøv at importere den hemmelige nøgle derfra.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Dekryptering mislykkedes på grund af en ukendt fejl!";
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "En ukendt fejl opstod, da beskeden blev forsøgt dekrypteret.\n\nKontakt os venligst på https://gpgtools.tenderapp.com/";
@@ -75,7 +75,7 @@
 
 /* Message Error Banner Attachment messages. */
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Den private nøgle til at dekryptere den vedhæftede fil mangler.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Ingen af de følgende hemmelige nøgler findes i din nøglering (%@). Den hemmelige nøgle er nødvendig for at dekryptere denne vedhæftede fil.\n\nTjek med afsenderen at den rigtige offentlige nøgle er brugt.\nTjek en backup af din nøglering, og prøv at importere den hemmelige nøgle derfra.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Ingen af de følgende hemmelige nøgler findes i din nøglering (%@). Den hemmelige nøgle er nødvendig for at dekryptere denne vedhæftede fil.\n\nTjek med afsenderen, at de har brugt din rigtige offentlige nøgle.\nTjek en backup af din nøglering, og prøv at importere den hemmelige nøgle derfra.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Dekryptering mislykkedes på grund af en ukendt fejl!";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "En ukendt fejl opstod, da den vedhæftede fil blev forsøgt dekrypteret.\n\nKontakt os på https://gpgtools.tenderapp.com/";
@@ -234,6 +234,16 @@ NO_DEFAULTS_MESSAGE = "GPGMail virker ikke som forventet.\n\nHent og gen-install
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Alternativt, find og importer den manglende offentlige nøgle med GPG Keychain for at sende svaret krypteret.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Send alligevel";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Annuller";
+
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_TITLE" = "Vigtigt: Du er ved at videresende den dekrypterede version af en krypteret besked";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "Det er ikke muligt at kryptere den besked, du er ved at videresende, fordi den offentlige nøgle mangler for følgende modtager:\n\n%@";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_MISSING_KEYS" = "Det er ikke muligt at kryptere den besked, du er ved at videresende, fordi de offentlige nøgler mangler for følgende modtagere:\n\n%@";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_EXPLANATION" = "Hvis du vælger at fortsætte, vil den besked, du er ved at videresende, blive sendt i klartekst. Som følge deraf kan fortrolig information slippe ud, hvilket er en risiko for både dig og modtagerne.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Alternativt, find og importer de manglende offentlige nøgler med GPG Keychain for at videresende en krypteret version af beskeden.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Alternativt, find og importer den manglende offentlige nøgle med GPG Keychain for at videresende en krypteret version af beskeden.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Videresend alligevel";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Annuller";
+
 
 
 /* Accessibility */

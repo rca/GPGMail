@@ -152,7 +152,7 @@
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Verificatz vòstra installacion e configuracion.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Telecargatz e reïnstallatz GPG Suite dempuèi http://www.gpgtools.org per garantir que totes los components necessaris son installats.";
 "DISABLE_ENCRYPT_DRAFTS_TITLE" = "Atencion : Desactivar aquesta opcion pòt engendrar de fugidas d'informacions sensiblas al moment de l'escritura d'un messatge";
-"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "Se l'opcion « Enregistrar los borrolhons sul servidor » es activada per vòstres comptes, OS X Mail enregistre automaticament vòstres borrolhons sul servidor de messatgerie lorsque vous écrivez un messatge.\nEn désactivant « Chifrar los borrolhons », vòstres borrolhons seront stockés en clair (non chifrats) e donc n'importe qui ayant accès al servidor de messatgerie pourra les lire.\n\nSe vous gardez « Chifrar los borrolhons » activé, vòstres borrolhons seront chifrats avant d'être stockés sul servidor de messatgerie e vous seul serez capable de les lire.\n\nVoulez-vous toujours desactivar « Chifrar los borrolhons » ?";
+"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, macOS Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling \"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want to disable \"Encrypt drafts\"?";
 "DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Desactivar lo chiframent";
 "DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Anullar";
 

@@ -52,11 +52,11 @@
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "De handtekening van het bericht is verlopen.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "De handtekening is verlopen en kan niet worden geverifiëerd.\n\nVraag de afzender waarom de sleutel is verlopen.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 is niet geïnstalleerd";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Decrypting failed because MacGPG2 is not installed.\n\nMacGPG2 is the underlying engine which is responsible for processing your message and is thus required.\n\nPlease download MacGPG2 from https://gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG is not installed";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Decrypting failed because MacGPG is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 is niet geïnstalleerd";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifying failed because MacGPG2 is not installed.\n\nMacGPG2 is the underlying engine which is responsible for processing your message and is thus required.\n\nPlease download MacGPG2 from https://gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG is not installed";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifying failed because MacGPG is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d bijlagen konden niet worden ontsleuteld of geverifiëerd.";
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Klik op het icoon voor bijlagen in het beveiligingsgedeelte van de berichtkop voor verdere details.";
@@ -147,12 +147,12 @@
 /* GPGMail Preferences strings. */
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail is gereed.";
 "GPG_STATUS_NO_ERROR_TOOLTIP" = "Je MacGPG installatie werkt zonder fouten.";
-"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 is niet geïnstalleerd. Controleer je installatie.";
+"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG is not installed. Check your installation.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Download het GPG Suite installatieprogramma van http://www.gpgtools.org om alle GPG Suite te installeren.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Controleer je installatie en instellingen.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Download het GPG Suite installatieprogramma van http://www.gpgtools.org om alle GPG Suite te installeren.";
 "DISABLE_ENCRYPT_DRAFTS_TITLE" = "Waarschuwing: het uitzetten van deze optie kan er toe leiden dat er gevoelige informatie gelekt wordt tijdens het opstellen van een bericht.";
-"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, OS X Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling\"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want want to disable \"Encrypt drafts\"?";
+"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, macOS Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling \"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want to disable \"Encrypt drafts\"?";
 "DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Versleuteling uit";
 "DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Cancel";
 
@@ -164,7 +164,7 @@
 
 /* No Libmacgpg. */
 "LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg niet gevonden";
-"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg is niet gevonden op uw systeem en moet geinstalleerd worden. De GPGTools op https://www.gpgtools.org, is een van de mogelijkheden daarvoor.";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg was not found on your system. Please download and install GPG Suite from https://www.gpgtools.org.";
 
 /* Code signature invalid */
 CODE_SIGN_ERROR_TITLE = "Iemand heeft geknoeid met uw installatie van GPGMail!";

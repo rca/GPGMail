@@ -147,12 +147,12 @@
 /* GPGMail Preferences strings. */
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail siap.";
 "GPG_STATUS_NO_ERROR_TOOLTIP" = "Instalasi MacGPG Anda bekerja tanpa galat.";
-"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 tak terpasang. Periksalah instalasi Anda.";
+"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG is not installed. Check your installation.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Harap unduh pemasang GPG Suite dari http://www.gpgtools.org untuk memasang semua GPG Suite.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Harap periksa instalasi dan konfigurasi Anda.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Harap unduh pemasang GPG Suite dari http://www.gpgtools.org untuk memasang semua GPG Suite.";
 "DISABLE_ENCRYPT_DRAFTS_TITLE" = "Peringatan: Mematikan opsi ini mungkin mengarah ke kebocoran informasi sensitif ketika menyusun suatu pesan";
-"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, OS X Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling\"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want want to disable \"Encrypt drafts\"?";
+"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, macOS Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling \"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want to disable \"Encrypt drafts\"?";
 "DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Matikan Enkripsi";
 "DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Batal";
 
@@ -234,6 +234,16 @@ NO_DEFAULTS_MESSAGE = "GPGMail tidak bekerja seperti yang diharapkan.\n\nHarap u
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Bila tidak, cari dan impor kunci publik yang terkait memakai GPG Keychain agar mengirim jawaban terenkripsi.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Kirim Saja";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Batal";
+
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_TITLE" = "Perhatian: Anda akan meneruskan versi terdekripsi dari sebuah pesan terenkripsi";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "Tidak mungkin mengenkripsi pesan yang hendak Anda teruskan, karena kunci publik untuk penerima berikut hilang:\n\n%@";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_MISSING_KEYS" = "Tidak mungkin mengenkripsi pesan yang hendak Anda teruskan, karena kunci-kunci publik untuk penerima berikut hilang:\n\n%@";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_EXPLANATION" = "Bila Anda memilih untuk melanjutkan, pesan yang akan Anda teruskan akan dikirim tak terenkripsi. Akibatnya, informasi konfidensial mungkin bocor, menjadikan Anda dan yang Anda kirimi dalam risiko.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Bila tidak, cari dan impor kunci-kunci publik yang terkait memakai GPG Keychain untuk meneruskan versi pesan yang terenkripsi.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Bila tidak, cari dan impor kunci publik yang terkait memakai GPG Keychain untuk meneruskan versi pesan yang terenkripsi.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Teruskan Saja";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Batal";
+
 
 
 /* Accessibility */

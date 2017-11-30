@@ -1,4 +1,3 @@
-"709.title" = "GPGMail";
 "715.title" = "Updates";
 "728.title" = "Composing";
 "733.ibShadowedToolTip" = "Dažniausiai Užduodami Klausimai.";
@@ -13,10 +12,10 @@
 "1053.title" = "Report Problem";
 "0PS-Wm-gKl.title" = "Check Now";
 "0Th-7E-Y7P.title" = "Versija: xxx";
-"2ul-d0-5ir.title" = "Sign new messages by default";
+"2ul-d0-5ir.title" = "Sign new emails";
 "80G-ZN-hjm.title" = "Automatically check for updates";
 "8oZ-YB-M9Q.title" = "Beta builds are published more often. New features and improvements are less tested.";
 "D6D-o9-63C.title" = "Rodyti laidos informaciją";
 "UhD-uR-dUs.title" = "Įtraukti beta darinius";
 "q0m-y8-baf.title" = "Darinys:";
-"yJs-2y-8Cb.title" = "Encrypt new messages by default";
+"yJs-2y-8Cb.title" = "Encrypt new emails";

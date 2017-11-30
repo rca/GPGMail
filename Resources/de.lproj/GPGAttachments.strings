@@ -7,7 +7,7 @@
 "240.title" = "Name:";
 "241.title" = "E-Mail:";
 "242.title" = "Kommentar:";
-"243.title" = "Schlüssel ID:";
+"243.title" = "Fingerabdruck:";
 "244.title" = "Erstellt:";
 "245.title" = "Ablaufdatum:";
 "246.title" = "Algorithmus:";
@@ -15,10 +15,10 @@
 "256.title" = "Signatur";
 "257.title" = "Erstellt:";
 "259.title" = "Ablaufdatum:";
-"291.title" = "Die Signatur konnte nicht verizifiert werden.";
-"293.title" = "Die Signatur dieses Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet. Bitte laden Sie den öffentlichen Schlüssel mit GPG Keychain herunter.";
+"291.title" = "Die Signatur konnte nicht verifiziert werden.";
+"293.title" = "Die Signatur des Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet.\nBitte lade den öffentlichen Schlüssel in GPG Keychain.";
 "325.ibShadowedIsNilPlaceholder" = "Diese Signatur hat kein Verfallsdatum";
 "353.ibShadowedIsNilPlaceholder" = "Diese Signatur hat kein Verfallsdatum";
 "366.ibShadowedIsNilPlaceholder" = "Diese Signatur hat kein Verfallsdatum";
-"382.title" = "Die Signatur konnte nicht verizifiert werden.";
-"383.title" = "Die Signatur dieses Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet. Bitte laden Sie den öffentlichen Schlüssel mit GPG Keychain herunter.";
+"382.title" = "Die Signatur konnte nicht verifiziert werden.";
+"383.title" = "Die Signatur des Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet.\nBitte lade den öffentlichen Schlüssel in GPG Keychain.";
