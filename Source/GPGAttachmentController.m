@@ -16,6 +16,13 @@
 #import "GPGSignatureView.h"
 #import "GPGMailBundle.h"
 
+@interface GPGAttachmentController ()
+@property (strong, readwrite, nonatomic) GPGKey *gpgKey;
+@property (strong, readwrite, nonatomic) GPGKey *subkey;
+@end
+
+
+
 @implementation GPGAttachmentController
 @synthesize errorImageView;
 @synthesize attachments;
@@ -23,32 +30,39 @@
 @synthesize currentAttachment;
 @synthesize signature;
 @synthesize keyList;
-@synthesize gpgKey;
+@synthesize gpgKey=_gpgKey;
+@synthesize subkey=_subkey;
 
 - (id)initWithAttachmentParts:(NSArray *)attachmentParts {
-    if(self = [super initWithWindowNibName:@"GPGAttachments"]) {
+    if (self = [super initWithWindowNibName:@"GPGAttachments"]) {
         attachments = [[NSMutableArray alloc] init];
-        for(MimePart_GPGMail *part in attachmentParts) {
+        for (MimePart_GPGMail *part in attachmentParts) {
             NSMutableDictionary *attachment = [[NSMutableDictionary alloc] init];
-            [attachment setValue:@(part.PGPEncrypted) forKey:@"encrypted"];
+			
+			[attachment setValue:@(part.PGPEncrypted) forKey:@"encrypted"];
             [attachment setValue:@(part.PGPSigned) forKey:@"signed"];
             [attachment setValue:part.PGPError forKey:@"error"];
             [attachment setValue:[part dispositionParameterForKey:@"filename"] forKey:@"decrypted-name"];
-            if(part.PGPSignatures)
+			if(part.PGPSignatures) {
                 [attachment setValue:(part.PGPSignatures)[0] forKey:@"signature"];
+			}
+			
             BOOL decrypted = part.PGPDecrypted;
             [attachment setValue:@(decrypted) forKey:@"decrypted"];
-            if(!part.PGPError) {
+			
+			
+			
+            if (!part.PGPError) {
                 [attachment setValue:@YES forKey:@"showErrorView"];
-                if(decrypted && part.PGPVerified) {
+                if (decrypted && part.PGPVerified) {
                     [attachment setValue:@NO forKey:@"showSignatureView"];
                     [attachment setValue:@YES forKey:@"showDecryptedNoSignatureView"];
                 }
-                else if(part.PGPVerified) {
+                else if (part.PGPVerified) {
                     [attachment setValue:@NO forKey:@"showSignatureView"];
                     [attachment setValue:@YES forKey:@"showDecryptedNoSignatureView"];
                 }
-                else if(decrypted) {
+                else if (decrypted) {
                     [attachment setValue:@YES forKey:@"showSignatureView"];
                     [attachment setValue:@NO forKey:@"showDecryptedNoSignatureView"];
                     [attachment setValue:localizedAttachmentMessage(@"ATTACHMENT_DECRYPTED_SUCCESSFULLY_TITLE") forKey:@"decryptionSuccessTitle"];
@@ -57,12 +71,12 @@
             }
             else {
                 [attachment setValue:@YES forKey:@"showSignatureView"];
-                if(part.PGPSigned) {
+                if (part.PGPSigned) {
                     [attachment setValue:[NSImage imageNamed:@"certificate"] forKey:@"errorBadgeImage"];
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"_MFShortDescription"] forKey:@"errorTitle"];
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"NSLocalizedDescription"] forKey:@"errorMessage"];
                 }
-                else if(!decrypted) {
+                else if (!decrypted) {
                     [attachment setValue:[NSImage imageNamed:@"encryption"] forKey:@"errorBadgeImage"];
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"_MFShortDescription"] forKey:@"errorTitle"];
                     [attachment setValue:[[(MFError *)[attachment valueForKey:@"error"] userInfo] valueForKey:@"NSLocalizedDescription"] forKey:@"errorMessage"];
@@ -74,14 +88,14 @@
             // 2.) only signed -> first icon = signed, second icon = nil
             // 3.) only encrypted -> first icon = encrypted, second icon = nil
             
-            if(part.PGPSigned && part.PGPEncrypted) {
+            if (part.PGPSigned && part.PGPEncrypted) {
                 [attachment setValue:[self encryptedImageForPart:part] forKey:@"firstIcon"];
                 [attachment setValue:[self signedImageForPart:part] forKey:@"secondIcon"];
             }
-            else if(part.PGPSigned) {
+            else if (part.PGPSigned) {
                 [attachment setValue:[self signedImageForPart:part] forKey:@"firstIcon"];
             }
-            else if(part.PGPEncrypted) {
+            else if (part.PGPEncrypted) {
                 [attachment setValue:[self encryptedImageForPart:part] forKey:@"firstIcon"];
             }
             
@@ -146,37 +160,104 @@
 		} else {
 			self.currentAttachment = nil;
             self.signature = nil;
-		}		
+		}
+		
+		
+		
+		if (![self.currentAttachment[@"showErrorView"] boolValue]) {
+			[subkeyView removeFromSuperview];
+			[decryptOKView removeFromSuperview];
+			[infoView removeFromSuperview];
+
+			[errorView setFrameSize:NSMakeSize(scrollContentView.frame.size.width, errorView.frame.size.height)];
+			[scrollContentView addSubview:errorView];
+			
+			CGFloat height = 0;
+			for (NSView *view in scrollContentView.subviews) {
+				height += view.frame.size.height;
+			}
+			[scrollContentView setFrameSize:NSMakeSize(scrollContentView.frame.size.width, height)];
+			[errorView setFrameOrigin:NSMakePoint(0, 0)];
+		} else if (![self.currentAttachment[@"showDecryptedNoSignatureView"] boolValue]) {
+			[subkeyView removeFromSuperview];
+			[infoView removeFromSuperview];
+			[errorView removeFromSuperview];
+
+			[decryptOKView setFrameSize:NSMakeSize(scrollContentView.frame.size.width, decryptOKView.frame.size.height)];
+			[scrollContentView addSubview:decryptOKView];
+
+			CGFloat height = 0;
+			for (NSView *view in scrollContentView.subviews) {
+				height += view.frame.size.height;
+			}
+			[scrollContentView setFrameSize:NSMakeSize(scrollContentView.frame.size.width, height)];
+			[decryptOKView setFrameOrigin:NSMakePoint(0, 0)];
+		} else if (![self.currentAttachment[@"showSignatureView"] boolValue]) {
+			[decryptOKView removeFromSuperview];
+			[errorView removeFromSuperview];
+
+			[infoView setFrameSize:NSMakeSize(scrollContentView.frame.size.width, infoView.frame.size.height)];
+			[scrollContentView addSubview:infoView];
+
+			if (self.subkey) {
+				if (self.window.contentView.frame.size.height == initialHeight || initialHeight == 0) {
+					NSRect frame = self.window.frame;
+					CGFloat height = subkeyView.frame.size.height;
+					frame.size.height += height;
+					frame.origin.y -= height;
+					if (initialHeight == 0) {
+						[self.window setFrame:frame display:YES];
+					} else {
+						[self.window.animator setFrame:frame display:YES];
+
+					}
+					initialHeight = CGFLOAT_MAX; // The window will never be that height, so this if branches only the first time.
+				}
+				[subkeyView setFrameSize:NSMakeSize(scrollContentView.frame.size.width, subkeyView.frame.size.height)];
+				[scrollContentView addSubview:subkeyView];
+			} else {
+				[subkeyView removeFromSuperview];
+			}
+
+			CGFloat height = 0;
+			for (NSView *view in scrollContentView.subviews) {
+				height += view.frame.size.height;
+			}
+			[scrollContentView setFrameSize:NSMakeSize(scrollContentView.frame.size.width, height)];
+			
+			[infoView setFrameOrigin:NSMakePoint(0, 0)];
+
+			if (self.subkey) {
+				[subkeyView setFrameOrigin:NSMakePoint(0, infoView.frame.size.height)];
+			}
+		}
+		
+		
 	}
 }
 
 - (void)setSignature:(GPGSignature *)value {
-	if (value != signature) {
-		signature = value;
-		
-		GPGKey *key = nil;
-		if (signature) {
-			NSString *fingerprint = signature.primaryFingerprint;
-			if ((key = [keyList member:fingerprint])) {
-				goto found;
-			}
-			fingerprint = signature.fingerprint;
-			if ([fingerprint length] >= 8) {
-				if ((key = [keyList member:fingerprint])) {
-					goto found;
-				}
-				fingerprint = [fingerprint stringByAppendingString:@"\n"];
-				for (key in keyList) {
-					if ([[key allFingerprints] member:fingerprint]) {
-						goto found;
-					}
-				}
-			}					
-		}
-	found:
-		self.gpgKey = key;
+	if (value == signature) {
+		return;
 	}
+	signature = value;
+	
+	GPGKey *key = signature.primaryKey;
+	GPGKey *subkey = signature.key;
+	
+	if ([key isEqual:subkey]) {
+		subkey = nil;
+	}
+	
+	self.gpgKey = key;
+	self.subkey = subkey;
 }
+
+
+
+
+
+
 
 - (id)valueForKeyPath:(NSString *)keyPath {
     if ([keyPath hasPrefix:@"signature."]) {
@@ -247,24 +328,6 @@
 	}
 }
 
-- (NSString *)emailAndID {
-    
-    NSMutableString *value = [[NSMutableString alloc] init];
-    if(gpgKey.email)
-        [value appendFormat:@"%@", gpgKey.email];
-    
-    NSString *keyID = [self keyID];
-    if(keyID) {
-        if(gpgKey.email)
-            [value appendString:@" ("];
-        [value appendFormat:@"%@", keyID];
-        if(gpgKey.email)
-            [value appendString:@")"];
-    }
-    
-    return value;
-}
-
 - (NSString *)validityDescription {
 	if (!signature) return nil;
 	
@@ -289,7 +352,7 @@
 }
 
 - (NSString *)keyID {
-	NSString *keyID = gpgKey.keyID;
+	NSString *keyID = self.gpgKey.keyID;
 	if (!keyID) {
 		keyID = signature.fingerprint;
 	}
@@ -326,7 +389,7 @@
 	NSSize splitViewSize = [splitView frame].size;
 	NSSize size1 = [view1 frame].size;
 	NSRect frame2 = [view2 frame];
-	CGFloat dividerThickness = [splitView dividerThickness];
+	CGFloat dividerThickness = splitView.dividerThickness;
 	
 	size1.width = splitViewSize.width;
 	frame2.size.width = splitViewSize.width;
@@ -338,61 +401,19 @@
 	}
 	frame2.origin.y = splitViewSize.height - frame2.size.height;
 	
-    [view1 setFrameSize:size1];
+	[view1 setFrameSize:size1];
 	[view2 setFrame:frame2];
 }
 
 - (void)awakeFromNib {
     // Get attachment for row.
     NSDictionary *attachment = attachments[0];
-    if([attachment valueForKey:@"error"])
+	if ([attachment valueForKey:@"error"]) {
         [scrollView setBackgroundColor:[NSColor colorWithDeviceRed:1.0 green:0.9451 blue:0.6074 alpha:1.0]];
-    else
-        [scrollView setBackgroundColor:[NSColor whiteColor]];
-    [detailView setFrameOrigin:NSMakePoint(0, [scrollContentView frame].size.height)];
-}
-
-- (IBAction)switchDetailView:(NSButton *)sender {
-	static CGFloat minHeight = 0;
-	static CGFloat maxHeight = 450;
-	NSRect windowFrame = self.window.frame;
-	NSSize windowSize = windowFrame.size;
-	NSSize scrollContentSize = [scrollContentView frame].size;
-	NSSize detailSize = [detailView frame].size;
-    
-    if ([detailView superview]) {
-		if (minHeight > 0 && minHeight < windowSize.height) {
-			maxHeight = windowSize.height;
-			windowSize.height = minHeight;
-		} else {
-			maxHeight = 0;
-		}
-        
-		scrollContentSize.height -= detailSize.height;
-		//infoSize.width = [infoView frame].size.width;
-        
-		[detailView removeFromSuperview];
 	} else {
-		if (maxHeight > 0 && windowSize.height < maxHeight) {
-			minHeight = windowSize.height;
-			windowSize.height = maxHeight;
-		} else {
-			minHeight = 0;
-		}
-        
-		scrollContentSize.height += detailSize.height;
-		[detailView setFrameSize:NSMakeSize(scrollContentSize.width, [detailView frame].size.height)];
-		//infoSize.width = [detailView frame].size.width;
-		
-		[scrollContentView addSubview:detailView];
+        [scrollView setBackgroundColor:[NSColor whiteColor]];
 	}
-    [scrollContentView setFrameSize:scrollContentSize];
-	
-	windowFrame.origin.x = windowFrame.origin.x + (windowSize.width - windowFrame.size.width) / 2;
-	windowFrame.origin.y = windowFrame.origin.y + windowFrame.size.height - windowSize.height;
-	windowFrame.size = windowSize;
-    
-	[self.window setFrame:windowFrame display:YES animate:YES];
+	initialHeight = self.window.contentView.frame.size.height;
 }
 
 #pragma mark - Table delegate

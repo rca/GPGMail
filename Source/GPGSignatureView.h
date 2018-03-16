@@ -1,45 +1,18 @@
 #import <Cocoa/Cocoa.h>
 #import <Libmacgpg/Libmacgpg.h>
 
-@interface GPGSignatureView : NSObject <NSWindowDelegate, NSTableViewDelegate, NSTableViewDataSource, NSSplitViewDelegate> {
-	IBOutlet NSWindow *window;
-	IBOutlet NSTableView *detailTable;
-	NSSet *keyList;
-	NSArray *signatures;
-	BOOL running;
-	NSIndexSet *signatureIndexes;
-	GPGSignature *signature;
-	GPGKey *gpgKey;
-	
-	IBOutlet NSView *scrollContentView;
-	IBOutlet NSView *infoView;
-	IBOutlet NSView *detailView;
-	IBOutlet NSScrollView *scrollView;
-}
+@interface GPGSignatureView : NSWindowController
 
-//Private
-@property (strong) NSIndexSet *signatureIndexes;
-@property (readonly) GPGKey *gpgKey;
-
-- (IBAction)switchDetailView:(NSButton *)sender;
-- (IBAction)close:(id)sender;
-
-
-
-
-//Public
-@property (strong) NSSet *keyList;
-@property (strong) NSArray *signatures;
+@property (nonatomic, strong) NSArray *signatures;
 
 + (id)signatureView;
 
 - (NSInteger)runModal;
 - (void)beginSheetModalForWindow:(NSWindow *)modalWindow completionHandler:(void (^)(NSInteger result))handler;
-- (NSString *)keyID;
-- (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 @end
 
 
 @interface GPGSignatureCertImageTransformer : NSValueTransformer {} @end
 @interface GPGFlippedView : NSView {} @end
+@interface GPGFlippedClipView : NSClipView {} @end
 @interface TopScrollView : NSScrollView {} @end

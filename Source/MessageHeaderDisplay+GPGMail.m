@@ -116,7 +116,6 @@
         return;
     }
     GPGSignatureView *signatureView = [GPGSignatureView signatureView];
-    signatureView.keyList = [[GPGMailBundle sharedInstance] allGPGKeys];
     signatureView.signatures = messageSigners;
 	[signatureView beginSheetModalForWindow:[self modalWindow] completionHandler:^(NSInteger result) {
 //        DebugLog(@"Signature panel was closed: %d", result);
