@@ -136,11 +136,11 @@ NSString *SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
 - (NSImage *)gpgStatusImage {
 	switch ([[GPGMailBundle sharedInstance] gpgStatus]) {
 		case GPGErrorNotFound:
-			return [NSImage imageNamed:@"RedDot"];
+			return [NSImage imageNamed:NSImageNameStatusUnavailable];
 		case GPGErrorNoError:
-			return [NSImage imageNamed:@"GreenDot"];
+			return [NSImage imageNamed:NSImageNameStatusAvailable];
 		default:
-			return [NSImage imageNamed:@"YellowDot"];
+			return [NSImage imageNamed:NSImageNameStatusPartiallyAvailable];
 	}
 }
 - (NSString *)gpgStatusToolTip {
@@ -148,7 +148,7 @@ NSString *SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
 		case GPGErrorNotFound:
 			return localized(@"GPG_STATUS_NOT_FOUND_TOOLTIP");
 		case GPGErrorNoError:
-			return localized(@"GPG_STATUS_NO_ERROR_TOOLTIP");
+			return nil;
 		default:
 			return localized(@"GPG_STATUS_OTHER_ERROR_TOOLTIP");
 	}
