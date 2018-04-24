@@ -1,12 +1,10 @@
 "2.title" = "Janela";
 "8.title" = "OK";
-"205.title" = "Expires on:";
 "210.title" = "nome";
 "211.title" = "Detalhes";
 "239.title" = "Key";
 "240.title" = "Nome:";
 "241.title" = "Email:";
-"242.title" = "Comentário:";
 "243.title" = "Fingerprint:";
 "244.title" = "Criado em:";
 "245.title" = "Expires:";
@@ -14,11 +12,8 @@
 "247.title" = "Ownertrust:";
 "256.title" = "Assinatura";
 "257.title" = "Criado em:";
-"259.title" = "Expires:";
 "291.title" = "Não foi possível verificar a assinatura.";
 "293.title" = "A assinatura não pode ser verificara uma vez que a chave pública não se encontra no porta-chaves.\nDescarregue a chave através de GPG Keychain.";
-"325.ibShadowedIsNilPlaceholder" = "No expiration is set on this signature";
-"353.ibShadowedIsNilPlaceholder" = "No expiration is set on this signature";
-"366.ibShadowedIsNilPlaceholder" = "No expiration is set on this signature";
 "382.title" = "Não foi possível verificar a assinatura.";
 "383.title" = "A assinatura não pode ser verificara uma vez que a chave pública não se encontra no porta-chaves.\nDescarregue a chave através de GPG Keychain.";
+"n4z-o9-sgL.ibShadowedIsNilPlaceholder" = "Never";

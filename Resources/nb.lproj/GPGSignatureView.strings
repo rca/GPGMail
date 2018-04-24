@@ -1,6 +1,5 @@
 "21.title" = "Signaturer";
 "25.title" = "OK";
-"236.title" = "Opprettet:";
 "237.title" = "navn";
 "251.title" = "Detaljer";
 "252.ibShadowedNoSelectionPlaceholder" = "Ingen signatur";
@@ -8,13 +7,10 @@
 "367.title" = "Nøkkel";
 "369.title" = "E-post:";
 "372.title" = "Fingeravtrykk:";
-"373.title" = "Kommentar:";
 "377.title" = "Algoritme:";
 "378.title" = "Utløper:";
 "379.title" = "Opprettet:";
 "381.title" = "Eier-tillit:";
-"434.title" = "Utløper:";
 "436.title" = "Opprettet:";
 "437.title" = "Signatur";
-"531.ibShadowedIsNilPlaceholder" = "Denne signaturen har ingen utløpsdato";
-"532.ibShadowedIsNilPlaceholder" = "Denne nøkkelen har ingen utløpsdato";
+"yCR-I5-KP1.ibShadowedIsNilPlaceholder" = "Never";

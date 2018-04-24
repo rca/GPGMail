@@ -1,6 +1,5 @@
 "21.title" = "署名";
 "25.title" = "OK";
-"236.title" = "作成日:";
 "237.title" = "名前";
 "251.title" = "詳細";
 "252.ibShadowedNoSelectionPlaceholder" = "No signature";
@@ -8,13 +7,10 @@
 "367.title" = "鍵";
 "369.title" = "Email:";
 "372.title" = "Fingerprint:";
-"373.title" = "コメント:";
 "377.title" = "アルゴリズム:";
 "378.title" = "有効期限:";
 "379.title" = "作成日:";
 "381.title" = "Ownertrust:";
-"434.title" = "有効期限:";
 "436.title" = "作成日:";
 "437.title" = "署名";
-"531.ibShadowedIsNilPlaceholder" = "No expiration is set on this signature";
-"532.ibShadowedIsNilPlaceholder" = "この鍵には有効期限が設定されていません";
+"yCR-I5-KP1.ibShadowedIsNilPlaceholder" = "Never";

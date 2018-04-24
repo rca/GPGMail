@@ -52,11 +52,11 @@
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Meddelandesignaturen har gått ut.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Signaturen har upphört och kunde inte kontrolleras.\n\nKontakta avsändaren och fråga varför signaturen upphört.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG is not installed";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Decrypting failed because MacGPG is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG är inte installerat";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Dekrypteringen misslyckades eftersom MacGPG inte är installerat.\n\nHämta och installera om GPG Suite från https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG is not installed";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifying failed because MacGPG is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG är inte installerat";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifieringen misslyckades eftersom MacGPG inte är installerat.\n\nHämta och installera om GPG Suite från https://gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d bilagor kunde inte avkrypteras eller kontrolleras.";
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Klicka på bilageikonen i brevhuvudets säkerhetsdel för mer detaljer.";
@@ -147,12 +147,12 @@
 /* GPGMail Preferences strings. */
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail är redo.";
 "GPG_STATUS_NO_ERROR_TOOLTIP" = "Din MacGPG2-installation fungerar utan fel.";
-"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG is not installed. Check your installation.";
+"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG är inte installerat. Kontrollera din installation.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Hämta och installera om GPG Suite från https://www.gpgtools.org för att försäkra dig om att alla komponenter är installerade.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Kontrollera din installation och konfiguration.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Hämta och installera om GPG Suite från https://www.gpgtools.org för att försäkra dig om att alla komponenter är installerade.";
 "DISABLE_ENCRYPT_DRAFTS_TITLE" = "Varning: Att avaktivera det här alternativet kan leda till att känslig information läcker ut när du skriver ett meddelande";
-"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, macOS Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling \"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want to disable \"Encrypt drafts\"?";
+"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "Om alternativet \"Spara utkast på servern\" är aktiverat för dina konton kommer macOS Mail att spara dina utkast på e-postservern automatiskt medan du skriver ett meddelande.\nGenom att avaktivera \"Kryptera utkast\" kommer dina utkast att sparas i klartext (inte krypterade) så att alla med tillgång till e-postservern kan läsa dem.\n\nOm du fortsätter ha \"Kryptera utkast\" aktiverat kommer dina utkast att krypteras innan de sparas på en e-postserver och endast du kommer att kunna läsa dem.\n\nVill du fortfarande avaktivera \"Kryptera utkast\"?";
 "DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Avaktivera kryptering";
 "DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Avbryt";
 
@@ -164,7 +164,7 @@
 
 /* No Libmacgpg. */
 "LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg hittades inte";
-"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg was not found on your system. Please download and install GPG Suite from https://www.gpgtools.org.";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg hittades inte på ditt system. Hämta och installera GPG Suite från https://www.gpgtools.org.";
 
 /* Code signature invalid */
 CODE_SIGN_ERROR_TITLE = "Någon har mixtrat med din installation av GPGMail!";

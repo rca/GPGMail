@@ -1,6 +1,5 @@
 "21.title" = "Firmas";
 "25.title" = "OK";
-"236.title" = "Creado:";
 "237.title" = "nombre";
 "251.title" = "Detalles";
 "252.ibShadowedNoSelectionPlaceholder" = "No firma";
@@ -8,13 +7,10 @@
 "367.title" = "Clave";
 "369.title" = "Correo electrónico:";
 "372.title" = "Huella de validación:";
-"373.title" = "Comentario:";
 "377.title" = "Algoritmo:";
 "378.title" = "Expira:";
 "379.title" = "Creado:";
 "381.title" = "Del propietario de la confianza:";
-"434.title" = "Expira:";
 "436.title" = "Creado:";
 "437.title" = "Firma";
-"531.ibShadowedIsNilPlaceholder" = "No de caducidad se encuentra en esta firma";
-"532.ibShadowedIsNilPlaceholder" = "No de caducidad se encuentra en esta clave";
+"yCR-I5-KP1.ibShadowedIsNilPlaceholder" = "Nunca";

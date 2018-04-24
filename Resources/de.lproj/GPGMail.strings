@@ -152,7 +152,7 @@
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Bitte überprüfe deine Installation und Konfiguration.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Bitte lade GPG Suite von https://www.gpgtools.org herunter und installiere erneut um sicherzustellen, dass alle Komponenten auf deinem System installiert sind.";
 "DISABLE_ENCRYPT_DRAFTS_TITLE" = "Achtung: Wenn du diese Option deaktivierst, könnten sensible Informationen preisgegeben werden, während du eine Nachricht verfasst";
-"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, macOS Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling \"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want to disable \"Encrypt drafts\"?";
+"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "Wenn die Option \"Entwürfe auf Server sichern\" für deinen Account aktiviert ist, speichert macOS Mail automatisch deine Entwürfe auf dem Mail Server, während du eine Nachricht verfasst.\nWird \"Entwürfe verschlüsseln\" deaktiviert, werden deine Entwürfe im Klartext (unverschlüsselt) gespeichert. Jeder der Zugang zum Mail Server hat, wird sie lesen können.\n\nBleibt \"Entwürfe verschlüsseln\" aktiviert, werden deine Entwürfe verschlüsselt, bevor sie auf dem Mail Server gespeichert werden, so dass nur du sie lesen kannst.\n\nWillst du dennoch \"Entwürfe verschlüsseln\" deaktivieren?";
 "DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Verschlüsselung deaktivieren";
 "DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Abbrechen";
 
@@ -164,7 +164,7 @@
 
 /* No Libmacgpg. */
 "LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg wurde nicht gefunden";
-"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg was not found on your system. Please download and install GPG Suite from https://www.gpgtools.org.";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg wurde auf deinem System nicht gefunden. Bitte lade und installiere GPG Suite von https://www.gpgtools.org.";
 
 /* Code signature invalid */
 CODE_SIGN_ERROR_TITLE = "Jemand hat deine GPGMail-Installation manipuliert!";

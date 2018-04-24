@@ -1,6 +1,5 @@
 "21.title" = "Assinaturas";
 "25.title" = "OK";
-"236.title" = "Criação:";
 "237.title" = "nome";
 "251.title" = "Detalhes";
 "252.ibShadowedNoSelectionPlaceholder" = "Nenhuma assinatura";
@@ -8,13 +7,10 @@
 "367.title" = "Chave";
 "369.title" = "E‑mail:";
 "372.title" = "Impressão Digital:";
-"373.title" = "Comentário:";
 "377.title" = "Algoritmo:";
 "378.title" = "Vencimento:";
 "379.title" = "Criação:";
 "381.title" = "Confiança:";
-"434.title" = "Vencimento:";
 "436.title" = "Criação:";
 "437.title" = "Assinatura";
-"531.ibShadowedIsNilPlaceholder" = "Não há vencimento definido para esta assinatura";
-"532.ibShadowedIsNilPlaceholder" = "Não há vencimento definido para esta chave";
+"yCR-I5-KP1.ibShadowedIsNilPlaceholder" = "Nunca";

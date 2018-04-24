@@ -1,12 +1,10 @@
 "2.title" = "Ventana";
 "8.title" = "OK";
-"205.title" = "Expira el:";
 "210.title" = "nombre";
 "211.title" = "Detalles";
 "239.title" = "Clave";
 "240.title" = "Nombre:";
 "241.title" = "Correo electrónico:";
-"242.title" = "Comentario:";
 "243.title" = "Huella de validación:";
 "244.title" = "Creado:";
 "245.title" = "Expira:";
@@ -14,11 +12,8 @@
 "247.title" = "Del propietario de la confianza:";
 "256.title" = "Firma";
 "257.title" = "Creado:";
-"259.title" = "Expira:";
 "291.title" = "La firma no pudo ser verificada.";
 "293.title" = "La firma no se pudo verificar porque la clave pública no está en su juego de claves (keychain).\nPor favor, descargue la clave usando GPG Keychain.";
-"325.ibShadowedIsNilPlaceholder" = "No de caducidad se encuentra en esta firma";
-"353.ibShadowedIsNilPlaceholder" = "No de caducidad se encuentra en esta firma";
-"366.ibShadowedIsNilPlaceholder" = "No de caducidad se encuentra en esta firma";
 "382.title" = "La firma no se pudo verificar.";
 "383.title" = "La firma no se pudo verificar porque la clave pública no está en su juego de claves (keychain).\nPor favor descargue la clave utilizando GPG Keychain.";
+"n4z-o9-sgL.ibShadowedIsNilPlaceholder" = "Nunca";

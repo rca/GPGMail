@@ -11,10 +11,10 @@
 "VALIDITY_OK" = "La signatura és fiable.";
 /* Signature view key status. */
 "VALIDITY_KEY_REVOKED" = "La clau de la signatura ha estat revocada.";
-"VALIDITY_SIGNATURE_EXPIRED" = "La signatura ha caducat.";
-"VALIDITY_KEY_EXPIRED" = "La clau de la signatura ha caducat.";
+"VALIDITY_SIGNATURE_EXPIRED" = "La signatura ha vençut.";
+"VALIDITY_KEY_EXPIRED" = "La clau de la signatura ha vençut.";
 "VALIDITY_KEY_REVOKED" = "La clau de la signatura ha estat revocada.";
 "VALIDITY_UNKNOWN_ALGORITHM" = "La signatura s'ha creat amb un algoritme desconegut.";
 "VALIDITY_NO_PUBLIC_KEY" = "La clau de la signatura no és al clauer.";
 "VALIDITY_UNKNOWN_ERROR" = "La signatura ha tingut un error desconegut.";
-"VALIDITY_BAD_SIGNATURE" = "La signatura és incorrecta.";
+"VALIDITY_BAD_SIGNATURE" = "La signatura no és vàlida.";

@@ -15,7 +15,7 @@
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Tästä PGP-avaimesta ei ole lisätietoja, koska se ei ole avainrenkaassasi.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Viestin purkuun vaadittava salainen avain puuttuu.";
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Viestin purkamista varten tarvitaan salainen avain, mutta sopivaa salaista avainta ei löydetty avainnipustasi (%@).\n\nSyynä voi olla, että lähettäjä on käyttänyt väärää, rikkinäistä tai kelvotonta julkista avainta viestin salaamiseen. Voit siis pyytää lähettäjää tarkistamaan käytetyn avaimen. Tai jos epäilet että olet hukannut avaimen tms. ja sinulla on varmuuskopio avainnipustasi, niin voit koettaa löytää salaisen avaimen varmuuskopiostasi. ";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\nPlease check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Salauksen purkaminen epäonnistui tuntemattoman virheen takia!";
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Tuntematon virhe salausta purettaessa.\n\nOle hyvä ja ota yhteyttä meihin osoitteessa https://gpgtools.tenderapp.com";
@@ -52,11 +52,11 @@
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Allekirjoitus on vanhentunut.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Allekirjoitus on vanhentunut eikä sitä voida varmentaa.\n\nKysy viestin lähettäjältä syytä vanhentuneeseen allekirjoitukseen";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 -sovellusta ei ole asennettu ";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Salauksen purkaminen epäonnistunut, koska MacGPG2 -sovellusta ei ole asennettu.\n\nOle hyvä ja lataa ja uudelleenasenna GPG Suite -ohjelmisto https://gpgtools.org -sivustolta";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG is not installed";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Decrypting failed because MacGPG is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 -sovellusta ei ole asennettu";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Varmennus epäonnistui koska MacGPG2-ohjelmaa ei ole asennettu. Ole hyvä, lataa ja (uudelleen- ) asenna GPG Suite osoitteesta https://gpgtools.org.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG is not installed";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifying failed because MacGPG is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d liitteen salauksen purku tai allekirjoituksen varmistus epäonnistui.";
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Ole hyvä ja paina liitekuvaketta otsakkeen turvallisuusosassa saadaksesi lisätietoja.";
@@ -75,7 +75,7 @@
 
 /* Message Error Banner Attachment messages. */
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Liitteen salauksen purkamiseen tarvittavaa salaista avainta ei löydy.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\n Please check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\nPlease check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Salauksen purkaminen epäonnistui tuntemattoman virheen takia!";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Tuntematon virhe ilmeni liitteen salausta purkaessa.\n\nOle hyvä ja ota yhteyttä https://gpgtools.tenderapp.com/";
@@ -147,7 +147,7 @@
 /* GPGMail Preferences strings. */
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail on valmis.";
 "GPG_STATUS_NO_ERROR_TOOLTIP" = "MacGPG asentaminen on käynnissä virheettömästi.";
-"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2-ohjelmistoa ei ole asennettu. Tarkista asennus.";
+"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG is not installed. Check your installation.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Please download and re-install GPG Suite from https://www.gpgtools.org to ensure all required components are installed.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Tarkista asennuksesi ja asetuksesi, ole hyvä.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Please download and re-install GPG Suite from https://www.gpgtools.org to ensure all required components are installed.";
@@ -164,7 +164,7 @@
 
 /* No Libmacgpg. */
 "LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg -kirjastoa ei löydy";
-"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg -kirjastoa ei löytynyt järjestelmästäsi. Ole hyvä ja asenna se. Löydät sen esim. GPGTools -asennusohjelmasta sivulta https://www.gpgtools.org.";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg was not found on your system. Please download and install GPG Suite from https://www.gpgtools.org.";
 
 /* Code signature invalid */
 CODE_SIGN_ERROR_TITLE = "Joku peruutti GPGMail-ohjelman asennuksesi!";
@@ -231,9 +231,19 @@ NO_DEFAULTS_MESSAGE = "GPGMail ei toimi odotetusti.\n\nOle hyvä ja asenna GPG S
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "Jos jatkat, vastauksesi lähetetään salaamattomana ja sen sisältö on tietovuodon sattuessa suojaton. Suojattoman viestin tietojen väärinkäytöstä voi koitua haittaa sinulle, viestin vastaanottajalle ja/tai muille asianosaisille.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nJos todellakin haluat lähettää vastauksen salaamattomana, ole hyvä ja jätä vastauksesta pois aiempi (salattu) kirjeenvaihto.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Muussa tapauksessa, nouda vastaavat julkiset avaimet GPG Keychain -ohjelmaan salataksesi vastauksen.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Muussa tapauksessa, nouda vastaava julkinen avain GPG Keychain -ohjelmaan salataksesi vastauksen.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Otherwise, search and import the corresponding public key using GPG Keychain in order to send the reply encrypted.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Lähetä joka tapauksessa";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Peruuta";
+
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_TITLE" = "Attention: You're about to forward the decrypted version of an encrypted message";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "It's not possible to encrypt the message you are about to forward, because the public key for the following recipient is missing:\n\n%@";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_MISSING_KEYS" = "It's not possible to encrypt the message you are about to forward, because public keys for the following recipients are missing:\n\n%@";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_EXPLANATION" = "If you choose to proceed, the message you are about to forward will be sent unencrypted. As a result, confidential information might be leaked, putting you and your recipients at risk.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Otherwise, search and import the corresponding public keys using GPG Keychain in order to forward an encrypted version of the message.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Otherwise, search and import the corresponding public key using GPG Keychain in order to forward an encrypted version of the message.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Forward Anyway";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Peruuta";
+
 
 
 /* Accessibility */

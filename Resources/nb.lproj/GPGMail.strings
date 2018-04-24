@@ -52,11 +52,11 @@
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Denne melingssignaturen er utløpt.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Signaturen er utløpt og kunne ikke verifiseres.\n\nSjekk med avsender hvorfor signaturen er utløpt.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 er ikke installert";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Dekryptering mislyktes fordi MacGPG2 ikke er installert.\n\nVennligst last ned og reinstaller GPG Suite fra https://gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG er ikke installert";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Dekryptering mislyktes fordi MacGPG ikke er installert.\n\nVennligst last ned og reinstaller GPG Suite fra https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 er ikke installert";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifisering mislyktes fordi MacGPG2 ikke er installert.\n\nVennligst last ned og reinstaller GPG Suite fra https://gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG er ikke installert";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifisering mislyktes fordi MacGPG ikke er installert.\n\nVennligst last ned og reinstaller GPG Suite fra https://gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "Dekryptering eller verifisering av vedlegg %d mislyktes.";
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Vennligst klikk på vedleggs-ikonet i sikkerhets-delen av meldings-hodet for ytterligere detaljer.";
@@ -135,7 +135,7 @@
 "MESSAGE_SECURITY_HEADER_ATTACHMENTS_SIGNED_TITLE" = "signerte vedlegg";
 
 /* Compose Window encrypt/sign button tooltips. */
-"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "This message can't be signed, since there's no secret key for %@.\n\nPlease make sure that a secret key for this address exists in GPG Keychain. Add a new User ID to an existing key for this address if necessary, or create a new key for this address.\n\nIf a key for the address exists, make sure that the address in Mail.app > Preferences > Accounts is correct and exactly matches the address of your key.";
+"COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_SIGN" = "Denne meldingen kunne ikke signeres, fordi det ikke finnes noen privat nøkkel for %@.\n\nVennligst sørg for at det finnes en privat nøkkel for denne adressen i GPG Keychain. Legg til en ny User ID til en eksisterende adresse om nødvendig, eller lag en ny nøkkel til denne adressen.\n\nHvis det finnes en nøkkel til denne adressen, sørg for at adressen i Mail-innstillingene er riktig, og at den stemmer overens med nøkkelens adresse.";
 "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT" = "Denne meldingen kan ikke krypteres, fordi det ikke er noen offentlige nøkler tilgjengelige til følgende adresser: %@.\n\nVennligst bruk GPG-nøkkelring til å finne og importere nøklene til disse adressene.";
 "COMPOSE_WINDOW_TOOLTIP_CAN_NOT_PGP_ENCRYPT_NO_RECIPIENTS" = "Denne meldingen kan ikke krypteres. Du må ha minst en mottaker først.";
 
@@ -147,12 +147,12 @@
 /* GPGMail Preferences strings. */
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail er klar.";
 "GPG_STATUS_NO_ERROR_TOOLTIP" = "MacGPG installasjonen din fungerer uten feil.";
-"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 er ikke installert. Vennligst sjekk installasjonen din.";
+"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG er ikke installert. Sjekk installasjonen din.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Vennligst last ned og installer GPG Suite på nytt fra https://www.gpgtools.org for å sikre at alle nødvendige komponenter er installert.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Vennligst sjekk installasjonen og innstillingene.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Vennligst last ned og installer GPG Suite på nytt fra https://www.gpgtools.org for å sikre at alle nødvendige komponenter er installert.";
 "DISABLE_ENCRYPT_DRAFTS_TITLE" = "Advarsel: Om du slår av denne funksjonen kan det lede til lekkasje av sensitiv informasjon når du skriver en melding";
-"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, macOS Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling \"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want to disable \"Encrypt drafts\"?";
+"DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "Hvis valget \"Lagre kladder på tjerner\" er skrudd på for kontoene, vil macOS Mail automatisk lagre kladdene dine på e-posttjeneren mens du forfatter en melding.\nVed å skru av \"Krypter kladder\", vil kladdene dine bli sendt i klartekst (ikke kryptert), slik at alle med tilgang til e-posttjeneren kan lese dem.\n\nHvis du beholder \"Krypter kladder\" påskrudd, vil kladdene dine bli kryptert før de lagres på en e-posttjener og kun du vil kunne lese dem.\n\nØnsker du fremdeles å skru av \"Krypter kladder\"";
 "DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Skru av kryptering";
 "DISABLE_ENCRYPT_DRAFTS_CANCEL" = "Avbryt";
 
@@ -164,7 +164,7 @@
 
 /* No Libmacgpg. */
 "LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg ble ikke funnet";
-"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg ikke funnet på ditt system. Vennligst installer det. Du kan finne det i for eksempel GPGTools sin installasjonspakke på https://www.gpgtools.org";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg ikke funnet på ditt system. Last ned og installer GPG Suite fra https://www.gpgtools.org";
 
 /* Code signature invalid */
 CODE_SIGN_ERROR_TITLE = "Noen har tuklet med din installasjon av GPGMail!";
@@ -190,7 +190,7 @@ NO_DEFAULTS_MESSAGE = "GPGMail fungerer ikke som forventet.\n\nVennligst last ne
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_TITLE" = "Kryptering av meldingen din mislyktes fordi det har oppstått en ukjent feil";
 "MESSAGE_ENCRYPTION_ERROR_UNKNOWN_ERROR_DESCRIPTION" = "Uheldigvis kan ikke GPGMail fikse denne feilen på det nåværende tidspunkt.";
 
-"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "You entered the wrong password too many times.";
+"MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_TITLE" = "Du har skrevet inn feil passord for mange ganger";
 "MESSAGE_SIGNING_ERROR_WRONG_PASSPHRASE_DESCRIPTION" = "Signering av meldingen din ble avbrutt fordi du skrev feil passord 3 ganger.";
 
 "CONTACT_GPGTOOLS_WITH_INFO_MESSAGE" = "\nSkulle problemet vedvare, vennligst kontakt oss på https://gpgtools.tenderapp.com med følgende feilbeskrivelse:\n\n%@";
@@ -199,30 +199,30 @@ NO_DEFAULTS_MESSAGE = "GPGMail fungerer ikke som forventet.\n\nVennligst last ne
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "Meldingen kunne ikke dekrypteres fordi du avbrøt passordforespørselen.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_TITLE" = "Du avbrøt dekryptering av vedlegg";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "The attachment couldn't be decrypted because you cancelled the password request.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PASSPHRASE_REQUEST_CANCELLED_MESSAGE" = "Vedlegget kunne ikke dekrypteres fordi du avbrøt passordførespørselen.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite fungerer ikke som forventet";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the message failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Dekryptering av meldingen mislyktes.\n\nVennligst installer GPG Suite på nytt fra https://gpgtools.org for å fikse dette problemet.\n\nSkulle problemet vedvare kan du kontakte oss på https://gpgtools.tenderapp.com/. Inkluder informasjon om at xpc-tjenesten ikke fungerer som den skal.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite fungerer ikke som forventet";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Decrypting the attachment failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE" = "Dekryptering av vedlegget mislyktes.\n\nVennligst installer GPG Suite på nytt fra https://gpgtools.org for å fikse dette problemet.\n\nSkulle problemet vedvare kan du kontakte oss på https://gpgtools.tenderapp.com/. Inkluder informasjon om at xpc-tjenesten ikke fungerer som den skal.";
 
 "MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite fungerer ikke som forventet";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the message failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifisering av meldingen mislyktes.\n\nVennligst installer GPG Suite på nytt fra https://gpgtools.org for å fikse dette problemet.\n\nSkulle problemet vedvare kan du kontakte oss på https://gpgtools.tenderapp.com/. Inkluder informasjon om at xpc-tjenesten ikke fungerer som den skal.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_TITLE" = "GPG Suite fungerer ikke som forventet";
-"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifying the attachment failed.\n\nPlease re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_VERIFY_ERROR_XPC_DAMAGED_MESSAGE" = "Verifisering av vedlegget mislyktes.\n\nVennligst installer GPG Suite på nytt fra https://gpgtools.org for å fikse dette problemet.\n\nSkulle problemet vedvare kan du kontakte oss på https://gpgtools.tenderapp.com/. Inkluder informasjon om at xpc-tjenesten ikke fungerer som den skal.";
 
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Signing your message failed due to a problem during the password request";
-"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "pinentry, the tool responsible for asking for your password, is not working properly.\n\nTo fix this problem, please re-install GPG Suite from https://gpgtools.org.";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_TITLE" = "Signering av meldingen mislyktes fordi et problem oppstod når passordfrasen ble forespurt.";
+"MESSAGE_SIGNING_ERROR_PINENTRY_CRASH_DESCRIPTION" = "pinentry, programmet som er ansvarlig for å be om passordet ditt, ser ikke ut til å fungere som det skal.\n\nVennligst installer GPG Suite på nytt fra https://gpgtools.org for å fikse dette problemet.";
 
 "MESSAGE_SIGNING_ERROR_XPC_DAMAGED_TITLE" = "Signering av meldingen din feilet grunnet et problem med din GPGMail installasjon.";
-"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "To fix this problem, please re-install GPG Suite from https://gpgtools.org.\n\nShould this problem persist, contact us at https://gpgtools.tenderapp.com/ and include the information that the xpc service is not working properly.";
+"MESSAGE_SIGNING_ERROR_XPC_DAMAGED_DESCRIPTION" = "Vennligst installer GPG Suite på nytt fra https://gpgtools.org for å fikse dette problemet.\n\nSkulle problemet vedvare kan du kontakte oss på https://gpgtools.tenderapp.com/. Inkluder informasjon om at xpc-tjenesten ikke fungerer som den skal.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the message failed due to a broken pinentry";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Kunne ikke dekryptere meldingen på grunn av feil i pinentry";
 "MESSAGE_BANNER_PGP_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, verktøyet som er ansvarlig for å be om passordet ditt ser ut til å være defekt.\n\nFor å fikse dette problemet, installer den nyeste versjonen av GPG Suite på nytt fra https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Decrypting the attachment failed due to a defect pinentry";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_TITLE" = "Kunne ikke dekryptere vedlegget på grunn av feil i pinentry";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_ERROR_PINENTRY_CRASHED_MESSAGE" = "pinentry, verktøyet som er ansvarlig for å be om passordet ditt ser ut til å være defekt.\n\nFor å fikse dette problemet, installer den nyeste versjonen av GPG Suite på nytt fra https://gpgtools.org";
 
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_TITLE" = "Advarsel: Du er i ferd med å senden et ukryptert svar på en kryptert melding";
@@ -247,7 +247,7 @@ NO_DEFAULTS_MESSAGE = "GPGMail fungerer ikke som forventet.\n\nVennligst last ne
 
 
 /* Accessibility */
-ACCESSIBILITY_SECURITY_METHOD_POPUP_LABEL = "Security method: %@";
-ACCESSIBILITY_SIGN_ON_IMAGE = "Sign";
-ACCESSIBILITY_SIGN_OFF_IMAGE = "Don't sign";
+ACCESSIBILITY_SECURITY_METHOD_POPUP_LABEL = "Sikkerhetsmetode: %@";
+ACCESSIBILITY_SIGN_ON_IMAGE = "Signer";
+ACCESSIBILITY_SIGN_OFF_IMAGE = "Ikke signer";
 

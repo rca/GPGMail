@@ -11,10 +11,10 @@
 "VALIDITY_OK" = "Den här signaturen är betrodd";
 /* Signature view key status. */
 "VALIDITY_KEY_REVOKED" = "Nyckeln för den här signaturen har återkallats.";
-"VALIDITY_SIGNATURE_EXPIRED" = "Denna signatur har gått ut.";
+"VALIDITY_SIGNATURE_EXPIRED" = "Den här signaturen har gått ut.";
 "VALIDITY_KEY_EXPIRED" = "Nyckeln för signaturen har förfallit.";
 "VALIDITY_KEY_REVOKED" = "Nyckeln för den här signaturen har återkallats.";
 "VALIDITY_UNKNOWN_ALGORITHM" = "Signaturen skapades med en okänd algoritm.";
 "VALIDITY_NO_PUBLIC_KEY" = "Nyckeln för signaturen finns inte i din nyckelring.";
 "VALIDITY_UNKNOWN_ERROR" = "Okänt signaturfel.";
-"VALIDITY_BAD_SIGNATURE" = "Denna signatur är ogiltig.";
+"VALIDITY_BAD_SIGNATURE" = "Den här signaturen är ogiltig.";

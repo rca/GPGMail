@@ -1,12 +1,10 @@
 "2.title" = "Vindu";
 "8.title" = "OK";
-"205.title" = "Utløper:";
 "210.title" = "navn";
 "211.title" = "Detaljer";
 "239.title" = "Nøkkel";
 "240.title" = "Navn:";
 "241.title" = "E-post:";
-"242.title" = "Kommentar:";
 "243.title" = "Fingeravtrykk:";
 "244.title" = "Opprettet:";
 "245.title" = "Utløper:";
@@ -14,11 +12,8 @@
 "247.title" = "Eier-tillit:";
 "256.title" = "Signatur";
 "257.title" = "Opprettet:";
-"259.title" = "Utløper:";
 "291.title" = "Signaturen kunne ikke verifiseres.";
 "293.title" = "Signaturen kunne ikke verifiserer fordi den offentlige nøkkelen ikke er din nøkkelring.\nVennligst last den ned ved å bruke GPG Keychain.";
-"325.ibShadowedIsNilPlaceholder" = "Ingen utløpsdato er satt for denne signaturen";
-"353.ibShadowedIsNilPlaceholder" = "Ingen utløpsdato er satt for denne signaturen";
-"366.ibShadowedIsNilPlaceholder" = "Ingen utløpsdato er satt for denne signaturen";
 "382.title" = "Signaturen kunne ikke verifiseres.";
 "383.title" = "Signaturen kunne ikke verifiserer fordi den offentlige nøkkelen ikke er din nøkkelring.\nVennligst last den ned ved å bruke GPG Keychain.";
+"n4z-o9-sgL.ibShadowedIsNilPlaceholder" = "Never";

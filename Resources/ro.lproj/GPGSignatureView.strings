@@ -1,6 +1,5 @@
 "21.title" = "Signatures";
 "25.title" = "OK";
-"236.title" = "Created:";
 "237.title" = "name";
 "251.title" = "Details";
 "252.ibShadowedNoSelectionPlaceholder" = "No signature";
@@ -8,13 +7,10 @@
 "367.title" = "Key";
 "369.title" = "Email:";
 "372.title" = "Fingerprint:";
-"373.title" = "Comment:";
 "377.title" = "Algorithm:";
 "378.title" = "Expires:";
 "379.title" = "Created:";
 "381.title" = "Ownertrust:";
-"434.title" = "Expires:";
 "436.title" = "Created:";
 "437.title" = "Signature";
-"531.ibShadowedIsNilPlaceholder" = "No expiration is set on this signature";
-"532.ibShadowedIsNilPlaceholder" = "No expiration is set on this key";
+"yCR-I5-KP1.ibShadowedIsNilPlaceholder" = "Never";

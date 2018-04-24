@@ -16,5 +16,5 @@
 "VALIDITY_KEY_REVOKED" = "La chiave di questa firma è stata revocata.";
 "VALIDITY_UNKNOWN_ALGORITHM" = "La firma è stata creata con un algoritmo sconosciuto.";
 "VALIDITY_NO_PUBLIC_KEY" = "La chiave di questa firma non è nel portachiavi.";
-"VALIDITY_UNKNOWN_ERROR" = "Errore sconosciuto di firma.";
+"VALIDITY_UNKNOWN_ERROR" = "Errore di firma sconosciuto.";
 "VALIDITY_BAD_SIGNATURE" = "Questa firma non è valida.";

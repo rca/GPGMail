@@ -15,7 +15,7 @@
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Нет подробных данных о PGP ключе, поскольку он не добавлен в связку.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Секретный ключ для расшифровки сообщения не найден.";
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Ни один из следующих ключей не найден в вашей связке (%@). Секретный ключ нужен для расшифровки. \n\nПожалуйста, уточните у отправителя, что он использовал правильный открытый ключ для шифрования.\nПроверьте резервные копии связки, возможно нужный ключ был ранее удалён и его нужно восстановить.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\nPlease check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Невозможно расшифровать. Неизвестная ошибка!";
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "При расшифровке этого сообщения произошла неизвестная ошибка.\n\nПожалуйста свяжитесь с нами https://gpgtools.tenderapp.com/";
@@ -52,11 +52,11 @@
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "Подпись сообщения устарела.";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "Подпись сообщения устарела и не может быть проверена.\n\nСвяжитесь с отправителем, что бы узнать причину.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 не установлена";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Дешифрование не удалось, потому что MacGPG2 не установлен.\n\nПожалуйста, скачайте и установите GPG Suite с https://gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG is not installed";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Decrypting failed because MacGPG is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 не установлена";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Проверка завершилась неудачно, поскольку MacGPG2 не установлен.\n\nПожалуйста, скачайте и установите GPG Suite с https://gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG is not installed";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifying failed because MacGPG is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d вложений не возможно расшифровать или проверить.";
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Пожалуйста, щелкните на иконку вложения в заголовке, что бы узнать подробнее.";
@@ -75,7 +75,7 @@
 
 /* Message Error Banner Attachment messages. */
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Нет секретного ключа для расшифровки вложения.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Ни один из следующих ключей не найден в вашей связке (%@). Секретный ключ нужен для расшифровки этого вложения. \n\nПожалуйста, уточните у отправителя, что он использовал правильный открытый ключ.\nПроверьте резервные копии связки, если нужный ключ был удалён, что бы восстановить его.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\nPlease check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Неизвестная ошибка! Расшифровка невозможна.";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "При расшифровке этого вложения произошла неизвестная ошибка.\n\nПожалуйста свяжитесь с нами https://gpgtools.tenderapp.com/";
@@ -142,15 +142,15 @@
 /* Message view pgp part. */
 "MESSAGE_VIEW_PGP_PART_ENCRYPTED" = "Зашифровано";
 "MESSAGE_VIEW_PGP_PART_SIGNED" = "Подписано";
-"MESSAGE_VIEW_PGP_PART" = "PGP part";
+"MESSAGE_VIEW_PGP_PART" = "Элемент PGP";
 
 /* GPGMail Preferences strings. */
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail готов.";
 "GPG_STATUS_NO_ERROR_TOOLTIP" = "Установленный MacGPG работает без ошибок.";
-"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 не установлена. Проверьте установку.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Please download and re-install GPG Suite from https://www.gpgtools.org to ensure all required components are installed.";
+"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG is not installed. Check your installation.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Загрузите и повторно установите GPG Suite с сайта https://www.gpgtools.org, чтобы убедиться, что все необходимые компоненты установлены.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Пожалуйста, проверьте установку и настройки.";
-"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Please download and re-install GPG Suite from https://www.gpgtools.org to ensure all required components are installed.";
+"GPG_STATUS_NOT_FOUND_TOOLTIP" = "Загрузите и повторно установите GPG Suite с сайта https://www.gpgtools.org, чтобы убедиться, что все необходимые компоненты установлены.";
 "DISABLE_ENCRYPT_DRAFTS_TITLE" = "Предупреждение: Отключение этой опции может привести к утечке конфиденциальной информации при создании сообщения";
 "DISABLE_ENCRYPT_DRAFTS_MESSAGE" = "If the option \"Store drafts on server\" is enabled for your accounts, macOS Mail automatically stores your drafts on your mail server while you're composing a message.\nBy disabling \"Encrypt drafts\", your drafts will be stored in plain text (not encrypted) so that anyone with access to the mail server can read them.\n\nIf you keep \"Encrypt drafts\" enabled, your drafts will be encrypted before they are stored on a mail server and only you will be able to read them.\n\nDo you still want to disable \"Encrypt drafts\"?";
 "DISABLE_ENCRYPT_DRAFTS_CONFIRM" = "Отключить шифрование";
@@ -164,7 +164,7 @@
 
 /* No Libmacgpg. */
 "LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg не найдена";
-"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg не найдена в вашей системе. Пожалуйста,  установите её с помощью установки GPGTools с сайта  https://www.gpgtools.org.";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg was not found on your system. Please download and install GPG Suite from https://www.gpgtools.org.";
 
 /* Code signature invalid */
 CODE_SIGN_ERROR_TITLE = "Кто-то вмешался в вашу установку GPGMail!";
@@ -231,9 +231,19 @@ NO_DEFAULTS_MESSAGE = "GPGMail не работает, как ожидалось.
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "Если вы решите продолжить, ваш ответ будет отправлен в незашифрованном виде. В результате этого может произойти утечка конфиденциальной информации, ставя под угрозу вас и ваших получателей.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nЕсли вы действительно хотите отправить этот ответ в незашифрованном виде, пожалуйста, удалите предыдущую переписку в вашем ответ перед отправкой.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "В противном случае, найдите и импортируйте соответствующие открытые ключи с помощью GPG Keychain для того, чтобы отправить зашифрованный ответ.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "В противном случае, найдите и импортируйте соответствующие открытые ключи с помощью GPG Keychain для того, чтобы отправить зашифрованный ответ.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Otherwise, search and import the corresponding public key using GPG Keychain in order to send the reply encrypted.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Отправить в любом случае";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Отмена";
+
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_TITLE" = "Attention: You're about to forward the decrypted version of an encrypted message";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "It's not possible to encrypt the message you are about to forward, because the public key for the following recipient is missing:\n\n%@";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_MISSING_KEYS" = "It's not possible to encrypt the message you are about to forward, because public keys for the following recipients are missing:\n\n%@";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_EXPLANATION" = "If you choose to proceed, the message you are about to forward will be sent unencrypted. As a result, confidential information might be leaked, putting you and your recipients at risk.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Otherwise, search and import the corresponding public keys using GPG Keychain in order to forward an encrypted version of the message.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Otherwise, search and import the corresponding public key using GPG Keychain in order to forward an encrypted version of the message.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Forward Anyway";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Отмена";
+
 
 
 /* Accessibility */

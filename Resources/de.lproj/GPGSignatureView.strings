@@ -1,6 +1,5 @@
 "21.title" = "Signaturen";
 "25.title" = "OK";
-"236.title" = "Erstellt:";
 "237.title" = "name";
 "251.title" = "Details";
 "252.ibShadowedNoSelectionPlaceholder" = "Keine Signatur";
@@ -8,13 +7,10 @@
 "367.title" = "Schlüssel";
 "369.title" = "E-Mail:";
 "372.title" = "Fingerabdruck:";
-"373.title" = "Kommentar:";
 "377.title" = "Algorithmus:";
 "378.title" = "Verfällt:";
 "379.title" = "Erstellt:";
 "381.title" = "Vertrauen:";
-"434.title" = "Verfällt:";
 "436.title" = "Erstellt:";
 "437.title" = "Signatur";
-"531.ibShadowedIsNilPlaceholder" = "Diese Signatur verfällt nicht";
-"532.ibShadowedIsNilPlaceholder" = "Dieser Schlüssel verfällt nicht";
+"yCR-I5-KP1.ibShadowedIsNilPlaceholder" = "Nie";

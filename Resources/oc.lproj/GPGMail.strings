@@ -15,7 +15,7 @@
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Pas cap d'informacion addicionala per aquesta clau PGP perque es absenta de vòstre trossèl.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "La clau secreta nécessaire al deschiframent d'aqueste messatge es manquante.";
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Cap de las claus secretas seguentas es estada trobada dins vòstre trossèl de claus (%@). La clau secreta es necessària per deschifrar aqueste messatge.\n\nVerificatz amb l'expeditor qu'il a utilizat la bona clau publica.\nVerificatz les sauvegardes de vòstre trossèl per ensajar d'en importar vòstra clau privada.";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\nPlease check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Lo deschiframent a fracassat sus una error desconeguda !";
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Una error s'es producha al moment del deschiframent del messatge.\n\nContactatz-nos a l'adreça seguenta https://gpgtools.tenderapp.com/";
@@ -52,11 +52,11 @@
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_TITLE" = "La signatura del messatge es localizada !";
 "MESSAGE_BANNER_PGP_VERIFY_SIGNATURE_EXPIRED_ERROR_MESSAGE" = "La signatura es localizada e a pas pogut èsser verificada.\n\nDemandatz a l'expeditor la rason de son expedicion.";
 
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG2 es pas installat";
-"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Lo deschiframent a pas pogut se debanar perque MacGPG2 es pas installat.\n\nMercé de telecargar e reïnstallar la seguida GPG dempuèi https://gpgtools.org";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_TITLE" = "MacGPG is not installed";
+"MESSAGE_BANNER_PGP_DECRYPT_ERROR_NO_GPG_MESSAGE" = "Decrypting failed because MacGPG is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
 
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG2 es pas installat";
-"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "La verificacion a pas pogut se debanar perque MacGPG2 es pas installat.\n\nMercé de telecargar e reïnstallar la seguida GPG dempuèi https://gpgtools.org";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_TITLE" = "MacGPG is not installed";
+"MESSAGE_BANNER_PGP_VERIFY_ERROR_NO_GPG_MESSAGE" = "Verifying failed because MacGPG is not installed.\n\nPlease download and re-install GPG Suite from https://gpgtools.org";
 
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_TITLE" = "%d fichièrs junts n'ont pas pu èsser deschifrats o verificats.";
 "MESSAGE_BANNER_PGP_ATTACHMENTS_DECRYPT_VERIFY_ERROR_MESSAGE" = "Mercé de clicar sus l'icòna de la pèça junta dins l'entèsta seguretat del messatge per mai de detalhs.";
@@ -75,7 +75,7 @@
 
 /* Message Error Banner Attachment messages. */
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "La clau secreta per deschifrar lo fichièr junt es introuvable.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Cap de las claus secretas seguentas a pas pogut èsser trobada dins vòstre trossèl (%@). La clau secreta es nécessaire per deschifrar aquesta pèça junta.\n\nMercé de verificar amb l'expeditor qu'il a bien utilizat la bonne clau publica.\nVerificatz les sauvegardes de vòstre trossèl e essayez d'importar la clau secreta.";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\nPlease check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Lo deschiframent a fracassat per una rason desconeguda !";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Una error desconeguda es arribada pendent lo deschiframent d'aqueste fichièr junt.\n\nMercé de nos contactar sus https://gpgtools.tenderapp.com/";
@@ -147,7 +147,7 @@
 /* GPGMail Preferences strings. */
 "GPG_STATUS_NO_ERROR_TITLE" = "GPGMail es prèst.";
 "GPG_STATUS_NO_ERROR_TOOLTIP" = "Vòstra installacion MacGPG fonctionne corrèctament.";
-"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG2 es pas installat. Verificatz vòstra installacion.";
+"GPG_STATUS_NOT_FOUND_TITLE" = "MacGPG is not installed. Check your installation.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Telecargatz e reïnstallatz GPG Suite dempuèi http://www.gpgtools.org per garantir que totes los components necessaris son installats.";
 "GPG_STATUS_OTHER_ERROR_TITLE" = "Verificatz vòstra installacion e configuracion.";
 "GPG_STATUS_NOT_FOUND_TOOLTIP" = "Telecargatz e reïnstallatz GPG Suite dempuèi http://www.gpgtools.org per garantir que totes los components necessaris son installats.";
@@ -164,7 +164,7 @@
 
 /* No Libmacgpg. */
 "LIBMACGPG_NOT_FOUND_TITLE" = "Libmacgpg es pas estada trobada";
-"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg es pas estada trobada sus vòstre sistèma. Mercé de l'installar. Podètz la trobar dins l'installador GPGTools disponible sus https://www.gpgtools.org.";
+"LIBMACGPG_NOT_FOUND_MESSAGE" = "Libmacgpg was not found on your system. Please download and install GPG Suite from https://www.gpgtools.org.";
 
 /* Code signature invalid */
 CODE_SIGN_ERROR_TITLE = "Quelqu'un a trafiqué vòstra installacion GPGMail !";
@@ -231,9 +231,19 @@ NO_DEFAULTS_MESSAGE = "GPGMail fonciona pas coma esperat.\n\nMercé de telecarga
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "Se vous décidez de contunhar, vòstra responsa sera envoyée non chifrada. Comme consequéncia, des informations confidentielles poiràn èsser divulguées, vous mettant vous e vos destinataris en danger.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nSe sètz segur que volètz mandar aquesta responsa non chifrada, mercé de levar tota correspondéncia precedenta inclusa dins vòstra responsa avant d'mandar.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Autrament, recercar e importar las claus publicas correspondentas amb GPG Keychain de façon a mandar la responsa chifrada.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Autrament, recercar e importar las claus publicas correspondentas amb GPG Keychain de façon a mandar la responsa chifrada.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Otherwise, search and import the corresponding public key using GPG Keychain in order to send the reply encrypted.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Mandar cossí que siá";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Anullar";
+
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_TITLE" = "Attention: You're about to forward the decrypted version of an encrypted message";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "It's not possible to encrypt the message you are about to forward, because the public key for the following recipient is missing:\n\n%@";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_MISSING_KEYS" = "It's not possible to encrypt the message you are about to forward, because public keys for the following recipients are missing:\n\n%@";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_EXPLANATION" = "If you choose to proceed, the message you are about to forward will be sent unencrypted. As a result, confidential information might be leaked, putting you and your recipients at risk.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Otherwise, search and import the corresponding public keys using GPG Keychain in order to forward an encrypted version of the message.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Otherwise, search and import the corresponding public key using GPG Keychain in order to forward an encrypted version of the message.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Forward Anyway";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Anullar";
+
 
 
 /* Accessibility */

@@ -1,12 +1,10 @@
 "2.title" = "Fenster";
 "8.title" = "OK";
-"205.title" = "Ablaufdatum:";
 "210.title" = "name";
 "211.title" = "Details";
 "239.title" = "Schlüssel";
 "240.title" = "Name:";
 "241.title" = "E-Mail:";
-"242.title" = "Kommentar:";
 "243.title" = "Fingerabdruck:";
 "244.title" = "Erstellt:";
 "245.title" = "Ablaufdatum:";
@@ -14,11 +12,8 @@
 "247.title" = "Vertrauen:";
 "256.title" = "Signatur";
 "257.title" = "Erstellt:";
-"259.title" = "Ablaufdatum:";
 "291.title" = "Die Signatur konnte nicht verifiziert werden.";
 "293.title" = "Die Signatur des Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet.\nBitte lade den öffentlichen Schlüssel in GPG Keychain.";
-"325.ibShadowedIsNilPlaceholder" = "Diese Signatur hat kein Verfallsdatum";
-"353.ibShadowedIsNilPlaceholder" = "Diese Signatur hat kein Verfallsdatum";
-"366.ibShadowedIsNilPlaceholder" = "Diese Signatur hat kein Verfallsdatum";
 "382.title" = "Die Signatur konnte nicht verifiziert werden.";
 "383.title" = "Die Signatur des Anhangs konnte nicht überprüft werden, da der öffentliche Schlüssel sich nicht im Schlüsselbund befindet.\nBitte lade den öffentlichen Schlüssel in GPG Keychain.";
+"n4z-o9-sgL.ibShadowedIsNilPlaceholder" = "Nie";

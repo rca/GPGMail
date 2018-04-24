@@ -7,7 +7,7 @@
  
  Defines the strings used in the signature view.
  */
-"VALIDITY_NO_TRUST" = "Diese Signatur ist nicht vertrauenswürig.";
+"VALIDITY_NO_TRUST" = "Diese Signatur ist nicht vertrauenswürdig.";
 "VALIDITY_OK" = "Diese Signature ist vertrauenswürdig";
 /* Signature view key status. */
 "VALIDITY_KEY_REVOKED" = "Der Schlüssel dieser Signatur wurde widerrufen.";

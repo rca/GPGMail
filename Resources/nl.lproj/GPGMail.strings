@@ -15,7 +15,7 @@
 "MESSAGE_ERROR_ALERT_PGP_VERIFY_NOT_IN_KEYCHAIN_MESSAGE" = "Er is geen extra informatie bekend over deze PGP-sleutel, omdat ze niet in je sleutelbos zit.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_TITLE" = "Geheime sleutel om dit bericht te ontsleutelen ontbreekt.";
-"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "Geen van de onderstaande geheime sleutels staat in uw keychain(%@). Een geheime sleutel is nodig om het bericht te ontsleutelen.\n\nControleer of de juiste publieke sleutel gebruikt heeft is; of controleer de backup van uw GPG Sleutelbos. ";
+"MESSAGE_BANNER_PGP_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this message. \n\nPlease check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_TITLE" = "Ontsleutelen mislukt om een onbekende reden!";
 "MESSAGE_BANNER_PGP_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Er is een onbekende fout opgetreden tijdens het ontsleutelen van dit bericht.\n\nNeem contact met ons op via https://gpgtools.tenderapp.com";
@@ -75,7 +75,7 @@
 
 /* Message Error Banner Attachment messages. */
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_TITLE" = "Geheime sleutel om de bijlage te ontsleutelen ontbreekt.";
-"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "Geen van de onderstaande geheime sleutels staat in uw keychain(%@). Een geheime sleutel is nodig om de bijlage te ontsleutelen.\n\nControleer of de juiste publieke sleutel gebruikt heeft is; of controleer de backup van uw keychain. ";
+"MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SECKEY_ERROR_MESSAGE" = "None of the following secret keys could be found in your keychain (%@). The secret key is needed to decrypt this attachment. \n\nPlease check with the sender that they used your correct public key.\nCheck any backup of your keychain, and try to import the secret key from there.";
 
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_TITLE" = "Ontsleutelen mislukt om een onbekende reden!";
 "MESSAGE_BANNER_PGP_ATTACHMENT_DECRYPT_SYSTEM_ERROR_MESSAGE" = "Er is een onbekende fout opgetreden bij het ontsleutelen van deze bijlage.\n\nNeem contact met ons op via https://gpgtools.tenderapp.com";
@@ -231,9 +231,19 @@ NO_DEFAULTS_MESSAGE = "GPGMail werkt niet naar behoren.\n\nDownload en her-insta
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_EXPLANATION" = "Uw antwoord zal NIET versleuteld verstuurd worden als U verder gaat. Dat kan tot gevolg hebben dat vertrouwelijke informatie lekt; met alle risico's van dien voor U en de ontvangers van het bericht.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_REMOVE_PREVIOUS_CORRESPONDENCE" = "\n\nAls U werkelijk dit bericht onversleuteld wil versturen; overweeg dan ten minste alle voorgaande correspondentie welke ook in dit bericht staat uit uw antwoord te verwijderen.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Of, gebruik GPG Keychain om de ontbrekende publieke sleutels te zoeken en/of te importeren. Dan kan het antwoord wel versleuteld verstuurd worden.";
-"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Of, gebruik GPG Keychain om de ontbrekende publieke sleutels te zoeken en/of te importeren. Dan kan het antwoord wel versleuteld verstuurd worden.";
+"UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Otherwise, search and import the corresponding public key using GPG Keychain in order to send the reply encrypted.";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Verstuur alsnog";
 "UNENCRYPTED_REPLY_TO_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Cancel";
+
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_TITLE" = "Attention: You're about to forward the decrypted version of an encrypted message";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_MISSING_KEYS_SINGULAR" = "It's not possible to encrypt the message you are about to forward, because the public key for the following recipient is missing:\n\n%@";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_MISSING_KEYS" = "It's not possible to encrypt the message you are about to forward, because public keys for the following recipients are missing:\n\n%@";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_EXPLANATION" = "If you choose to proceed, the message you are about to forward will be sent unencrypted. As a result, confidential information might be leaked, putting you and your recipients at risk.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS" = "Otherwise, search and import the corresponding public keys using GPG Keychain in order to forward an encrypted version of the message.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_SOLUTION_IMPORT_KEYS_SINGULAR" = "Otherwise, search and import the corresponding public key using GPG Keychain in order to forward an encrypted version of the message.";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Forward Anyway";
+"UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Cancel";
+
 
 
 /* Accessibility */
