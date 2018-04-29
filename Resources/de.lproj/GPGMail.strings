@@ -244,8 +244,8 @@ NO_DEFAULTS_MESSAGE = "GPGMail funktioniert nicht wie erwartet.\n\nLade und inst
 "UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_SEND_ANYWAY" = "Trotzdem weiterleiten";
 "UNENCRYPTED_FORWARD_OF_ENCRYPTED_MESSAGE_BUTTON_CANCEL" = "Abbrechen";
 
-"MESSAGE_BANNER_PGP_DECRYPT_MDC_ERROR_TITLE" = "Es ist schädlich diese Nachricht zu entschlüsseln.";
-"MESSAGE_BANNER_PGP_DECRYPT_MDC_ERROR_MESSAGE" = "Der Code zum Erkennen von Änderungen (MDC) dieser verschlüsselten Nachricht ist nicht vorhanden oder wurde abgeändert.\n\nDas könnte ein Zeichen dafür sein, dass der Inhalt der verschlüsselten Nachricht von einem Angreifer verändert wurde.\n\nBitte lassen Sie sich die Nachricht erneut zusenden und lassen Sie den Absender wissen, dass deren Nachricht keinen Code zum Erkennen von Änderungen enthielt.";
+"MESSAGE_BANNER_PGP_DECRYPT_MDC_ERROR_TITLE" = "Die Entschlüsselung dieser Nachricht wurde abgebrochen";
+"MESSAGE_BANNER_PGP_DECRYPT_MDC_ERROR_MESSAGE" = "Der Code zum Erkennen von Änderungen (MDC) dieser verschlüsselten Nachricht ist nicht vorhanden oder wurde abgeändert.\n\nDas könnte ein Zeichen dafür sein, dass der Inhalt der verschlüsselten Nachricht von einem Angreifer verändert wurde.\n\nBitte lass dir die Nachricht erneut zusenden und informiere den Absender, dass seine Nachricht keinen Code zum Erkennen von Änderungen enthielt.";
 
 /* Accessibility */
 ACCESSIBILITY_SECURITY_METHOD_POPUP_LABEL = "Sicherheitstechnik: %@";
