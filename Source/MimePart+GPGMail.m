@@ -838,11 +838,18 @@
 	// Sometimes decryption okay is issued even though a NODATA error occured.
 	BOOL success = gpgc.decryptionOkay && !error;
 	
-    // Check if this is a non-clear-signed message.
-    // Conditions: decryptionOkay == false and encrypted data has signature packets.
-    // If decryptedData length != 0 && !decryptionOkay signature packets are expected.
-    BOOL nonClearSigned = !gpgc.decryptionOkay && [decryptedData hasSignaturePacketsWithSignaturePacketsExpected:[decryptedData length] != 0 && !gpgc.decryptionOkay];
-    
+	// Bug #980: If the message doesn't contain a MDC or contains a modified MDC,
+	//           GPGMail currently believes that the message is non-clear-signed and
+	//           ignores the failed decryption.
+	//
+	// Libmacgpg has since been patched to no longer return the decrypted content
+	// if no MDC or a modified MDC is detected, so if data is returned and no DECRYPTION_OKAY
+	// status line is issued, there's a high chance, that the message was non-clear-signed instead of
+	// encrypted. In addition a check is added, to see if BEGIN_DECRYPTION wasn't issued either.
+	BOOL nonClearSigned = ![gpgc.statusDict objectForKey:@"BEGIN_DECRYPTION"] &&
+						  ![gpgc.statusDict objectForKey:@"DECRYPTION_OKAY"] &&
+						  [decryptedData length] != 0;
+
 	// Let's reset the error if the message is not clear-signed,
 	// since error will be general error.
 	if (nonClearSigned)
@@ -973,6 +980,14 @@
 		titleKey = [NSString stringWithFormat:@"%@_DECRYPT_ERROR_XPC_DAMAGED_TITLE", prefix];
 		messageKey = [NSString stringWithFormat:@"%@_DECRYPT_ERROR_XPC_DAMAGED_MESSAGE", prefix];
 		
+		title = GMLocalizedString(titleKey);
+		message = GMLocalizedString(messageKey);
+	}
+	else if(((GPGException *)operationError).errorCode == GPGErrorNoMDC ||
+			((GPGException *)operationError).errorCode == GPGErrorBadMDC) {
+		titleKey = [NSString stringWithFormat:@"%@_DECRYPT_MDC_ERROR_TITLE", prefix];
+		messageKey = [NSString stringWithFormat:@"%@_DECRYPT_MDC_ERROR_MESSAGE", prefix];
+
 		title = GMLocalizedString(titleKey);
 		message = GMLocalizedString(messageKey);
 	}
