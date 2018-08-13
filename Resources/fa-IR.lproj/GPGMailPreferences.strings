@@ -1,0 +1,69 @@
+
+/* Class = "NSTextFieldCell"; title = "GPGMail"; ObjectID = "709"; */
+"709.title" = "GPGMail";
+
+/* Class = "NSTextFieldCell"; title = "Updates"; ObjectID = "715"; */
+"715.title" = "Updates";
+
+/* Class = "NSTextFieldCell"; title = "Composing"; ObjectID = "728"; */
+"728.title" = "Composing";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "732"; */
+"732.title" = "Box";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Frequently Asked Questions."; ObjectID = "733"; */
+"733.ibShadowedToolTip" = "Frequently Asked Questions.";
+
+/* Class = "NSButtonCell"; alternateTitle = "Frequently Asked Questions"; ObjectID = "734"; */
+"734.alternateTitle" = "Frequently Asked Questions";
+
+/* Class = "NSButtonCell"; title = "Knowledge Base"; ObjectID = "734"; */
+"734.title" = "Knowledge Base";
+
+/* Class = "NSTextFieldCell"; title = "Reading"; ObjectID = "744"; */
+"744.title" = "Reading";
+
+/* Class = "NSButtonCell"; title = "Encrypt drafts"; ObjectID = "781"; */
+"781.title" = "Encrypt drafts";
+
+/* Class = "NSButton"; ibShadowedToolTip = "See Preferences -> Viewing -> List Preview."; ObjectID = "786"; */
+"786.ibShadowedToolTip" = "See Preferences -> Viewing -> List Preview.";
+
+/* Class = "NSButtonCell"; title = "Create List Preview"; ObjectID = "787"; */
+"787.title" = "Create List Preview";
+
+/* Class = "NSButtonCell"; title = "Button"; ObjectID = "834"; */
+"834.title" = "Button";
+
+/* Class = "NSButton"; ibShadowedToolTip = "If you've any other question."; ObjectID = "1051"; */
+"1051.ibShadowedToolTip" = "If you've any other question.";
+
+/* Class = "NSButtonCell"; title = "Report Problem"; ObjectID = "1053"; */
+"1053.title" = "Report Problem";
+
+/* Class = "NSButtonCell"; title = "Check Now"; ObjectID = "0PS-Wm-gKl"; */
+"0PS-Wm-gKl.title" = "Check Now";
+
+/* Class = "NSTextFieldCell"; title = "Version: xxx"; ObjectID = "0Th-7E-Y7P"; */
+"0Th-7E-Y7P.title" = "Version: xxx";
+
+/* Class = "NSButtonCell"; title = "Sign new messages by default"; ObjectID = "2ul-d0-5ir"; */
+"2ul-d0-5ir.title" = "Sign new messages by default";
+
+/* Class = "NSButtonCell"; title = "Automatically check for updates"; ObjectID = "80G-ZN-hjm"; */
+"80G-ZN-hjm.title" = "Automatically check for updates";
+
+/* Class = "NSTextFieldCell"; title = "Beta builds are published more often. New features and improvements are less tested."; ObjectID = "8oZ-YB-M9Q"; */
+"8oZ-YB-M9Q.title" = "Beta builds are published more often. New features and improvements are less tested.";
+
+/* Class = "NSButtonCell"; title = "Show Release Notes"; ObjectID = "D6D-o9-63C"; */
+"D6D-o9-63C.title" = "Show Release Notes";
+
+/* Class = "NSButtonCell"; title = "Include beta builds"; ObjectID = "UhD-uR-dUs"; */
+"UhD-uR-dUs.title" = "Include beta builds";
+
+/* Class = "NSTextFieldCell"; title = "Build:"; ObjectID = "q0m-y8-baf"; */
+"q0m-y8-baf.title" = "Build:";
+
+/* Class = "NSButtonCell"; title = "Encrypt new messages by default"; ObjectID = "yJs-2y-8Cb"; */
+"yJs-2y-8Cb.title" = "Encrypt new messages by default";

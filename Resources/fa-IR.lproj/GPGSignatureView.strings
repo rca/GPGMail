@@ -1,0 +1,108 @@
+
+/* Class = "NSWindow"; title = "Signatures"; ObjectID = "21"; */
+"21.title" = "Signatures";
+
+/* Class = "NSButtonCell"; title = "OK"; ObjectID = "25"; */
+"25.title" = "OK";
+
+/* Class = "NSTextFieldCell"; title = "signature.creationDate"; ObjectID = "233"; */
+"233.title" = "signature.creationDate";
+
+/* Class = "NSTextFieldCell"; title = "validityDescription"; ObjectID = "235"; */
+"235.title" = "validityDescription";
+
+/* Class = "NSTextFieldCell"; title = "Created:"; ObjectID = "236"; */
+"236.title" = "Created:";
+
+/* Class = "NSTextFieldCell"; title = "name"; ObjectID = "237"; */
+"237.title" = "name";
+
+/* Class = "NSTextFieldCell"; title = "Details"; ObjectID = "251"; */
+"251.title" = "Details";
+
+/* Class = "IBBindingConnection"; ibShadowedNoSelectionPlaceholder = "No signature"; ObjectID = "252"; */
+"252.ibShadowedNoSelectionPlaceholder" = "No signature";
+
+/* Class = "NSTextFieldCell"; title = "emailAndID"; ObjectID = "255"; */
+"255.title" = "emailAndID";
+
+/* Class = "NSTextFieldCell"; title = "Name:"; ObjectID = "365"; */
+"365.title" = "Name:";
+
+/* Class = "NSTextFieldCell"; title = "Key"; ObjectID = "367"; */
+"367.title" = "Key";
+
+/* Class = "NSTextFieldCell"; title = "E-Mail:"; ObjectID = "369"; */
+"369.title" = "E-Mail:";
+
+/* Class = "NSTextFieldCell"; title = "Key ID:"; ObjectID = "372"; */
+"372.title" = "Key ID:";
+
+/* Class = "NSTextFieldCell"; title = "Comment:"; ObjectID = "373"; */
+"373.title" = "Comment:";
+
+/* Class = "NSTextFieldCell"; title = "Algorithm:"; ObjectID = "377"; */
+"377.title" = "Algorithm:";
+
+/* Class = "NSTextFieldCell"; title = "Expires:"; ObjectID = "378"; */
+"378.title" = "Expires:";
+
+/* Class = "NSTextFieldCell"; title = "Created:"; ObjectID = "379"; */
+"379.title" = "Created:";
+
+/* Class = "NSTextFieldCell"; title = "Ownertrust:"; ObjectID = "381"; */
+"381.title" = "Ownertrust:";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.name"; ObjectID = "383"; */
+"383.title" = "gpgKey.name";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.email"; ObjectID = "385"; */
+"385.title" = "gpgKey.email";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.keyID"; ObjectID = "388"; */
+"388.title" = "gpgKey.keyID";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.comment"; ObjectID = "389"; */
+"389.title" = "gpgKey.comment";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.ownerTrust"; ObjectID = "394"; */
+"394.title" = "gpgKey.ownerTrust";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.algorithm"; ObjectID = "395"; */
+"395.title" = "gpgKey.algorithm";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.expirationDate"; ObjectID = "396"; */
+"396.title" = "gpgKey.expirationDate";
+
+/* Class = "NSTextFieldCell"; title = "gpgKey.creationDate"; ObjectID = "397"; */
+"397.title" = "gpgKey.creationDate";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "425"; */
+"425.title" = "Box";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "432"; */
+"432.title" = "Box";
+
+/* Class = "NSTextFieldCell"; title = "signature.expirationDate"; ObjectID = "433"; */
+"433.title" = "signature.expirationDate";
+
+/* Class = "NSTextFieldCell"; title = "Expires:"; ObjectID = "434"; */
+"434.title" = "Expires:";
+
+/* Class = "NSTextFieldCell"; title = "signature.creationDate"; ObjectID = "435"; */
+"435.title" = "signature.creationDate";
+
+/* Class = "NSTextFieldCell"; title = "Created:"; ObjectID = "436"; */
+"436.title" = "Created:";
+
+/* Class = "NSTextFieldCell"; title = "Signature"; ObjectID = "437"; */
+"437.title" = "Signature";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "483"; */
+"483.title" = "Text Cell";
+
+/* Class = "IBBindingConnection"; ibShadowedIsNilPlaceholder = "No expiration is set on this signature"; ObjectID = "531"; */
+"531.ibShadowedIsNilPlaceholder" = "No expiration is set on this signature";
+
+/* Class = "IBBindingConnection"; ibShadowedIsNilPlaceholder = "No expiration is set on this key"; ObjectID = "532"; */
+"532.ibShadowedIsNilPlaceholder" = "No expiration is set on this key";
